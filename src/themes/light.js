@@ -1,7 +1,8 @@
 import tinycolor from 'tinycolor2';
 
-const navyBlue = '#0B3556';
+const whisper = '#E7E5E5';
 const curiousBlue = '#CBE2EE';
+const deepSkyBlue = '#3695A9';
 const airForceBlue = '#5E8CA5';
 const qQhite = '#EEEEEE';
 const orange = '#FF7F15';
@@ -11,36 +12,48 @@ const cobolt = '#FBB35D';
 const warning = '#ff7f0b';
 const success = '#3CD4A0';
 const info = '#3f2b2f';
-const tableHeader = '#f5f5f5';
+const tableHeader = '#ffffff';
 const black = 'black';
-
+const lochmara = '#3478A5';
 const lightenRate = 7.5;
 const darkenRate = 15;
-const tableHeaderBorder = '#004c73 3px solid';
-const tableHeaderFontColor = '#194563';
-const tableFontFamily = "'Raleway', sans-serif";
+const tableHeaderBorder = '#4B619A 3px solid';
+const tableHeaderFontColor = '#004c73';
+const tableFontFamily = "'Lato Regular','Raleway', sans-serif";
+const white = '#FFFFFF';
 
 export default {
   custom: {
     maxContentWidth: '1440px',
     maxContent: 'white',
-    bodyBackGround: 'white',
+    bodyBackGround: '#f2f2f2',
     cardBackGround: '#f0f6f8',
-    footorBackground: '#325068',
     fontFamilySans: '"Open Sans", sans-serif',
+    footorBackground: '#325068',
+    fontFamily: '"Lato Regular","Open Sans", sans-serif',
     fontFamilyRaleway: "'Raleway', sans-serif",
     drawerWidth: '240px',
   },
   palette: {
     primary: {
-      main: navyBlue,
-      light: tinycolor(navyBlue)
+      main: whisper,
+      light: tinycolor(whisper)
         .lighten(lightenRate)
         .toHexString(),
-      dark: tinycolor(navyBlue)
+      dark: tinycolor(whisper)
         .darken(darkenRate)
         .toHexString(),
-      contrastText: '#FFFFFF',
+      contrastText: '#0E273A',
+    },
+    secondary: {
+      main: deepSkyBlue,
+      light: tinycolor(deepSkyBlue)
+        .lighten(lightenRate)
+        .toHexString(),
+      dark: tinycolor(deepSkyBlue)
+        .darken(darkenRate)
+        .toHexString(),
+      contrastText: '#0E273A',
     },
     curiousBlue: {
       main: curiousBlue,
@@ -52,12 +65,43 @@ export default {
         .toHexString(),
       contrastText: '#FFFFFF',
     },
+    deepSkyBlue: {
+      main: deepSkyBlue,
+      light: tinycolor(deepSkyBlue)
+        .lighten(lightenRate)
+        .toHexString(),
+      dark: tinycolor(deepSkyBlue)
+        .darken(darkenRate)
+        .toHexString(),
+      contrastText: '#FFFFFF',
+    },
+    lochmara: {
+      main: lochmara,
+      light: tinycolor(lochmara)
+        .lighten(lochmara)
+        .toHexString(),
+      dark: tinycolor(lochmara)
+        .darken(darkenRate)
+        .toHexString(),
+      contrastText: 'lochmara',
+      contrastTextColor: '#3478A5',
+    },
+    white: {
+      main: white,
+      light: tinycolor(white)
+        .lighten(white)
+        .toHexString(),
+      dark: tinycolor(white)
+        .darken(white)
+        .toHexString(),
+      contrastText: 'white',
+    },
     airForceBlue: {
       main: airForceBlue,
       light: tinycolor(airForceBlue)
         .lighten(lightenRate)
         .toHexString(),
-      dark: tinycolor(navyBlue)
+      dark: tinycolor(whisper)
         .darken(darkenRate)
         .toHexString(),
       contrastText: '#FFFFFF',
@@ -120,8 +164,8 @@ export default {
       dark: tinycolor(black)
         .darken(darkenRate)
         .toHexString(),
-      contrastText: 'black',
-      lattice: '#E9F1F5',
+      contrastText: '#3478A5',
+      lattice: '#E5F6F8',
     },
     warning: {
       main: warning,
@@ -168,7 +212,7 @@ export default {
       footerText: 'white',
     },
     background: {
-      default: '#fafafa',
+      default: '#f2f2f2',
       light: '#F3F5FF',
     },
   },
@@ -189,6 +233,9 @@ export default {
     MuiListItemText: {
       root: {
         padding: '0 8px',
+        '&:first-child': {
+          wordBreak: 'break-word',
+        },
       },
     },
     MuiListItem: {
@@ -216,6 +263,14 @@ export default {
         boxShadow: 'none',
       },
     },
+    MUIDataTable: {
+      responsiveStacked: {
+        transform: 'rotateX(180deg)',
+      },
+      tableRoot: {
+        transform: 'rotateX(180deg)',
+      },
+    },
     MUIDataTableSelectCell: {
       fixedHeader: {
         position: 'relative',
@@ -230,6 +285,9 @@ export default {
       },
       checkboxRoot: {
         color: 'inherit',
+        '&$checked': {
+          color: '#3695A9',
+        },
       },
 
     },
@@ -250,16 +308,20 @@ export default {
     },
     MUIDataTableHeadCell: {
       fixedHeader: {
+        position: 'relative',
         borderTop: tableHeaderBorder,
         borderBottom: tableHeaderBorder,
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
         textDecoration: 'underline',
         fontFamily: tableFontFamily,
-        letterSpacing: '0.025em',
+        letterSpacing: '0.06em',
         fontStyle: 'normal',
         fontSize: '11pt',
         fontWeight: 'bold',
+        '&:first-child': {
+          paddingLeft: '30px',
+        },
       },
       sortActive: {
         color: tableHeaderFontColor,
@@ -279,12 +341,11 @@ export default {
     MUIDataTableBodyRow: {
       root: {
         '&:nth-child(even)': {
-          color: '#223d4c',
-          background: '#f5f5f5 !important',
+          color: '#004c73',
         },
         '&:nth-child(odd)': {
-          color: '#223d4c !important',
-
+          color: '#004c73 !important',
+          background: '#f5f5f5 !important',
         },
       },
     },
@@ -306,7 +367,7 @@ export default {
       },
       body: {
         color: 'inherit',
-        fontFamily: '"Open Sans", sans-serif',
+        fontFamily: '"Lato Regular","Open Sans", sans-serif',
         letterSpacing: '0.025em',
         fontStyle: 'normal',
         fontSize: '10pt',
@@ -323,6 +384,7 @@ export default {
         backgroundColor: tableHeader,
       },
       titleText: {
+
         color: tableHeaderFontColor,
         fontSize: '25.2pt',
         fontFamily: tableFontFamily,
@@ -342,21 +404,35 @@ export default {
         letterSpacing: '0.025em',
         fontStyle: 'normal',
       },
+      iconButton: {
+        marginRight: '2.8%',
+        '@media (max-width: 1600px)': {
+          marginRight: '1.3%',
+        },
+      },
     },
     MuiIconButton: {
       root: {
         padding: '5px',
       },
     },
-    MuiGrid: {
-      container: {
-        width: '100% !important',
-
+    MuiTablePagination: {
+      toolbar: {
+        textTransform: 'uppercase',
+      },
+      select: {
+        border: '2px #fff solid',
+        background: '#fff',
       },
     },
     MuiSwitch: {
       bar: {
         backgroundColor: '#ABADB0',
+      },
+    },
+    MuiTableFooter: {
+      root: {
+        borderTop: '6px #E7E5E5 solid',
       },
     },
   },

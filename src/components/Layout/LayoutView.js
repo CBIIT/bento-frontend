@@ -12,24 +12,15 @@ import Error from '../../pages/error/Error';
 
 import Dashboard from '../../pages/dashboard/dashboardController';
 import CaseDetail from '../../pages/caseDetail/caseDetailController';
-import Cases from '../../pages/cases/casesController';
-import Studies from '../../pages/studies/studiesController';
-import Programs from '../../pages/programs/programController';
 import modelPage from '../../pages/modelPage/modelPageView';
 import table from '../../pages/table/tableView';
-import StudyDetail from '../../pages/studyDetail/studyDetailController';
-import ProgramDetail from '../../pages/programDetail/programDetailController';
 import SelectedCases from '../../pages/selectedCases/selectedCasesController';
 import SelectedFiles from '../../pages/selectedFiles/selectedFilesController';
 import Home from '../../pages/landing/landingController';
-import CRDCView from '../../pages/about/CRDCView';
-import developerView from '../../pages/about/developerView';
-import ICDCDataView from '../../pages/about/ICDCDataView';
-import purposeView from '../../pages/about/purposeView';
-import steeringCommiteeView from '../../pages/about/steeringCommitteeView';
-import supportView from '../../pages/about/supportView';
-import submitingData from '../../pages/about/submitDataView';
-
+import About from '../../pages/about/aboutController';
+import DataDictonary from '../../pages/dataDictionary/dataDictonaryController';
+import Trials from '../../pages/trials/trialsController';
+import TrialDetail from '../../pages/trialDetail/trialDetailController';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -54,26 +45,21 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
             <Route path="/cases" component={Dashboard} />
-            <Route path="/programs" component={Programs} />
-            <Route path="/studies" component={Studies} />
+            <Route path="/trials" component={Trials} />
             <Route path="/model" component={modelPage} />
             <Route path="/table" component={table} />
             <Route path="/myCases" component={SelectedCases} />
             <Route path="/myCasesFiles" component={SelectedFiles} />
 
-            <Route path="/program/:id" component={ProgramDetail} />
-            <Route path="/study/:id" component={StudyDetail} />
+            <Route path="/trial/:id" component={TrialDetail} />
             <Route path="/case/:id" component={CaseDetail} />
-            <Route path="/study_cases/:id" component={Cases} />
-            <Route path="/purpose" component={purposeView} />
-            <Route path="/steeringCommittee" component={steeringCommiteeView} />
-            <Route path="/crdc" component={CRDCView} />
-            <Route path="/icdcData" component={ICDCDataView} />
-            <Route path="/developers" component={developerView} />
-            <Route path="/support" component={supportView} />
-            <Route path="/submit" component={submitingData} />
-
-
+            <Route path="/purpose" component={About} />
+            <Route path="/crdc" component={About} />
+            <Route path="/icdcData" component={About} />
+            <Route path="/developers" component={About} />
+            <Route path="/support" component={About} />
+            <Route path="/request-access" component={About} />
+            <Route path="/data-dictionary" component={DataDictonary} />
             <Route component={Error} />
           </Switch>
           <Footer data={{ isSidebarOpened }} />
@@ -94,18 +80,19 @@ const styles = (theme) => ({
     // width: `calc(100vw - 240px)`,   // Ajay need to add this on addung side bar
     width: 'calc(100%)', // Remove this on adding sidebar
     background: theme.custom.bodyBackGround,
-    marginTop: '139px',
+    marginTop: '185px',
   },
   '@global': {
     '*::-webkit-scrollbar': {
-      width: '0.6em',
+      width: '0.7em',
+      height: '0.6em',
     },
     '*::-webkit-scrollbar-track': {
       '-webkit-box-shadow': 'inset 0 0 6px #ccc',
       borderRadius: '10px',
     },
     '*::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgba(94,140,165)',
+      backgroundColor: '#97b0c0',
       outline: '1px solid slategrey',
       borderRadius: '10px',
     },

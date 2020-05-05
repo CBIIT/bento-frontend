@@ -1,143 +1,73 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import {
-  Button, Menu, withStyles, Paper, Fade,
+  Button, withStyles,
 } from '@material-ui/core';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+import DropdownMenu from './DropdownMenu';
 
-const AboutMenu = ({ classes }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const AboutMenu = ({ classes, handleButtonClickEvent, clickedEl }) => {
+  const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
 
-  function handleClick(event) {
-    setAnchorEl(event.currentTarget);
+  function handleClick() {
+    setDisplayDropDownMenu(true);
   }
 
-  function handleClose() {
-    setAnchorEl(null);
+  function handleMoveOut() {
+    setDisplayDropDownMenu(false);
+  }
+
+  function dropdownMenuClickEvent() {
+    setDisplayDropDownMenu(false);
+    handleButtonClickEvent('aboutMenu');
   }
 
   return (
-    <>
+    <div
+      onMouseEnter={handleClick}
+      onMouseLeave={handleMoveOut}
+      className={classes.aboutMenu}
+    >
       <Button
-        variant="h6"
+        id="button_navbar_about"
         weight="medium"
         aria-controls="simple-menu"
         aria-haspopup="true"
-        onClick={handleClick}
+        onFocus={handleClick}
         className={classes.logotype}
         classes={{ root: classes.buttonRoot }}
-        disableRipple
       >
+        <span className={clickedEl === 'aboutMenu' ? classes.buttonRootClicked : ''}>
         About
+        </span>
         <ExpandMoreRoundedIcon className={classes.icon} />
       </Button>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        TransitionComponent={Fade}
-        MenuListProps={{
-          style: {
-            padding: 0,
-          },
-        }}
-        PaperProps={{
-          style: {
-            boxShadow: 'none',
-            marginTop: '-8px',
-            marginLeft: '40px',
-            borderRadius: '0px',
-            background: '#309EC4',
-          },
-        }}
-      >
-        <Paper className={classes.paper}>
-          <div className={classes.aboutItemsWrapper}>
-            <NavLink
-              className={classes.link}
-              activeStyle={{ color: 'white' }}
-              to="/purpose"
-            >
-               Purpose
-            </NavLink>
-            <NavLink
-              className={classes.link}
-              activeStyle={{ color: 'white' }}
-              to="/steeringCommittee"
-            >
-               Steering Committee
-            </NavLink>
-            <NavLink
-              className={classes.link}
-              activeStyle={{ color: 'white' }}
-              to="/crdc"
-            >
-               CRDC & Analysis
-            </NavLink>
-            <NavLink
-              className={classes.link}
-              activeStyle={{ color: 'white' }}
-              to="/model"
-            >
-               ICDC Data & Model
-            </NavLink>
-            <NavLink
-              className={classes.link}
-              activeStyle={{ color: 'white' }}
-              to="/developers"
-            >
-               Developers
-            </NavLink>
-            <NavLink
-              className={classes.link}
-              activeStyle={{ color: 'white' }}
-              to="/support"
-            >
-               Support
-            </NavLink>
-            <NavLink
-              className={classes.link}
-              activeStyle={{ color: 'white' }}
-              to="/submit"
-            >
-               Submitting Data
-            </NavLink>
-
-          </div>
-        </Paper>
-      </Menu>
-    </>
+      {displayDropDownMenu ? <DropdownMenu handleClick={dropdownMenuClickEvent} /> : ''}
+    </div>
   );
 };
 
 const styles = (theme) => ({
   logotype: {
     whiteSpace: 'nowrap',
-    color: '#FFFFFF',
-    fontFamily: 'Raleway',
+    color: theme.palette.primary.contrastText,
+    fontFamily: 'Lato',
     fontSize: '13px',
     fontWeight: '600',
     letterSpacing: '0.9px',
     [theme.breakpoints.down('xs')]: {
       display: 'none',
     },
+    '&:hover, &:focus': {
+      borderRadius: '0',
+    },
   },
   buttonRoot: {
     paddingTop: '9px',
     paddingLeft: '20px',
     paddingRight: '20px',
+  },
+  buttonRootClicked: {
+    borderBottom: '2px solid  #39C0F0',
   },
   icon: {
     fontSize: '18px',
@@ -149,9 +79,9 @@ const styles = (theme) => ({
   link: {
     textDecoration: 'none',
     color: 'black',
-    fontFamily: 'Raleway',
+    fontFamily: 'Lato',
     fontSize: '13px',
-    fontWeight: '600',
+    fontWeight: '800',
     lineSpacing: '1px',
     display: 'block',
     marginTop: '13px',
@@ -162,6 +92,9 @@ const styles = (theme) => ({
   },
   aboutItemsWrapper: {
     maxWidth: '150px',
+  },
+  aboutMenu: {
+    float: 'right',
   },
 });
 

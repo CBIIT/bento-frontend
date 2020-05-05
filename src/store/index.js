@@ -8,6 +8,7 @@ const loggerMiddleware = createLogger();
 
 const store = createStore(
   reducers,
+
   applyMiddleware(ReduxThunk, loggerMiddleware),
 );
 

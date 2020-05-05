@@ -1,5 +1,8 @@
 'use strict';
 
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+
+
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
@@ -45,20 +48,17 @@ const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 if (process.env.HOST) {
-  console.log(
+  console.warn(
     chalk.cyan(
       `Attempting to bind to HOST environment variable: ${chalk.yellow(
         chalk.bold(process.env.HOST)
       )}`
     )
   );
-  console.log(
+  console.warn(
     `If this was unintentional, check that you haven't mistakenly set it in your shell.`
   );
-  console.log(
-    `Learn more here: ${chalk.yellow('http://bit.ly/CRA-advanced-config')}`
-  );
-  console.log();
+  
 }
 
 // We require that you explictly set browsers and do not fall back to
@@ -91,14 +91,13 @@ checkBrowsers(paths.appPath, isInteractive)
     );
     const devServer = new WebpackDevServer(compiler, serverConfig);
     // Launch WebpackDevServer.
-    devServer.listen(port, HOST, (err) => {
+    devServer.listen(port, HOST, function(err){
       if (err) {
-        return console.log(err);
+        console.error(err);
       }
       if (isInteractive) {
         clearConsole();
       }
-      console.log(chalk.cyan('Starting the development server...\n'));
       openBrowser(urls.localUrlForBrowser);
     });
 
@@ -111,7 +110,7 @@ checkBrowsers(paths.appPath, isInteractive)
   })
   .catch((err) => {
     if (err && err.message) {
-      console.log(err.message);
+      console.error(err.message);
     }
     process.exit(1);
   });

@@ -8,8 +8,41 @@ import { Link } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 
-const defaultFooterStyles = {
+const styles = () => ({
+  buttonRoot: {
+    background: '#C53B27',
+    '&:hover': {
+      background: '#C53B27',
+    },
+    borderRadius: '35px',
+    fontSize: '13px',
+    fontFamily: 'raleway',
+    fontWeight: '600',
+    lineHeight: '19px',
+    textAlign: 'center',
+    height: '40px',
+    width: '165px',
+    color: '#FFFF',
+    '&$buttonDisabled': {
+      backgroundColor: '#C53B27',
+      opacity: '0.3',
+      border: '3px solid grey',
+      color: '#FFFF',
+      fontWeight: '600',
+      fontFamily: 'raleway',
+      fontSize: '13px',
+      lineHeight: '11px',
+      textAlign: 'center',
+    },
+  },
+  buttonDisabled: {
 
+  },
+});
+
+const linkStyle = {
+  textDecoration: 'none',
+  cursor: 'auto',
 };
 
 const CustomFooter = ({
@@ -24,8 +57,8 @@ const CustomFooter = ({
   <TableFooter>
     <TableRow>
       <TableCell>
-        <Link to="mycasesfiles">
-          <Button variant="contained" color="primary" className={classes.button}>
+        <Link to={count > 0 && 'mycasesfiles'} style={linkStyle}>
+          <Button disabled={count < 1} variant="contained" color="primary" classes={{ root: classes.buttonRoot, disabled: classes.buttonDisabled }}>
             {text}
           </Button>
         </Link>
@@ -42,4 +75,4 @@ const CustomFooter = ({
   </TableFooter>
 );
 
-export default withStyles(defaultFooterStyles, { withTheme: true })(CustomFooter);
+export default withStyles(styles)(CustomFooter);

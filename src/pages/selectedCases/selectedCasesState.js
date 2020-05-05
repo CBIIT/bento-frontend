@@ -1,5 +1,3 @@
-import client from '../../utils/graphqlClient';
-import { GET_MY_CASES_DATA_QUERY } from '../../utils/graphqlQueries';
 import {
 
 } from '../../utils/dashboardUtilFunctions';
@@ -18,7 +16,6 @@ export const INIT_CART = 'INIT_CART';
 export const CART_QUERY_ERR = 'CART_QUERY_ERR';
 export const READY_CART = 'READY_CART';
 export const DELETE_CASES = 'DELETE_CASES';
-export const DELETE_FILES = 'DELETE_FILES';
 
 
 export const deleteCasesAction = (payload) => ({
@@ -28,15 +25,9 @@ export const deleteCasesAction = (payload) => ({
 
 const deleteCases = (selectedCases, cases) => {
   if (!selectedCases || selectedCases.length === 0) return cases;
-
-  return cases.filter((caseDetail) => !selectedCases.includes(caseDetail.case_id));
+  return cases.filter((caseId) => !selectedCases.includes(caseId));
 };
 
-
-const deleteFiles = (selectedCases, files) => {
-  if (!selectedCases || selectedCases.length === 0) return files;
-  return files.filter((filesDetail) => !selectedCases.includes(filesDetail.case_id));
-};
 
 export const getCart = () => ({
   type: INIT_CART,
@@ -66,10 +57,9 @@ export const toggleCheckboxInCaseTable = (payload) => ({
 });
 
 
-function receiveNewCasesAndFiles(result) {
+export function receiveCases(casesIds) {
   const payload = {
-    cases: result.data.casesInList,
-    files: result.data.filesOfCases,
+    cases: casesIds,
   };
   return ({
     type: TOGGLE_CHEKCBOX_IN_CASE_TABLE,
@@ -78,36 +68,14 @@ function receiveNewCasesAndFiles(result) {
 }
 
 
-function errorCARThandler(error) {
-  return ({
-    type: CART_QUERY_ERR,
-    error,
-  });
-}
-
-
-export function fetchCasesAndFiles(userSelectedCases) {
-  return (dispatch) => client
-    .query({
-      query: GET_MY_CASES_DATA_QUERY,
-      variables: { caseIds: userSelectedCases },
-    })
-    .then((result) => dispatch(receiveNewCasesAndFiles(result)))
-    .catch((error) => dispatch(errorCARThandler(error)));
-}
-
-
 export default function CARTReducer(state = initialState, action) {
   switch (action.type) {
     case DELETE_CASES: {
-      const casesAfterDelete = deleteCases(action.payload, state.cases);
-      const filesAfterDelete = deleteFiles(action.payload, state.files);
-      localStorage.setItem('userSelectedCases', JSON.stringify(casesAfterDelete));
-      localStorage.setItem('userSelectedFiles', JSON.stringify(filesAfterDelete));
+      const casesAfterDeletion = deleteCases(action.payload, state.cases);
+      localStorage.setItem('userSelectedCases', JSON.stringify(casesAfterDeletion));
       return {
         ...state,
-        cases: casesAfterDelete,
-        files: filesAfterDelete,
+        cases: casesAfterDeletion,
       };
     }
 
@@ -115,39 +83,26 @@ export default function CARTReducer(state = initialState, action) {
       return {
         ...state,
         isError: false,
-        cases: JSON.parse(localStorage.getItem('userSelectedCases')),
-        files: JSON.parse(localStorage.getItem('userSelectedFiles')),
+        cases: JSON.parse(localStorage.getItem('userSelectedCases')) || [],
       };
     }
 
 
     case TOGGLE_CHEKCBOX_IN_CASE_TABLE: {
       const previousStatCases = Object.assign([], state.cases);
-      const previousStatFiles = Object.assign([], state.files);
+      // remove duplicates in case's ids.
       const uniqueCases = action.payload.cases.length > 0
         ? Array.from(
           new Set(
-            previousStatCases.concat(action.payload.cases)
-              .map((c) => c.case_id),
+            previousStatCases.concat(action.payload.cases),
           ),
-        ).map((id) => previousStatCases.concat(action.payload.cases)
-          .find((c) => c.case_id === id)) : previousStatCases;
-      const uniqueFiles = action.payload.files.length > 0
-        ? Array.from(
-          new Set(
-            previousStatFiles.concat(action.payload.files)
-              .map((c) => c.uuid),
-          ),
-        ).map((id) => previousStatFiles.concat(action.payload.files)
-          .find((c) => c.uuid === id)) : previousStatFiles;
+        ) : previousStatCases;
 
-      localStorage.setItem('userSelectedCases', JSON.stringify(uniqueCases));
-      localStorage.setItem('userSelectedFiles', JSON.stringify(uniqueFiles));
+      localStorage.setItem('userSelectedCases', JSON.stringify(uniqueCases) || []);
       return {
         ...state,
         isError: false,
         cases: uniqueCases,
-        files: uniqueFiles,
       };
     }
     case CART_QUERY_ERR: {

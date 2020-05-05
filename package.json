@@ -1,6 +1,6 @@
 {
   "homepage": ".",
-  "name": "icdc-frontend",
+  "name": "ctdc-frontend",
   "version": "0.1.0",
   "dependencies": {
     "@babel/core": "7.2.2",
@@ -8,6 +8,7 @@
     "@material-ui/icons": "^3.0.2",
     "@svgr/webpack": "4.1.0",
     "apollo-boost": "^0.4.3",
+    "axios": "^0.19.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^9.0.0",
     "babel-jest": "23.6.0",
@@ -35,6 +36,7 @@
     "jest-pnp-resolver": "1.0.2",
     "jest-resolve": "23.6.0",
     "jest-watch-typeahead": "^0.2.1",
+    "js-yaml": "^3.13.1",
     "line-awesome": "github:icons8/line-awesome",
     "mini-css-extract-plugin": "0.5.0",
     "mui-custom-datatables": "git+https://github.com/skiran86/mui-custom-datatables.git",
@@ -55,6 +57,7 @@
     "react-redux": "^7.1.1",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
+    "react-scroll": "^1.7.16",
     "react-syntax-highlighter": "^10.2.0",
     "react-toastify": "^4.5.2",
     "react-uuid": "^1.0.2",

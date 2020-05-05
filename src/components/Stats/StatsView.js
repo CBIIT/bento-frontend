@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import {
   Grid,
@@ -5,135 +6,100 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Typography } from '../Wrappers/Wrappers';
-import StudyIcon from '../../assets/icons/Icon-studies-stats.svg';
-import CasesIcon from '../../assets/icons/Icon-cases-stats.svg';
-import SamplesIcon from '../../assets/icons/Icon-samples-stats.svg';
-import FilesIcon from '../../assets/icons/Icon-files-stats.svg';
-import AliquotsIcon from '../../assets/icons/Icon-aliquots-stats.svg';
+import TrialsIcon from '../../assets/icons/stats/stats-bar-trials.svg';
+import CasesIcon from '../../assets/icons/stats/stats-bar-cases.svg';
+import FilesIcon from '../../assets/icons/stats/stats-bar-files.svg';
 
 
 const StatsView = ({ classes, data }) => (
-  <Grid container class={classes.statsContainer}>
+  <Grid container className={classes.statsContainer}>
     <Grid item xs={12}>
       <Paper className={classes.paper}>
-        <Grid container class={classes.statsMaxWidth}>
-          <Grid item xs={1} />
-          <Grid item xs={12} sm={4} md={2} lg={2}>
-            <div className={classes.statsGroup}>
-              <div className={classes.statsIcon}>
-                <img
-                  src={StudyIcon}
-                  alt="Studies Stats Bar Icon"
-                />
+        <div id="stats_bar" container className={classes.statsMaxWidth}>
+          <div className={classes.statsGroup}>
+            <div className={classes.statsIcon}>
+              <img
+                src={TrialsIcon}
+                alt="Studies Stats Bar Icon"
+              />
 
-              </div>
-              <div className={classes.statsText}>
-                <Typography weight="bold" size="md">
+            </div>
+            <div className={classes.statsText}>
+              <div className={classes.floatLeft}>
+                <Typography weight="bold" size="sm"  color="textWithBackground">
+                      TRIALS:
                   {' '}
-                  {data.numberOfStudies ? data.numberOfStudies : 0}
+                  {' '}
                 </Typography>
-                <div className={classes.marginTop1}>
-                  <Typography color="primary" weight="bold">
-                                              Studies
-                  </Typography>
-                </div>
+              </div>
+              <div id="trials_count" className={classes.floatRight}>
+                <Typography color="primary" weight="bold" size="sm">
+                  {data.numberOfTrials ? data.numberOfTrials : 0}
+                </Typography>
               </div>
             </div>
-          </Grid>
-          <Grid item xs={12} sm={4} md={2} lg={2}>
-            <div className={classes.statsGroup}>
-              <div className={classes.statsIcon}>
-                <img
-                  src={CasesIcon}
-                  alt="Cases Stats Bar Icon"
-                />
+          </div>
+          <div className={classes.statsGroup}>
+            <div className={classes.statsIcon}>
+              <img
+                src={CasesIcon}
+                alt="Cases Stats Bar Icon"
+              />
 
+            </div>
+            <div className={classes.statsText}>
+              <div className={classes.floatLeft}>
+                <Typography weight="bold" size="sm" color="textWithBackground">
+                      CASES:
+                  {' '}
+                  {' '}
+                </Typography>
               </div>
-              <div className={classes.statsText}>
-                <Typography weight="bold" size="md">
+              <div id="cases_count" className={classes.floatRight}>
+                <Typography color="primary" weight="bold" size="sm">
                   {data.numberOfCases ? data.numberOfCases : 0}
                 </Typography>
-                <div className={classes.marginTop1}>
-                  <Typography color="primary" weight="bold">
-                                            Cases
-                  </Typography>
-                </div>
               </div>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={4} md={2} lg={2}>
-            <div className={classes.statsGroup}>
-              <div className={classes.statsIcon}>
-                <img
-                  src={SamplesIcon}
-                  alt="Cases Samples Bar Icon"
-                />
 
-              </div>
-              <div className={classes.statsText}>
-                <Typography weight="bold" size="md">
-                  {data.numberOfSamples ? data.numberOfSamples : 0}
+            </div>
+          </div>
+          <div className={classes.statsGroup}>
+            <div className={classes.statsIcon}>
+              <img
+                src={FilesIcon}
+                alt="Files Stats Bar Icon"
+              />
+
+            </div>
+            <div className={classes.statsText}>
+              <div className={classes.floatLeft}>
+                <Typography weight="bold" size="sm" color="textWithBackground">
+                      FILES:
+                  {' '}
+                  {' '}
                 </Typography>
-                <div className={classes.marginTop1}>
-                  <Typography color="primary" weight="bold">
-                                            Samples
-                  </Typography>
-                </div>
               </div>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={4} md={2} lg={2}>
-
-            <div className={classes.statsGroup}>
-              <div className={classes.statsIcon}>
-                <img
-                  src={FilesIcon}
-                  alt="Files Stats Bar Icon"
-                />
-
-              </div>
-              <div className={classes.statsText}>
-                <Typography weight="bold" size="md">
+              <div id="files_count" className={classes.floatRight}>
+                <Typography weight="bold" color="primary" size="sm">
                   {data.numberOfFiles ? data.numberOfFiles : 0}
                 </Typography>
-                <div className={classes.marginTop1}>
-                  <Typography color="primary" weight="bold">
-                                            Files
-                  </Typography>
-                </div>
               </div>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={4} md={2} lg={2}>
 
-            <div className={classes.statsGroup}>
-              <div className={classes.statsIcon}>
-                <img
-                  src={AliquotsIcon}
-                  alt="Aliquots Stats Bar Icon"
-                />
-
-              </div>
-              <div className={classes.statsText}>
-                <Typography weight="bold" size="md">
-                  {data.numberOfBiospecimenAliquots ? data.numberOfBiospecimenAliquots : 0}
-                </Typography>
-                <div className={classes.marginTop1}>
-                  <Typography color="primary" weight="bold">
-                                            Aliquots
-                  </Typography>
-                </div>
-              </div>
             </div>
-          </Grid>
-          <Grid item xs={1} />
-        </Grid>
+          </div>
+        </div>
       </Paper>
     </Grid>
   </Grid>
 );
 
 const styles = (theme) => ({
+  statsContainer: {
+        position: 'fixed',
+        width: '100%',
+        zIndex: '999',
+        top: '139px',
+  },
   card: {
     minHeight: '100%',
     display: 'flex',
@@ -141,11 +107,12 @@ const styles = (theme) => ({
   },
   paper: {
     // textAlign: 'center',
-    background: theme.palette.curiousBlue.main,
+    background: theme.palette.deepSkyBlue.main,
     boxShadow: 'none',
+    borderRadius: '0',
   },
   statsGroup: {
-    padding: '9px 16px 12px 16px',
+    padding: '13px 48px 12px 48px',
     height: '46px',
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
@@ -154,17 +121,30 @@ const styles = (theme) => ({
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
     float: 'left',
-    marginLeft: '52px',
+    marginLeft: '32px',
     marginBottom: '8px',
   },
   statsIcon: {
     position: 'absolute',
     float: 'left',
-    width: '45px',
-    height: '45px',
+    width: '28px',
+    height: '28px',
+    marginTop: '-4px',
   },
-  marginTop1: {
-    marginTop: '1px',
+  floatLeft: {
+    float: 'left',
+    marginTop: '3px',
+    letterSpacing: '1px',
+  },
+  floatRight: {
+    float: 'right',
+    marginLeft: '6px',
+    marginTop: '3px',
+  },
+  statsMaxWidth: {
+    display: 'flex',
+    maxWidth: '700px',
+    margin: '0 auto',
   },
 });
 

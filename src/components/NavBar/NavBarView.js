@@ -5,26 +5,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   AppBar,
   Button,
-  Divider,
-  Drawer,
-  IconButton,
   Toolbar,
   Tooltip,
   withStyles,
 } from '@material-ui/core';
-// import {
-//   ColorLens as ColorLensIcon,
-// } from '@material-ui/icons';
 import classnames from 'classnames';
 // import { useTheme } from '../ThemeContext';
 import caseIcon from '../../assets/icons/Icon-MyCases.svg';
-import funnelIconBlue from '../../assets/icons/Icon-funnel-blue.svg';
-import funnelIconWhite from '../../assets/icons/Icon-funnel-white.svg';
-// import ProfileMenu from '../ProfileMenu/ProfileMenuView';
-import SideBarContent from '../SideBar/SideBarView';
+
 import { initCart } from '../../pages/selectedCases/selectedCasesState';
-import { toggleCheckBox } from '../../pages/dashboard/dashboardState';
-import { unselectFilters } from '../../utils/dashboardUtilFunctions';
 import AboutMenu from './components/AboutMenu';
 
 const drawerWidth = 240;
@@ -33,7 +22,7 @@ const drawerWidth = 240;
 const BACKEND_GETUSERINFO_API = process.env.REACT_APP_BACKEND_GETUSERINFO_API;
 
 const NavBar = ({
-  classes, isSidebarOpened, toggleSidebar, location,
+  classes, isSidebarOpened,
 }) => {
   // const theme = useTheme();
   const [authState, setAuthState] = React.useState({
@@ -44,6 +33,12 @@ const NavBar = ({
   // Empty second argument of react useEffect will avoid the infinte loop that
   // caused due to component update
   const dispatch = useDispatch();
+  const [clickedEl, setClickedEl] = React.useState(null);
+
+  function handleButtonClickEvent(eventName) {
+    setClickedEl(eventName);
+  }
+
   React.useEffect(() => {
     dispatch(initCart());
     const values = queryString.parse(window.location.search);
@@ -81,10 +76,10 @@ const NavBar = ({
     return 0;
   });
 
-  const activeFilters = useSelector((state) => (
-    state.dashboard.datatable
-      && state.dashboard.datatable.filters
-      ? state.dashboard.datatable.filters : []));
+  // const activeFilters = useSelector((state) => (
+  //   state.dashboard.datatable
+  //     && state.dashboard.datatable.filters
+  //     ? state.dashboard.datatable.filters : []));
   return (
     <>
       <AppBar
@@ -97,69 +92,42 @@ const NavBar = ({
         <Toolbar className={classes.toolbar}>
 
           {/* Sidebar button */}
-          <div>
-            { (location.pathname === '/cases') && (
-            <Button
-              variant="h6"
-              weight="medium"
-              aria-label="open drawer"
-              onClick={toggleSidebar}
-              edge="start"
-              className={classnames(classes.menuButton, classes.logotype, {
-                [classes.hide]: isSidebarOpened,
-              })}
-              classes={{ root: classes.iconButtonRoot }}
-            >
-              <img
-                className={classes.funnelLogoImg}
-                src={funnelIconWhite}
-                alt="cart_logo"
-              />
-            </Button>
-            )}
-          </div>
+
           {/* End Sidebar button */}
-          <div className={classes.buttonContainer}>
-            <Button disableRipple variant="h6" weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
+          <div id="navbar" className={classes.buttonContainer}>
+            <Button id="button_navbar_home" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
               <NavLink
-                className={classes.link}
+                className={classes.firstLink}
                 activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
                 to="/home"
+                onClick={() => handleButtonClickEvent('home')}
               >
               home
               </NavLink>
             </Button>
-            <Button disableRipple variant="h6" weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
+            <Button id="button_navbar_trials" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
+              <NavLink
+                className={classes.link}
+                activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
+                to="/trials"
+                onClick={() => handleButtonClickEvent('trials')}
+              >
+              Trials
+              </NavLink>
+
+            </Button>
+
+            <Button id="button_navbar_cases" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
               <NavLink
                 className={classes.link}
                 activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
                 to="/cases"
+                onClick={() => handleButtonClickEvent('cases')}
               >
               Cases
               </NavLink>
-
             </Button>
-
-            <Button disableRipple variant="h6" weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
-              <NavLink
-                className={classes.link}
-                activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
-                to="/programs"
-              >
-                Programs
-              </NavLink>
-            </Button>
-
-            <Button disableRipple variant="h6" weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
-              <NavLink
-                className={classes.link}
-                activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
-                to="/studies"
-              >
-               Studies
-              </NavLink>
-            </Button>
-            <AboutMenu />
+            <AboutMenu handleButtonClickEvent={handleButtonClickEvent} clickedEl={clickedEl} />
           </div>
           {/* <div className={classes.grow} /> */}
           {/* Start of Theme Switching Icon and logic */}
@@ -178,38 +146,40 @@ const NavBar = ({
             </Tooltip>
           </IconButton> */}
           {/* Start of Theme Switching Icon and logic */}
-          <Button disableRipple variant="h6" weight="medium" className={classes.logotype} classes={{ root: classes.buttonRootNoRightPadding }}>
-            <NavLink
-              className={classes.link}
-              to="/myCases"
-            >
+          <div className={classes.myCasesPosition}>
+            <Button id="button_navbar_mycases" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRootNoRightPadding }}>
+              <NavLink
+                className={classnames(classes.link, classes.myCasesLink)}
+                to="/myCases"
+              >
             My Cases
-              {/* <IconButton
+                {/* <IconButton
                 color="inherit"
                 aria-haspopup="true"
                 aria-controls="mail-menu"
                 className={classes.headerMenuButton}
                 classes={{ root: classes.iconButtonRoot }}
               > */}
-              {/* <Badge badgeContent={numberOfCases} max={99999}> */}
+                {/* <Badge badgeContent={numberOfCases} max={99999}> */}
 
-              <Tooltip title="Cases" placement="bottom-end">
-                <span className={classes.badge}>
-                  <img
-                    className={classes.cartLogoImg}
-                    src={caseIcon}
-                    alt="cart_logo"
-                  />
-                  <span className={classes.badgeText}>
-                    {numberOfCases}
+                <Tooltip title="Cases" placement="bottom-end">
+                  <span className={classes.badge}>
+                    <img
+                      className={classes.cartLogoImg}
+                      src={caseIcon}
+                      alt="cart_logo"
+                    />
+                    <span className={classes.badgeText}>
+                      {numberOfCases}
+                    </span>
                   </span>
-                </span>
-              </Tooltip>
+                </Tooltip>
 
-              {/* </Badge> */}
-              {/* </IconButton> */}
-            </NavLink>
-          </Button>
+                {/* </Badge> */}
+                {/* </IconButton> */}
+              </NavLink>
+            </Button>
+          </div>
           {/* Login button functionality on Navigation bar */}
 
           {/* {authState.isAuthorized ? (
@@ -223,7 +193,7 @@ const NavBar = ({
 
         </Toolbar>
       </AppBar>
-      { (location.pathname === '/cases') && (
+      {/* { (location.pathname === '/cases') && (
         <Drawer
           className={classes.drawer}
           variant="persistent"
@@ -260,22 +230,29 @@ const NavBar = ({
           <Divider />
           <SideBarContent />
         </Drawer>
-      )}
+      )} */}
     </>
   );
 };
 
 
 const styles = (theme) => ({
+  myCasesPosition: {
+    position: 'absolute',
+    right: '20px',
+  },
   logotype: {
     whiteSpace: 'nowrap',
     color: '#FFFFFF',
     fontFamily: 'Raleway',
     fontSize: '11px',
-    letterSpacing: '1px',
-    fontWeight: '600',
+    letterSpacing: '1.25px',
+    fontWeight: '800',
     [theme.breakpoints.down('xs')]: {
       display: 'none',
+    },
+    '&:hover, &:focus': {
+      borderRadius: '0',
     },
   },
   buttonContainer: {
@@ -377,13 +354,23 @@ const styles = (theme) => ({
     marginBottom: theme.spacing.unit * 2,
     textTransform: 'none',
   },
+  firstLink: {
+    textDecoration: 'none',
+    color: theme.palette.primary.contrastText,
+    fontFamily: 'Lato',
+    fontSize: '13px',
+  },
   sendButtonIcon: {
     marginLeft: theme.spacing.unit * 2,
   },
   link: {
     textDecoration: 'none',
-    color: 'white',
+    color: theme.palette.primary.contrastText,
+    fontFamily: 'Lato',
     fontSize: '13px',
+  },
+  myCasesLink: {
+    color: '#B91F40',
   },
   menuButton: {
     marginRight: theme.spacing.unit * 2,
@@ -466,6 +453,7 @@ const styles = (theme) => ({
   },
   badgeText: {
     height: '16px',
+    color: '#0E273A',
     minWidth: '16px',
     fontWeight: '600',
     letterSpacing: '0.8px',

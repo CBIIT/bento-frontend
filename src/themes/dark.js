@@ -11,37 +11,51 @@ const cobolt = '#FBB35D';
 const warning = '#FFC260';
 const success = '#3CD4A0';
 const info = '#9013FE';
-const tableHeader = '#EEEEEE';
+const tableHeader = '#FFFFFF';
+const whisper = '#E7E5E5';
+const deepSkyBlue = '#3695A9';
+const lochmara = '#3478A5';
 const lightenRate = 7.5;
 const darkenRate = 15;
-const tableHeaderBorder = '#004c73 3px solid';
-const tableHeaderFontColor = '#194563';
-const tableFontFamily = "'Raleway', sans-serif";
+const tableHeaderBorder = '#4B619A 3px solid';
+const tableHeaderFontColor = '#004c73';
+const tableFontFamily = "'Lato Regular','Raleway', sans-serif";
 const black = 'black';
+const white = '#FFFFFF';
 
 export default {
   custom: {
     maxContentWidth: '1440px',
     maxContent: 'black',
-    bodyBackGround: 'white',
+    bodyBackGround: '#f2f2f2',
     cardBackGround: '#D9F3F2',
     footorBackground: '#325068',
     fontFamilySans: '"Open Sans", sans-serif',
+    fontFamily: '"Lato Regular","Open Sans", sans-serif',
     fontFamilyRaleway: "'Raleway', sans-serif",
     drawerWidth: '240px',
   },
   palette: {
     primary: {
-      main: navyBlue,
-      light: tinycolor(navyBlue)
+      main: whisper,
+      light: tinycolor(whisper)
         .lighten(lightenRate)
         .toHexString(),
-      dark: tinycolor(navyBlue)
+      dark: tinycolor(whisper)
         .darken(darkenRate)
         .toHexString(),
-      contrastText: '#FFFFFF',
+      contrastText: '#0E273A',
     },
-
+    secondary: {
+      main: deepSkyBlue,
+      light: tinycolor(deepSkyBlue)
+        .lighten(lightenRate)
+        .toHexString(),
+      dark: tinycolor(deepSkyBlue)
+        .darken(darkenRate)
+        .toHexString(),
+      contrastText: '#0E273A',
+    },
     curiousBlue: {
       main: curiousBlue,
       light: tinycolor(curiousBlue)
@@ -51,6 +65,37 @@ export default {
         .darken(darkenRate)
         .toHexString(),
       contrastText: '#FFFFFF',
+    },
+    deepSkyBlue: {
+      main: deepSkyBlue,
+      light: tinycolor(deepSkyBlue)
+        .lighten(lightenRate)
+        .toHexString(),
+      dark: tinycolor(deepSkyBlue)
+        .darken(darkenRate)
+        .toHexString(),
+      contrastText: '#FFFFFF',
+    },
+    lochmara: {
+      main: lochmara,
+      light: tinycolor(lochmara)
+        .lighten(lochmara)
+        .toHexString(),
+      dark: tinycolor(lochmara)
+        .darken(darkenRate)
+        .toHexString(),
+      contrastText: 'white',
+      contrastTextColor: '#FFFFFF',
+    },
+    white: {
+      main: white,
+      light: tinycolor(white)
+        .lighten(white)
+        .toHexString(),
+      dark: tinycolor(white)
+        .darken(white)
+        .toHexString(),
+      contrastText: 'white',
     },
     airForceBlue: {
       main: airForceBlue,
@@ -167,7 +212,7 @@ export default {
       footerText: 'white',
     },
     background: {
-      default: '#fafafa',
+      default: '#f2f2f2',
       light: '#F3F5FF',
     },
   },
@@ -188,6 +233,9 @@ export default {
     MuiListItemText: {
       root: {
         padding: '0 8px',
+        '&:first-child': {
+          wordBreak: 'break-word',
+        },
       },
     },
     MuiListItem: {
@@ -220,6 +268,9 @@ export default {
       },
       checkboxRoot: {
         color: 'inherit',
+        '&$checked': {
+          color: '#3695A9',
+        },
       },
 
     },
@@ -250,6 +301,9 @@ export default {
         fontStyle: 'normal',
         fontSize: '11pt',
         fontWeight: 'bold',
+        '&:first-child': {
+          paddingLeft: '30px',
+        },
       },
       sortActive: {
         color: tableHeaderFontColor,
@@ -269,11 +323,11 @@ export default {
     MUIDataTableBodyRow: {
       root: {
         '&:nth-child(even)': {
-          backgroundColor: '#f5f5f5',
-          color: '#1c2023',
+          color: '#004c73',
         },
         '&:nth-child(odd)': {
-          color: '#1c2023',
+          color: '#004c73',
+          backgroundColor: '#f5f5f5',
         },
       },
     },
@@ -295,7 +349,7 @@ export default {
       },
       body: {
         color: 'inherit',
-        fontFamily: '"Open Sans", sans-serif',
+        fontFamily: '"Lato Regular","Open Sans", sans-serif',
         letterSpacing: '0.025em',
         fontStyle: 'normal',
         fontSize: '10pt',
@@ -331,15 +385,16 @@ export default {
         letterSpacing: '0.025em',
         fontStyle: 'normal',
       },
+      iconButton: {
+        marginRight: '2.8%',
+        '@media (max-width: 1600px)': {
+          marginRight: '1.3%',
+        },
+      },
     },
     MuiSwitch: {
       bar: {
         backgroundColor: '#ABADB0',
-      },
-    },
-    MuiGrid: {
-      container: {
-        width: '100% !important',
       },
     },
     MuiPaper: {
@@ -350,9 +405,23 @@ export default {
         boxShadow: 'none',
       },
     },
+    MuiTablePagination: {
+      toolbar: {
+        textTransform: 'uppercase',
+      },
+      select: {
+        border: '2px #fff solid',
+        background: '#fff',
+      },
+    },
     MuiIconButton: {
       root: {
         padding: '5px',
+      },
+    },
+    MuiTableFooter: {
+      root: {
+        borderTop: '6px #E7E5E5 solid',
       },
     },
   },

@@ -65,6 +65,7 @@ function getClientEnvironment(publicUrl) {
     .filter(key => REACT_APP.test(key))
     .reduce(
       (env, key) => {
+        // eslint-disable-next-line 
         env[key] = process.env[key];
         return env;
       },
@@ -82,6 +83,7 @@ function getClientEnvironment(publicUrl) {
   // Stringify all values so we can feed into Webpack DefinePlugin
   const stringified = {
     'process.env': Object.keys(raw).reduce((env, key) => {
+      // eslint-disable-next-line 
       env[key] = JSON.stringify(raw[key]);
       return env;
     }, {}),

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
-import nihLogo from '../../assets/header/icdc_nih_logo.svg';
+import nihLogo from '../../assets/header/CTDC_Logo.svg';
 // import icdcLogo from '../../assets/header/icdc_logo_white.svg';
-import cancergraphic400 from '../../assets/header/Canine400.png';
-import cancergraphic800 from '../../assets/header/Canine800.png';
-import cancergraphic1400 from '../../assets/header/Canine1400.png';
-import cancergraphic1600 from '../../assets/header/Canine1600.png';
-import cancergraphic1800 from '../../assets/header/Canine1800.png';
-import cancergraphic2000 from '../../assets/header/Canine2000.png';
+// import cancergraphic400 from '../../assets/header/Canine400.png';
+import cancergraphic800 from '../../assets/header/easter800.png';
+import cancergraphic1400 from '../../assets/header/easter1400.png';
+import cancergraphic1600 from '../../assets/header/easter1600.png';
+import cancergraphic1800 from '../../assets/header/easter1800.png';
+import cancergraphic2000 from '../../assets/header/easter2000.png';
 
 
 // import classes from '*.module.sass';
@@ -18,13 +18,13 @@ import cancergraphic2000 from '../../assets/header/Canine2000.png';
  */
 
 const Header = ({ classes }) => (
-  <div className={classes.headerBar}>
+  <div id="header" className={classes.headerBar}>
     <div className={classes.nihLogoContainer}>
       <Link to="/home">
         <img
           className={classes.nihLogoImg}
           src={nihLogo}
-          alt="NCI ICDC Logo - Integrated Canine Data Commons"
+          alt="NCI CTDC Logo - Clinical Trials Data Commons"
         />
       </Link>
       {/* <img
@@ -71,7 +71,7 @@ const styles = () => ({
     '@media (min-width: 900px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${cancergraphic400})`,
+      background: `url(${cancergraphic800})`,
     },
     '@media (min-width: 1200px)': {
       backgroundRepeat: 'no-repeat',
@@ -100,10 +100,8 @@ const styles = () => ({
     },
   },
   nihLogoImg: {
-    height: '54px',
     width: '463px',
     cursor: 'pointer',
-    marginLeft: '9px',
   },
   icdcLogoImg: {
     margin: '22px 35px auto',

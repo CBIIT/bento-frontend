@@ -17,16 +17,17 @@ const Widget = ({
   className,
   header,
   customBackGround,
+  titleClass,
   ...props
 }) => (
   <div className={classes.widgetWrapper}>
     <Paper className={classnames(classes.paper,{[classes.customBackGround]:customBackGround})} classes={{ root: classes.widgetRoot }}>
-      <div className={classes.widgetHeader}>
+      <div id={title} className={classes.widgetHeader}>
         {props.header ? (
           props.header
         ) : (
           <>
-            <Typography size="md" weight="bold" family="Raleway" color={color}>
+            <Typography className={titleClass} size="md" weight="bold" family="Lato" color={color}>
               {title}
             </Typography>
           </>

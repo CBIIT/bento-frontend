@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
 import icon from '../../assets/icons/Icon-MyCases.svg';
+import wizardIcon from '../../assets/icons/MyCases-Wizard-Step3.svg';
 import CustomFooter from './customFooter';
 
 class selectedFilesView extends Component {
@@ -23,7 +24,17 @@ class selectedFilesView extends Component {
     // It may a problem that the code below always
     // set downloadButton as grey out .
     this.downloadButton.current.disabled = true;
-    this.downloadButton.current.style.color = 'rgb(0, 0, 0,0.26)';
+    this.downloadButton.current.style.color = '#FFFF';
+    this.downloadButton.current.style.opacity = '0.3';
+    this.downloadButton.current.style.border = '3px solid grey';
+    this.downloadButton.current.style.fontWeight = '600';
+    this.downloadButton.current.style.backgroundColor = '#C53B27';
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    return {
+      data: nextProps.data,
+    };
   }
 
 
@@ -32,11 +43,18 @@ class selectedFilesView extends Component {
     if (allRowsSelected.length === 0) {
       this.downloadButton.current.disabled = true;
       this.downloadButton.current.style.color = '#FFFFFF';
-      this.downloadButton.current.style.backgroundColor = 'rgba(0, 0, 0, 0.12)';
+      this.downloadButton.current.style.backgroundColor = '#C53B27';
+      this.downloadButton.current.style.opacity = '0.3';
+      this.downloadButton.current.style.border = '3px solid grey';
+      this.downloadButton.current.style.fontWeight = '600';
+      this.downloadButton.current.style.cursor = 'auto';
     } else {
       this.downloadButton.current.disabled = false;
       this.downloadButton.current.style.color = '#FFFFFF';
-      this.downloadButton.current.style.backgroundColor = '#0B3556';
+      this.downloadButton.current.style.backgroundColor = '#C53B27';
+      this.downloadButton.current.style.cursor = 'pointer';
+      this.downloadButton.current.style.opacity = 'unset';
+      this.downloadButton.current.style.border = 'unset';
     }
   }
 
@@ -67,7 +85,7 @@ class selectedFilesView extends Component {
 
       if (seconds < 10) { seconds = `0${seconds}`; }
 
-      return `${'ICDC File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
+      return `${'CTDC File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
     }
 
 
@@ -123,17 +141,99 @@ class selectedFilesView extends Component {
 
     const columns = [
 
-      { name: 'case_id', label: 'Case ID', sortDirection: 'asc' },
-      { name: 'file_name', label: 'File Name', sortDirection: 'asc' },
-      { name: 'file_type', label: 'File Type' },
-      { name: 'parent', label: 'Association' },
-      { name: 'file_description', label: 'Description' },
-      { name: 'file_format', label: 'Format' },
+      {
+        name: 'case_id',
+        label: 'Case ID',
+        sortDirection: 'asc',
+        options: {
+          customBodyRender: (value) => (
+            <div className={classes.tableCell1}>
+              {' '}
+              {value}
+              {' '}
+            </div>
+          ),
+        },
+      },
+      {
+        name: 'file_name',
+        label: 'File Name',
+        sortDirection: 'asc',
+        options: {
+          customBodyRender: (value) => (
+            <div className={classes.tableCell2}>
+              {' '}
+              {value}
+              {' '}
+            </div>
+          ),
+        },
+      },
+      {
+        name: 'file_type',
+        label: 'File Type',
+        options: {
+          customBodyRender: (value) => (
+            <div className={classes.tableCell3}>
+              {' '}
+              {value}
+              {' '}
+            </div>
+          ),
+        },
+      },
+      {
+        name: 'parent',
+        label: 'Association',
+        options: {
+          customBodyRender: (value) => (
+            <div className={classes.tableCell4}>
+              {' '}
+              {value}
+              {' '}
+            </div>
+          ),
+        },
+      },
+      {
+        name: 'file_description',
+        label: 'Description',
+        options: {
+          customBodyRender: (value) => (
+            <div className={classes.tableCell5}>
+              {' '}
+              {value}
+              {' '}
+            </div>
+          ),
+        },
+      },
+      {
+        name: 'file_format',
+        label: 'Format',
+        options: {
+          customBodyRender: (value) => (
+            <div className={classes.tableCell6}>
+              {' '}
+              {value}
+              {' '}
+            </div>
+          ),
+        },
+      },
       {
         name: 'file_size',
         label: 'Size',
         options: {
-          customBodyRender: (bytes) => (formatBytes(bytes)),
+          customBodyRender(bytes) {
+            return (
+              <div className={classes.tableCell7}>
+                {' '}
+                {formatBytes(bytes)}
+                {' '}
+              </div>
+            );
+          },
         },
       },
       {
@@ -141,6 +241,7 @@ class selectedFilesView extends Component {
         label: 'UUID',
         options: {
           display: false,
+
         },
       },
       {
@@ -154,7 +255,8 @@ class selectedFilesView extends Component {
 
 
     const options = () => ({
-      selectableRows: true,
+      selectableRows: 'multiple',
+      responsive: 'stacked',
       search: false,
       filter: false,
       searchable: false,
@@ -175,11 +277,12 @@ class selectedFilesView extends Component {
         ));
 
         globalData = selectedFiles.map((obj) => ({
-          caseId: obj[0],
-          fileName: obj[1],
+          caseId: obj[0].props.children[1],
+          fileName: obj[1].props.children[1],
           uuid: obj[2],
           md5Sum: obj[3],
         }));
+
         return '';
       },
       customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
@@ -200,17 +303,20 @@ class selectedFilesView extends Component {
     const btnStyle = {
       color: 'rgba(0, 0, 0,0.26)',
       boxShadow: 'none',
-      backgroundColor: 'rgba(0, 0, 0, 0.12)',
-      padding: '6px 16px',
-      fontSize: '0.875rem',
-      minWidth: '64px',
+      backgroundColor: '#C53B27',
       boxSizing: 'border-box',
       transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-      lineHeight: '1.75',
-      fontWeight: '500',
-      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-      borderRadius: '4px',
+      height: '40px',
+      width: '200px',
+      lineHeight: '11px',
+      fontSize: '13px',
+      fontWeight: '600',
+      fontFamily: 'raleway',
+      borderRadius: '35px',
       textTransform: 'uppercase',
+      marginLeft: '-28px',
+      textAlign: 'center',
+      marginTop: '14px',
     };
 
     const divStyle = {
@@ -219,47 +325,55 @@ class selectedFilesView extends Component {
       marginLeft: '30px',
     };
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <div className={classes.header}>
-            <div className={classes.logo}>
-              <img
-                src={icon}
-                alt="ICDC case detail header logo"
-              />
+      <Grid>
+        <div className={classes.myFilesWrapper}>
+          <Grid item xs={12}>
+            <div className={classes.header}>
+              <div className={classes.logo}>
+                <img
+                  src={icon}
+                  alt="ICDC case detail header logo"
+                />
 
-            </div>
-            <div className={classes.headerTitle}>
-              <div className={classes.headerMainTitle}>
-                <span>
-                  <span>My Cases: Files</span>
-                </span>
+              </div>
+              <div className={classes.headerTitle}>
+                <div className={classes.headerMainTitle}>
+                My Cases :
+                  <span className={classes.headerMainTitleTwo}>
+                    {' '}
+                    {' '}
+                Files
+                  </span>
+                </div>
+              </div>
+              <div className={classes.tableTitleWizard}>
+                <img
+                  src={wizardIcon}
+                  alt="CTDC MyCases Wizard"
+                />
               </div>
             </div>
-          </div>
-        </Grid>
-        <Grid item xs={12}>
 
-          <div className={classes.tableWrapper}>
-            <MUIDataTable
-              data={state.data}
-              columns={columns}
-              options={options()}
-              className={classes.tableStyle}
-            />
-            <div style={divStyle}>
-              <button
-                type="button"
-                style={btnStyle}
-                ref={this.downloadButton}
-                onClick={downloadJson}
-              >
-              download manifest
-              </button>
+            <div id="table_selected_files" className={classes.tableWrapper}>
+              <MUIDataTable
+                data={state.data}
+                columns={columns}
+                options={options()}
+                className={classes.tableStyle}
+              />
+              <div style={divStyle}>
+                <button
+                  type="button"
+                  style={btnStyle}
+                  ref={this.downloadButton}
+                  onClick={downloadJson}
+                >
+                  download manifest
+                </button>
+              </div>
             </div>
-          </div>
-        </Grid>
-
+          </Grid>
+        </div>
       </Grid>
     );
   }
@@ -269,50 +383,85 @@ const styles = (theme) => ({
   logo: {
     position: 'absolute',
     float: 'left',
-    marginTop: '14px',
-    width: '100px',
+    marginTop: '-8.9px',
+    width: '82px',
+    filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
   tableWrapper: {
-    borderBottomLeftRadius: '20px',
-    borderBottomRightRadius: '20px',
-    borderTopLeftRadius: '20px',
-    borderTopRightRadius: '20px',
-    paddingTop: '30px',
-    margin: 'auto auto 30px auto',
-    maxWidth: '1440px',
-    background: '#f3f3f4',
-    paddingBottom: '30px',
+    margin: 'auto 3% auto 3%',
+    maxWidth: '100%',
   },
   tableStyle: {
-    maxWidth: '1440px',
-    margin: '0 30px',
+    maxWidth: '100%',
   },
   customFooterStyle: {
     background: '#f3f3f4',
   },
   headerMainTitle: {
     fontFamily: theme.custom.fontFamilySans,
-    fontWeight: 'bold',
+    fontWeight: '300',
     letterSpacing: '0.017em',
-    color: '#ff8a00',
-    fontSize: '25px',
-    lineHeight: '125px',
-    paddingLeft: '5px',
+    color: '#DE5227',
+    fontSize: '18pt',
+    lineHeight: '75px',
+    '& $headerMainTitleTwo': {
+      fontWeight: 'bold',
+      letterSpacing: '0.025em',
+    },
+  },
+  headerMainTitleTwo: {
+
   },
   headerTitle: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
     float: 'left',
-    marginLeft: '110px',
+    marginLeft: '85px',
     paddingLeft: '3px',
+    marginBottom: '-30px',
+    position: 'absolute',
+  },
+  tableTitleWizard: {
+    width: '400px',
+    float: 'right',
+    paddingTop: '8px',
   },
   header: {
-    paddingLeft: '32px',
-    paddingRight: '32px',
-    borderBottom: '#81a6b9 4px solid',
-    height: '100px',
-    maxWidth: theme.custom.maxContentWidth,
-    margin: 'auto',
+    borderBottom: '#4B619A 10px solid',
+    height: '77px',
+    maxWidth: '100%',
+    marginLeft: '3%',
+    marginRight: '3%',
+  },
+  myFilesWrapper: {
+    border: '#DE5227 4px solid',
+    borderRadius: '35px',
+    margin: '80px',
+    marginLeft: '3%',
+    marginRight: '3%',
+    paddingBottom: '36px',
+    background: 'white',
+  },
+  tableCell1: {
+    width: '130px',
+  },
+  tableCell2: {
+    width: '300px',
+  },
+  tableCell3: {
+    width: '190px',
+  },
+  tableCell4: {
+    width: '170px',
+  },
+  tableCell5: {
+    width: '120px',
+  },
+  tableCell6: {
+    width: '80px',
+  },
+  tableCell7: {
+    width: '80px',
   },
 });
 export default withStyles(styles, { withTheme: true })(selectedFilesView);

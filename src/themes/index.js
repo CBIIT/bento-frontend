@@ -6,6 +6,11 @@ export default {
   dark: darkTheme,
 };
 
+export const typography = {
+  fontFamily: "'Lato Regular','Open Sans', 'sans-serif'",
+  useNextVariants: true,
+};
+
 export const overrides = {
   typography: {
     h1: {

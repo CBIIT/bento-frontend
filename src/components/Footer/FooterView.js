@@ -6,17 +6,21 @@ import { useLocation } from 'react-router';
 import { Typography } from '../Wrappers/Wrappers';
 import cn from '../../utils/classNameConcat';
 import nciLogo from '../../assets/footer/NCI-footer.logo.svg';
-
+import footerBackground800 from '../../assets/footer/footerBackground800.png';
+import footerBackground1200 from '../../assets/footer/footerBackground1200.png';
+import footerBackground1800 from '../../assets/footer/footerBackground1800.png';
 
 const VERSION = process.env.REACT_APP_APPLICATION_VERSION;
 
-const Footer = ({ classes, data }) => {
+const Footer = ({ classes }) => {
   const location = useLocation();
-  const sideBarStatus = location.pathname === '/cases' ? data.isSidebarOpened : false;
+  const sideBarStatus = location.pathname === '/cases';
   return (
-    <footer className={classnames({
-      [classes.contentShift]: sideBarStatus,
-    }, classes.footerComponent)}
+    <footer
+      id="footer"
+      className={classnames({
+        [classes.contentShift]: sideBarStatus,
+      }, classes.footerComponent)}
     >
       <div className={classes.footerRow}>
         <div className={
@@ -36,20 +40,13 @@ const Footer = ({ classes, data }) => {
                 weight="bold"
                 className={cn(classes.footerText, classes.listHeader)}
               >
-              About ICDC
+              About CTDC
               </Typography>
             </li>
             <li>
               <Typography className={classes.footerText}>
                 <Link className={classes.link} to="/purpose">
                 Purpose
-                </Link>
-              </Typography>
-            </li>
-            <li>
-              <Typography className={classes.footerText}>
-                <Link className={classes.link} to="/steeringCommittee">
-              Steering Committee
                 </Link>
               </Typography>
             </li>
@@ -62,7 +59,7 @@ const Footer = ({ classes, data }) => {
             </li>
             <li>
               <Typography className={classes.footerText}>
-                <a href="mailto:icdchelpdesk@nih.gov" target="icdc">Contact Us</a>
+                <a href="mailto:CTDCHelpDesk@mail.nih.gov" target="ctdc">Contact Us</a>
               </Typography>
             </li>
           </ul>
@@ -80,7 +77,7 @@ const Footer = ({ classes, data }) => {
             <li>
               <Typography className={classes.footerText}>
                 <Link className={classes.link} to="/model">
-              ICDC Data & Model
+              CTDC Data & Model
                 </Link>
               </Typography>
             </li>
@@ -99,14 +96,6 @@ const Footer = ({ classes, data }) => {
                 </Link>
               </Typography>
             </li>
-            <li>
-              <Typography className={classes.footerText}>
-                <Link className={classes.link} to="/submit">
-              Submission Guide
-
-                </Link>
-              </Typography>
-            </li>
           </ul>
         </div>
         <div className={classes.footerRowSection}>
@@ -121,7 +110,7 @@ const Footer = ({ classes, data }) => {
             </li>
             <li>
               <Typography className={classes.footerText}>
-                <a title="link to NCI Policies" href="http://www.cancer.gov/global/web/policies" target="icdc-nci">
+                <a title="link to NCI Policies" href="http://www.cancer.gov/global/web/policies" target="ctdc-nci">
                  Policies
                 </a>
               </Typography>
@@ -179,25 +168,25 @@ Accessibility
       <div className={cn(classes.footerRow, classes.contentJustifyCenter)}>
         <div className={cn(classes.nciLinks, classes.contentJustifyCenter)}>
           <Typography>
-            <a target="icdc-external" href="https://www.hhs.gov">
+            <a target="ctdc-external" href="https://www.hhs.gov">
             U.S. Department of Health and Human Services
             </a>
             <span className={classes.ext}>&nbsp;|&nbsp;</span>
           </Typography>
           <Typography>
-            <a target="icdc-external" href="https://www.nih.gov">
+            <a target="ctdc-external" href="https://www.nih.gov">
             National Institutes of Health
             </a>
             <span className={classes.ext}>&nbsp;|&nbsp;</span>
           </Typography>
           <Typography>
-            <a target="icdc-external" href="https://www.cancer.gov">
+            <a target="ctdc-external" href="https://www.cancer.gov">
             National Cancer Institute
             </a>
             <span className={classes.ext}>&nbsp;|&nbsp;</span>
           </Typography>
           <Typography>
-            <a target="icdc-external" href="https://www.usa.gov">
+            <a target="ctdc-external" href="https://www.usa.gov">
             USA.gov
               <span
                 className={classes.ext}
@@ -248,8 +237,8 @@ Accessibility
 
 const styles = (theme) => ({
   contentShift: {
-    width: `calc(100vw - ${theme.custom.drawerWidth})`,
-    marginLeft: `${theme.custom.drawerWidth} !important`,
+    width: '100%',
+    zIndex: '1202',
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -293,7 +282,9 @@ const styles = (theme) => ({
     lineHeight: '1.42857143',
     margin: '0',
     '-webkit-font-smoothing': 'antialiased',
-    background: theme.custom.footorBackground,
+    backgroundRepeat: 'repeat-y',
+    backgroundSize: '100%',
+    background: `url(${footerBackground800})`,
     color: theme.palette.text.footerText,
     padding: '24px 35px 64px 35px',
     '& ul': {
@@ -324,6 +315,21 @@ const styles = (theme) => ({
         cursor: 'pointer',
         textDecoration: 'underline',
       },
+    },
+    '@media (min-width: 800px)': {
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '100% 100%',
+      background: `url(${footerBackground800})`,
+    },
+    '@media (min-width: 1200px)': {
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '100% 100%',
+      background: `url(${footerBackground1200})`,
+    },
+    '@media (min-width: 1600px)': {
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '100% 100%',
+      background: `url(${footerBackground1800})`,
     },
   },
   footerRow: {

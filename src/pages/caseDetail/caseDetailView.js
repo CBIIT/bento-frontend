@@ -3,16 +3,14 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import MUIDataTable from 'mui-datatables';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
-import { useDispatch } from 'react-redux';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Icon-CaseDetail.svg';
-import cn from '../../utils/classNameConcat';
-import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 
 function formatBytes(bytes, decimals = 2) {
@@ -27,25 +25,9 @@ function formatBytes(bytes, decimals = 2) {
 }
 
 
-const columns = [
-
-  { name: 'file_name', label: 'File Name', sortDirection: 'asc' },
-  { name: 'file_type', label: 'File Type' },
-  { name: 'parent', label: 'Association' },
-  { name: 'file_description', label: 'Description' },
-  { name: 'file_format', label: 'Format' },
-  {
-    name: 'file_size',
-    label: 'Size',
-    options: {
-      customBodyRender: (bytes) => (formatBytes(bytes)),
-    },
-  },
-];
-
-
 const options = (classes) => ({
-  selectableRows: false,
+  selectableRows: 'none',
+  responsive: 'stacked',
   search: false,
   filter: false,
   searchable: false,
@@ -72,51 +54,106 @@ const options = (classes) => ({
 
 
 const CaseDetail = ({ classes, data }) => {
-  const initDashboardStatus = () => (dispatch) => Promise.resolve(
-    dispatch(fetchDataForDashboardDataTable()),
-  );
-
-  const dispatch = useDispatch();
-  const redirectTo = (study) => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
-        groupName: 'Study',
-        name: study,
-        datafield: 'study_code',
-        isChecked: true,
-      }]));
-    });
-  };
-
   const stat = {
-    numberOfStudies: 1,
+    numberOfTrials: 1,
     numberOfCases: 1,
-    numberOfSamples: data.sampleCountOfCase,
-    numberOfFiles: data.fileCountOfCase,
-    numberOfBiospecimenAliquots: data.aliquotCountOfCase,
+    numberOfFiles: data.filesOfCase.length,
   };
-  const caseDetail = data.case[0];
+  const caseDetail = data.caseDetailByCaseId[0];
 
   const notProvided = '';
 
   const breadCrumbJson = [{
-    name: 'ALL PROGRAMS',
-    to: '/programs',
-    isALink: true,
-  }, {
-    name: `${caseDetail.study.clinical_study_designation} Detail`,
-    to: `/study/${caseDetail.study.clinical_study_designation}`,
-    isALink: true,
-  }, {
-    name: `${caseDetail.study.clinical_study_designation} CASES`,
+    name: 'ALL CASES',
     to: '/cases',
-    onClick: () => redirectTo(caseDetail.study.clinical_study_designation),
     isALink: true,
-  }, {
-    name: caseDetail.case_id,
   }];
 
 
+  const columns = [
+
+    {
+      name: 'file_name',
+      label: 'File Name',
+      sortDirection: 'asc',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell1}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'file_type',
+      label: 'File Type',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell2}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'parent',
+      label: 'Association',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell3}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'file_description',
+      label: 'Description',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell4}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'file_format',
+      label: 'Format',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell5}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'file_size',
+      label: 'Size',
+      options: {
+        customBodyRender(bytes) {
+          return (
+            <div className={classes.tableCell6}>
+              {' '}
+              {formatBytes(bytes)}
+              {' '}
+            </div>
+          );
+        },
+      },
+    },
+  ];
   return (
     <>
       <StatsView data={stat} />
@@ -125,84 +162,24 @@ const CaseDetail = ({ classes, data }) => {
           <div className={classes.logo}>
             <img
               src={icon}
-              alt="ICDC case detail header logo"
+              alt="CTDC case detail header logo"
             />
 
           </div>
-
-          {(caseDetail.patient_first_name === '' || caseDetail.patient_first_name === null)
-             && !(caseDetail.enrollment && caseDetail.enrollment.initials !== '' && caseDetail.enrollment.initials !== null)
-            ? (
-              <div className={classes.headerTitle}>
-                <div className={cn(classes.headerMainTitle, classes.marginTop23)}>
-                  <span>
-                    <span>
-                      {' '}
+          <div className={classes.headerTitle}>
+            <div className={classes.headerMainTitle}>
 Case :
-                      {' '}
-                      {' '}
-                      {caseDetail.case_id}
-                    </span>
-                  </span>
-                </div>
-
-                <CustomBreadcrumb data={breadCrumbJson} />
-              </div>
-            )
-
-            : (
-              <div className={classes.headerTitle}>
-                <div className={classes.headerMainTitle}>
-                  <span>
-                    <span>
-                      {' '}
-Case :
-                      {' '}
-                      {' '}
-                      {caseDetail.case_id}
-                    </span>
-                  </span>
-                </div>
-                <div className={cn(classes.headerMSubTitle, classes.headerSubTitleCate)}>
-                  {caseDetail.patient_first_name === '' || caseDetail.patient_first_name === null
-                    ? '' : (
-                      <span>
-                        <span className={classes.headerSubTitleCate}>
-                    CASE NAME
-                          {' '}
-                          {' '}
-                          {' '}
--
-                          {' '}
-                        </span>
-                        <span className={classes.headerSubTitleContent}>
-                          {caseDetail.patient_first_name}
-                        </span>
-                      </span>
-                    )}
-                  {caseDetail.enrollment && caseDetail.enrollment.initials !== '' && caseDetail.enrollment.initials !== null
-                    ? (
-                      <span>
-                        <span className={cn(
-                          classes.headerSubTitleCate, classes.paddingLeft8, classes.paddingBottm17,
-                        )}
-                        >
-                      INITIALS
-                          {' '}
-                        </span>
-                        <span className={classes.headerSubTitleContent}>
-                          {caseDetail.enrollment.initials}
-                        </span>
-                      </span>
-                    ) : ''}
-
-                </div>
-
-                <CustomBreadcrumb data={breadCrumbJson} />
-              </div>
-            )}
-
-
+              <span className={classes.headerMainTitleTwo}>
+                {' '}
+                {' '}
+                {caseDetail.case_id}
+              </span>
+            </div>
+            <div className={classes.breadCrumb}>
+              {' '}
+              <CustomBreadcrumb data={breadCrumbJson} />
+            </div>
+          </div>
         </div>
 
 
@@ -210,9 +187,9 @@ Case :
 
           <Grid container spacing={4}>
 
-            <Grid item lg={3} md={3} sm={12} xs={12} className={classes.detailContainerLeft}>
+            <Grid item lg={6} md={6} sm={6} xs={12} className={classes.detailContainerLeft}>
               <Grid container spacing={32} direction="column">
-                <Grid item xs={12} pt={100}>
+                <Grid xs={12} pt={100}>
                   <span className={classes.detailContainerHeader}>DEMOGRAPHICS</span>
                 </Grid>
 
@@ -220,10 +197,10 @@ Case :
                   <Grid item xs={12}>
                     <Grid container spacing={4}>
                       <Grid item xs={4}>
-                        <span className={classes.title}>BREED</span>
+                        <span className={classes.title}>GENDER</span>
                       </Grid>
                       <Grid item xs={8} className={classes.content}>
-                        {caseDetail.demographic ? caseDetail.demographic.breed : notProvided}
+                        {caseDetail.gender ? caseDetail.gender : notProvided}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -231,227 +208,117 @@ Case :
                   <Grid item xs={12}>
                     <Grid container spacing={4}>
                       <Grid item xs={4}>
-                        <span className={classes.title}>Sex</span>
+                        <span className={classes.title}>RACE</span>
                       </Grid>
                       <Grid item xs={8} className={classes.content}>
-                        {caseDetail.demographic ? caseDetail.demographic.sex : notProvided}
+                        {caseDetail.race ? caseDetail.race : notProvided}
                       </Grid>
                     </Grid>
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid item xs={12} pt={100}>
                     <Grid container spacing={4}>
                       <Grid item xs={4}>
-                        <span className={classes.title}>Neutered Status</span>
+                        <span className={classes.title}>Ethnicity</span>
                       </Grid>
                       <Grid item xs={8} className={classes.content}>
-                        {caseDetail.demographic
-                          ? caseDetail.demographic.neutered_indicator : notProvided}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-
-
-                  <Grid item xs={12}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={4}>
-                        <span className={classes.title}>Age at Enrollment</span>
-                      </Grid>
-                      <Grid item xs={8} className={classes.content}>
-                        {caseDetail.demographic
-                          ? caseDetail.demographic.patient_age_at_enrollment : notProvided}
+                        {caseDetail.ethnicity
+                          ? caseDetail.ethnicity : notProvided}
                       </Grid>
                     </Grid>
                   </Grid>
 
                 </Grid>
-              </Grid>
-            </Grid>
-
-
-            <Grid item lg={4} md={4} sm={12} xs={12} className={classes.detailContainerRight}>
-              <Grid container spacing={32} direction="column">
-                <Grid item xs={12}>
+                <Grid xs={12} className={classes.paddingTop}>
                   <span className={classes.detailContainerHeader}>DIAGNOSIS</span>
                 </Grid>
-
-                { caseDetail.diagnoses.map((diagnosis) => (
-                  <Grid container spacing={4} className={classes.detailContainerItems}>
-                    <Grid item xs={12}>
-                      <Grid container spacing={4}>
-                        <Grid item xs={6}>
-                          <span className={classes.title}>Disease</span>
-                        </Grid>
-                        <Grid item xs={6} className={classes.content}>
-                          {diagnosis.disease_term
-                            ? diagnosis.disease_term : notProvided}
-                          {' '}
-                        </Grid>
+                <Grid container spacing={4} className={classes.detailContainerItems}>
+                  <Grid item xs={12}>
+                    <Grid container spacing={4}>
+                      <Grid item xs={4}>
+                        <span className={classes.title}>Diagnosis</span>
                       </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Grid container spacing={4}>
-                        <Grid item xs={6}>
-                          <span className={classes.title}>Stage of Disease</span>
-                        </Grid>
-                        <Grid item xs={6} className={classes.content}>
-                          {diagnosis.stage_of_disease
-                            ? diagnosis.stage_of_disease : notProvided}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Grid container spacing={4}>
-                        <Grid item xs={6}>
-                          <span className={classes.title}>Date of Diagnosis</span>
-                        </Grid>
-                        <Grid item xs={6} className={classes.content}>
-                          {diagnosis.date_of_diagnosis
-                            ? diagnosis.date_of_diagnosis : notProvided}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Grid container spacing={4}>
-                        <Grid item xs={6}>
-                          <span className={classes.title}>Primary Site</span>
-                        </Grid>
-                        <Grid item xs={6} className={classes.content}>
-                          {diagnosis.primary_disease_site
-                            ? diagnosis.primary_disease_site : notProvided}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Grid container spacing={4}>
-                        <Grid item xs={6}>
-                          <span className={classes.title}>Histology/Cytology</span>
-                        </Grid>
-                        <Grid item xs={6} className={classes.content}>
-                          {diagnosis.histology_cytopathology
-                            ? diagnosis.histology_cytopathology : notProvided}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Grid container spacing={4}>
-                        <Grid item xs={6}>
-                          <span className={classes.title}>Histological Grade</span>
-                        </Grid>
-                        <Grid item xs={6} className={classes.content}>
-                          {diagnosis.histological_grade === '' || diagnosis.histological_grade === null
-                            ? '' : diagnosis.histological_grade}
-                        </Grid>
+                      <Grid item xs={8} className={classes.content}>
+                        {caseDetail.disease
+                          ? caseDetail.disease : notProvided}
+                        {' '}
                       </Grid>
                     </Grid>
                   </Grid>
-                ))}
-
+                </Grid>
               </Grid>
             </Grid>
 
-
-            <Grid item lg={5} md={5} sm={12} xs={12} className={classes.detailContainerRight}>
+            <Grid item lg={6} md={6} sm={6} xs={12} className={classes.detailContainerRight}>
               <Grid container spacing={32} direction="column">
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>STUDY</span>
+                <Grid xs={12} pt={100}>
+                  <span className={classes.detailContainerHeader}>TRIAL</span>
                 </Grid>
 
                 <Grid container spacing={4} className={classes.detailContainerItems}>
                   <Grid item xs={12}>
                     <Grid container spacing={4}>
                       <Grid item xs={6}>
-                        <span className={classes.title}>Assigned to Study</span>
+                        <span className={classes.title}>Assigned to Trial</span>
                       </Grid>
                       <Grid item xs={6} className={classes.content}>
-                        {caseDetail.study
-                          ? caseDetail.study.clinical_study_designation : notProvided}
+                        {caseDetail.clinical_trial_code
+                          ? <Link to={`/trial/${caseDetail.clinical_trial_id}`} className={classes.link}>{caseDetail.clinical_trial_code}</Link>
+                          : notProvided}
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={6}>
-                        <span className={classes.title}>Assigned to Arm</span>
-                      </Grid>
-                      <Grid item xs={6} className={classes.content}>
-                        {caseDetail.cohort
-                          ? (caseDetail.cohort.study_arm
-                            ? caseDetail.cohort.study_arm.arm : notProvided) : notProvided}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={6}>
-                        <span className={classes.title}>Assigned to Cohort</span>
-                      </Grid>
-                      <Grid item xs={6} className={classes.content}>
-                        {' '}
-                        {caseDetail.cohort
-                          ? caseDetail.cohort.cohort_description : notProvided}
-                        {' '}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={6}>
-                        <span className={classes.title}>Patient Subgroup</span>
-                      </Grid>
-                      <Grid item xs={6} className={classes.content}>
-                        {caseDetail.enrollment
-                          ? caseDetail.enrollment.patient_subgroup : notProvided}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={6}>
-                        <span className={classes.title}>Date of Informed Consent</span>
-                      </Grid>
-                      <Grid item xs={6} className={classes.content}>
-                        {caseDetail.enrollment
-                          ? caseDetail.enrollment.date_of_informed_consent : notProvided}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={6}>
-                        <span className={classes.title}>Date of registration</span>
-                      </Grid>
-                      <Grid item xs={6} className={classes.content}>
-                        {caseDetail.enrollment
-                          ? caseDetail.enrollment.date_of_registration : notProvided}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid container spacing={4}>
 
-                      <Grid item xs={6}>
-                        <span className={classes.title}>Study Site</span>
+                  { caseDetail.arms.map((arms) => (
+                    <Grid container spacing={4}>
+                      <Grid item xs={12}>
+                        <Grid container spacing={4}>
+                          <Grid item xs={6}>
+                            <span className={classes.title}>Arm</span>
+                          </Grid>
+                          <Grid item xs={6} className={classes.content}>
+                            {arms.arm_id
+                              ? arms.arm_id : notProvided}
+                          </Grid>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={6} className={classes.content}>
-                        {caseDetail.enrollment
-                            && caseDetail.enrollment.site_short_name
-                              && caseDetail.enrollment.site_short_name !== null
-                          ? caseDetail.enrollment.site_short_name : notProvided}
+                      <Grid item xs={12}>
+                        <Grid container spacing={4}>
+                          <Grid item xs={6}>
+                            <span className={classes.title}>Arm Treatment</span>
+                          </Grid>
+                          <Grid item xs={6} className={classes.content}>
+                            {' '}
+                            {arms.arm_drug
+                              ? arms.arm_drug : notProvided}
+                            {' '}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Grid container spacing={4}>
+                          <Grid item xs={6}>
+                            <span className={classes.title}>Arm Target</span>
+                          </Grid>
+                          <Grid item xs={6} className={classes.content}>
+                            {arms.arm_target
+                              ? arms.arm_target : notProvided}
+                          </Grid>
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
+                  ))}
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
         </div>
       </div>
-      <div className={classes.tableContainer}>
+      <div id="table_case_detail" className={classes.tableContainer}>
 
         <div className={classes.tableDiv}>
           <div className={classes.tableTitle}>
-            <span className={classes.tableHeader}>AVAILABLE DATA</span>
+            <span className={classes.tableHeader}>ASSOCIATED FILES</span>
           </div>
           <Grid item xs={12}>
             <Grid container spacing={4}>
@@ -484,9 +351,10 @@ const styles = (theme) => ({
   },
   container: {
     paddingTop: '50px',
-    fontFamily: 'Raleway, sans-serif',
+    fontFamily: theme.custom.fontFamily,
     paddingLeft: '32px',
     paddingRight: '32px',
+    background: '#FFFF',
   },
   content: {
     fontSize: '12px',
@@ -504,16 +372,16 @@ const styles = (theme) => ({
     ...theme.mixins.toolbar,
   },
   root: {
-    fontFamily: '"Open Sans", sans-serif',
+    fontFamily: theme.custom.fontFamily,
     fontSize: '9px',
     letterSpacing: '0.025em',
     color: '#000',
     background: '#f3f3f3',
   },
   header: {
-    paddingLeft: '32px',
+    paddingLeft: '23px',
     paddingRight: '32px',
-    borderBottom: '#81a6b9 4px solid',
+    borderBottom: '#7D7D7D 10px solid',
     height: '80px',
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
@@ -523,17 +391,25 @@ const styles = (theme) => ({
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
     float: 'left',
-    marginLeft: '110px',
-    paddingLeft: '3px',
+    marginLeft: '90px',
+    width: 'calc(100% - 265px)',
   },
   headerMainTitle: {
-    fontFamily: theme.custom.fontFamilySans,
-    fontWeight: 'bold',
+    fontFamily: 'Lato',
+    color: '#931D1D',
+    fontSize: '18pt',
+    lineHeight: '24px',
+    paddingLeft: '0px',
+    fontWeight: '300',
     letterSpacing: '0.017em',
-    color: '#ff8a00',
-    fontSize: '19px',
-    lineHeight: '18px',
-    paddingLeft: '5px',
+    paddingTop: '10px',
+    '& $headerMainTitleTwo': {
+      fontWeight: 'bold',
+      letterSpacing: '0.025em',
+    },
+  },
+  headerMainTitleTwo: {
+
   },
   headerMSubTitle: {
     paddingTop: '8px',
@@ -563,16 +439,17 @@ const styles = (theme) => ({
   logo: {
     position: 'absolute',
     float: 'left',
-    marginTop: '-14px',
-    width: '100px',
+    marginTop: '-6px',
+    width: '82px',
+    filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    paddingTop: '12px',
-    paddingLeft: '60px',
+    paddingTop: '24px',
+    paddingLeft: '40px',
     paddingRight: '32px',
-    fontFamily: theme.custom.fontFamilySans,
+    fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
     size: '12px',
@@ -580,10 +457,11 @@ const styles = (theme) => ({
   },
   detailContainerHeader: {
     textTransform: 'uppercase',
-    fontFamily: theme.custom.fontFamilySans,
+    fontFamily: 'Lato',
     fontSize: '17px',
-    letterSpacing: '0.017em',
-    color: '#ff8a00',
+    letterSpacing: '0.025em',
+    color: '#0296C9',
+    paddingLeft: '16px',
   },
   detailContainerBottom: {
     borderTop: '#81a6b9 1px solid',
@@ -591,25 +469,30 @@ const styles = (theme) => ({
     padding: ' 35px 2px 63px 2px !important',
   },
   detailContainerLeft: {
-    padding: '35px 0px 0 2px !important',
-    minHeight: '290px',
+    padding: '24px 0px 0 2px !important',
+    minHeight: '209px',
+    maxHeight: '500px',
+    overflowY: 'auto',
+    overflowX: 'hidden',
   },
   detailContainerRight: {
-    padding: '35px 20px 0px 20px !important',
-    minHeight: '290px',
-    borderLeft: '#81a6b9 1px solid',
+    padding: '24px 20px 0px 20px !important',
+    marginBottom: '24px',
+    minHeight: '209px',
+    maxHeight: '500px',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    borderLeft: '#81A6BA 1px solid',
   },
   tableContainer: {
     background: '#f3f3f3',
   },
   tableHeader: {
     paddingLeft: '32px',
-    color: '#ff8a00',
   },
   tableDiv: {
-    padding: '31px 0px',
     maxWidth: theme.custom.maxContentWidth,
-    margin: '10px auto',
+    margin: '22px auto auto auto',
   },
   headerButtonLink: {
     textDecoration: 'none',
@@ -631,6 +514,7 @@ const styles = (theme) => ({
   detailContainerItems: {
     paddingTop: '5px',
     paddingLeft: '17px',
+    paddingRight: '16px',
   },
   title: {
     color: '#9d9d9c',
@@ -642,11 +526,47 @@ const styles = (theme) => ({
     textTransform: 'uppercase',
   },
   tableTitle: {
-    fontFamily: theme.custom.fontFamilySans,
+    textTransform: 'uppercase',
+    fontFamily: 'Lato',
     fontSize: '17px',
-    letterSpacing: '0.017em',
-    color: '#ff17f15',
+    letterSpacing: '0.025em',
+    color: '#0296c9',
     paddingBottom: '20px',
+  },
+  breadCrumb: {
+    paddingTop: '10px',
+  },
+  paddingTop: {
+    paddingTop: '36px',
+  },
+  link: {
+    color: '#DD401C',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+    '&:visited': {
+      color: '#9F3D26',
+    },
+  },
+  tableCell1: {
+    paddingLeft: '25px',
+    width: '440px',
+  },
+  tableCell2: {
+    width: '260px',
+  },
+  tableCell3: {
+    width: '220px',
+  },
+  tableCell4: {
+    width: '200px',
+  },
+  tableCell5: {
+    width: '110px',
+  },
+  tableCell6: {
+    width: '110px',
   },
 });
 
