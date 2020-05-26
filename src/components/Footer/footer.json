@@ -1,0 +1,78 @@
+{
+	"link_sections": [
+		{
+			"title": "About ICDC",
+			"items": [
+				{
+					"text": "Purpose",
+					"href": "https://caninecommons.cancer.gov/#/"
+				},
+				{
+					"text": "Steering Committee",
+					"href": "https://caninecommons.cancer.gov/#/"
+				},
+				{
+					"text": "CRDC",
+					"href": "https://caninecommons.cancer.gov/#/"
+				}
+			]
+		},
+		{
+      "title": "About the Data",
+			"items": [
+				{
+					"text": "ICDC Data & Model",
+					"href": "https://caninecommons.cancer.gov/#/"
+				},
+				{
+					"text": "Analyzing Data",
+					"href": "https://caninecommons.cancer.gov/#/"
+				},
+				{
+					"text": "Submission Guide",
+					"href": "https://caninecommons.cancer.gov/#/"
+				}
+			]
+		},
+		{
+			"title": "More Information",
+			"items": [
+				{
+					"text": "Policies",
+					"href": "https://caninecommons.cancer.gov/#/"
+				},
+				{
+					"text": "Disclaimer",
+					"href": "https://caninecommons.cancer.gov/#/"
+				},
+				{
+					"text": "FOIA",
+					"href": "https://caninecommons.cancer.gov/#/"
+				},
+				{
+					"text": "Copyright",
+					"href": "https://caninecommons.cancer.gov/#/"
+				}
+			]
+		}
+  ],
+  "nci_links": [
+    {
+      "text": "U.S. Department of Health and Human Services",
+      "href": "https://www.hhs.gov"
+    },
+    {
+      "text": "National Institutes of Health",
+      "href": "https://www.nih.gov"
+    },
+    {
+      "text": "National Cancer Institute",
+      "href": "https://www.cancer.gov"
+    },
+    {
+      "text": "USA.gov",
+      "href": "https://www.usa.gov"
+    }
+  ],
+	"version": "mvp_1.1.1"
+}
