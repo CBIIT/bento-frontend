@@ -4,6 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import landingPageData from './landingData.json';
 import imgAbout from '../../assets/landing/About-image.jpg';
 import imgTrial from '../../assets/landing/Trials-image.jpg';
 import imgAccess from '../../assets/landing/RequestAccess-LP.jpg';
@@ -36,12 +37,14 @@ const LandingController = ({ classes, heroData }) => (
     <div className={classes.container}>
       <Grid container spacing={16} direction="row" className={cn(classes.paddingTop30, classes.paddingLeft50)}>
         <div className={classes.bannerTexture}>
-                 Exploring, analyzing, and understanding data from human cancer trials
+          {landingPageData.exploreText}
         </div>
       </Grid>
       <Grid container spacing={16} direction="row" className={cn(classes.paddingTop30, classes.paddingLeft50)}>
         <div className={classes.redButtonSection}>
-          <Link to="/cases" className={classes.redButton}>Explore</Link>
+          <Link to={landingPageData.exploreCallToActionLink} className={classes.redButton}>
+            {landingPageData.exploreCallToActionButtonText}
+          </Link>
         </div>
       </Grid>
     </div>
@@ -54,24 +57,22 @@ const LandingController = ({ classes, heroData }) => (
                 <img src={imgAbout} className={classes.aboutImage} alt="CTDC about" />
               </div>
               <div className={classes.CTDCWords}>
-                About the Clinical Trial Data Commons (CTDC)
+                {landingPageData.cards[0].cardTitleText}
               </div>
               <div className={classes.aboutContent}>
-               CTDC has been established to allow researchers to search, explore and select data
-                across
-                clinical trials from the Precision Medicine Initiative. Data in the CTDC is sourced
-                from multiple different programs and projects; all are focused on human subjects
-                and the data files are access controlled. As part of the NCI's Cancer Research Data
-                Commons (CRDC),
-                user selected data files are available for analysis in the CRDC's Cloud Resources.
-
+                {landingPageData.cards[0].cardDescriptionText}
               </div>
               <div className={classes.aboutButtonSection}>
                 <div className={classes.aboutButtonLeft}>
                   <img src={iconAbout} className={classes.iconAbout} alt="CTDC about icon" />
                 </div>
                 <div className={classes.aboutButtonRight}>
-                  <Link to="/purpose" className={classes.aboutButton}>READ MORE</Link>
+                  <Link
+                    to={landingPageData.cards[0].cardCallToActionLink}
+                    className={classes.aboutButton}
+                  >
+                    {landingPageData.cards[0].cardCallToActionText}
+                  </Link>
                 </div>
               </div>
             </div>
@@ -83,9 +84,11 @@ const LandingController = ({ classes, heroData }) => (
                   <img className={classes.image} src={imgTrial} alt="CTDC  Trials" />
                 </div>
                 <div className={classes.content}>
-                  <div className={classes.contentHeader}> Trials</div>
+                  <div className={classes.contentHeader}>
+                    {landingPageData.cards[1].cardTitleText}
+                  </div>
                   <div className={classes.contentContainer}>
-                    View summaries of clinical trials within CTDC.
+                    {landingPageData.cards[1].cardDescriptionText}
                   </div>
 
                 </div>
@@ -95,7 +98,12 @@ const LandingController = ({ classes, heroData }) => (
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
-                    <Link to="/trials" className={classes.blueButton}>EXPLORE</Link>
+                    <Link
+                      to={landingPageData.cards[1].cardCallToActionLink}
+                      className={classes.blueButton}
+                    >
+                      {landingPageData.cards[1].cardCallToActionText}
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -104,10 +112,11 @@ const LandingController = ({ classes, heroData }) => (
                   <img className={classes.image} src={imgAccess} alt="CTDC Request ACCESS " />
                 </div>
                 <div className={classes.content}>
-                  <div className={classes.contentHeader}> REQUEST ACCESS</div>
+                  <div className={classes.contentHeader}>
+                    {landingPageData.cards[2].cardTitleText}
+                  </div>
                   <div className={classes.contentContainer}>
-                    Data and files in CTDC are not open access,
-                     they require users to have permission.
+                    {landingPageData.cards[2].cardDescriptionText}
                   </div>
 
                 </div>
@@ -117,7 +126,12 @@ const LandingController = ({ classes, heroData }) => (
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
-                    <Link to="/request-access" className={classes.blueButton}>READ MORE</Link>
+                    <Link
+                      to={landingPageData.cards[2].cardCallToActionLink}
+                      className={classes.blueButton}
+                    >
+                      {landingPageData.cards[2].cardCallToActionText}
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -125,11 +139,11 @@ const LandingController = ({ classes, heroData }) => (
             </div>
             <div className={classes.contentRightBottom}>
               <div className={classes.cases}>
-                <div className={classes.greyContentHeader}> Cases</div>
+                <div className={classes.greyContentHeader}>
+                  {landingPageData.cards[3].cardTitleText}
+                </div>
                 <div className={classes.greyContent}>
-Search all the Cases and build cohorts from all the
-Programs/Studies within the CTDC. The data files from
- these cohorts can then be analyzed in the Cloud Resources.
+                  {landingPageData.cards[3].cardDescriptionText}
                 </div>
                 <div className={classes.greybuttonSection}>
                   <div className={classes.blueButtonLeft}>
@@ -137,7 +151,12 @@ Programs/Studies within the CTDC. The data files from
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
-                    <Link to="/cases" className={classes.greybutton}>Explore</Link>
+                    <Link
+                      to={landingPageData.cards[3].cardCallToActionLink}
+                      className={classes.greybutton}
+                    >
+                      {landingPageData.cards[3].cardCallToActionText}
+                    </Link>
                   </div>
                 </div>
               </div>
