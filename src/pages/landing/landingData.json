@@ -1,0 +1,31 @@
+{
+    "exploreText": "eb sites still in their infancy. Various versions have evolved over the years",
+    "exploreCallToActionButtonText": "printing",
+    "exploreCallToActionLink": "/cases",
+    "cards": [
+        {
+          "cardTitleText": "is simply dummy text ",
+          "cardDescriptionText": "mply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchange",
+          "cardCallToActionText":"random text",
+          "cardCallToActionLink":"/trials"
+        },
+        {
+            "cardTitleText": "variations",
+            "cardDescriptionText": "It is a long established fact that",
+            "cardCallToActionText":"a reader",
+            "cardCallToActionLink":"/request-access"
+        },
+        {
+            "cardTitleText": "passages",
+            "cardDescriptionText": "distracted by the readable content of a page ",
+            "cardCallToActionText":"when looking",
+            "cardCallToActionLink":"/model"
+        },
+        {
+            "cardTitleText": "Ipsum",
+            "cardDescriptionText": " layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is",
+            "cardCallToActionText":"that it",
+            "cardCallToActionLink":"/purpose"
+        }
+    ]
+}
