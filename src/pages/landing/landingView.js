@@ -5,21 +5,10 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import landingPageData from './landingData.json';
-import imgAbout from '../../assets/landing/About-image.jpg';
-import imgTrial from '../../assets/landing/Trials-image.jpg';
-import imgAccess from '../../assets/landing/RequestAccess-LP.jpg';
+import landingImgData from './landingImgData';
 import icon from '../../assets/landing/LP_ReadMore.svg';
 import iconAbout from '../../assets/landing/LP_About_Fullarticle.Arrow.svg';
 import texturebg from '../../assets/landing/BackgroundTexture-LP.jpg';
-import l9dg from '../../assets/landing/Cases-LP.jpg';
-import herobg800 from '../../assets/landing/heroGraphic/heroGraphic800.png';
-import herobg1000 from '../../assets/landing/heroGraphic/heroGraphic1000.png';
-import herobg1200 from '../../assets/landing/heroGraphic/heroGraphic1200.png';
-import herobg1400 from '../../assets/landing/heroGraphic/heroGraphic1400.png';
-import herobg1600 from '../../assets/landing/heroGraphic/heroGraphic1600.png';
-import herobg1800 from '../../assets/landing/heroGraphic/heroGraphic1800.png';
-import herobg2000 from '../../assets/landing/heroGraphic/heroGraphic2000.png';
-
 import InteractiveHero from '../../components/InteractiveHero/InteractiveHero';
 import cn from '../../utils/classNameConcat';
 
@@ -54,7 +43,11 @@ const LandingController = ({ classes, heroData }) => (
           <div className={classes.contentLeft}>
             <div className={classes.about}>
               <div className={classes.aboutImageSection}>
-                <img src={imgAbout} className={classes.aboutImage} alt="CTDC about" />
+                <img
+                  src={landingImgData.imgData.tile1.img}
+                  className={classes.aboutImage}
+                  alt={landingImgData.imgData.tile1.alt}
+                />
               </div>
               <div className={classes.CTDCWords}>
                 {landingPageData.cards[0].cardTitleText}
@@ -81,7 +74,11 @@ const LandingController = ({ classes, heroData }) => (
             <div className={classes.contentRightTop}>
               <div className={classes.program}>
                 <div className={classes.programImg}>
-                  <img className={classes.image} src={imgTrial} alt="CTDC  Trials" />
+                  <img
+                    className={classes.image}
+                    src={landingImgData.imgData.tile2.img}
+                    alt={landingImgData.imgData.tile2.alt}
+                  />
                 </div>
                 <div className={classes.content}>
                   <div className={classes.contentHeader}>
@@ -109,7 +106,11 @@ const LandingController = ({ classes, heroData }) => (
               </div>
               <div className={classes.studies}>
                 <div className={classes.programImg}>
-                  <img className={classes.image} src={imgAccess} alt="CTDC Request ACCESS " />
+                  <img
+                    className={classes.image}
+                    src={landingImgData.imgData.tile3.img}
+                    alt={landingImgData.imgData.tile3.src}
+                  />
                 </div>
                 <div className={classes.content}>
                   <div className={classes.contentHeader}>
@@ -177,36 +178,36 @@ const styles = () => ({
     height: '600px',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
-    background: `url(${herobg800})`,
+    background: `url(${landingImgData.imgData.hero.src})`,
     '@media (min-width: 1000px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${herobg1000})`,
+      background: `url(${landingImgData.imgData.hero.img})`,
     },
     '@media (min-width: 1200px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${herobg1200})`,
+      background: `url(${landingImgData.imgData.hero.img})`,
     },
     '@media (min-width: 1400px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${herobg1400})`,
+      background: `url(${landingImgData.imgData.hero.img})`,
     },
     '@media (min-width: 1600px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${herobg1600})`,
+      background: `url(${landingImgData.imgData.hero.img})`,
     },
     '@media (min-width: 1800px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${herobg1800})`,
+      background: `url(${landingImgData.imgData.hero.img})`,
     },
     '@media (min-width: 2000px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${herobg2000})`,
+      background: `url(${landingImgData.imgData.hero.img})`,
     },
   },
   texture: {
@@ -406,7 +407,7 @@ const styles = () => ({
     float: 'left',
     width: '597px',
     background: '#fff',
-    backgroundImage: `url(${l9dg})`,
+    backgroundImage: `url(${landingImgData.imgData.tile4.img})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
   },
