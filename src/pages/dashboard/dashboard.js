@@ -98,7 +98,7 @@ const Dashboard = ({
                       >
                         <CustomActiveDonut
                           // data={data.caseCountByDisease}
-                          data={data.caseCountByDisease}
+                          data={data[donutData.donut1.data]}
                           width={400}
                           height={225}
                           innerRadius={50}
@@ -119,7 +119,7 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
-                          data={data.caseCountByGender}
+                          data={data[donutData.donut2.data]}
                           width={400}
                           height={225}
                           innerRadius={50}
@@ -143,7 +143,7 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
-                          data={data.caseCountByRace}
+                          data={data[donutData.donut3.data]}
                           width={400}
                           height={225}
                           innerRadius={50}
@@ -185,7 +185,7 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
-                          data={data.caseCountByPubmedId}
+                          data={data[donutData.donut4.data]}
                           width={400}
                           height={225}
                           innerRadius={50}
