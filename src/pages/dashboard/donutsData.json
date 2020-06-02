@@ -1,0 +1,26 @@
+{
+    "sunburst":{
+        "label": "Test Trials and Arms",
+        "data": "armsByTrial"
+    },
+    "donut1":{
+        "label": "Test Diagnosis",
+        "data": "data.caseCountByDisease"
+    },
+    "donut2":{
+        "label": "Test Gender",
+        "data": "caseCountByGender"
+    },
+    "donut3":{
+        "label": "Test Race",
+        "data": "caseCountByRace"
+    },
+    "donut4":{
+        "label": "Test Ethnicity",
+        "data": "caseCountByEthnicity"
+    },
+    "donut5":{
+        "label": "Test Pubmed ID",
+        "data": "caseCountByPubmedId"
+    }
+}

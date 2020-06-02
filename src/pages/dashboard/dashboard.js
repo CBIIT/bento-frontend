@@ -10,7 +10,10 @@ import Cases from './caseTable/caseController';
 import ProgramSunburst from '../../components/Widgets/PieCharts/ProgramSunburst/ProgramSunburstController';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import SideBar from '../../components/SideBar/SideBarView';
+import donutData from './donutsData.json';
 
+console.log(donutData);
+console.log(donutData.donut1.label);
 const Dashboard = ({
   classes, data, theme,
 }) => {
@@ -19,6 +22,7 @@ const Dashboard = ({
   const handleChange = () => {
     setChecked((prev) => !prev);
   };
+  console.log(data.caseCountByDisease);
 
   return (
     <>
@@ -62,7 +66,7 @@ const Dashboard = ({
                   <Grid container spacing={16}>
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Trials and Arms"
+                        title={donutData.sunburst.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -85,7 +89,7 @@ const Dashboard = ({
                     </Grid>
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Diagnosis"
+                        title={donutData.donut1.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -93,6 +97,7 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
+                          // data={data.caseCountByDisease}
                           data={data.caseCountByDisease}
                           width={400}
                           height={225}
@@ -106,7 +111,7 @@ const Dashboard = ({
                     </Grid>
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Gender"
+                        title={donutData.donut2.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -130,7 +135,7 @@ const Dashboard = ({
                     {/* <Grid container spacing={32}> */}
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Race"
+                        title={donutData.donut3.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -151,7 +156,7 @@ const Dashboard = ({
                     </Grid>
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Ethnicity"
+                        title={donutData.donut4.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -172,7 +177,7 @@ const Dashboard = ({
                     </Grid>
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Pubmed ID"
+                        title={donutData.donut5.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
