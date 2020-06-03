@@ -6,9 +6,6 @@ const mappingCheckBoxToDataTable = [
     group: 'Trial ID', field: 'clinical_trial_id', api: 'casesCountBaseOnTrialId', datafield: 'clinical_trial_id', show: true,
   },
   {
-    group: 'PubMed ID', field: 'pubmed_id', api: 'casesCountBaseOnPubMedID', datafield: 'pubmed_id', show: true,
-  },
-  {
     group: 'Trial Arm', field: 'trial_arm', api: 'casesCountBaseOnTrialArm', datafield: 'trial_arm', show: true,
   },
   {
@@ -25,6 +22,9 @@ const mappingCheckBoxToDataTable = [
   },
   {
     group: 'Associated File Type', field: 'file_type', api: 'casesCountBaseOnFileType', datafield: 'file_types', show: true,
+  },
+  {
+    group: 'Associated File Format', field: 'file_format', api: 'casesCountBaseOnFileFormat', datafield: 'file_formats', show: true,
   },
 ];
 
