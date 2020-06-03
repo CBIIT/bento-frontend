@@ -10,7 +10,7 @@ import Cases from './caseTable/caseController';
 import ProgramSunburst from '../../components/Widgets/PieCharts/ProgramSunburst/ProgramSunburstController';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import SideBar from '../../components/SideBar/SideBarView';
-import donutData from './donutsData.json';
+import donutData from '../../bento/donutsData.json';
 
 
 const Dashboard = ({
