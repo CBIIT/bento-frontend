@@ -12,9 +12,7 @@ import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDo
 import SideBar from '../../components/SideBar/SideBarView';
 import donutData from './donutsData.json';
 
-console.log(CustomActiveDonut);
-console.log(donutData);
-console.log(donutData.donut1.label);
+
 const Dashboard = ({
   classes, data, theme,
 }) => {
@@ -23,8 +21,6 @@ const Dashboard = ({
   const handleChange = () => {
     setChecked((prev) => !prev);
   };
-  console.log(data);
-  console.log(data.caseCountByDisease);
 
   return (
     <>
@@ -77,7 +73,7 @@ const Dashboard = ({
                       >
                         <div className={classes.marginTop18}>
                           <ProgramSunburst
-                            data={data.armsByTrial}
+                            data={data[donutData.sunburst.data]}
                             width={250}
                             height={180}
                             innerRadius={40}
@@ -99,7 +95,6 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
-                          // data={data.caseCountByDisease}
                           data={data[donutData.donut1.data]}
                           width={400}
                           height={225}

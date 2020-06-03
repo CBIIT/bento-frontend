@@ -10,11 +10,13 @@
     },
     "donut2":{
         "label": "Test Gender",
-        "data": "caseCountByGender"
+        "data": "caseCountByGender",
+        "display": "none"
     },
     "donut3":{
         "label": "Test Race",
-        "data": "caseCountByRace"
+        "data": "caseCountByRace",
+        "display": "none"
     },
     "donut4":{
         "label": "Test Ethnicity",
