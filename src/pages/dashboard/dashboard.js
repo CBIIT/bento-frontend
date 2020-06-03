@@ -12,6 +12,7 @@ import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDo
 import SideBar from '../../components/SideBar/SideBarView';
 import donutData from './donutsData.json';
 
+console.log(CustomActiveDonut);
 console.log(donutData);
 console.log(donutData.donut1.label);
 const Dashboard = ({
@@ -22,6 +23,7 @@ const Dashboard = ({
   const handleChange = () => {
     setChecked((prev) => !prev);
   };
+  console.log(data);
   console.log(data.caseCountByDisease);
 
   return (
@@ -87,7 +89,7 @@ const Dashboard = ({
                         </div>
                       </Widget>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
+                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut1Style}>
                       <Widget
                         title={donutData.donut1.label}
                         upperTitle
@@ -109,7 +111,7 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
+                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut2Style}>
                       <Widget
                         title={donutData.donut2.label}
                         upperTitle
@@ -133,7 +135,7 @@ const Dashboard = ({
                     {/* </Grid> */}
                     {/* second row Grids */}
                     {/* <Grid container spacing={32}> */}
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
+                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut3Style}>
                       <Widget
                         title={donutData.donut3.label}
                         upperTitle
@@ -154,7 +156,7 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
+                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut4Style}>
                       <Widget
                         title={donutData.donut4.label}
                         upperTitle
@@ -175,7 +177,7 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
+                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut5Style}>
                       <Widget
                         title={donutData.donut5.label}
                         upperTitle
@@ -296,6 +298,21 @@ const styles = (theme) => ({
   },
   checked: {},
   track: {},
+  donut1Style: {
+    display: donutData.donut1.display,
+  },
+  donut2Style: {
+    display: donutData.donut2.display,
+  },
+  donut3Style: {
+    display: donutData.donut3.display,
+  },
+  donut4Style: {
+    display: donutData.donut4.display,
+  },
+  donut5Style: {
+    display: donutData.donut5.display,
+  },
 });
 
 export default withStyles(styles, { withTheme: true })(Dashboard);

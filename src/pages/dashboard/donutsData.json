@@ -5,7 +5,8 @@
     },
     "donut1":{
         "label": "Test Diagnosis",
-        "data": "data.caseCountByDisease"
+        "data": "data.caseCountByDisease",
+        "display": "none"
     },
     "donut2":{
         "label": "Test Gender",
