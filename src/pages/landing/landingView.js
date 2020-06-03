@@ -4,8 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import landingPageData from './landingData.json';
-import landingImgData from './landingImgData';
+import landingPageData from '../../bento/landingData';
 import icon from '../../assets/landing/LP_ReadMore.svg';
 import iconAbout from '../../assets/landing/LP_About_Fullarticle.Arrow.svg';
 import texturebg from '../../assets/landing/BackgroundTexture-LP.jpg';
@@ -44,16 +43,16 @@ const LandingController = ({ classes, heroData }) => (
             <div className={classes.about}>
               <div className={classes.aboutImageSection}>
                 <img
-                  src={landingImgData.imgData.tile1.img}
+                  src={landingPageData.tile1.img}
                   className={classes.aboutImage}
-                  alt={landingImgData.imgData.tile1.alt}
+                  alt={landingPageData.tile1.alt}
                 />
               </div>
               <div className={classes.CTDCWords}>
-                {landingPageData.cards[0].cardTitleText}
+                {landingPageData.tile1.cardTitleText}
               </div>
               <div className={classes.aboutContent}>
-                {landingPageData.cards[0].cardDescriptionText}
+                {landingPageData.tile1.cardDescriptionText}
               </div>
               <div className={classes.aboutButtonSection}>
                 <div className={classes.aboutButtonLeft}>
@@ -61,10 +60,10 @@ const LandingController = ({ classes, heroData }) => (
                 </div>
                 <div className={classes.aboutButtonRight}>
                   <Link
-                    to={landingPageData.cards[0].cardCallToActionLink}
+                    to={landingPageData.tile1.cardCallToActionLink}
                     className={classes.aboutButton}
                   >
-                    {landingPageData.cards[0].cardCallToActionText}
+                    {landingPageData.tile1.cardCallToActionText}
                   </Link>
                 </div>
               </div>
@@ -76,16 +75,16 @@ const LandingController = ({ classes, heroData }) => (
                 <div className={classes.programImg}>
                   <img
                     className={classes.image}
-                    src={landingImgData.imgData.tile2.img}
-                    alt={landingImgData.imgData.tile2.alt}
+                    src={landingPageData.tile2.img}
+                    alt={landingPageData.tile2.alt}
                   />
                 </div>
                 <div className={classes.content}>
                   <div className={classes.contentHeader}>
-                    {landingPageData.cards[1].cardTitleText}
+                    {landingPageData.tile2.cardTitleText}
                   </div>
                   <div className={classes.contentContainer}>
-                    {landingPageData.cards[1].cardDescriptionText}
+                    {landingPageData.tile2.cardDescriptionText}
                   </div>
 
                 </div>
@@ -96,10 +95,10 @@ const LandingController = ({ classes, heroData }) => (
                   </div>
                   <div className={classes.blueButtonRight}>
                     <Link
-                      to={landingPageData.cards[1].cardCallToActionLink}
+                      to={landingPageData.tile2cardCallToActionLink}
                       className={classes.blueButton}
                     >
-                      {landingPageData.cards[1].cardCallToActionText}
+                      {landingPageData.tile2.cardCallToActionText}
                     </Link>
                   </div>
                 </div>
@@ -108,16 +107,16 @@ const LandingController = ({ classes, heroData }) => (
                 <div className={classes.programImg}>
                   <img
                     className={classes.image}
-                    src={landingImgData.imgData.tile3.img}
-                    alt={landingImgData.imgData.tile3.src}
+                    src={landingPageData.tile3.img}
+                    alt={landingPageData.tile3.src}
                   />
                 </div>
                 <div className={classes.content}>
                   <div className={classes.contentHeader}>
-                    {landingPageData.cards[2].cardTitleText}
+                    {landingPageData.tile3.cardTitleText}
                   </div>
                   <div className={classes.contentContainer}>
-                    {landingPageData.cards[2].cardDescriptionText}
+                    {landingPageData.tile3.cardDescriptionText}
                   </div>
 
                 </div>
@@ -128,10 +127,10 @@ const LandingController = ({ classes, heroData }) => (
                   </div>
                   <div className={classes.blueButtonRight}>
                     <Link
-                      to={landingPageData.cards[2].cardCallToActionLink}
+                      to={landingPageData.tile3.cardCallToActionLink}
                       className={classes.blueButton}
                     >
-                      {landingPageData.cards[2].cardCallToActionText}
+                      {landingPageData.tile3.cardCallToActionText}
                     </Link>
                   </div>
                 </div>
@@ -141,10 +140,10 @@ const LandingController = ({ classes, heroData }) => (
             <div className={classes.contentRightBottom}>
               <div className={classes.cases}>
                 <div className={classes.greyContentHeader}>
-                  {landingPageData.cards[3].cardTitleText}
+                  {landingPageData.tile4.cardTitleText}
                 </div>
                 <div className={classes.greyContent}>
-                  {landingPageData.cards[3].cardDescriptionText}
+                  {landingPageData.tile4.cardDescriptionText}
                 </div>
                 <div className={classes.greybuttonSection}>
                   <div className={classes.blueButtonLeft}>
@@ -153,10 +152,10 @@ const LandingController = ({ classes, heroData }) => (
                   </div>
                   <div className={classes.blueButtonRight}>
                     <Link
-                      to={landingPageData.cards[3].cardCallToActionLink}
+                      to={landingPageData.tile4.cardCallToActionLink}
                       className={classes.greybutton}
                     >
-                      {landingPageData.cards[3].cardCallToActionText}
+                      {landingPageData.tile4.cardCallToActionText}
                     </Link>
                   </div>
                 </div>
@@ -178,36 +177,36 @@ const styles = () => ({
     height: '600px',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
-    background: `url(${landingImgData.imgData.hero.src})`,
+    background: `url(${landingPageData.hero.src})`,
     '@media (min-width: 1000px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${landingImgData.imgData.hero.img})`,
+      background: `url(${landingPageData.hero.img})`,
     },
     '@media (min-width: 1200px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${landingImgData.imgData.hero.img})`,
+      background: `url(${landingPageData.hero.img})`,
     },
     '@media (min-width: 1400px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${landingImgData.imgData.hero.img})`,
+      background: `url(${landingPageData.hero.img})`,
     },
     '@media (min-width: 1600px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${landingImgData.imgData.hero.img})`,
+      background: `url(${landingPageData.hero.img})`,
     },
     '@media (min-width: 1800px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${landingImgData.imgData.hero.img})`,
+      background: `url(${landingPageData.hero.img})`,
     },
     '@media (min-width: 2000px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
-      background: `url(${landingImgData.imgData.hero.img})`,
+      background: `url(${landingPageData.hero.img})`,
     },
   },
   texture: {
@@ -407,7 +406,7 @@ const styles = () => ({
     float: 'left',
     width: '597px',
     background: '#fff',
-    backgroundImage: `url(${landingImgData.imgData.tile4.img})`,
+    backgroundImage: `url(${landingPageData.tile4.img})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
   },
