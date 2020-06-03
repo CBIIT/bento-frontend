@@ -1,29 +1,32 @@
 {
     "sunburst":{
         "label": "Test Trials and Arms",
-        "data": "armsByTrial"
+        "data": "armsByTrial",
+        "show": true
     },
     "donut1":{
         "label": "Test Diagnosis",
         "data": "caseCountByDisease",
-        "display": "none"
+        "show": true
     },
     "donut2":{
         "label": "Test Gender",
         "data": "caseCountByGender",
-        "display": "none"
+        "show": true
     },
     "donut3":{
         "label": "Test Race",
         "data": "caseCountByRace",
-        "display": "none"
+        "show": true
     },
     "donut4":{
         "label": "Test Ethnicity",
-        "data": "caseCountByEthnicity"
+        "data": "caseCountByEthnicity",
+        "show": true
     },
     "donut5":{
         "label": "Test Pubmed ID",
-        "data": "caseCountByPubmedId"
+        "data": "caseCountByPubmedId",
+        "show": true
     }
 }

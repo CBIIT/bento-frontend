@@ -85,7 +85,8 @@ const Dashboard = ({
                         </div>
                       </Widget>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut1Style}>
+                    { donutData.donut1.show && (
+                    <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
                         title={donutData.donut1.label}
                         upperTitle
@@ -106,7 +107,9 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut2Style}>
+                    )}
+                    {donutData.donut2.show && (
+                    <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
                         title={donutData.donut2.label}
                         upperTitle
@@ -127,10 +130,12 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
+                    )}
                     {/* </Grid> */}
                     {/* second row Grids */}
                     {/* <Grid container spacing={32}> */}
-                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut3Style}>
+                    {donutData.donut3.show && (
+                    <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
                         title={donutData.donut3.label}
                         upperTitle
@@ -151,7 +156,9 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut4Style}>
+                    )}
+                    {donutData.donut4.show && (
+                    <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
                         title={donutData.donut4.label}
                         upperTitle
@@ -172,7 +179,9 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={12} xs={12} className={classes.donut5Style}>
+                    )}
+                    {donutData.donut5.show && (
+                    <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
                         title={donutData.donut5.label}
                         upperTitle
@@ -193,6 +202,7 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
+                    )}
                   </Grid>
                 </Collapse>
               </div>
@@ -293,21 +303,6 @@ const styles = (theme) => ({
   },
   checked: {},
   track: {},
-  donut1Style: {
-    display: donutData.donut1.display,
-  },
-  donut2Style: {
-    display: donutData.donut2.display,
-  },
-  donut3Style: {
-    display: donutData.donut3.display,
-  },
-  donut4Style: {
-    display: donutData.donut4.display,
-  },
-  donut5Style: {
-    display: donutData.donut5.display,
-  },
 });
 
 export default withStyles(styles, { withTheme: true })(Dashboard);
