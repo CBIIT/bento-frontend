@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Header } from 'bento-components';
-import headerData from './headerData';
+import headerData from '../../bento/headerData';
 
 // import nihLogo from '../../assets/header/icdc_nih_logo.svg';
 

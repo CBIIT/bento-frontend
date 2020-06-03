@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Footer } from 'bento-components';
-import FooterData from './footer.json';
+import FooterData from '../../bento/footer.json';
 
 // import nihLogo from '../../assets/header/icdc_nih_logo.svg';
 

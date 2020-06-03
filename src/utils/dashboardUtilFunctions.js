@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import mappingCheckBoxToDataTable from '../pages/dashboard/checkboxData';
+import mappingCheckBoxToDataTable from '../bento/checkboxData';
 
 export const COLORS = [
   '#39C0F0',

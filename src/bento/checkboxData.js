@@ -26,11 +26,6 @@ const mappingCheckBoxToDataTable = [
   {
     group: 'Associated File Type', field: 'file_type', api: 'casesCountBaseOnFileType', datafield: 'file_types', show: true,
   },
-  {
-    group: 'Associated File Format', field: 'file_format', api: 'casesCountBaseOnFileFormat', datafield: 'file_formats', show: true,
-  },
-
-
 ];
 
 export default mappingCheckBoxToDataTable;
