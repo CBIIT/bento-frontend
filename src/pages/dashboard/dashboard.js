@@ -10,6 +10,8 @@ import Cases from './caseTable/caseController';
 import ProgramSunburst from '../../components/Widgets/PieCharts/ProgramSunburst/ProgramSunburstController';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import SideBar from '../../components/SideBar/SideBarView';
+import donutData from '../../bento/donutsData.json';
+
 
 const Dashboard = ({
   classes, data, theme,
@@ -62,7 +64,7 @@ const Dashboard = ({
                   <Grid container spacing={16}>
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Trials and Arms"
+                        title={donutData.sunburst.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -71,7 +73,7 @@ const Dashboard = ({
                       >
                         <div className={classes.marginTop18}>
                           <ProgramSunburst
-                            data={data.armsByTrial}
+                            data={data[donutData.sunburst.data]}
                             width={250}
                             height={180}
                             innerRadius={40}
@@ -83,9 +85,10 @@ const Dashboard = ({
                         </div>
                       </Widget>
                     </Grid>
+                    { donutData.donut1.show && (
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Diagnosis"
+                        title={donutData.donut1.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -93,7 +96,7 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
-                          data={data.caseCountByDisease}
+                          data={data[donutData.donut1.data]}
                           width={400}
                           height={225}
                           innerRadius={50}
@@ -104,9 +107,11 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
+                    )}
+                    {donutData.donut2.show && (
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Gender"
+                        title={donutData.donut2.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -114,7 +119,7 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
-                          data={data.caseCountByGender}
+                          data={data[donutData.donut2.data]}
                           width={400}
                           height={225}
                           innerRadius={50}
@@ -125,12 +130,14 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
+                    )}
                     {/* </Grid> */}
                     {/* second row Grids */}
                     {/* <Grid container spacing={32}> */}
+                    {donutData.donut3.show && (
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Race"
+                        title={donutData.donut3.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -138,7 +145,7 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
-                          data={data.caseCountByRace}
+                          data={data[donutData.donut3.data]}
                           width={400}
                           height={225}
                           innerRadius={50}
@@ -149,9 +156,11 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
+                    )}
+                    {donutData.donut4.show && (
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Ethnicity"
+                        title={donutData.donut4.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -170,9 +179,11 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
+                    )}
+                    {donutData.donut5.show && (
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
-                        title="Pubmed ID"
+                        title={donutData.donut5.label}
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
@@ -180,7 +191,7 @@ const Dashboard = ({
                         customBackGround
                       >
                         <CustomActiveDonut
-                          data={data.caseCountByPubmedId}
+                          data={data[donutData.donut4.data]}
                           width={400}
                           height={225}
                           innerRadius={50}
@@ -191,6 +202,7 @@ const Dashboard = ({
                         />
                       </Widget>
                     </Grid>
+                    )}
                   </Grid>
                 </Collapse>
               </div>
