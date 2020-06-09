@@ -32,7 +32,6 @@ const LandingView = ({ classes, statsData }) => (
                     {landingPageData.exploreCallToActionButtonText}
                   </Button>
                 </Link>
-
               </div>
             </div>
           </div>
@@ -182,7 +181,7 @@ const styles = () => ({
     height: '600px',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
-    background: `url(${landingPageData.hero.src})`,
+    backgroundImage: `url(${landingPageData.hero.img})`,
   },
   texture: {
     backgroundSize: 'cover',
