@@ -21,17 +21,15 @@ const LandingView = ({ classes, statsData }) => (
           <div className={classes.heroTextContainer}>
             <div className={classes.heroTextWrapper}>
               <div className={classes.headerTitle}>
-              Your Tagline Here Up to 2-3 lines
+                { landingPageData.heroHeaderTitle }
               </div>
               <div className={classes.headerContent}>
-              ABC Data Source believes in the value of sharing and exploring data together
-              for the benefit of the research community. Up to 150 Characters Limit.
+                { landingPageData.heroHeaderDescription}
               </div>
               <div className={classes.headerButtonSection}>
-                <Link to="/cases" className={classes.headerLink}>
+                <Link to={landingPageData.exploreCallToActionLink} className={classes.headerLink}>
                   <Button className={classes.buttonText} color="neonBlue">
-                    {' '}
-                Explore the Site
+                    {landingPageData.exploreCallToActionButtonText}
                   </Button>
                 </Link>
 

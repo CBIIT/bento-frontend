@@ -6,8 +6,9 @@ import tile3Img from '../assets/landing/RequestAccess-LP.jpg';
 import tile4Img from '../assets/landing/Cases-LP.jpg';
 
 export const landingPageData = {
-  exploreText: 'eb sites still in their infancy. Various versions have evolved over the years',
-  exploreCallToActionButtonText: 'printing',
+  heroHeaderTitle: 'Yours Tagline Here Up to 2-3 lines',
+  heroHeaderDescription: 'ABC Data Source believes in the value of sharing and exploring data together for the benefit of the research community. Up to 150 Characters Limit.',
+  exploreCallToActionButtonText: 'explore the site',
   exploreCallToActionLink: '/cases',
   hero: {
     alt: 'Alt tag1',
