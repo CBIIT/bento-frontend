@@ -4,38 +4,45 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import StatsView from './components/statsView';
+import { Button } from '../../components/Wrappers/Wrappers';
 import landingPageData from '../../bento/landingData';
 import icon from '../../assets/landing/LP_ReadMore.svg';
 import iconAbout from '../../assets/landing/LP_About_Fullarticle.Arrow.svg';
-import texturebg from '../../assets/landing/BackgroundTexture-LP.jpg';
-import InteractiveHero from '../../components/InteractiveHero/InteractiveHero';
-import cn from '../../utils/classNameConcat';
+// import cn from '../../utils/classNameConcat';
 
 
-const LandingController = ({ classes, heroData }) => (
+const LandingController = ({ classes }) => (
   <div className={classes.page}>
     <div className={classes.container}>
       <div className={classes.hero}>
         <Grid container spacing={16} direction="row">
           <div className={classes.heroImage} />
-          <InteractiveHero heroData={heroData} />
+          <div className={classes.heroTextContainer}>
+            <div className={classes.heroTextWrapper}>
+              <div className={classes.headerTitle}>
+              Your Tagline Here Up to 2-3 lines
+              </div>
+              <div className={classes.headerContent}>
+              ABC Data Source believes in the value of sharing and exploring data together
+              for the benefit of the research community. Up to 150 Characters Limit.
+              </div>
+              <div className={classes.headerButtonSection}>
+                <Link to="/cases" className={classes.headerLink}>
+                  <Button className={classes.buttonText} color="neonBlue">
+                    {' '}
+                Explore the Site
+                  </Button>
+                </Link>
+
+              </div>
+            </div>
+          </div>
         </Grid>
       </div>
     </div>
-    <div className={classes.container}>
-      <Grid container spacing={16} direction="row" className={cn(classes.paddingTop30, classes.paddingLeft50)}>
-        <div className={classes.bannerTexture}>
-          {landingPageData.exploreText}
-        </div>
-      </Grid>
-      <Grid container spacing={16} direction="row" className={cn(classes.paddingTop30, classes.paddingLeft50)}>
-        <div className={classes.redButtonSection}>
-          <Link to={landingPageData.exploreCallToActionLink} className={classes.redButton}>
-            {landingPageData.exploreCallToActionButtonText}
-          </Link>
-        </div>
-      </Grid>
-    </div>
+    <div className={classes.whiteSection} />
+    <StatsView data={landingPageData.stats} />
     <div className={classes.container}>
       <div className={classes.texture}>
         <Grid container spacing={16} direction="row" className={classes.landingContainer}>
@@ -139,21 +146,21 @@ const LandingController = ({ classes, heroData }) => (
             </div>
             <div className={classes.contentRightBottom}>
               <div className={classes.cases}>
-                <div className={classes.greyContentHeader}>
+                <div className={classes.mountainMeadowContentHeader}>
                   {landingPageData.tile4.cardTitleText}
                 </div>
-                <div className={classes.greyContent}>
+                <div className={classes.mountainMeadowContent}>
                   {landingPageData.tile4.cardDescriptionText}
                 </div>
-                <div className={classes.greybuttonSection}>
+                <div className={classes.mountainMeadowButtonSection}>
                   <div className={classes.blueButtonLeft}>
-                    <img className={classes.greyIcon} src={icon} alt="CTDC about " />
+                    <img className={classes.mountainMeadowIcon} src={icon} alt="CTDC about " />
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
                     <Link
                       to={landingPageData.tile4.cardCallToActionLink}
-                      className={classes.greybutton}
+                      className={classes.mountainMeadowButton}
                     >
                       {landingPageData.tile4.cardCallToActionText}
                     </Link>
@@ -178,42 +185,10 @@ const styles = () => ({
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
     background: `url(${landingPageData.hero.src})`,
-    '@media (min-width: 1000px)': {
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100% 100%',
-      background: `url(${landingPageData.hero.img})`,
-    },
-    '@media (min-width: 1200px)': {
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100% 100%',
-      background: `url(${landingPageData.hero.img})`,
-    },
-    '@media (min-width: 1400px)': {
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100% 100%',
-      background: `url(${landingPageData.hero.img})`,
-    },
-    '@media (min-width: 1600px)': {
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100% 100%',
-      background: `url(${landingPageData.hero.img})`,
-    },
-    '@media (min-width: 1800px)': {
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100% 100%',
-      background: `url(${landingPageData.hero.img})`,
-    },
-    '@media (min-width: 2000px)': {
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '100% 100%',
-      background: `url(${landingPageData.hero.img})`,
-    },
   },
   texture: {
     backgroundSize: 'cover',
-    backgroundImage: `url(${texturebg})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundAttachment: 'fixed',
+    background: '#B6DCFC',
     padding: '120px 0 80px 0',
   },
   container: {
@@ -222,25 +197,9 @@ const styles = () => ({
 
   },
 
-  bannerTexture: {
-    color: '#4898B4',
-    fontFamily: 'Raleway',
-    fontSize: '19px',
-    fontWeight: '600',
-    lineHeight: '60px',
-    textAlign: 'center',
-    margin: '0 auto',
-    letterSpacing: '0.050pt',
-    textTransform: 'uppercase',
-    width: '869px',
-  },
-  redButtonSection: {
-    margin: '0 auto -15px auto',
-    background: '#C53B27',
-    width: '179px',
-    height: '47px',
-    borderRadius: '50px',
-    textAlign: 'center',
+  whiteSection: {
+    height: '8px',
+    background: 'white',
   },
   redButton: {
     height: '13px',
@@ -257,26 +216,27 @@ const styles = () => ({
   headerTitle: {
     paddingTop: '180px',
     paddingBottom: '12px',
-    width: '208px',
-    color: '#FFFFFF',
-    fontFamily: 'Raleway, sans-serif',
+    fontFamily: 'Inter, Raleway, sans-serif',
     fontSize: '40px',
-    fontWeight: 'bold',
-    lineHeight: '40px',
-
+    fontWeight: '600',
+    lineHeight: '41px',
+    color: '#0077E3',
+    letterSpacing: 0.25,
   },
   paddingLeft50: {
     paddingLeft: '50px',
   },
   headerContent: {
-    height: '98px',
-    width: '194px',
-    color: '#CB8311',
-    fontFamily: 'Raleway',
+    color: '#000000',
+    fontFamily: 'Lato, Raleway',
     fontSize: '16px',
     fontWeight: '500',
-    lineHeight: '22px',
-    marginBottom: '40px',
+    lineHeight: '29px',
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+  headerLink: {
+    textDecoration: 'none',
   },
 
   iconAbout: {
@@ -300,7 +260,7 @@ const styles = () => ({
   },
   CTDCWords: {
     height: '188px',
-    background: '#0B2731',
+    background: '#274FA5',
     color: '#FFFFFF',
     fontSize: '26px',
     textTransform: 'uppercase',
@@ -319,24 +279,24 @@ const styles = () => ({
   },
   about: {
     width: '300px',
-    backgroundColor: '#20506A',
+    backgroundColor: 'white',
   },
   image: {
     width: '293px',
     height: '251px',
   },
   aboutContent: {
-    background: '#20506A',
+    background: 'white',
     minHeight: '372px',
     width: '300px',
     padding: '30px 30px 32px 30px',
-    color: '#fff',
+    color: '#000000',
     fontFamily: '"Open Sans"',
     fontSize: '14px',
     lineHeight: '22px',
   },
   aboutButtonSection: {
-    background: '#20506A',
+    background: 'white',
     height: '71px',
   },
   imgIconAbout: {
@@ -344,12 +304,12 @@ const styles = () => ({
   },
   aboutButtonLeft: {
     float: 'left',
-    background: '#C53B27',
+    background: '#443CBB',
     height: '45px',
     width: '48px',
   },
   aboutButtonRight: {
-    background: '#894439',
+    background: '#7747FF',
     float: 'left',
     height: '45px',
     width: '132px',
@@ -373,10 +333,10 @@ const styles = () => ({
     minHeight: '130px',
   },
   contentHeader: {
-    color: '#20506A',
-    fontFamily: 'Oswald',
+    color: '#033D6F',
+    fontFamily: 'Lato',
     fontSize: '26px',
-    fontWeight: '500',
+    fontWeight: 'bold',
     lineHeight: '27px',
     padding: '10px 0',
     textTransform: 'uppercase',
@@ -415,16 +375,16 @@ const styles = () => ({
     paddingLeft: '370px',
     paddingTop: '70px',
   },
-  greybuttonSection: {
+  mountainMeadowButtonSection: {
     height: '46px',
     width: '176px',
-    backgroundColor: '#20506A',
+    backgroundColor: '#10A075',
     marginTop: '20px',
 
   },
   blueButton: {
     height: '45px',
-    background: '#5396AA',
+    background: '#0077E3',
     color: '#FFFFFF',
     fontFamily: 'Raleway',
     fontSize: '12px',
@@ -439,11 +399,13 @@ const styles = () => ({
   blueButtonRight: {
     float: 'left',
     lineHeight: '47px',
+    fontFamily: 'Lato',
+    fontSize: '14px',
     color: '#fff',
     textTransform: 'uppercase',
   },
-  greyContentHeader: {
-    color: '#20506A',
+  mountainMeadowContentHeader: {
+    color: '#033D6F',
     fontFamily: 'Oswald',
     fontSize: '31px',
     fontWeight: '500',
@@ -451,7 +413,7 @@ const styles = () => ({
     padding: '15px 0',
     textTransform: 'uppercase',
   },
-  greyContent: {
+  mountainMeadowContent: {
     height: '143px',
     width: '166px',
     color: '#010101',
@@ -459,12 +421,12 @@ const styles = () => ({
     fontSize: '15px',
     lineHeight: '22px',
   },
-  greyIcon: {
+  mountainMeadowIcon: {
     width: '20px',
     marginTop: '15px',
     marginLeft: '28px',
   },
-  greybutton: {
+  mountainMeadowButton: {
     padding: '15px 5px 0 0',
     height: '9px',
     width: '71px',
@@ -487,13 +449,24 @@ const styles = () => ({
   },
   animationContainer: {
     position: 'relative',
-    height: '800px',
-    maxHeight: '800px',
-    overflow: 'hidden',
+    left: '33%',
   },
 
   paddingLeft2: {
     paddingLeft: '2px',
+  },
+  heroTextContainer: {
+    position: 'absolute',
+    width: 900,
+    margin: 'auto',
+    left: 0,
+    right: 0,
+  },
+  heroTextWrapper: {
+    width: '350px',
+  },
+  buttonText: {
+    padding: '8px 30px',
   },
 
 });

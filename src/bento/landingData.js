@@ -12,6 +12,28 @@ const landingPageData = {
     alt: 'Alt tag1',
     img: heroImg,
   },
+  stats: [
+    {
+      statTitle: 'Programs',
+      statCount: '23',
+    },
+    {
+      statTitle: 'Arms',
+      statCount: '23',
+    },
+    {
+      statTitle: 'cases',
+      statCount: '23',
+    },
+    {
+      statTitle: 'samples',
+      statCount: '23',
+    },
+    {
+      statTitle: 'files',
+      statCount: '23',
+    },
+  ],
   tile1: {
     alt: 'Alt tag1',
     img: tile1Img,
