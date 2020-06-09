@@ -6,13 +6,13 @@ import {
 import { Link } from 'react-router-dom';
 import StatsView from './components/statsView';
 import { Button } from '../../components/Wrappers/Wrappers';
-import landingPageData from '../../bento/landingData';
+import { landingPageData } from '../../bento/landingData';
 import icon from '../../assets/landing/LP_ReadMore.svg';
 import iconAbout from '../../assets/landing/LP_About_Fullarticle.Arrow.svg';
 // import cn from '../../utils/classNameConcat';
 
 
-const LandingController = ({ classes }) => (
+const LandingView = ({ classes, statsData }) => (
   <div className={classes.page}>
     <div className={classes.container}>
       <div className={classes.hero}>
@@ -42,7 +42,7 @@ const LandingController = ({ classes }) => (
       </div>
     </div>
     <div className={classes.whiteSection} />
-    <StatsView data={landingPageData.stats} />
+    <StatsView stats={landingPageData.stats} statsData={statsData} />
     <div className={classes.container}>
       <div className={classes.texture}>
         <Grid container spacing={16} direction="row" className={classes.landingContainer}>
@@ -291,7 +291,7 @@ const styles = () => ({
     width: '300px',
     padding: '30px 30px 32px 30px',
     color: '#000000',
-    fontFamily: '"Open Sans"',
+    fontFamily: '"Nunito Sans"',
     fontSize: '14px',
     lineHeight: '22px',
   },
@@ -470,4 +470,4 @@ const styles = () => ({
   },
 
 });
-export default withStyles(styles, { withTheme: true })(LandingController);
+export default withStyles(styles, { withTheme: true })(LandingView);

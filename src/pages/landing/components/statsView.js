@@ -5,25 +5,25 @@ import {
 } from '@material-ui/core';
 
 
-const LandingStatsView = ({ classes, data }) => (
+const LandingStatsView = ({ classes, stats, statsData }) => (
   <>
     <div className={classes.statsSection}>
       <div
         className={classnames({
-          [classes.boxCut]: data.length < 5,
-          [classes.box]: data.length === 5,
+          [classes.boxCut]: stats.length < 5,
+          [classes.box]: stats.length === 5,
         })}
       >
 
         {
-        data.map((stat) => (
+        stats.map((stat) => (
           <div className={classes.statsGroup}>
             <div className={classes.statsText}>
               <div className={classes.statTitle}>
                 {stat.statTitle}
               </div>
               <div className={classes.statCount}>
-                {stat.statCount}
+                {statsData[stat.statAPI]}
               </div>
             </div>
           </div>
@@ -73,7 +73,7 @@ const styles = () => ({
   },
   statsText: {
     height: '42px',
-    borderBottom: '2px solid #27DBFF',
+    borderBottom: '3px solid #27DBFF',
   },
   statTitle: {
     display: 'inline-block',
@@ -81,9 +81,9 @@ const styles = () => ({
     color: '#476783',
     fontFamily: 'Nunito Sans',
     fontSize: '11px',
-    fontWeight: 'bold',
-    marginRight: '20px',
+    marginRight: '16px',
     marginTop: '16px',
+    textTransform: 'uppercase',
   },
   statCount: {
     display: 'inline-block',

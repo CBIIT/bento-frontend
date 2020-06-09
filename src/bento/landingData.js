@@ -1,10 +1,11 @@
+import gql from 'graphql-tag';
 import heroImg from '../assets/landing/heroGraphic/heroGraphic1200.png';
 import tile1Img from '../assets/landing/About-image.jpg';
 import tile2Img from '../assets/landing/Trials-image.jpg';
 import tile3Img from '../assets/landing/RequestAccess-LP.jpg';
 import tile4Img from '../assets/landing/Cases-LP.jpg';
 
-const landingPageData = {
+export const landingPageData = {
   exploreText: 'eb sites still in their infancy. Various versions have evolved over the years',
   exploreCallToActionButtonText: 'printing',
   exploreCallToActionLink: '/cases',
@@ -15,23 +16,23 @@ const landingPageData = {
   stats: [
     {
       statTitle: 'Programs',
-      statCount: '23',
+      statAPI: 'numberOfPrograms',
     },
     {
-      statTitle: 'Arms',
-      statCount: '23',
+      statTitle: 'Studies',
+      statAPI: 'numberOfStudies',
     },
     {
-      statTitle: 'cases',
-      statCount: '23',
+      statTitle: 'Subjects',
+      statAPI: 'numberOfSubjects',
     },
     {
       statTitle: 'samples',
-      statCount: '23',
+      statAPI: 'numberOfSamples',
     },
     {
       statTitle: 'files',
-      statCount: '23',
+      statAPI: 'numberOfFiles',
     },
   ],
   tile1: {
@@ -68,4 +69,11 @@ const landingPageData = {
   },
 };
 
-export default landingPageData;
+export const LANDING_QUERY = gql`{
+  numberOfPrograms
+  numberOfStudies
+  numberOfSubjects
+  numberOfSamples
+  numberOfFiles
+  }
+  `;
