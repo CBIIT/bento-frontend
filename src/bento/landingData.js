@@ -33,7 +33,7 @@ export const landingPageData = {
   ],
   tile1: {
     alt: 'Alt tag1',
-    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/LP/src/assets/landing/Box.About_Image.png',
+    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/LP/src/assets/landing/aboutImage.png',
     cardTitleText: 'About Your Data Commons',
     cardDescriptionText: 'Up to 460 Character Limitsed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id. Excepteur laborum.',
     cardCallToActionText: 'random text',
@@ -41,7 +41,7 @@ export const landingPageData = {
   },
   tile2: {
     alt: 'Alt tag1',
-    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/LP/src/assets/landing/Box.Analytics-image.png',
+    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/LP/src/assets/landing/analyticsImage.png',
     cardTitleText: 'Programs',
     cardDescriptionText: 'It is a long established fact that',
     cardCallToActionText: 'a reader',
@@ -49,7 +49,7 @@ export const landingPageData = {
   },
   tile3: {
     alt: 'Alt tag1',
-    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/LP/src/assets/landing/Box.Prgm-image.png',
+    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/LP/src/assets/landing/prgmImage.png',
     cardTitleText: 'Analytics',
     cardDescriptionText: 'distracted by the readable content of a page',
     cardCallToActionText: 'when looking',
@@ -57,7 +57,7 @@ export const landingPageData = {
   },
   tile4: {
     alt: 'Alt tag1',
-    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/LP/src/assets/landing/Box.Cases-image.png',
+    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/LP/src/assets/landing/casesImage.png',
     cardTitleText: 'Cases',
     cardDescriptionText: 'layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is',
     cardCallToActionText: 'that it',
