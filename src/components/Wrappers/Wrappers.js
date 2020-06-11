@@ -133,7 +133,7 @@ const ButtonExtended = ({ theme, children, ...props }) => {
       boxShadow: theme.customShadows.widget,
       color: 'white',
       '&:hover': {
-        backgroundColor: getColor(props.color, theme, 'light'),
+        backgroundColor: getColor(props.color, theme),
         boxShadow: theme.customShadows.widgetWide,
       },
     },
