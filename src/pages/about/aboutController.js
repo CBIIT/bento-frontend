@@ -13,10 +13,8 @@ import AboutBody from './aboutBodyView';
 
 const ABOUT_CONTENT_URL = process.env.REACT_APP_ABOUT_CONTENT_URL;
 
-
 const About = ({ match }) => {
   const [data, setData] = useState([]);
-
 
   useEffect(() => {
     const fetchData = async () => {

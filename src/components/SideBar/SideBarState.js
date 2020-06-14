@@ -8,7 +8,6 @@ export const toggleSidebar = () => ({
   type: TOGGLE_SIDEBAR,
 });
 
-
 export default function LayoutReducer(state = initialState, { type }) {
   switch (type) {
     case TOGGLE_SIDEBAR:

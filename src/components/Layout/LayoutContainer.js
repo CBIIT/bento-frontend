@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { toggleSidebar } from './LayoutState';
 import LayoutView from './LayoutView';
 
-
 export default compose(
   connect(
     (state) => ({

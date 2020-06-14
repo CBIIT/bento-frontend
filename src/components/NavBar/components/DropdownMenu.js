@@ -4,7 +4,6 @@ import {
   withStyles, Paper,
 } from '@material-ui/core';
 
-
 const CustomDropdownMenu = ({ classes, handleClick }) => (
   <>
     <Paper className={classes.paper}>
@@ -15,7 +14,7 @@ const CustomDropdownMenu = ({ classes, handleClick }) => (
           to="/purpose"
           onClick={handleClick}
         >
-               Purpose
+          Purpose
         </NavLink>
         <NavLink
           className={classes.link}
@@ -23,7 +22,7 @@ const CustomDropdownMenu = ({ classes, handleClick }) => (
           to="/crdc"
           onClick={handleClick}
         >
-               CRDC & Analysis
+          CRDC & Analysis
         </NavLink>
         <NavLink
           className={classes.link}
@@ -31,7 +30,7 @@ const CustomDropdownMenu = ({ classes, handleClick }) => (
           to="/model"
           onClick={handleClick}
         >
-               CTDC Data & Model
+          CTDC Data & Model
         </NavLink>
         <NavLink
           className={classes.link}
@@ -39,7 +38,7 @@ const CustomDropdownMenu = ({ classes, handleClick }) => (
           to="/data-dictionary"
           onClick={handleClick}
         >
-                CTDC Data Dictionary
+          CTDC Data Dictionary
         </NavLink>
         <NavLink
           className={classes.link}
@@ -47,7 +46,7 @@ const CustomDropdownMenu = ({ classes, handleClick }) => (
           to="/developers"
           onClick={handleClick}
         >
-               Developers
+          Developers
         </NavLink>
         <NavLink
           className={classes.link}
@@ -55,7 +54,7 @@ const CustomDropdownMenu = ({ classes, handleClick }) => (
           to="/support"
           onClick={handleClick}
         >
-               Support
+          Support
         </NavLink>
         <NavLink
           className={classes.link}
@@ -63,7 +62,7 @@ const CustomDropdownMenu = ({ classes, handleClick }) => (
           to="/request-access"
           onClick={handleClick}
         >
-               Request Access
+          Request Access
         </NavLink>
 
       </div>

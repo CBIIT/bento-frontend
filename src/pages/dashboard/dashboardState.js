@@ -10,7 +10,6 @@ import {
   customCheckBox,
 } from '../../utils/dashboardUtilFunctions';
 
-
 export const initialState = {
   dashboard: {
     isFetched: false,
@@ -49,12 +48,10 @@ export const toggleCheckBox = (payload) => ({
   payload,
 });
 
-
 export const singleCheckBox = (payload) => ({
   type: SINGLE_CHECKBOX,
   payload,
 });
-
 
 function shouldFetchDataForDashboardDataTable(state) {
   return !(state.dashboard.isFetched);
@@ -76,7 +73,6 @@ function receiveDashboard(json) {
   };
 }
 
-
 function errorhandler(error, type) {
   return {
     type,
@@ -84,13 +80,11 @@ function errorhandler(error, type) {
   };
 }
 
-
 function readyDashboard() {
   return {
     type: READY_DASHBOARD,
   };
 }
-
 
 // This need to go to dashboard controller
 
@@ -105,7 +99,6 @@ function fetchDashboard() {
       .catch((error) => dispatch(errorhandler(error, DASHBOARD_QUERY_ERR)));
   };
 }
-
 
 export function fetchDataForDashboardDataTable() {
   return (dispatch, getState) => {

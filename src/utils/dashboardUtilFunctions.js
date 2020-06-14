@@ -25,7 +25,6 @@ export const COLORS_LEVEL_2 = [
   '#302059',
 ];
 
-
 const NOT_PROVIDED = 'Not Specified';
 /*
  Group : GroupName that will show on the page as category
@@ -98,7 +97,6 @@ export function getSunburstDataFromDashboardData(data) {
       return trial;
     }); // end find Trial
 
-
     if (!existTrial && !existArm) {
       colorIndex += 1;
       widgetData.push({
@@ -156,7 +154,6 @@ export function getDonutDataFromDashboardData(data, widgetName) {
   return output;
 }
 
-
 /* filterData function evaluates a row of data with filters,
       to check if this row will be showed in the data table.
 
@@ -202,7 +199,6 @@ export const filterData = (row, filters) => {
   return true;
 };
 
-
 export function getFilters(orginFilter, newCheckBoxs) {
   let ogFilter = orginFilter;
   newCheckBoxs.forEach((checkbox) => {
@@ -240,7 +236,6 @@ export function customSorting(a, b, flag, i = 0) {
   }
   return -1;
 }
-
 
 // Everytime the checkbox has been clicked, will call this function to update the data of checkbox
 export const getCheckBoxData = (data, allCheckBoxs, activeCheckBoxs, filters) => (
@@ -313,7 +308,6 @@ export const getCheckBoxData = (data, allCheckBoxs, activeCheckBoxs, filters) =>
   })
 );
 
-
 export function transformAPIDataIntoCheckBoxData(data, field) {
   const result = [];
   let preElementIndex = 0;
@@ -340,7 +334,6 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
 
   return result;
 }
-
 
 // CustomCheckBox works for first time init Checkbox,
 // that function transforms the data which returns from API into a another format

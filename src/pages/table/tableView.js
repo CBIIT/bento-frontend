@@ -29,7 +29,6 @@ const data = [
   ['Loriem ipsum', 'NCATS01', 'Preclinical Evaluation of three indenoisquinoline Candidated in Tumor Bearing Dogs', 'Clinical Trial', '0'],
 ];
 
-
 const options = {
   selectableRows: 'none',
   responsive: 'stacked',

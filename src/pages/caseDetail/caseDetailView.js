@@ -24,7 +24,6 @@ function formatBytes(bytes, decimals = 2) {
   return `${parseFloat((bytes / (1024 ** i)).toFixed(dm))} ${sizes[i]}`;
 }
 
-
 const options = (classes) => ({
   selectableRows: 'none',
   responsive: 'stacked',
@@ -52,7 +51,6 @@ const options = (classes) => ({
   ),
 });
 
-
 const CaseDetail = ({ classes, data }) => {
   const stat = {
     numberOfTrials: 1,
@@ -68,7 +66,6 @@ const CaseDetail = ({ classes, data }) => {
     to: '/cases',
     isALink: true,
   }];
-
 
   const columns = [
 
@@ -168,7 +165,7 @@ const CaseDetail = ({ classes, data }) => {
           </div>
           <div className={classes.headerTitle}>
             <div className={classes.headerMainTitle}>
-Case :
+              Case :
               <span className={classes.headerMainTitleTwo}>
                 {' '}
                 {' '}
@@ -181,7 +178,6 @@ Case :
             </div>
           </div>
         </div>
-
 
         <div className={classes.detailContainer}>
 
@@ -341,7 +337,6 @@ Case :
   );
 };
 
-
 const styles = (theme) => ({
   paddingLeft8: {
     paddingLeft: '12px',
@@ -434,7 +429,6 @@ const styles = (theme) => ({
     fontSize: '12px',
     paddingLeft: '3px',
   },
-
 
   logo: {
     position: 'absolute',

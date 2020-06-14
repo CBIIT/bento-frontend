@@ -6,7 +6,6 @@ import {
 import LeftBg from '../../assets/error/leftBg.png';
 import rightBg from '../../assets/error/rightBg.png';
 
-
 const Error = ({ classes }) => (
   <div className={classes.container}>
     <Grid container className={classes.container2}>
@@ -17,10 +16,11 @@ const Error = ({ classes }) => (
           <Typography className={classes.boldText}>PAGE NOT FOUND</Typography>
           <div className={classes.errorTextRow}>
             <Typography className={classes.errorText}>
-The page you are looking for does not exist or another error has occured. Go back or head&nbsp;
+              The page you are looking for does not exist or another error has occured.
+              Go back or head&nbsp;
               <Link className={classes.link} to="/">home</Link>
               {' '}
-to choose another direction.
+              to choose another direction.
             </Typography>
           </div>
         </Paper>

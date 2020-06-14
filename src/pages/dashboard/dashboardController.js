@@ -5,7 +5,6 @@ import Dashboard from './dashboard';
 import { fetchDataForDashboardDataTable } from './dashboardState';
 import { Typography } from '../../components/Wrappers/Wrappers';
 
-
 class DashboardController extends Component {
   componentDidMount() {
     const { dispatch } = this.props;

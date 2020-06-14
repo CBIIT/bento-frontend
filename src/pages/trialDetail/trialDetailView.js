@@ -24,7 +24,6 @@ import {
 } from '../../utils/dashboardUtilFunctions';
 import fileIcon from '../../assets/trial/Trials_File_Counter.Icon.svg';
 
-
 const TrialView = ({ classes, data, theme }) => {
   const trialData = data.clinicalTrialByTrialId[0];
 
@@ -56,19 +55,16 @@ const TrialView = ({ classes, data, theme }) => {
         file: 0,
       }));
 
-
   // initDashboardStatus will be used in dispatch to
   // make sure dashboard data has be loaded first.
   const initDashboardStatus = () => () => Promise.resolve(
     dispatch(fetchDataForDashboardDataTable()),
   );
 
-
   React.useEffect(() => {
     // Update dashboard first
     dispatch(initDashboardStatus());
   }, []);
-
 
   const redirectTo = () => {
     dispatch(initDashboardStatus()).then(() => {
@@ -80,7 +76,6 @@ const TrialView = ({ classes, data, theme }) => {
       }]));
     });
   };
-
 
   const redirectToTrialArm = (TrialArm) => {
     dispatch(initDashboardStatus()).then(() => {
@@ -99,13 +94,11 @@ const TrialView = ({ classes, data, theme }) => {
     numberOfFiles: data.fileCountByTrialId,
   };
 
-
   const breadCrumbJson = [{
     name: 'All Trials',
     to: '/trials',
     isALink: true,
   }];
-
 
   const columns = [
     {
@@ -172,7 +165,6 @@ const TrialView = ({ classes, data, theme }) => {
     },
   ];
 
-
   const options = {
     selectableRows: 'none',
     responsive: 'stacked',
@@ -200,7 +192,6 @@ const TrialView = ({ classes, data, theme }) => {
     ),
   };
 
-
   return (
     <>
       <StatsView data={stat} />
@@ -217,7 +208,7 @@ const TrialView = ({ classes, data, theme }) => {
             <div className={classes.headerMainTitle}>
               <span>
                 {' '}
-                 Trial :
+                Trial :
                 <span>
                   {' '}
                   {' '}
@@ -253,7 +244,6 @@ const TrialView = ({ classes, data, theme }) => {
             </span>
           </div>
         </div>
-
 
         <div className={classes.detailContainer}>
 
@@ -305,10 +295,8 @@ const TrialView = ({ classes, data, theme }) => {
                   </div>
                 </Grid>
 
-
               </Grid>
             </Grid>
-
 
             <Grid
               item
@@ -363,10 +351,8 @@ const TrialView = ({ classes, data, theme }) => {
                   </div>
                 </Grid>
 
-
               </Grid>
             </Grid>
-
 
             <Grid
               item
@@ -417,7 +403,6 @@ const TrialView = ({ classes, data, theme }) => {
                   </div>
                 </Grid>
 
-
               </Grid>
             </Grid>
 
@@ -451,7 +436,6 @@ const TrialView = ({ classes, data, theme }) => {
     </>
   );
 };
-
 
 const styles = (theme) => ({
   firstColumn: {

@@ -6,7 +6,6 @@ export const STATS_QUERY_ERR = 'STATS_QUERY_ERR';
 export const READY_STATS = 'READY_STATS';
 export const REQUEST_STATS = 'REQUEST_STATS';
 
-
 export const initialState = {
   isFetched: false,
   isLoading: false,
@@ -14,7 +13,6 @@ export const initialState = {
   hasError: false,
   data: [],
 };
-
 
 function shouldFetchDataForAllStats(state) {
   return !state.stats.isFetched;
@@ -36,14 +34,12 @@ function receiveStats(json) {
   };
 }
 
-
 function errorhandler(error, type) {
   return {
     type,
     error,
   };
 }
-
 
 function fetchStats(statQuery) {
   return (dispatch) => client
@@ -54,7 +50,6 @@ function fetchStats(statQuery) {
     .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
 }
 
-
 export function fetchDataForStats() {
   return (dispatch, getState) => {
     if (shouldFetchDataForAllStats(getState())) {
@@ -63,7 +58,6 @@ export function fetchDataForStats() {
     return dispatch(readyStats());
   };
 }
-
 
 export default function dashboardReducer(state = initialState, action) {
   switch (action.type) {

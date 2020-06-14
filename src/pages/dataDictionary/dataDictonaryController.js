@@ -9,7 +9,6 @@ const ABOUT_CONTENT_URL = process.env.REACT_APP_ABOUT_CONTENT_URL;
 const About = () => {
   const [data, setData] = useState([]);
 
-
   useEffect(() => {
     const fetchData = async () => {
       let resultData = [];

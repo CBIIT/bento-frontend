@@ -11,7 +11,6 @@ import icon from '../../assets/landing/LP_ReadMore.svg';
 import iconAbout from '../../assets/landing/LP_About_Fullarticle.Arrow.svg';
 // import cn from '../../utils/classNameConcat';
 
-
 const LandingView = ({ classes, statsData }) => (
   <div className={classes.page}>
     <div className={classes.container}>
@@ -247,7 +246,6 @@ const styles = () => ({
     marginTop: '13px',
     marginLeft: '23px',
   },
-
 
   aboutImage: {
     width: '300px',

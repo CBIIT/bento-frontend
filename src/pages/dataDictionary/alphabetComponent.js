@@ -10,7 +10,7 @@ const AlphabetComponent = ({ classes, alphabetsData }) => (
         {alphabetsData && alphabetsData.map((alphabetNode) => (
           alphabetNode.status ? (
             <span>
-|&nbsp;
+              |&nbsp;
               <Link
                 activeClass={classes.activeLink}
                 to={alphabetNode.alphabet}
@@ -26,7 +26,7 @@ const AlphabetComponent = ({ classes, alphabetsData }) => (
             </span>
           ) : (
             <span>
-|&nbsp;
+              |&nbsp;
               {alphabetNode.alphabet}
 &nbsp;
             </span>

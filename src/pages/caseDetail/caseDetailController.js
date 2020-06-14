@@ -5,7 +5,6 @@ import CaseDetailView from './caseDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_CASE_DETAIL_DATA_QUERY } from '../../utils/graphqlQueries';
 
-
 const CaseDetailContainer = ({ match }) => (
   <Query query={GET_CASE_DETAIL_DATA_QUERY} variables={{ case_id: match.params.id }}>
     {({ data, loading, error }) => (

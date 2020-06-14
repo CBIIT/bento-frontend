@@ -4,7 +4,6 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-
 const LandingStatsView = ({ classes, stats, statsData }) => (
   <>
     <div className={classes.statsSection}>

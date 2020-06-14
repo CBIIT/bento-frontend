@@ -19,7 +19,7 @@ const CasesInActiveText = ({ classes, heroData }) => (
     <div className={classes.whiteTextInactive}>
       {heroData ? heroData.numberOfCases : 'NA'}
       {' '}
-CASES
+      CASES
     </div>
   </div>
 );
@@ -32,18 +32,18 @@ const CasesActiveText = ({ classes, heroData }) => (
       CASES
     </div>
     <div className={classes.blueText}>
-  from
+      from
       {' '}
       {heroData ? heroData.numberOfTrials : 'NA'}
       {' '}
-TRIAL
+      TRIAL
     </div>
     <div className={classes.blueText}>
-  from
+      from
       {' '}
       {heroData ? heroData.numberOfArms : 'NA'}
       {' '}
-ARMs
+      ARMs
     </div>
   </div>
 );
@@ -65,20 +65,20 @@ const TrialsActiveText = ({ classes, heroData }) => {
       <div className={classes.whiteText}>
         {heroData ? heroData.numberOfDiagnoses : 'NA'}
         {' '}
-      DIAGNOSES
+        DIAGNOSES
         <span className={classes.whiteSmallText}>&nbsp;&nbsp; from 2 ARMS:</span>
       </div>
       <div className={classes.blueText}>
         {sortedDiagnosis[0] && sortedDiagnosis[0].diagnoses}
         {' '}
-Diagnoses from ARM
+        Diagnoses from ARM
         {' '}
         {sortedDiagnosis[0] && sortedDiagnosis[0].arm_id}
       </div>
       <div className={classes.blueText}>
         {sortedDiagnosis[1] && sortedDiagnosis[1].diagnoses}
         {' '}
-Diagnoses from ARM
+        Diagnoses from ARM
         {' '}
         {sortedDiagnosis[1] && sortedDiagnosis[1].arm_id}
       </div>
@@ -86,13 +86,12 @@ Diagnoses from ARM
   );
 };
 
-
 const FilesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
       {heroData ? heroData.numberOfFiles : 'NA'}
       {' '}
-FILES
+      FILES
     </div>
   </div>
 );
@@ -105,7 +104,7 @@ const FilesActiveText = ({ classes, heroData }) => (
       FILES
     </div>
     <div className={classes.blueText}>
-  from
+      from
       {' '}
       {heroData ? heroData.numberOfFileTypes : 'NA'}
       {' '}
@@ -267,6 +266,5 @@ const styles = () => ({
     paddingBottom: '10px',
   },
 });
-
 
 export default withStyles(styles)(InteractiveHero);

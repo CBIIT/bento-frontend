@@ -55,5 +55,4 @@ const styles = () => ({
   },
 });
 
-
 export default withStyles(styles)(AboutHeader);

@@ -12,7 +12,6 @@ import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDo
 import SideBar from '../../components/SideBar/SideBarView';
 import donutData from '../../bento/donutsData.json';
 
-
 const Dashboard = ({
   classes, data, theme,
 }) => {

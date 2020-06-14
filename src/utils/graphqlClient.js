@@ -6,5 +6,4 @@ const client = new ApolloClient({
   uri: BACKEND,
 });
 
-
 export default client;

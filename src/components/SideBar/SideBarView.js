@@ -39,7 +39,7 @@ const SideBarContent = ({ classes }) => {
             onClick={() => dispatch(toggleCheckBox(unselectFilters(activeFilters)))}
             disableRipple
           >
-        Clear All
+            Clear All
           </Button>
         </div>
       </div>

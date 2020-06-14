@@ -13,7 +13,6 @@ import CustomFooter from './customFooter';
 import { toggleCheckBox } from '../dashboardState';
 import { receiveCases } from '../../selectedCases/selectedCasesState';
 
-
 // const tableStyle = (ratio = 1) => ({
 //   : ((((document.documentElement.clientWidth - 280) * 0.6) / 10) * ratio),
 //   overflow: 'hidden',
@@ -22,7 +21,6 @@ import { receiveCases } from '../../selectedCases/selectedCasesState';
 //   minWidth: '100px',
 // }
 // );
-
 
 const Cases = ({ classes, data }) => {
   const [snackbarState, setsnackbarState] = React.useState({
@@ -71,9 +69,7 @@ const Cases = ({ classes, data }) => {
 
   bubbles = '';
 
-
   const saveButton = useRef(null);
-
 
   useEffect(() => {
     saveButton.current.disabled = true;
@@ -242,7 +238,6 @@ const Cases = ({ classes, data }) => {
       saveButton.current.style.border = 'unset';
     }
   }
-
 
   const options = () => ({
     selectableRows: 'multiple',
