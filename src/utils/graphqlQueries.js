@@ -74,7 +74,6 @@ export const DASHBOARD_QUERY = gql`{
      }
 }`;
 
-
 export const GET_CASE_DETAIL_DATA_QUERY = gql`
   query caseDetailByCaseId($case_id: String!){
           caseDetailByCaseId(case_id:$case_id){
@@ -101,7 +100,6 @@ export const GET_CASE_DETAIL_DATA_QUERY = gql`
         md5sum 
     }
       }`;
-
 
 export const GET_MY_CASES_DATA_QUERY = gql`
 query casesInList($caseIds: [String!]!) {
@@ -132,7 +130,6 @@ query casesInList($caseIds: [String!]!) {
 
 }`;
 
-
 export const TRIALS_QUERY = gql`{
    clinicalTrials{
     clinical_trial_id
@@ -148,7 +145,6 @@ export const TRIALS_QUERY = gql`{
     }
 }
   `;
-
 
 export const TRIAL_BY_ID_QUERY = gql`
 query clinicalTrialByTrialId($id: String!) {

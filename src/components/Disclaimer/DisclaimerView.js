@@ -7,7 +7,6 @@ import {
 import WarningIcon from '@material-ui/icons/Warning';
 import { Typography } from '../Wrappers/Wrappers';
 
-
 function PositionedSnackbar({ classes }) {
   const [state, setState] = React.useState({
     open: true,
@@ -16,7 +15,6 @@ function PositionedSnackbar({ classes }) {
   });
 
   const { vertical, horizontal, open } = state;
-
 
   function handleClose() {
     setState({ ...state, open: false });

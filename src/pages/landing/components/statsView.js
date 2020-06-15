@@ -4,7 +4,6 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-
 const LandingStatsView = ({ classes, stats, statsData }) => (
   <>
     <div className={classes.statsSection}>
@@ -79,7 +78,8 @@ const styles = () => ({
     display: 'inline-block',
     float: 'left',
     color: '#476783',
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
+    fontWeight: 'bold',
     fontSize: '11px',
     marginRight: '16px',
     marginTop: '16px',

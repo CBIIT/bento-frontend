@@ -30,5 +30,4 @@ const selectedFilesController = () => {
   );
 };
 
-
 export default selectedFilesController;

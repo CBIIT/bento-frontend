@@ -12,7 +12,7 @@ const AttributeComponent = ({ classes, data }) => (
     </div>
     {data.row[3] !== '' && (
     <div className={classes.attributeContent}>
-    Display Name:
+      Display Name:
       <span className={classes.boldAttrDesc}>
       &nbsp;
         {data.row[3]}
@@ -28,7 +28,7 @@ const AttributeComponent = ({ classes, data }) => (
     </div>
     {data.row[2] !== '' && (
     <div className={classes.attributeContent}>
-    Attribute of Node:
+      Attribute of Node:
       <span className={classes.attrDesc}>
       &nbsp;
         {data.row[2]}
@@ -37,7 +37,7 @@ const AttributeComponent = ({ classes, data }) => (
     )}
     { typeof data.row[8] !== 'undefined' && (
     <div className={classes.attributeContent}>
-    Attribute of Relationship:
+      Attribute of Relationship:
       <span className={classes.attrDesc}>
       &nbsp;
         {data.row[8]}

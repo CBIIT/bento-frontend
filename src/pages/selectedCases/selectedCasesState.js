@@ -2,7 +2,6 @@ import {
 
 } from '../../utils/dashboardUtilFunctions';
 
-
 export const initialState = {
   cases: [],
   files: [],
@@ -10,13 +9,11 @@ export const initialState = {
   isError: false,
 };
 
-
 export const TOGGLE_CHEKCBOX_IN_CASE_TABLE = 'TOGGLE_CHEKCBOX_IN_CASE_TABLE';
 export const INIT_CART = 'INIT_CART';
 export const CART_QUERY_ERR = 'CART_QUERY_ERR';
 export const READY_CART = 'READY_CART';
 export const DELETE_CASES = 'DELETE_CASES';
-
 
 export const deleteCasesAction = (payload) => ({
   type: DELETE_CASES,
@@ -28,18 +25,15 @@ const deleteCases = (selectedCases, cases) => {
   return cases.filter((caseId) => !selectedCases.includes(caseId));
 };
 
-
 export const getCart = () => ({
   type: INIT_CART,
 });
-
 
 const shouldInitCart = (state) => state.cart.cases !== JSON.parse(localStorage.getItem('userSelectedCases'));
 
 const readyCart = () => ({
   type: READY_CART,
 });
-
 
 export function initCart() {
   return (dispatch, getState) => {
@@ -50,12 +44,10 @@ export function initCart() {
   };
 }
 
-
 export const toggleCheckboxInCaseTable = (payload) => ({
   type: TOGGLE_CHEKCBOX_IN_CASE_TABLE,
   payload,
 });
-
 
 export function receiveCases(casesIds) {
   const payload = {
@@ -66,7 +58,6 @@ export function receiveCases(casesIds) {
     payload,
   });
 }
-
 
 export default function CARTReducer(state = initialState, action) {
   switch (action.type) {
@@ -86,7 +77,6 @@ export default function CARTReducer(state = initialState, action) {
         cases: JSON.parse(localStorage.getItem('userSelectedCases')) || [],
       };
     }
-
 
     case TOGGLE_CHEKCBOX_IN_CASE_TABLE: {
       const previousStatCases = Object.assign([], state.cases);

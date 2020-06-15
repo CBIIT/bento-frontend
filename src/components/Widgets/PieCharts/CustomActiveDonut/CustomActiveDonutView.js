@@ -13,7 +13,6 @@ const COLORS_EVEN = [
   '#8b5996',
 ];
 
-
 const COLORS_ODD = [
   '#381f5f',
   '#007ea5',
@@ -67,7 +66,6 @@ const renderActiveShape = (props) => {
     </g>
   );
 };
-
 
 export default class CustomActiveDonut extends PureComponent {
   constructor(props) {

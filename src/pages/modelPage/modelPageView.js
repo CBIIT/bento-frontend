@@ -15,7 +15,6 @@ import ZoomOutIcon from '../../assets/about/Model-Buttons-ZoomOut.svg';
 
 const ABOUT_CONTENT_URL = process.env.REACT_APP_ABOUT_CONTENT_URL;
 
-
 const limitToBounds = false;
 const panningEnabled = true;
 const transformEnabled = true;

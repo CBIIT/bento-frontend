@@ -22,3 +22,7 @@
     font-family: 'Inter';
     src: local('Inter'), url(./fonts/Inter-Regular-slnt=0.ttf) format('ttf');
   }
+  @font-face {
+    font-family: 'Inter-Semibold';
+    src: local('Inter-Semibold'), url(./fonts/Inter-SemiBold.ttf) format('ttf');
+  }

@@ -102,7 +102,7 @@ const NavBar = ({
                 to="/home"
                 onClick={() => handleButtonClickEvent('home')}
               >
-              home
+                home
               </NavLink>
             </Button>
             <Button id="button_navbar_trials" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
@@ -112,7 +112,7 @@ const NavBar = ({
                 to="/trials"
                 onClick={() => handleButtonClickEvent('trials')}
               >
-              Trials
+                Trials
               </NavLink>
 
             </Button>
@@ -124,7 +124,7 @@ const NavBar = ({
                 to="/cases"
                 onClick={() => handleButtonClickEvent('cases')}
               >
-              Cases
+                Cases
               </NavLink>
             </Button>
             <AboutMenu handleButtonClickEvent={handleButtonClickEvent} clickedEl={clickedEl} />
@@ -152,7 +152,7 @@ const NavBar = ({
                 className={classnames(classes.link, classes.myCasesLink)}
                 to="/myCases"
               >
-            My Cases
+                My Cases
                 {/* <IconButton
                 color="inherit"
                 aria-haspopup="true"
@@ -234,7 +234,6 @@ const NavBar = ({
     </>
   );
 };
-
 
 const styles = (theme) => ({
   myCasesPosition: {

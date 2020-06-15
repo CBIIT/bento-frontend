@@ -30,5 +30,4 @@ const selectedCasesController = () => {
   );
 };
 
-
 export default selectedCasesController;

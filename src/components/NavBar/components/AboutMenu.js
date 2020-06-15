@@ -37,7 +37,7 @@ const AboutMenu = ({ classes, handleButtonClickEvent, clickedEl }) => {
         classes={{ root: classes.buttonRoot }}
       >
         <span className={clickedEl === 'aboutMenu' ? classes.buttonRootClicked : ''}>
-        About
+          About
         </span>
         <ExpandMoreRoundedIcon className={classes.icon} />
       </Button>

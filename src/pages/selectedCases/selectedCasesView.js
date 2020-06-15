@@ -146,7 +146,6 @@ const columns = (classes) => [
   },
 ];
 
-
 const SelectedCasesView = ({ data, classes }) => {
   const dispatch = useDispatch();
 
@@ -222,11 +221,11 @@ const SelectedCasesView = ({ data, classes }) => {
               </div>
               <div className={classes.headerTitle}>
                 <div className={classes.headerMainTitle}>
-                My Cases :
+                  My Cases :
                   <span className={classes.headerMainTitleTwo}>
                     {' '}
                     {' '}
-                Cases
+                    Cases
                   </span>
                 </div>
               </div>

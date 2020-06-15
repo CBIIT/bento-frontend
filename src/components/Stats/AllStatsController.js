@@ -16,5 +16,4 @@ const Stats = () => {
   return (!data || data.length === 0 ? (<CircularProgress />) : <StatsView data={data} />);
 };
 
-
 export default (Stats);

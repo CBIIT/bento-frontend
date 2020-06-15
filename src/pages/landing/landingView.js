@@ -11,7 +11,6 @@ import icon from '../../assets/landing/LP_ReadMore.svg';
 import iconAbout from '../../assets/landing/LP_About_Fullarticle.Arrow.svg';
 // import cn from '../../utils/classNameConcat';
 
-
 const LandingView = ({ classes, statsData }) => (
   <div className={classes.page}>
     <div className={classes.container}>
@@ -28,7 +27,7 @@ const LandingView = ({ classes, statsData }) => (
               </div>
               <div className={classes.headerButtonSection}>
                 <Link to={landingPageData.exploreCallToActionLink} className={classes.headerLink}>
-                  <Button className={classes.buttonText} color="neonBlue">
+                  <Button className={classes.buttonText} bgColor="neonBlue" color="white">
                     {landingPageData.exploreCallToActionButtonText}
                   </Button>
                 </Link>
@@ -52,7 +51,7 @@ const LandingView = ({ classes, statsData }) => (
                   alt={landingPageData.tile1.alt}
                 />
               </div>
-              <div className={classes.CTDCWords}>
+              <div className={classes.DCWords}>
                 {landingPageData.tile1.cardTitleText}
               </div>
               <div className={classes.aboutContent}>
@@ -248,22 +247,21 @@ const styles = () => ({
     marginLeft: '23px',
   },
 
-
   aboutImage: {
     width: '300px',
     padding: '14px',
   },
   aboutImageSection: {
   },
-  CTDCWords: {
+  DCWords: {
     height: '188px',
     background: '#274FA5',
     color: '#FFFFFF',
-    fontSize: '26px',
+    fontSize: '28px',
     textTransform: 'uppercase',
     lineHeight: '29px',
     padding: '24px 75px 26px 26px',
-    fontFamily: 'Oswald',
+    fontFamily: 'Lato',
   },
   landingContainer: {
     alignItems: 'center',
@@ -288,8 +286,8 @@ const styles = () => ({
     width: '300px',
     padding: '30px 30px 32px 30px',
     color: '#000000',
-    fontFamily: '"Nunito Sans"',
-    fontSize: '14px',
+    fontFamily: 'Nunito',
+    fontSize: '16px',
     lineHeight: '22px',
   },
   aboutButtonSection: {
@@ -332,17 +330,16 @@ const styles = () => ({
   contentHeader: {
     color: '#033D6F',
     fontFamily: 'Lato',
-    fontSize: '26px',
+    fontSize: '28px',
     fontWeight: 'bold',
     lineHeight: '27px',
     padding: '10px 0',
-    textTransform: 'uppercase',
   },
   contentContainer: {
     width: '215px',
     color: '#010101',
-    fontFamily: 'Lato',
-    fontSize: '15px',
+    fontFamily: 'Nunito',
+    fontSize: '16px',
     lineHeight: '22px',
     paddingLeft: '2px',
     paddingBottom: '10px',
@@ -403,18 +400,17 @@ const styles = () => ({
   },
   mountainMeadowContentHeader: {
     color: '#033D6F',
-    fontFamily: 'Oswald',
-    fontSize: '31px',
-    fontWeight: '500',
+    fontFamily: 'Lato',
+    fontSize: '28px',
+    fontWeight: 'bold',
     lineHeight: '32px',
     padding: '15px 0',
-    textTransform: 'uppercase',
   },
   mountainMeadowContent: {
     height: '143px',
     width: '166px',
     color: '#010101',
-    fontFamily: 'Lato',
+    fontFamily: 'Nunito',
     fontSize: '15px',
     lineHeight: '22px',
   },

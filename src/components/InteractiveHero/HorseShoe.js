@@ -19,5 +19,4 @@ const styles = () => ({
 }
 );
 
-
 export default withStyles(styles)(HorseShoe);

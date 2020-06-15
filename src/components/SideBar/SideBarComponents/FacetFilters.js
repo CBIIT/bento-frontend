@@ -31,7 +31,6 @@ const CustomExpansionPanelSummary = withStyles({
   expanded: {},
 })(ExpansionPanelSummary);
 
-
 const FacetPanel = ({ classes }) => {
   // data from store
   const sideBarContent = useSelector((state) => (
@@ -133,7 +132,6 @@ const FacetPanel = ({ classes }) => {
     </>
   );
 };
-
 
 const styles = (theme) => ({
   expansionPanelRoot: {

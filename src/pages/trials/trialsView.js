@@ -15,7 +15,6 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/trial/Trials_Title_Bar.Icon.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
-
 const Trials = ({ classes, data }) => {
   const initDashboardStatus = () => (dispatch) => Promise.resolve(
     dispatch(fetchDataForDashboardDataTable()),
@@ -128,7 +127,6 @@ const Trials = ({ classes, data }) => {
     ),
   });
 
-
   return (
     <>
       <Stats />
@@ -153,7 +151,6 @@ const Trials = ({ classes, data }) => {
             </div>
           </div>
 
-
           <div id="table_trials" className={classes.tableDiv}>
             <Grid container>
               <Grid item xs={12}>
@@ -166,7 +163,6 @@ const Trials = ({ classes, data }) => {
             </Grid>
           </div>
         </div>
-
 
       </div>
     </>

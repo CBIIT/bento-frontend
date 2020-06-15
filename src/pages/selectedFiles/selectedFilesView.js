@@ -37,7 +37,6 @@ class selectedFilesView extends Component {
     };
   }
 
-
   onRowsSelect(curr, allRowsSelected) {
     // Change button status based on selection status
     if (allRowsSelected.length === 0) {
@@ -57,7 +56,6 @@ class selectedFilesView extends Component {
       this.downloadButton.current.style.border = 'unset';
     }
   }
-
 
   render() {
     let globalData = [];
@@ -87,7 +85,6 @@ class selectedFilesView extends Component {
 
       return `${'CTDC File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
     }
-
 
     function convertToCSV(jsonse) {
       const objArray = jsonse;
@@ -137,7 +134,6 @@ class selectedFilesView extends Component {
 
       return `${parseFloat((bytes / (1024 ** i)).toFixed(dm))} ${sizes[i]}`;
     }
-
 
     const columns = [
 
@@ -253,7 +249,6 @@ class selectedFilesView extends Component {
       },
     ];
 
-
     const options = () => ({
       selectableRows: 'multiple',
       responsive: 'stacked',
@@ -338,11 +333,11 @@ class selectedFilesView extends Component {
               </div>
               <div className={classes.headerTitle}>
                 <div className={classes.headerMainTitle}>
-                My Cases :
+                  My Cases :
                   <span className={classes.headerMainTitleTwo}>
                     {' '}
                     {' '}
-                Files
+                    Files
                   </span>
                 </div>
               </div>
