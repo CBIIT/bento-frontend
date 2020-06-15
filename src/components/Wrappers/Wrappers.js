@@ -68,15 +68,15 @@ function Typography({
   );
 }
 
-function Button({ children, color, className, ...props }) {
+function Button({ children, color, bgColor, className, ...props }) {
   var theme = useTheme();
 
   var Styled = createStyled({
     root: {
       color: getColor(color, theme),
+      backgroundColor: getColor(bgColor, theme),
     },
     contained: {
-      backgroundColor: getColor(color, theme),
       boxShadow: theme.customShadows.widget,
       color: `${color ? "white" : theme.palette.text.primary} !important`,
       "&:hover": {
