@@ -20,7 +20,7 @@ export const initialState = {
     checkboxForAll: {
       data: [],
     },
-    caseOverview: {
+    subjectOverView: {
       data: [],
     },
     checkbox: {
@@ -115,10 +115,10 @@ export default function dashboardReducer(state = initialState, action) {
   switch (action.type) {
     case SINGLE_CHECKBOX: {
       const dataTableFilters = action.payload;
-      const tableData = state.caseOverview.data.filter((d) => (filterData(d, dataTableFilters)));
+      const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
       const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
         ? getCheckBoxData(
-          state.caseOverview.data,
+          state.subjectOverView.data,
           state.checkboxForAll.data,
           state.checkbox.data.filter((d) => action.payload[0].groupName === d.groupName)[0],
           dataTableFilters,
@@ -153,10 +153,10 @@ export default function dashboardReducer(state = initialState, action) {
     // if checkbox status has been changed, dashboard data table need to be update as well.
     case TOGGLE_CHECKBOX: {
       const dataTableFilters = getFilters(state.datatable.filters, action.payload);
-      const tableData = state.caseOverview.data.filter((d) => (filterData(d, dataTableFilters)));
+      const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
       const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
         ? getCheckBoxData(
-          state.caseOverview.data,
+          state.subjectOverView.data,
           state.checkboxForAll.data,
           state.checkbox.data.filter((d) => action.payload[0].groupName === d.groupName)[0],
           dataTableFilters,
@@ -167,7 +167,7 @@ export default function dashboardReducer(state = initialState, action) {
         stats: {
           numberOfCases: getStatDataFromDashboardData(tableData, 'case', dataTableFilters),
           numberOfFiles: getStatDataFromDashboardData(tableData, 'file', dataTableFilters),
-          numberOfTrials: getStatDataFromDashboardData(tableData, 'clinical_trial_code', dataTableFilters),
+          numberOfTrials: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
         },
         checkbox: {
           data: updatedCheckboxData,
@@ -202,8 +202,8 @@ export default function dashboardReducer(state = initialState, action) {
             numberOfFiles: action.payload.data.numberOfFiles,
             numberOfTrials: action.payload.data.numberOfTrials,
           },
-          caseOverview: {
-            data: action.payload.data.caseOverview,
+          subjectOverView: {
+            data: action.payload.data.subjectOverView,
           },
           checkboxForAll: {
             data: checkboxData,
@@ -212,16 +212,16 @@ export default function dashboardReducer(state = initialState, action) {
             data: checkboxData,
           },
           datatable: {
-            data: action.payload.data.caseOverview,
+            data: action.payload.data.subjectOverView,
             filters: [],
           },
           widgets: {
-            armsByTrial: getSunburstDataFromDashboardData(action.payload.data.caseOverview),
-            caseCountByDisease: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'disease'),
-            caseCountByGender: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'gender'),
-            caseCountByRace: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'race'),
-            caseCountByEthnicity: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'ethnicity'),
-            caseCountByPubmedId: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'pubmed_id'),
+            armsByTrial: getSunburstDataFromDashboardData(action.payload.data.subjectOverView),
+            caseCountByDisease: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'disease'),
+            caseCountByGender: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'gender'),
+            caseCountByRace: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'race'),
+            caseCountByEthnicity: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'ethnicity'),
+            caseCountByPubmedId: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'pubmed_id'),
 
           },
 

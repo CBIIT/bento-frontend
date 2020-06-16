@@ -54,8 +54,8 @@ export function getStatDataFromDashboardData(data, statName) {
     case 'file':
       return [...new Set(data.reduce((output, d) => output.concat(d.files
         ? d.files : []), []).map((f) => f.uuid))].length;
-    case 'clinical_trial_code':
-      return [...new Set(data.map((d) => d.clinical_trial_code))].length;
+    case 'program':
+      return [...new Set(data.map((d) => d.program))].length;
     default:
       return 0;
   }
@@ -68,55 +68,48 @@ export function getSunburstDataFromDashboardData(data) {
   const widgetData = [];
   let colorIndex = 0;
   data.forEach((d) => {
-    let existTrial = false;
-    let existArm = false;
-    widgetData.map((trial) => {
-      if (trial.title === d.clinical_trial_code) { // program exist
-        existTrial = true;
-        // eslint-disable-next-line no-param-reassign
-        trial.caseSize += 1;
-        trial.children.map((arm) => {
-          const armID = arm;
-          if (armID.title === `${trial.title} : ${d.arm_id}`) { // arm exist
-            existArm = true;
-            armID.size += 1;
-            armID.caseSize += 1;
+    let existProgram = false;
+    let existStudy = false;
+    widgetData.map((p) => {
+      if (p.title === d.program) { // program exist
+        existProgram = true;
+        p.children.map((study) => {
+          const s = study;
+          if (s.title === d.study_acronym) { // study exist
+            existStudy = true;
+            s.size += 1;
           }
-          return armID;
-        }); // end find arm
-        if (!existArm) { // new arm
-          colorIndex += 1;
-          trial.children.push({
-            title: `${trial.title} : ${d.arm_id}`,
-            color: COLORS_LEVEL_2[parseInt(colorIndex, 10)],
+          return s;
+        }); // end find study
+        if (!existStudy) { // new study
+          p.children.push({
+            title: d.study_acronym,
+            color: p.color,
             size: 1,
-            caseSize: 1,
           });
         }
       }
-      return trial;
-    }); // end find Trial
+      return p;
+    }); // end find program
 
-    if (!existTrial && !existArm) {
-      colorIndex += 1;
+    if (!existProgram && !existStudy) {
       widgetData.push({
-        title: d.clinical_trial_code,
-        color: COLORS_LEVEL_2[parseInt(colorIndex - 1, 10)],
-        caseSize: 1,
+        title: d.program,
+        color: COLORS[parseInt(colorIndex, 10)],
         children: [{
-          title: `${d.clinical_trial_code} : ${d.arm_id}`,
-          color: COLORS_LEVEL_2[parseInt(colorIndex, 10)],
+          title: d.study_acronym,
+          color: COLORS[parseInt(colorIndex, 10)],
           size: 1,
-          caseSize: 1,
         }],
       });
+      colorIndex += 1;
     }
   }); // end foreach
 
   return ({
-    key: uuid.v1(),
+    key: uuid(),
     title: 'root',
-    color: COLORS_LEVEL_2[parseInt(colorIndex, 10)],
+    color: COLORS[parseInt(colorIndex, 10)],
     children: widgetData,
   });
 }
@@ -315,7 +308,7 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
     name: el[field.toString()] === '' || !el[field.toString()]
       ? NOT_PROVIDED : el[field.toString()],
     isChecked: false,
-    cases: el.cases,
+    count: el.count,
   }))
     .sort((a, b) => customSorting(a.name, b.name, 'alphabetical'))
     .forEach((el) => {

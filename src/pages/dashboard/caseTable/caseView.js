@@ -7,7 +7,8 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import Snackbar from '@material-ui/core/Snackbar';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import dashboardTableData from '../../../bento/dashboardTable.json';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import CustomFooter from './customFooter';
 import { toggleCheckBox } from '../dashboardState';
@@ -81,129 +82,19 @@ const Cases = ({ classes, data }) => {
     saveButton.current.style.cursor = 'auto';
   });
 
-  const columns = [
-    {
-      name: 'case_id',
-      label: 'Case ID',
-      options: {
-        filter: false,
-        sortDirection: 'asc',
-        customBodyRender: (value) => (
-          <div className={classes.tableCell1}>
-            {' '}
-            <Link to={`/case/${value}`} className={classes.link}>{value}</Link>
-            {' '}
-          </div>
-        ),
-      },
+  const columns = dashboardTableData.map((column) => ({
+    name: column.field,
+    label: column.label,
+    options: {
+      display: column.display ? column.display : true,
+      filter: false,
+      customBodyRender: (value) => (
+        <div className={classes.tableCell8}>
+          { value }
+        </div>
+      ),
     },
-    {
-      name: 'clinical_trial_code',
-      label: 'Trial Code',
-      options: {
-        filter: false,
-        customBodyRender: (value, tableMeta) => (
-          <div className={classes.tableCell2}>
-
-            <Link to={`/trial/${tableMeta.rowData[8]}`} className={classes.link}>{value}</Link>
-
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'arm_id',
-      label: 'Arm',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell3}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'arm_drug',
-      label: 'Arm Treatment',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell4}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'disease',
-      label: 'Diagnosis',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell5}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'gender',
-      label: 'Gender',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell6}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'race',
-      label: 'Race',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell7}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'ethnicity',
-      label: 'Ethnicity',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell8}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    // This is to redirect clinical trial code to the page
-    {
-      name: 'clinical_trial_id',
-      label: 'clinical rial id',
-      options: {
-        display: false,
-      },
-    },
-  ];
+  }));
 
   let selectedCaseIds = [];
 

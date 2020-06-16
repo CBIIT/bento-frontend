@@ -1,78 +1,83 @@
 import gql from 'graphql-tag';
 
 export const DASHBOARD_QUERY = gql`{
-    numberOfTrials
-    numberOfCases
-    numberOfFiles
-
-     casesCountBaseOnTrialId {
-        clinical_trial_id
-        cases
-    }
-     casesCountBaseOnTrialCode {
-        clinical_trial_designation
-        cases
-    }
-     casesCountBaseOnPubMedID {
-        pubmed_id
-        cases
-    }
-     casesCountBaseOnGender {
-        gender
-        cases
-    }
-     casesCountBaseOnRace {
-        race
-        cases
-    }
-    casesCountBaseOnEthnicity {
-        ethnicity
-        cases
-    }
-
-    casesCountBaseOnDiagnosis {
-        disease
-        cases
-    }
-     casesCountBaseOnFileType {
-        file_type
-        cases
-    }
-    casesCountBaseOnFileFormat {
-        file_format
-        cases
-    }
-
-    casesCountBaseOnTrialArm {
-        trial_arm
-        cases
-    }
+  numberOfPrograms
+  numberOfStudies
+  numberOfSubjects
+  numberOfSamples
+  numberOfLabProcedures
+  numberOfFiles
+  subjectCountByProgram{
+        group
+         count
+      }
+    subjectCountByStudy{
+        group
+         count
+      }
+    subjectCountByDiagnoses{
+        group
+         count
+      }
+    subjectCountByRecurrenceScore{
+        group
+         count
+      }
+    subjectCountByTumorSize{
+        group
+         count
+      }
+    subjectCountByChemotherapyRegimen{
+        group
+         count
+      }
+    subjectCountByTumorGrade{
+        group
+         count
+      }
+  subjectCountByErStatus{
+        group
+         count
+      }
+  subjectCountByPrStatus{
+        group
+         count
+      }
+  subjectCountByMenopauseStatus{
+        group
+         count
+      }
     
-   caseOverview{   
-        case_id
-        clinical_trial_code
-        arm_id
-        arm_drug
-        disease
-        gender
-        race
-        arm_target
-        ethnicity
-        clinical_trial_id
-        pubmed_id
-        trial_arm
-        file_types
-        file_formats
-        files{
-           uuid
-           file_name
-           file_type
-           file_description
-           file_format
-           file_size
-        }
-     }
-}`;
+    subjectOverView {
+      subject_id
+      program
+      study_acronym
+      study_short_description
+      diagnosis
+      recurrence_score
+      tumor_size
+      tumor_grade
+      er_status
+      pr_status
+      chemotherapy
+      endocrine_therapy
+      menopause_status
+      age_at_index
+      survival_time
+      survival_time_unit
+      files{
+        file_id
+        file_type
+        file_description
+        file_format
+        file_size
+        file_name
+        file_location
+        md5sum
+        file_status
+      }
+  }
+  }`;
 
 export const GET_CASE_DETAIL_DATA_QUERY = gql`
   query caseDetailByCaseId($case_id: String!){
