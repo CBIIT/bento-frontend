@@ -73,19 +73,24 @@ export function getSunburstDataFromDashboardData(data) {
     widgetData.map((p) => {
       if (p.title === d.program) { // program exist
         existProgram = true;
+        // eslint-disable-next-line no-param-reassign
+        p.caseSize += 1;
         p.children.map((study) => {
           const s = study;
-          if (s.title === d.study_acronym) { // study exist
+          if (s.title === `${d.program} : ${d.study_acronym}`) { // study exist
             existStudy = true;
             s.size += 1;
+            s.caseSize += 1;
           }
           return s;
         }); // end find study
         if (!existStudy) { // new study
+          colorIndex += 1;
           p.children.push({
-            title: d.study_acronym,
+            title: `${d.program} : ${d.study_acronym}`,
             color: p.color,
             size: 1,
+            caseSize: 1,
           });
         }
       }
@@ -93,16 +98,18 @@ export function getSunburstDataFromDashboardData(data) {
     }); // end find program
 
     if (!existProgram && !existStudy) {
+      colorIndex += 1;
       widgetData.push({
         title: d.program,
         color: COLORS[parseInt(colorIndex, 10)],
+        caseSize: 1,
         children: [{
-          title: d.study_acronym,
+          title: `${d.program} : ${d.study_acronym}`,
           color: COLORS[parseInt(colorIndex, 10)],
           size: 1,
+          caseSize: 1,
         }],
       });
-      colorIndex += 1;
     }
   }); // end foreach
 
@@ -131,10 +138,10 @@ export function getDonutDataFromDashboardData(data, widgetName) {
       if (accumulator.has(targetAttr)) {
         accumulator.set(
           targetAttr,
-          accumulator.get(targetAttr).concat(currentValue.case_id),
+          accumulator.get(targetAttr).concat(currentValue.subject_id),
         );
       } else {
-        accumulator.set(targetAttr, [currentValue.case_id]);
+        accumulator.set(targetAttr, [currentValue.subject_id]);
       }
     });
 
