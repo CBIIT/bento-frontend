@@ -127,7 +127,7 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         stats: {
-          numberOfProgams: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
+          numberOfPrograms: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
           numberOfStudies: getStatDataFromDashboardData(tableData, 'study_acronym', dataTableFilters),
           numberOfSubjects: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
           numberOfSamples: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
@@ -168,7 +168,7 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         stats: {
-          numberOfProgams: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
+          numberOfPrograms: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
           numberOfStudies: getStatDataFromDashboardData(tableData, 'study_acronym', dataTableFilters),
           numberOfSubjects: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
           numberOfSamples: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
@@ -204,7 +204,7 @@ export default function dashboardReducer(state = initialState, action) {
           hasError: false,
           error: '',
           stats: {
-            numberOfProgams: action.payload.data.numberOfPrograms,
+            numberOfPrograms: action.payload.data.numberOfPrograms,
             numberOfStudies: action.payload.data.numberOfStudies,
             numberOfSubjects: action.payload.data.numberOfSubjects,
             numberOfSamples: action.payload.data.numberOfSamples,

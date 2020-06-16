@@ -32,7 +32,7 @@ export default {
     cardBackGround: '#f0f6f8',
     fontFamilySans: '"Open Sans", sans-serif',
     footorBackground: '#325068',
-    fontFamily: '"Lato Regular","Open Sans", sans-serif',
+    fontFamily: 'Lato,"Open Sans", sans-serif',
     fontFamilyRaleway: "'Raleway', sans-serif",
     drawerWidth: '240px',
   },

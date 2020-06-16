@@ -1,0 +1,22 @@
+[
+    {
+      "statTitle": "Programs",
+      "statAPI": "numberOfPrograms"
+    },
+    {
+      "statTitle": "Studies",
+      "statAPI": "numberOfStudies"
+    },
+    {
+      "statTitle": "Subjects",
+      "statAPI": "numberOfSubjects"
+    },
+    {
+      "statTitle": "samples",
+      "statAPI": "numberOfSamples"
+    },
+    {
+      "statTitle": "files",
+      "statAPI": "numberOfFiles"
+    }
+]

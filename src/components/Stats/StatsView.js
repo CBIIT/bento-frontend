@@ -1,135 +1,99 @@
 /* eslint-disable */
 import React from 'react';
+import classnames from 'classnames';
+import stats from '../../bento/stats.json';
 import {
-  Grid,
-  Paper,
   withStyles,
 } from '@material-ui/core';
-import { Typography } from '../Wrappers/Wrappers';
-import TrialsIcon from '../../assets/icons/stats/stats-bar-trials.svg';
-import CasesIcon from '../../assets/icons/stats/stats-bar-cases.svg';
-import FilesIcon from '../../assets/icons/stats/stats-bar-files.svg';
 
+const LandingStatsView = ({ classes, data }) => (
+  <>
+    <div className={classes.statsSection}>
+      <div
+        className={classnames({
+          [classes.boxCut]: stats.length < 5,
+          [classes.box]: stats.length === 5,
+        })}
+      >
 
-const StatsView = ({ classes, data }) => (
-  <Grid container className={classes.statsContainer}>
-    <Grid item xs={12}>
-      <Paper className={classes.paper}>
-        <div id="stats_bar" container className={classes.statsMaxWidth}>
+        {
+        stats.map((stat) => (
           <div className={classes.statsGroup}>
-            <div className={classes.statsIcon}>
-              <img
-                src={TrialsIcon}
-                alt="Studies Stats Bar Icon"
-              />
-
-            </div>
             <div className={classes.statsText}>
-              <div className={classes.floatLeft}>
-                <Typography weight="bold" size="sm"  color="textWithBackground">
-                      TRIALS:
-                  {' '}
-                  {' '}
-                </Typography>
+              <div className={classes.statTitle}>
+                {stat.statTitle}
               </div>
-              <div id="trials_count" className={classes.floatRight}>
-                <Typography color="primary" weight="bold" size="sm">
-                  {data.numberOfTrials ? data.numberOfTrials : 0}
-                </Typography>
+              <div className={classes.statCount}>
+                {data[stat.statAPI]}
               </div>
             </div>
           </div>
-          <div className={classes.statsGroup}>
-            <div className={classes.statsIcon}>
-              <img
-                src={CasesIcon}
-                alt="Cases Stats Bar Icon"
-              />
-
-            </div>
-            <div className={classes.statsText}>
-              <div className={classes.floatLeft}>
-                <Typography weight="bold" size="sm" color="textWithBackground">
-                      CASES:
-                  {' '}
-                  {' '}
-                </Typography>
-              </div>
-              <div id="cases_count" className={classes.floatRight}>
-                <Typography color="primary" weight="bold" size="sm">
-                  {data.numberOfCases ? data.numberOfCases : 0}
-                </Typography>
-              </div>
-
-            </div>
-          </div>
-          <div className={classes.statsGroup}>
-            <div className={classes.statsIcon}>
-              <img
-                src={FilesIcon}
-                alt="Files Stats Bar Icon"
-              />
-
-            </div>
-            <div className={classes.statsText}>
-              <div className={classes.floatLeft}>
-                <Typography weight="bold" size="sm" color="textWithBackground">
-                      FILES:
-                  {' '}
-                  {' '}
-                </Typography>
-              </div>
-              <div id="files_count" className={classes.floatRight}>
-                <Typography weight="bold" color="primary" size="sm">
-                  {data.numberOfFiles ? data.numberOfFiles : 0}
-                </Typography>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </Paper>
-    </Grid>
-  </Grid>
+        ))
+        }
+      </div>
+    </div>
+  </>
 );
 
-const styles = (theme) => ({
-  statsContainer: {
-        position: 'fixed',
-        width: '100%',
-        zIndex: '999',
-        top: '139px',
-  },
-  card: {
-    minHeight: '100%',
+const styles = () => ({
+  statsSection: {
+    top: '139px',
+    width: '100%',
+    zIndex: 999,
+    position: 'fixed',
+    background: '#8DCAFF',
+    textAlign: 'center',
+    left: 0,
+    right: 0,
     display: 'flex',
-    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
-  paper: {
-    // textAlign: 'center',
-    background: theme.palette.deepSkyBlue.main,
-    boxShadow: 'none',
-    borderRadius: '0',
+  bannerTexture: {
+    color: '#4898B4',
+    fontFamily: 'Raleway',
+    fontSize: '19px',
+    fontWeight: '600',
+    lineHeight: '60px',
+    textAlign: 'center',
+    margin: '0 auto',
+    letterSpacing: '0.050pt',
+    textTransform: 'uppercase',
+    width: '869px',
   },
-  statsGroup: {
-    padding: '13px 48px 12px 48px',
-    height: '46px',
-    maxWidth: theme.custom.maxContentWidth,
-    margin: 'auto',
+  boxCut: {
+    direction: 'ltr',
+    display: 'inline-flex',
+    borderBottom: '47px solid #8DCAFF',
+    borderLeft: '50px solid transparent',
+    height: '47px',
+  },
+  box: {
+    direction: 'ltr',
+    display: 'inline-flex',
+    borderBottom: '47px solid #8DCAFF',
+    height: '47px',
+    margin: '0 auto',
   },
   statsText: {
-    maxWidth: theme.custom.maxContentWidth,
-    margin: 'auto',
-    float: 'left',
-    marginLeft: '32px',
-    marginBottom: '8px',
+    height: '42px',
   },
-  statsIcon: {
-    position: 'absolute',
+  statTitle: {
+    display: 'inline-block',
     float: 'left',
-    width: '28px',
-    height: '28px',
-    marginTop: '-4px',
+    color: '#062D4F',
+    fontFamily: 'Nunito',
+    fontWeight: 'bold',
+    fontSize: '11px',
+    marginRight: '16px',
+    marginTop: '16px',
+    textTransform: 'uppercase',
+  },
+  statCount: {
+    display: 'inline-block',
+    color: '#0467BD',
+    fontFamily: 'Oswald',
+    fontSize: '24px',
+    fontWeight: 500,
   },
   floatLeft: {
     float: 'left',
@@ -141,11 +105,11 @@ const styles = (theme) => ({
     marginLeft: '6px',
     marginTop: '3px',
   },
-  statsMaxWidth: {
-    display: 'flex',
-    maxWidth: '700px',
-    margin: '0 auto',
+  statsGroup: {
+    // padding: '36px 48px 4px 48px',
+    // borderBottom: '2px solid',
+    margin: '4px 48px',
   },
 });
 
-export default withStyles(styles, { withTheme: true })(StatsView);
+export default withStyles(styles, { withTheme: true })(LandingStatsView);

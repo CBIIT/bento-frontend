@@ -146,7 +146,7 @@ const Cases = ({ classes, data }) => {
         selectedRows.data[keyVlaue].index
       ));
       const selectedCaseId = selectedKeys.map((keyVlaue) => (
-        displayData[keyVlaue].data[0].props.children[1].props.children
+        displayData[keyVlaue].data[0].props.children
       ));
       selectedCaseIds = selectedCaseId;
       return '';
@@ -255,10 +255,11 @@ const styles = (theme) => ({
     },
   },
   caseTitle: {
-    color: '#C32F30',
+    color: '#039970',
     fontSize: '18pt',
     fontStyle: 'normal',
-    fontFamily: 'Raleway',
+    fontFamily: 'Lato',
+    fontWeight: 'bold',
     letterSpacing: '0.025em',
     backgroundColor: '#f5f5f5',
     padding: '10px 32px 8px 28px',
