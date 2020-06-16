@@ -282,7 +282,7 @@ const styles = (theme) => ({
     },
   },
   backgroundShawdowWidgets: {
-    background: theme.palette.widgetBackground.lattice,
+    background: 'transparent',
   },
   sideBar: {
     maxWidth: '240px',
@@ -291,7 +291,6 @@ const styles = (theme) => ({
     position: 'fixed',
   },
   switchBase: {
-    height: '20px',
     color: theme.palette.widgetBackground.contrastText,
     '&$checked': {
       color: theme.palette.widgetBackground.contrastText,

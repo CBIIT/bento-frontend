@@ -20,7 +20,7 @@ export const initialState = {
     checkboxForAll: {
       data: [],
     },
-    caseOverview: {
+    subjectOverView: {
       data: [],
     },
     checkbox: {
@@ -115,10 +115,10 @@ export default function dashboardReducer(state = initialState, action) {
   switch (action.type) {
     case SINGLE_CHECKBOX: {
       const dataTableFilters = action.payload;
-      const tableData = state.caseOverview.data.filter((d) => (filterData(d, dataTableFilters)));
+      const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
       const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
         ? getCheckBoxData(
-          state.caseOverview.data,
+          state.subjectOverView.data,
           state.checkboxForAll.data,
           state.checkbox.data.filter((d) => action.payload[0].groupName === d.groupName)[0],
           dataTableFilters,
@@ -127,9 +127,12 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         stats: {
-          numberOfCases: getStatDataFromDashboardData(tableData, 'case', dataTableFilters),
+          numberOfPrograms: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
+          numberOfStudies: getStatDataFromDashboardData(tableData, 'study_acronym', dataTableFilters),
+          numberOfSubjects: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
+          numberOfSamples: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
+          numberOfLabProcedures: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
           numberOfFiles: getStatDataFromDashboardData(tableData, 'file', dataTableFilters),
-          numberOfTrials: getStatDataFromDashboardData(tableData, 'clinical_trial_code', dataTableFilters),
         },
         checkbox: {
           data: updatedCheckboxData,
@@ -153,10 +156,10 @@ export default function dashboardReducer(state = initialState, action) {
     // if checkbox status has been changed, dashboard data table need to be update as well.
     case TOGGLE_CHECKBOX: {
       const dataTableFilters = getFilters(state.datatable.filters, action.payload);
-      const tableData = state.caseOverview.data.filter((d) => (filterData(d, dataTableFilters)));
+      const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
       const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
         ? getCheckBoxData(
-          state.caseOverview.data,
+          state.subjectOverView.data,
           state.checkboxForAll.data,
           state.checkbox.data.filter((d) => action.payload[0].groupName === d.groupName)[0],
           dataTableFilters,
@@ -165,9 +168,12 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         stats: {
-          numberOfCases: getStatDataFromDashboardData(tableData, 'case', dataTableFilters),
+          numberOfPrograms: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
+          numberOfStudies: getStatDataFromDashboardData(tableData, 'study_acronym', dataTableFilters),
+          numberOfSubjects: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
+          numberOfSamples: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
+          numberOfLabProcedures: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
           numberOfFiles: getStatDataFromDashboardData(tableData, 'file', dataTableFilters),
-          numberOfTrials: getStatDataFromDashboardData(tableData, 'clinical_trial_code', dataTableFilters),
         },
         checkbox: {
           data: updatedCheckboxData,
@@ -179,11 +185,11 @@ export default function dashboardReducer(state = initialState, action) {
         },
         widgets: {
           armsByTrial: getSunburstDataFromDashboardData(tableData),
-          caseCountByDisease: getDonutDataFromDashboardData(tableData, 'disease'),
-          caseCountByGender: getDonutDataFromDashboardData(tableData, 'gender'),
-          caseCountByRace: getDonutDataFromDashboardData(tableData, 'race'),
-          caseCountByEthnicity: getDonutDataFromDashboardData(tableData, 'ethnicity'),
-          caseCountByPubmedId: getDonutDataFromDashboardData(tableData, 'pubmed_id'),
+          caseCountByDisease: getDonutDataFromDashboardData(tableData, 'diagnosis'),
+          caseCountByGender: getDonutDataFromDashboardData(tableData, 'recurrence_score'),
+          caseCountByRace: getDonutDataFromDashboardData(tableData, 'tumor_size'),
+          caseCountByEthnicity: getDonutDataFromDashboardData(tableData, 'chemotherapy'),
+          caseCountByPubmedId: getDonutDataFromDashboardData(tableData, 'endocrine_therapy'),
         },
       };
     }
@@ -198,12 +204,15 @@ export default function dashboardReducer(state = initialState, action) {
           hasError: false,
           error: '',
           stats: {
-            numberOfCases: action.payload.data.numberOfCases,
+            numberOfPrograms: action.payload.data.numberOfPrograms,
+            numberOfStudies: action.payload.data.numberOfStudies,
+            numberOfSubjects: action.payload.data.numberOfSubjects,
+            numberOfSamples: action.payload.data.numberOfSamples,
+            numberOfLabProcedures: action.payload.data.numberOfLabProcedures,
             numberOfFiles: action.payload.data.numberOfFiles,
-            numberOfTrials: action.payload.data.numberOfTrials,
           },
-          caseOverview: {
-            data: action.payload.data.caseOverview,
+          subjectOverView: {
+            data: action.payload.data.subjectOverView,
           },
           checkboxForAll: {
             data: checkboxData,
@@ -212,16 +221,16 @@ export default function dashboardReducer(state = initialState, action) {
             data: checkboxData,
           },
           datatable: {
-            data: action.payload.data.caseOverview,
+            data: action.payload.data.subjectOverView,
             filters: [],
           },
           widgets: {
-            armsByTrial: getSunburstDataFromDashboardData(action.payload.data.caseOverview),
-            caseCountByDisease: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'disease'),
-            caseCountByGender: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'gender'),
-            caseCountByRace: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'race'),
-            caseCountByEthnicity: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'ethnicity'),
-            caseCountByPubmedId: getDonutDataFromDashboardData(action.payload.data.caseOverview, 'pubmed_id'),
+            armsByTrial: getSunburstDataFromDashboardData(action.payload.data.subjectOverView),
+            caseCountByDisease: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'diagnosis'),
+            caseCountByGender: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'recurrence_score'),
+            caseCountByRace: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'tumor_size'),
+            caseCountByEthnicity: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'chemotherapy'),
+            caseCountByPubmedId: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'endocrine_therapy'),
 
           },
 

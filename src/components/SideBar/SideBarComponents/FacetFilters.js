@@ -95,7 +95,7 @@ const FacetPanel = ({ classes }) => {
                   <List component="div" disablePadding dense>
                     {
             sideBarItem.checkboxItems.map((checkboxItem) => {
-              if (checkboxItem.cases === 0 && !checkboxItem.isChecked) {
+              if (checkboxItem.count === 0 && !checkboxItem.isChecked) {
                 return '';
               }
               return (
@@ -115,7 +115,7 @@ const FacetPanel = ({ classes }) => {
                     color="secondary"
                     classes={{ root: classes.checkboxRoot }}
                   />
-                  <div className={classes.panelDetailText}>{`${checkboxItem.name}  (${checkboxItem.cases})`}</div>
+                  <div className={classes.panelDetailText}>{`${checkboxItem.name}  (${checkboxItem.count})`}</div>
                 </ListItem>
               );
             })
@@ -136,6 +136,7 @@ const FacetPanel = ({ classes }) => {
 const styles = (theme) => ({
   expansionPanelRoot: {
     boxShadow: 'none',
+    background: 'transparent',
     margin: 'auto',
     position: 'initial',
     '&:before': {
@@ -145,22 +146,23 @@ const styles = (theme) => ({
   dividerRoot: {
     backgroundColor: '#B0CFE1',
     marginLeft: '35px',
-    height: '2px',
+    height: '1px',
   },
   panelSummaryText: {
     marginLeft: '24px',
-    color: '#194563',
+    color: '#3F799A',
     fontFamily: theme.custom.fontFamily,
-    fontSize: 16,
-    fontWeight: 600,
+    fontSize: '14px',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   panelDetailText: {
-    color: '#004C73',
-    fontFamily: theme.custom.fontFamily,
-    fontSize: 12,
+    color: '#000000',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
   },
   checkboxRoot: {
-    color: '#5E8CA5',
+    color: '#000000',
     height: 12,
   },
   listItemGutters: {

@@ -21,6 +21,11 @@ const SideBarContent = ({ classes }) => {
       variant="persistent"
       className={classes.drawer}
       anchor="left"
+      PaperProps={{
+        classes: {
+          root: classes.drawerPaperRoot,
+        },
+      }}
       open={1}
       classes={{
         paper: classes.drawerPaper,
@@ -52,10 +57,8 @@ const SideBarContent = ({ classes }) => {
 };
 
 const styles = (theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: 240,
-    backgroundColor: theme.palette.background.paper,
+  drawerPaperRoot: {
+    backgroundColor: 'transparent',
   },
   drawerAppBar: {
     height: '54px',
@@ -71,7 +74,6 @@ const styles = (theme) => ({
     position: 'relative',
     float: 'left',
     overflowY: 'auto',
-
   },
   floatRight: {
     float: 'right',
@@ -84,9 +86,9 @@ const styles = (theme) => ({
   filterTitle: {
     marginTop: '18px',
     marginLeft: '35px',
-    color: theme.palette.lochmara.main,
+    color: '#218CD3',
     fontFamily: 'Lato',
-    fontSize: 18,
+    fontSize: '18px',
     fontWeight: 'bold',
   },
   funnelLogoImg: {
@@ -117,7 +119,7 @@ const styles = (theme) => ({
   dividerRoot: {
     backgroundColor: '#B0CFE1',
     marginLeft: '35px',
-    height: '2px',
+    height: '1px',
   },
 });
 

@@ -50,6 +50,7 @@ function Typography({
   size,
   colorBrightness,
   color,
+  family,
   ...props
 }) {
   var theme = useTheme();
@@ -60,6 +61,7 @@ function Typography({
         color: getColor(color, theme, colorBrightness),
         fontWeight: getFontWeight(weight),
         fontSize: getFontSize(size, props.variant, theme),
+        fontFamily: family,
       }}
       {...props}
     >
