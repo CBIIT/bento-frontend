@@ -213,11 +213,11 @@ const styles = () => ({
     paddingTop: '180px',
     paddingBottom: '12px',
     fontFamily: 'Inter, Raleway, sans-serif',
-    fontSize: '40px',
+    fontSize: '42px',
     fontWeight: '600',
     lineHeight: '41px',
     color: '#0077E3',
-    letterSpacing: 0.25,
+    letterSpacing: '-2px',
   },
   paddingLeft50: {
     paddingLeft: '50px',
@@ -258,7 +258,7 @@ const styles = () => ({
     background: '#274FA5',
     color: '#FFFFFF',
     fontSize: '28px',
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     lineHeight: '29px',
     padding: '24px 75px 26px 26px',
     fontFamily: 'Lato',
@@ -278,7 +278,7 @@ const styles = () => ({
   },
   image: {
     width: '293px',
-    height: '251px',
+    height: '270px',
   },
   aboutContent: {
     background: 'white',
@@ -288,6 +288,7 @@ const styles = () => ({
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '16px',
+    fontWeight: '500',
     lineHeight: '22px',
   },
   aboutButtonSection: {
@@ -318,6 +319,7 @@ const styles = () => ({
     lineHeight: '45px',
     paddingLeft: '20px',
     boxShadow: 'none',
+    letterSpacing: '1px',
   },
 
   content: {
@@ -366,7 +368,7 @@ const styles = () => ({
   },
   cases: {
     height: '438px',
-    paddingLeft: '370px',
+    paddingLeft: '320px',
     paddingTop: '70px',
   },
   mountainMeadowButtonSection: {
@@ -386,6 +388,7 @@ const styles = () => ({
     lineHeight: '25px',
     paddingLeft: '8px',
     textDecoration: 'none',
+    letterSpacing: '1px',
   },
   blueButtonLeft: {
     float: 'left',
@@ -408,7 +411,7 @@ const styles = () => ({
   },
   mountainMeadowContent: {
     height: '143px',
-    width: '166px',
+    width: '230px',
     color: '#010101',
     fontFamily: 'Nunito',
     fontSize: '15px',
@@ -430,6 +433,7 @@ const styles = () => ({
     lineHeight: '19.31px',
     textDecoration: 'none',
     marginLeft: '8px',
+    letterSpacing: '1px',
     '&:hover': {
       color: '#ffffff',
     },
@@ -456,10 +460,10 @@ const styles = () => ({
     right: 0,
   },
   heroTextWrapper: {
-    width: '350px',
+    width: '352px',
   },
   buttonText: {
-    padding: '8px 30px',
+    padding: '12px 30px',
   },
 
 });

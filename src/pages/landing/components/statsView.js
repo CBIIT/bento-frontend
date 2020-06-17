@@ -36,7 +36,7 @@ const LandingStatsView = ({ classes, stats, statsData }) => (
 const styles = () => ({
   statsSection: {
     background: 'transparent',
-    maxWidth: '900px',
+    maxWidth: '916px',
     textAlign: 'center',
     position: 'absolute',
     left: 0,
@@ -66,12 +66,18 @@ const styles = () => ({
   },
   box: {
     direction: 'ltr',
-    display: 'inline-flex',
+    display: 'none',
     borderBottom: '74px solid white',
     height: '74px',
+    boxShadow: '-3px 5px 24px 1px rgba(27,28,28,0.15)',
+    '@media (min-width: 850px)': {
+      display: 'inline-flex',
+    },
+
   },
   statsText: {
     height: '42px',
+    display: 'flex',
     borderBottom: '3px solid #27DBFF',
   },
   statTitle: {
@@ -79,7 +85,8 @@ const styles = () => ({
     float: 'left',
     color: '#476783',
     fontFamily: 'Nunito',
-    fontWeight: 'bold',
+    letterSpacing: 1,
+    fontWeight: 900,
     fontSize: '11px',
     marginRight: '16px',
     marginTop: '16px',
@@ -90,7 +97,7 @@ const styles = () => ({
     color: '#244264',
     fontFamily: 'Oswald',
     fontSize: '24px',
-    fontWeight: 500,
+    fontWeight: 600,
   },
   floatLeft: {
     float: 'left',
