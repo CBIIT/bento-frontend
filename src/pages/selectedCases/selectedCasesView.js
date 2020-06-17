@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import MUIDataTable from 'mui-custom-datatables';
 import Snackbar from '@material-ui/core/Snackbar';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import wizardIcon from '../../assets/icons/MyCases-Wizard-Step2.svg';
@@ -13,7 +12,7 @@ import { deleteCasesAction } from './selectedCasesState';
 const columns = (classes) => [
 
   {
-    name: 'case_id',
+    name: 'subject_id',
     label: 'Case ID',
     sortDirection: 'asc',
     options: {
@@ -22,28 +21,28 @@ const columns = (classes) => [
       customBodyRender: (value) => (
         <div className={classes.tableCell1}>
           {' '}
-          <Link to={`/case/${value}`} className={classes.link}>{value}</Link>
+          {value}
           {' '}
         </div>
       ),
     },
   },
   {
-    name: 'clinical_trial_code',
-    label: 'Trial Code',
+    name: 'program',
+    label: 'Program Code',
     options: {
       filter: false,
-      customBodyRender: (value, tableMeta) => (
+      customBodyRender: (value) => (
         <div className={classes.tableCell2}>
           {' '}
-          <Link to={`/trial/${tableMeta.rowData[8]}`} className={classes.link}>{value}</Link>
+          {value}
           {' '}
         </div>
       ),
     },
   },
   {
-    name: 'arm_id',
+    name: 'study_acronym',
     label: 'Arm',
     options: {
       customBodyRender: (value) => (
@@ -56,8 +55,8 @@ const columns = (classes) => [
     },
   },
   {
-    name: 'arm_drug',
-    label: 'Arm Treatment',
+    name: 'diagnosis',
+    label: 'Diagnosis',
     options: {
       customBodyRender: (value) => (
         <div className={classes.tableCell4}>
@@ -69,8 +68,8 @@ const columns = (classes) => [
     },
   },
   {
-    name: 'disease',
-    label: 'Diagnosis',
+    name: 'recurrence_score',
+    label: 'Recurrence Score',
     options: {
       customBodyRender: (value) => (
         <div className={classes.tableCell5}>
@@ -82,8 +81,8 @@ const columns = (classes) => [
     },
   },
   {
-    name: 'gender',
-    label: 'Gender',
+    name: 'tumor_size',
+    label: 'Tumor Size (cm)',
     options: {
       customBodyRender: (value) => (
         <div className={classes.tableCell6}>
@@ -95,8 +94,8 @@ const columns = (classes) => [
     },
   },
   {
-    name: 'race',
-    label: 'Race',
+    name: 'er_status',
+    label: 'ER Status',
     options: {
       customBodyRender: (value) => (
         <div className={classes.tableCell7}>
@@ -108,8 +107,8 @@ const columns = (classes) => [
     },
   },
   {
-    name: 'ethnicity',
-    label: 'Ethnicity',
+    name: 'pr_status',
+    label: 'PR Status',
     options: {
       customBodyRender: (value) => (
         <div className={classes.tableCell8}>
@@ -121,10 +120,29 @@ const columns = (classes) => [
     },
   },
   {
-    name: 'clinical_trial_id',
-    label: 'Trial ID',
+    name: 'age_at_index',
+    label: 'Age (years)',
     options: {
-      display: false,
+      customBodyRender: (value) => (
+        <div className={classes.tableCell8}>
+          {' '}
+          {value}
+          {' '}
+        </div>
+      ),
+    },
+  },
+  {
+    name: 'survival_time',
+    label: 'Survival (days)',
+    options: {
+      customBodyRender: (value) => (
+        <div className={classes.tableCell8}>
+          {' '}
+          {value}
+          {' '}
+        </div>
+      ),
     },
   },
   {
@@ -168,7 +186,7 @@ const SelectedCasesView = ({ data, classes }) => {
           && snackbarState.cases
             && snackbarState.cases !== null) {
       dispatch(deleteCasesAction(
-        snackbarState.rowsDeleted.data.map((row) => snackbarState.cases[row.dataIndex].case_id),
+        snackbarState.rowsDeleted.data.map((row) => snackbarState.cases[row.dataIndex].subject_id),
       ));
     }
   }

@@ -17,13 +17,13 @@ const selectedFilesController = () => {
   const cart = useSelector((state) => state.cart);
 
   return (
-    <Query query={GET_MY_CASES_DATA_QUERY} variables={{ caseIds: cart.cases }}>
+    <Query query={GET_MY_CASES_DATA_QUERY} variables={{ subject_ids: cart.cases }}>
       {({ data, loading, error }) => (
         loading ? <CircularProgress />
           : (
             error || !data
               ? <Typography variant="headline" color="error" size="sm">{error && `An error has occurred in loading CART : ${error}`}</Typography>
-              : <SelectedFilesView data={data.filesOfCases === null || data.filesOfCases === '' ? [] : data.filesOfCases} />
+              : <SelectedFilesView data={data.filesOfSubjects === null || data.filesOfSubjects === '' ? [] : data.filesOfSubjects} />
           )
       )}
     </Query>

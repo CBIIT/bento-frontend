@@ -83,7 +83,7 @@ class selectedFilesView extends Component {
 
       if (seconds < 10) { seconds = `0${seconds}`; }
 
-      return `${'CTDC File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
+      return `${'BENTO File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
     }
 
     function convertToCSV(jsonse) {
@@ -138,7 +138,7 @@ class selectedFilesView extends Component {
     const columns = [
 
       {
-        name: 'case_id',
+        name: 'subject_id',
         label: 'Case ID',
         sortDirection: 'asc',
         options: {
@@ -179,7 +179,7 @@ class selectedFilesView extends Component {
         },
       },
       {
-        name: 'parent',
+        name: 'association',
         label: 'Association',
         options: {
           customBodyRender: (value) => (
@@ -233,7 +233,7 @@ class selectedFilesView extends Component {
         },
       },
       {
-        name: 'uuid',
+        name: 'file_id',
         label: 'UUID',
         options: {
           display: false,
