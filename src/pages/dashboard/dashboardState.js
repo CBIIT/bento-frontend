@@ -130,8 +130,8 @@ export default function dashboardReducer(state = initialState, action) {
           numberOfPrograms: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
           numberOfStudies: getStatDataFromDashboardData(tableData, 'study_acronym', dataTableFilters),
           numberOfSubjects: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
-          numberOfSamples: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
-          numberOfLabProcedures: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
+          numberOfSamples: getStatDataFromDashboardData(tableData, 'samples', dataTableFilters),
+          numberOfLabProcedures: getStatDataFromDashboardData(tableData, 'lab_procedures', dataTableFilters),
           numberOfFiles: getStatDataFromDashboardData(tableData, 'file', dataTableFilters),
         },
         checkbox: {
@@ -171,8 +171,8 @@ export default function dashboardReducer(state = initialState, action) {
           numberOfPrograms: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
           numberOfStudies: getStatDataFromDashboardData(tableData, 'study_acronym', dataTableFilters),
           numberOfSubjects: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
-          numberOfSamples: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
-          numberOfLabProcedures: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
+          numberOfSamples: getStatDataFromDashboardData(tableData, 'samples', dataTableFilters),
+          numberOfLabProcedures: getStatDataFromDashboardData(tableData, 'lab_procedures', dataTableFilters),
           numberOfFiles: getStatDataFromDashboardData(tableData, 'file', dataTableFilters),
         },
         checkbox: {

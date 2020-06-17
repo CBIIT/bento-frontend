@@ -16,6 +16,10 @@
       "statAPI": "numberOfSamples"
     },
     {
+      "statTitle": "Lab Procedures",
+      "statAPI": "numberOfLabProcedures"
+    },
+    {
       "statTitle": "files",
       "statAPI": "numberOfFiles"
     }

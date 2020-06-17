@@ -56,6 +56,12 @@ export function getStatDataFromDashboardData(data, statName) {
         ? d.files : []), []).map((f) => f.uuid))].length;
     case 'program':
       return [...new Set(data.map((d) => d.program))].length;
+    case 'samples':
+      return [...new Set(data.reduce((output, d) => output.concat(d.samples
+        ? d.samples : []), []))].length;
+    case 'lab_procedures':
+      return [...new Set(data.reduce((output, d) => output.concat(d.lab_procedures
+        ? d.lab_procedures : []), []))].length;
     default:
       return 0;
   }

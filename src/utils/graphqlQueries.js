@@ -51,6 +51,8 @@ export const DASHBOARD_QUERY = gql`{
     subjectOverView {
       subject_id
       study_info
+      samples
+      lab_procedures
       program
       study_acronym
       study_short_description
