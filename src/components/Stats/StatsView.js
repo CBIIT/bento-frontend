@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React from 'react';
-import classnames from 'classnames';
 import stats from '../../bento/stats.json';
 import {
   withStyles,
@@ -10,12 +9,8 @@ const LandingStatsView = ({ classes, data }) => (
   <>
     <div className={classes.statsSection}>
       <div
-        className={classnames({
-          [classes.boxCut]: stats.length < 5,
-          [classes.box]: stats.length === 5,
-        })}
+        className={classes.box}
       >
-
         {
         stats.map((stat) => (
           <div className={classes.statsGroup}>
@@ -108,7 +103,7 @@ const styles = () => ({
   statsGroup: {
     // padding: '36px 48px 4px 48px',
     // borderBottom: '2px solid',
-    margin: '4px 48px',
+    margin: '4px 32px',
   },
 });
 
