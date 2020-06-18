@@ -277,7 +277,7 @@ const styles = () => ({
   },
   image: {
     width: '293px',
-    height: '272px',
+    height: '249px',
   },
   aboutContent: {
     background: 'white',
@@ -316,7 +316,7 @@ const styles = () => ({
     fontSize: '12px',
     fontWeight: '600',
     lineHeight: '45px',
-    paddingLeft: '20px',
+    paddingLeft: '12px',
     boxShadow: 'none',
     letterSpacing: '1px',
   },
@@ -326,7 +326,7 @@ const styles = () => ({
     background: '#fff',
     paddingLeft: '30px',
     paddingTop: '6px',
-    minHeight: '130px',
+    minHeight: '138px',
   },
   contentHeader: {
     color: '#033D6F',
@@ -366,7 +366,7 @@ const styles = () => ({
     backgroundSize: 'cover',
   },
   cases: {
-    height: '438px',
+    height: '456px',
     paddingLeft: '320px',
     paddingTop: '70px',
   },
