@@ -6,7 +6,11 @@ import {
 
 const LandingStatsView = ({ classes, stats, statsData }) => (
   <>
-    <div className={classes.statsSection}>
+    <div className={classnames({
+      [classes.statsSection]: stats.length < 5,
+      [classes.statsSectionCenter]: stats.length === 5,
+    })}
+    >
       <div
         className={classnames({
           [classes.boxCut]: stats.length < 5,
@@ -45,6 +49,17 @@ const styles = () => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  statsSectionCenter: {
+    background: 'transparent',
+    maxWidth: '906px',
+    textAlign: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    margin: '-24px auto auto auto',
+    display: 'flex',
+    justifyContent: 'center',
+  },
   bannerTexture: {
     color: '#4898B4',
     fontFamily: 'Raleway',
@@ -72,7 +87,6 @@ const styles = () => ({
     boxShadow: '-3px 5px 24px 1px rgba(27,28,28,0.15)',
     '@media (min-width: 900px)': {
       display: 'inline-flex',
-      width: '906px',
     },
 
   },
