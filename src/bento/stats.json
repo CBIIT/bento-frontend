@@ -16,7 +16,7 @@
       "statAPI": "numberOfSamples"
     },
     {
-      "statTitle": "Lab Procedures",
+      "statTitle": "Assays",
       "statAPI": "numberOfLabProcedures"
     },
     {
