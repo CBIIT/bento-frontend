@@ -248,7 +248,7 @@ const styles = () => ({
   },
 
   aboutImage: {
-    width: '300px',
+    width: '297px',
     padding: '14px',
   },
   aboutImageSection: {
@@ -266,7 +266,6 @@ const styles = () => ({
   landingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: '15px',
   },
   contentLeft: {
     float: 'left',
@@ -395,7 +394,7 @@ const styles = () => ({
   },
   blueButtonRight: {
     float: 'left',
-    lineHeight: '47px',
+    lineHeight: '44px',
     fontFamily: 'Lato',
     fontSize: '14px',
     color: '#fff',
@@ -419,7 +418,7 @@ const styles = () => ({
   },
   mountainMeadowIcon: {
     width: '20px',
-    marginTop: '15px',
+    marginTop: '12px',
     marginLeft: '28px',
   },
   mountainMeadowButton: {
@@ -454,9 +453,9 @@ const styles = () => ({
   },
   heroTextContainer: {
     position: 'absolute',
-    width: 900,
+    width: '906px',
     margin: 'auto',
-    left: 0,
+    left: '12px',
     right: 0,
   },
   heroTextWrapper: {
