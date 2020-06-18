@@ -49,17 +49,18 @@ function findCaseSizeOfTitle(data, title) {
 
 const styles = (theme) => ({
   title: {
-    color: theme.palette.lochmara.contrastTextColor,
+    color: theme.palette.widgetBackground.contrastText,
     fontSize: '12px',
     maxWidth: '1440px',
-    fontFamily: theme.custom.fontFamily,
+    fontFamily: 'Nunito',
     lineHeight: '20px',
-    fontWeight: '600',
+    fontWeight: '500',
     paddingLeft: '28px',
     height: '20px',
+    textAlign: 'center',
   },
   customWidget: {
-    marginTop: '-21px',
+    marginTop: '18px',
   },
 });
 
@@ -94,9 +95,6 @@ class ProgramSunburst extends PureComponent {
     return (
       <>
         <div className={classes.customWidget}>
-          <div className={classes.title}>
-            {title}
-          </div>
           <Sunburst
             id={widgetData.key}
             hideRootNode
@@ -134,7 +132,7 @@ class ProgramSunburst extends PureComponent {
                 fontSize: '12px',
                 textAnchor: 'middle',
                 fill: textColor,
-                fontFamily: '"Lato Regular","Open Sans", sans-serif',
+                fontFamily: '"Nunito","Open Sans", sans-serif',
               },
             }, {
               x: 0,
@@ -144,12 +142,15 @@ class ProgramSunburst extends PureComponent {
                 fontSize: '12px',
                 textAnchor: 'middle',
                 fill: textColor,
-                fontFamily: '"Lato Regular","Open Sans", sans-serif',
+                fontFamily: '"Nunito","Open Sans", sans-serif',
               },
             }]}
             />
             )}
           </Sunburst>
+          <div className={classes.title}>
+            {title}
+          </div>
         </div>
       </>
     );

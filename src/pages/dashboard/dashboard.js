@@ -60,7 +60,7 @@ const Dashboard = ({
                   </div>
                 </div>
                 <Collapse in={checked} className={classes.backgroundShawdowWidgets}>
-                  <Grid container spacing={16}>
+                  <Grid container spacing={2}>
                     <Grid item lg={4} md={6} sm={12} xs={12}>
                       <Widget
                         title={donutData.sunburst.label}
@@ -282,10 +282,11 @@ const styles = (theme) => ({
     },
   },
   backgroundShawdowWidgets: {
-    background: 'transparent',
+    background: theme.palette.widgetBackground.lattice,
   },
   sideBar: {
     maxWidth: '240px',
+    background: 'linear-gradient(to left, #E2E7EC, #FBFBFB ,)',
   },
   statsBar: {
     position: 'fixed',

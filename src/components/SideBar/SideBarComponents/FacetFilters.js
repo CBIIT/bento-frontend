@@ -82,7 +82,7 @@ const FacetPanel = ({ classes }) => {
                 classes={{ root: classes.expansionPanelRoot }}
               >
                 <CustomExpansionPanelSummary
-                  expandIcon={<ArrowDropDownIcon style={{ fill: '#3695A9' }} />}
+                  expandIcon={<ArrowDropDownIcon style={{ fill: '#8DCAFF' }} />}
                   aria-controls={sideBarItem.groupName}
                   id={sideBarItem.groupName}
                 >

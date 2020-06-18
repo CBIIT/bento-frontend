@@ -41,9 +41,9 @@ const renderActiveShape = (props) => {
 
   return (
     <g>
-      <text y={9} fill={textColor} fontSize={fontSize || '12px'} fontWeight="600" fontFamily="Lato">{String(payload.name).length > 23 ? `${String(payload.name).substr(0, 23)}...` : payload.name}</text>
-      <text x={cx} y={cy} dy={0} textAnchor="middle" fill={textColor} fontSize="12px" fontWeight="500" fontFamily="Open Sans">{`${value}`}</text>
-      <text x={cx} y={cy} dy={12} textAnchor="middle" fill={textColor} fontSize="12px" fontWeight="500" fontFamily="Open Sans">Cases</text>
+      <text x={cx} y={cy * 2} dy={0} textAnchor="middle" fill={textColor} fontSize={fontSize || '12px'} fontWeight="500" fontFamily="Nunito">{String(payload.name).length > 23 ? `${String(payload.name).substr(0, 23)}...` : payload.name}</text>
+      <text x={cx} y={cy} dy={0} textAnchor="middle" fill={textColor} fontSize="12px" fontWeight="500" fontFamily="Nunito">{`${value}`}</text>
+      <text x={cx} y={cy} dy={12} textAnchor="middle" fill={textColor} fontSize="12px" fontWeight="500" fontFamily="Nunito">Cases</text>
       <Sector
         cx={cx}
         cy={cy}
