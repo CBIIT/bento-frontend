@@ -49,13 +49,15 @@ export const unselectFilters = (filtersObj) => filtersObj.map((filterElement) =>
 
 export function getStatDataFromDashboardData(data, statName) {
   switch (statName) {
-    case 'case':
-      return [...new Set(data.map((d) => d.case_id))].length;
+    case 'subject_id':
+      return [...new Set(data.map((d) => d.subject_id))].length;
+    case 'program':
+      return [...new Set(data.map((d) => d.program))].length;
     case 'file':
       return [...new Set(data.reduce((output, d) => output.concat(d.files
         ? d.files : []), []).map((f) => f.uuid))].length;
-    case 'program':
-      return [...new Set(data.map((d) => d.program))].length;
+    case 'study_acronym':
+      return [...new Set(data.map((d) => d.study_acronym))].length;
     case 'samples':
       return [...new Set(data.reduce((output, d) => output.concat(d.samples
         ? d.samples : []), []))].length;
