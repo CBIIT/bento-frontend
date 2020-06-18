@@ -36,7 +36,7 @@ const LandingStatsView = ({ classes, stats, statsData }) => (
 const styles = () => ({
   statsSection: {
     background: 'transparent',
-    maxWidth: '916px',
+    maxWidth: '906px',
     textAlign: 'center',
     position: 'absolute',
     left: 0,
@@ -70,8 +70,9 @@ const styles = () => ({
     borderBottom: '74px solid white',
     height: '74px',
     boxShadow: '-3px 5px 24px 1px rgba(27,28,28,0.15)',
-    '@media (min-width: 850px)': {
+    '@media (min-width: 900px)': {
       display: 'inline-flex',
+      width: '906px',
     },
 
   },
