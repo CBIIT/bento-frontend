@@ -278,7 +278,7 @@ const styles = () => ({
   },
   image: {
     width: '293px',
-    height: '270px',
+    height: '272px',
   },
   aboutContent: {
     background: 'white',
