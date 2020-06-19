@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const landingPageData = {
-  heroHeaderTitle: 'Yours Tagline Here Up to 2-3 lines',
+  heroHeaderTitle: 'Yours Tagline Here Up to 2-3 Lines',
   heroHeaderDescription: 'ABC Data Source believes in the value of sharing and exploring data together for the benefit of the research community. Up to 150 Characters Limit.',
   exploreCallToActionButtonText: 'explore the site',
   exploreCallToActionLink: '/cases',
