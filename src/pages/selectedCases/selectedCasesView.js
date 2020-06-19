@@ -4,8 +4,7 @@ import MUIDataTable from 'mui-custom-datatables';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useDispatch } from 'react-redux';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
-import wizardIcon from '../../assets/icons/MyCases-Wizard-Step2.svg';
-import icon from '../../assets/icons/Icon-MyCases.svg';
+import { myCasesPageData, cartSelectionMessages } from '../../bento/cartWorkflowData';
 import CustomFooter from './customFooter';
 import { deleteCasesAction } from './selectedCasesState';
 
@@ -214,7 +213,7 @@ const SelectedCasesView = ({ data, classes }) => {
     },
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <CustomFooter
-        text="GO TO FILES"
+        text={myCasesPageData.buttonText}
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -232,25 +231,25 @@ const SelectedCasesView = ({ data, classes }) => {
             <div className={classes.header}>
               <div className={classes.logo}>
                 <img
-                  src={icon}
-                  alt="ICDC case detail header logo"
+                  src={myCasesPageData.headerIconSrc}
+                  alt={myCasesPageData.headerIconAlt}
                 />
 
               </div>
               <div className={classes.headerTitle}>
                 <div className={classes.headerMainTitle}>
-                  My Cases :
+                  {myCasesPageData.myCasesMainTitle}
                   <span className={classes.headerMainTitleTwo}>
                     {' '}
                     {' '}
-                    Cases
+                    {myCasesPageData.myCasesSubTitle}
                   </span>
                 </div>
               </div>
               <div className={classes.tableTitleWizard}>
                 <img
-                  src={wizardIcon}
-                  alt="CTDC MyCases Wizard"
+                  src={myCasesPageData.wizardIconSrc}
+                  alt={myCasesPageData.wizardIconAlt}
                 />
               </div>
             </div>
@@ -281,7 +280,7 @@ const SelectedCasesView = ({ data, classes }) => {
             <span className={classes.snackBarText}>
               {snackbarState.value}
               {' '}
-              Case(s) successfully removed from the My Cases list
+              {cartSelectionMessages.selectionsRemovedMessage}
             </span>
           </div>
 )}

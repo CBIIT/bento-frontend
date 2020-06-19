@@ -10,8 +10,8 @@ import {
   withStyles,
 } from '@material-ui/core';
 import classnames from 'classnames';
+import { navBarCartData } from '../../bento/cartWorkflowData';
 // import { useTheme } from '../ThemeContext';
-import caseIcon from '../../assets/icons/Icon-MyCases.svg';
 
 import { initCart } from '../../pages/selectedCases/selectedCasesState';
 import AboutMenu from './components/AboutMenu';
@@ -150,9 +150,9 @@ const NavBar = ({
             <Button id="button_navbar_mycases" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRootNoRightPadding }}>
               <NavLink
                 className={classnames(classes.link, classes.myCasesLink)}
-                to="/myCases"
+                to={navBarCartData.cartLink}
               >
-                My Cases
+                {navBarCartData.cartLabel}
                 {/* <IconButton
                 color="inherit"
                 aria-haspopup="true"
@@ -166,8 +166,8 @@ const NavBar = ({
                   <span className={classes.badge}>
                     <img
                       className={classes.cartLogoImg}
-                      src={caseIcon}
-                      alt="cart_logo"
+                      src={navBarCartData.cartIcon}
+                      alt={navBarCartData.cartIconAlt}
                     />
                     <span className={classes.badgeText}>
                       {numberOfCases}
