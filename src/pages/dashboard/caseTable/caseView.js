@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import Snackbar from '@material-ui/core/Snackbar';
 // import { Link } from 'react-router-dom';
-import dashboardTableData from '../../../bento/dashboardTable.json';
+import dashboardTableData from '../../../bento/dashboardTable';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import CustomFooter from './customFooter';
 import { toggleCheckBox } from '../dashboardState';
@@ -81,7 +81,7 @@ const Cases = ({ classes, data }) => {
     saveButton.current.style.cursor = 'auto';
   });
 
-  const columns = dashboardTableData.map((column) => ({
+  const columns = dashboardTableData.tableData.map((column) => ({
     name: column.field,
     label: column.label,
     options: {
@@ -138,13 +138,16 @@ const Cases = ({ classes, data }) => {
     download: false,
     viewColumns: false,
     pagination: true,
-    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    onRowsSelect:
+     (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
     customToolbarSelect: (selectedRows, displayData) => {
       const selectedKeys = Object.keys(selectedRows.data).map((keyVlaue) => (
         selectedRows.data[keyVlaue].index
       ));
       const selectedCaseId = selectedKeys.map((keyVlaue) => (
-        displayData[keyVlaue].data[0].props.children
+        displayData[keyVlaue].data[dashboardTableData.tableData.findIndex(
+          (p) => p.primary === true,
+        )].props.children
       ));
       selectedCaseIds = selectedCaseId;
       return '';
@@ -194,7 +197,7 @@ const Cases = ({ classes, data }) => {
 
         <Grid container>
           <Grid item xs={12} className={classes.caseTitle}>
-            Cases
+            {dashboardTableData.tableTitle}
           </Grid>
           <Grid item xs={12} id="table_cases">
             <MUIDataTable
