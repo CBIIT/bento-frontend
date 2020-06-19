@@ -13,7 +13,7 @@ const warning = '#FFC260';
 const success = '#3CD4A0';
 const info = '#9013FE';
 const tableHeader = '#FFFFFF';
-const deepSkyBlue = '#3695A9';
+const deepSkyBlue = '#8DCAFF';
 const lochmara = '#3478A5';
 const lightenRate = 7.5;
 const darkenRate = 15;
@@ -279,7 +279,7 @@ export default {
       checkboxRoot: {
         color: 'inherit',
         '&$checked': {
-          color: '#3695A9',
+          color: '#8DCAFF',
         },
       },
 

@@ -3,7 +3,7 @@ import tinycolor from 'tinycolor2';
 const whisper = '#E7E5E5';
 const navyBlue = '#142D64';
 const curiousBlue = '#CBE2EE';
-const deepSkyBlue = '#3695A9';
+const deepSkyBlue = '#8DCAFF';
 const airForceBlue = '#5E8CA5';
 const neonBlue = '#5D53F6';
 const qQhite = '#EEEEEE';
@@ -169,15 +169,15 @@ export default {
       contrastText: '#FFFFFF',
     },
     widgetBackground: {
-      main: '#F3F8FB',
+      main: '#FAFEFF',
       light: tinycolor(black)
         .lighten(lightenRate)
         .toHexString(),
       dark: tinycolor(black)
         .darken(darkenRate)
         .toHexString(),
-      contrastText: '#3478A5',
-      lattice: '#E5F6F8',
+      contrastText: 'black',
+      lattice: '#E2E7EC',
     },
     warning: {
       main: warning,
@@ -298,7 +298,7 @@ export default {
       checkboxRoot: {
         color: 'inherit',
         '&$checked': {
-          color: '#3695A9',
+          color: '#8DCAFF',
         },
       },
 
