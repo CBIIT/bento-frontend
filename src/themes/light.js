@@ -289,8 +289,7 @@ export default {
 
       },
       headerCell: {
-        borderTop: tableHeaderBorder,
-        borderBottom: tableHeaderBorder,
+        borderBottom: '2px solid #42779A',
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
 
@@ -353,10 +352,10 @@ export default {
     MUIDataTableBodyRow: {
       root: {
         '&:nth-child(even)': {
-          color: '#004c73',
+          color: '#004C73',
         },
         '&:nth-child(odd)': {
-          color: '#004c73 !important',
+          color: '#004C73 !important',
           background: '#f5f5f5 !important',
         },
       },
@@ -364,6 +363,7 @@ export default {
     MuiTableRow: {
       head: {
         height: 40,
+        borderBottom: '2px solid #42779A',
       },
       root: {
         height: 40,
@@ -379,11 +379,11 @@ export default {
       },
       body: {
         color: 'inherit',
-        fontFamily: '"Lato Regular","Open Sans", sans-serif',
         letterSpacing: '0.025em',
         fontStyle: 'normal',
-        fontSize: '10pt',
-        fontWeight: 'bold',
+        fontSize: '16px',
+        fontFamily: 'Nunito',
+        fontWeight: 'normal',
         paddingLeft: '8px',
       },
       head: {
@@ -435,6 +435,11 @@ export default {
       select: {
         border: '2px #fff solid',
         background: '#fff',
+      },
+      caption: {
+        color: '#000000',
+        fontFamily: 'Open Sans',
+        fontSize: '10px',
       },
     },
     MuiSwitch: {

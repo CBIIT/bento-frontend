@@ -75,9 +75,8 @@ const Cases = ({ classes, data }) => {
   useEffect(() => {
     saveButton.current.disabled = true;
     saveButton.current.style.color = '#FFFF';
-    saveButton.current.style.backgroundColor = '#C53B27';
+    saveButton.current.style.backgroundColor = '#10A075';
     saveButton.current.style.opacity = '0.3';
-    saveButton.current.style.border = '3px solid grey';
     saveButton.current.style.fontWeight = '600';
     saveButton.current.style.cursor = 'auto';
   });
@@ -115,15 +114,14 @@ const Cases = ({ classes, data }) => {
     if (allRowsSelected.length === 0) {
       saveButton.current.disabled = true;
       saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#C53B27';
+      saveButton.current.style.backgroundColor = '#10A075';
       saveButton.current.style.opacity = '0.3';
-      saveButton.current.style.border = '3px solid grey';
       saveButton.current.style.fontWeight = '600';
       saveButton.current.style.cursor = 'auto';
     } else {
       saveButton.current.disabled = false;
       saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#C53B27';
+      saveButton.current.style.backgroundColor = '#10A075';
       saveButton.current.style.cursor = 'pointer';
       saveButton.current.style.opacity = 'unset';
       saveButton.current.style.border = 'unset';
@@ -231,7 +229,7 @@ const styles = (theme) => ({
   saveButton: {
     color: '#FFFF',
     boxShadow: 'none',
-    backgroundColor: '#C53B27',
+    backgroundColor: '#10A075',
     boxSizing: 'border-box',
     transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
     height: '40px',
@@ -239,8 +237,8 @@ const styles = (theme) => ({
     lineHeight: '11px',
     fontSize: '13px',
     fontWeight: '600',
-    fontFamily: 'raleway',
-    borderRadius: '35px',
+    fontFamily: 'Lato',
+    borderRadius: '6px',
     textTransform: 'uppercase',
     textAlign: 'center',
   },

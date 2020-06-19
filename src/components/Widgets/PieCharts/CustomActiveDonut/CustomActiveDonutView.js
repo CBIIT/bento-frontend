@@ -4,23 +4,23 @@ import {
 } from 'recharts';
 
 const COLORS_EVEN = [
-  '#fdb915',
-  '#381f5f',
-  '#007ea5',
-  '#6ac6b6',
-  '#c33b27',
-  '#c2e5dc',
-  '#8b5996',
+  '#D4D4D4',
+  '#057EBD',
+  '#0C3151',
+  '#F78F49',
+  '#79287C',
+  '#7CC242',
+  '#61479D',
 ];
 
 const COLORS_ODD = [
-  '#381f5f',
-  '#007ea5',
-  '#6ac6b6',
-  '#c33b27',
-  '#c2e5dc',
-  '#8b5996',
-  '#fdb915',
+  '#057EBD',
+  '#0C3151',
+  '#F78F49',
+  '#79287C',
+  '#7CC242',
+  '#61479D',
+  '#D4D4D4',
 ];
 
 const renderActiveShape = (props) => {

@@ -1,7 +1,9 @@
 import tinycolor from 'tinycolor2';
 
+const whisper = '#E7E5E5';
 const navyBlue = '#142D64';
 const curiousBlue = '#CBE2EE';
+const deepSkyBlue = '#8DCAFF';
 const airForceBlue = '#5E8CA5';
 const neonBlue = '#5D53F6';
 const qQhite = '#EEEEEE';
@@ -9,35 +11,34 @@ const orange = '#FF7F15';
 const green = '#2FA000';
 const dodgeBlue = '#0296C9';
 const cobolt = '#FBB35D';
-const warning = '#FFC260';
+const warning = '#ff7f0b';
 const success = '#3CD4A0';
-const info = '#9013FE';
-const tableHeader = '#FFFFFF';
-const deepSkyBlue = '#8DCAFF';
+const info = '#3f2b2f';
+const tableHeader = '#ffffff';
+const black = 'black';
 const lochmara = '#3478A5';
 const lightenRate = 7.5;
 const darkenRate = 15;
 const tableHeaderBorder = '#4B619A 3px solid';
 const tableHeaderFontColor = '#004c73';
 const tableFontFamily = "'Lato Regular','Raleway', sans-serif";
-const black = 'black';
 const white = '#FFFFFF';
 
 export default {
   custom: {
     maxContentWidth: '1440px',
-    maxContent: 'black',
+    maxContent: 'white',
     bodyBackGround: '#f2f2f2',
-    cardBackGround: '#D9F3F2',
-    footorBackground: '#325068',
+    cardBackGround: '#f0f6f8',
     fontFamilySans: '"Open Sans", sans-serif',
-    fontFamily: '"Lato Regular","Open Sans", sans-serif',
+    footorBackground: '#325068',
+    fontFamily: 'Lato,"Open Sans", sans-serif',
     fontFamilyRaleway: "'Raleway', sans-serif",
     drawerWidth: '240px',
   },
   palette: {
     primary: {
-      main: navyBlue,
+      main: whisper,
       light: tinycolor(navyBlue)
         .lighten(lightenRate)
         .toHexString(),
@@ -66,22 +67,22 @@ export default {
         .toHexString(),
       contrastText: '#FFFFFF',
     },
-    deepSkyBlue: {
-      main: deepSkyBlue,
-      light: tinycolor(deepSkyBlue)
-        .lighten(lightenRate)
-        .toHexString(),
-      dark: tinycolor(deepSkyBlue)
-        .darken(darkenRate)
-        .toHexString(),
-      contrastText: '#FFFFFF',
-    },
     neonBlue: {
       main: neonBlue,
       light: tinycolor(curiousBlue)
         .lighten(lightenRate)
         .toHexString(),
       dark: tinycolor(curiousBlue)
+        .darken(darkenRate)
+        .toHexString(),
+      contrastText: '#FFFFFF',
+    },
+    deepSkyBlue: {
+      main: deepSkyBlue,
+      light: tinycolor(deepSkyBlue)
+        .lighten(lightenRate)
+        .toHexString(),
+      dark: tinycolor(deepSkyBlue)
         .darken(darkenRate)
         .toHexString(),
       contrastText: '#FFFFFF',
@@ -94,8 +95,8 @@ export default {
       dark: tinycolor(lochmara)
         .darken(darkenRate)
         .toHexString(),
-      contrastText: 'white',
-      contrastTextColor: '#FFFFFF',
+      contrastText: 'lochmara',
+      contrastTextColor: '#3478A5',
     },
     white: {
       main: white,
@@ -112,7 +113,7 @@ export default {
       light: tinycolor(airForceBlue)
         .lighten(lightenRate)
         .toHexString(),
-      dark: tinycolor(navyBlue)
+      dark: tinycolor(whisper)
         .darken(darkenRate)
         .toHexString(),
       contrastText: '#FFFFFF',
@@ -167,6 +168,17 @@ export default {
         .toHexString(),
       contrastText: '#FFFFFF',
     },
+    widgetBackground: {
+      main: '#2C3038',
+      light: tinycolor(black)
+        .lighten(lightenRate)
+        .toHexString(),
+      dark: tinycolor(black)
+        .darken(darkenRate)
+        .toHexString(),
+      contrastText: 'white',
+      lattice: '#24292f',
+    },
     warning: {
       main: warning,
       light: tinycolor(warning)
@@ -185,8 +197,8 @@ export default {
         .darken(darkenRate)
         .toHexString(),
     },
-    textWithBackground: {
-      main: 'white',
+    info: {
+      main: info,
       light: tinycolor(info)
         .lighten(lightenRate)
         .toHexString(),
@@ -194,19 +206,8 @@ export default {
         .darken(darkenRate)
         .toHexString(),
     },
-    widgetBackground: {
-      main: '#2C3038',
-      light: tinycolor(black)
-        .lighten(lightenRate)
-        .toHexString(),
-      dark: tinycolor(black)
-        .darken(darkenRate)
-        .toHexString(),
-      contrastText: 'white',
-      lattice: '#24292f',
-    },
-    info: {
-      main: info,
+    textWithBackground: {
+      main: 'black',
       light: tinycolor(info)
         .lighten(lightenRate)
         .toHexString(),
@@ -219,6 +220,7 @@ export default {
       primary: '#4A4A4A',
       secondary: '#6E6E6E',
       hint: '#B9B9B9',
+      link: '#1669aa',
       footerText: 'white',
     },
     background: {
@@ -265,13 +267,29 @@ export default {
         margin: '4px 0',
       },
     },
+    MuiPaper: {
+      elevation4: {
+        boxShadow: 'none',
+      },
+      elevation2: {
+        boxShadow: 'none',
+      },
+    },
+    MUIDataTable: {
+      responsiveStacked: {
+        transform: 'rotateX(180deg)',
+      },
+      tableRoot: {
+        transform: 'rotateX(180deg)',
+      },
+    },
     MUIDataTableSelectCell: {
       fixedHeader: {
         position: 'relative',
+
       },
       headerCell: {
-        borderTop: tableHeaderBorder,
-        borderBottom: tableHeaderBorder,
+        borderBottom: '2px solid #42779A',
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
 
@@ -301,13 +319,14 @@ export default {
     },
     MUIDataTableHeadCell: {
       fixedHeader: {
+        position: 'relative',
         borderTop: tableHeaderBorder,
         borderBottom: tableHeaderBorder,
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
         textDecoration: 'underline',
         fontFamily: tableFontFamily,
-        letterSpacing: '0.025em',
+        letterSpacing: '0.06em',
         fontStyle: 'normal',
         fontSize: '11pt',
         fontWeight: 'bold',
@@ -333,17 +352,18 @@ export default {
     MUIDataTableBodyRow: {
       root: {
         '&:nth-child(even)': {
-          color: '#004c73',
+          color: '#004C73',
         },
         '&:nth-child(odd)': {
-          color: '#004c73',
-          backgroundColor: '#f5f5f5',
+          color: '#004C73 !important',
+          background: '#f5f5f5 !important',
         },
       },
     },
     MuiTableRow: {
       head: {
         height: 40,
+        borderBottom: '2px solid #42779A',
       },
       root: {
         height: 40,
@@ -359,11 +379,11 @@ export default {
       },
       body: {
         color: 'inherit',
-        fontFamily: '"Lato Regular","Open Sans", sans-serif',
         letterSpacing: '0.025em',
         fontStyle: 'normal',
-        fontSize: '10pt',
-        fontWeight: 'bold',
+        fontSize: '16px',
+        fontFamily: 'Nunito',
+        fontWeight: 'normal',
         paddingLeft: '8px',
       },
       head: {
@@ -376,14 +396,15 @@ export default {
         backgroundColor: tableHeader,
       },
       titleText: {
+
         color: tableHeaderFontColor,
         fontSize: '25.2pt',
         fontFamily: tableFontFamily,
         letterSpacing: '0.025em',
         fontStyle: 'normal',
       },
-
     },
+
     MUIDataTableToolbarSelect: {
       root: {
         backgroundColor: tableHeader,
@@ -402,17 +423,9 @@ export default {
         },
       },
     },
-    MuiSwitch: {
-      bar: {
-        backgroundColor: '#ABADB0',
-      },
-    },
-    MuiPaper: {
-      elevation4: {
-        boxShadow: 'none',
-      },
-      elevation2: {
-        boxShadow: 'none',
+    MuiIconButton: {
+      root: {
+        padding: '5px',
       },
     },
     MuiTablePagination: {
@@ -423,10 +436,15 @@ export default {
         border: '2px #fff solid',
         background: '#fff',
       },
+      caption: {
+        color: '#000000',
+        fontFamily: 'Open Sans',
+        fontSize: '10px',
+      },
     },
-    MuiIconButton: {
-      root: {
-        padding: '5px',
+    MuiSwitch: {
+      bar: {
+        backgroundColor: '#ABADB0',
       },
     },
     MuiTableFooter: {
