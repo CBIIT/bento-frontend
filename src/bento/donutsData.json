@@ -1,32 +1,38 @@
-{
-    "sunburst":{
+[
+    {
+        "type": "sunburst",
         "label": "Programs and Arms",
         "data": "armsByTrial",
         "show": true
     },
-    "donut1":{
-        "label": "Diagnosis",
-        "data": "caseCountByDisease",
-        "show": true
+    {
+    "type": "donut",
+    "label": "Diagnosis",
+    "data": "caseCountByDisease",
+    "show": true
     },
-    "donut2":{
+    {
+        "type": "donut",
         "label": "Recurrence Score",
         "data": "caseCountByGender",
         "show": true
     },
-    "donut3":{
+    {
+        "type": "donut",
         "label": "Tumor Size",
         "data": "caseCountByRace",
         "show": true
     },
-    "donut4":{
+    {
+        "type": "donut",
         "label": "Chemotherapy",
         "data": "caseCountByEthnicity",
         "show": true
     },
-    "donut5":{
+    {
+        "type": "donut",
         "label": "Endocrine Therapy",
         "data": "caseCountByPubmedId",
         "show": true
     }
-}
+]
