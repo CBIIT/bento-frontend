@@ -52,7 +52,12 @@ const LandingView = ({ classes, statsData }) => (
                 />
               </div>
               <div className={classes.DCWords}>
-                {landingPageData.tile1.cardTitleText}
+                {landingPageData.tile1.cardTitleText.match(/\b(\w+)\b/g).map((word) => (
+                  <>
+                    {word}
+                    <br />
+                  </>
+                ))}
               </div>
               <div className={classes.aboutContent}>
                 {landingPageData.tile1.cardDescriptionText}
@@ -214,10 +219,10 @@ const styles = () => ({
     paddingBottom: '12px',
     fontFamily: 'Inter, Raleway, sans-serif',
     fontSize: '42px',
-    fontWeight: '600',
-    lineHeight: '41px',
+    fontWeight: 'normal',
+    lineHeight: '42px',
     color: '#0077E3',
-    letterSpacing: '-2px',
+    letterSpacing: '-1.5px',
   },
   paddingLeft50: {
     paddingLeft: '50px',
