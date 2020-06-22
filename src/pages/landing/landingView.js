@@ -219,7 +219,7 @@ const styles = () => ({
     paddingBottom: '12px',
     fontFamily: 'Inter, Raleway, sans-serif',
     fontSize: '42px',
-    fontWeight: 'normal',
+    fontWeight: '600',
     lineHeight: '42px',
     color: '#0077E3',
     letterSpacing: '-1.5px',
@@ -464,7 +464,7 @@ const styles = () => ({
     right: 0,
   },
   heroTextWrapper: {
-    width: '352px',
+    width: '360px',
   },
   buttonText: {
     padding: '12px 30px',
