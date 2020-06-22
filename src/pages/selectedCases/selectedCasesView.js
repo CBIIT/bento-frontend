@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import MUIDataTable from 'mui-custom-datatables';
+import MUIDataTable from 'mui-datatables';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useDispatch } from 'react-redux';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
