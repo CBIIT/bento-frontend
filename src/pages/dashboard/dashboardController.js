@@ -19,7 +19,7 @@ class DashboardController extends Component {
     if (hasError) {
       return (
         <Typography variant="headline" color="error" size="sm">
-          { error && `An error has occurred in loading stats component: ${error}`}
+          { error && `An error has occurred in loading dashboard component: ${error}`}
         </Typography>
       );
     }

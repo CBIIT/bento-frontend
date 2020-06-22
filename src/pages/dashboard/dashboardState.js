@@ -1,5 +1,7 @@
 import client from '../../utils/graphqlClient';
 import { DASHBOARD_QUERY } from '../../utils/graphqlQueries';
+import donutData from '../../bento/donutsData.json';
+
 import {
   getStatDataFromDashboardData,
   getSunburstDataFromDashboardData,
@@ -84,6 +86,16 @@ function readyDashboard() {
   return {
     type: READY_DASHBOARD,
   };
+}
+
+function getDonuts(input) {
+  const donut = donutData.reduce((acc, widget) => {
+    const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input) : getDonutDataFromDashboardData(input, widget.datatable_field);
+    const label = widget.data;
+    return { ...acc, [label]: Data };
+  }, {});
+
+  return donut;
 }
 
 // This need to go to dashboard controller
@@ -224,15 +236,7 @@ export default function dashboardReducer(state = initialState, action) {
             data: action.payload.data.subjectOverView,
             filters: [],
           },
-          widgets: {
-            armsByTrial: getSunburstDataFromDashboardData(action.payload.data.subjectOverView),
-            caseCountByDisease: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'diagnosis'),
-            caseCountByGender: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'recurrence_score'),
-            caseCountByRace: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'tumor_size'),
-            caseCountByEthnicity: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'chemotherapy'),
-            caseCountByPubmedId: getDonutDataFromDashboardData(action.payload.data.subjectOverView, 'endocrine_therapy'),
-
-          },
+          widgets: getDonuts(action.payload.data.subjectOverView),
 
         } : { ...state };
     }
