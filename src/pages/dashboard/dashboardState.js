@@ -88,9 +88,9 @@ function readyDashboard() {
   };
 }
 
-function getDonuts(input) {
+function getWidgetsData(input) {
   const donut = donutData.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input) : getDonutDataFromDashboardData(input, widget.datatable_field);
+    const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input, widget.datatable_level1_field, widget.datatable_level2_field) : getDonutDataFromDashboardData(input, widget.datatable_field);
     const label = widget.data;
     return { ...acc, [label]: Data };
   }, {});
@@ -155,14 +155,7 @@ export default function dashboardReducer(state = initialState, action) {
           data: tableData,
           filters: dataTableFilters,
         },
-        widgets: {
-          armsByTrial: getSunburstDataFromDashboardData(tableData),
-          caseCountByDisease: getDonutDataFromDashboardData(tableData, 'disease'),
-          caseCountByGender: getDonutDataFromDashboardData(tableData, 'gender'),
-          caseCountByRace: getDonutDataFromDashboardData(tableData, 'race'),
-          caseCountByEthnicity: getDonutDataFromDashboardData(tableData, 'ethnicity'),
-          caseCountByPubmedId: getDonutDataFromDashboardData(tableData, 'pubmed_id'),
-        },
+        widgets: getWidgetsData(tableData),
       };
     }
     // if checkbox status has been changed, dashboard data table need to be update as well.
@@ -195,14 +188,7 @@ export default function dashboardReducer(state = initialState, action) {
           data: tableData,
           filters: dataTableFilters,
         },
-        widgets: {
-          armsByTrial: getSunburstDataFromDashboardData(tableData),
-          caseCountByDisease: getDonutDataFromDashboardData(tableData, 'diagnosis'),
-          caseCountByGender: getDonutDataFromDashboardData(tableData, 'recurrence_score'),
-          caseCountByRace: getDonutDataFromDashboardData(tableData, 'tumor_size'),
-          caseCountByEthnicity: getDonutDataFromDashboardData(tableData, 'chemotherapy'),
-          caseCountByPubmedId: getDonutDataFromDashboardData(tableData, 'endocrine_therapy'),
-        },
+        widgets: getWidgetsData(tableData),
       };
     }
     case RECEIVE_DASHBOARD: {
@@ -236,7 +222,7 @@ export default function dashboardReducer(state = initialState, action) {
             data: action.payload.data.subjectOverView,
             filters: [],
           },
-          widgets: getDonuts(action.payload.data.subjectOverView),
+          widgets: getWidgetsData(action.payload.data.subjectOverView),
 
         } : { ...state };
     }

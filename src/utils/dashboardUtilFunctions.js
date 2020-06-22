@@ -71,31 +71,31 @@ export function getStatDataFromDashboardData(data, statName) {
 
 // getStudiesProgramWidgetFromDT
 
-export function getSunburstDataFromDashboardData(data) {
+export function getSunburstDataFromDashboardData(data, level1, level2) {
   // construct data tree
   const widgetData = [];
   let colorIndex = 0;
   data.forEach((d) => {
-    let existProgram = false;
-    let existStudy = false;
+    let existLevel1 = false;
+    let existLevel2 = false;
     widgetData.map((p) => {
-      if (p.title === d.program) { // program exist
-        existProgram = true;
+      if (p.title === d[level1]) { // program exist
+        existLevel1 = true;
         // eslint-disable-next-line no-param-reassign
         p.caseSize += 1;
         p.children.map((study) => {
           const s = study;
-          if (s.title === `${d.program} : ${d.study_acronym}`) { // study exist
-            existStudy = true;
+          if (s.title === `${d[level1]} : ${d[level2]}`) { // study exist
+            existLevel2 = true;
             s.size += 1;
             s.caseSize += 1;
           }
           return s;
         }); // end find study
-        if (!existStudy) { // new study
+        if (!existLevel2) { // new study
           colorIndex += 1;
           p.children.push({
-            title: `${d.program} : ${d.study_acronym}`,
+            title: `${d[level1]} : ${d[level2]}`,
             color: p.color,
             size: 1,
             caseSize: 1,
@@ -105,14 +105,14 @@ export function getSunburstDataFromDashboardData(data) {
       return p;
     }); // end find program
 
-    if (!existProgram && !existStudy) {
+    if (!existLevel1 && !existLevel2) {
       colorIndex += 1;
       widgetData.push({
-        title: d.program,
+        title: d[level1],
         color: COLORS[parseInt(colorIndex, 10)],
         caseSize: 1,
         children: [{
-          title: `${d.program} : ${d.study_acronym}`,
+          title: `${d[level1]} : ${d[level2]}`,
           color: COLORS[parseInt(colorIndex, 10)],
           size: 1,
           caseSize: 1,

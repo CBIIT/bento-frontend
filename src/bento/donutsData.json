@@ -3,6 +3,8 @@
         "type": "sunburst",
         "label": "Programs and Arms",
         "data": "armsByTrial",
+        "datatable_level1_field": "program",
+        "datatable_level2_field": "study_acronym",
         "show": true
     },
     {
