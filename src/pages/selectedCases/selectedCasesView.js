@@ -5,163 +5,23 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useDispatch } from 'react-redux';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import { myCasesPageData, cartSelectionMessages } from '../../bento/cartWorkflowData';
+import dashboardTableData from '../../bento/dashboardTable.json';
 import CustomFooter from './customFooter';
 import { deleteCasesAction } from './selectedCasesState';
 
-const columns = (classes) => [
-
-  {
-    name: 'subject_id',
-    label: 'Case ID',
-    sortDirection: 'asc',
-    options: {
-      filter: false,
-      sortDirection: 'asc',
-      customBodyRender: (value) => (
-        <div className={classes.tableCell1}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
+const columns = dashboardTableData.map((column) => ({
+  name: column.field,
+  label: column.label,
+  options: {
+    display: column.display ? column.display : true,
+    filter: false,
+    customBodyRender: (value) => (
+      <div>
+        { value }
+      </div>
+    ),
   },
-  {
-    name: 'program',
-    label: 'Program Code',
-    options: {
-      filter: false,
-      customBodyRender: (value) => (
-        <div className={classes.tableCell2}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'study_acronym',
-    label: 'Arm',
-    options: {
-      customBodyRender: (value) => (
-        <div className={classes.tableCell3}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'diagnosis',
-    label: 'Diagnosis',
-    options: {
-      customBodyRender: (value) => (
-        <div className={classes.tableCell4}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'recurrence_score',
-    label: 'Recurrence Score',
-    options: {
-      customBodyRender: (value) => (
-        <div className={classes.tableCell5}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'tumor_size',
-    label: 'Tumor Size (cm)',
-    options: {
-      customBodyRender: (value) => (
-        <div className={classes.tableCell6}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'er_status',
-    label: 'ER Status',
-    options: {
-      customBodyRender: (value) => (
-        <div className={classes.tableCell7}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'pr_status',
-    label: 'PR Status',
-    options: {
-      customBodyRender: (value) => (
-        <div className={classes.tableCell8}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'age_at_index',
-    label: 'Age (years)',
-    options: {
-      customBodyRender: (value) => (
-        <div className={classes.tableCell8}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'survival_time',
-    label: 'Survival (days)',
-    options: {
-      customBodyRender: (value) => (
-        <div className={classes.tableCell8}>
-          {' '}
-          {value}
-          {' '}
-        </div>
-      ),
-    },
-  },
-  {
-    name: 'remove_label',
-    options: {
-      filter: false,
-      sort: false,
-      customHeadRender: () => (
-        <th className={classes.tableCell9}>
-          <span
-            role="button"
-            className={classes.removeLabel}
-          >
-            REMOVE
-          </span>
-        </th>
-      ),
-    },
-  },
-];
+}));
 
 const SelectedCasesView = ({ data, classes }) => {
   const dispatch = useDispatch();
@@ -257,8 +117,8 @@ const SelectedCasesView = ({ data, classes }) => {
             <div id="table_selected_cases" className={classes.tableWrapper}>
               <MUIDataTable
                 data={data}
-                columns={columns(classes)}
-                options={options(data)}
+                columns={columns}
+                options={options()}
                 className={classes.tableStyle}
               />
             </div>
