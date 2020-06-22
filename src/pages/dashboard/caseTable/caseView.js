@@ -10,6 +10,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 // import { Link } from 'react-router-dom';
 import dashboardTableData from '../../../bento/dashboardTable';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
+import { cartSelectionMessages } from '../../../bento/cartWorkflowData';
 import CustomFooter from './customFooter';
 import { toggleCheckBox } from '../dashboardState';
 import { receiveCases } from '../../selectedCases/selectedCasesState';
@@ -185,7 +186,7 @@ const Cases = ({ classes, data }) => {
             <span className={classes.snackBarText}>
               {snackbarState.value}
               {' '}
-              Case(s) successfully added to the My Cases list
+              {cartSelectionMessages.selectionsAddedMessage}
             </span>
           </div>
 )}

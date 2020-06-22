@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import MUIDataTable from 'mui-datatables';
-import icon from '../../assets/icons/Icon-MyCases.svg';
-import wizardIcon from '../../assets/icons/MyCases-Wizard-Step3.svg';
+import { myFilesPageData } from '../../bento/cartWorkflowData';
 import CustomFooter from './customFooter';
 
 class selectedFilesView extends Component {
@@ -83,7 +82,7 @@ class selectedFilesView extends Component {
 
       if (seconds < 10) { seconds = `0${seconds}`; }
 
-      return `${'BENTO File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
+      return `${myFilesPageData.manifestFileName} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
     }
 
     function convertToCSV(jsonse) {
@@ -326,25 +325,25 @@ class selectedFilesView extends Component {
             <div className={classes.header}>
               <div className={classes.logo}>
                 <img
-                  src={icon}
-                  alt="ICDC case detail header logo"
+                  src={myFilesPageData.headerIconSrc}
+                  alt={myFilesPageData.headerIconAlt}
                 />
 
               </div>
               <div className={classes.headerTitle}>
                 <div className={classes.headerMainTitle}>
-                  My Cases :
+                  {myFilesPageData.mainTitle}
                   <span className={classes.headerMainTitleTwo}>
                     {' '}
                     {' '}
-                    Files
+                    {myFilesPageData.subTitle}
                   </span>
                 </div>
               </div>
               <div className={classes.tableTitleWizard}>
                 <img
-                  src={wizardIcon}
-                  alt="CTDC MyCases Wizard"
+                  src={myFilesPageData.wizardIconSrc}
+                  alt={myFilesPageData.wizardIconAlt}
                 />
               </div>
             </div>
@@ -363,7 +362,7 @@ class selectedFilesView extends Component {
                   ref={this.downloadButton}
                   onClick={downloadJson}
                 >
-                  download manifest
+                  {myFilesPageData.buttonText}
                 </button>
               </div>
             </div>
