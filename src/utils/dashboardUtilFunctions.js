@@ -47,26 +47,20 @@ export const unselectFilters = (filtersObj) => filtersObj.map((filterElement) =>
   isChecked: false,
 }));
 
-export function getStatDataFromDashboardData(data, statName) {
-  switch (statName) {
-    case 'subject_id':
-      return [...new Set(data.map((d) => d.subject_id))].length;
-    case 'program':
-      return [...new Set(data.map((d) => d.program))].length;
-    case 'file':
-      return [...new Set(data.reduce((output, d) => output.concat(d.files
-        ? d.files : []), []).map((f) => f.uuid))].length;
-    case 'study_acronym':
-      return [...new Set(data.map((d) => d.study_acronym))].length;
-    case 'samples':
-      return [...new Set(data.reduce((output, d) => output.concat(d.samples
-        ? d.samples : []), []))].length;
-    case 'lab_procedures':
-      return [...new Set(data.reduce((output, d) => output.concat(d.lab_procedures
-        ? d.lab_procedures : []), []))].length;
-    default:
-      return 0;
+export function getStatDataFromDashboardData(data, type, datatableField, datatableSubField = 'uuid') {
+  if (type === 'field') {
+    return [...new Set(data.map((d) => d[datatableField]))].length;
   }
+  if (type === 'array') {
+    return [...new Set(data.reduce((output, d) => output.concat(d[datatableField]
+      ? d[[datatableField]] : []), []))].length;
+  }
+  if (type === 'object') {
+    const test = [...new Set(data.reduce((output, d) => output.concat(d[datatableField]
+      ? d[datatableField] : []), []).map((f) => f[datatableSubField]))].length;
+    return test;
+  }
+  return 0;
 }
 
 // getStudiesProgramWidgetFromDT

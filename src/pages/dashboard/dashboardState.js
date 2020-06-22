@@ -1,6 +1,7 @@
 import client from '../../utils/graphqlClient';
 import { DASHBOARD_QUERY } from '../../utils/graphqlQueries';
 import donutData from '../../bento/donutsData.json';
+import statsData from '../../bento/stats.json';
 
 import {
   getStatDataFromDashboardData,
@@ -98,6 +99,26 @@ function getWidgetsData(input) {
   return donut;
 }
 
+function getStatInit(input) {
+  const donut = statsData.reduce((acc, widget) => (
+    { ...acc, [widget.statAPI]: input[widget.statAPI] }
+  ), {});
+  return donut;
+}
+
+function getFilteredStat(input) {
+  const donut = statsData.reduce((acc, widget) => (
+    {
+      ...acc,
+      [widget.statAPI]:
+       getStatDataFromDashboardData(
+         input, widget.type, widget.datatable_field, widget.datatable_sub_field,
+       ),
+    }
+  ), {});
+  return donut;
+}
+
 // This need to go to dashboard controller
 
 function fetchDashboard() {
@@ -138,14 +159,7 @@ export default function dashboardReducer(state = initialState, action) {
         : state.checkboxForAll.data;
       return {
         ...state,
-        stats: {
-          numberOfPrograms: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
-          numberOfStudies: getStatDataFromDashboardData(tableData, 'study_acronym', dataTableFilters),
-          numberOfSubjects: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
-          numberOfSamples: getStatDataFromDashboardData(tableData, 'samples', dataTableFilters),
-          numberOfLabProcedures: getStatDataFromDashboardData(tableData, 'lab_procedures', dataTableFilters),
-          numberOfFiles: getStatDataFromDashboardData(tableData, 'file', dataTableFilters),
-        },
+        stats: getFilteredStat(tableData, dataTableFilters),
         checkbox: {
           data: updatedCheckboxData,
           defaultPanel: action.payload[0].groupName,
@@ -172,14 +186,7 @@ export default function dashboardReducer(state = initialState, action) {
         : state.checkboxForAll.data;
       return {
         ...state,
-        stats: {
-          numberOfPrograms: getStatDataFromDashboardData(tableData, 'program', dataTableFilters),
-          numberOfStudies: getStatDataFromDashboardData(tableData, 'study_acronym', dataTableFilters),
-          numberOfSubjects: getStatDataFromDashboardData(tableData, 'subject_id', dataTableFilters),
-          numberOfSamples: getStatDataFromDashboardData(tableData, 'samples', dataTableFilters),
-          numberOfLabProcedures: getStatDataFromDashboardData(tableData, 'lab_procedures', dataTableFilters),
-          numberOfFiles: getStatDataFromDashboardData(tableData, 'file', dataTableFilters),
-        },
+        stats: getFilteredStat(tableData, dataTableFilters),
         checkbox: {
           data: updatedCheckboxData,
         },
@@ -201,14 +208,7 @@ export default function dashboardReducer(state = initialState, action) {
           isLoading: false,
           hasError: false,
           error: '',
-          stats: {
-            numberOfPrograms: action.payload.data.numberOfPrograms,
-            numberOfStudies: action.payload.data.numberOfStudies,
-            numberOfSubjects: action.payload.data.numberOfSubjects,
-            numberOfSamples: action.payload.data.numberOfSamples,
-            numberOfLabProcedures: action.payload.data.numberOfLabProcedures,
-            numberOfFiles: action.payload.data.numberOfFiles,
-          },
+          stats: getStatInit(action.payload.data),
           subjectOverView: {
             data: action.payload.data.subjectOverView,
           },
