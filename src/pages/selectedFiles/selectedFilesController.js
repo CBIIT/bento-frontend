@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SelectedFilesView from './selectedFilesView';
 import { initCart } from '../selectedCases/selectedCasesState';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { GET_MY_CASES_DATA_QUERY } from '../../utils/graphqlQueries';
+import { GET_MY_CASES_DATA_QUERY } from '../../bento/cartWorkflowData';
 
 const selectedFilesController = () => {
   const dispatch = useDispatch();

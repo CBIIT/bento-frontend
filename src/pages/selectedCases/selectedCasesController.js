@@ -5,7 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import SelectedCasesView from './selectedCasesView';
 import { initCart } from './selectedCasesState';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { GET_MY_CASES_DATA_QUERY } from '../../utils/graphqlQueries';
+import { GET_MY_CASES_DATA_QUERY } from '../../bento/cartWorkflowData';
 
 const selectedCasesController = () => {
   const dispatch = useDispatch();
