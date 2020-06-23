@@ -23,6 +23,12 @@ export const dashboardTable = {
       display: true,
     },
     {
+      field: 'diagnosis',
+      label: 'Diagnosis',
+      sort: 'asc',
+      display: true,
+    },
+    {
       field: 'recurrence_score',
       label: 'Recurrence Score',
       sort: 'asc',
@@ -42,7 +48,7 @@ export const dashboardTable = {
     },
     {
       field: 'pr_status',
-      label: 'pr_status',
+      label: 'PR Status',
       sort: 'asc',
       display: true,
     },
