@@ -118,7 +118,7 @@ const SelectedCasesView = ({ data, classes }) => {
               <MUIDataTable
                 data={data}
                 columns={columns}
-                options={options()}
+                options={options(data)}
                 className={classes.tableStyle}
               />
             </div>
