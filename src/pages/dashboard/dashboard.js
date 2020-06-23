@@ -61,147 +61,61 @@ const Dashboard = ({
                 </div>
                 <Collapse in={checked} className={classes.backgroundShawdowWidgets}>
                   <Grid container spacing={2}>
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
-                      <Widget
-                        title={donutData.sunburst.label}
-                        upperTitle
-                        bodyClass={classes.fullHeightBody}
-                        className={classes.card}
-                        color={theme.palette.lochmara.contrastText}
-                        customBackGround
-                      >
-                        <div className={classes.marginTop18}>
-                          <ProgramSunburst
-                            data={data[donutData.sunburst.data]}
-                            width={250}
-                            height={180}
-                            innerRadius={40}
-                            outerRadius={65}
-                            cx="50%"
-                            cy="50%"
-                            textColor={theme.palette.widgetBackground.contrastText}
-                          />
-                        </div>
-                      </Widget>
-                    </Grid>
-                    { donutData.donut1.show && (
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
-                      <Widget
-                        title={donutData.donut1.label}
-                        upperTitle
-                        bodyClass={classes.fullHeightBody}
-                        className={classes.card}
-                        color={theme.palette.lochmara.contrastText}
-                        customBackGround
-                      >
-                        <CustomActiveDonut
-                          data={data[donutData.donut1.data]}
-                          width={400}
-                          height={225}
-                          innerRadius={50}
-                          outerRadius={75}
-                          cx="50%"
-                          cy="50%"
-                          textColor={theme.palette.widgetBackground.contrastText}
-                        />
-                      </Widget>
-                    </Grid>
-                    )}
-                    {donutData.donut2.show && (
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
-                      <Widget
-                        title={donutData.donut2.label}
-                        upperTitle
-                        bodyClass={classes.fullHeightBody}
-                        className={classes.card}
-                        color={theme.palette.lochmara.contrastText}
-                        customBackGround
-                      >
-                        <CustomActiveDonut
-                          data={data[donutData.donut2.data]}
-                          width={400}
-                          height={225}
-                          innerRadius={50}
-                          outerRadius={75}
-                          cx="50%"
-                          cy="50%"
-                          textColor={theme.palette.widgetBackground.contrastText}
-                        />
-                      </Widget>
-                    </Grid>
-                    )}
-                    {/* </Grid> */}
-                    {/* second row Grids */}
-                    {/* <Grid container spacing={32}> */}
-                    {donutData.donut3.show && (
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
-                      <Widget
-                        title={donutData.donut3.label}
-                        upperTitle
-                        bodyClass={classes.fullHeightBody}
-                        className={classes.card}
-                        color={theme.palette.lochmara.contrastText}
-                        customBackGround
-                      >
-                        <CustomActiveDonut
-                          data={data[donutData.donut3.data]}
-                          width={400}
-                          height={225}
-                          innerRadius={50}
-                          outerRadius={75}
-                          cx="50%"
-                          cy="50%"
-                          textColor={theme.palette.widgetBackground.contrastText}
-                        />
-                      </Widget>
-                    </Grid>
-                    )}
-                    {donutData.donut4.show && (
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
-                      <Widget
-                        title={donutData.donut4.label}
-                        upperTitle
-                        bodyClass={classes.fullHeightBody}
-                        className={classes.card}
-                        color={theme.palette.lochmara.contrastText}
-                        customBackGround
-                      >
-                        <CustomActiveDonut
-                          data={data.caseCountByEthnicity}
-                          width={400}
-                          height={225}
-                          innerRadius={50}
-                          outerRadius={75}
-                          cx="50%"
-                          cy="50%"
-                          textColor={theme.palette.widgetBackground.contrastText}
-                        />
-                      </Widget>
-                    </Grid>
-                    )}
-                    {donutData.donut5.show && (
-                    <Grid item lg={4} md={6} sm={12} xs={12}>
-                      <Widget
-                        title={donutData.donut5.label}
-                        upperTitle
-                        bodyClass={classes.fullHeightBody}
-                        className={classes.card}
-                        color={theme.palette.lochmara.contrastText}
-                        customBackGround
-                      >
-                        <CustomActiveDonut
-                          data={data[donutData.donut4.data]}
-                          width={400}
-                          height={225}
-                          innerRadius={50}
-                          outerRadius={75}
-                          cx="50%"
-                          cy="50%"
-                          textColor={theme.palette.widgetBackground.contrastText}
-                        />
-                      </Widget>
-                    </Grid>
-                    )}
+                    {donutData.map((widget) => {
+                      if (widget.type === 'sunburst') {
+                        return (
+                          <Grid item lg={4} md={6} sm={12} xs={12}>
+                            <Widget
+                              title={widget.label}
+                              upperTitle
+                              bodyClass={classes.fullHeightBody}
+                              className={classes.card}
+                              color={theme.palette.lochmara.contrastText}
+                              customBackGround
+                            >
+                              <div className={classes.marginTop18}>
+                                <ProgramSunburst
+                                  data={data[widget.data]}
+                                  width={250}
+                                  height={180}
+                                  innerRadius={40}
+                                  outerRadius={65}
+                                  cx="50%"
+                                  cy="50%"
+                                  textColor={theme.palette.widgetBackground.contrastText}
+                                />
+                              </div>
+                            </Widget>
+                          </Grid>
+                        );
+                      }
+                      if (widget.type === 'donut') {
+                        return (
+                          <Grid item lg={4} md={6} sm={12} xs={12}>
+                            <Widget
+                              title={widget.label}
+                              upperTitle
+                              bodyClass={classes.fullHeightBody}
+                              className={classes.card}
+                              color={theme.palette.lochmara.contrastText}
+                              customBackGround
+                            >
+                              <CustomActiveDonut
+                                data={data[widget.data]}
+                                width={400}
+                                height={225}
+                                innerRadius={50}
+                                outerRadius={75}
+                                cx="50%"
+                                cy="50%"
+                                textColor={theme.palette.widgetBackground.contrastText}
+                              />
+                            </Widget>
+                          </Grid>
+                        );
+                      }
+                      return <></>;
+                    })}
                   </Grid>
                 </Collapse>
               </div>

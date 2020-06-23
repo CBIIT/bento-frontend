@@ -47,55 +47,49 @@ export const unselectFilters = (filtersObj) => filtersObj.map((filterElement) =>
   isChecked: false,
 }));
 
-export function getStatDataFromDashboardData(data, statName) {
-  switch (statName) {
-    case 'subject_id':
-      return [...new Set(data.map((d) => d.subject_id))].length;
-    case 'program':
-      return [...new Set(data.map((d) => d.program))].length;
-    case 'file':
-      return [...new Set(data.reduce((output, d) => output.concat(d.files
-        ? d.files : []), []).map((f) => f.uuid))].length;
-    case 'study_acronym':
-      return [...new Set(data.map((d) => d.study_acronym))].length;
-    case 'samples':
-      return [...new Set(data.reduce((output, d) => output.concat(d.samples
-        ? d.samples : []), []))].length;
-    case 'lab_procedures':
-      return [...new Set(data.reduce((output, d) => output.concat(d.lab_procedures
-        ? d.lab_procedures : []), []))].length;
-    default:
-      return 0;
+export function getStatDataFromDashboardData(data, type, datatableField, datatableSubField = 'uuid') {
+  if (type === 'field') {
+    return [...new Set(data.map((d) => d[datatableField]))].length;
   }
+  if (type === 'array') {
+    return [...new Set(data.reduce((output, d) => output.concat(d[datatableField]
+      ? d[[datatableField]] : []), []))].length;
+  }
+  if (type === 'object') {
+    const test = [...new Set(data.reduce((output, d) => output.concat(d[datatableField]
+      ? d[datatableField] : []), []).map((f) => f[datatableSubField]))].length;
+    return test;
+  }
+  return 0;
 }
 
 // getStudiesProgramWidgetFromDT
 
-export function getSunburstDataFromDashboardData(data) {
+export function getSunburstDataFromDashboardData(data, level1, level2) {
   // construct data tree
   const widgetData = [];
   let colorIndex = 0;
   data.forEach((d) => {
-    let existProgram = false;
-    let existStudy = false;
+    let existLevel1 = false;
+    let existLevel2 = false;
     widgetData.map((p) => {
-      if (p.title === d.program) { // program exist
-        existProgram = true;
+      if (p.title === d[level1]) { // program exist
+        existLevel1 = true;
         // eslint-disable-next-line no-param-reassign
         p.caseSize += 1;
         p.children.map((study) => {
           const s = study;
-          if (s.title === `${d.program} : ${d.study_acronym}`) { // study exist
-            existStudy = true;
+          if (s.title === `${d[level1]} : ${d[level2]}`) { // study exist
+            existLevel2 = true;
             s.size += 1;
             s.caseSize += 1;
           }
           return s;
         }); // end find study
-        if (!existStudy) { // new study
+        if (!existLevel2) { // new study
           colorIndex += 1;
           p.children.push({
-            title: `${d.program} : ${d.study_acronym}`,
+            title: `${d[level1]} : ${d[level2]}`,
             color: p.color,
             size: 1,
             caseSize: 1,
@@ -105,14 +99,14 @@ export function getSunburstDataFromDashboardData(data) {
       return p;
     }); // end find program
 
-    if (!existProgram && !existStudy) {
+    if (!existLevel1 && !existLevel2) {
       colorIndex += 1;
       widgetData.push({
-        title: d.program,
+        title: d[level1],
         color: COLORS[parseInt(colorIndex, 10)],
         caseSize: 1,
         children: [{
-          title: `${d.program} : ${d.study_acronym}`,
+          title: `${d[level1]} : ${d[level2]}`,
           color: COLORS[parseInt(colorIndex, 10)],
           size: 1,
           caseSize: 1,
