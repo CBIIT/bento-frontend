@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import mappingCheckBoxToDataTable from '../bento/checkboxData';
+import { dashboardData } from '../bento/dashboardData';
 
 export const COLORS = [
   '#39C0F0',
@@ -342,7 +342,7 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
 // so it contains more information and easy for front-end to show it correctly.
 export function customCheckBox(data) {
   return (
-    mappingCheckBoxToDataTable.map((mapping) => ({
+    dashboardData.facetSearch.map((mapping) => ({
       groupName: mapping.group,
       checkboxItems: transformAPIDataIntoCheckBoxData(data[mapping.api], mapping.field),
       datafield: mapping.datafield,
