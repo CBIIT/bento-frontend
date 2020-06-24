@@ -77,12 +77,15 @@ function Button({ children, color, bgColor, className, ...props }) {
     root: {
       color: getColor(color, theme),
       backgroundColor: getColor(bgColor, theme),
+      "&:hover": {
+        backgroundColor: getColor(bgColor, theme),
+      }
     },
     contained: {
       boxShadow: theme.customShadows.widget,
       color: `${color ? "white" : theme.palette.text.primary} !important`,
       "&:hover": {
-        backgroundColor: getColor(color, theme, "light"),
+        backgroundColor: getColor(bgColor, theme),
         boxShadow: theme.customShadows.widgetWide,
       },
       "&:active": {

@@ -60,7 +60,7 @@ const Dashboard = ({
                   </div>
                 </div>
                 <Collapse in={checked} className={classes.backgroundShawdowWidgets}>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={1}>
                     { widgetsData.map((widget) => {
                       if (widget.type === 'sunburst') {
                         return (
