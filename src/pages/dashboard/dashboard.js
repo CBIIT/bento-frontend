@@ -75,7 +75,7 @@ const Dashboard = ({
                             >
                               <div className={classes.marginTop18}>
                                 <ProgramSunburst
-                                  data={data[widget.data]}
+                                  data={data[widget.dataName]}
                                   width={250}
                                   height={180}
                                   innerRadius={40}
@@ -101,7 +101,7 @@ const Dashboard = ({
                               customBackGround
                             >
                               <CustomActiveDonut
-                                data={data[widget.data]}
+                                data={data[widget.dataName]}
                                 width={400}
                                 height={225}
                                 innerRadius={50}
