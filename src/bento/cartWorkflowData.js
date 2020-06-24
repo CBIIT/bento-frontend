@@ -1,3 +1,5 @@
+import gql from 'graphql-tag';
+
 export const navBarCartData = {
   cartLabel: 'MY CASES',
   cartLink: '/myCases',
@@ -31,3 +33,33 @@ export const cartSelectionMessages = {
   selectionsAddedMessage: 'Case(s) successfully added to the My Cases list',
   selectionsRemovedMessage: 'Case(s) successfully removed from the My Cases list',
 };
+
+export const GET_MY_CASES_DATA_QUERY = gql`
+query subjectsInList($subject_ids: [String!]!) {
+
+  subjectsInList(subject_ids: $subject_ids) {
+    subject_id
+    program
+    study_acronym
+    diagnosis
+    recurrence_score
+    tumor_size
+    er_status
+    pr_status
+    age_at_index
+    survival_time
+    survival_time_unit
+}
+filesOfSubjects(subject_ids: $subject_ids) {
+   subject_id
+    file_description
+    file_format
+    file_name
+    file_size
+    file_type
+    association
+    file_id
+    md5sum
+}
+
+}`;
