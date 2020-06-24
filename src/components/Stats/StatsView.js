@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { dashboardData } from '../../bento/dashboardData';
+import statsCount from '../../bento/stats';
 
 import {
   withStyles,
@@ -13,7 +13,7 @@ const LandingStatsView = ({ classes, data }) => (
         className={classes.box}
       >
         {
-        dashboardData.stats.map((stat) => (
+        statsCount.map((stat) => (
           <div className={classes.statsGroup}>
             <div className={classes.statsText}>
               <div className={classes.statTitle}>

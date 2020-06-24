@@ -1,5 +1,6 @@
 import client from '../../utils/graphqlClient';
-import { dashboardData, DASHBOARD_QUERY } from '../../bento/dashboardData';
+import { DASHBOARD_QUERY, widgetsData } from '../../bento/dashboardData';
+import statsCount from '../../bento/stats';
 
 import {
   getStatDataFromDashboardData,
@@ -88,9 +89,9 @@ function readyDashboard() {
 }
 
 function getWidgetsData(input) {
-  const donut = dashboardData.widgets.reduce((acc, widget) => {
+  const donut = widgetsData.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input, widget.datatable_level1_field, widget.datatable_level2_field) : getDonutDataFromDashboardData(input, widget.datatable_field);
-    const label = widget.data;
+    const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});
 
@@ -98,14 +99,14 @@ function getWidgetsData(input) {
 }
 
 function getStatInit(input) {
-  const donut = dashboardData.stats.reduce((acc, widget) => (
+  const initStats = statsCount.reduce((acc, widget) => (
     { ...acc, [widget.statAPI]: input[widget.statAPI] }
   ), {});
-  return donut;
+  return initStats;
 }
 
 function getFilteredStat(input) {
-  const donut = dashboardData.stats.reduce((acc, widget) => (
+  const filteredStats = statsCount.reduce((acc, widget) => (
     {
       ...acc,
       [widget.statAPI]:
@@ -114,7 +115,7 @@ function getFilteredStat(input) {
        ),
     }
   ), {});
-  return donut;
+  return filteredStats;
 }
 
 // This need to go to dashboard controller
