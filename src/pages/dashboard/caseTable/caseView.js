@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import Snackbar from '@material-ui/core/Snackbar';
 // import { Link } from 'react-router-dom';
-import { dashboardData } from '../../../bento/dashboardData';
+import { dashboardTable } from '../../../bento/dashboardData';
 
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import { cartSelectionMessages } from '../../../bento/cartWorkflowData';
@@ -83,7 +83,7 @@ const Cases = ({ classes, data }) => {
     saveButton.current.style.cursor = 'auto';
   });
 
-  const columns = dashboardData.table.tableData.map((column) => ({
+  const columns = dashboardTable.tableData.map((column) => ({
     name: column.field,
     label: column.label,
     options: {
@@ -147,7 +147,7 @@ const Cases = ({ classes, data }) => {
         selectedRows.data[keyVlaue].index
       ));
       const selectedCaseId = selectedKeys.map((keyVlaue) => (
-        displayData[keyVlaue].data[dashboardData.table.tableData.findIndex(
+        displayData[keyVlaue].data[dashboardTable.tableData.findIndex(
           (p) => p.primary === true,
         )].props.children
       ));
@@ -199,7 +199,7 @@ const Cases = ({ classes, data }) => {
 
         <Grid container>
           <Grid item xs={12} className={classes.caseTitle}>
-            {dashboardData.table.tableTitle}
+            {dashboardTable.tableTitle}
           </Grid>
           <Grid item xs={12} id="table_cases">
             <MUIDataTable

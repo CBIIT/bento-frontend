@@ -10,7 +10,7 @@ import Cases from './caseTable/caseController';
 import ProgramSunburst from '../../components/Widgets/PieCharts/ProgramSunburst/ProgramSunburstController';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import SideBar from '../../components/SideBar/SideBarView';
-import { dashboardData } from '../../bento/dashboardData';
+import { widgetsData } from '../../bento/dashboardData';
 
 const Dashboard = ({
   classes, data, theme,
@@ -61,7 +61,7 @@ const Dashboard = ({
                 </div>
                 <Collapse in={checked} className={classes.backgroundShawdowWidgets}>
                   <Grid container spacing={2}>
-                    {dashboardData.widgets.map((widget) => {
+                    { widgetsData.map((widget) => {
                       if (widget.type === 'sunburst') {
                         return (
                           <Grid item lg={4} md={6} sm={12} xs={12}>

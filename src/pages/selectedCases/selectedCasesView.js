@@ -5,12 +5,12 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useDispatch } from 'react-redux';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import { myCasesPageData, cartSelectionMessages } from '../../bento/cartWorkflowData';
-import { dashboardData } from '../../bento/dashboardData';
+import { dashboardTable } from '../../bento/dashboardData';
 
 import CustomFooter from './customFooter';
 import { deleteCasesAction } from './selectedCasesState';
 
-const columns = dashboardData.table.tableData.map((column) => ({
+const columns = dashboardTable.tableData.map((column) => ({
   name: column.field,
   label: column.label,
   options: {
