@@ -353,7 +353,7 @@ const styles = () => ({
 
   program: {
     float: 'left',
-    padding: '0 10px 6.7px 0px',
+    padding: '0 10px 6.8px 0px',
   },
   programImg: {
     background: '#fff',
