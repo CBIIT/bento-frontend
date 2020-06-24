@@ -353,7 +353,7 @@ const styles = () => ({
 
   program: {
     float: 'left',
-    padding: '0 10px 8px 0px',
+    padding: '0 10px 6.7px 0px',
   },
   programImg: {
     background: '#fff',
@@ -372,7 +372,7 @@ const styles = () => ({
   },
   cases: {
     height: '456px',
-    paddingLeft: '320px',
+    paddingLeft: '340px',
     paddingTop: '70px',
   },
   mountainMeadowButtonSection: {
@@ -400,6 +400,7 @@ const styles = () => ({
   blueButtonRight: {
     float: 'left',
     lineHeight: '44px',
+    marginLeft: '16px',
     fontFamily: 'Lato',
     fontSize: '14px',
     color: '#fff',
@@ -469,6 +470,5 @@ const styles = () => ({
   buttonText: {
     padding: '12px 30px',
   },
-
 });
 export default withStyles(styles, { withTheme: true })(LandingView);
