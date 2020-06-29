@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import MUIDataTable from 'mui-datatables';
+import { CustomDataTable } from 'bento-components';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -319,7 +319,7 @@ const CaseDetail = ({ classes, data }) => {
           <Grid item xs={12}>
             <Grid container spacing={4}>
               <Grid item xs={12}>
-                <MUIDataTable
+                <CustomDataTable
                   data={data.filesOfCase}
                   columns={columns}
                   options={options(classes)}
