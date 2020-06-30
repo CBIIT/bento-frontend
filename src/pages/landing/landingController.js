@@ -2,10 +2,10 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LandingView from './landingView';
-import { LANDING_QUERY } from '../../bento/landingData';
+import { landingPageQuery } from '../../bento/landingPageData';
 
 const landingController = () => (
-  <Query query={LANDING_QUERY}>
+  <Query query={landingPageQuery}>
     {({ data, loading }) => (loading ? <CircularProgress /> : <LandingView statsData={data} />
     )}
   </Query>
