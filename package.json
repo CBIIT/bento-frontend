@@ -1,6 +1,6 @@
 {
   "homepage": ".",
-  "name": "ctdc-frontend",
+  "name": "bento-frontend",
   "version": "0.1.0",
   "dependencies": {
     "@babel/core": "7.2.2",
@@ -15,7 +15,7 @@
     "babel-loader": "8.0.5",
     "babel-plugin-named-asset-import": "^0.3.4",
     "babel-preset-react-app": "^7.0.1",
-    "bento-components": "^0.1.11",
+    "bento-components": "^0.1.14",
     "bfj": "6.1.1",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "classnames": "^2.2.6",
@@ -40,8 +40,6 @@
     "js-yaml": "^3.13.1",
     "line-awesome": "github:icons8/line-awesome",
     "mini-css-extract-plugin": "0.5.0",
-    "mui-custom-datatables": "git+https://github.com/skiran86/mui-custom-datatables.git",
-    "mui-datatables": "^2.6.4",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.2.1",
     "postcss-flexbugs-fixes": "4.1.0",

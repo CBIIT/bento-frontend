@@ -3,7 +3,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import MUIDataTable from 'mui-datatables';
+import { CustomDataTable } from 'bento-components';
 import { Link } from 'react-router-dom';
 
 import TableFooter from '@material-ui/core/TableFooter';
@@ -154,7 +154,7 @@ const Trials = ({ classes, data }) => {
           <div id="table_trials" className={classes.tableDiv}>
             <Grid container>
               <Grid item xs={12}>
-                <MUIDataTable
+                <CustomDataTable
                   data={data.clinicalTrials}
                   columns={columns}
                   options={options(classes)}
