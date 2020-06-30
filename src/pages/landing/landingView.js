@@ -6,7 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import StatsView from './components/statsView';
 import { Button } from '../../components/Wrappers/Wrappers';
-import { landingPageData } from '../../bento/landingData';
+import { landingPageData } from '../../bento/landingPageData';
 import icon from '../../assets/landing/LP_ReadMore.svg';
 import iconAbout from '../../assets/landing/LP_About_Fullarticle.Arrow.svg';
 // import cn from '../../utils/classNameConcat';
@@ -20,15 +20,15 @@ const LandingView = ({ classes, statsData }) => (
           <div className={classes.heroTextContainer}>
             <div className={classes.heroTextWrapper}>
               <div className={classes.headerTitle}>
-                { landingPageData.heroHeaderTitle }
+                { landingPageData.callToActionTitle }
               </div>
               <div className={classes.headerContent}>
-                { landingPageData.heroHeaderDescription}
+                { landingPageData.callToActionDescription}
               </div>
               <div className={classes.headerButtonSection}>
-                <Link to={landingPageData.exploreCallToActionLink} className={classes.headerLink}>
+                <Link to={landingPageData.callToActionLink} className={classes.headerLink}>
                   <Button className={classes.buttonText} bgColor="neonBlue" color="white">
-                    {landingPageData.exploreCallToActionButtonText}
+                    {landingPageData.callToActionButtonText}
                   </Button>
                 </Link>
               </div>
@@ -38,7 +38,7 @@ const LandingView = ({ classes, statsData }) => (
       </div>
     </div>
     <div className={classes.whiteSection} />
-    <StatsView stats={landingPageData.stats} statsData={statsData} />
+    <StatsView stats={landingPageData.landingPageStatsBar} statsData={statsData} />
     <div className={classes.container}>
       <div className={classes.texture}>
         <Grid container spacing={16} direction="row" className={classes.landingContainer}>
@@ -52,7 +52,7 @@ const LandingView = ({ classes, statsData }) => (
                 />
               </div>
               <div className={classes.DCWords}>
-                {landingPageData.tile1.cardTitleText.match(/\b(\w+)\b/g).map((word) => (
+                {landingPageData.tile1.titleText.match(/\b(\w+)\b/g).map((word) => (
                   <>
                     {word}
                     <br />
@@ -60,7 +60,7 @@ const LandingView = ({ classes, statsData }) => (
                 ))}
               </div>
               <div className={classes.aboutContent}>
-                {landingPageData.tile1.cardDescriptionText}
+                {landingPageData.tile1.descriptionText}
               </div>
               <div className={classes.aboutButtonSection}>
                 <div className={classes.aboutButtonLeft}>
@@ -68,10 +68,10 @@ const LandingView = ({ classes, statsData }) => (
                 </div>
                 <div className={classes.aboutButtonRight}>
                   <Link
-                    to={landingPageData.tile1.cardCallToActionLink}
+                    to={landingPageData.tile1.callToActionLink}
                     className={classes.aboutButton}
                   >
-                    {landingPageData.tile1.cardCallToActionText}
+                    {landingPageData.tile1.callToActionText}
                   </Link>
                 </div>
               </div>
@@ -89,10 +89,10 @@ const LandingView = ({ classes, statsData }) => (
                 </div>
                 <div className={classes.content}>
                   <div className={classes.contentHeader}>
-                    {landingPageData.tile2.cardTitleText}
+                    {landingPageData.tile2.titleText}
                   </div>
                   <div className={classes.contentContainer}>
-                    {landingPageData.tile2.cardDescriptionText}
+                    {landingPageData.tile2.descriptionText}
                   </div>
 
                 </div>
@@ -103,10 +103,10 @@ const LandingView = ({ classes, statsData }) => (
                   </div>
                   <div className={classes.blueButtonRight}>
                     <Link
-                      to={landingPageData.tile2cardCallToActionLink}
+                      to={landingPageData.tile2.callToActionLink}
                       className={classes.blueButton}
                     >
-                      {landingPageData.tile2.cardCallToActionText}
+                      {landingPageData.tile2.callToActionText}
                     </Link>
                   </div>
                 </div>
@@ -121,10 +121,10 @@ const LandingView = ({ classes, statsData }) => (
                 </div>
                 <div className={classes.content}>
                   <div className={classes.contentHeader}>
-                    {landingPageData.tile3.cardTitleText}
+                    {landingPageData.tile3.titleText}
                   </div>
                   <div className={classes.contentContainer}>
-                    {landingPageData.tile3.cardDescriptionText}
+                    {landingPageData.tile3.descriptionText}
                   </div>
 
                 </div>
@@ -135,10 +135,10 @@ const LandingView = ({ classes, statsData }) => (
                   </div>
                   <div className={classes.blueButtonRight}>
                     <Link
-                      to={landingPageData.tile3.cardCallToActionLink}
+                      to={landingPageData.tile3.callToActionLink}
                       className={classes.blueButton}
                     >
-                      {landingPageData.tile3.cardCallToActionText}
+                      {landingPageData.tile3.callToActionText}
                     </Link>
                   </div>
                 </div>
@@ -148,10 +148,10 @@ const LandingView = ({ classes, statsData }) => (
             <div className={classes.contentRightBottom}>
               <div className={classes.cases}>
                 <div className={classes.mountainMeadowContentHeader}>
-                  {landingPageData.tile4.cardTitleText}
+                  {landingPageData.tile4.titleText}
                 </div>
                 <div className={classes.mountainMeadowContent}>
-                  {landingPageData.tile4.cardDescriptionText}
+                  {landingPageData.tile4.descriptionText}
                 </div>
                 <div className={classes.mountainMeadowButtonSection}>
                   <div className={classes.blueButtonLeft}>
@@ -160,10 +160,10 @@ const LandingView = ({ classes, statsData }) => (
                   </div>
                   <div className={classes.blueButtonRight}>
                     <Link
-                      to={landingPageData.tile4.cardCallToActionLink}
+                      to={landingPageData.tile4.callToActionLink}
                       className={classes.mountainMeadowButton}
                     >
-                      {landingPageData.tile4.cardCallToActionText}
+                      {landingPageData.tile4.callToActionText}
                     </Link>
                   </div>
                 </div>
@@ -185,7 +185,7 @@ const styles = () => ({
     height: '600px',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
-    backgroundImage: `url(${landingPageData.hero.img})`,
+    backgroundImage: `url(${landingPageData.landingPageHero.img})`,
   },
   texture: {
     backgroundSize: 'cover',
