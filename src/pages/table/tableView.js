@@ -1,10 +1,9 @@
-/* eslint-disable */
 import React from 'react';
 import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
+import MUIDataTable from 'mui-datatables';
 
 const columns = [{ name: 'program_id', label: 'Program' },
   { name: 'clinical_study_designation', label: 'Study Code' },
@@ -45,7 +44,7 @@ const Studies = () => (
   <>
     <Grid container spacing={32}>
       <Grid item xs={12}>
-        <CustomDataTable
+        <MUIDataTable
           title="Sample Table"
           data={data}
           columns={columns}

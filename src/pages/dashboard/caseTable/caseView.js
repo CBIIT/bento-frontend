@@ -5,7 +5,7 @@ import {
   Chip,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { CustomDataTable } from 'bento-components';
+import MUIDataTable from 'mui-datatables';
 import Snackbar from '@material-ui/core/Snackbar';
 // import { Link } from 'react-router-dom';
 import { dashboardTable } from '../../../bento/dashboardData';
@@ -202,7 +202,7 @@ const Cases = ({ classes, data }) => {
             {dashboardTable.tableTitle}
           </Grid>
           <Grid item xs={12} id="table_cases">
-            <CustomDataTable
+            <MUIDataTable
               data={data}
               columns={columns}
               options={options()}
