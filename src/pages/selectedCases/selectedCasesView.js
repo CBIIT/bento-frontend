@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import MUIDataTable from 'mui-datatables';
+import { CustomDataTable } from 'bento-components';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useDispatch } from 'react-redux';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
@@ -52,6 +52,7 @@ const SelectedCasesView = ({ data, classes }) => {
   }
   const options = (cases) => ({
     selectableRows: 'multiple',
+    selectCellPostion: 'right',
     responsive: 'stacked',
     search: false,
     filter: false,
@@ -116,7 +117,7 @@ const SelectedCasesView = ({ data, classes }) => {
             </div>
             <div />
             <div id="table_selected_cases" className={classes.tableWrapper}>
-              <MUIDataTable
+              <CustomDataTable
                 data={data}
                 columns={columns}
                 options={options(data)}

@@ -112,7 +112,7 @@ const NavBar = ({
                 to="/trials"
                 onClick={() => handleButtonClickEvent('trials')}
               >
-                Trials
+                Programs
               </NavLink>
 
             </Button>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import MUIDataTable from 'mui-datatables';
+import { CustomDataTable } from 'bento-components';
 import { myFilesPageData } from '../../bento/cartWorkflowData';
 import CustomFooter from './customFooter';
 
@@ -349,7 +349,7 @@ class selectedFilesView extends Component {
             </div>
 
             <div id="table_selected_files" className={classes.tableWrapper}>
-              <MUIDataTable
+              <CustomDataTable
                 data={state.data}
                 columns={columns}
                 options={options()}

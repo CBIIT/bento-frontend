@@ -1,9 +1,8 @@
 import gql from 'graphql-tag';
 
 export const landingPageData = {
-  heroHeaderTitle: 'Yours Tagline Here Up to 2-3 Lines',
-  heroHeaderDescription: 'ABC Data Source believes in the value of sharing and exploring data together for the benefit of the research community. Up to 150 Characters Limit.',
-  exploreCallToActionButtonText: 'explore the site',
+  heroHeaderTitle: 'Explore, Analyze, Visualize Clinical Trial Data Sets',
+  exploreCallToActionButtonText: 'EXPLORE',
   exploreCallToActionLink: '/cases',
   hero: {
     alt: 'Alt tag1',
@@ -19,7 +18,7 @@ export const landingPageData = {
       statAPI: 'numberOfStudies',
     },
     {
-      statTitle: 'Subjects',
+      statTitle: 'Cases',
       statAPI: 'numberOfSubjects',
     },
     {
@@ -32,36 +31,36 @@ export const landingPageData = {
     },
   ],
   tile1: {
-    alt: 'Alt tag1',
+    alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/aboutImage.png',
-    cardTitleText: 'About Your Data Commons',
-    cardDescriptionText: 'Up to 460 Character Limitsed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in cumastera qui officia deserunt mollit anim id. Excepteur laborum.',
-    cardCallToActionText: 'read more',
-    cardCallToActionLink: '/trials',
+    cardTitleText: 'About Bento',
+    cardDescriptionText: 'Effective data management is key to scientific discovery. Bento is an open source framework, developed by the Frederick National Laboratory for Cancer Research, to support the creation of data sharing platforms, that adhere to the FAIR principles of scientific data management.',
+    cardCallToActionText: 'Read More',
+    cardCallToActionLink: '', // This links to the "About" static page.
   },
   tile2: {
-    alt: 'Alt tag1',
+    alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/prgmImage.png',
     cardTitleText: 'Programs',
-    cardDescriptionText: 'Up to 100 Character Limit. It is a long established fact that',
-    cardCallToActionText: 'read more',
-    cardCallToActionLink: '/request-access',
+    cardDescriptionText: 'This reference implementation of the Bento framework provides access to data from the TailoRx clinical trial.',
+    cardCallToActionText: 'More',
+    cardCallToActionLink: '/trials', // This links to the Programs Listing Page.
   },
   tile3: {
-    alt: 'Alt tag1',
-    cardTitleText: 'Analytics',
+    alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/analyticsImage.png',
-    cardDescriptionText: 'Up to 100 Character Limit. distracted by the readable content of a page',
-    cardCallToActionText: 'read more',
-    cardCallToActionLink: '/model',
+    cardTitleText: 'Resources',
+    cardDescriptionText: 'Use Bento to set up your data sharing platform',
+    cardCallToActionText: 'Read More',
+    cardCallToActionLink: '/purpose', // Link to the "Resources" Static Page
   },
   tile4: {
-    alt: 'Alt tag1',
+    alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/casesImage.png',
     cardTitleText: 'Cases',
-    cardDescriptionText: 'Up to 250 Character Limit. layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is layout. The point of using Lorem Ipsum is',
-    cardCallToActionText: 'explore',
-    cardCallToActionLink: '/purpose',
+    cardDescriptionText: 'Analyze data from the TailoRx clinical trial.',
+    cardCallToActionText: 'Explore',
+    cardCallToActionLink: '/cases', // This links to the cases dashboard.
   },
 };
 

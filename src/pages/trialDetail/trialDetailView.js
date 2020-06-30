@@ -4,7 +4,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import MUIDataTable from 'mui-datatables';
+import { CustomDataTable } from 'bento-components';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -419,7 +419,7 @@ const TrialView = ({ classes, data, theme }) => {
             <Grid container spacing={8}>
               <Grid item xs={12}>
                 <Typography>
-                  <MUIDataTable
+                  <CustomDataTable
                     data={data.clinicalTrialArmByTrialId}
                     columns={columns}
                     options={options}
