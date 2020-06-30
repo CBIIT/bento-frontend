@@ -12,7 +12,7 @@ export default [
     statAPI: 'numberOfStudies',
   },
   {
-    statTitle: 'Subjects',
+    statTitle: 'Cases',
     datatable_field: 'subject_id',
     type: 'field',
     statAPI: 'numberOfSubjects',

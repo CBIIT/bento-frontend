@@ -254,12 +254,14 @@ const styles = () => ({
 
   aboutImage: {
     width: '297px',
+    height: '249px',
     padding: '14px',
   },
   aboutImageSection: {
+    height: '249px',
   },
   DCWords: {
-    height: '188px',
+    height: '220px',
     background: '#274FA5',
     color: '#FFFFFF',
     fontSize: '28px',
@@ -321,13 +323,14 @@ const styles = () => ({
     fontSize: '12px',
     fontWeight: '600',
     lineHeight: '45px',
-    paddingLeft: '12px',
+    paddingLeft: '20px',
     boxShadow: 'none',
     letterSpacing: '1px',
   },
 
   content: {
     width: '100%',
+    height: '175px',
     background: '#fff',
     paddingLeft: '30px',
     paddingTop: '6px',
@@ -357,6 +360,7 @@ const styles = () => ({
   },
   programImg: {
     background: '#fff',
+    height: '249px',
   },
   studies: {
     float: 'left',
@@ -371,7 +375,7 @@ const styles = () => ({
     backgroundSize: 'cover',
   },
   cases: {
-    height: '456px',
+    height: '436px',
     paddingLeft: '340px',
     paddingTop: '70px',
   },
@@ -400,7 +404,7 @@ const styles = () => ({
   blueButtonRight: {
     float: 'left',
     lineHeight: '44px',
-    marginLeft: '16px',
+    marginLeft: '8px',
     fontFamily: 'Lato',
     fontSize: '14px',
     color: '#fff',
