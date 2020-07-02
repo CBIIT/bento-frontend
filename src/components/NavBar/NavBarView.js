@@ -109,10 +109,10 @@ const NavBar = ({
               <NavLink
                 className={classes.link}
                 activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
-                to="/trials"
+                to="/programs"
                 onClick={() => handleButtonClickEvent('trials')}
               >
-                Trials
+                Programs
               </NavLink>
 
             </Button>
