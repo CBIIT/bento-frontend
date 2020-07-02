@@ -42,7 +42,7 @@ export const landingPageData = {
     alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/prgmImage.png',
     titleText: 'Programs',
-    descriptionText: 'This reference implementation of the Bento framework provides access to data from the TailoRx clinical trial.',
+    descriptionText: 'This data sharing platform has been built using the Bento framework. It provides access to data from the TAILORx clinical trial.',
     callToActionText: 'More',
     callToActionLink: '/trials', // This links to the Programs Listing Page.
   },
@@ -50,7 +50,7 @@ export const landingPageData = {
     alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/analyticsImage.png',
     titleText: 'Resources',
-    descriptionText: 'Use Bento to set up your data sharing platform',
+    descriptionText: 'The Bento team has developed a suite of software components to help you build your own data sharing platform.q',
     callToActionText: 'Read More',
     callToActionLink: '/purpose', // Link to the "Resources" Static Page
   },

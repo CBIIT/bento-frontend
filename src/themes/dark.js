@@ -1,7 +1,7 @@
 import tinycolor from 'tinycolor2';
 
 const whisper = '#E7E5E5';
-const navyBlue = '#142D64';
+const midNightBlue = '#142D64';
 const curiousBlue = '#CBE2EE';
 const deepSkyBlue = '#8DCAFF';
 const airForceBlue = '#5E8CA5';
@@ -38,14 +38,14 @@ export default {
   },
   palette: {
     primary: {
-      main: whisper,
-      light: tinycolor(navyBlue)
+      main: midNightBlue,
+      light: tinycolor(midNightBlue)
         .lighten(lightenRate)
         .toHexString(),
-      dark: tinycolor(navyBlue)
+      dark: tinycolor(midNightBlue)
         .darken(darkenRate)
         .toHexString(),
-      contrastText: '#0E273A',
+      contrastText: '#FFFFFF',
     },
     secondary: {
       main: deepSkyBlue,

@@ -356,7 +356,7 @@ const styles = (theme) => ({
   firstLink: {
     textDecoration: 'none',
     color: theme.palette.primary.contrastText,
-    fontFamily: 'Lato',
+    fontFamily: 'Nunito',
     fontSize: '13px',
   },
   sendButtonIcon: {
@@ -365,7 +365,7 @@ const styles = (theme) => ({
   link: {
     textDecoration: 'none',
     color: theme.palette.primary.contrastText,
-    fontFamily: 'Lato',
+    fontFamily: 'Nunito',
     fontSize: '13px',
   },
   myCasesLink: {

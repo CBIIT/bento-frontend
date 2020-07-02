@@ -1,4 +1,4 @@
-import { STATS_QUERY } from '../../utils/graphqlQueries';
+import { globalStatsQuery as STATS_QUERY } from '../../bento/stats';
 import client from '../../utils/graphqlClient';
 
 export const RECIEVE_STATS = 'RECIEVE_STATS';
