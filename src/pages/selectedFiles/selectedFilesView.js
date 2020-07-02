@@ -27,7 +27,7 @@ class selectedFilesView extends Component {
     this.downloadButton.current.style.opacity = '0.3';
     this.downloadButton.current.style.border = '3px solid grey';
     this.downloadButton.current.style.fontWeight = '600';
-    this.downloadButton.current.style.backgroundColor = '#C53B27';
+    this.downloadButton.current.style.backgroundColor = '#03A383';
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -41,7 +41,7 @@ class selectedFilesView extends Component {
     if (allRowsSelected.length === 0) {
       this.downloadButton.current.disabled = true;
       this.downloadButton.current.style.color = '#FFFFFF';
-      this.downloadButton.current.style.backgroundColor = '#C53B27';
+      this.downloadButton.current.style.backgroundColor = '#03A383';
       this.downloadButton.current.style.opacity = '0.3';
       this.downloadButton.current.style.border = '3px solid grey';
       this.downloadButton.current.style.fontWeight = '600';
@@ -49,7 +49,7 @@ class selectedFilesView extends Component {
     } else {
       this.downloadButton.current.disabled = false;
       this.downloadButton.current.style.color = '#FFFFFF';
-      this.downloadButton.current.style.backgroundColor = '#C53B27';
+      this.downloadButton.current.style.backgroundColor = '#03A383';
       this.downloadButton.current.style.cursor = 'pointer';
       this.downloadButton.current.style.opacity = 'unset';
       this.downloadButton.current.style.border = 'unset';
@@ -295,7 +295,7 @@ class selectedFilesView extends Component {
       ),
     });
     const btnStyle = {
-      color: 'rgba(0, 0, 0,0.26)',
+      color: '#DE5227',
       boxShadow: 'none',
       backgroundColor: '#C53B27',
       boxSizing: 'border-box',
@@ -377,8 +377,9 @@ const styles = (theme) => ({
   logo: {
     position: 'absolute',
     float: 'left',
-    marginTop: '-8.9px',
-    width: '82px',
+    marginTop: '-17.9px',
+    marginLeft: '-10px',
+    width: '101px',
     filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
   tableWrapper: {
@@ -395,7 +396,7 @@ const styles = (theme) => ({
     fontFamily: theme.custom.fontFamilySans,
     fontWeight: '300',
     letterSpacing: '0.017em',
-    color: '#DE5227',
+    color: '#03A383',
     fontSize: '18pt',
     lineHeight: '75px',
     '& $headerMainTitleTwo': {
@@ -428,7 +429,7 @@ const styles = (theme) => ({
     marginRight: '3%',
   },
   myFilesWrapper: {
-    border: '#DE5227 4px solid',
+    border: '#03A383 4px solid',
     borderRadius: '35px',
     margin: '80px',
     marginLeft: '3%',
