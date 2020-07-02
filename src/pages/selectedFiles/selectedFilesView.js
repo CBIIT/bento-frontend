@@ -306,7 +306,7 @@ class selectedFilesView extends Component {
       fontSize: '13px',
       fontWeight: '600',
       fontFamily: 'raleway',
-      borderRadius: '35px',
+      borderRadius: '6px',
       textTransform: 'uppercase',
       marginLeft: '-28px',
       textAlign: 'center',

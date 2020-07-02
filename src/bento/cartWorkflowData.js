@@ -14,7 +14,7 @@ export const myCasesPageData = {
   buttonLink: '/mycasesfiles',
   headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/bento-142/src/assets/icons/Icon-Cart-Workflow.svg',
   headerIconAlt: 'Bento MyCases header logo',
-  wizardIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/MyCases-Wizard-Step2.svg',
+  wizardIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/bento-142/src/assets/icons/Cart-Wizard-Step2.svg',
   wizardIconAlt: 'Bento MyCases Wizard',
 };
 
@@ -24,7 +24,7 @@ export const myFilesPageData = {
   buttonText: 'DOWNLOAD MANIFEST',
   headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/bento-142/src/assets/icons/Icon-Cart-Workflow.svg',
   headerIconAlt: 'Bento MyFiles header logo',
-  wizardIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/MyCases-Wizard-Step3.svg',
+  wizardIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/bento-142/src/assets/icons/Cart-Wizard-Step3.svg',
   wizardIconAlt: 'Bento MyFiles Wizard',
   manifestFileName: 'BENTO File Manifest',
 };
