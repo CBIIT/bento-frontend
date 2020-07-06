@@ -50,7 +50,7 @@ export const landingPageData = {
     alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/analyticsImage.png',
     titleText: 'Resources',
-    descriptionText: 'The Bento team has developed a suite of software components to help you build your own data sharing platform.q',
+    descriptionText: 'The Bento team has developed a suite of software components to help you build your own data sharing platform.',
     callToActionText: 'Read More',
     callToActionLink: '/purpose', // Link to the "Resources" Static Page
   },
