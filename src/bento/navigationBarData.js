@@ -1,0 +1,31 @@
+export default [
+  {
+    labelText: 'home',
+    type: 'link',
+    link: '/home',
+  },
+  {
+    labelText: 'programs',
+    type: 'link',
+    link: '/trials',
+  },
+  {
+    labelText: 'cases',
+    type: 'link',
+    link: '/cases',
+  },
+  {
+    labelText: 'about',
+    type: 'dropdown',
+    dropDonwLinks: [
+      {
+        labelText: 'purpose',
+        link: '/purpose',
+      },
+      {
+        labelText: 'crdc & analysis',
+        link: '/crdc',
+      },
+    ],
+  },
+];

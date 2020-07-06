@@ -11,10 +11,12 @@ import {
 } from '@material-ui/core';
 import classnames from 'classnames';
 import { navBarCartData } from '../../bento/cartWorkflowData';
+import navBarData from '../../bento/navigationBarData';
+
 // import { useTheme } from '../ThemeContext';
 
 import { initCart } from '../../pages/selectedCases/selectedCasesState';
-import AboutMenu from './components/AboutMenu';
+import DropdownMenu from './components/DropdownMenu';
 
 const drawerWidth = 240;
 // const FENCE_LOGIN_URL = process.env.FENCE_LOGIN_URL;
@@ -95,56 +97,30 @@ const NavBar = ({
 
           {/* End Sidebar button */}
           <div id="navbar" className={classes.buttonContainer}>
-            <Button id="button_navbar_home" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
-              <NavLink
-                className={classes.firstLink}
-                activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
-                to="/home"
-                onClick={() => handleButtonClickEvent('home')}
-              >
-                home
-              </NavLink>
-            </Button>
-            <Button id="button_navbar_trials" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
-              <NavLink
-                className={classes.link}
-                activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
-                to="/trials"
-                onClick={() => handleButtonClickEvent('trials')}
-              >
-                Programs
-              </NavLink>
-
-            </Button>
-
-            <Button id="button_navbar_cases" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
-              <NavLink
-                className={classes.link}
-                activeStyle={{ borderBottom: '2px solid  #39C0F0' }}
-                to="/cases"
-                onClick={() => handleButtonClickEvent('cases')}
-              >
-                Cases
-              </NavLink>
-            </Button>
-            <AboutMenu handleButtonClickEvent={handleButtonClickEvent} clickedEl={clickedEl} />
+            {navBarData.map((navButton) => (
+              navButton.type === 'dropdown'
+                ? (
+                  <DropdownMenu
+                    handleButtonClickEvent={handleButtonClickEvent}
+                    clickedEl={clickedEl}
+                    linkText={navButton.labelText}
+                    dropDownElements={navButton.dropDonwLinks}
+                  />
+                )
+                : (
+                  <Button id="button_navbar_navButton" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
+                    <NavLink
+                      className={classes.firstLink}
+                      activeStyle={{ borderBottom: '2px solid  #FFFFFF' }}
+                      to={navButton.link ? navButton.link : '/'}
+                      onClick={() => handleButtonClickEvent(`${navButton.labelText}`)}
+                    >
+                      {navButton.labelText}
+                    </NavLink>
+                  </Button>
+                )
+            ))}
           </div>
-          {/* <div className={classes.grow} /> */}
-          {/* Start of Theme Switching Icon and logic */}
-          {/* <IconButton
-            color="inherit"
-            aria-haspopup="true"
-            aria-controls="mail-menu"
-            onClick={() => {
-              theme.toggleTheme();
-            }}
-            className={classes.headerMenuButton}
-            classes={{ root: classes.iconButtonRoot }}
-          >
-            <Tooltip title="Light/Dark Theme" placement="bottom-end">
-              <ColorLensIcon classes={{ root: classes.headerIcon }} />
-            </Tooltip>
-          </IconButton> */}
           {/* Start of Theme Switching Icon and logic */}
           <div className={classes.myCasesPosition}>
             <Button id="button_navbar_mycases" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRootNoRightPadding }}>
@@ -369,7 +345,7 @@ const styles = (theme) => ({
     fontSize: '13px',
   },
   myCasesLink: {
-    color: '#B91F40',
+    color: '#FFFFFF',
   },
   menuButton: {
     marginRight: theme.spacing.unit * 2,
