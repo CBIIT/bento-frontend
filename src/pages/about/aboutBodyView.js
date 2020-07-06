@@ -4,7 +4,7 @@ import AboutHeader from './aboutHeaderView';
 import Stats from '../../components/Stats/AllStatsController';
 import externalIcon from '../../assets/about/About-ExternalLink.svg';
 import submissionGuide from '../../assets/footer/ICDC_DGAB_Guidelines.pdf';
-import MyCasesWizardStep4 from '../../assets/icons/MyCases-Wizard-Step4.svg';
+import MyCasesWizardStep4 from '../../assets/icons/Cart-Wizard-Step2.svg';
 
 const AboutBody = ({ classes, data }) => {
   function boldText(text) {

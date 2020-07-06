@@ -10,11 +10,11 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = () => ({
   buttonRoot: {
-    background: '#C53B27',
+    background: '#03A383',
     '&:hover': {
-      background: '#C53B27',
+      background: '#03A383',
     },
-    borderRadius: '35px',
+    borderRadius: '6px',
     fontSize: '13px',
     fontFamily: 'raleway',
     fontWeight: '600',
@@ -24,7 +24,7 @@ const styles = () => ({
     width: '165px',
     color: '#FFFF',
     '&$buttonDisabled': {
-      backgroundColor: '#C53B27',
+      backgroundColor: '#03A383',
       opacity: '0.3',
       border: '3px solid grey',
       color: '#FFFF',

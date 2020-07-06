@@ -162,8 +162,9 @@ const styles = (theme) => ({
   logo: {
     position: 'absolute',
     float: 'left',
-    marginTop: '-8.9px',
-    width: '82px',
+    marginTop: '-17.9px',
+    marginLeft: '-10px',
+    width: '101px',
     filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
   tableWrapper: {
@@ -180,7 +181,7 @@ const styles = (theme) => ({
     fontFamily: theme.custom.fontFamilySans,
     fontWeight: '300',
     letterSpacing: '0.017em',
-    color: '#DE5227',
+    color: '#03A383',
     fontSize: '18pt',
     lineHeight: '75px',
     '& $headerMainTitleTwo': {
@@ -213,7 +214,7 @@ const styles = (theme) => ({
     marginRight: '3%',
   },
   myCasesWrapper: {
-    border: '#DE5227 4px solid',
+    border: '#03A383 4px solid',
     borderRadius: '35px',
     margin: '80px',
     marginLeft: '3%',
