@@ -9,11 +9,29 @@ import { Link } from 'react-router-dom';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
+import { useDispatch } from 'react-redux';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/trial/Trials_Title_Bar.Icon.svg';
+import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
 const Programs = ({ classes, data }) => {
+  const initDashboardStatus = () => (dispatch) => Promise.resolve(
+    dispatch(fetchDataForDashboardDataTable()),
+  );
+
+  const dispatch = useDispatch();
+  const redirectTo = (trial) => {
+    dispatch(initDashboardStatus()).then(() => {
+      dispatch(singleCheckBox([{
+        groupName: 'Program',
+        name: trial,
+        datafield: 'program',
+        isChecked: true,
+      }]));
+    });
+  };
+
   const columns = [
     {
       name: 'program_acronym',
@@ -109,10 +127,10 @@ const Programs = ({ classes, data }) => {
       name: 'num_subjects',
       label: 'Study Subjects',
       options: {
-        customBodyRender: (value) => (
+        customBodyRender: (value, tableMeta) => (
           <div className={classes.tableCell5}>
             {' '}
-            <Link className={classes.link} to="/cases/">{value}</Link>
+            <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo(tableMeta.rowData[0])}>{value}</Link>
             {' '}
           </div>
         ),
