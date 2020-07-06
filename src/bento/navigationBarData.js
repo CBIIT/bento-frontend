@@ -26,6 +26,14 @@ export default [
         labelText: 'crdc & analysis',
         link: '/crdc',
       },
+      {
+        labelText: 'support',
+        link: '/support',
+      },
+      {
+        labelText: 'developers',
+        link: '/developers',
+      },
     ],
   },
 ];
