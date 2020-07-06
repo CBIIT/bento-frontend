@@ -55,9 +55,9 @@ const CaseDetail = ({ classes, data }) => {
   const stat = {
     numberOfTrials: 1,
     numberOfCases: 1,
-    numberOfFiles: data.filesOfCase.length,
+    numberOfFiles: data.subjectDetail.files.length,
   };
-  const caseDetail = data.caseDetailByCaseId[0];
+  const caseDetail = data.subjectDetail;
 
   const notProvided = '';
 
@@ -169,7 +169,7 @@ const CaseDetail = ({ classes, data }) => {
               <span className={classes.headerMainTitleTwo}>
                 {' '}
                 {' '}
-                {caseDetail.case_id}
+                {caseDetail.subject_id}
               </span>
             </div>
             <div className={classes.breadCrumb}>
@@ -235,8 +235,8 @@ const CaseDetail = ({ classes, data }) => {
                         <span className={classes.title}>Diagnosis</span>
                       </Grid>
                       <Grid item xs={8} className={classes.content}>
-                        {caseDetail.disease
-                          ? caseDetail.disease : notProvided}
+                        {caseDetail.disease_type
+                          ? caseDetail.disease_type : notProvided}
                         {' '}
                       </Grid>
                     </Grid>
@@ -258,8 +258,8 @@ const CaseDetail = ({ classes, data }) => {
                         <span className={classes.title}>Assigned to Trial</span>
                       </Grid>
                       <Grid item xs={6} className={classes.content}>
-                        {caseDetail.clinical_trial_code
-                          ? <Link to={`/trial/${caseDetail.clinical_trial_id}`} className={classes.link}>{caseDetail.clinical_trial_code}</Link>
+                        {caseDetail.study_acronym
+                          ? <Link to={`/trial/${caseDetail.study_acronym}`} className={classes.link}>{caseDetail.study_acronym}</Link>
                           : notProvided}
                       </Grid>
                     </Grid>
@@ -320,7 +320,7 @@ const CaseDetail = ({ classes, data }) => {
             <Grid container spacing={4}>
               <Grid item xs={12}>
                 <CustomDataTable
-                  data={data.filesOfCase}
+                  data={caseDetail.files}
                   columns={columns}
                   options={options(classes)}
                 />
