@@ -6,5 +6,5 @@ import headerData from '../../bento/headerData';
 
 // import nihLogo from '../../assets/header/icdc_nih_logo.svg';
 
-const ICDCHeader = () => <><Header logo={headerData.logo} easter={headerData.easter}/></>;
+const ICDCHeader = () => <><Header logo={headerData.globalHeaderLogo} easter={headerData.globalHeaderImage} alt={headerData.globalHeaderLogoAltText} homeLink={headerData.globalHeaderLogoLink}/></>;
 export default ICDCHeader;

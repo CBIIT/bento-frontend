@@ -1,6 +1,6 @@
 import client from '../../utils/graphqlClient';
 import { DASHBOARD_QUERY, widgetsData } from '../../bento/dashboardData';
-import statsCount from '../../bento/stats';
+import { statsData as statsCount } from '../../bento/stats';
 
 import {
   getStatDataFromDashboardData,

@@ -1,4 +1,6 @@
-export default [
+import gql from 'graphql-tag';
+
+export const statsData = [
   {
     statTitle: 'Programs',
     datatable_field: 'program',
@@ -37,3 +39,12 @@ export default [
     statAPI: 'numberOfFiles',
   },
 ];
+
+export const globalStatsQuery = gql`{
+  numberOfPrograms
+  numberOfStudies
+  numberOfSubjects
+  numberOfSamples
+  numberOfFiles
+  }
+  `;

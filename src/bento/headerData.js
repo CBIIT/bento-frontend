@@ -1,8 +1,6 @@
-import icdcLogo from '../assets/header/icdc_nih_logo.svg';
-// import easter2000 from '../assets/header/easter2000.png';
-
 export default {
-  logo: icdcLogo,
+  globalHeaderLogo: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/header/icdc_nih_logo.svg',
+  globalHeaderLogoLink: '/',
+  globalHeaderLogoAltText: 'Bento Logo',
+  // globalHeaderImage: '',
 };
-
-// export default {};
