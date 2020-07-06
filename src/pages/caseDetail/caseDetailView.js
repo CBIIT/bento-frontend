@@ -34,6 +34,7 @@ const options = (classes) => ({
   download: false,
   viewColumns: false,
   pagination: true,
+  sortOrder: { name: 'file_name', direction: 'asc' },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
       <TableRow>
@@ -97,7 +98,7 @@ const CaseDetail = ({ classes, data }) => {
       },
     },
     {
-      name: 'parent',
+      name: 'association',
       label: 'Association',
       options: {
         customBodyRender: (value) => (
