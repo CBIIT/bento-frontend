@@ -92,6 +92,32 @@ const Programs = ({ classes, data }) => {
         ),
       },
     },
+    {
+      name: 'num_studies',
+      label: 'Number of Studies',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell5}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'num_subjects',
+      label: 'Study Subjects',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell5}>
+            {' '}
+            <Link className={classes.link} to="/cases/">{value}</Link>
+            {' '}
+          </div>
+        ),
+      },
+    },
   ];
 
   const options = () => ({
