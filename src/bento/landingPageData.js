@@ -44,7 +44,7 @@ export const landingPageData = {
     titleText: 'Programs',
     descriptionText: 'This data sharing platform has been built using the Bento framework. It provides access to data from the TAILORx clinical trial.',
     callToActionText: 'More',
-    callToActionLink: '/trials', // This links to the Programs Listing Page.
+    callToActionLink: '/programs', // This links to the Programs Listing Page.
   },
   tile3: {
     alt: '',

@@ -7,7 +7,7 @@ export default [
   {
     labelText: 'programs',
     type: 'link',
-    link: '/trials',
+    link: '/programs',
   },
   {
     labelText: 'cases',
