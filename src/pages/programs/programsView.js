@@ -38,9 +38,9 @@ const Programs = ({ classes, data }) => {
       label: 'Program Code',
       options: {
         filter: false,
-        customBodyRender: (value, tableMeta) => (
+        customBodyRender: (value) => (
           <div className={classes.tableCell1}>
-            <Link className={classes.link} to={`/program/${tableMeta.rowData[1]}`}>{value}</Link>
+            <Link className={classes.link} to={`/program/${value}`}>{value}</Link>
           </div>
         ),
       },
