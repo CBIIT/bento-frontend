@@ -15,7 +15,7 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/trial/Trials_Title_Bar.Icon.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
-const Trials = ({ classes, data }) => {
+const Programs = ({ classes, data }) => {
   const initDashboardStatus = () => (dispatch) => Promise.resolve(
     dispatch(fetchDataForDashboardDataTable()),
   );
@@ -24,9 +24,9 @@ const Trials = ({ classes, data }) => {
   const redirectTo = (trial) => {
     dispatch(initDashboardStatus()).then(() => {
       dispatch(singleCheckBox([{
-        groupName: 'Trial Code',
+        groupName: 'Program',
         name: trial,
-        datafield: 'clinical_trial_code',
+        datafield: 'program',
         isChecked: true,
       }]));
     });
@@ -34,20 +34,20 @@ const Trials = ({ classes, data }) => {
 
   const columns = [
     {
-      name: 'clinical_trial_designation',
-      label: 'Trial Code',
+      name: 'program_acronym',
+      label: 'Program Code',
       options: {
         filter: false,
-        customBodyRender: (value, tableMeta) => (
+        customBodyRender: (value) => (
           <div className={classes.tableCell1}>
-            <Link className={classes.link} to={`/trial/${tableMeta.rowData[1]}`}>{value}</Link>
+            <Link className={classes.link} to={`/program/${value}`}>{value}</Link>
           </div>
         ),
       },
     },
     {
-      name: 'clinical_trial_id',
-      label: 'Trial ID',
+      name: 'program_id',
+      label: 'Program ID',
       options: {
         customBodyRender: (value) => (
           <div className={classes.tableCell2}>
@@ -59,8 +59,8 @@ const Trials = ({ classes, data }) => {
       },
     },
     {
-      name: 'clinical_trial_short_name',
-      label: 'Trial Name',
+      name: 'program_name',
+      label: 'Program Name',
       options: {
         customBodyRender: (value) => (
           <div className={classes.tableCell3}>
@@ -72,8 +72,8 @@ const Trials = ({ classes, data }) => {
       },
     },
     {
-      name: 'number_of_arms',
-      label: 'Arms',
+      name: 'start_date',
+      label: 'Start Date',
       options: {
         customBodyRender: (value) => (
           <div className={classes.tableCell4}>
@@ -85,8 +85,47 @@ const Trials = ({ classes, data }) => {
       },
     },
     {
-      name: 'number_of_cases',
-      label: 'Cases',
+      name: 'end_date',
+      label: 'End Date',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell5}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'pubmed_id',
+      label: 'PubMed ID',
+      options: {
+        customBodyRender: (value, tableMeta) => (
+          <div className={classes.tableCell5}>
+            {' '}
+            <a href={`https://pubmed.ncbi.nlm.nih.gov/${tableMeta.rowData[5]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'num_studies',
+      label: 'Number of Studies',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell5}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'num_subjects',
+      label: 'Study Subjects',
       options: {
         customBodyRender: (value, tableMeta) => (
           <div className={classes.tableCell5}>
@@ -114,7 +153,7 @@ const Trials = ({ classes, data }) => {
       <TableFooter>
         <TableRow>
           <TablePagination
-            className={classes.root}
+            className={count >= 10 ? classes.root : classes.root2}
             count={count}
             page={page}
             rowsPerPage={rowsPerPage}
@@ -136,7 +175,7 @@ const Trials = ({ classes, data }) => {
             <div className={classes.logo}>
               <img
                 src={icon}
-                alt="CTDC header logo"
+                alt="BENTO header logo"
               />
 
             </div>
@@ -144,18 +183,18 @@ const Trials = ({ classes, data }) => {
               <div className={classes.headerMainTitle}>
                 <span>
                   <Typography>
-                    <span className={classes.headerMainTitle}>Trials</span>
+                    <span className={classes.headerMainTitle}>Programs</span>
                   </Typography>
                 </span>
               </div>
             </div>
           </div>
 
-          <div id="table_trials" className={classes.tableDiv}>
+          <div id="table_programs" className={classes.tableDiv}>
             <Grid container>
               <Grid item xs={12}>
                 <CustomDataTable
-                  data={data.clinicalTrials}
+                  data={data.programInfo}
                   columns={columns}
                   options={options(classes)}
                 />
@@ -202,6 +241,9 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#000',
     background: '#eee',
+  },
+  root2: {
+    display: 'none',
   },
   header: {
     background: '#eee',
@@ -261,4 +303,4 @@ const styles = (theme) => ({
   },
 });
 
-export default withStyles(styles, { withTheme: true })(Trials);
+export default withStyles(styles, { withTheme: true })(Programs);

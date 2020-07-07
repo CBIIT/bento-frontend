@@ -1,83 +1,82 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import {
-  withStyles, Paper,
+  Button, withStyles,
 } from '@material-ui/core';
+import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+import DropdownItemsMenu from './DropdownItemsMenu';
 
-const CustomDropdownMenu = ({ classes, handleClick }) => (
-  <>
-    <Paper className={classes.paper}>
-      <div className={classes.aboutItemsWrapper} id="aboutDropDown">
-        <NavLink
-          className={classes.link}
-          activeStyle={{ color: 'white' }}
-          to="/purpose"
-          onClick={handleClick}
-        >
-          Purpose
-        </NavLink>
-        <NavLink
-          className={classes.link}
-          activeStyle={{ color: 'white' }}
-          to="/crdc"
-          onClick={handleClick}
-        >
-          CRDC & Analysis
-        </NavLink>
-        <NavLink
-          className={classes.link}
-          activeStyle={{ color: 'white' }}
-          to="/model"
-          onClick={handleClick}
-        >
-          CTDC Data & Model
-        </NavLink>
-        <NavLink
-          className={classes.link}
-          activeStyle={{ color: 'white' }}
-          to="/data-dictionary"
-          onClick={handleClick}
-        >
-          CTDC Data Dictionary
-        </NavLink>
-        <NavLink
-          className={classes.link}
-          activeStyle={{ color: 'white' }}
-          to="/developers"
-          onClick={handleClick}
-        >
-          Developers
-        </NavLink>
-        <NavLink
-          className={classes.link}
-          activeStyle={{ color: 'white' }}
-          to="/support"
-          onClick={handleClick}
-        >
-          Support
-        </NavLink>
-        <NavLink
-          className={classes.link}
-          activeStyle={{ color: 'white' }}
-          to="/request-access"
-          onClick={handleClick}
-        >
-          Request Access
-        </NavLink>
+const DropdownMenu = ({
+  classes, handleButtonClickEvent, linkText, clickedEl, dropDownElements,
+}) => {
+  const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
 
-      </div>
-    </Paper>
-  </>
-);
+  function handleClick() {
+    setDisplayDropDownMenu(true);
+  }
 
-const styles = () => ({
+  function handleMoveOut() {
+    setDisplayDropDownMenu(false);
+  }
+
+  function dropdownMenuClickEvent() {
+    setDisplayDropDownMenu(false);
+    handleButtonClickEvent('aboutMenu');
+  }
+
+  return (
+    <div
+      onMouseEnter={handleClick}
+      onMouseLeave={handleMoveOut}
+      className={classes.aboutMenu}
+    >
+      <Button
+        id="button_navbar_about"
+        weight="medium"
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onFocus={handleClick}
+        className={classes.logotype}
+        classes={{ root: classes.buttonRoot }}
+      >
+        <span className={clickedEl === 'aboutMenu' ? classes.buttonRootClicked : ''}>
+          { linkText }
+        </span>
+        <ExpandMoreRoundedIcon className={classes.icon} />
+      </Button>
+      {displayDropDownMenu ? <DropdownItemsMenu handleClick={dropdownMenuClickEvent} dropDownElements={dropDownElements} /> : ''}
+    </div>
+  );
+};
+
+const styles = (theme) => ({
+  logotype: {
+    whiteSpace: 'nowrap',
+    color: theme.palette.primary.contrastText,
+    fontFamily: 'Nunito',
+    fontSize: '13px',
+    fontWeight: '600',
+    letterSpacing: '0.9px',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+    '&:hover, &:focus': {
+      borderRadius: '0',
+    },
+  },
+  buttonRoot: {
+    paddingTop: '9px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
+  },
+  buttonRootClicked: {
+    borderBottom: '2px solid #FFFFFF',
+  },
+  icon: {
+    fontSize: '18px',
+  },
   paper: {
     background: '#309EC4',
-    width: '170px',
-    padding: '0px 16px 16px 16px',
-    position: 'absolute',
-    marginTop: '-5px',
-    borderRadius: '0',
+    padding: '6px 16px 16px 16px',
   },
   link: {
     textDecoration: 'none',
@@ -96,6 +95,9 @@ const styles = () => ({
   aboutItemsWrapper: {
     maxWidth: '150px',
   },
+  aboutMenu: {
+    float: 'right',
+  },
 });
 
-export default withStyles(styles)(CustomDropdownMenu);
+export default withStyles(styles)(DropdownMenu);

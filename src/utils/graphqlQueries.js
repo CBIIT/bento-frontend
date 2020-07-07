@@ -27,19 +27,17 @@ export const GET_CASE_DETAIL_DATA_QUERY = gql`
     }
       }`;
 
-export const TRIALS_QUERY = gql`{
-   clinicalTrials{
-    clinical_trial_id
-  clinical_trial_short_name
-  clinical_trial_description
-  clinical_trial_designation
-  clinical_trial_long_name
-  clinical_trial_type
-  lead_organization
-  principal_investigators
-  number_of_arms
-  number_of_cases
-    }
+export const PROGRAMS_QUERY = gql`{
+   programInfo {
+  program_acronym
+  program_id
+  program_name
+  start_date
+  end_date
+  pubmed_id
+  num_studies
+  num_subjects
+  }
 }
   `;
 
