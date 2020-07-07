@@ -19,7 +19,7 @@ import SelectedFiles from '../../pages/selectedFiles/selectedFilesController';
 import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
 import DataDictonary from '../../pages/dataDictionary/dataDictonaryController';
-import Trials from '../../pages/trials/trialsController';
+import Programs from '../../pages/programs/programsController';
 import TrialDetail from '../../pages/trialDetail/trialDetailController';
 
 const ScrollToTop = () => {
@@ -45,7 +45,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
             <Route path="/cases" component={Dashboard} />
-            <Route path="/trials" component={Trials} />
+            <Route path="/programs" component={Programs} />
             <Route path="/model" component={modelPage} />
             <Route path="/table" component={table} />
             <Route path="/myCases" component={SelectedCases} />
