@@ -148,12 +148,12 @@ const Programs = ({ classes, data }) => {
     download: false,
     viewColumns: false,
     pagination: true,
-    rowsPerPageOptions: [10, 20, 25, 50, 100],
+    rowsPerPageOptions: [10, 25, 50, 100],
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <TableFooter>
         <TableRow>
           <TablePagination
-            className={classes.root}
+            className={count >= 10 ? classes.root : classes.root2}
             count={count}
             page={page}
             rowsPerPage={rowsPerPage}
@@ -241,6 +241,9 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#000',
     background: '#eee',
+  },
+  root2: {
+    display: 'none',
   },
   header: {
     background: '#eee',
