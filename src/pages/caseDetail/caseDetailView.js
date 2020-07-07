@@ -72,8 +72,11 @@ const PropertyItem = ({
 
 const CaseDetail = ({ classes, data }) => {
   const stat = {
-    numberOfTrials: 1,
-    numberOfCases: 1,
+    numberOfPrograms: 1,
+    numberOfStudies: 1,
+    numberOfSubjects: 1,
+    numberOfSamples: data.subjectDetail.num_samples,
+    numberOfLabProcedures: data.subjectDetail.num_lab_procedures,
     numberOfFiles: data.subjectDetail.files.length,
   };
   const caseDetail = data.subjectDetail;

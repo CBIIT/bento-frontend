@@ -44,6 +44,8 @@ export const GET_CASE_DETAIL_DATA_QUERY = gql`
             file_id
             md5sum
         }
+        num_samples
+        num_lab_procedures
     }
   }`;
 
