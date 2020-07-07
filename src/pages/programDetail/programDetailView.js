@@ -24,8 +24,10 @@ import {
 } from '../../utils/dashboardUtilFunctions';
 import fileIcon from '../../assets/trial/Trials_File_Counter.Icon.svg';
 
-const TrialView = ({ classes, data, theme }) => {
-  const trialData = data.clinicalTrialByTrialId[0];
+const ProgramView = ({ classes, data, theme }) => {
+  const programData = data.programDetail;
+  console.log('i am program detail view file');
+  console.log(data);
 
   const dispatch = useDispatch();
 
@@ -43,7 +45,7 @@ const TrialView = ({ classes, data, theme }) => {
           (d) => (filterData(d,
             [{
               groupName: 'Trial Code',
-              name: trialData.clinical_trial_designation,
+              name: programData.clinical_trial_designation,
               datafield: 'clinical_trial_code',
               isChecked: true,
             }])
@@ -70,7 +72,7 @@ const TrialView = ({ classes, data, theme }) => {
     dispatch(initDashboardStatus()).then(() => {
       dispatch(singleCheckBox([{
         groupName: 'Trial Code',
-        name: trialData.clinical_trial_designation,
+        name: programData.clinical_trial_designation,
         datafield: 'clinical_trial_code',
         isChecked: true,
       }]));
@@ -212,14 +214,14 @@ const TrialView = ({ classes, data, theme }) => {
                 <span>
                   {' '}
                   {' '}
-                  {trialData.clinical_trial_designation}
+                  {programData.program_id}
                 </span>
               </span>
             </div>
             <div className={cn(classes.headerMSubTitle, classes.headerSubTitleCate)}>
               <span>
                 {' '}
-                {trialData.clinical_trial_short_name}
+                {programData.program_id}
               </span>
 
             </div>
@@ -236,7 +238,7 @@ const TrialView = ({ classes, data, theme }) => {
                 <span className={classes.headerButtonLinkText}> View </span>
                 <span className={classes.headerButtonLinkNumber}>
 
-                  {trialData.number_of_cases}
+                  {programData.program_id}
 
                 </span>
                 <span className={classes.headerButtonLinkText}>CASES</span>
@@ -257,7 +259,7 @@ const TrialView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {trialData.clinical_trial_long_name}
+                      {programData.program_id}
                       {' '}
                     </span>
                   </div>
@@ -274,7 +276,7 @@ const TrialView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {trialData.clinical_trial_id}
+                      {programData.program_id}
                       {' '}
                     </span>
                   </div>
@@ -289,7 +291,7 @@ const TrialView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {trialData.clinical_trial_description}
+                      {programData.program_id}
                       {' '}
                     </span>
                   </div>
@@ -315,7 +317,7 @@ const TrialView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {trialData.clinical_trial_type}
+                      {programData.program_id}
                       {' '}
                     </span>
                   </div>
@@ -330,7 +332,7 @@ const TrialView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {trialData.lead_organization}
+                      {programData.program_id}
                       {' '}
                     </span>
                   </div>
@@ -345,7 +347,7 @@ const TrialView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {trialData.principal_investigators}
+                      {programData.program_id}
                       {' '}
                     </span>
                   </div>
@@ -752,4 +754,4 @@ const styles = (theme) => ({
   },
 });
 
-export default withStyles(styles, { withTheme: true })(TrialView);
+export default withStyles(styles, { withTheme: true })(ProgramView);
