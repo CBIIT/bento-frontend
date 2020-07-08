@@ -11,7 +11,7 @@ const CaseDetailContainer = ({ match }) => (
       loading ? <CircularProgress />
         : (error || !data || data.subjectDetail.subject_id !== match.params.id
           ? (
-            <Typography variant="h1" color="error" size="sm">
+            <Typography variant="h5" color="error" size="sm">
               {error && `An error has occurred in loading stats component: ${error}`}
             </Typography>
           )
