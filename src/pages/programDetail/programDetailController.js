@@ -10,7 +10,7 @@ const ProgramDetailContainer = ({ match }) => (
     {({ data, loading, error }) => (
       loading ? <CircularProgress />
         : (
-          error || !data || !data.programDetail.program_id !== match.params.id ? <Typography variant="headline" color="error" size="sm">{error && `An error has occurred in loading stats component: ${error}`}</Typography>
+          error || !data || data.programDetail.program_id !== match.params.id ? <Typography variant="headline" color="error" size="sm">{error && `An error has occurred in loading stats component: ${error}`}</Typography>
             : <ProgramView data={data} />
         )
     )}
