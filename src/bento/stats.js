@@ -8,7 +8,7 @@ export const statsData = [
     statAPI: 'numberOfPrograms',
   },
   {
-    statTitle: 'Studies',
+    statTitle: 'Arms',
     datatable_field: 'study_acronym',
     type: 'field',
     statAPI: 'numberOfStudies',

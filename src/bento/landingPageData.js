@@ -14,7 +14,7 @@ export const landingPageData = {
       statAPI: 'numberOfPrograms',
     },
     {
-      statTitle: 'Studies',
+      statTitle: 'Arms',
       statAPI: 'numberOfStudies',
     },
     {
@@ -33,7 +33,7 @@ export const landingPageData = {
   tile1: {
     alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/aboutImage.png',
-    titleText: 'About Bento',
+    titleText: 'The Bento Framework',
     descriptionText: 'Effective data management is key to scientific discovery. Bento is an open source framework, developed by the Frederick National Laboratory for Cancer Research, to support the creation of data sharing platforms, that adhere to the FAIR principles of scientific data management.',
     callToActionText: 'Read More',
     callToActionLink: '/purpose', // This links to the "About" static page.
@@ -42,7 +42,7 @@ export const landingPageData = {
     alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/prgmImage.png',
     titleText: 'Programs',
-    descriptionText: 'This data sharing platform has been built using the Bento framework. It provides access to data from the TAILORx clinical trial.',
+    descriptionText: 'Access data from the TAILORx clinical trial, on this data sharing platform, built on Bento.',
     callToActionText: 'More',
     callToActionLink: '/programs', // This links to the Programs Listing Page.
   },
@@ -50,7 +50,7 @@ export const landingPageData = {
     alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/analyticsImage.png',
     titleText: 'Resources',
-    descriptionText: 'The Bento team has developed a suite of software components to help you build your own data sharing platform.',
+    descriptionText: 'Use Bento to you build your own data sharing platform.',
     callToActionText: 'Read More',
     callToActionLink: '/purpose', // Link to the "Resources" Static Page
   },
@@ -58,7 +58,7 @@ export const landingPageData = {
     alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/casesImage.png',
     titleText: 'Cases',
-    descriptionText: 'Analyze data from the TailoRx clinical trial.',
+    descriptionText: 'Analyze cases from the TAILORx clinical trial.',
     callToActionText: 'Explore',
     callToActionLink: '/cases', // This links to the cases dashboard.
   },
