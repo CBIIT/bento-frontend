@@ -112,7 +112,7 @@ const Programs = ({ classes, data }) => {
     },
     {
       name: 'num_studies',
-      label: 'Number of Studies',
+      label: 'Number of ARMs',
       options: {
         customBodyRender: (value) => (
           <div className={classes.tableCell5}>
@@ -125,7 +125,7 @@ const Programs = ({ classes, data }) => {
     },
     {
       name: 'num_subjects',
-      label: 'Study Subjects',
+      label: 'Cases',
       options: {
         customBodyRender: (value, tableMeta) => (
           <div className={classes.tableCell5}>

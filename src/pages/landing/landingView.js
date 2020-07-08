@@ -222,7 +222,7 @@ const styles = () => ({
     fontWeight: '600',
     lineHeight: '42px',
     color: '#0077E3',
-    letterSpacing: '-1.5px',
+    letterSpacing: '-0px',
   },
   paddingLeft50: {
     paddingLeft: '50px',
@@ -261,13 +261,14 @@ const styles = () => ({
     height: '249px',
   },
   DCWords: {
-    height: '220px',
+    height: '200px',
     background: '#274FA5',
     color: '#FFFFFF',
     fontSize: '28px',
+    fontWeight: 'bold',
     textTransform: 'capitalize',
-    lineHeight: '29px',
-    padding: '24px 75px 26px 26px',
+    lineHeight: '36px',
+    padding: '16px 75px 26px 26px',
     fontFamily: 'Lato',
   },
   landingContainer: {
@@ -330,7 +331,8 @@ const styles = () => ({
 
   content: {
     width: '100%',
-    height: '175px',
+    height: '155px',
+    overflowY: 'auto',
     background: '#fff',
     paddingLeft: '30px',
     paddingTop: '6px',

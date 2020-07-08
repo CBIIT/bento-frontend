@@ -5,7 +5,7 @@ export const facetSearchData = [
     group: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'program', show: true,
   },
   {
-    group: 'Study', field: 'group', api: 'subjectCountByStudy', datafield: 'study_info', show: true,
+    group: 'Arm', field: 'group', api: 'subjectCountByStudy', datafield: 'study_info', show: true,
   },
   {
     group: 'Diagnosis', field: 'group', api: 'subjectCountByDiagnoses', datafield: 'diagnosis', show: true,
