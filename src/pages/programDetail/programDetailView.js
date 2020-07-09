@@ -26,8 +26,6 @@ import fileIcon from '../../assets/trial/Trials_File_Counter.Icon.svg';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
-  console.log('i am program detail view file');
-  console.log(data);
 
   const dispatch = useDispatch();
 
@@ -104,7 +102,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
   const columns = [
     {
-      name: 'arm_id',
+      name: 'study_acronym',
       label: 'Arm',
       options: {
         filter: false,
@@ -116,8 +114,8 @@ const ProgramView = ({ classes, data, theme }) => {
       },
     },
     {
-      name: 'arm_drug',
-      label: 'Arm Treatment',
+      name: 'study_name',
+      label: 'Arm Name',
       options: {
         customBodyRender: (value) => (
           <div className={classes.tableCell2}>
@@ -129,8 +127,8 @@ const ProgramView = ({ classes, data, theme }) => {
       },
     },
     {
-      name: 'arm_target',
-      label: 'Arm Target',
+      name: 'study_full_description',
+      label: 'Arm Description',
       options: {
         customBodyRender: (value) => (
           <div className={classes.tableCell3}>
@@ -142,8 +140,8 @@ const ProgramView = ({ classes, data, theme }) => {
       },
     },
     {
-      name: 'pubmed_id',
-      label: 'PubMed ID',
+      name: 'study_type',
+      label: 'Arm Type',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -154,7 +152,7 @@ const ProgramView = ({ classes, data, theme }) => {
       },
     },
     {
-      name: 'number_of_cases',
+      name: 'num_subjects',
       label: 'Cases',
       options: {
         filter: false,
@@ -210,11 +208,11 @@ const ProgramView = ({ classes, data, theme }) => {
             <div className={classes.headerMainTitle}>
               <span>
                 {' '}
-                Trial :
+                Program :
                 <span>
                   {' '}
                   {' '}
-                  {programData.program_id}
+                  {programData.program_acronym}
                 </span>
               </span>
             </div>
@@ -253,13 +251,13 @@ const ProgramView = ({ classes, data, theme }) => {
             <Grid item className={classes.firstColumn} lg={false} md={false} sm={12} xs={12}>
               <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Trial Name</span>
+                  <span className={classes.detailContainerHeader}>Program</span>
                 </Grid>
                 <Grid item xs={12}>
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {programData.program_id}
+                      {programData.program_acronym}
                       {' '}
                     </span>
                   </div>
@@ -267,7 +265,7 @@ const ProgramView = ({ classes, data, theme }) => {
                 </Grid>
                 <Grid item lg={12} md={12} sm={12} xs={12} className={classes.paddingTop32}>
                   <span className={classes.detailContainerHeader}>
-                    Trial ID
+                    Program Name
                   </span>
 
                 </Grid>
@@ -276,14 +274,14 @@ const ProgramView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {programData.program_id}
+                      {programData.program_name}
                       {' '}
                     </span>
                   </div>
                 </Grid>
 
                 <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>Trial Description</span>
+                  <span className={classes.detailContainerHeader}>Program Id</span>
 
                 </Grid>
 
@@ -310,21 +308,21 @@ const ProgramView = ({ classes, data, theme }) => {
             >
               <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Trial Type</span>
+                  <span className={classes.detailContainerHeader}>Program Description</span>
 
                 </Grid>
                 <Grid item xs={12}>
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {programData.program_id}
+                      {programData.program_full_description}
                       {' '}
                     </span>
                   </div>
 
                 </Grid>
                 <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>Lead Organization</span>
+                  <span className={classes.detailContainerHeader}>Institution</span>
 
                 </Grid>
 
@@ -332,14 +330,14 @@ const ProgramView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {programData.program_id}
+                      {programData.institution_name}
                       {' '}
                     </span>
                   </div>
                 </Grid>
 
                 <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>Principal Investigators</span>
+                  <span className={classes.detailContainerHeader}>External Link to Program</span>
 
                 </Grid>
 
@@ -347,7 +345,7 @@ const ProgramView = ({ classes, data, theme }) => {
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      {programData.program_id}
+                      {programData.program_external_url}
                       {' '}
                     </span>
                   </div>
@@ -422,7 +420,7 @@ const ProgramView = ({ classes, data, theme }) => {
               <Grid item xs={12}>
                 <Typography>
                   <CustomDataTable
-                    data={data.clinicalTrialArmByTrialId}
+                    data={data.programDetail.studies}
                     columns={columns}
                     options={options}
                   />
