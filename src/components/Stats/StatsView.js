@@ -6,14 +6,14 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-const LandingStatsView = ({ classes, data }) => (
+const StatsView = ({ classes, data }) => (
   <>
     <div className={classes.statsSection}>
       <div
         className={classes.box}
       >
         {
-        statsCount.map((stat) => (
+        statsCount.length < 7 ? statsCount.map((stat) => (
           <div className={classes.statsGroup}>
             <div className={classes.statsText}>
               <div className={classes.statTitle}>
@@ -24,7 +24,7 @@ const LandingStatsView = ({ classes, data }) => (
               </div>
             </div>
           </div>
-        ))
+        )): 'The maximum value for stats is 6'
         }
       </div>
     </div>
@@ -110,4 +110,4 @@ const styles = () => ({
   },
 });
 
-export default withStyles(styles, { withTheme: true })(LandingStatsView);
+export default withStyles(styles, { withTheme: true })(StatsView);

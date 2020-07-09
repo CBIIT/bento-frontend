@@ -61,61 +61,62 @@ const Dashboard = ({
                 </div>
                 <Collapse in={checked} className={classes.backgroundShawdowWidgets}>
                   <Grid container spacing={1}>
-                    { widgetsData.map((widget) => {
-                      if (widget.type === 'sunburst') {
-                        return (
-                          <Grid item lg={4} md={6} sm={12} xs={12}>
-                            <Widget
-                              title={widget.label}
-                              upperTitle
-                              bodyClass={classes.fullHeightBody}
-                              className={classes.card}
-                              color={theme.palette.lochmara.contrastText}
-                              customBackGround
-                            >
-                              <div className={classes.marginTop18}>
-                                <ProgramSunburst
+                    { widgetsData.reduce((a, v) => (v.show === true ? a + 1 : a), 0) < 7
+                      ? widgetsData.map((widget) => {
+                        if (widget.type === 'sunburst' && widget.show) {
+                          return (
+                            <Grid item lg={4} md={6} sm={12} xs={12}>
+                              <Widget
+                                title={widget.label}
+                                upperTitle
+                                bodyClass={classes.fullHeightBody}
+                                className={classes.card}
+                                color={theme.palette.lochmara.contrastText}
+                                customBackGround
+                              >
+                                <div className={classes.marginTop18}>
+                                  <ProgramSunburst
+                                    data={data[widget.dataName]}
+                                    width={250}
+                                    height={180}
+                                    innerRadius={40}
+                                    outerRadius={65}
+                                    cx="50%"
+                                    cy="50%"
+                                    textColor={theme.palette.widgetBackground.contrastText}
+                                  />
+                                </div>
+                              </Widget>
+                            </Grid>
+                          );
+                        }
+                        if (widget.type === 'donut' && widget.show) {
+                          return (
+                            <Grid item lg={4} md={6} sm={12} xs={12}>
+                              <Widget
+                                title={widget.label}
+                                upperTitle
+                                bodyClass={classes.fullHeightBody}
+                                className={classes.card}
+                                color={theme.palette.lochmara.contrastText}
+                                customBackGround
+                              >
+                                <CustomActiveDonut
                                   data={data[widget.dataName]}
-                                  width={250}
-                                  height={180}
-                                  innerRadius={40}
-                                  outerRadius={65}
+                                  width={400}
+                                  height={225}
+                                  innerRadius={50}
+                                  outerRadius={75}
                                   cx="50%"
                                   cy="50%"
                                   textColor={theme.palette.widgetBackground.contrastText}
                                 />
-                              </div>
-                            </Widget>
-                          </Grid>
-                        );
-                      }
-                      if (widget.type === 'donut') {
-                        return (
-                          <Grid item lg={4} md={6} sm={12} xs={12}>
-                            <Widget
-                              title={widget.label}
-                              upperTitle
-                              bodyClass={classes.fullHeightBody}
-                              className={classes.card}
-                              color={theme.palette.lochmara.contrastText}
-                              customBackGround
-                            >
-                              <CustomActiveDonut
-                                data={data[widget.dataName]}
-                                width={400}
-                                height={225}
-                                innerRadius={50}
-                                outerRadius={75}
-                                cx="50%"
-                                cy="50%"
-                                textColor={theme.palette.widgetBackground.contrastText}
-                              />
-                            </Widget>
-                          </Grid>
-                        );
-                      }
-                      return <></>;
-                    })}
+                              </Widget>
+                            </Grid>
+                          );
+                        }
+                        return <></>;
+                      }) : 'The maximum value of widgets is 6'}
                   </Grid>
                 </Collapse>
               </div>
