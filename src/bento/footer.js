@@ -1,6 +1,7 @@
 export default {
   footerLogoImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/footer/src/assets/footer/FNL_logo.png',
   footerLogoAltText: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/footer/src/assets/footer/FNL_logo.png',
+  footerStaticText: 'NIH … Turning Discovery Into Health®',
   link_sections: [
     {
       title: 'About Bento',

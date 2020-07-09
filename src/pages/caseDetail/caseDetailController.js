@@ -6,12 +6,16 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_CASE_DETAIL_DATA_QUERY } from '../../utils/graphqlQueries';
 
 const CaseDetailContainer = ({ match }) => (
-  <Query query={GET_CASE_DETAIL_DATA_QUERY} variables={{ case_id: match.params.id }}>
+  <Query query={GET_CASE_DETAIL_DATA_QUERY} variables={{ subject_id: match.params.id }}>
     {({ data, loading, error }) => (
       loading ? <CircularProgress />
-        : (
-          error || !data || data.caseDetailByCaseId[0].case_id !== match.params.id ? <Typography variant="headline" color="error" size="sm">{error && `An error has occurred in loading stats component: ${error}`}</Typography>
-            : <CaseDetailView data={data} />
+        : (error || !data || data.subjectDetail.subject_id !== match.params.id
+          ? (
+            <Typography variant="h5" color="error" size="sm">
+              {error && `An error has occurred in loading stats component: ${error}`}
+            </Typography>
+          )
+          : <CaseDetailView data={data} />
         )
     )}
   </Query>

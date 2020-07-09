@@ -3,7 +3,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 In the project directory, you can run:
+To run the independently of backend update the REACT_APP_BACKEND_API varibale from REACT_APP_BACKEND_API=http://localhost:8084/v1/graphql/
+ to REACT_APP_BACKEND_API=https://api-dev.bento-tools.org/v1/graphql/
 
+"npm install" and then "npm start"
 ### `npm start`
 
 Runs the app in the development mode.<br>
