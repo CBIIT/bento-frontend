@@ -12,6 +12,12 @@ import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Icon-CaseDetail.svg';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
+import {
+  caseHeader,
+  leftPanelSubsections,
+  rightPanelSubsections,
+  tableConfig,
+} from '../../bento/caseDetailData';
 
 function formatBytes(bytes, decimals = 2) {
   if (bytes === 0) return '0 Bytes';
@@ -34,7 +40,10 @@ const options = (classes) => ({
   download: false,
   viewColumns: false,
   pagination: true,
-  sortOrder: { name: 'file_name', direction: 'asc' },
+  sortOrder: {
+    name: tableConfig.defaultSortField,
+    direction: tableConfig.defaultSortDirection,
+  },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
       <TableRow>
@@ -53,35 +62,52 @@ const options = (classes) => ({
 });
 
 const PropertyItem = ({
-  classes, label, dataField, defaultValue, linkUrl,
-}) => (
-  <Grid item xs={12}>
-    <Grid container spacing={4}>
+  label, value, linkUrl, classes,
+}) => {
+  const defaultValue = '';
+  return (
+    <Grid item container xs={12} spacing={4}>
       <Grid item xs={4}>
         <span className={classes.title}>{label}</span>
       </Grid>
       <Grid item xs={8} className={classes.content}>
-        { dataField != null ? (
-          linkUrl ? <Link to={linkUrl} className={classes.link}>{dataField}</Link>
-            : dataField
+        { value || value === 0 ? (
+          linkUrl ? <Link to={linkUrl} className={classes.link}>{value}</Link>
+            : value
         ) : defaultValue }
       </Grid>
+    </Grid>
+  );
+};
+
+const Subsection = ({ config, data, classes }) => (
+  <Grid item container>
+    <Grid item xs={12}>
+      <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
+    </Grid>
+    <Grid item container xs={12}>
+      {config.properties.map((prop) => (
+        <PropertyItem
+          key={prop.label}
+          label={prop.label}
+          value={data[prop.dataField]}
+          classes={classes}
+          linkUrl={prop.linkUrl}
+        />
+      ))}
     </Grid>
   </Grid>
 );
 
-const CaseDetail = ({ classes, data }) => {
+const CaseDetail = ({ data, classes }) => {
   const stat = {
     numberOfPrograms: 1,
     numberOfStudies: 1,
     numberOfSubjects: 1,
-    numberOfSamples: data.subjectDetail.num_samples,
-    numberOfLabProcedures: data.subjectDetail.num_lab_procedures,
-    numberOfFiles: data.subjectDetail.files.length,
+    numberOfSamples: data.num_samples,
+    numberOfLabProcedures: data.num_lab_procedures,
+    numberOfFiles: data[tableConfig.filesField].length,
   };
-  const caseDetail = data.subjectDetail;
-
-  const notProvided = '';
 
   const breadCrumbJson = [{
     name: 'ALL CASES /',
@@ -89,90 +115,22 @@ const CaseDetail = ({ classes, data }) => {
     isALink: true,
   }];
 
-  const columns = [
+  const columns = tableConfig.columns.map((column, index) => (
+    {
+      name: column.dataField,
+      label: column.header,
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes[`tableCell${index + 1}`]}>
+            {' '}
+            {column.formatBytes ? formatBytes(value) : value}
+            {' '}
+          </div>
+        ),
+      },
+    }
+  ));
 
-    {
-      name: 'file_name',
-      label: 'File Name',
-      sortDirection: 'asc',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell1}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'file_type',
-      label: 'File Type',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell2}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'association',
-      label: 'Association',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell3}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'file_description',
-      label: 'Description',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell4}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'file_format',
-      label: 'Format',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell5}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'file_size',
-      label: 'Size',
-      options: {
-        customBodyRender(bytes) {
-          return (
-            <div className={classes.tableCell6}>
-              {' '}
-              {formatBytes(bytes)}
-              {' '}
-            </div>
-          );
-        },
-      },
-    },
-  ];
   return (
     <>
       <StatsView data={stat} />
@@ -187,11 +145,11 @@ const CaseDetail = ({ classes, data }) => {
           </div>
           <div className={classes.headerTitle}>
             <div className={classes.headerMainTitle}>
-              Case ID:
+              {`${caseHeader.label} :`}
               <span className={classes.headerMainTitleTwo}>
                 {' '}
                 {' '}
-                {caseDetail.subject_id}
+                {data[caseHeader.dataField]}
               </span>
             </div>
             <div className={classes.breadCrumb}>
@@ -205,109 +163,72 @@ const CaseDetail = ({ classes, data }) => {
 
           <Grid container spacing={4}>
             {/* Left panel */}
-            <Grid item lg={6} md={6} sm={6} xs={12} className={classes.detailContainerLeft}>
-              <Grid container spacing={32} direction="column">
-                {/* Program section */}
-                <Grid xs={12} pt={100}>
-                  <span className={classes.detailContainerHeader}>Program</span>
-                </Grid>
-                <Grid container spacing={4} className={classes.detailContainerItems}>
-                  <PropertyItem label="Assigned to Program" dataField={caseDetail.program_acronym} defaultValue={notProvided} classes={classes} linkUrl={`/trial/${caseDetail.program_acronym}`} />
-                  <PropertyItem label="Arm" dataField={caseDetail.study_acronym} defaultValue={notProvided} classes={classes} linkUrl={`/arm/${caseDetail.study_acronym}`} />
-                  <PropertyItem label="Arm Description" dataField={caseDetail.study_name} defaultValue={notProvided} classes={classes} />
-                </Grid>
-                {/* Program section end */}
-                {/* Demographic section */}
-                <Grid xs={12} pt={100}>
-                  <span className={classes.detailContainerHeader}>Demographics</span>
-                </Grid>
-                <Grid container spacing={4} className={classes.detailContainerItems}>
-                  <PropertyItem label="Gender" dataField={caseDetail.gender} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Race" dataField={caseDetail.race} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Ethnicity" dataField={caseDetail.ethnicity} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Age At Enrollment" dataField={caseDetail.age_at_index} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Menopause Status" dataField={caseDetail.menopause_status} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Vital Status" dataField={caseDetail.vital_status} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Cause Of Death" dataField={caseDetail.cause_of_death} defaultValue={notProvided} classes={classes} />
-                </Grid>
-                {/* Demographic section end */}
-                {/* Diagnosis section */}
-                <Grid xs={12} className={classes.paddingTop}>
-                  <span className={classes.detailContainerHeader}>Diagnosis</span>
-                </Grid>
-                <Grid container spacing={4} className={classes.detailContainerItems}>
-                  <PropertyItem label="Diagnosis" dataField={caseDetail.disease_type} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Diagnosis Subtype" dataField={caseDetail.disease_subtype} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Tumor Grade" dataField={caseDetail.tumor_grade} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Tumor Grade (mm)" dataField={caseDetail.tumor_largest_dimension_diameter} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="ER Status" dataField={caseDetail.er_status} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="PR Status" dataField={caseDetail.pr_status} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Nuclear Grade" dataField={caseDetail.nuclear_grade} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Recurrence Score" dataField={caseDetail.recurrence_score} defaultValue={notProvided} classes={classes} />
-                </Grid>
-                {/* Diagnosis section end */}
-              </Grid>
+            <Grid
+              item
+              sm={6}
+              xs={12}
+              container
+              spacing={2}
+              className={classes.detailContainerLeft}
+            >
+              {leftPanelSubsections.map((section) => (
+                <Subsection
+                  key={section.sectionHeader}
+                  config={section}
+                  classes={classes}
+                  data={data}
+                />
+              ))}
             </Grid>
             {/* Left panel end */}
             {/* Right panel */}
-            <Grid item lg={6} md={6} sm={6} xs={12} className={classes.detailContainerRight}>
-              {/* Treatment section */}
-              <Grid container spacing={32} direction="column">
-                <Grid xs={12} pt={100}>
-                  <span className={classes.detailContainerHeader}>Treatment</span>
-                </Grid>
-
-                <Grid container spacing={4} className={classes.detailContainerItems}>
-                  <PropertyItem label="Primary Surgical Procedure" dataField={caseDetail.primary_surgical_procedure} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Chemotherapy Regimen Group" dataField={caseDetail.chemotherapy_regimen_group} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Chemotherapy Regimen" dataField={caseDetail.chemotherapy_regimen} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Endocrine Therapy Type" dataField={caseDetail.endocrine_therapy_type} defaultValue={notProvided} classes={classes} />
-                </Grid>
-              </Grid>
-              {/* Treatment section end */}
-              {/* Follow Up section */}
-              <Grid container spacing={32} direction="column">
-                <Grid xs={12} pt={100}>
-                  <span className={classes.detailContainerHeader}>Follow Up</span>
-                </Grid>
-                <Grid container spacing={4} className={classes.detailContainerItems}>
-                  <PropertyItem label="Is Disease Free" dataField={caseDetail.dfs_event_indicator} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Is Recurrence Free" dataField={caseDetail.recurrence_free_indicator} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Is Distant Recurrence Free" dataField={caseDetail.distant_recurrence_indicator} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Disease Free Event Type" dataField={caseDetail.dfs_event_type} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Recurrence Event Type" dataField={caseDetail.first_recurrence_type} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Days to Progression" dataField={caseDetail.days_to_progression} defaultValue={notProvided} classes={classes} />
-                  <PropertyItem label="Days to Recurrence" dataField={caseDetail.days_to_recurrence} defaultValue={notProvided} classes={classes} />
-                </Grid>
-              </Grid>
-              {/* Follow Up section end */}
+            <Grid
+              item
+              sm={6}
+              xs={12}
+              container
+              spacing={2}
+              className={classes.detailContainerRight}
+            >
+              {rightPanelSubsections.map((section) => (
+                <Subsection
+                  key={section.sectionHeader}
+                  config={section}
+                  classes={classes}
+                  data={data}
+                />
+              ))}
             </Grid>
             {/* Right panel end */}
           </Grid>
         </div>
       </div>
-      <div id="table_case_detail" className={classes.tableContainer}>
-        <div className={classes.tableDiv}>
-          <div className={classes.tableTitle}>
-            <span className={classes.tableHeader}>ASSOCIATED FILES</span>
-          </div>
-          <Grid item xs={12}>
-            <Grid container spacing={4}>
+      {
+      tableConfig.display
+        ? (
+          <div id="table_case_detail" className={classes.tableContainer}>
+            <div className={classes.tableDiv}>
+              <div className={classes.tableTitle}>
+                <span className={classes.tableHeader}>{tableConfig.title}</span>
+              </div>
               <Grid item xs={12}>
-                <CustomDataTable
-                  data={caseDetail.files}
-                  columns={columns}
-                  options={options(classes)}
-                />
+                <Grid container spacing={4}>
+                  <Grid item xs={12}>
+                    <CustomDataTable
+                      data={data[tableConfig.filesField]}
+                      columns={columns}
+                      options={options(classes)}
+                    />
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Typography />
+                  </Grid>
+                </Grid>
               </Grid>
-              <Grid item xs={8}>
-                <Typography />
-              </Grid>
-            </Grid>
-          </Grid>
-        </div>
-      </div>
-
+            </div>
+          </div>
+        ) : ''
+      }
     </>
   );
 };
@@ -430,7 +351,6 @@ const styles = (theme) => ({
     fontSize: '17px',
     letterSpacing: '0.025em',
     color: '#0296C9',
-    paddingLeft: '16px',
   },
   detailContainerBottom: {
     borderTop: '#81a6b9 1px solid',
