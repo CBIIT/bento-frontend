@@ -62,17 +62,19 @@ const options = (classes) => ({
 });
 
 const PropertyItem = ({
-  label, value, linkUrl, classes,
+  label, value, linkUrl, labelLinkUrl, classes,
 }) => {
   const defaultValue = '';
   return (
     <Grid item container xs={12} spacing={4}>
       <Grid item xs={4}>
-        <span className={classes.title}>{label}</span>
+        <span className={classes.title}>
+          { labelLinkUrl ? <Link to={labelLinkUrl.replace('{}', value)}>{label}</Link> : label }
+        </span>
       </Grid>
       <Grid item xs={8} className={classes.content}>
         { value || value === 0 ? (
-          linkUrl ? <Link to={linkUrl} className={classes.link}>{value}</Link>
+          linkUrl ? <Link to={linkUrl.replace('{}', value)} className={classes.link}>{value}</Link>
             : value
         ) : defaultValue }
       </Grid>
@@ -93,6 +95,7 @@ const Subsection = ({ config, data, classes }) => (
           value={data[prop.dataField]}
           classes={classes}
           linkUrl={prop.linkUrl}
+          labelLinkUrl={prop.labelLinkUrl}
         />
       ))}
     </Grid>
@@ -163,14 +166,7 @@ const CaseDetail = ({ data, classes }) => {
 
           <Grid container spacing={4}>
             {/* Left panel */}
-            <Grid
-              item
-              sm={6}
-              xs={12}
-              container
-              spacing={2}
-              className={classes.detailContainerLeft}
-            >
+            <Grid item sm={6} xs={12} container spacing={2} className={classes.detailContainerLeft}>
               {leftPanelSubsections.map((section) => (
                 <Subsection
                   key={section.sectionHeader}
