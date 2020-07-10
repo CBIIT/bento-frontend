@@ -10,12 +10,13 @@ const caseHeader = {
 const leftPanelSubsections = [
   {
     sectionHeader: 'Program',
+    // sectionDesc: 'Program Related Info',
     properties: [
       {
         label: 'Assigned to Program',
         dataField: 'program_acronym',
         // valueLink property specify URL value should link to
-        // spaceholder "{}" will be replaced by actual value in the dataField
+        // space holder "{}" will be replaced by actual value in the dataField
         linkUrl: '/program/{}',
         // labelLink property specify URL label should link to
         // labelLink: '/programs',
@@ -33,6 +34,7 @@ const leftPanelSubsections = [
   },
   {
     sectionHeader: 'Demographics',
+    // sectionDesc: 'Demographic Related Info',
     properties: [
       {
         label: 'Gender',
@@ -66,6 +68,7 @@ const leftPanelSubsections = [
   },
   {
     sectionHeader: 'Diagnosis',
+    // sectionDesc: 'Diagnosis Related Info',
     properties: [
       {
         label: 'Diagnosis',
@@ -106,6 +109,7 @@ const leftPanelSubsections = [
 const rightPanelSubsections = [
   {
     sectionHeader: 'Treatment',
+    // sectionDesc: 'Treatment Related Info',
     properties: [
       {
         label: 'Primary Surgical Procedure',
@@ -127,6 +131,7 @@ const rightPanelSubsections = [
   },
   {
     sectionHeader: 'Follow Up',
+    // sectionDesc: 'Follow Up Related Info',
     properties: [
       {
         label: 'Is Disease Free',

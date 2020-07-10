@@ -61,12 +61,13 @@ const options = (classes) => ({
   ),
 });
 
+// Component to display a propertiy
 const PropertyItem = ({
   label, value, linkUrl, labelLinkUrl, classes,
 }) => {
   const defaultValue = '';
   return (
-    <Grid item container xs={12} spacing={4}>
+    <Grid item container spacing={4}>
       <Grid item xs={4}>
         <span className={classes.title}>
           { labelLinkUrl ? <Link to={labelLinkUrl.replace('{}', value)}>{label}</Link> : label }
@@ -82,26 +83,32 @@ const PropertyItem = ({
   );
 };
 
+// Component to display a subsection
 const Subsection = ({ config, data, classes }) => (
-  <Grid item container>
-    <Grid item xs={12}>
+  <Grid item container direction="column">
+    <Grid item>
       <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
     </Grid>
-    <Grid item container xs={12}>
-      {config.properties.map((prop) => (
-        <PropertyItem
-          key={prop.label}
-          label={prop.label}
-          value={data[prop.dataField]}
-          classes={classes}
-          linkUrl={prop.linkUrl}
-          labelLinkUrl={prop.labelLinkUrl}
-        />
-      ))}
-    </Grid>
+    {
+      config.sectionDesc
+        ? (
+          <Grid item><span>{config.sectionDesc}</span></Grid>
+        ) : ''
+    }
+    {config.properties.map((prop) => (
+      <PropertyItem
+        key={prop.label}
+        label={prop.label}
+        value={data[prop.dataField]}
+        classes={classes}
+        linkUrl={prop.linkUrl}
+        labelLinkUrl={prop.labelLinkUrl}
+      />
+    ))}
   </Grid>
 );
 
+// Main case detail component
 const CaseDetail = ({ data, classes }) => {
   const stat = {
     numberOfPrograms: 1,
