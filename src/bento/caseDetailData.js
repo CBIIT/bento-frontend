@@ -8,6 +8,7 @@ const caseHeader = {
 
 // --------------- Data panel configuration --------------
 const leftPanelSubsections = [
+  // Each object here represents a subsection in the panel
   {
     sectionHeader: 'Program',
     // sectionDesc: 'Program Related Info',
@@ -18,8 +19,8 @@ const leftPanelSubsections = [
         // valueLink property specify URL value should link to
         // space holder "{}" will be replaced by actual value in the dataField
         linkUrl: '/program/{}',
-        // labelLink property specify URL label should link to
-        // labelLink: '/programs',
+        // labelLinkUrl property specify URL label should link to
+        // labelLinkUrl: '/programs',
       },
       {
         label: 'Arm',
@@ -172,7 +173,7 @@ const tableConfig = {
   display: true,
   // Table title
   title: 'ASSOCIATED FILES',
-  // Field name for files data
+  // Field name for files data, need to be updated only when using a different GraphQL query
   filesField: 'files',
   // Value must be one of the 'dataField's in fileTableColumns
   defaultSortField: 'file_name',
@@ -203,6 +204,7 @@ const tableConfig = {
     {
       dataField: 'file_size',
       header: 'Size',
+      // set formatBytes to true to display file size (in bytes) in a more human readable format
       formatBytes: true,
     },
   ],
