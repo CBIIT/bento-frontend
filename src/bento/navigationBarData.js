@@ -19,20 +19,12 @@ export default [
     type: 'dropdown',
     dropDonwLinks: [
       {
-        labelText: 'purpose',
-        link: '/purpose',
+        labelText: 'Bento',
+        link: '/bento',
       },
       {
-        labelText: 'crdc & analysis',
-        link: '/crdc',
-      },
-      {
-        labelText: 'support',
-        link: '/support',
-      },
-      {
-        labelText: 'developers',
-        link: '/developers',
+        labelText: 'Resources',
+        link: '/resources',
       },
     ],
   },

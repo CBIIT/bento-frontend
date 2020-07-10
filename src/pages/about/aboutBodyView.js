@@ -22,9 +22,6 @@ const AboutBody = ({ classes, data }) => {
       <AboutHeader title={data.title} />
       <div id="about_body" className={classes.container}>
         <Grid container spacing={16} direction="row" className={classes.aboutSection}>
-          <Grid item lg={3} md={3} sm={12} xs={12} className={classes.leftSection}>
-            <img className={classes.img} src={data.img} alt={data.title} />
-          </Grid>
           <Grid item lg={9} md={9} sm={12} xs={12} className={classes.rightSection}>
             {data.content ? data.content.map((contentObj) => (
               <>
@@ -146,6 +143,9 @@ const AboutBody = ({ classes, data }) => {
               </>
             )) : ''}
           </Grid>
+          <Grid item lg={3} md={3} sm={12} xs={12} className={classes.leftSection}>
+            <img className={classes.img} src={data.img} alt={data.title} />
+          </Grid>
         </Grid>
       </div>
     </>
@@ -156,7 +156,7 @@ const styles = (theme) => ({
   container: {
     margin: '16px auto 16px auto',
     color: '#000000',
-    fontFamily: theme.custom.fontFamily,
+    fontFamily: 'Nunito',
     fontSize: '15px',
     lineHeight: '22px',
     maxWidth: '1440px',
@@ -165,9 +165,9 @@ const styles = (theme) => ({
     // height: '476px',
     // width: '675px',
     color: '#000000',
-    fontFamily: theme.custom.fontFamily,
-    fontSize: '15px',
-    lineHeight: '22px',
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    lineHeight: '30px',
   },
   title: {
     color: '#0B3556',

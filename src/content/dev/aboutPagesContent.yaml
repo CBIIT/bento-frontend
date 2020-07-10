@@ -1,62 +1,22 @@
-- page: '/crdc'
-  title: "Cancer Research Data Commons (CRDC) and Analysis"
+- page: '/bento'
+  title: "Bento"
   content:
-    - paragraph: "$$#CRDC:#$$"
-    - paragraph: "$$[The Cancer Research DataCommons](https://datascience.cancer.gov/data-commons)$$ is an initiative from NCI’s Center for Biomedical
-        Informatics & Information Technology ($$[CBIIT](https://datascience.cancer.gov/)$$). CBIIT’s vision for the project consists of a 
-        virtual, expandable infrastructure that provides secure access to many different data types across scientific domains, 
-        allowing users to analyze, share, and store results, leveraging the storage and elastic compute, or ability to easily scale resources, of the 
-        cloud. The ability to combine diverse data types and perform cross-domain analysis of large data sets can lead to new discoveries in cancer prevention, 
-        treatment and diagnosis, and supports the goals of precision medicine and the Cancer Moonshot℠."
-    - paragraph: "Users can query the CTDC data via Graphical User Interface (GUI) or APIs. The GUI provides users a distilled set of parameters (faceted querying) they can use to explore the CTDC data. The APIs provide access to the full collection of parameters as seen in the $$[CTDC Data Model](https://github.com/CBIIT/ctdc-model)$$."
-    - paragraph: "$$#ANALYSIS- THE CLOUD RESOURCES:#$$"
-    - paragraph: "The CRDC has three Cloud Resources ($$[Seven Bridges Cancer Genomics Cloud](http://www.cancergenomicscloud.org/)$$,$$[ISB Cancer Genomics Cloud ](https://isb-cgc.appspot.com/)$$, $$[Terra ](https://terra.bio/)$$),
-        each providing analysis platforms for the community to use when working with CRDC data."
-    - paragraph: "These cloud-based platforms eliminate the need for researchers to download and store extremely large data sets by allowing them to bring
-        analysis tools to the data in the cloud, instead of the traditional process of bringing the data to the tools on local hardware. The Cloud Resources 
-        also provide access to on-demand computational capacity to analyze these data. The Cloud Resources allow users to run best practice tools and pipelines 
-        already implemented or upload their own data or analysis methods to workspaces."
-    - paragraph: "All three Cloud Resources provide support for data access through a web-based user interface in addition to programmatic access to analytic 
-       tools and workflows, and the capability of sharing results with collaborators. Each Cloud Resource is continually developing new functionality to improve 
-       the user experience and add new tools for researchers."
-    - paragraph: "$$*SEVEN BRIDGES CANCER GENOMICS CLOUD (SBG)*$$ is hosted on Amazon Web Services and has a rich user interface that allows researchers to find data of 
-       interest and combine it with their own private data. Data can be analyzed using more than 200 preinstalled, curated bioinformatics tools and workflows. 
-       Researchers can also extend the functionality of the platform by adding their own data and tools via an intuitive software development kit."
-    - paragraph: "$$*INSTITUTE FOR SYSTEMS BIOLOGY CANCER GENOMICS CLOUD (ISB-CGC)*$$ leveraging many aspects of the Google Cloud Platform, allows scientists to 
-       interactively define and compare cohorts, examine underlying molecular data for specific genes and pathways, and share insights with collaborators. 
-       For computational users, Application Program Interfaces (APIs) and Google Cloud Platform (GCP) resources such as BigQuery and Google Pipeline service, 
-       allow complex queries from R or Python scripts, or Dockerized workflows to run on data available in the Google Cloud Storage."
-    - paragraph: "$$*BROAD INSTITUTE- TERRA*$$ is an open, standards-based platform for performing production-scale data analysis in the cloud. Built on the Google 
-       Cloud Platform, Terra empowers analysts, tool developers, and production managers to run large-scale analysis and to share results with collaborators. 
-       Users can upload their own analysis methods and data to workspaces or run the Broad’s best practice tools and pipelines."
-    - paragraph: "$$*FROM CTDC TO CLOUD RESOURCES:*$$"
-    - image: "MyCases-Wizard-Step4-SVG"
-    - paragraph: "Researchers find cases/cohorts in CTDC and then identify the files they would like to use for analysis. This list of files is called a Manifest. 
-        The user will download the Manifest and then upload the Manifest into SBG where the files will be available for analysis. The user will need a SBG account. 
-        The Manifest file is a text file consisting of CRDC Identifiers and, on uploading to SBG, the user will be able to access the relevant data files and see 
-        some basic case information."
-    - paragraph: "This Cloud Resource analysis model eliminates the need for researchers to download and store extremely large data sets by allowing them to bring 
-        analysis tools to the data in the cloud, instead of the traditional process of bringing the data to the tools on local hardware. The Cloud Resources also 
-        provide access to on-demand computational capacity to analyze these data, allow users to run best practice tools and pipelines already implemented, and 
-        upload their own data or analysis methods to workspaces."
-    - paragraph: "All three Cloud Resources provide support for data access through a web-based user interface in addition to programmatic access to analytic tools 
-        and workflows, and the capability of sharing results with collaborators. Each Cloud Resource is continually developing new functionality to improve the user 
-        experience and add new tools for researchers."
-    - paragraph: "Currently the CTDC supports analysis via the SBG Cloud Resource."
-- page: "/developers"
-  title: "Developers"
+    - paragraph: "Bento is an open source framework developed by the Frederick National Laboratory for Cancer Research to support data sharing. It provides a structure to enable groups to quickly stand up and then configure a data sharing environment for life science data - groups can use Bento to share data amongst themselves or with a larger community. Bento's reference implementation contains a data model that is compatible with the Cancer Research Data Commons' Harmonized model (CRDC-H) such that Bento instances can be connected into and inter-operate with the CRDC. Users can customize the data model for their own needs. Bento also contains a User Interface and an API for programmatic access."
+    - paragraph: "$$*CONTACT:*$$ bento-help@nih.gov"
+- page: "/resources"
+  title: "Resources"
   content:
-    - paragraph: "The CTDC System features a GraphQL API to enable querying of the entire data model."
-    - paragraph: "https://trialcommons-dev.cancer.gov/v1/graphql/"
-    - paragraph: "The CTDC metadata is open to the public and will not require authentication to the system. However, some clinical data and all Data Files are not public so require permission."
-    - paragraph: "Users can query the CTDC data via Graphical User Interface (GUI) or API. The GUI provides users a distilled set of parameters (faceted querying) they can use to explore a subset of the CTDC data model. The API provide access to the full collection of parameters as seen in the $$[CTDC Data Model](https://github.com/CBIIT/ctdc-codebase)$$."
+    - paragraph: "The BENTO System features a GraphQL API to enable querying of the entire data model."
+    - paragraph: "https://dev.bento-tools.org/.gov/v1/graphql/"
+    - paragraph: "The BENTO metadata is open to the public and will not require authentication to the system. However, some clinical data and all Data Files are not public so require permission."
+    - paragraph: "Users can query the BENTO data via Graphical User Interface (GUI) or API. The GUI provides users a distilled set of parameters (faceted querying) they can use to explore a subset of the CTDC data model. The API provide access to the full collection of parameters as seen in the $$[CTDC Data Model](https://github.com/CBIIT/ctdc-codebase)$$."
     - paragraph: "The API is provided “as is”; there are no warranties or conditions arising out of usage of these services. "
     - paragraph: "$$#GITHUB:#$$"
-    - paragraph: "As a resource for the public and cancer research, $$[the CTDC GitHub repo](https://github.com/CBIIT/ctdc-codebase)$$ is available for research,
+    - paragraph: "As a resource for the public and cancer research, $$[the BENTO GitHub repo](https://github.com/CBIIT/bento-frontend)$$ is available for research,
         usage, forking, and pull requests. The codebase is intended for sharing and building frameworks for related initiatives 
-        and projects. The CTDC GitHub repo has documentation about how to access the system, including endpoints and recommendations for 
+        and projects. The BENTO GitHub repo has documentation about how to access the system, including endpoints and recommendations for 
         tools and example queries. Both the project and documentation are currently maintained and updated. "
-    - paragraph: "CTDC is based on a Graph database, and features a GraphQL API (Java) and a React front-end (JavaScript). 
+    - paragraph: "BENTO is based on a Graph database, and features a GraphQL API (Java) and a React front-end (JavaScript). 
         Each tier in the application stack is designed to be modular and adaptable for a variety of use-cases and scenarios. "
 - page: '/support'
   title: "Support"
@@ -65,25 +25,26 @@
 - page: '/request-access'
   title: "Request Access"
   content:
-    - paragraph: "CTDC provides open access to baseline information on the cases present in CTDC. However, the detailed clinical information and associated sequencing data files for cases presented in the CTDC are not open access, they require users to have permission. Requesting permission is a two step process;"
+    - paragraph: "CTDC provides open access to baseline information on the cases present in CTDC. However, the detailed clinical information and associated sequencing data files for cases presented in the CTDC are not open access, they require users to have permission. Requesting permission is a two step process;."
     - paragraph: "STEP 1: Request access through the NCTN Data Archive site."
     - paragraph: "STEP 2: Request access through dbGaP."
-    - paragraph: "Once access has been granted, users will be able to view and work with the CTDC data files and clinical information in one of the Cancer Research Data Common’s analysis resources. Currently the CTDC supports analysis via the SBG Cloud Resource ($$[Seven Bridges Cancer Genomics Cloud](http://www.cancergenomicscloud.org/)$$)."
+    - paragraph: "Once access has been granted, users will be able to view and work with the CTDC data files and clinical information in one of the Cancer Research Data Common’s analysis resources."
     - paragraph: "$$#STEP 1:#$$"
     - paragraph: "Navigate to the $$[NCTN/NCORP Data Archive](https://nctn-data-archive.nci.nih.gov)$$ site. If you do not have an NCTN account, please create one. Once registered you will be able to request access to the trial of interest. It is suggested to use either the NCT Trial Number or the PubMed ID to search for the trial of interest- each trial in CTDC has an associated NCT Trial number and PubMed ID. A $$[PDF document](https://nctn-drupal8-prod.nci.nih.gov/sites/default/files/RequestPDF.pdf)$$ is available detailing the steps for both registration and access requesting."
     - paragraph: "$$#STEP 2:#$$"
     - paragraph: "Navigate to $$[dbGaP’s Authorized Access](https://dbgap.ncbi.nlm.nih.gov/aa/wga.cgi?page=login)$$ site and login. If you do not have a dbGaP account, please create one. 
         If a user is requesting access through a collaborator or their Principal Investigator (PI) who already has access, then the PI/collaborator can add the user as a “Downloader”.
-        If a user is requesting access as a PI, then they will need to create a new research project within dbGaP. The following information is useful to add the appropriate dataset to the dbGaP research project request; ARM Q Study Accession ID is phs001926, ARM Z1D Study Accession ID is phs001859."
+        If a user is requesting access as a PI, then they will need to create a new research project within dbGaP. The following information is useful to add the appropriate dataset to the dbGaP research project request; ARM Q is Study Accession ID is phs001926, ARM Z1D is Study Accession ID is phs001859."
 - page: '/purpose'
   title: "Purpose"
   content:
-    - paragraph: "The CTDC is part of the Cancer Research Data Commons (CRDC), an initiative from 
-        NCI’s Center for Biomedical Informatics and Information Technology (CBIIT). The CTDC is focused on providing access to data from NCI's Precision Medicine Initiative which has the goal to provide clinicians with new tools to select the therapies that can be used in a more individualized approach with patients. CTDC is providing the community with access to data from the National Cancer Institute-Molecular Analysis for Therapy Choice
-        (NCI-MATCH) project whose primary goal is to determine the percentage of patients whose tumors have a complete or partial response to treatment. Patients are enrolled using criteria that includes tumor genetics. All the data in CTDC is sourced from human subjects."
-    - paragraph: "The data in CTDC has been harmonized into an integrated data model and then made available 
-        to the research community. Bioinformatic analysis of the 
+    - paragraph: "The data in the CTDC is sourced from multiple different programs and projects; 
+        all focused on human subjects. The data is harmonized into an integrated data model and then made available 
+        to the research community. The CTDC is part of the Cancer Research Data Commons (CRDC), an initiative from 
+        NCI’s Center for Biomedical Informatics and Information Technology (CBIIT). Bioinformatic analysis of the 
         CTDC data is accomplished using the CRDC $$[Cloud Resources](https://datascience.cancer.gov/data-commons/cloud-resources)$$."
+    - paragraph: "Within the FNLCR, the Biomedical Informatics and Data Science (BIDS) Directorate is focused on data science that includes software engineering 
+        and data handling."
 - page: '/ctdc-data-model'
   title: 'CTDC Data Model'
   content:
@@ -104,7 +65,7 @@
     - paragraph: "The CTDC data model is a representation of how all the constituent data are arranged relative to each 
         other. Given the number of studies, the range of study types and the multiple data types that the CTDC needs 
         to support, the data model will need to adapt to the needs of the science. The data model is not static and 
-        is expected to change as new needs are identified. The data dictionary can be found $$[here](https://trialcommons-dev.cancer.gov/#/data-dictionary)$$."
+        is expected to change as new needs are identified. The data dictionary can be found $$[here](https://trialcommons.cancer.gov/#/data-dictionary)$$."
     - paragraph: "The SVG graphic below represents the current CTDC data model consisting of data nodes, 
         node properties, and relationships (edges). It provides a comprehensive mapping of the system data, 
         part of which may be viewed in the application interface and UI. In other words, additional nodes and 
@@ -275,6 +236,7 @@
         attributeConventions: "rules enforced on attribute values."
       - attributeName: "Enumeration - "
         attributeConventions: "If applicable, the list of possible values for the attribute"
+    
     attribute:
       - row:
         - "case"
@@ -931,7 +893,7 @@
       - row:
         - "copy_number_ci_95"
         - "The upper limit of the 95% confidence interval for the estimated copy number."
-        - "copy_number_variant_of"
+        - ""
         - ""
         - "true"
         - "number"
@@ -958,3 +920,4 @@
         - "gene2_read_count > 0"
         - "None"
         - "gene_fusion_variant_of"
+    
