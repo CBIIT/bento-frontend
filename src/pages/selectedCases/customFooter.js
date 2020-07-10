@@ -23,6 +23,7 @@ const styles = () => ({
     height: '40px',
     width: '165px',
     color: '#FFFF',
+    marginTop: '31px',
     '&$buttonDisabled': {
       backgroundColor: '#03A383',
       opacity: '0.3',

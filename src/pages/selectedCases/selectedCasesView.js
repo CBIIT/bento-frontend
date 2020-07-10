@@ -165,7 +165,6 @@ const styles = (theme) => ({
     marginTop: '-17.9px',
     marginLeft: '-10px',
     width: '101px',
-    filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
   tableWrapper: {
     margin: 'auto 3% auto 3%',
@@ -207,16 +206,17 @@ const styles = (theme) => ({
     paddingTop: '8px',
   },
   header: {
-    borderBottom: '#4B619A 10px solid',
+    borderBottom: '#42779A 10px solid',
     height: '77px',
     maxWidth: '100%',
     marginLeft: '3%',
-    marginRight: '3%',
+    marginRight: '3.05%',
   },
   myCasesWrapper: {
     border: '#03A383 4px solid',
     borderRadius: '35px',
-    margin: '80px',
+    marginTop: '200px',
+    marginBottom: '80px',
     marginLeft: '3%',
     marginRight: '3%',
     paddingBottom: '20px',
