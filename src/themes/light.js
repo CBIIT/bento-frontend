@@ -19,8 +19,8 @@ const black = 'black';
 const lochmara = '#3478A5';
 const lightenRate = 7.5;
 const darkenRate = 15;
-const tableHeaderBorder = '#4B619A 3px solid';
-const tableHeaderFontColor = '#004c73';
+const tableHeaderBorder = '#42779A 3px solid';
+const tableHeaderFontColor = '#13344A';
 const tableFontFamily = "'Lato Regular','Raleway', sans-serif";
 const white = '#FFFFFF';
 
@@ -28,7 +28,7 @@ export default {
   custom: {
     maxContentWidth: '1440px',
     maxContent: 'white',
-    bodyBackGround: '#f2f2f2',
+    bodyBackGround: '#E5F0FA',
     cardBackGround: '#f0f6f8',
     fontFamilySans: '"Open Sans", sans-serif',
     footorBackground: '#325068',
@@ -224,7 +224,7 @@ export default {
       footerText: 'white',
     },
     background: {
-      default: '#f2f2f2',
+      default: '#E5F0FA',
       light: '#F3F5FF',
     },
   },
@@ -289,7 +289,8 @@ export default {
 
       },
       headerCell: {
-        borderBottom: '2px solid #42779A',
+        borderTop: '3px solid #42779A',
+        borderBottom: '3px solid #42779A',
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
 
@@ -417,8 +418,20 @@ export default {
         fontStyle: 'normal',
       },
       iconButton: {
-        marginRight: '2.8%',
+        marginRight: '0.3%',
+        '@media (max-width: 2560px)': {
+          marginRight: '0.5%',
+        },
+        '@media (max-width: 2000px)': {
+          marginRight: '0.7%',
+        },
         '@media (max-width: 1600px)': {
+          marginRight: '0.9%',
+        },
+        '@media (max-width: 1300px)': {
+          marginRight: '1.1%',
+        },
+        '@media (max-width: 1024px)': {
           marginRight: '1.3%',
         },
       },
@@ -426,6 +439,9 @@ export default {
     MuiIconButton: {
       root: {
         padding: '5px',
+      },
+      label: {
+        color: '#344B5A',
       },
     },
     MuiTablePagination: {
@@ -450,6 +466,13 @@ export default {
     MuiTableFooter: {
       root: {
         borderTop: '6px #E7E5E5 solid',
+      },
+    },
+    MUIDataTableBodyCell: {
+      stackedParent: {
+        '&:first-child': {
+          paddingLeft: '30px',
+        },
       },
     },
   },
