@@ -42,9 +42,9 @@ const ProgramView = ({ classes, data, theme }) => {
         }(state.dashboard.caseOverview.data.filter(
           (d) => (filterData(d,
             [{
-              groupName: 'Trial Code',
-              name: programData.clinical_trial_designation,
-              datafield: 'clinical_trial_code',
+              groupName: 'Diagnosis',
+              name: programData.disease_subtypes,
+              datafield: 'diagnosis',
               isChecked: true,
             }])
           ),
@@ -69,20 +69,9 @@ const ProgramView = ({ classes, data, theme }) => {
   const redirectTo = () => {
     dispatch(initDashboardStatus()).then(() => {
       dispatch(singleCheckBox([{
-        groupName: 'Trial Code',
-        name: programData.clinical_trial_designation,
-        datafield: 'clinical_trial_code',
-        isChecked: true,
-      }]));
-    });
-  };
-
-  const redirectToTrialArm = (TrialArm) => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
-        groupName: 'Trial Arm',
-        name: TrialArm,
-        datafield: 'trial_arm',
+        groupName: 'Program',
+        name: programData.program_acronym,
+        datafield: 'program',
         isChecked: true,
       }]));
     });
@@ -95,8 +84,8 @@ const ProgramView = ({ classes, data, theme }) => {
   };
 
   const breadCrumbJson = [{
-    name: 'All Trials',
-    to: '/trials',
+    name: 'All Programs',
+    to: '/programs',
     isALink: true,
   }];
 
@@ -106,9 +95,9 @@ const ProgramView = ({ classes, data, theme }) => {
       label: 'Arm',
       options: {
         filter: false,
-        customBodyRender: (value, tableMeta) => (
+        customBodyRender: (value) => (
           <div className={classes.tableCell1}>
-            <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectToTrialArm(`${tableMeta.rowData[0]}_${tableMeta.rowData[1]}`)}>{value}</Link>
+            <Link className={classes.link} to={`/arm/${value}`}>{value}</Link>
           </div>
         ),
       },
@@ -146,7 +135,7 @@ const ProgramView = ({ classes, data, theme }) => {
         filter: false,
         customBodyRender: (value) => (
           <div className={classes.tableCell4}>
-            <a rel="noopener noreferrer" className={classes.link} target="_blank" href={`https://www.ncbi.nlm.nih.gov/sites/m/pubmed/${value}`}>{value}</a>
+            {value}
           </div>
         ),
       },
@@ -156,9 +145,9 @@ const ProgramView = ({ classes, data, theme }) => {
       label: 'Cases',
       options: {
         filter: false,
-        customBodyRender: (value, tableMeta) => (
+        customBodyRender: (value) => (
           <div className={classes.tableCell5}>
-            <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectToTrialArm(`${tableMeta.rowData[0]}_${tableMeta.rowData[1]}`)}>{value}</Link>
+            <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo()}>{value}</Link>
           </div>
         ),
       },
@@ -179,7 +168,7 @@ const ProgramView = ({ classes, data, theme }) => {
       <TableFooter>
         <TableRow>
           <TablePagination
-            className={classes.root}
+            className={count >= 10 ? classes.root : classes.root2}
             count={count}
             page={page}
             rowsPerPage={rowsPerPage}
@@ -236,7 +225,7 @@ const ProgramView = ({ classes, data, theme }) => {
                 <span className={classes.headerButtonLinkText}> View </span>
                 <span className={classes.headerButtonLinkNumber}>
 
-                  {programData.program_id}
+                  {programData.num_subjects}
 
                 </span>
                 <span className={classes.headerButtonLinkText}>CASES</span>
@@ -337,18 +326,10 @@ const ProgramView = ({ classes, data, theme }) => {
                 </Grid>
 
                 <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>External Link to Program</span>
+                  <span className={classes.detailContainerHeader}>
+                    <a href={`${programData.program_external_url}`} target="_blank" rel="noopener noreferrer">External Link to Program</a>
+                  </span>
 
-                </Grid>
-
-                <Grid item xs={12}>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_external_url}
-                      {' '}
-                    </span>
-                  </div>
                 </Grid>
 
               </Grid>
@@ -398,7 +379,7 @@ const ProgramView = ({ classes, data, theme }) => {
                       <img src={fileIcon} alt="file icon" />
                     </span>
                     <span className={classes.fileContent}>
-                      {widgetData.file}
+                      {programData.num_files}
                     </span>
                   </div>
                 </Grid>
@@ -413,7 +394,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
         <div className={classes.tableDiv}>
           <div className={classes.tableTitle}>
-            <span className={classes.tableHeader}>Trial Arms</span>
+            <span className={classes.tableHeader}>Arms</span>
           </div>
           <Grid item xs={12}>
             <Grid container spacing={8}>
@@ -499,6 +480,9 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#000',
     background: '#f3f3f3',
+  },
+  root2: {
+    display: 'none',
   },
   header: {
     paddingLeft: '21px',
