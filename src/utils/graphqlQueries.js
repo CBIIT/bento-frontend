@@ -63,32 +63,26 @@ export const PROGRAMS_QUERY = gql`{
 }
   `;
 
-export const TRIAL_BY_ID_QUERY = gql`
-query clinicalTrialByTrialId($id: String!) {
-
-   caseCountByTrialId(trial_id:$id)
-   fileCountByTrialId(trial_id:$id)
-
-  clinicalTrialByTrialId(trial_id: $id) {
-  clinical_trial_id
-  clinical_trial_short_name
-  clinical_trial_description
-  clinical_trial_designation
-  clinical_trial_long_name
-  clinical_trial_type
-  lead_organization
-  principal_investigators
-  number_of_cases
-  number_of_arms
-}
-
-clinicalTrialArmByTrialId(trial_id:$id){
-                  arm_id
-                  arm_target
-                  arm_drug
-                  pubmed_id
-                  number_of_cases
-                }
+export const PROGRAM_DETAIL_QUERY = gql`
+query programDetail($program_id: String!) {
+  programDetail(program_id: $program_id) {
+    program_acronym
+    program_id
+    program_name
+    program_full_description
+    institution_name
+    program_external_url
+    num_subjects
+    num_files
+    disease_subtypes
+    studies { 
+      study_name
+      study_type
+      study_acronym
+      study_full_description
+      num_subjects
+    }
+  }
 }`;
 
 export const STATS_QUERY = gql`{
