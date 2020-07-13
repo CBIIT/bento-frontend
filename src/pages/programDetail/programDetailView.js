@@ -31,20 +31,20 @@ const ProgramView = ({ classes, data, theme }) => {
 
   const widgetData = useSelector((state) => (
     state.dashboard
-      && state.dashboard.caseOverview
-       && state.dashboard.caseOverview.data
+      && state.dashboard.subjectOverView
+       && state.dashboard.subjectOverView.data
       ? (
         function extraData(d) {
           return {
-            diagnosis: getDonutDataFromDashboardData(d, 'disease'),
+            diagnosis: getDonutDataFromDashboardData(d, 'diagnosis'),
             file: getStatDataFromDashboardData(d, 'file'),
           };
-        }(state.dashboard.caseOverview.data.filter(
+        }(state.dashboard.subjectOverView.data.filter(
           (d) => (filterData(d,
             [{
-              groupName: 'Diagnosis',
-              name: programData.disease_subtypes,
-              datafield: 'diagnosis',
+              groupName: 'Program',
+              name: programData.program_acronym,
+              datafield: 'program',
               isChecked: true,
             }])
           ),
