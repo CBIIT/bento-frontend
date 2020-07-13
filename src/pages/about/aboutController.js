@@ -67,6 +67,7 @@ const About = ({ match }) => {
         title: data.title ? data.title : '',
         content: data.content ? data.content : '',
         table: data.table ? data.table : '',
+        secondaryZoomImage: data.secondaryZoomImage ? data.secondaryZoomImage : null,
       }}
       />
     </>

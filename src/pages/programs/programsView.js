@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/trial/Trials_Title_Bar.Icon.svg';
+import externalLinkIcon from '../../assets/icons/Program-ExternalLink.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
 const Programs = ({ classes, data }) => {
@@ -38,9 +39,9 @@ const Programs = ({ classes, data }) => {
       label: 'Program Code',
       options: {
         filter: false,
-        customBodyRender: (value) => (
+        customBodyRender: (value, tableMeta) => (
           <div className={classes.tableCell1}>
-            <Link className={classes.link} to={`/program/${value}`}>{value}</Link>
+            <Link className={classes.link} to={`/program/${tableMeta.rowData[1]}`}>{value}</Link>
           </div>
         ),
       },
@@ -105,6 +106,11 @@ const Programs = ({ classes, data }) => {
           <div className={classes.tableCell5}>
             {' '}
             <a href={`https://pubmed.ncbi.nlm.nih.gov/${tableMeta.rowData[5]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+            <img
+              src={externalLinkIcon}
+              alt="BENTO external link"
+              className={classes.externalLinkIcon}
+            />
             {' '}
           </div>
         ),
@@ -300,6 +306,10 @@ const styles = (theme) => ({
   },
   tableCell5: {
     width: '140px',
+  },
+  externalLinkIcon: {
+    width: '20px',
+    verticalAlign: 'sub',
   },
 });
 

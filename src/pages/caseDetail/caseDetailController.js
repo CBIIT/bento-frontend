@@ -3,19 +3,19 @@ import { Query } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CaseDetailView from './caseDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { GET_CASE_DETAIL_DATA_QUERY } from '../../utils/graphqlQueries';
+import { GET_CASE_DETAIL_DATA_QUERY, dataRoot, caseIDField } from '../../bento/caseDetailData';
 
 const CaseDetailContainer = ({ match }) => (
-  <Query query={GET_CASE_DETAIL_DATA_QUERY} variables={{ subject_id: match.params.id }}>
+  <Query query={GET_CASE_DETAIL_DATA_QUERY} variables={{ [caseIDField]: match.params.id }}>
     {({ data, loading, error }) => (
       loading ? <CircularProgress />
-        : (error || !data || data.subjectDetail.subject_id !== match.params.id
+        : (error || !data || data[dataRoot][caseIDField] !== match.params.id
           ? (
             <Typography variant="h5" color="error" size="sm">
               {error && `An error has occurred in loading stats component: ${error}`}
             </Typography>
           )
-          : <CaseDetailView data={data} />
+          : <CaseDetailView data={data[dataRoot]} />
         )
     )}
   </Query>
