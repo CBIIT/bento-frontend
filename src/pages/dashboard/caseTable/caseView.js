@@ -5,6 +5,7 @@ import {
   Chip,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { CustomDataTable } from 'bento-components';
 import Snackbar from '@material-ui/core/Snackbar';
 // import { Link } from 'react-router-dom';
@@ -91,7 +92,12 @@ const Cases = ({ classes, data }) => {
       filter: false,
       customBodyRender: (value) => (
         <div className={classes.tableCell8}>
-          { value }
+          {column.linkUrl
+            ? (
+              <Link to={column.linkUrl.replace('{}', value)} className={classes.link}>
+                {value}
+              </Link>
+            ) : value }
         </div>
       ),
     },

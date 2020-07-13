@@ -86,7 +86,7 @@ export const dashboardTable = {
       field: 'subject_id',
       label: 'Case ID',
       sort: 'asc',
-      cellRenderPath: '/case',
+      linkUrl: '/case/{}',
       primary: true,
       display: true,
     },
@@ -94,7 +94,7 @@ export const dashboardTable = {
       field: 'program',
       label: 'Program Code',
       sort: 'asc',
-      cellRenderPath: '/trial',
+      linkUrl: '/trial/{}',
       display: true,
     },
     {
