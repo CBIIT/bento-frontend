@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, withStyles, Link } from '@material-ui/core';
 import AboutHeader from './aboutHeaderView';
+import XoomInOut from './xoomInOutView';
 import Stats from '../../components/Stats/AllStatsController';
 import externalIcon from '../../assets/about/About-ExternalLink.svg';
 import submissionGuide from '../../assets/footer/ICDC_DGAB_Guidelines.pdf';
@@ -148,18 +149,20 @@ const AboutBody = ({ classes, data }) => {
           </Grid>
         </Grid>
       </div>
+      {data.secondaryZoomImage && <XoomInOut />}
     </>
   );
 };
 
 const styles = (theme) => ({
   container: {
-    margin: '16px auto 16px auto',
+    margin: '0px auto 0px auto',
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '15px',
     lineHeight: '22px',
     maxWidth: '1440px',
+    background: '#e7eef5',
   },
   text: {
     // height: '476px',
@@ -181,7 +184,8 @@ const styles = (theme) => ({
     float: 'left',
   },
   aboutSection: {
-    margin: '60px auto 60px auto',
+    paddingTop: '60px',
+    paddingBottom: '60px',
   },
   img: {
     width: '100%',
