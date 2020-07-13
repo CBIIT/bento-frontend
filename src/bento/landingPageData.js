@@ -40,14 +40,14 @@ export const landingPageData = {
     titleText: 'The Bento Framework',
     descriptionText: 'Effective data management is key to scientific discovery. Bento is an open source framework, developed by the Frederick National Laboratory for Cancer Research, to support the creation of data sharing platforms, that adhere to the FAIR principles of scientific data management.',
     callToActionText: 'Read More',
-    callToActionLink: '/purpose', // This links to the "About" static page.
+    callToActionLink: '/bento', // This links to the "About" static page.
   },
   tile2: {
     alt: '',
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/prgmImage.png',
     titleText: 'Programs',
     descriptionText: 'Access data from the TAILORx clinical trial, on this data sharing platform, built on Bento.',
-    callToActionText: 'More',
+    callToActionText: 'Read More',
     callToActionLink: '/programs', // This links to the Programs Listing Page.
   },
   tile3: {
@@ -56,7 +56,7 @@ export const landingPageData = {
     titleText: 'Resources',
     descriptionText: 'Use Bento to you build your own data sharing platform.',
     callToActionText: 'Read More',
-    callToActionLink: '/purpose', // Link to the "Resources" Static Page
+    callToActionLink: '/resources', // Link to the "Resources" Static Page
   },
   tile4: {
     alt: '',
