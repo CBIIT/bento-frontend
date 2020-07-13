@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import icon from '../../assets/icons/Icon-CaseDetail.svg';
+import icon from '../../assets/icons/Cases.Icon.svg';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import {
   caseHeader,
@@ -61,19 +61,19 @@ const options = (classes) => ({
   ),
 });
 
-// Component to display a propertiy
+// Component to display a property
 const PropertyItem = ({
   label, value, linkUrl, labelLinkUrl, classes,
 }) => {
   const defaultValue = '';
   return (
     <Grid item container spacing={4}>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <span className={classes.title}>
           { labelLinkUrl ? <Link to={labelLinkUrl.replace('{}', value)}>{label}</Link> : label }
         </span>
       </Grid>
-      <Grid item xs={8} className={classes.content}>
+      <Grid item xs={6} className={classes.content}>
         { value || value === 0 ? (
           linkUrl ? <Link to={linkUrl.replace('{}', value)} className={classes.link}>{value}</Link>
             : value
@@ -85,26 +85,29 @@ const PropertyItem = ({
 
 // Component to display a subsection
 const Subsection = ({ config, data, classes }) => (
-  <Grid item container direction="column">
-    <Grid item>
-      <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
+  <Grid item container>
+    <Grid item container direction="column" className={classes.subsection} xs={11}>
+      <Grid item>
+        <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
+      </Grid>
+      {
+        config.sectionDesc
+          ? (
+            <Grid item><span>{config.sectionDesc}</span></Grid>
+          ) : ''
+      }
+      {config.properties.map((prop) => (
+        <PropertyItem
+          key={prop.label}
+          label={prop.label}
+          value={data[prop.dataField]}
+          classes={classes}
+          linkUrl={prop.linkUrl}
+          labelLinkUrl={prop.labelLinkUrl}
+        />
+      ))}
     </Grid>
-    {
-      config.sectionDesc
-        ? (
-          <Grid item><span>{config.sectionDesc}</span></Grid>
-        ) : ''
-    }
-    {config.properties.map((prop) => (
-      <PropertyItem
-        key={prop.label}
-        label={prop.label}
-        value={data[prop.dataField]}
-        classes={classes}
-        linkUrl={prop.linkUrl}
-        labelLinkUrl={prop.labelLinkUrl}
-      />
-    ))}
+    <Grid xs={1} />
   </Grid>
 );
 
@@ -148,6 +151,7 @@ const CaseDetail = ({ data, classes }) => {
         <div className={classes.header}>
           <div className={classes.logo}>
             <img
+              className={classes.caseIcon}
               src={icon}
               alt="Bento case detail header logo"
             />
@@ -157,7 +161,6 @@ const CaseDetail = ({ data, classes }) => {
             <div className={classes.headerMainTitle}>
               {`${caseHeader.label} :`}
               <span className={classes.headerMainTitleTwo}>
-                {' '}
                 {' '}
                 {data[caseHeader.dataField]}
               </span>
@@ -169,42 +172,32 @@ const CaseDetail = ({ data, classes }) => {
           </div>
         </div>
 
-        <div className={classes.detailContainer}>
-
-          <Grid container spacing={4}>
-            {/* Left panel */}
-            <Grid item sm={6} xs={12} container spacing={2} className={classes.detailContainerLeft}>
-              {leftPanelSubsections.map((section) => (
-                <Subsection
-                  key={section.sectionHeader}
-                  config={section}
-                  classes={classes}
-                  data={data}
-                />
-              ))}
-            </Grid>
-            {/* Left panel end */}
-            {/* Right panel */}
-            <Grid
-              item
-              sm={6}
-              xs={12}
-              container
-              spacing={2}
-              className={classes.detailContainerRight}
-            >
-              {rightPanelSubsections.map((section) => (
-                <Subsection
-                  key={section.sectionHeader}
-                  config={section}
-                  classes={classes}
-                  data={data}
-                />
-              ))}
-            </Grid>
-            {/* Right panel end */}
+        <Grid container spacing={4} className={classes.detailContainer}>
+          {/* Left panel */}
+          <Grid item sm={6} xs={12} container spacing={2} className={classes.detailContainerLeft}>
+            {leftPanelSubsections.map((section) => (
+              <Subsection
+                key={section.sectionHeader}
+                config={section}
+                classes={classes}
+                data={data}
+              />
+            ))}
           </Grid>
-        </div>
+          {/* Left panel end */}
+          {/* Right panel */}
+          <Grid item sm={6} xs={12} container spacing={2} className={classes.detailContainerRight}>
+            {rightPanelSubsections.map((section) => (
+              <Subsection
+                key={section.sectionHeader}
+                config={section}
+                classes={classes}
+                data={data}
+              />
+            ))}
+          </Grid>
+          {/* Right panel end */}
+        </Grid>
       </div>
       {
       tableConfig.display
@@ -244,7 +237,7 @@ const styles = (theme) => ({
     paddingBottm: '17px',
   },
   container: {
-    paddingTop: '50px',
+    paddingTop: '38px',
     fontFamily: theme.custom.fontFamily,
     paddingLeft: '32px',
     paddingRight: '32px',
@@ -273,40 +266,33 @@ const styles = (theme) => ({
     background: '#f3f3f3',
   },
   header: {
-    paddingLeft: '23px',
     paddingRight: '32px',
-    borderBottom: '#7D7D7D 10px solid',
+    borderBottom: '#42779A 10px solid',
     height: '80px',
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
   },
-
+  caseIcon: {
+    height: '94px',
+  },
   headerTitle: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
     float: 'left',
-    marginLeft: '90px',
+    paddingLeft: '98px',
     width: 'calc(100% - 265px)',
   },
   headerMainTitle: {
     fontFamily: 'Lato',
-    color: '#931D1D',
-    fontSize: '18pt',
+    color: '#274FA5',
+    fontSize: '22px',
     lineHeight: '24px',
     paddingLeft: '0px',
-    fontWeight: '300',
-    letterSpacing: '0.017em',
-    paddingTop: '10px',
-    '& $headerMainTitleTwo': {
-      fontWeight: 'bold',
-      letterSpacing: '0.025em',
-    },
+    paddingTop: '20px',
   },
   headerMainTitleTwo: {
-
-  },
-  headerMSubTitle: {
-    paddingTop: '8px',
+    fontWeight: 'bold',
+    letterSpacing: '0.025em',
   },
   headerSubTitleCate: {
     color: '#606061',
@@ -333,15 +319,12 @@ const styles = (theme) => ({
     position: 'absolute',
     float: 'left',
     marginTop: '-6px',
-    width: '82px',
     filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    paddingTop: '24px',
-    paddingLeft: '40px',
-    paddingRight: '32px',
+    padding: '24px 10px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -361,20 +344,23 @@ const styles = (theme) => ({
     padding: ' 35px 2px 63px 2px !important',
   },
   detailContainerLeft: {
-    padding: '24px 0px 0 2px !important',
+    paddingTop: '8px',
     minHeight: '209px',
     maxHeight: '500px',
     overflowY: 'auto',
     overflowX: 'hidden',
   },
   detailContainerRight: {
-    padding: '24px 20px 0px 20px !important',
-    marginBottom: '24px',
+    paddingTop: '8px',
     minHeight: '209px',
     maxHeight: '500px',
     overflowY: 'auto',
     overflowX: 'hidden',
     borderLeft: '#81A6BA 1px solid',
+  },
+  subsection: {
+    borderBottom: '#8DCAFF 1px solid',
+    paddingBottom: '15px',
   },
   tableContainer: {
     background: '#f3f3f3',
@@ -426,7 +412,7 @@ const styles = (theme) => ({
     paddingBottom: '20px',
   },
   breadCrumb: {
-    paddingTop: '10px',
+    paddingTop: '3px',
   },
   paddingTop: {
     paddingTop: '36px',
