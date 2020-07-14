@@ -1,7 +1,4 @@
 import gql from 'graphql-tag';
-// import Test from '../assets/header/CTDC_Logo.svg';
-// headerIconSrc optimum size 100x100
-// wizardIconSrc optimum size 400x46.76
 
 const tableTitle = 'Programs';
 
