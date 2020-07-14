@@ -19,8 +19,7 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
 function manipultateLinks(tableData) {
-  let cloumnCount = 0;
-  tableData.forEach((column) => {
+  tableData.forEach((column, index) => {
     if ((column.link !== undefined && column.link !== null)) {
       const linkKey = column.link.substring(
         column.link.lastIndexOf('{') + 1,
@@ -28,15 +27,14 @@ function manipultateLinks(tableData) {
       );
       const linktext = column.link.split('{')[0];
       if (linktext.startsWith('/')) {
-        tableData[cloumnCount].internalLink = true;
+        tableData[index].internalLink = true;
       } else {
-        tableData[cloumnCount].externalLink = true;
+        tableData[index].externalLink = true;
       }
       const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
-      tableData[cloumnCount].actualLink = linktext;
-      tableData[cloumnCount].actualLinkId = arrayIndex;
+      tableData[index].actualLink = linktext;
+      tableData[index].actualLinkId = arrayIndex;
     }
-    cloumnCount += 1;
   });
   return tableData;
 }
