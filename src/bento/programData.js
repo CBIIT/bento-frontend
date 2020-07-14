@@ -38,7 +38,7 @@ const table = {
     {
       field: 'pubmed_id',
       label: 'PubMed ID',
-      externalLink: 'https://pubmed.ncbi.nlm.nih.gov/{}',
+      externalLink: 'https://pubmed.ncbi.nlm.nih.gov/{pubmed_id}',
     },
     {
       field: 'num_studies',

@@ -21,12 +21,22 @@ import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/das
 function manipultateLinks(tableData) {
   let cloumnCount = 0;
   tableData.forEach((column) => {
-    if (column.internalLink !== undefined && column.internalLink !== null) {
+    if ((column.internalLink !== undefined && column.internalLink !== null)) {
       const linkKey = column.internalLink.substring(
         column.internalLink.lastIndexOf('{') + 1,
         column.internalLink.lastIndexOf('}'),
       );
       const linktext = column.internalLink.split('{')[0];
+      const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
+      tableData[cloumnCount].actualLink = linktext;
+      tableData[cloumnCount].actualLinkId = arrayIndex;
+    }
+    if (column.externalLink !== undefined && column.externalLink !== null) {
+      const linkKey = column.externalLink.substring(
+        column.externalLink.lastIndexOf('{') + 1,
+        column.externalLink.lastIndexOf('}'),
+      );
+      const linktext = column.externalLink.split('{')[0];
       const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
       tableData[cloumnCount].actualLink = linktext;
       tableData[cloumnCount].actualLinkId = arrayIndex;
@@ -67,7 +77,7 @@ const Programs = ({ classes, data }) => {
           column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
             : column.externalLink ? (
               <span className={classes.linkSpan}>
-                <a href={`${column.externalLink.replace('{}', value)}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
                 <img
                   src={externalLinkIcon.src}
                   alt={externalLinkIcon.alt}
