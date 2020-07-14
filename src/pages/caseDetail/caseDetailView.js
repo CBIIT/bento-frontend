@@ -85,8 +85,8 @@ const PropertyItem = ({
 
 // Component to display a subsection
 const Subsection = ({ config, data, classes }) => (
-  <Grid item container>
-    <Grid item container direction="column" className={classes.subsection} xs={11}>
+  <Grid item container className={classes.subsection}>
+    <Grid item container direction="column" className={classes.subsectionBody} xs={11}>
       <Grid item>
         <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
       </Grid>
@@ -172,29 +172,37 @@ const CaseDetail = ({ data, classes }) => {
           </div>
         </div>
 
-        <Grid container spacing={4} className={classes.detailContainer}>
+        <Grid container spacing={1} className={classes.detailContainer}>
           {/* Left panel */}
-          <Grid item sm={6} xs={12} container spacing={2} className={classes.detailContainerLeft}>
-            {leftPanelSubsections.map((section) => (
-              <Subsection
-                key={section.sectionHeader}
-                config={section}
-                classes={classes}
-                data={data}
-              />
-            ))}
+          <Grid item sm={6} xs={12} className={classes.detailPannel}>
+            <div className={classes.innerPanel}>
+              <Grid container spacing={2}>
+                {leftPanelSubsections.map((section) => (
+                  <Subsection
+                    key={section.sectionHeader}
+                    config={section}
+                    classes={classes}
+                    data={data}
+                  />
+                ))}
+              </Grid>
+            </div>
           </Grid>
           {/* Left panel end */}
           {/* Right panel */}
-          <Grid item sm={6} xs={12} container spacing={2} className={classes.detailContainerRight}>
-            {rightPanelSubsections.map((section) => (
-              <Subsection
-                key={section.sectionHeader}
-                config={section}
-                classes={classes}
-                data={data}
-              />
-            ))}
+          <Grid item sm={6} xs={12} className={classes.detailPannel}>
+            <div className={classes.innerPanel}>
+              <Grid container spacing={2}>
+                {rightPanelSubsections.map((section) => (
+                  <Subsection
+                    key={section.sectionHeader}
+                    config={section}
+                    classes={classes}
+                    data={data}
+                  />
+                ))}
+              </Grid>
+            </div>
           </Grid>
           {/* Right panel end */}
         </Grid>
@@ -343,24 +351,28 @@ const styles = (theme) => ({
     marginTop: '8px',
     padding: ' 35px 2px 63px 2px !important',
   },
-  detailContainerLeft: {
-    paddingTop: '8px',
-    minHeight: '209px',
-    maxHeight: '500px',
-    overflowY: 'auto',
-    overflowX: 'hidden',
+  detailPannel: {
+    paddingTop: '0 !important',
+    paddingBottom: '0 !important',
+    borderRight: '1px solid #81A6BA',
   },
-  detailContainerRight: {
-    paddingTop: '8px',
+  innerPanel: {
+    height: '100%',
     minHeight: '209px',
     maxHeight: '500px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    borderLeft: '#81A6BA 1px solid',
+    paddingLeft: '16px',
+    scrollbarColor: '#697270',
+  },
+  subsectionBody: {
+    borderBottom: '1px solid #8DCAFF',
+    paddingBottom: '15px',
   },
   subsection: {
-    borderBottom: '#8DCAFF 1px solid',
-    paddingBottom: '15px',
+    '&:last-child $subsectionBody': {
+      borderBottom: 'none',
+    },
   },
   tableContainer: {
     background: '#f3f3f3',
@@ -370,7 +382,8 @@ const styles = (theme) => ({
   },
   tableDiv: {
     maxWidth: theme.custom.maxContentWidth,
-    margin: '22px auto auto auto',
+    margin: '0 auto auto auto',
+    paddingTop: '50px',
   },
   headerButtonLink: {
     textDecoration: 'none',
@@ -408,7 +421,7 @@ const styles = (theme) => ({
     fontFamily: 'Lato',
     fontSize: '17px',
     letterSpacing: '0.025em',
-    color: '#0296c9',
+    color: '#3695A9',
     paddingBottom: '20px',
   },
   breadCrumb: {
