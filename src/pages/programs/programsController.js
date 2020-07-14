@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import View from './programsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { PROGRAMS_QUERY } from '../../utils/graphqlQueries';
+import { PROGRAMS_QUERY } from '../../bento/programData';
 
 const container = () => (
   <Query query={PROGRAMS_QUERY}>

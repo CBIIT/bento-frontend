@@ -4,16 +4,16 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
-import { Link } from 'react-router-dom';
 
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { table, tableTitle, icon } from '../../bento/programData';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import icon from '../../assets/trial/Trials_Title_Bar.Icon.svg';
-import externalLinkIcon from '../../assets/icons/Program-ExternalLink.svg';
+import externalLinkIcon from '../../assets/program/externalLinkIcon.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
 const Programs = ({ classes, data }) => {
@@ -33,116 +33,33 @@ const Programs = ({ classes, data }) => {
     });
   };
 
-  const columns = [
-    {
-      name: 'program_acronym',
-      label: 'Program Code',
-      options: {
-        filter: false,
-        customBodyRender: (value, tableMeta) => (
-          <div className={classes.tableCell1}>
-            <Link className={classes.link} to={`/program/${tableMeta.rowData[1]}`}>{value}</Link>
-          </div>
-        ),
-      },
+  const columns = table.data.slice(0, 10).map((column) => ({
+    name: column.field,
+    label: column.label,
+    options: {
+      display: column.display ? column.display : true,
+      filter: false,
+      customBodyRender: (value) => (
+        <div>
+          {
+          column.internalLink ? <Link className={classes.link} to={`${column.internalLink}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.externalLink.replace('{}', value)}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+                <img
+                  src={externalLinkIcon}
+                  alt="BENTO external link"
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : column.field === 'num_subjects' ? <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo('TAILORx')}>{value}</Link>
+                : `${value}`
+}
+        </div>
+      ),
     },
-    {
-      name: 'program_id',
-      label: 'Program ID',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell2}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'program_name',
-      label: 'Program Name',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell3}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'start_date',
-      label: 'Start Date',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell4}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'end_date',
-      label: 'End Date',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell5}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'pubmed_id',
-      label: 'PubMed ID',
-      options: {
-        customBodyRender: (value, tableMeta) => (
-          <div className={classes.tableCell5}>
-            {' '}
-            <a href={`https://pubmed.ncbi.nlm.nih.gov/${tableMeta.rowData[5]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
-            <img
-              src={externalLinkIcon}
-              alt="BENTO external link"
-              className={classes.externalLinkIcon}
-            />
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'num_studies',
-      label: 'Number of ARMs',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell5}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'num_subjects',
-      label: 'Cases',
-      options: {
-        customBodyRender: (value, tableMeta) => (
-          <div className={classes.tableCell5}>
-            {' '}
-            <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo(tableMeta.rowData[0])}>{value}</Link>
-            {' '}
-          </div>
-        ),
-      },
-    },
-  ];
+  }));
 
   const options = () => ({
     selectableRows: 'none',
@@ -180,8 +97,8 @@ const Programs = ({ classes, data }) => {
           <div className={classes.header}>
             <div className={classes.logo}>
               <img
-                src={icon}
-                alt="BENTO header logo"
+                src={icon.src}
+                alt={icon.alt}
               />
 
             </div>
@@ -189,7 +106,7 @@ const Programs = ({ classes, data }) => {
               <div className={classes.headerMainTitle}>
                 <span>
                   <Typography>
-                    <span className={classes.headerMainTitle}>Programs</span>
+                    <span className={classes.headerMainTitle}>{tableTitle}</span>
                   </Typography>
                 </span>
               </div>
@@ -308,8 +225,12 @@ const styles = (theme) => ({
     width: '140px',
   },
   externalLinkIcon: {
-    width: '20px',
+    width: '16px',
     verticalAlign: 'sub',
+    marginLeft: '4px',
+  },
+  linkSpan: {
+    display: '-webkit-box',
   },
 });
 
