@@ -11,10 +11,11 @@ import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { table, tableTitle, icon } from '../../bento/programData';
+import {
+  table, tableTitle, icon, externalLinkIcon,
+} from '../../bento/programData';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import externalLinkIcon from '../../assets/program/externalLinkIcon.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
 function manipultateLinks(tableData) {
@@ -68,8 +69,8 @@ const Programs = ({ classes, data }) => {
               <span className={classes.linkSpan}>
                 <a href={`${column.externalLink.replace('{}', value)}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
                 <img
-                  src={externalLinkIcon}
-                  alt="BENTO external link"
+                  src={externalLinkIcon.src}
+                  alt={externalLinkIcon.alt}
                   className={classes.externalLinkIcon}
                 />
               </span>

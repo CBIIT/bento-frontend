@@ -7,6 +7,11 @@ const icon = {
   alt: 'Bento program logo',
 };
 
+const externalLinkIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+  alt: 'External link icon',
+};
+
 const table = {
   data: [
     {
@@ -63,6 +68,7 @@ const PROGRAMS_QUERY = gql`{
 export {
   tableTitle,
   icon,
+  externalLinkIcon,
   PROGRAMS_QUERY,
   table,
 };
