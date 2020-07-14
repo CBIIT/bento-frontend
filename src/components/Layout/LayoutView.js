@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles, CssBaseline } from '@material-ui/core';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import aboutPageRoutes from '../../bento/aboutPagesRoutes';
 import Header from '../Header/HeaderView';
 import NavBar from '../NavBar/NavBarContainer';
 import Footer from '../Footer/FooterView';
@@ -53,14 +54,9 @@ const Layout = ({ classes, isSidebarOpened }) => (
 
             <Route path="/program/:id" component={ProgramDetail} />
             <Route path="/case/:id" component={CaseDetail} />
-            <Route path="/bento" component={About} />
-            <Route path="/resources" component={About} />
-            <Route path="/purpose" component={About} />
-            <Route path="/crdc" component={About} />
-            <Route path="/icdcData" component={About} />
-            <Route path="/developers" component={About} />
-            <Route path="/support" component={About} />
-            <Route path="/request-access" component={About} />
+            {aboutPageRoutes.map(
+              (aboutPageRoute) => <Route path={aboutPageRoute} component={About} />,
+            )}
             <Route path="/data-dictionary" component={DataDictonary} />
             <Route component={Error} />
           </Switch>
