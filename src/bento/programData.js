@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 const tableTitle = 'Programs';
 
 const icon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/bento-39/src/assets/program/programIcon.svg',
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/programIcon.svg',
   alt: 'Bento program logo',
 };
 
