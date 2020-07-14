@@ -15,12 +15,11 @@ const table = {
     {
       field: 'program_acronym',
       label: 'Program Code',
-      internalLink: 'program/{program_id}',
+      internalLink: '/program/{program_id}',
     },
     {
       field: 'program_id',
       label: 'Program ID',
-      display: true,
     },
     {
       field: 'program_name',

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import {
   Grid,
@@ -16,6 +17,26 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import externalLinkIcon from '../../assets/program/externalLinkIcon.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
+function manipultateLinks(tableData) {
+  let cloumnCount = 0;
+  tableData.forEach((column) => {
+    if (column.internalLink !== undefined && column.internalLink !== null) {
+      const linkKey = column.internalLink.substring(
+        column.internalLink.lastIndexOf('{') + 1,
+        column.internalLink.lastIndexOf('}'),
+      );
+      const linktext = column.internalLink.split('{')[0];
+      const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
+      tableData[cloumnCount].actualLink = linktext;
+      tableData[cloumnCount].actualLinkId = arrayIndex;
+    }
+    cloumnCount += 1;
+  });
+  return tableData;
+}
+
+const updatedData = manipultateLinks(table.data);
+
 const Programs = ({ classes, data }) => {
   const initDashboardStatus = () => (dispatch) => Promise.resolve(
     dispatch(fetchDataForDashboardDataTable()),
@@ -33,16 +54,16 @@ const Programs = ({ classes, data }) => {
     });
   };
 
-  const columns = table.data.slice(0, 10).map((column) => ({
+  const columns = updatedData.slice(0, 10).map((column) => ({
     name: column.field,
     label: column.label,
     options: {
       display: column.display ? column.display : true,
       filter: false,
-      customBodyRender: (value) => (
+      customBodyRender: (value, tableMeta) => (
         <div>
           {
-          column.internalLink ? <Link className={classes.link} to={`${column.internalLink}`}>{value}</Link>
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
             : column.externalLink ? (
               <span className={classes.linkSpan}>
                 <a href={`${column.externalLink.replace('{}', value)}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
