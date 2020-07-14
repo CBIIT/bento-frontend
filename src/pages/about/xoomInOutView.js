@@ -23,7 +23,7 @@ const enableTouchPadPinch = true;
 const enableVelocity = true;
 const disableLimitsOnWheel = true;
 
-const ModelPage = ({ classes }) => (
+const ModelPage = ({ classes, children }) => (
   <>
     <TransformWrapper
       defaultScale={1}
@@ -63,7 +63,7 @@ const ModelPage = ({ classes }) => (
           </div>
           <div className={classes.imgSection}>
             <TransformComponent>
-              <img src="https://cbiit.github.io/ctdc-model/model-desc/ctdc-model.svg" alt="ICDC schema" className={classes.img} />
+              {children}
             </TransformComponent>
           </div>
         </div>

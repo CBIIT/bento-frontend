@@ -149,7 +149,7 @@ const AboutBody = ({ classes, data }) => {
           </Grid>
         </Grid>
       </div>
-      {data.secondaryZoomImage && <XoomInOut />}
+      {data.secondaryZoomImage && <XoomInOut><img src={data.secondaryZoomImage} alt="secondary zoominout" className={classes.img} /></XoomInOut>}
     </>
   );
 };
