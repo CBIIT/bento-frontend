@@ -21,22 +21,17 @@ import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/das
 function manipultateLinks(tableData) {
   let cloumnCount = 0;
   tableData.forEach((column) => {
-    if ((column.internalLink !== undefined && column.internalLink !== null)) {
-      const linkKey = column.internalLink.substring(
-        column.internalLink.lastIndexOf('{') + 1,
-        column.internalLink.lastIndexOf('}'),
+    if ((column.link !== undefined && column.link !== null)) {
+      const linkKey = column.link.substring(
+        column.link.lastIndexOf('{') + 1,
+        column.link.lastIndexOf('}'),
       );
-      const linktext = column.internalLink.split('{')[0];
-      const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
-      tableData[cloumnCount].actualLink = linktext;
-      tableData[cloumnCount].actualLinkId = arrayIndex;
-    }
-    if (column.externalLink !== undefined && column.externalLink !== null) {
-      const linkKey = column.externalLink.substring(
-        column.externalLink.lastIndexOf('{') + 1,
-        column.externalLink.lastIndexOf('}'),
-      );
-      const linktext = column.externalLink.split('{')[0];
+      const linktext = column.link.split('{')[0];
+      if (linktext.startsWith('/')) {
+        tableData[cloumnCount].internalLink = true;
+      } else {
+        tableData[cloumnCount].externalLink = true;
+      }
       const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
       tableData[cloumnCount].actualLink = linktext;
       tableData[cloumnCount].actualLinkId = arrayIndex;

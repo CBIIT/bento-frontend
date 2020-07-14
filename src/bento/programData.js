@@ -17,7 +17,7 @@ const table = {
     {
       field: 'program_acronym',
       label: 'Program Code',
-      internalLink: '/program/{program_id}',
+      link: '/program/{program_id}',
     },
     {
       field: 'program_id',
@@ -38,7 +38,7 @@ const table = {
     {
       field: 'pubmed_id',
       label: 'PubMed ID',
-      externalLink: 'https://pubmed.ncbi.nlm.nih.gov/{pubmed_id}',
+      link: 'https://pubmed.ncbi.nlm.nih.gov/{pubmed_id}',
     },
     {
       field: 'num_studies',
