@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import cn from '../../utils/classNameConcat';
-import icon from '../../assets/trial/Trials_Title_Bar.Icon.svg';
+import icon from '../../assets/program/programIcon.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
@@ -22,7 +22,7 @@ import {
   getDonutDataFromDashboardData,
   getStatDataFromDashboardData,
 } from '../../utils/dashboardUtilFunctions';
-import fileIcon from '../../assets/trial/Trials_File_Counter.Icon.svg';
+import fileIcon from '../../assets/program/Trials_File_Counter.Icon.svg';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;

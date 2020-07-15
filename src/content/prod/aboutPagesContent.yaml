@@ -5,7 +5,7 @@
     - paragraph: "Bento is an open source framework developed by the Frederick National Laboratory for Cancer Research to support data sharing. It provides a structure to enable groups to quickly stand up and then configure a data sharing environment for life science data - groups can use Bento to share data amongst themselves or with a larger community. Bento's reference implementation contains a data model that is compatible with the Cancer Research Data Commons' Harmonized model (CRDC-H) such that Bento instances can be connected into and inter-operate with the CRDC. Users can customize the data model for their own needs. Bento also contains a User Interface and an API for programmatic access."
     - paragraph: "$$*CONTACT:*$$ bento-help@nih.gov"
 - page: "/resources"
-  sideTextImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/about/About_Purpose.png'
+  primaryContentImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/about/About_Purpose.png'
   title: "Resources"
   content:
     - paragraph: "The BENTO System features a GraphQL API to enable querying of the entire data model."
