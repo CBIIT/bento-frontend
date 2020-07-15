@@ -86,14 +86,17 @@ const PropertyItem = ({
 // Component to display a subsection
 const Subsection = ({ config, data, classes }) => (
   <Grid item container className={classes.subsection}>
-    <Grid item container direction="column" className={classes.subsectionBody} xs={11}>
+    <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
       <Grid item>
         <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
       </Grid>
       {
         config.sectionDesc
           ? (
-            <Grid item><span>{config.sectionDesc}</span></Grid>
+            <Grid item container className={classes.descriptionPart}>
+              <Grid item><span className={classes.description}>Description -</span></Grid>
+              <Grid item><span>{config.sectionDesc}</span></Grid>
+            </Grid>
           ) : ''
       }
       {config.properties.map((prop) => (
@@ -107,7 +110,7 @@ const Subsection = ({ config, data, classes }) => (
         />
       ))}
     </Grid>
-    <Grid xs={1} />
+    <Grid xs={3} />
   </Grid>
 );
 
@@ -278,7 +281,7 @@ const styles = (theme) => ({
     borderBottom: '#42779A 10px solid',
     height: '80px',
     maxWidth: theme.custom.maxContentWidth,
-    margin: 'auto',
+    margin: 'auto auto 10px auto',
   },
   caseIcon: {
     height: '94px',
@@ -293,7 +296,7 @@ const styles = (theme) => ({
   headerMainTitle: {
     fontFamily: 'Lato',
     color: '#274FA5',
-    fontSize: '22px',
+    fontSize: '26px',
     lineHeight: '24px',
     paddingLeft: '0px',
     paddingTop: '20px',
@@ -332,7 +335,7 @@ const styles = (theme) => ({
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    padding: '24px 10px',
+    padding: '26px 10px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -359,7 +362,7 @@ const styles = (theme) => ({
   innerPanel: {
     height: '100%',
     minHeight: '209px',
-    maxHeight: '500px',
+    maxHeight: '617px',
     overflowY: 'auto',
     overflowX: 'hidden',
     paddingLeft: '16px',
@@ -416,13 +419,19 @@ const styles = (theme) => ({
     fontWeight: '600',
     textTransform: 'uppercase',
   },
+  descriptionPart: {
+    paddingBottom: '26px',
+  },
+  description: {
+    fontWeight: 'bold',
+  },
   tableTitle: {
     textTransform: 'uppercase',
     fontFamily: 'Lato',
-    fontSize: '17px',
+    fontSize: '22px',
     letterSpacing: '0.025em',
     color: '#3695A9',
-    paddingBottom: '20px',
+    paddingBottom: '19px',
   },
   breadCrumb: {
     paddingTop: '3px',

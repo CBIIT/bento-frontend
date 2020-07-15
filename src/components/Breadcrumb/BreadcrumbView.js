@@ -8,7 +8,12 @@ const CustomBreadcrumb = ({ classes, data }) => (
       data.reduce((acc, current, index) => {
         if (current.isALink) {
           acc.push(
-            <Link className={classes.headerNavLink} to={current.to} onClick={current.onClick}>
+            <Link
+              className={classes.headerNavLink}
+              to={current.to}
+              onClick={current.onClick}
+              key={current.to}
+            >
               {current.name}
             </Link>,
           );
@@ -36,7 +41,7 @@ const styles = (theme) => ({
     color: '#3D9ACC',
     textTransform: 'uppercase',
     fontFamily: theme.custom.fontFamilySans,
-    fontSize: '9px',
+    fontSize: '10px',
     letterSpacing: '0.025em',
     verticalAlign: 'text-top',
 
