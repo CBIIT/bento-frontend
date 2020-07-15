@@ -56,7 +56,7 @@ const externalLinkIcon = {
 };
 
 const numberOfFilesIcon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/trial/Trials_File_Counter.Icon.svg',
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/Trials_File_Counter.Icon.svg',
   alt: 'Number of files icon',
 };
 

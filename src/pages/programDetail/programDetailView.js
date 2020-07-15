@@ -12,7 +12,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { Link } from 'react-router-dom';
 import {
   pageTitle, tableTitle, table, externalLinkIcon,
-  icon, numberOfFilesIcon, programBreadCrumb, pageSubTitle,
+  icon, numberOfFilesIcon, programBreadCrumb, pageSubTitle, attributes,
 } from '../../bento/programDetailData';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
@@ -226,12 +226,12 @@ const ProgramView = ({ classes, data, theme }) => {
         <div className={classes.detailContainer}>
 
           <Grid container spacing={5}>
-            <Grid item className={classes.firstColumn} lg={false} md={false} sm={12} xs={12}>
+            <Grid item sm={6} xs={12} container spacing={2}>
               <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
+                {console.log(programData)}
+                {console.log(attributes)}
                 <Grid item xs={12}>
                   <span className={classes.detailContainerHeader}>Program</span>
-                </Grid>
-                <Grid item xs={12}>
                   <div>
                     <span className={classes.content}>
                       {' '}
@@ -239,16 +239,11 @@ const ProgramView = ({ classes, data, theme }) => {
                       {' '}
                     </span>
                   </div>
-
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12} className={classes.paddingTop32}>
+                <Grid item xs={12}>
                   <span className={classes.detailContainerHeader}>
                     Program Name
                   </span>
-
-                </Grid>
-
-                <Grid item xs={12}>
                   <div>
                     <span className={classes.content}>
                       {' '}
@@ -258,12 +253,8 @@ const ProgramView = ({ classes, data, theme }) => {
                   </div>
                 </Grid>
 
-                <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>Program Id</span>
-
-                </Grid>
-
                 <Grid item xs={12}>
+                  <span className={classes.detailContainerHeader}>Program Id</span>
                   <div>
                     <span className={classes.content}>
                       {' '}
@@ -273,23 +264,8 @@ const ProgramView = ({ classes, data, theme }) => {
                   </div>
                 </Grid>
 
-              </Grid>
-            </Grid>
-
-            <Grid
-              item
-              lg={false}
-              md={false}
-              sm={12}
-              xs={12}
-              className={cn(classes.borderLeft, classes.secondColumn)}
-            >
-              <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12}>
                   <span className={classes.detailContainerHeader}>Program Description</span>
-
-                </Grid>
-                <Grid item xs={12}>
                   <div>
                     <span className={classes.content}>
                       {' '}
@@ -297,14 +273,10 @@ const ProgramView = ({ classes, data, theme }) => {
                       {' '}
                     </span>
                   </div>
-
-                </Grid>
-                <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>Institution</span>
-
                 </Grid>
 
                 <Grid item xs={12}>
+                  <span className={classes.detailContainerHeader}>Institution</span>
                   <div>
                     <span className={classes.content}>
                       {' '}
@@ -314,23 +286,25 @@ const ProgramView = ({ classes, data, theme }) => {
                   </div>
                 </Grid>
 
-                <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>
-                    <a href={`${programData.program_external_url}`} target="_blank" rel="noopener noreferrer">External Link to Program</a>
-                  </span>
-
+                <Grid item xs={12}>
+                  <span className={classes.detailContainerHeader}>External Link to Program</span>
+                  <div>
+                    <span className={classes.content}>
+                      {' '}
+                      <a href={`${programData.program_external_url}`} target="_blank" rel="noopener noreferrer">External Link to Program</a>
+                      {' '}
+                    </span>
+                  </div>
                 </Grid>
-
               </Grid>
             </Grid>
 
             <Grid
               item
-              lg={false}
-              md={false}
-              sm={12}
+              sm={6}
               xs={12}
-              className={cn(classes.borderLeft, classes.thirdColumn)}
+              container
+              spacing={2}
             >
               <Grid container spacing={16} direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12} className={classes.marginTopN37}>
@@ -686,7 +660,7 @@ const styles = (theme) => ({
   },
   fileIcon: {
     '& img': {
-      width: '50%',
+      width: '25%',
     },
   },
   fileContent: {
