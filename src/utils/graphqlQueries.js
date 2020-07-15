@@ -49,20 +49,6 @@ export const GET_CASE_DETAIL_DATA_QUERY = gql`
     }
   }`;
 
-export const PROGRAMS_QUERY = gql`{
-   programInfo {
-  program_acronym
-  program_id
-  program_name
-  start_date
-  end_date
-  pubmed_id
-  num_studies
-  num_subjects
-  }
-}
-  `;
-
 export const PROGRAM_DETAIL_QUERY = gql`
 query programDetail($program_id: String!) {
   programDetail(program_id: $program_id) {
