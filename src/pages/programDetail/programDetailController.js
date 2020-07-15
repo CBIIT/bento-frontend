@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ProgramView from './programDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { PROGRAM_DETAIL_QUERY } from '../../utils/graphqlQueries';
+import { PROGRAM_DETAIL_QUERY } from '../../bento/programDetailData';
 
 const ProgramDetailContainer = ({ match }) => (
   <Query query={PROGRAM_DETAIL_QUERY} variables={{ program_id: match.params.id }}>

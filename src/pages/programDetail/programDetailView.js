@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -9,10 +10,13 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import { Link } from 'react-router-dom';
+import {
+  pageTitle, tableTitle, table, externalLinkIcon,
+  icon, numberOfFilesIcon, programBreadCrumb, pageSubTitle,
+} from '../../bento/programDetailData';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import cn from '../../utils/classNameConcat';
-import icon from '../../assets/trial/Trials_Title_Bar.Icon.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
@@ -22,7 +26,6 @@ import {
   getDonutDataFromDashboardData,
   getStatDataFromDashboardData,
 } from '../../utils/dashboardUtilFunctions';
-import fileIcon from '../../assets/trial/Trials_File_Counter.Icon.svg';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
@@ -84,75 +87,61 @@ const ProgramView = ({ classes, data, theme }) => {
   };
 
   const breadCrumbJson = [{
-    name: 'All Programs',
-    to: '/programs',
+    name: `${programBreadCrumb.label}`,
+    to: `${programBreadCrumb.link}`,
     isALink: true,
   }];
 
-  const columns = [
-    {
-      name: 'study_acronym',
-      label: 'Arm',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell1}>
-            <Link className={classes.link} to={`/arm/${value}`}>{value}</Link>
-          </div>
-        ),
-      },
+  function manipultateLinks(tableData) {
+    tableData.forEach((column, index) => {
+      if ((column.link !== undefined && column.link !== null)) {
+        const linkKey = column.link.substring(
+          column.link.lastIndexOf('{') + 1,
+          column.link.lastIndexOf('}'),
+        );
+        const linktext = column.link.split('{')[0];
+        if (linktext.startsWith('/')) {
+          tableData[index].internalLink = true;
+        } else {
+          tableData[index].externalLink = true;
+        }
+        const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
+        tableData[index].actualLink = linktext;
+        tableData[index].actualLinkId = arrayIndex;
+      }
+    });
+    return tableData;
+  }
+
+  const updatedData = manipultateLinks(table.data);
+
+  const columns = updatedData.slice(0, 10).map((column) => ({
+    name: column.field,
+    label: column.label,
+    options: {
+      display: column.display ? column.display : true,
+      filter: false,
+      customBodyRender: (value, tableMeta) => (
+        <div>
+          {
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+                <img
+                  src={externalLinkIcon.src}
+                  alt={externalLinkIcon.alt}
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : column.field === 'num_subjects' ? <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo()}>{value}</Link>
+                : `${value}`
+}
+        </div>
+      ),
     },
-    {
-      name: 'study_name',
-      label: 'Arm Name',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell2}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'study_full_description',
-      label: 'Arm Description',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell3}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'study_type',
-      label: 'Arm Type',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell4}>
-            {value}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'num_subjects',
-      label: 'Cases',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell5}>
-            <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo()}>{value}</Link>
-          </div>
-        ),
-      },
-    },
-  ];
+  }));
 
   const options = {
     selectableRows: 'none',
@@ -188,8 +177,8 @@ const ProgramView = ({ classes, data, theme }) => {
         <div className={classes.header}>
           <div className={classes.logo}>
             <img
-              src={icon}
-              alt="CTDC case detail header logo"
+              src={icon.src}
+              alt={icon.alt}
             />
 
           </div>
@@ -197,18 +186,18 @@ const ProgramView = ({ classes, data, theme }) => {
             <div className={classes.headerMainTitle}>
               <span>
                 {' '}
-                Program :
+                {pageTitle.label}
                 <span>
                   {' '}
                   {' '}
-                  {programData.program_acronym}
+                  {programData[pageTitle.field]}
                 </span>
               </span>
             </div>
             <div className={cn(classes.headerMSubTitle, classes.headerSubTitleCate)}>
               <span>
                 {' '}
-                {programData.program_id}
+                {programData[pageSubTitle.field]}
               </span>
 
             </div>
@@ -376,7 +365,7 @@ const ProgramView = ({ classes, data, theme }) => {
                 <Grid item xs={12}>
                   <div>
                     <span className={classes.fileIcon}>
-                      <img src={fileIcon} alt="file icon" />
+                      <img src={numberOfFilesIcon.src} alt={numberOfFilesIcon.alt} />
                     </span>
                     <span className={classes.fileContent}>
                       {programData.num_files}
@@ -394,7 +383,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
         <div className={classes.tableDiv}>
           <div className={classes.tableTitle}>
-            <span className={classes.tableHeader}>Arms</span>
+            <span className={classes.tableHeader}>{tableTitle}</span>
           </div>
           <Grid item xs={12}>
             <Grid container spacing={8}>
