@@ -228,70 +228,25 @@ const ProgramView = ({ classes, data, theme }) => {
           <Grid container spacing={5}>
             <Grid item sm={6} xs={12} container spacing={2}>
               <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
-                {console.log(programData)}
-                {console.log(attributes)}
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Program</span>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_acronym}
-                      {' '}
-                    </span>
-                  </div>
-                </Grid>
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>
-                    Program Name
-                  </span>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_name}
-                      {' '}
-                    </span>
-                  </div>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Program Id</span>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_id}
-                      {' '}
-                    </span>
-                  </div>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Program Description</span>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_full_description}
-                      {' '}
-                    </span>
-                  </div>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Institution</span>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.institution_name}
-                      {' '}
-                    </span>
-                  </div>
-                </Grid>
+                {attributes.data.map((attribute) => (
+                  <Grid item xs={12}>
+                    <span className={classes.detailContainerHeader}>{attribute.label}</span>
+                    <div>
+                      <span className={classes.content}>
+                        {' '}
+                        {programData[attribute.field]}
+                        {' '}
+                      </span>
+                    </div>
+                  </Grid>
+                ))}
 
                 <Grid item xs={12}>
                   <span className={classes.detailContainerHeader}>External Link to Program</span>
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      <a href={`${programData.program_external_url}`} target="_blank" rel="noopener noreferrer">External Link to Program</a>
+                      <a href={`${programData.program_external_url}`} target="_blank" rel="noopener noreferrer">{programData.program_external_url}</a>
                       {' '}
                     </span>
                   </div>

@@ -39,6 +39,7 @@ const attributes = {
     {
       field: 'program_external_url',
       label: 'External Link to Program',
+      link: '/{program_external_url}',
     },
   ],
 };
