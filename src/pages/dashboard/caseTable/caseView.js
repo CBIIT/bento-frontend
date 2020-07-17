@@ -92,9 +92,9 @@ const Cases = ({ classes, data }) => {
       filter: false,
       customBodyRender: (value) => (
         <div className={classes.tableCell8}>
-          {column.linkUrl
+          {column.link
             ? (
-              <Link to={column.linkUrl.replace('{}', value)} className={classes.link}>
+              <Link to={column.link.replace('{}', value)} className={classes.link}>
                 {value}
               </Link>
             ) : value }
