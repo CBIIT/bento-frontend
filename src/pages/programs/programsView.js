@@ -141,7 +141,7 @@ const styles = (theme) => ({
   link: {
     textDecoration: 'none',
     fontWeight: 'bold',
-    color: '#DD401C',
+    color: '#7747FF',
     '&:hover': {
       textDecoration: 'underline',
     },
@@ -177,19 +177,19 @@ const styles = (theme) => ({
     background: '#eee',
     paddingLeft: '20px',
     paddingRight: '50px',
-    borderBottom: '#4B619A 10px solid',
-    height: '120px',
+    borderBottom: '#42779A 10px solid',
+    height: '128px',
     paddingTop: '35px',
   },
   headerMainTitle: {
     fontFamily: 'Lato',
     letterSpacing: '0.025em',
-    color: '#4B619A',
+    color: '#274FA5',
     fontSize: '24pt',
     position: 'absolute',
-    marginTop: '14px',
+    marginTop: '16px',
     lineHeight: '25px',
-    marginLeft: '-5px',
+    marginLeft: '-3px',
   },
 
   headerTitle: {
@@ -201,10 +201,10 @@ const styles = (theme) => ({
   logo: {
     position: 'absolute',
     float: 'left',
-    marginLeft: '-13px',
-    width: '82px',
+    marginLeft: '-17px',
+    width: '100px',
     zIndex: '999',
-    filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
+    filter: 'drop-shadow(-3px 2px 6px rgba(27,28,28,0.29))',
   },
   tableContainer: {
     background: '#eee',
@@ -230,9 +230,10 @@ const styles = (theme) => ({
     width: '140px',
   },
   externalLinkIcon: {
-    width: '16px',
+    width: '14.5px',
     verticalAlign: 'sub',
     marginLeft: '4px',
+    paddingBottom: '2px',
   },
   linkSpan: {
     display: '-webkit-box',
