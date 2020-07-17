@@ -29,6 +29,12 @@ export const facetSearchData = [
     group: 'PR Status', field: 'group', api: 'subjectCountByPrStatus', datafield: 'pr_status', show: true,
   },
   {
+    group: 'Chemotherapy', field: 'group', api: 'subjectCountByChemotherapyRegimen', datafield: 'chemotherapy', show: true,
+  },
+  {
+    group: 'Endocrine Therapy', field: 'group', api: 'subjectCountByEndocrineTherapy', datafield: 'endocrine_therapy', show: true,
+  },
+  {
     group: 'Menopause Status', field: 'group', api: 'subjectCountByMenopauseStatus', datafield: 'menopause_status', show: true,
   },
 ];
@@ -86,7 +92,7 @@ export const dashboardTable = {
       field: 'subject_id',
       label: 'Case ID',
       sort: 'asc',
-      linkUrl: '/case/{}',
+      link: '/case/{}',
       primary: true,
       display: true,
     },
@@ -94,7 +100,7 @@ export const dashboardTable = {
       field: 'program',
       label: 'Program Code',
       sort: 'asc',
-      linkUrl: '/trial/{}',
+      link: '/trial/{}',
       display: true,
     },
     {
@@ -195,6 +201,14 @@ export const DASHBOARD_QUERY = gql`{
         group
          count
       }
+  subjectCountByChemotherapyRegimen{
+        group
+        count
+      }
+      subjectCountByEndocrineTherapy{
+    group
+    count
+  }
     
     subjectOverView {
       subject_id

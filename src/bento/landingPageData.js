@@ -6,7 +6,8 @@ import gql from 'graphql-tag';
 // Tile4 image optimum size 600x 436 px
 export const landingPageData = {
   callToActionTitle: 'Explore, Analyze, Visualize Clinical Trial Data Sets',
-  callToActionButtonText: 'EXPLORE',
+  callToActionDescription: 'Model, Store and Share your Data Sets using the Bento Framework for Data Sharing Platforms.',
+  callToActionButtonText: 'EXPLORE THE SITE',
   callToActionLink: '/cases',
   landingPageHero: {
     alt: 'Alt tag1',
@@ -36,7 +37,7 @@ export const landingPageData = {
   ],
   tile1: {
     alt: '',
-    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/aboutImage.png',
+    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/tileAbout.png',
     titleText: 'The Bento Framework',
     descriptionText: 'Effective data management is key to scientific discovery. Bento is an open source framework, developed by the Frederick National Laboratory for Cancer Research, to support the creation of data sharing platforms, that adhere to the FAIR principles of scientific data management.',
     callToActionText: 'Read More',
@@ -44,7 +45,7 @@ export const landingPageData = {
   },
   tile2: {
     alt: '',
-    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/prgmImage.png',
+    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/tileProgam.png',
     titleText: 'Programs',
     descriptionText: 'Access data from the TAILORx clinical trial, on this data sharing platform, built on Bento.',
     callToActionText: 'Read More',
@@ -52,7 +53,7 @@ export const landingPageData = {
   },
   tile3: {
     alt: '',
-    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/analyticsImage.png',
+    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/tileAnalytics.png',
     titleText: 'Resources',
     descriptionText: 'Use Bento to you build your own data sharing platform.',
     callToActionText: 'Read More',
@@ -60,7 +61,7 @@ export const landingPageData = {
   },
   tile4: {
     alt: '',
-    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/casesImage.png',
+    img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/tileCases.png',
     titleText: 'Cases',
     descriptionText: 'Analyze cases from the TAILORx clinical trial.',
     callToActionText: 'Explore',
