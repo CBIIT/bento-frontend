@@ -71,7 +71,7 @@ const FacetPanel = ({ classes }) => {
 
   return (
     <>
-      { sideBarContent.data.reduce((a, v) => (v.show === true ? a + 1 : a), 0) < 11
+      { sideBarContent.data.reduce((a, v) => (v.show === true ? a + 1 : a), 0) < 13
         ? sideBarContent.data.map((sideBarItem) => {
           if (sideBarItem.show) {
             return (
@@ -129,7 +129,7 @@ const FacetPanel = ({ classes }) => {
             );
           }
           return '';
-        }) : 'The sidebar items is 10'}
+        }) : 'The sidebar items is 12'}
     </>
   );
 };

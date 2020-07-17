@@ -14,30 +14,10 @@ import { Link } from 'react-router-dom';
 import {
   table, tableTitle, icon, externalLinkIcon,
 } from '../../bento/programData';
+import manipultateLinks from '../../utils/helpers';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
-
-function manipultateLinks(tableData) {
-  tableData.forEach((column, index) => {
-    if ((column.link !== undefined && column.link !== null)) {
-      const linkKey = column.link.substring(
-        column.link.lastIndexOf('{') + 1,
-        column.link.lastIndexOf('}'),
-      );
-      const linktext = column.link.split('{')[0];
-      if (linktext.startsWith('/')) {
-        tableData[index].internalLink = true;
-      } else {
-        tableData[index].externalLink = true;
-      }
-      const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
-      tableData[index].actualLink = linktext;
-      tableData[index].actualLinkId = arrayIndex;
-    }
-  });
-  return tableData;
-}
 
 const updatedData = manipultateLinks(table.data);
 

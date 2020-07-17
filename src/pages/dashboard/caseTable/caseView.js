@@ -155,7 +155,7 @@ const Cases = ({ classes, data }) => {
       const selectedCaseId = selectedKeys.map((keyVlaue) => (
         displayData[keyVlaue].data[dashboardTable.tableData.findIndex(
           (p) => p.primary === true,
-        )].props.children
+        )].props.children.props.children
       ));
       selectedCaseIds = selectedCaseId;
       return '';

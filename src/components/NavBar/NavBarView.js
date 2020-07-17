@@ -428,7 +428,6 @@ const styles = (theme) => ({
   },
   badgeText: {
     height: '16px',
-    color: '#0E273A',
     minWidth: '16px',
     fontWeight: '600',
     letterSpacing: '0.8px',
