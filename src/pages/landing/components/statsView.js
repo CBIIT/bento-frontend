@@ -54,11 +54,15 @@ const styles = () => ({
     maxWidth: '906px',
     textAlign: 'center',
     position: 'absolute',
+    overflow: 'auto',
     left: 0,
     right: 0,
     margin: '-24px auto auto auto',
     display: 'flex',
     justifyContent: 'center',
+    '@media (min-width: 900px)': {
+      overflow: 'inherit',
+    },
   },
   bannerTexture: {
     color: '#4898B4',
@@ -81,13 +85,13 @@ const styles = () => ({
   },
   box: {
     direction: 'ltr',
-    display: 'none',
+    display: 'inline-flex',
     borderBottom: '74px solid white',
     height: '74px',
     boxShadow: '-3px 5px 24px 1px rgba(27,28,28,0.15)',
-    '@media (min-width: 900px)': {
-      display: 'inline-flex',
-    },
+    // '@media (min-width: 900px)': {
+    //   display: 'inline-flex',
+    // },
 
   },
   statsText: {
