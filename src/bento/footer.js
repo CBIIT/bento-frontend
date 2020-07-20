@@ -11,7 +11,7 @@ export default {
       items: [
         {
           text: 'Purpose',
-          link: '/purpose',
+          link: '/bento',
         },
         {
           text: 'Resources',
@@ -19,7 +19,7 @@ export default {
         },
         {
           text: 'Documentation',
-          link: '/documentation',
+          link: 'https://cbiit.github.io/bento-docs/',
         },
       ],
     },
@@ -28,10 +28,10 @@ export default {
       items: [
         {
           text: 'Contact Us',
-          link: '/contact',
+          link: 'bento-help@nih.gov',
         },
         {
-          link: 'https://www.linkedin.com/',
+          link: 'https://www.linkedin.com/company/frederick-national-laboratory-for-cancer-research/',
           icon: 'https://raw.githubusercontent.com/CBIIT/bento-tools/master/src/components/assets/footer/linkedInIcon.svg',
         },
       ],

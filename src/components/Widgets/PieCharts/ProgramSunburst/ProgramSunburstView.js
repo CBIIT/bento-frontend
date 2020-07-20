@@ -16,13 +16,16 @@ function updateData(d, keyPath) {
   const data = d;
   if (data.children) {
     data.children.map((child) => updateData(child, keyPath));
+    data.style = {
+      ...data.style,
+      fillOpacity: keyPath && !keyPath[data.title] ? 0.2 : 0.7,
+    };
+  } else {
+    data.style = {
+      ...data.style,
+      fillOpacity: keyPath && !keyPath[data.title] ? 0.2 : 1,
+    };
   }
-
-  data.style = {
-    ...data.style,
-    fillOpacity: keyPath && !keyPath[data.title] ? 0.2 : 1,
-  };
-
   return data;
 }
 
