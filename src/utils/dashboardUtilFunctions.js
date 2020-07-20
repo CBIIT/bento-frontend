@@ -268,7 +268,7 @@ export const getCheckBoxData = (data, allCheckBoxs, activeCheckBoxs, filters) =>
         const item = el;
 
         // init item's value of number of cases to zero
-        item.cases = [];
+        item.subjects = [];
         // get filters that are not in this checkbox group
         const filtersNotInThisCheckboxGroup = filters.filter(
           (f) => (f.groupName !== checkbox.groupName),
@@ -283,18 +283,18 @@ export const getCheckBoxData = (data, allCheckBoxs, activeCheckBoxs, filters) =>
             // value in the array
             if (Array.isArray(d[checkbox.datafield])) {
               if (d[checkbox.datafield].includes(fName)) {
-                item.cases.push(d.case_id);
+                item.subjects.push(d.subject_id);
               }
             }
             // Str compare
             if (d[checkbox.datafield] === fName) {
-              item.cases.push(d.case_id);
+              item.subjects.push(d.subject_id);
             }
           } else if (item.name === NOT_PROVIDED) { // No such attribute
-            item.cases.push(d.case_id);
+            item.subjects.push(d.subject_id);
           }
         });
-        item.cases = [...new Set(item.cases)].length;
+        item.subjects = [...new Set(item.subjects)].length;
         // update check status
         item.isChecked = false;
         filters.forEach((filter) => {
@@ -317,14 +317,14 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
     name: el[field.toString()] === '' || !el[field.toString()]
       ? NOT_PROVIDED : el[field.toString()],
     isChecked: false,
-    count: el.count,
+    subjects: el.subjects,
   }))
     .sort((a, b) => customSorting(a.name, b.name, 'alphabetical'))
     .forEach((el) => {
       // reduce the duplication
       if (result[parseInt(preElementIndex, 10)] && result[parseInt(preElementIndex, 10)].name) {
         if (result[parseInt(preElementIndex, 10)].name === el.name) {
-          result[parseInt(preElementIndex, 10)].cases += el.cases;
+          result[parseInt(preElementIndex, 10)].subjects += el.subjects;
         } else {
           preElementIndex += 1;
           result.push(el);
