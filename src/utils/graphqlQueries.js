@@ -49,28 +49,6 @@ export const GET_CASE_DETAIL_DATA_QUERY = gql`
     }
   }`;
 
-export const PROGRAM_DETAIL_QUERY = gql`
-query programDetail($program_id: String!) {
-  programDetail(program_id: $program_id) {
-    program_acronym
-    program_id
-    program_name
-    program_full_description
-    institution_name
-    program_external_url
-    num_subjects
-    num_files
-    disease_subtypes
-    studies { 
-      study_name
-      study_type
-      study_acronym
-      study_full_description
-      num_subjects
-    }
-  }
-}`;
-
 export const STATS_QUERY = gql`{
   numberOfTrials
   numberOfCases

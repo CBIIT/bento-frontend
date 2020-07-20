@@ -9,10 +9,15 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import { Link } from 'react-router-dom';
+import {
+  pageTitle, table, externalLinkIcon,
+  icon, breadCrumb, aggregateCount,
+  pageSubTitle, leftPanelattributes, rightpannel,
+} from '../../bento/programDetailData';
+import manipultateLinks from '../../utils/helpers';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import cn from '../../utils/classNameConcat';
-import icon from '../../assets/program/programIcon.svg';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
@@ -22,7 +27,6 @@ import {
   getDonutDataFromDashboardData,
   getStatDataFromDashboardData,
 } from '../../utils/dashboardUtilFunctions';
-import fileIcon from '../../assets/program/Trials_File_Counter.Icon.svg';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
@@ -84,75 +88,41 @@ const ProgramView = ({ classes, data, theme }) => {
   };
 
   const breadCrumbJson = [{
-    name: 'All Programs',
-    to: '/programs',
+    name: `${breadCrumb.label}`,
+    to: `${breadCrumb.link}`,
     isALink: true,
   }];
 
-  const columns = [
-    {
-      name: 'study_acronym',
-      label: 'Arm',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell1}>
-            <Link className={classes.link} to={`/arm/${value}`}>{value}</Link>
-          </div>
-        ),
-      },
+  const updatedTableData = manipultateLinks(table.columns);
+  const updatedAttributesData = manipultateLinks(leftPanelattributes.data);
+
+  const columns = updatedTableData.slice(0, 10).map((column) => ({
+    name: column.field,
+    label: column.label,
+    options: {
+      display: column.display ? column.display : true,
+      filter: false,
+      customBodyRender: (value, tableMeta) => (
+        <div>
+          {
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+                <img
+                  src={externalLinkIcon.src}
+                  alt={externalLinkIcon.alt}
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : column.field === 'num_subjects' ? <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo()}>{value}</Link>
+                : `${value}`
+}
+        </div>
+      ),
     },
-    {
-      name: 'study_name',
-      label: 'Arm Name',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell2}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'study_full_description',
-      label: 'Arm Description',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell3}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'study_type',
-      label: 'Arm Type',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell4}>
-            {value}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'num_subjects',
-      label: 'Cases',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className={classes.tableCell5}>
-            <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo()}>{value}</Link>
-          </div>
-        ),
-      },
-    },
-  ];
+  }));
 
   const options = {
     selectableRows: 'none',
@@ -164,6 +134,10 @@ const ProgramView = ({ classes, data, theme }) => {
     download: false,
     viewColumns: false,
     pagination: true,
+    sortOrder: {
+      name: table.defaultSortField,
+      direction: table.defaultSortDirection,
+    },
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <TableFooter>
         <TableRow>
@@ -188,8 +162,8 @@ const ProgramView = ({ classes, data, theme }) => {
         <div className={classes.header}>
           <div className={classes.logo}>
             <img
-              src={icon}
-              alt="CTDC case detail header logo"
+              src={icon.src}
+              alt={icon.alt}
             />
 
           </div>
@@ -197,223 +171,248 @@ const ProgramView = ({ classes, data, theme }) => {
             <div className={classes.headerMainTitle}>
               <span>
                 {' '}
-                Program :
+                {pageTitle.label}
                 <span>
                   {' '}
                   {' '}
-                  {programData.program_acronym}
+                  {programData[pageTitle.field]}
                 </span>
               </span>
             </div>
             <div className={cn(classes.headerMSubTitle, classes.headerSubTitleCate)}>
               <span>
                 {' '}
-                {programData.program_id}
+                {programData[pageSubTitle.field]}
               </span>
 
             </div>
             <CustomBreadcrumb data={breadCrumbJson} />
           </div>
-          <div className={classes.headerButton}>
-            <span className={classes.headerButtonLinkSpan}>
-              <Link
-                className={classes.headerButtonLink}
-                to={(location) => ({ ...location, pathname: '/cases' })}
-                onClick={() => redirectTo()}
-              >
-                {' '}
-                <span className={classes.headerButtonLinkText}> View </span>
-                <span className={classes.headerButtonLinkNumber}>
 
-                  {programData.num_subjects}
+          {aggregateCount.display ? (
+            <div className={classes.headerButton}>
+              <span className={classes.headerButtonLinkSpan}>
+                <Link
+                  className={classes.headerButtonLink}
+                  to={(location) => ({ ...location, pathname: '/cases' })}
+                  onClick={() => redirectTo()}
+                >
+                  {' '}
+                  <span className={classes.headerButtonLinkText}>{aggregateCount.labelText}</span>
+                  <span className={classes.headerButtonLinkNumber}>
 
-                </span>
-                <span className={classes.headerButtonLinkText}>CASES</span>
-              </Link>
-            </span>
-          </div>
+                    {programData[aggregateCount.field]}
+
+                  </span>
+                  <span
+                    className={classes.headerButtonLinkText}
+                  >
+                    {aggregateCount.labelTextContinued}
+                  </span>
+                </Link>
+              </span>
+            </div>
+          ) : ''}
         </div>
 
         <div className={classes.detailContainer}>
 
           <Grid container spacing={5}>
-            <Grid item className={classes.firstColumn} lg={false} md={false} sm={12} xs={12}>
+            <Grid item sm={6} xs={12} container spacing={2}>
               <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Program</span>
-                </Grid>
-                <Grid item xs={12}>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_acronym}
-                      {' '}
-                    </span>
-                  </div>
-
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>
-                    Program Name
-                  </span>
-
-                </Grid>
-
-                <Grid item xs={12}>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_name}
-                      {' '}
-                    </span>
-                  </div>
-                </Grid>
-
-                <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>Program Id</span>
-
-                </Grid>
-
-                <Grid item xs={12}>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_id}
-                      {' '}
-                    </span>
-                  </div>
-                </Grid>
+                {updatedAttributesData.slice(0, 6).map((attribute) => (
+                  <Grid item xs={12}>
+                    <div>
+                      {
+                      attribute.internalLink
+                        ? (
+                          <div>
+                            <span className={classes.detailContainerHeader}>{attribute.label}</span>
+                            <div>
+                              <span className={classes.content}>
+                                {' '}
+                                <Link
+                                  className={classes.link}
+                                  to={`${attribute.actualLink}${programData[updatedAttributesData[attribute.actualLinkId].field]}`}
+                                >
+                                  {programData[attribute.field]}
+                                </Link>
+                                {' '}
+                              </span>
+                            </div>
+                          </div>
+                        )
+                        : attribute.externalLink
+                          ? (
+                            <div>
+                              <span
+                                className={classes.detailContainerHeader}
+                              >
+                                {attribute.label}
+                              </span>
+                              <div>
+                                <span className={classes.content}>
+                                  {' '}
+                                  <a
+                                    href={`${attribute.actualLink}${programData[updatedAttributesData[attribute.actualLinkId].field]}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={classes.link}
+                                  >
+                                    {programData[attribute.field]}
+                                  </a>
+                                  <img
+                                    src={externalLinkIcon.src}
+                                    alt={externalLinkIcon.alt}
+                                    className={classes.externalLinkIcon}
+                                  />
+                                  {' '}
+                                </span>
+                              </div>
+                            </div>
+                          )
+                          : attribute.internalLinkToLabel
+                            ? (
+                              <div>
+                                <span
+                                  className={classes.detailContainerHeader}
+                                >
+                                  <a href={`${programData[attribute.field]}`} rel="noopener noreferrer">{attribute.label}</a>
+                                </span>
+                              </div>
+                            )
+                            : attribute.externalLinkToLabel
+                              ? (
+                                <div>
+                                  <span
+                                    className={classes.detailContainerHeader}
+                                  >
+                                    <a href={`${programData[attribute.field]}`} target="_blank" rel="noopener noreferrer">{attribute.label}</a>
+                                    <img
+                                      src={externalLinkIcon.src}
+                                      alt={externalLinkIcon.alt}
+                                      className={classes.externalLinkIcon}
+                                    />
+                                  </span>
+                                </div>
+                              )
+                              : (
+                                <div>
+                                  <span
+                                    className={classes.detailContainerHeader}
+                                  >
+                                    {attribute.label}
+                                  </span>
+                                  <div>
+                                    <span className={classes.content}>
+                                      {' '}
+                                      {programData[attribute.field]}
+                                      {' '}
+                                    </span>
+                                  </div>
+                                </div>
+                              )
+}
+                    </div>
+                  </Grid>
+                ))}
 
               </Grid>
             </Grid>
 
             <Grid
               item
-              lg={false}
-              md={false}
-              sm={12}
+              sm={6}
               xs={12}
-              className={cn(classes.borderLeft, classes.secondColumn)}
-            >
-              <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Program Description</span>
-
-                </Grid>
-                <Grid item xs={12}>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.program_full_description}
-                      {' '}
-                    </span>
-                  </div>
-
-                </Grid>
-                <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>Institution</span>
-
-                </Grid>
-
-                <Grid item xs={12}>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      {programData.institution_name}
-                      {' '}
-                    </span>
-                  </div>
-                </Grid>
-
-                <Grid item xs={12} className={classes.paddingTop32}>
-                  <span className={classes.detailContainerHeader}>
-                    <a href={`${programData.program_external_url}`} target="_blank" rel="noopener noreferrer">External Link to Program</a>
-                  </span>
-
-                </Grid>
-
-              </Grid>
-            </Grid>
-
-            <Grid
-              item
-              lg={false}
-              md={false}
-              sm={12}
-              xs={12}
-              className={cn(classes.borderLeft, classes.thirdColumn)}
+              container
+              spacing={2}
             >
               <Grid container spacing={16} direction="row" className={classes.detailContainerLeft}>
-                <Grid item xs={12} className={classes.marginTopN37}>
-                  <Widget
-
-                    title="Diagnosis"
-                    upperTitle
-                    bodyClass={classes.fullHeightBody}
-                    className={classes.card}
-                    color={theme.palette.dodgeBlue.main}
-                    titleClass={classes.widgetTitle}
-                    customBackGround
+                { rightpannel.widjet[0].display ? (
+                  <Grid
+                    item
+                    xs={12}
+                    className={classes.marginTopN37}
                   >
-                    <CustomActiveDonut
-                      data={widgetData.diagnosis}
-                      width={400}
-                      height={225}
-                      innerRadius={50}
-                      outerRadius={75}
-                      cx="50%"
-                      cy="50%"
-                      fontSize="15px"
+                    <Widget
+                      title={rightpannel.widjet[0].label}
+                      upperTitle
+                      bodyClass={classes.fullHeightBody}
+                      className={classes.card}
+                      color={theme.palette.dodgeBlue.main}
+                      titleClass={classes.widgetTitle}
+                      customBackGround
+                    >
+                      <CustomActiveDonut
+                        data={widgetData[rightpannel.widjet[0].field]}
+                        width={400}
+                        height={225}
+                        innerRadius={50}
+                        outerRadius={75}
+                        cx="50%"
+                        cy="50%"
+                        fontSize="15px"
+                      />
+                    </Widget>
+                  </Grid>
+                ) : ''}
+
+                <Grid item xs={12}>
+                  <span
+                    className={classes.detailContainerHeader}
+                  >
+                    {rightpannel.files[0].label}
+                  </span>
+
+                </Grid>
+
+                { rightpannel.files[0].display ? (
+                  <Grid item xs={12}>
+                    <div>
+                      <span className={classes.fileIcon}>
+                        <img
+                          src={rightpannel.files[0].fileIconSrc}
+                          alt={rightpannel.files[0].fileIconAlt}
+                        />
+                      </span>
+                      <span className={classes.fileContent}>
+                        {programData[rightpannel.files[0].field]}
+                      </span>
+                    </div>
+                  </Grid>
+                ) : ''}
+              </Grid>
+            </Grid>
+
+          </Grid>
+        </div>
+      </div>
+      { table.display ? (
+        <div id="table_program_detail" className={classes.tableContainer}>
+
+          <div className={classes.tableDiv}>
+            <div className={classes.tableTitle}>
+              <span className={classes.tableHeader}>{table.title}</span>
+            </div>
+            <Grid item xs={12}>
+              <Grid container spacing={8}>
+                <Grid item xs={12}>
+                  <Typography>
+                    <CustomDataTable
+                      data={data.programDetail[table.dataField]}
+                      columns={columns}
+                      options={options}
                     />
-                  </Widget>
+                  </Typography>
                 </Grid>
-
-                <Grid item xs={12}>
-                  <span className={classes.detailContainerHeader}>Number of files </span>
-
+                <Grid item xs={8}>
+                  <Typography />
                 </Grid>
-
-                <Grid item xs={12}>
-                  <div>
-                    <span className={classes.fileIcon}>
-                      <img src={fileIcon} alt="file icon" />
-                    </span>
-                    <span className={classes.fileContent}>
-                      {programData.num_files}
-                    </span>
-                  </div>
-                </Grid>
-
               </Grid>
             </Grid>
-
-          </Grid>
-        </div>
-      </div>
-      <div id="table_trial_detail" className={classes.tableContainer}>
-
-        <div className={classes.tableDiv}>
-          <div className={classes.tableTitle}>
-            <span className={classes.tableHeader}>Arms</span>
           </div>
-          <Grid item xs={12}>
-            <Grid container spacing={8}>
-              <Grid item xs={12}>
-                <Typography>
-                  <CustomDataTable
-                    data={data.programDetail.studies}
-                    columns={columns}
-                    options={options}
-                  />
-                </Typography>
-              </Grid>
-              <Grid item xs={8}>
-                <Typography />
-              </Grid>
-            </Grid>
-          </Grid>
         </div>
-      </div>
+      ) : ''}
     </>
   );
 };
@@ -441,7 +440,7 @@ const styles = (theme) => ({
   link: {
     textDecoration: 'none',
     fontWeight: 'bold',
-    color: '#DD401C',
+    color: '#7747FF',
     '&:hover': {
       textDecoration: 'underline',
     },
@@ -697,7 +696,7 @@ const styles = (theme) => ({
   },
   fileIcon: {
     '& img': {
-      width: '50%',
+      width: '25%',
     },
   },
   fileContent: {
@@ -733,6 +732,11 @@ const styles = (theme) => ({
   },
   tableCell5: {
     width: '160px',
+  },
+  externalLinkIcon: {
+    width: '16px',
+    verticalAlign: 'sub',
+    marginLeft: '4px',
   },
 });
 
