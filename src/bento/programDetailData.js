@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+// --------------- Page title configuration --------------
 const pageTitle = {
   label: 'Program :',
   field: 'program_acronym',
@@ -9,12 +10,32 @@ const pageSubTitle = {
   field: 'program_id',
 };
 
-const programBreadCrumb = {
+const breadCrumb = {
   label: 'ALL PROGRAMS',
   link: '/programs',
 };
 
-const attributes = {
+// --------------- Aggregated count configuration --------------
+const aggregateCount = {
+  labelText: 'View',
+  field: 'num_subjects',
+  labelTextContinued: 'Cases',
+  display: true,
+};
+
+// --------------- Icons configuration --------------
+const icon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/programIcon.svg',
+  alt: 'Bento program logo',
+};
+
+const externalLinkIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+  alt: 'External link icon',
+};
+
+// --------------- Left Pannel configuration --------------
+const leftPanelattributes = {
   data: [
     {
       field: 'program_acronym',
@@ -39,30 +60,45 @@ const attributes = {
     {
       field: 'program_external_url',
       label: 'External Link to Program',
-      link: '/{program_external_url}',
+      externalLinkToLabel: true,
     },
   ],
 };
 
-const tableTitle = 'ARMS';
-
-const icon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/programIcon.svg',
-  alt: 'Bento program logo',
+// --------------- Right Pannel configuration --------------
+const rightpannel = {
+  widjet: [
+    {
+      field: 'diagnosis',
+      label: 'Diagnosis',
+      display: true,
+    },
+  ],
+  files: [
+    {
+      field: 'num_files',
+      label: 'Number of files',
+      fileIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/Trials_File_Counter.Icon.svg',
+      fileIconAlt: 'Number of files icon',
+      display: true,
+    },
+  ],
 };
 
-const externalLinkIcon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
-  alt: 'External link icon',
-};
-
-const numberOfFilesIcon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/Trials_File_Counter.Icon.svg',
-  alt: 'Number of files icon',
-};
-
+// --------------- Table configuration --------------
 const table = {
-  data: [
+  // Set 'display' to false to hide the table entirely
+  display: true,
+  // Table title
+  title: 'ARMS',
+  // Field name for table data, need to be updated only when using a different GraphQL query
+  dataField: 'studies',
+  // Value must be one of the 'dataField's in fileTableColumns
+  defaultSortField: 'study_acronym',
+  // 'asc' or 'desc'
+  defaultSortDirection: 'asc',
+  // Columns
+  columns: [
     {
       field: 'study_acronym',
       label: 'Arm',
@@ -87,6 +123,7 @@ const table = {
   ],
 };
 
+// --------------- GraphQL query - Retrieve program details --------------
 const PROGRAM_DETAIL_QUERY = gql`
 query programDetail($program_id: String!) {
   programDetail(program_id: $program_id) {
@@ -110,14 +147,14 @@ query programDetail($program_id: String!) {
 }`;
 
 export {
-  tableTitle,
   pageTitle,
   pageSubTitle,
+  aggregateCount,
   icon,
-  attributes,
+  leftPanelattributes,
+  rightpannel,
   externalLinkIcon,
-  numberOfFilesIcon,
-  programBreadCrumb,
+  breadCrumb,
   PROGRAM_DETAIL_QUERY,
   table,
 };
