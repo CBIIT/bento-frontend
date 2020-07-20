@@ -96,7 +96,7 @@ const styles = (theme) => ({
     maxWidth: '150px',
   },
   aboutMenu: {
-    float: 'right',
+    display: 'inline-block',
   },
 });
 

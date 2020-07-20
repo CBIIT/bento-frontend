@@ -163,51 +163,51 @@ export const DASHBOARD_QUERY = gql`{
   numberOfFiles
   subjectCountByProgram{
         group
-         count
+        subjects
       }
     subjectCountByStudy{
         group
-         count
+        subjects
       }
     subjectCountByDiagnoses{
         group
-         count
+        subjects
       }
     subjectCountByRecurrenceScore{
         group
-         count
+        subjects
       }
     subjectCountByTumorSize{
         group
-         count
+        subjects
       }
     subjectCountByChemotherapyRegimen{
         group
-         count
+        subjects
       }
     subjectCountByTumorGrade{
         group
-         count
+        subjects
       }
   subjectCountByErStatus{
         group
-         count
+        subjects
       }
   subjectCountByPrStatus{
         group
-         count
+        subjects
       }
   subjectCountByMenopauseStatus{
         group
-         count
+        subjects
       }
   subjectCountByChemotherapyRegimen{
         group
-        count
+        subjects
       }
       subjectCountByEndocrineTherapy{
     group
-    count
+    subjects
   }
     
     subjectOverView {

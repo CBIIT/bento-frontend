@@ -96,7 +96,7 @@ const FacetPanel = ({ classes }) => {
                     <List component="div" disablePadding dense>
                       {
             sideBarItem.checkboxItems.map((checkboxItem) => {
-              if (checkboxItem.count === 0 && !checkboxItem.isChecked) {
+              if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
                 return '';
               }
               return (
@@ -116,7 +116,7 @@ const FacetPanel = ({ classes }) => {
                     color="secondary"
                     classes={{ root: classes.checkboxRoot }}
                   />
-                  <div className={classes.panelDetailText}>{`${checkboxItem.name}  (${checkboxItem.count})`}</div>
+                  <div className={classes.panelDetailText}>{`${checkboxItem.name}  (${checkboxItem.subjects})`}</div>
                 </ListItem>
               );
             })
