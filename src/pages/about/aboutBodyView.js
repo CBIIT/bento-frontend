@@ -22,132 +22,134 @@ const AboutBody = ({ classes, data }) => {
       <Stats />
       <AboutHeader title={data.title} />
       <div id="about_body" className={classes.container}>
-        <Grid container spacing={16} direction="row" className={classes.aboutSection}>
-          <Grid item lg={9} md={9} sm={12} xs={12} className={classes.rightSection}>
-            {data.content ? data.content.map((contentObj) => (
-              <>
-                {/* Ordered List with Numbers logic */}
-                {contentObj.listWithNumbers && (
-                <div className={classes.text}>
-                  {/* Numbered ordered list */}
-                  <ol>
-                    { contentObj.listWithNumbers.map((listObj) => (
-                      listObj.listWithAlpahbets ? (
+        <div className={classes.maxWidthContainer}>
+          <Grid container spacing={16} direction="row" className={classes.aboutSection}>
+            <Grid item lg={9} md={9} sm={12} xs={12} className={classes.rightSection}>
+              {data.content ? data.content.map((contentObj) => (
+                <>
+                  {/* Ordered List with Numbers logic */}
+                  {contentObj.listWithNumbers && (
+                  <div className={classes.text}>
+                    {/* Numbered ordered list */}
+                    <ol>
+                      { contentObj.listWithNumbers.map((listObj) => (
+                        listObj.listWithAlpahbets ? (
                         // Alphetised sub ordered list
-                        <ol type="a">
-                          {/* bolding text if necessary */}
-                          { listObj.listWithAlpahbets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
-                        </ol>
-                      ) : <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>
-                    ))}
-                  </ol>
-                </div>
-                )}
-                {/* Ordered List with Alphabets logic */}
-                {contentObj.listWithAlpahbets && (
-                <div className={classes.text}>
-                  {/* Alphabetised ordered list */}
-                  <ol type="a">
-                    { contentObj.listWithAlpahbets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
-                  </ol>
-                </div>
-                )}
-                {/* MyCases-Wizard-Step4-SVG */}
-                {contentObj.image && (
-                <div className={classes.text}>
-                  <img
-                    src={MyCasesWizardStep4}
-                    alt="Step1 - Select and Save to My Cases|
+                          <ol type="a">
+                            {/* bolding text if necessary */}
+                            { listObj.listWithAlpahbets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
+                          </ol>
+                        ) : <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>
+                      ))}
+                    </ol>
+                  </div>
+                  )}
+                  {/* Ordered List with Alphabets logic */}
+                  {contentObj.listWithAlpahbets && (
+                  <div className={classes.text}>
+                    {/* Alphabetised ordered list */}
+                    <ol type="a">
+                      { contentObj.listWithAlpahbets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
+                    </ol>
+                  </div>
+                  )}
+                  {/* MyCases-Wizard-Step4-SVG */}
+                  {contentObj.image && (
+                  <div className={classes.text}>
+                    <img
+                      src={MyCasesWizardStep4}
+                      alt="Step1 - Select and Save to My Cases|
                     Step2 - Review My Cases|
                     Step3 - Select Files and Create Manifest|
                     Step4 - Load Manifest to SBG"
-                    className={classes.MyCasesWizardStep4}
-                  />
-                </div>
-                )}
-                {/* Paragraphs */}
-                {contentObj.paragraph && (
-                <div className={classes.text}>
-                  { contentObj.paragraph.split('$$').map((splitedParagraph) => {
-                  // Checking for regex ()[] pattern
-                    if (splitedParagraph != null && ((/\[(.+)\]\((.+)\)/g.test(splitedParagraph)) || (/\((.+)\)\[(.+)\]/g.test(splitedParagraph)))) {
-                      return (
-                        <>
-                          <Link
-                            title={splitedParagraph.match(/\[(.*)\]/).pop()}
-                            target="_blank"
-                            rel="noreferrer"
-                            href={splitedParagraph.match(/\((.*)\)/).pop()}
-                            color="inherit"
-                            className={classes.link}
-                          >
-                            {splitedParagraph.match(/\[(.*)\]/).pop()}
-                          </Link>
-                          <img
-                            src={externalIcon}
-                            alt="outbounnd web site icon"
-                            className={classes.linkIcon}
-                          />
-                        </>
-                      );
-                    }
-                    // For sub headings
-                    if (splitedParagraph != null && (/#(.*)#/.test(splitedParagraph))) {
-                      return (<div className={classes.title}>{splitedParagraph.match(/#(.*)#/).pop()}</div>);
-                    }
-                    // For bolding inline words
-                    if (splitedParagraph != null && (/\*(.*)\*/.test(splitedParagraph))) {
-                      return (<span className={classes.title}>{splitedParagraph.match(/\*(.*)\*/).pop()}</span>);
-                    }
-                    // For downloading Submission PDF
-                    if (splitedParagraph != null && (/{(.*)}/.test(splitedParagraph))) {
-                      return (
-                        <Link target="_blank" className={classes.link} href={submissionGuide}>
-                          {splitedParagraph.match(/{(.*)}/).pop()}
-                        </Link>
-                      );
-                    }
-                    return splitedParagraph;
-                  })}
-                </div>
-                )}
-
-                {/* Table logic */}
-                {contentObj.table && (
-                <div className={classes.tableDiv}>
-                  <table className={classes.table}>
-                    <thead className={classes.tableHeader}>
-                      <tr className={classes.tableBodyRow}>
-                        <th className={classes.headerCell} aria-label="Index" />
-                        { contentObj.table[0].head.map((rowObj) => (
+                      className={classes.MyCasesWizardStep4}
+                    />
+                  </div>
+                  )}
+                  {/* Paragraphs */}
+                  {contentObj.paragraph && (
+                  <div className={classes.text}>
+                    { contentObj.paragraph.split('$$').map((splitedParagraph) => {
+                      // Checking for regex ()[] pattern
+                      if (splitedParagraph != null && ((/\[(.+)\]\((.+)\)/g.test(splitedParagraph)) || (/\((.+)\)\[(.+)\]/g.test(splitedParagraph)))) {
+                        return (
                           <>
-                            <th className={classes.headerCell}>{rowObj}</th>
+                            <Link
+                              title={splitedParagraph.match(/\[(.*)\]/).pop()}
+                              target="_blank"
+                              rel="noreferrer"
+                              href={splitedParagraph.match(/\((.*)\)/).pop()}
+                              color="inherit"
+                              className={classes.link}
+                            >
+                              {splitedParagraph.match(/\[(.*)\]/).pop()}
+                            </Link>
+                            <img
+                              src={externalIcon}
+                              alt="outbounnd web site icon"
+                              className={classes.linkIcon}
+                            />
+                          </>
+                        );
+                      }
+                      // For sub headings
+                      if (splitedParagraph != null && (/#(.*)#/.test(splitedParagraph))) {
+                        return (<div className={classes.title}>{splitedParagraph.match(/#(.*)#/).pop()}</div>);
+                      }
+                      // For bolding inline words
+                      if (splitedParagraph != null && (/\*(.*)\*/.test(splitedParagraph))) {
+                        return (<span className={classes.title}>{splitedParagraph.match(/\*(.*)\*/).pop()}</span>);
+                      }
+                      // For downloading Submission PDF
+                      if (splitedParagraph != null && (/{(.*)}/.test(splitedParagraph))) {
+                        return (
+                          <Link target="_blank" className={classes.link} href={submissionGuide}>
+                            {splitedParagraph.match(/{(.*)}/).pop()}
+                          </Link>
+                        );
+                      }
+                      return splitedParagraph;
+                    })}
+                  </div>
+                  )}
+
+                  {/* Table logic */}
+                  {contentObj.table && (
+                  <div className={classes.tableDiv}>
+                    <table className={classes.table}>
+                      <thead className={classes.tableHeader}>
+                        <tr className={classes.tableBodyRow}>
+                          <th className={classes.headerCell} aria-label="Index" />
+                          { contentObj.table[0].head.map((rowObj) => (
+                            <>
+                              <th className={classes.headerCell}>{rowObj}</th>
+                            </>
+                          )) }
+                        </tr>
+                      </thead>
+                      <tbody>
+                        { contentObj.table[1].body.map((rowObj, index) => (
+                          <>
+                            <tr className={classes.tableBodyRow}>
+                              <td className={classes.tableCell}>{index + 1}</td>
+                              {/* eslint-disable-next-line max-len */}
+                              { rowObj.row.map((rowValue) => <td className={classes.tableCell}>{rowValue}</td>)}
+                            </tr>
                           </>
                         )) }
-                      </tr>
-                    </thead>
-                    <tbody>
-                      { contentObj.table[1].body.map((rowObj, index) => (
-                        <>
-                          <tr className={classes.tableBodyRow}>
-                            <td className={classes.tableCell}>{index + 1}</td>
-                            {/* eslint-disable-next-line max-len */}
-                            { rowObj.row.map((rowValue) => <td className={classes.tableCell}>{rowValue}</td>)}
-                          </tr>
-                        </>
-                      )) }
-                    </tbody>
-                  </table>
-                </div>
-                )}
-                <br />
-              </>
-            )) : ''}
+                      </tbody>
+                    </table>
+                  </div>
+                  )}
+                  <br />
+                </>
+              )) : ''}
+            </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12} className={classes.leftSection}>
+              <img className={classes.img} src={data.img} alt={data.title} />
+            </Grid>
           </Grid>
-          <Grid item lg={3} md={3} sm={12} xs={12} className={classes.leftSection}>
-            <img className={classes.img} src={data.img} alt={data.title} />
-          </Grid>
-        </Grid>
+        </div>
       </div>
       {data.secondaryZoomImage && <XoomInOut><img src={data.secondaryZoomImage} alt="secondary zoominout" className={classes.img} /></XoomInOut>}
     </>
@@ -156,13 +158,15 @@ const AboutBody = ({ classes, data }) => {
 
 const styles = (theme) => ({
   container: {
-    margin: '0px auto 0px auto',
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '15px',
     lineHeight: '22px',
-    maxWidth: '1440px',
     background: '#e7eef5',
+  },
+  maxWidthContainer: {
+    margin: '0px auto 0px auto',
+    maxWidth: '1440px',
   },
   text: {
     // height: '476px',
