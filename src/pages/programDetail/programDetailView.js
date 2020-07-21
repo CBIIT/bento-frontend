@@ -194,7 +194,7 @@ const ProgramView = ({ classes, data, theme }) => {
               <span className={classes.headerButtonLinkSpan}>
                 <Link
                   className={classes.headerButtonLink}
-                  to={(location) => ({ ...location, pathname: '/cases' })}
+                  to={(location) => ({ ...location, pathname: `${aggregateCount.link}` })}
                   onClick={() => redirectTo()}
                 >
                   {' '}

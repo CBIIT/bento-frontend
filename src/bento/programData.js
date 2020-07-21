@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 
-const tableTitle = 'Programs';
-
+// --------------- Icons configuration --------------
 const icon = {
   src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/programIcon.svg',
   alt: 'Bento program logo',
@@ -12,8 +11,20 @@ const externalLinkIcon = {
   alt: 'External link icon',
 };
 
+// --------------- Table configuration --------------
 const table = {
-  data: [
+  // Set 'display' to false to hide the table entirely
+  display: true,
+  // Table title
+  title: 'Programs',
+  // Field name for table data, need to be updated only when using a different GraphQL query
+  dataField: 'programInfo',
+  // Value must be one of the 'field' in columns
+  defaultSortField: 'program_acronym',
+  // 'asc' or 'desc'
+  defaultSortDirection: 'asc',
+  // Columns
+  columns: [
     {
       field: 'program_acronym',
       label: 'Program Code',
@@ -51,6 +62,7 @@ const table = {
   ],
 };
 
+// --------------- GraphQL query - Retrieve program info --------------
 const PROGRAMS_QUERY = gql`{
   programInfo {
  program_acronym
@@ -66,9 +78,8 @@ const PROGRAMS_QUERY = gql`{
  `;
 
 export {
-  tableTitle,
   icon,
   externalLinkIcon,
-  PROGRAMS_QUERY,
   table,
+  PROGRAMS_QUERY,
 };

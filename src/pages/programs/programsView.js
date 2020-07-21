@@ -12,14 +12,14 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
-  table, tableTitle, icon, externalLinkIcon,
+  table, icon, externalLinkIcon,
 } from '../../bento/programData';
 import manipultateLinks from '../../utils/helpers';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
-const updatedData = manipultateLinks(table.data);
+const updatedData = manipultateLinks(table.columns);
 
 const Programs = ({ classes, data }) => {
   const initDashboardStatus = () => (dispatch) => Promise.resolve(
@@ -77,6 +77,10 @@ const Programs = ({ classes, data }) => {
     viewColumns: false,
     pagination: true,
     rowsPerPageOptions: [10, 25, 50, 100],
+    sortOrder: {
+      name: table.defaultSortField,
+      direction: table.defaultSortDirection,
+    },
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <TableFooter>
         <TableRow>
@@ -111,24 +115,26 @@ const Programs = ({ classes, data }) => {
               <div className={classes.headerMainTitle}>
                 <span>
                   <Typography>
-                    <span className={classes.headerMainTitle}>{tableTitle}</span>
+                    <span className={classes.headerMainTitle}>{table.title}</span>
                   </Typography>
                 </span>
               </div>
             </div>
           </div>
 
-          <div id="table_programs" className={classes.tableDiv}>
-            <Grid container>
-              <Grid item xs={12}>
-                <CustomDataTable
-                  data={data.programInfo}
-                  columns={columns}
-                  options={options(classes)}
-                />
+          { table.display ? (
+            <div id="table_programs" className={classes.tableDiv}>
+              <Grid container>
+                <Grid item xs={12}>
+                  <CustomDataTable
+                    data={data[table.dataField]}
+                    columns={columns}
+                    options={options(classes)}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-          </div>
+            </div>
+          ) : ''}
         </div>
 
       </div>

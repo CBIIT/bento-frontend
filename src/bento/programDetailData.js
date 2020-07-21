@@ -20,6 +20,7 @@ const aggregateCount = {
   labelText: 'View',
   field: 'num_subjects',
   labelTextContinued: 'Cases',
+  link: '/cases',
   display: true,
 };
 
@@ -93,7 +94,7 @@ const table = {
   title: 'ARMS',
   // Field name for table data, need to be updated only when using a different GraphQL query
   dataField: 'studies',
-  // Value must be one of the 'dataField's in fileTableColumns
+  // Value must be one of the 'field' in columns
   defaultSortField: 'study_acronym',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
