@@ -465,10 +465,13 @@ const styles = () => ({
   },
   heroTextContainer: {
     position: 'absolute',
-    width: '906px',
+    width: '400px',
     margin: 'auto',
     left: '12px',
     right: 0,
+    '@media (min-width: 900px)': {
+      width: '906px',
+    },
   },
   heroTextWrapper: {
     width: '360px',
