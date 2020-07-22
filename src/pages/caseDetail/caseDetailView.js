@@ -110,7 +110,7 @@ const Subsection = ({ config, data, classes }) => (
         />
       ))}
     </Grid>
-    <Grid xs={3} />
+    <Grid item xs={3} />
   </Grid>
 );
 
