@@ -215,7 +215,7 @@ const tableConfig = {
 // query name, also used as root of returned data
 const dataRoot = 'subjectDetail';
 // Primary ID field used to query a case
-const caseIDField = caseHeader.dataField;
+const caseIDField = 'subject_id';
 // GraphQL query to retrieve detailed info for a case
 const GET_CASE_DETAIL_DATA_QUERY = gql`
     query subjectDetail($subject_id: String) {
