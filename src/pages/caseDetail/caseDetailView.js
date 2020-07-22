@@ -163,10 +163,18 @@ const CaseDetail = ({ data, classes }) => {
           <div className={classes.headerTitle}>
             <div className={classes.headerMainTitle}>
               {`${caseHeader.label} :`}
-              <span className={classes.headerMainTitleTwo}>
-                {' '}
-                {data[caseHeader.dataField]}
-              </span>
+              { data[caseHeader.dataField]
+                ? (
+                  <span className={classes.headerMainTitleTwo}>
+                    {' '}
+                    {data[caseHeader.dataField]}
+                  </span>
+                )
+                : (
+                  <Typography variant="h5" color="error" size="sm">
+                    {`"${caseHeader.dataField}" is not a valid property name`}
+                  </Typography>
+                )}
             </div>
             <div className={classes.breadCrumb}>
               {' '}
