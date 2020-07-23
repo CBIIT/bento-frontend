@@ -32,13 +32,13 @@ const CustomBreadcrumb = ({ classes, data }) => (
 const styles = (theme) => ({
   headerNav: {
     paddingTop: '0px',
-    color: '#3D9ACC',
+    color: '#00B0BD',
   },
   headerNavLink: {
     paddingLeft: '3px',
     paddingRight: '3px',
     textDecoration: 'none',
-    color: '#3D9ACC',
+    color: '#00B0BD',
     textTransform: 'uppercase',
     fontFamily: theme.custom.fontFamilySans,
     fontSize: '10px',

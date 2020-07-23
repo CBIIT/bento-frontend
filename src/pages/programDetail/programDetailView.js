@@ -186,7 +186,7 @@ const ProgramView = ({ classes, data, theme }) => {
               </span>
 
             </div>
-            <CustomBreadcrumb data={breadCrumbJson} />
+            <CustomBreadcrumb className={classes.breadCrumb} data={breadCrumbJson} />
           </div>
 
           {aggregateCount.display ? (
@@ -199,15 +199,11 @@ const ProgramView = ({ classes, data, theme }) => {
                 >
                   {' '}
                   <span className={classes.headerButtonLinkText}>{aggregateCount.labelText}</span>
+                  <span className={classes.headerButtonColumn}>{': '}</span>
                   <span className={classes.headerButtonLinkNumber}>
 
                     {programData[aggregateCount.field]}
 
-                  </span>
-                  <span
-                    className={classes.headerButtonLinkText}
-                  >
-                    {aggregateCount.labelTextContinued}
                   </span>
                 </Link>
               </span>
@@ -218,7 +214,7 @@ const ProgramView = ({ classes, data, theme }) => {
         <div className={classes.detailContainer}>
 
           <Grid container spacing={5}>
-            <Grid item sm={6} xs={12} container spacing={2}>
+            <Grid item lg={6} sm={6} xs={12} container>
               <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
                 {updatedAttributesData.slice(0, 6).map((attribute) => (
                   <Grid item xs={12}>
@@ -275,7 +271,7 @@ const ProgramView = ({ classes, data, theme }) => {
                             ? (
                               <div>
                                 <span
-                                  className={classes.detailContainerHeader}
+                                  className={classes.detailContainerHeaderLink}
                                 >
                                   <a href={`${programData[attribute.field]}`} rel="noopener noreferrer">{attribute.label}</a>
                                 </span>
@@ -285,7 +281,7 @@ const ProgramView = ({ classes, data, theme }) => {
                               ? (
                                 <div>
                                   <span
-                                    className={classes.detailContainerHeader}
+                                    className={classes.detailContainerHeaderLink}
                                   >
                                     <a href={`${programData[attribute.field]}`} target="_blank" rel="noopener noreferrer">{attribute.label}</a>
                                     <img
@@ -322,12 +318,11 @@ const ProgramView = ({ classes, data, theme }) => {
 
             <Grid
               item
+              lg={6}
               sm={6}
               xs={12}
-              container
-              spacing={2}
             >
-              <Grid container spacing={16} direction="row" className={classes.detailContainerLeft}>
+              <Grid container spacing={16} direction="row" className={classes.detailContainerRight}>
                 { rightpannel.widjet[0].display ? (
                   <Grid
                     item
@@ -357,27 +352,25 @@ const ProgramView = ({ classes, data, theme }) => {
                   </Grid>
                 ) : ''}
 
-                <Grid item xs={12}>
-                  <span
-                    className={classes.detailContainerHeader}
-                  >
-                    {rightpannel.files[0].label}
-                  </span>
-
-                </Grid>
-
                 { rightpannel.files[0].display ? (
                   <Grid item xs={12}>
-                    <div>
-                      <span className={classes.fileIcon}>
-                        <img
-                          src={rightpannel.files[0].fileIconSrc}
-                          alt={rightpannel.files[0].fileIconAlt}
-                        />
+                    <div className={classes.fileContainer}>
+                      <span
+                        className={classes.detailContainerHeader}
+                      >
+                        {rightpannel.files[0].label}
                       </span>
-                      <span className={classes.fileContent}>
-                        {programData[rightpannel.files[0].field]}
-                      </span>
+                      <div className={classes.fileContent}>
+                        <div className={classes.fileIcon}>
+                          <img
+                            src={rightpannel.files[0].fileIconSrc}
+                            alt={rightpannel.files[0].fileIconAlt}
+                          />
+                        </div>
+                        <div className={classes.fileCount}>
+                          {programData[rightpannel.files[0].field]}
+                        </div>
+                      </div>
                     </div>
                   </Grid>
                 ) : ''}
@@ -485,17 +478,16 @@ const styles = (theme) => ({
   },
   header: {
     paddingLeft: '21px',
-    paddingRight: '21px',
+    paddingRight: '35px',
     borderBottom: '#4B619A 10px solid',
     height: '80px',
-    maxWidth: theme.custom.maxContentWidth,
+    maxWidth: '1240px',
     margin: 'auto',
   },
   headerTitle: {
-    maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
     float: 'left',
-    marginLeft: '90px',
+    marginLeft: '85px',
     width: 'calc(100% - 265px)',
   },
   headerMainTitle: {
@@ -510,14 +502,14 @@ const styles = (theme) => ({
     },
     fontFamily: 'Lato',
     letterSpacing: '0.025em',
-    color: '#415589 ',
-    fontSize: '18pt',
+    color: '#274FA5 ',
+    fontSize: '26px',
     lineHeight: '24px',
     paddingLeft: '0px',
 
   },
   headerSubTitleCate: {
-    color: '#5F85A2',
+    color: '#00B0BD',
     fontWeight: '300',
     fontFamily: 'Poppins',
     textTransform: 'uppercase',
@@ -542,6 +534,9 @@ const styles = (theme) => ({
   headerMSubTitle: {
     paddingTop: '3px',
   },
+  breadCrumb: {
+    color: '#00B0BD',
+  },
   headerButton: {
     fontFamily: theme.custom.fontFamily,
     float: 'right',
@@ -549,8 +544,7 @@ const styles = (theme) => ({
     width: '104px',
     height: '33px',
     background: '#F6F4F4',
-    paddingLeft: '10px',
-    paddingRight: '10px',
+    textAlign: 'center',
     marginRight: '-20px',
 
   },
@@ -563,13 +557,17 @@ const styles = (theme) => ({
   },
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamily,
-    color: '#0B3556',
+    color: '#7747FF',
     fontSize: '8pt',
     textTransform: 'uppercase',
   },
+  headerButtonColumn: {
+    color: '#000000',
+  },
   headerButtonLinkNumber: {
+    color: '#000000',
     fontFamily: theme.custom.fontFamily,
-    borderBottom: 'solid',
+    borderBottom: 'solid #6690AC',
     lineHeight: '30px',
     paddingBottom: '3px',
     margin: '0 4px',
@@ -578,16 +576,17 @@ const styles = (theme) => ({
   logo: {
     position: 'absolute',
     float: 'left',
-    marginTop: '-6px',
-    width: '82px',
-    filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
+    marginLeft: '-23px',
+    marginTop: '-21px',
+    width: '107px',
+    filter: 'drop-shadow(-3px 2px 6px rgba(27,28,28,0.29))',
   },
   detailContainer: {
-    maxWidth: theme.custom.maxContentWidth,
+    maxWidth: '1340px',
     margin: 'auto',
     paddingTop: '24px',
     paddingLeft: '36px',
-    paddingRight: '36px',
+    marginRight: '-20px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -599,9 +598,15 @@ const styles = (theme) => ({
   detailContainerHeader: {
     textTransform: 'uppercase',
     fontFamily: 'Lato',
-    fontSize: '17px',
+    fontSize: '15px',
     letterSpacing: '0.025em',
-    color: '#0296c9',
+    color: '#0296C9',
+  },
+  detailContainerHeaderLink: {
+    fontFamily: 'Raleway',
+    fontSize: '14px',
+    letterSpacing: '0.025em',
+    color: '#0077E3',
   },
   detailContainerBottom: {
     borderTop: '#81a6b9 1px solid',
@@ -615,9 +620,8 @@ const styles = (theme) => ({
     maxHeight: '500px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    width: 'calc(100% + 8px) !important',
+    width: '101.9%',
     margin: '0px -8px -5px -8px',
-
   },
   borderRight: {
     borderRight: '#81a6b9 1px solid',
@@ -629,21 +633,25 @@ const styles = (theme) => ({
     overflowY: 'auto',
     overflowX: 'hidden',
     height: '500px',
-    width: 'calc(100% + 8px)',
+    width: '91.5%',
+    borderLeft: '1px solid #81A6BA',
+    borderRight: '1px solid #81A6BA',
+    marginLeft: '-30px',
   },
 
   tableContainer: {
     background: '#f3f3f3',
   },
   tableHeader: {
-    paddingLeft: '32px',
+    paddingLeft: '30px',
   },
   paddingTop12: {
     paddingTop: '12px',
   },
   tableDiv: {
-    maxWidth: theme.custom.maxContentWidth,
-    margin: '22px auto auto auto',
+    maxWidth: '1340px',
+    paddingTop: '53px',
+    paddingLeft: '100px',
   },
 
   headerButtonLink: {
@@ -694,28 +702,39 @@ const styles = (theme) => ({
     color: '#0296c9',
     paddingBottom: '20px',
   },
-  fileIcon: {
-    '& img': {
-      width: '25%',
-    },
+  fileContainer: {
+    paddingTop: '4px',
   },
   fileContent: {
-    paddingBottom: '11px',
-    lineHeight: '100px',
-    verticalAlign: 'top',
-    fontSize: '33px',
-    color: '#C53B27',
-    fontWeight: 'bold',
-    borderBottom: '#C53B27 solid 6px',
-    marginLeft: '40px',
+    backgroundColor: '#F3F3F3',
+    borderRadius: '50%',
+    height: '162px',
+    width: '162px',
+    paddingLeft: '48px',
+    marginLeft: '43px',
+    marginTop: '25px',
+  },
+  fileIcon: {
+    '& img': {
+      width: '163%',
+      padding: '21px 120px 0px 0px',
+    },
+  },
+  fileCount: {
+    lineHeight: '31.7px',
+    fontSize: '30px',
+    color: '#7A297D',
+    fontWeight: '600',
+    borderBottom: '#7A297D solid 5px',
     fontFamily: 'Oswald',
-
+    width: 'max-content',
+    padding: '15px 0px 12px 0px',
   },
   paddingTop32: {
     paddingTop: '36px !important',
   },
   marginTopN37: {
-    marginTop: '-37px',
+    marginTop: '8px',
   },
   tableCell1: {
     paddingLeft: '25px',

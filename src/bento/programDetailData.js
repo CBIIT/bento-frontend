@@ -17,9 +17,8 @@ const breadCrumb = {
 
 // --------------- Aggregated count configuration --------------
 const aggregateCount = {
-  labelText: 'View',
+  labelText: 'Cases',
   field: 'num_subjects',
-  labelTextContinued: 'Cases',
   link: '/cases',
   display: true,
 };
@@ -79,7 +78,7 @@ const rightpannel = {
     {
       field: 'num_files',
       label: 'Number of files',
-      fileIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/Trials_File_Counter.Icon.svg',
+      fileIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/programNumberofFilesIcon.svg',
       fileIconAlt: 'Number of files icon',
       display: true,
     },
