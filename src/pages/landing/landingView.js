@@ -182,7 +182,7 @@ const styles = () => ({
   },
   heroImage: {
     width: '100%',
-    height: '600px',
+    height: '420px',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
     backgroundImage: `url(${landingPageData.landingPageHero.img})`,
@@ -215,7 +215,7 @@ const styles = () => ({
     letterSpacing: '0.8px',
   },
   headerTitle: {
-    paddingTop: '180px',
+    paddingTop: '70px',
     paddingBottom: '12px',
     fontFamily: 'Inter, Raleway, sans-serif',
     fontSize: '42px',
@@ -233,8 +233,8 @@ const styles = () => ({
     fontSize: '16px',
     fontWeight: '500',
     lineHeight: '29px',
-    marginTop: '20px',
-    marginBottom: '20px',
+    marginTop: '16px',
+    marginBottom: '26px',
   },
   headerLink: {
     textDecoration: 'none',
@@ -478,6 +478,7 @@ const styles = () => ({
   },
   buttonText: {
     padding: '12px 30px',
+    height: '40px',
   },
 });
 export default withStyles(styles, { withTheme: true })(LandingView);
