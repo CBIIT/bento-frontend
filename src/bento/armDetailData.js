@@ -7,161 +7,29 @@ const header = {
 };
 
 // --------------- Data panel configuration --------------
-const leftPanelSubsections = [
-  // Each object here represents a subsection in the panel
+const armProperties = [
+  // Each object here represents a set of label:value pair of a property
   {
-    sectionHeader: 'Program',
-    properties: [
-      {
-        label: 'Assigned to Program',
-        dataField: 'program_acronym',
-        // valueLink property specify URL value should link to
-        // space holder "{}" will be replaced by actual value in the dataField
-        linkUrl: '/program/{}',
-        // labelLinkUrl property specify URL label should link to
-        // labelLinkUrl: '/programs',
-      },
-      {
-        label: 'Arm',
-        dataField: 'study_acronym',
-        linkUrl: '/study/{}',
-      },
-      {
-        label: 'Arm Description',
-        dataField: 'study_name',
-      },
-    ],
+    label: 'Arm',
+    dataField: 'study_acronym',
+    // valueLink property specify URL value should link to
+    // space holder "{}" will be replaced by actual value in the dataField
+    // linkUrl: '/program/{}',
+    // labelLinkUrl property specify URL label should link to
+    // labelLinkUrl: '/programs',
   },
   {
-    sectionHeader: 'Demographics',
-    // sectionDesc: 'Demographic Related Info',
-    properties: [
-      {
-        label: 'Gender',
-        dataField: 'gender',
-      },
-      {
-        label: 'Race',
-        dataField: 'race',
-      },
-      {
-        label: 'Ethnicity',
-        dataField: 'ethnicity',
-      },
-      {
-        label: 'Age At Enrollment',
-        dataField: 'age_at_index',
-      },
-      {
-        label: 'Menopause Status',
-        dataField: 'menopause_status',
-      },
-      {
-        label: 'Vital Status',
-        dataField: 'vital_status',
-      },
-      {
-        label: 'Cause Of Death',
-        dataField: 'cause_of_death',
-      },
-    ],
+    label: 'Arm Name',
+    dataField: 'study_name',
+    // linkUrl: '/study/{}',
   },
   {
-    sectionHeader: 'Diagnosis',
-    // sectionDesc: 'Diagnosis Related Info',
-    properties: [
-      {
-        label: 'Diagnosis',
-        dataField: 'disease_type',
-      },
-      {
-        label: 'Diagnosis Subtype',
-        dataField: 'disease_subtype',
-      },
-      {
-        label: 'Tumor Grade',
-        dataField: 'tumor_grade',
-      },
-      {
-        label: 'Tumor Grade (mm)',
-        dataField: 'tumor_largest_dimension_diameter',
-      },
-      {
-        label: 'ER Status',
-        dataField: 'er_status',
-      },
-      {
-        label: 'PR Status',
-        dataField: 'pr_status',
-      },
-      {
-        label: 'Nuclear Grade',
-        dataField: 'nuclear_grade',
-      },
-      {
-        label: 'Recurrence Score',
-        dataField: 'recurrence_score',
-      },
-    ],
-  },
-];
-
-const rightPanelSubsections = [
-  {
-    sectionHeader: 'Treatment',
-    // sectionDesc: 'Treatment Related Info',
-    properties: [
-      {
-        label: 'Primary Surgical Procedure',
-        dataField: 'primary_surgical_procedure',
-      },
-      {
-        label: 'Chemotherapy Regimen Group',
-        dataField: 'chemotherapy_regimen_group',
-      },
-      {
-        label: 'Chemotherapy Regimen',
-        dataField: 'chemotherapy_regimen',
-      },
-      {
-        label: 'Endocrine Therapy Type',
-        dataField: 'endocrine_therapy_type',
-      },
-    ],
+    label: 'Arm Type',
+    dataField: 'study_type',
   },
   {
-    sectionHeader: 'Follow Up',
-    // sectionDesc: 'Follow Up Related Info',
-    properties: [
-      {
-        label: 'Is Disease Free',
-        dataField: 'dfs_event_indicator',
-      },
-      {
-        label: 'Is Recurrence Free',
-        dataField: 'recurrence_free_indicator',
-      },
-      {
-        label: 'Is Distant Recurrence Free',
-        dataField: 'distant_recurrence_indicator',
-      },
-      {
-        label: 'Disease Free Event Type',
-        dataField: 'dfs_event_type',
-      },
-      {
-        label: 'Recurrence Event Type',
-        dataField: 'first_recurrence_type',
-      },
-      {
-        label: 'Days to Progression',
-        dataField: 'days_to_progression',
-      },
-      {
-        label: 'Days to Recurrence',
-        dataField: 'days_to_recurrence',
-      },
-    ],
+    label: 'Arm Description',
+    dataField: 'study_full_description',
   },
 ];
 
@@ -245,8 +113,7 @@ export {
   header,
   dataRoot,
   armIDField,
-  leftPanelSubsections,
-  rightPanelSubsections,
+  armProperties,
   tableConfig,
   GET_ARM_DETAIL_DATA_QUERY,
 };
