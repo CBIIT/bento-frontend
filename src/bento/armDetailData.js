@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 // -------------- Case ID area configurations --------------
-const caseHeader = {
-  label: 'Case ID',
-  dataField: 'subject_id',
+const header = {
+  label: 'Arm',
+  dataField: 'study_acronym',
 };
 
 // --------------- Data panel configuration --------------
@@ -11,7 +11,6 @@ const leftPanelSubsections = [
   // Each object here represents a subsection in the panel
   {
     sectionHeader: 'Program',
-    sectionDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     properties: [
       {
         label: 'Assigned to Program',
@@ -243,7 +242,7 @@ const GET_ARM_DETAIL_DATA_QUERY = gql`
 `;
 
 export {
-  caseHeader,
+  header,
   dataRoot,
   armIDField,
   leftPanelSubsections,
