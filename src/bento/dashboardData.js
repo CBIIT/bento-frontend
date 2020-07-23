@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+// --------------- Dashboard Sidebar Filters configuration --------------
 export const facetSearchData = [
   {
     group: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'program', show: true,
@@ -39,6 +40,7 @@ export const facetSearchData = [
   },
 ];
 
+// --------------- Dashboard Widgets configuration --------------
 export const widgetsData = [
   {
     type: 'sunburst',
@@ -85,6 +87,7 @@ export const widgetsData = [
   },
 ];
 
+// --------------- Dashboard Table configuration --------------
 export const dashboardTable = {
   tableTitle: 'Cases',
   tableData: [
@@ -154,6 +157,7 @@ export const dashboardTable = {
   ],
 };
 
+// --------------- Dashboard Query configuration --------------
 export const DASHBOARD_QUERY = gql`{
   numberOfPrograms
   numberOfStudies

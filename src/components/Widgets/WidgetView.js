@@ -51,7 +51,6 @@ const styles = (theme) => ({
     minHeight: '100%',
   },
   widgetHeader: {
-    padding: theme.spacing.unit * 3,
     paddingBottom: theme.spacing.unit,
     display: 'flex',
     justifyContent: 'space-between',
