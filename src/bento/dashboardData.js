@@ -87,6 +87,12 @@ export const widgetsData = [
   },
 ];
 
+// --------------- Dahboard Table external link configuration --------------
+export const externalLinkIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+  alt: 'External link icon',
+};
+
 // --------------- Dashboard Table configuration --------------
 export const dashboardTable = {
   tableTitle: 'Cases',
@@ -95,7 +101,7 @@ export const dashboardTable = {
       field: 'subject_id',
       label: 'Case ID',
       sort: 'asc',
-      link: '/case/{}',
+      link: '/case/{subject_id}',
       primary: true,
       display: true,
     },
@@ -103,8 +109,14 @@ export const dashboardTable = {
       field: 'program',
       label: 'Program Code',
       sort: 'asc',
-      link: '/trial/{}',
+      link: '/program/{program_id}',
       display: true,
+    },
+    {
+      field: 'program_id',
+      label: 'Program ID',
+      sort: 'asc',
+      display: false,
     },
     {
       field: 'study_acronym',
@@ -216,6 +228,7 @@ export const DASHBOARD_QUERY = gql`{
     
     subjectOverView {
       subject_id
+      program_id
       study_info
       samples
       lab_procedures
