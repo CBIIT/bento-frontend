@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 import { CustomDataTable } from 'bento-components';
 import Snackbar from '@material-ui/core/Snackbar';
 // import { Link } from 'react-router-dom';
-import { dashboardTable } from '../../../bento/dashboardData';
-
+import { dashboardTable, externalLinkIcon } from '../../../bento/dashboardData';
+import manipultateLinks from '../../../utils/helpers';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import { cartSelectionMessages } from '../../../bento/cartWorkflowData';
 import CustomFooter from './customFooter';
@@ -84,20 +84,30 @@ const Cases = ({ classes, data }) => {
     saveButton.current.style.cursor = 'auto';
   });
 
-  const columns = dashboardTable.tableData.map((column) => ({
+  const updatedTableWithLinks = manipultateLinks(dashboardTable.tableData);
+
+  const columns = updatedTableWithLinks.map((column) => ({
     name: column.field,
     label: column.label,
     options: {
-      display: column.display ? column.display : true,
+      display: column.display ? column.display : false,
       filter: false,
-      customBodyRender: (value) => (
-        <div className={classes.tableCell8}>
-          {column.link
-            ? (
-              <Link to={column.link.replace('{}', value)} className={classes.link}>
-                {value}
-              </Link>
-            ) : value }
+      customBodyRender: (value, tableMeta) => (
+        <div>
+          {
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+                <img
+                  src={externalLinkIcon ? externalLinkIcon.src : ''}
+                  alt={externalLinkIcon.alt ? externalLinkIcon.alt : ''}
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : `${value}`
+}
         </div>
       ),
     },
