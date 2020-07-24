@@ -1,24 +1,39 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
+import { Link } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useDispatch } from 'react-redux';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import { myCasesPageData, cartSelectionMessages } from '../../bento/cartWorkflowData';
-import { dashboardTable } from '../../bento/dashboardData';
-
+import { dashboardTable, externalLinkIcon } from '../../bento/dashboardData';
+import manipultateLinks from '../../utils/helpers';
 import CustomFooter from './customFooter';
 import { deleteCasesAction } from './selectedCasesState';
 
-const columns = dashboardTable.tableData.map((column) => ({
+const updatedTableWithLinks = manipultateLinks(dashboardTable.tableData);
+
+const columns = updatedTableWithLinks.map((column) => ({
   name: column.field,
   label: column.label,
   options: {
-    display: column.display ? column.display : true,
+    display: column.display ? column.display : false,
     filter: false,
-    customBodyRender: (value) => (
+    customBodyRender: (value, tableMeta) => (
       <div>
-        { value }
+        {
+        column.internalLink ? <Link to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+          : column.externalLink ? (
+            <span>
+              <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer">{value}</a>
+              <img
+                src={externalLinkIcon ? externalLinkIcon.src : ''}
+                alt={externalLinkIcon.alt ? externalLinkIcon.alt : ''}
+              />
+            </span>
+          )
+            : `${value}`
+}
       </div>
     ),
   },

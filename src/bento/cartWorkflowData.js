@@ -42,6 +42,7 @@ query subjectsInList($subject_ids: [String!]!) {
 
   subjectsInList(subject_ids: $subject_ids) {
     subject_id
+    program_id
     program
     study_acronym
     diagnosis
