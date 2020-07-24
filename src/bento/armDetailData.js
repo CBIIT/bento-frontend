@@ -37,7 +37,7 @@ const armProperties = [
 
 const tableConfig = {
   // Set 'display' to false to hide the table entirely
-  display: true,
+  display: false,
   // Table title
   title: 'ASSOCIATED FILES',
   // Field name for files data, need to be updated only when using a different GraphQL query
@@ -91,7 +91,9 @@ const GET_ARM_DETAIL_DATA_QUERY = gql`
       study_name
       study_type
       study_full_description
+      study_info
       num_subjects
+      num_files
       diagnoses {
         group
         subjects

@@ -116,9 +116,9 @@ const ArmDetail = ({ data, classes }) => {
   const redirectTo = () => {
     dispatch(initDashboardStatus()).then(() => {
       dispatch(singleCheckBox([{
-        groupName: 'Program',
-        name: data.program_acronym,
-        datafield: 'program',
+        groupName: 'Arm',
+        name: data.study_info,
+        datafield: 'study_info',
         isChecked: true,
       }]));
     });
@@ -247,7 +247,7 @@ const ArmDetail = ({ data, classes }) => {
                 </Widget>
               </Grid>
               {/* File count */}
-              <FileCount classes={classes} num_files={data.files.length} />
+              <FileCount classes={classes} num_files={data.num_files} />
             </div>
           </Grid>
           {/* Right panel end */}
