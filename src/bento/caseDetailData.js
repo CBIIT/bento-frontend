@@ -25,7 +25,7 @@ const leftPanelSubsections = [
       {
         label: 'Arm',
         dataField: 'study_acronym',
-        linkUrl: '/study/{}',
+        linkUrl: '/arm/{}',
       },
       {
         label: 'Arm Description',
