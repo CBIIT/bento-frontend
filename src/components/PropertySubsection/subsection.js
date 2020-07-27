@@ -100,6 +100,7 @@ const styles = (theme) => ({
     letterSpacing: '0.017em',
     fontWeight: '600',
     textTransform: 'uppercase',
+    whiteSpace: 'nowrap',
   },
   descriptionPart: {
     paddingBottom: '26px',
