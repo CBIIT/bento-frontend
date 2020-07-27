@@ -48,7 +48,7 @@ export const landingPageData = {
     img: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/landing/tileProgam.png',
     titleText: 'Programs',
     descriptionText: 'Access data from the TAILORx clinical trial, on this data sharing platform, built on Bento.',
-    callToActionText: 'Read More',
+    callToActionText: 'View',
     callToActionLink: '/programs', // This links to the Programs Listing Page.
   },
   tile3: {
