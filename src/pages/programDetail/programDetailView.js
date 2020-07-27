@@ -481,7 +481,7 @@ const styles = (theme) => ({
     paddingRight: '35px',
     borderBottom: '#4B619A 10px solid',
     height: '80px',
-    maxWidth: '1240px',
+    maxWidth: '91.5%',
     margin: 'auto',
   },
   headerTitle: {
@@ -582,7 +582,7 @@ const styles = (theme) => ({
     filter: 'drop-shadow(-3px 2px 6px rgba(27,28,28,0.29))',
   },
   detailContainer: {
-    maxWidth: '1340px',
+    maxWidth: '97.5%',
     margin: 'auto',
     paddingTop: '24px',
     paddingLeft: '36px',
@@ -649,7 +649,7 @@ const styles = (theme) => ({
     paddingTop: '12px',
   },
   tableDiv: {
-    maxWidth: '1340px',
+    maxWidth: '93.5%',
     paddingTop: '53px',
     paddingLeft: '100px',
   },
@@ -711,7 +711,7 @@ const styles = (theme) => ({
     height: '162px',
     width: '162px',
     paddingLeft: '48px',
-    marginLeft: '43px',
+    marginLeft: '36%',
     marginTop: '25px',
   },
   fileIcon: {
