@@ -9,20 +9,26 @@ import { Typography } from '../Wrappers/Wrappers';
 
 const Widget = ({
   classes,
-  color,
+  color, // Color of text
   children,
-  title,
-  noBodyPadding,
+  title,  // Title of the widget
+  noBodyPadding, // NO padding 
   bodyClass,
   className,
   header,
-  customBackGround,
+  customBackGround, // For customBackground Color
   titleClass,
+  widgetBorderDivider, // true for add  bottom divider
+  noPaddedTitle, // Padded title
   ...props
 }) => (
   <div className={classes.widgetWrapper}>
     <Paper className={classnames(classes.paper,{[classes.customBackGround]:customBackGround})} classes={{ root: classes.widgetRoot }}>
-      <div id={title} className={classes.widgetHeader}>
+      <div id={title} className={classes.widgetHeader}
+        className={classnames(classes.paddedTitle, {
+          [classes.noPaddedTitle]: noPaddedTitle
+      })}
+      >
         {props.header ? (
           props.header
         ) : (
@@ -41,6 +47,7 @@ const Widget = ({
       >
         {children}
       </div>
+      {widgetBorderDivider && <hr className={classes.widgetDivider} />}
     </Paper>
   </div>
 );
@@ -50,8 +57,21 @@ const styles = (theme) => ({
     display: 'flex',
     minHeight: '100%',
   },
-  widgetHeader: {
-    paddingBottom: theme.spacing.unit,
+  widgetDivider:{
+    background: '#E2E7EC',
+    height: '6px',
+    width: '180px',
+    border: 'none',
+    margin: '16px auto 0px auto'
+  },
+  paddedTitle: {
+    margin: '32px 32px 0px 64px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  noPaddedTitle: {
+    margin: '0px 0px 0px 0px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -61,7 +81,6 @@ const styles = (theme) => ({
   },
   widgetBody: {
     margin:'0px auto',
-    paddingBottom: theme.spacing.unit * 3,
     paddingRight: theme.spacing.unit * 3,
     paddingLeft: theme.spacing.unit * 3,
   },

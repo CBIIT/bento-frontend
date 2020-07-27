@@ -11,10 +11,10 @@ export const COLORS = [
 ];
 export const COLORS_LEVEL_1 = [
   '#c2e5dc',
+  '#af66ff',
   '#6ac6b6',
   '#2b69a3',
   '#287d6d',
-  '#af66ff',
 ];
 
 export const COLORS_LEVEL_2 = [
@@ -90,7 +90,7 @@ export function getSunburstDataFromDashboardData(data, level1, level2) {
           colorIndex += 1;
           p.children.push({
             title: `${d[level1]} : ${d[level2]}`,
-            color: p.color,
+            color: COLORS_LEVEL_2[parseInt(colorIndex, 10)],
             size: 1,
             caseSize: 1,
           });
@@ -103,11 +103,11 @@ export function getSunburstDataFromDashboardData(data, level1, level2) {
       colorIndex += 1;
       widgetData.push({
         title: d[level1],
-        color: COLORS[parseInt(colorIndex, 10)],
+        color: COLORS_LEVEL_1[parseInt(colorIndex, 10)],
         caseSize: 1,
         children: [{
           title: `${d[level1]} : ${d[level2]}`,
-          color: COLORS[parseInt(colorIndex, 10)],
+          color: COLORS_LEVEL_2[parseInt(colorIndex, 10)],
           size: 1,
           caseSize: 1,
         }],
@@ -118,7 +118,7 @@ export function getSunburstDataFromDashboardData(data, level1, level2) {
   return ({
     key: uuid(),
     title: 'root',
-    color: COLORS[parseInt(colorIndex, 10)],
+    color: COLORS_LEVEL_1[parseInt(colorIndex, 10)],
     children: widgetData,
   });
 }

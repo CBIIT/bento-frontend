@@ -58,7 +58,6 @@ const styles = (theme) => ({
     fontFamily: 'Nunito',
     lineHeight: '20px',
     fontWeight: '500',
-    paddingLeft: '28px',
     height: '20px',
     textAlign: 'center',
   },

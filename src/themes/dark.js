@@ -356,7 +356,7 @@ export default {
         },
         '&:nth-child(odd)': {
           color: '#004C73 !important',
-          background: '#f5f5f5 !important',
+          background: '#f3f3f3 !important',
         },
       },
     },
@@ -446,6 +446,7 @@ export default {
     MuiTablePagination: {
       toolbar: {
         textTransform: 'uppercase',
+        marginTop: '-11px',
       },
       select: {
         border: '2px #fff solid',
@@ -455,6 +456,9 @@ export default {
         color: '#000000',
         fontFamily: 'Open Sans',
         fontSize: '10px',
+      },
+      actions: {
+        marginRight: '39px',
       },
     },
     MuiSwitch: {

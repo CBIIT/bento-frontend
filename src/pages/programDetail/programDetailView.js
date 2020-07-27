@@ -336,7 +336,7 @@ const ProgramView = ({ classes, data, theme }) => {
                       className={classes.card}
                       color={theme.palette.dodgeBlue.main}
                       titleClass={classes.widgetTitle}
-                      customBackGround
+                      noPaddedTitle
                     >
                       <CustomActiveDonut
                         data={widgetData[rightpannel.widjet[0].field]}
