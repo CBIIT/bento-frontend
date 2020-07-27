@@ -208,7 +208,7 @@ const Cases = ({ classes, data }) => {
           </div>
 )}
       />
-      <div>
+      <div className={classes.margin16}>
         <div className={classes.chips}>
           {bubbles}
         </div>
@@ -243,9 +243,8 @@ const Cases = ({ classes, data }) => {
 
 const styles = (theme) => ({
   saveButtonDiv: {
-    position: 'absolute',
-    margin: '-50px 0 0 0',
-    paddingLeft: '25px',
+    margin: '-26px 25px 40px 0',
+    // paddingLeft: '25px',
   },
   saveButton: {
     color: '#FFFF',
@@ -264,13 +263,13 @@ const styles = (theme) => ({
     textAlign: 'center',
   },
   link: {
-    color: '#DD401C',
+    color: '#7747ff ',
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'underline',
     },
     '&:visited': {
-      color: '#9F3D26',
+      color: '#588eb2',
     },
   },
   caseTitle: {
@@ -280,12 +279,16 @@ const styles = (theme) => ({
     fontFamily: 'Lato',
     fontWeight: 'bold',
     letterSpacing: '0.025em',
-    backgroundColor: '#f5f5f5',
-    padding: '10px 32px 8px 28px',
+    backgroundColor: '#FFFFFF',
+    padding: '0px 32px 8px 16px',
+    borderBottom: '#42779A 6px solid',
+  },
+  margin16: {
+    margin: '16px 32px',
   },
   chips: {
     position: 'absolute',
-    marginLeft: '250px',
+    marginLeft: '240px',
     marginTop: '36px',
     zIndex: '999',
   },

@@ -44,7 +44,7 @@ const SideBarContent = ({ classes }) => {
             onClick={() => dispatch(toggleCheckBox(unselectFilters(activeFilters)))}
             disableRipple
           >
-            Clear All
+            CLEAR ALL
           </Button>
         </div>
       </div>
@@ -68,12 +68,13 @@ const styles = (theme) => ({
     flexShrink: 0,
   },
   drawerPaper: {
-    width: '240px',
+    width: '250px',
     height: 'auto',
     zIndex: '90',
     position: 'relative',
     float: 'left',
     overflowY: 'auto',
+    border: 'none',
   },
   floatRight: {
     float: 'right',
@@ -85,7 +86,7 @@ const styles = (theme) => ({
   },
   filterTitle: {
     marginTop: '18px',
-    marginLeft: '35px',
+    marginLeft: '39px',
     color: '#218CD3',
     fontFamily: 'Lato',
     fontSize: '18px',
@@ -100,11 +101,11 @@ const styles = (theme) => ({
   },
   customButton: {
     borderRadius: '100px',
-    borderLeft: '0px',
+    marginTop: '4px',
     minHeight: '20px',
     fontSize: 9,
     textTransform: 'none',
-    color: theme.palette.lochmara.main,
+    color: '#3d4241',
     marginLeft: '16px',
     fontFamily: theme.custom.fontFamily,
     '&:hover': {
@@ -118,7 +119,7 @@ const styles = (theme) => ({
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',
-    marginLeft: '35px',
+    marginLeft: '39px',
     height: '1px',
   },
 });

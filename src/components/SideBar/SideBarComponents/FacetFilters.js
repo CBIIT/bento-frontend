@@ -134,7 +134,7 @@ const FacetPanel = ({ classes }) => {
   );
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   expansionPanelRoot: {
     boxShadow: 'none',
     background: 'transparent',
@@ -146,13 +146,13 @@ const styles = (theme) => ({
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',
-    marginLeft: '35px',
+    marginLeft: '39px',
     height: '1px',
   },
   panelSummaryText: {
     marginLeft: '24px',
     color: '#3F799A',
-    fontFamily: theme.custom.fontFamily,
+    fontFamily: 'Lato',
     fontSize: '14px',
     fontWeight: 'bold',
     textTransform: 'uppercase',
@@ -161,6 +161,7 @@ const styles = (theme) => ({
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '14px',
+    marginRight: '12px',
   },
   checkboxRoot: {
     color: '#000000',
