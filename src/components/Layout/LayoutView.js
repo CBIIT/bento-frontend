@@ -13,6 +13,7 @@ import Error from '../../pages/error/Error';
 
 import Dashboard from '../../pages/dashboard/dashboardController';
 import CaseDetail from '../../pages/caseDetail/caseDetailController';
+import ArmDetail from '../../pages/armDetail/armDetailController';
 import modelPage from '../../pages/modelPage/modelPageView';
 import table from '../../pages/table/tableView';
 import SelectedCases from '../../pages/selectedCases/selectedCasesController';
@@ -54,6 +55,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
 
             <Route path="/program/:id" component={ProgramDetail} />
             <Route path="/case/:id" component={CaseDetail} />
+            <Route path="/arm/:id" component={ArmDetail} />
             {aboutPageRoutes.map(
               (aboutPageRoute) => <Route path={aboutPageRoute} component={About} />,
             )}
