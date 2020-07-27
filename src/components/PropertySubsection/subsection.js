@@ -3,6 +3,20 @@ import { Grid, withStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import React from 'react';
 
+function prepareLinks(properties, data) {
+  return properties.map((prop) => {
+    const newProp = { ...prop };
+    const pattern = /{(.*)}/;
+    if (prop.linkUrl) {
+      newProp.linkUrl = prop.linkUrl.replace(pattern, (match, p1) => data[p1]);
+    }
+    if (prop.labelLinkUrl) {
+      newProp.labelLinkUrl = prop.labelLinkUrl.replace(pattern, (match, p1) => data[p1]);
+    }
+    return newProp;
+  });
+}
+
 const PropertyItem = ({
   label, value, linkUrl, labelLinkUrl, classes,
 }) => {
@@ -25,35 +39,38 @@ const PropertyItem = ({
 };
 
 // Component to display a subsection
-const Subsection = ({ config, data, classes }) => (
-  <Grid item container className={classes.subsection}>
-    <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
-      <Grid item>
-        <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
+const Subsection = ({ config, data, classes }) => {
+  const properties = prepareLinks(config.properties, data);
+  return (
+    <Grid item container className={classes.subsection}>
+      <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
+        <Grid item>
+          <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
+        </Grid>
+        {
+          config.sectionDesc
+            ? (
+              <Grid item container className={classes.descriptionPart}>
+                <Grid item><span className={classes.description}>Description -</span></Grid>
+                <Grid item><span>{config.sectionDesc}</span></Grid>
+              </Grid>
+            ) : ''
+        }
+        {properties.map((prop) => (
+          <PropertyItem
+            key={prop.label}
+            label={prop.label}
+            value={data[prop.dataField]}
+            classes={classes}
+            linkUrl={prop.linkUrl}
+            labelLinkUrl={prop.labelLinkUrl}
+          />
+        ))}
       </Grid>
-      {
-        config.sectionDesc
-          ? (
-            <Grid item container className={classes.descriptionPart}>
-              <Grid item><span className={classes.description}>Description -</span></Grid>
-              <Grid item><span>{config.sectionDesc}</span></Grid>
-            </Grid>
-          ) : ''
-      }
-      {config.properties.map((prop) => (
-        <PropertyItem
-          key={prop.label}
-          label={prop.label}
-          value={data[prop.dataField]}
-          classes={classes}
-          linkUrl={prop.linkUrl}
-          labelLinkUrl={prop.labelLinkUrl}
-        />
-      ))}
+      <Grid item xs={3} />
     </Grid>
-    <Grid item xs={3} />
-  </Grid>
-);
+  );
+};
 
 const styles = (theme) => ({
   content: {
