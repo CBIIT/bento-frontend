@@ -17,6 +17,12 @@ function prepareLinks(properties, data) {
   });
 }
 
+const Anchor = ({ link, text, classes }) => (
+  link.match(/\w+:\/\//)
+    ? <a href={link} target="_blank" rel="noopener noreferrer" className={classes.link}>{text}</a>
+    : <Link to={link} className={classes.link}>{text}</Link>
+);
+
 const PropertyItem = ({
   label, value, link, labelLink, classes,
 }) => {
@@ -25,13 +31,12 @@ const PropertyItem = ({
     <Grid item container>
       <Grid item xs={6}>
         <span className={classes.title}>
-          {labelLink ? <Link to={labelLink.replace('{}', value)}>{label}</Link> : label}
+          {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : label}
         </span>
       </Grid>
       <Grid item xs={6} className={classes.content}>
         {value || value === 0 ? (
-          link ? <Link to={link.replace('{}', value)} className={classes.link}>{value}</Link>
-            : value
+          link ? <Anchor link={link} text={value} classes={classes} /> : value
         ) : defaultValue}
       </Grid>
     </Grid>
