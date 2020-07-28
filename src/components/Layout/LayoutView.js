@@ -23,6 +23,7 @@ import About from '../../pages/about/aboutController';
 import DataDictonary from '../../pages/dataDictionary/dataDictonaryController';
 import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
+import GraphqlClient from '../GraphqlClient/GraphqlView';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -60,6 +61,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
               (aboutPageRoute) => <Route path={aboutPageRoute} component={About} />,
             )}
             <Route path="/data-dictionary" component={DataDictonary} />
+            <Route path="/graphql" component={GraphqlClient} />
             <Route component={Error} />
           </Switch>
           <Footer data={{ isSidebarOpened }} />
