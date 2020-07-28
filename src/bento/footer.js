@@ -2,7 +2,7 @@
 
 // footerLogoImage ideal image size 310x80 px
 export default {
-  footerLogoImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/footer/src/assets/footer/FNL_logo.png',
+  footerLogoImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/footer/FNL_logo.png',
   footerLogoAltText: 'Footer Logo',
   footerStaticText: 'NIH … Turning Discovery Into Health®',
   link_sections: [
