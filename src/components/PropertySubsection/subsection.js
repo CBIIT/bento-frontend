@@ -7,30 +7,30 @@ function prepareLinks(properties, data) {
   return properties.map((prop) => {
     const newProp = { ...prop };
     const pattern = /{(.*)}/;
-    if (prop.linkUrl) {
-      newProp.linkUrl = prop.linkUrl.replace(pattern, (match, p1) => data[p1]);
+    if (prop.link) {
+      newProp.link = prop.link.replace(pattern, (match, p1) => data[p1]);
     }
-    if (prop.labelLinkUrl) {
-      newProp.labelLinkUrl = prop.labelLinkUrl.replace(pattern, (match, p1) => data[p1]);
+    if (prop.labelLink) {
+      newProp.labelLink = prop.labelLink.replace(pattern, (match, p1) => data[p1]);
     }
     return newProp;
   });
 }
 
 const PropertyItem = ({
-  label, value, linkUrl, labelLinkUrl, classes,
+  label, value, link, labelLink, classes,
 }) => {
   const defaultValue = '';
   return (
     <Grid item container>
       <Grid item xs={6}>
         <span className={classes.title}>
-          {labelLinkUrl ? <Link to={labelLinkUrl.replace('{}', value)}>{label}</Link> : label}
+          {labelLink ? <Link to={labelLink.replace('{}', value)}>{label}</Link> : label}
         </span>
       </Grid>
       <Grid item xs={6} className={classes.content}>
         {value || value === 0 ? (
-          linkUrl ? <Link to={linkUrl.replace('{}', value)} className={classes.link}>{value}</Link>
+          link ? <Link to={link.replace('{}', value)} className={classes.link}>{value}</Link>
             : value
         ) : defaultValue}
       </Grid>
@@ -62,8 +62,8 @@ const Subsection = ({ config, data, classes }) => {
             label={prop.label}
             value={data[prop.dataField]}
             classes={classes}
-            linkUrl={prop.linkUrl}
-            labelLinkUrl={prop.labelLinkUrl}
+            link={prop.link}
+            labelLink={prop.labelLink}
           />
         ))}
       </Grid>

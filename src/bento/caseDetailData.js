@@ -17,15 +17,15 @@ const leftPanelSubsections = [
         label: 'Assigned to Program',
         dataField: 'program_acronym',
         // valueLink property specify URL value should link to
-        // space holder "{}" will be replaced by actual value in the dataField
-        linkUrl: '/program/{program_id}',
-        // labelLinkUrl property specify URL label should link to
-        // labelLinkUrl: '/programs',
+        // space holder "{program_id}" will be replaced by actual value in the property program_id
+        link: '/program/{program_id}',
+        // labelLin property specify URL label should link to
+        // labelLink: '/programs',
       },
       {
         label: 'Arm',
         dataField: 'study_acronym',
-        linkUrl: '/study/{study_acronym}',
+        link: '/arm/{study_acronym}',
       },
       {
         label: 'Arm Description',
