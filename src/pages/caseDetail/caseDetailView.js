@@ -11,7 +11,7 @@ import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Cases.Icon.svg';
 import formatBytes from '../../utils/formatBytes';
-import Subsection from '../../components/PropertySubsection/subsection';
+import Subsection from '../../components/PropertySubsection/caseDetailSubsection';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import {
   caseHeader,
