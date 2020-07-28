@@ -23,10 +23,9 @@ const Dashboard = ({
 
   return (
     <>
-      <div>
+      <div className={classes.dashboardContainer}>
         <Stats />
         <div>
-
           <div className={classes.content}>
             <div className={classes.sideBar}>
               <SideBar />
@@ -39,7 +38,7 @@ const Dashboard = ({
                     <FormControlLabel
                       control={(
                         <Button className={classes.customButton} onClick={handleChange}>
-                          {checked ? 'Close View' : 'Open View' }
+                          {checked ? 'COLLAPSE VIEW' : 'OPEN VIEW' }
                         </Button>
 )}
                     />
@@ -60,7 +59,7 @@ const Dashboard = ({
                   </div>
                 </div>
                 <Collapse in={checked} className={classes.backgroundShawdowWidgets}>
-                  <Grid container spacing={1}>
+                  <Grid container>
                     { widgetsData.reduce((a, v) => (v.show === true ? a + 1 : a), 0) < 7
                       ? widgetsData.map((widget) => {
                         if (widget.type === 'sunburst' && widget.show) {
@@ -72,20 +71,18 @@ const Dashboard = ({
                                 bodyClass={classes.fullHeightBody}
                                 className={classes.card}
                                 color={theme.palette.lochmara.contrastText}
-                                customBackGround
+                                widgetBorderDivider
                               >
-                                <div className={classes.marginTop18}>
-                                  <ProgramSunburst
-                                    data={data[widget.dataName]}
-                                    width={250}
-                                    height={180}
-                                    innerRadius={40}
-                                    outerRadius={65}
-                                    cx="50%"
-                                    cy="50%"
-                                    textColor={theme.palette.widgetBackground.contrastText}
-                                  />
-                                </div>
+                                <ProgramSunburst
+                                  data={data[widget.dataName]}
+                                  width={250}
+                                  height={173}
+                                  innerRadius={40}
+                                  outerRadius={65}
+                                  cx="50%"
+                                  cy="50%"
+                                  textColor={theme.palette.widgetBackground.contrastText}
+                                />
                               </Widget>
                             </Grid>
                           );
@@ -99,7 +96,7 @@ const Dashboard = ({
                                 bodyClass={classes.fullHeightBody}
                                 className={classes.card}
                                 color={theme.palette.lochmara.contrastText}
-                                customBackGround
+                                widgetBorderDivider
                               >
                                 <CustomActiveDonut
                                   data={data[widget.dataName]}
@@ -120,6 +117,7 @@ const Dashboard = ({
                   </Grid>
                 </Collapse>
               </div>
+              { checked && <div className={classes.dashboardDivider} />}
               <Cases />
             </div>
           </div>
@@ -132,8 +130,17 @@ const Dashboard = ({
 };
 
 const styles = (theme) => ({
+  dashboardContainer: {
+    backgroundColor: '#FFFFFF',
+    // boxShadow: 'inset 0 0 87px 7px rgba(27,28,28,0.15)',
+  },
+  dashboardDivider: {
+    height: 16,
+    backgroundColor: '#E2E7EC',
+    marginTop: 16,
+  },
   rightContent: {
-    maxWidth: 'calc(100% - 240px)',
+    maxWidth: 'calc(100% - 250px)',
   },
   content: {
     // padding: theme.spacing.unit * 3,
@@ -166,8 +173,9 @@ const styles = (theme) => ({
   sunburst: {
     textAlign: 'center',
   },
-  marginTop18: {
-    marginTop: '18px',
+  widgetInner: {
+    marginTop: '-8px',
+    borderBottom: '6px solid #E2E7EC',
   },
   widgetsCollapse: {
     background: theme.palette.widgetBackground.main,
@@ -180,7 +188,7 @@ const styles = (theme) => ({
     float: 'left',
   },
   customSwitch: {
-    marginTop: '5px',
+    marginTop: '-6px',
   },
   customButton: {
     borderRadius: '0 0 18px 18px',
@@ -197,11 +205,13 @@ const styles = (theme) => ({
     },
   },
   backgroundShawdowWidgets: {
-    background: theme.palette.widgetBackground.lattice,
+    background: '#FFFFFF',
   },
   sideBar: {
-    maxWidth: '240px',
-    background: 'linear-gradient(to left, #E2E7EC, #FBFBFB ,)',
+    width: '250px',
+    backgroundColor: '#FFFFFF',
+    boxShadow: 'inset 0 0 87px 7px #E2E7EC',
+    // background: 'linear-gradient(to left, #E2E7EC, #FBFBFB ,)',
   },
   statsBar: {
     position: 'fixed',

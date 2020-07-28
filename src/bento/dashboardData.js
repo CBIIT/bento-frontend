@@ -122,6 +122,7 @@ export const dashboardTable = {
       field: 'study_acronym',
       label: 'Arm',
       sort: 'asc',
+      link: '/arm/{study_acronym}',
       display: true,
     },
     {
