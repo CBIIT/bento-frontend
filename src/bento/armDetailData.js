@@ -6,35 +6,46 @@ const header = {
   dataField: 'study_acronym',
 };
 
+const maxSections = 6;
+const maxProperties = 10;
 // --------------- Data panel configuration --------------
-const armProperties = [
-  // Each object here represents a set of label:value pair of a property
+const subsections = [
+  // Each object here represents a subsection in the panel
   {
-    label: 'Arm',
-    dataField: 'study_acronym',
-    // valueLink property specify URL value should link to
-    // space holder "{}" will be replaced by actual value in the dataField
-    // linkUrl: '/program/{}',
-    // labelLinkUrl property specify URL label should link to
-    // labelLinkUrl: '/programs',
-  },
-  {
-    label: 'Arm Name',
-    dataField: 'study_name',
-    // linkUrl: '/study/{}',
-  },
-  {
-    label: 'Arm Type',
-    dataField: 'study_type',
-  },
-  {
-    label: 'Arm Description',
-    dataField: 'study_full_description',
+    sectionHeader: 'Arm Summary',
+    // sectionDesc: '',
+    properties: [
+      // Each object here represents a set of label:value pair of a property
+      {
+        label: 'Arm',
+        dataField: 'study_acronym',
+        // link property specify URL value should link to
+        // space holder "{study_acronym}" will be replaced by
+        // actual value in the property program_id
+        // link: '/arm/{study_acronym}',
+        // labelLink property specify URL label should link to
+        // labelLink: '/programs',
+        // external links must have URL scheme part such as "https://"
+      },
+      {
+        label: 'Arm Name',
+        dataField: 'study_name',
+      },
+      {
+        label: 'Arm Type',
+        dataField: 'study_type',
+      },
+      {
+        label: 'Arm Description',
+        dataField: 'study_full_description',
+      },
+    ],
   },
 ];
 
 // --------------- File table configuration --------------
 
+const maxColumns = 10;
 const tableConfig = {
   // Set 'display' to false to hide the table entirely
   display: false,
@@ -115,7 +126,10 @@ export {
   header,
   dataRoot,
   armIDField,
-  armProperties,
+  subsections,
+  maxSections,
+  maxProperties,
   tableConfig,
   GET_ARM_DETAIL_DATA_QUERY,
+  maxColumns,
 };

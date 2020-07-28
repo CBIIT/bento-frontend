@@ -15,8 +15,10 @@ import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
 import {
   header,
-  armProperties,
+  subsections,
+  maxSections,
   tableConfig,
+  maxColumns,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
 import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
@@ -238,7 +240,7 @@ const ArmDetail = ({ data, classes }) => {
                     <Grid item xs={12}>
                       <CustomDataTable
                         data={data[tableConfig.filesField]}
-                        columns={columns}
+                        columns={columns.slice(0, maxColumns)}
                         options={options(classes)}
                       />
                     </Grid>
