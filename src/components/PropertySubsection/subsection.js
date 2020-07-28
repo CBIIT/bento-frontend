@@ -22,7 +22,7 @@ const PropertyItem = ({
 }) => {
   const defaultValue = '';
   return (
-    <Grid item container spacing={4}>
+    <Grid item container>
       <Grid item xs={6}>
         <span className={classes.title}>
           {labelLinkUrl ? <Link to={labelLinkUrl.replace('{}', value)}>{label}</Link> : label}
