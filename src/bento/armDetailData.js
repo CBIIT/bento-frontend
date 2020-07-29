@@ -105,6 +105,8 @@ const GET_ARM_DETAIL_DATA_QUERY = gql`
       study_info
       num_subjects
       num_files
+      num_samples
+      num_lab_procedures
       diagnoses {
         group
         subjects
