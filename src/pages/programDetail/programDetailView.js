@@ -81,6 +81,17 @@ const ProgramView = ({ classes, data, theme }) => {
     });
   };
 
+  const redirectToArm = (programArm) => {
+    dispatch(initDashboardStatus()).then(() => {
+      dispatch(singleCheckBox([{
+        groupName: 'Arm',
+        name: programArm,
+        datafield: 'study_info',
+        isChecked: true,
+      }]));
+    });
+  };
+
   const stat = {
     numberOfCases: data.caseCountByTrialId,
     numberOfTrials: 1,
@@ -116,7 +127,9 @@ const ProgramView = ({ classes, data, theme }) => {
                 />
               </span>
             )
-              : column.field === 'num_subjects' ? <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo()}>{value}</Link>
+              : column.field === 'num_subjects' ? (
+                <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectToArm(`${tableMeta.rowData[0]}: ${tableMeta.rowData[1]}`)}>{value}</Link>
+              )
                 : `${value}`
 }
         </div>
@@ -142,7 +155,7 @@ const ProgramView = ({ classes, data, theme }) => {
       <TableFooter>
         <TableRow>
           <TablePagination
-            className={count >= 10 ? classes.root : classes.root2}
+            className={count >= 11 ? classes.root : classes.noDisplay}
             count={count}
             page={page}
             rowsPerPage={rowsPerPage}
@@ -473,7 +486,7 @@ const styles = (theme) => ({
     color: '#000',
     background: '#f3f3f3',
   },
-  root2: {
+  noDisplay: {
     display: 'none',
   },
   header: {
