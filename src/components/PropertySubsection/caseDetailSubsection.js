@@ -1,8 +1,7 @@
 // Component to display a property
 import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
-import Anchor from '../Anchor/anchor';
-import prepareLinks from '../../utils/prepareLinks';
+import { Anchor, prepareLinks } from '../../utils/anchor';
 
 const PropertyItem = ({
   label, value, link, labelLink, classes,

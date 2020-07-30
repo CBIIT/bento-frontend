@@ -1,8 +1,7 @@
 import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
 import { maxProperties } from '../../bento/armDetailData';
-import Anchor from '../Anchor/anchor';
-import prepareLinks from '../../utils/prepareLinks';
+import { Anchor, prepareLinks } from '../../utils/anchor';
 
 const PropertyItem = ({
   label, value, link, labelLink, classes,
