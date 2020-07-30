@@ -140,6 +140,7 @@ query programDetail($program_id: String!) {
       study_name
       study_type
       study_acronym
+      study_info
       study_full_description
       num_subjects
     }
