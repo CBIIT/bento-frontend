@@ -142,7 +142,7 @@ const ProgramView = ({ classes, data, theme }) => {
       <TableFooter>
         <TableRow>
           <TablePagination
-            className={count >= 10 ? classes.root : classes.root2}
+            className={count >= 11 ? classes.root : classes.noDisplay}
             count={count}
             page={page}
             rowsPerPage={rowsPerPage}
@@ -473,7 +473,7 @@ const styles = (theme) => ({
     color: '#000',
     background: '#f3f3f3',
   },
-  root2: {
+  noDisplay: {
     display: 'none',
   },
   header: {

@@ -85,7 +85,7 @@ const options = (classes) => ({
     <TableFooter>
       <TableRow>
         <TablePagination
-          className={classes.root}
+          className={count >= 11 ? classes.root : classes.noDisplay}
           count={count}
           page={page}
           rowsPerPage={rowsPerPage}
@@ -297,6 +297,9 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#000',
     background: '#f3f3f3',
+  },
+  noDisplay: {
+    display: 'none',
   },
   header: {
     paddingRight: '32px',
