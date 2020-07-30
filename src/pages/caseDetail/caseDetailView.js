@@ -7,7 +7,7 @@ import { CustomDataTable } from 'bento-components';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
-import StatsView from '../../components/Stats/StatsView';
+import StatsView from '../../components/Stats/pageSpecificStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Cases.Icon.svg';
 import formatBytes from '../../utils/formatBytes';
@@ -53,14 +53,12 @@ const options = (classes) => ({
 
 // Main case detail component
 const CaseDetail = ({ data, classes }) => {
-  const stat = {
-    numberOfPrograms: 1,
-    numberOfStudies: 1,
-    numberOfSubjects: 1,
-    numberOfSamples: data.num_samples,
-    numberOfLabProcedures: data.num_lab_procedures,
-    numberOfFiles: data[tableConfig.filesField].length,
-  };
+  const filter = [{
+    groupName: caseHeader.label,
+    name: data[caseHeader.dataField],
+    datafield: caseHeader.dataField,
+    isChecked: true,
+  }];
 
   const breadCrumbJson = [{
     name: 'ALL CASES /',
@@ -86,7 +84,7 @@ const CaseDetail = ({ data, classes }) => {
 
   return (
     <>
-      <StatsView data={stat} />
+      <StatsView filter={filter} />
       <div className={classes.container}>
         <div className={classes.header}>
           <div className={classes.logo}>

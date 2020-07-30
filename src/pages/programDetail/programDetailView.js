@@ -15,7 +15,7 @@ import {
   pageSubTitle, leftPanelattributes, rightpannel,
 } from '../../bento/programDetailData';
 import manipultateLinks from '../../utils/helpers';
-import StatsView from '../../components/Stats/StatsView';
+import StatsView from '../../components/Stats/pageSpecificStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import cn from '../../utils/classNameConcat';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
@@ -92,11 +92,12 @@ const ProgramView = ({ classes, data, theme }) => {
     });
   };
 
-  const stat = {
-    numberOfCases: data.caseCountByTrialId,
-    numberOfTrials: 1,
-    numberOfFiles: data.fileCountByTrialId,
-  };
+  const filter = [{
+    groupName: 'Program',
+    name: programData.program_acronym,
+    datafield: 'program',
+    isChecked: true,
+  }];
 
   const breadCrumbJson = [{
     name: `${breadCrumb.label}`,
@@ -170,7 +171,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
   return (
     <>
-      <StatsView data={stat} />
+      <StatsView filter={filter} />
       <div className={classes.container}>
         <div className={classes.header}>
           <div className={classes.logo}>
