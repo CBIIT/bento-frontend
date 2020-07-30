@@ -227,7 +227,7 @@ const ProgramView = ({ classes, data, theme }) => {
         <div className={classes.detailContainer}>
 
           <Grid container spacing={5}>
-            <Grid item lg={6} sm={6} xs={12} container>
+            <Grid item lg={7} sm={6} xs={12} container>
               <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
                 {updatedAttributesData.slice(0, 6).map((attribute) => (
                   <Grid item xs={12}>
@@ -331,7 +331,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
             <Grid
               item
-              lg={6}
+              lg={5}
               sm={6}
               xs={12}
             >
@@ -494,7 +494,7 @@ const styles = (theme) => ({
     paddingRight: '35px',
     borderBottom: '#4B619A 10px solid',
     height: '80px',
-    maxWidth: '1240px',
+    maxWidth: '1340px',
     margin: 'auto',
   },
   headerTitle: {
@@ -599,7 +599,6 @@ const styles = (theme) => ({
     margin: 'auto',
     paddingTop: '24px',
     paddingLeft: '36px',
-    marginRight: '-20px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -633,8 +632,8 @@ const styles = (theme) => ({
     maxHeight: '500px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    width: '101.9%',
-    margin: '0px -8px -5px -8px',
+    width: '103.9%',
+    margin: '0px -8px -5px -21px',
   },
   borderRight: {
     borderRight: '#81a6b9 1px solid',
@@ -646,10 +645,10 @@ const styles = (theme) => ({
     overflowY: 'auto',
     overflowX: 'hidden',
     height: '500px',
-    width: '91.5%',
+    width: '105%',
     borderLeft: '1px solid #81A6BA',
     borderRight: '1px solid #81A6BA',
-    marginLeft: '-30px',
+    marginLeft: '-26px',
   },
 
   tableContainer: {
@@ -663,8 +662,8 @@ const styles = (theme) => ({
   },
   tableDiv: {
     maxWidth: '1340px',
+    margin: 'auto',
     paddingTop: '53px',
-    paddingLeft: '100px',
   },
 
   headerButtonLink: {
@@ -724,7 +723,7 @@ const styles = (theme) => ({
     height: '162px',
     width: '162px',
     paddingLeft: '48px',
-    marginLeft: '43px',
+    marginLeft: '36%',
     marginTop: '25px',
   },
   fileIcon: {
