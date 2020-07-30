@@ -13,6 +13,9 @@ const styles = () => ({
       border: '2.51px solid #B7B7B7',
     },
   },
+  noDisplay: {
+    display: 'none',
+  },
 });
 
 const CustomFooter = ({
@@ -26,7 +29,7 @@ const CustomFooter = ({
   <TableFooter>
     <TableRow>
       <TablePagination
-        className={classes.root}
+        className={count >= 11 ? classes.root : classes.noDisplay}
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}

@@ -6,7 +6,9 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { withStyles } from '@material-ui/core/styles';
 
 const defaultFooterStyles = {
-
+  noDisplay: {
+    display: 'none',
+  },
 };
 
 const CustomFooter = ({
@@ -20,7 +22,7 @@ const CustomFooter = ({
   <TableFooter>
     <TableRow>
       <TablePagination
-        className={classes.root}
+        className={count >= 11 ? classes.root : classes.noDisplay}
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}

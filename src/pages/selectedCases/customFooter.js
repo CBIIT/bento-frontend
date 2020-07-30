@@ -36,6 +36,9 @@ const styles = () => ({
       textAlign: 'center',
     },
   },
+  noDisplay: {
+    display: 'none',
+  },
   buttonDisabled: {
 
   },
@@ -65,7 +68,7 @@ const CustomFooter = ({
         </Link>
       </TableCell>
       <TablePagination
-        className={classes.root}
+        className={count >= 11 ? classes.root : classes.noDisplay}
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}
