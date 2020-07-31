@@ -9,7 +9,7 @@ import { CustomDataTable } from 'bento-components';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
-import StatsView from '../../components/Stats/StatsView';
+import StatsView from '../../components/Stats/pageSpecificStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
@@ -104,15 +104,6 @@ const ArmDetail = ({ data, classes }) => {
     });
   };
 
-  const stat = {
-    numberOfPrograms: 1,
-    numberOfStudies: 1,
-    numberOfSubjects: data.num_subjects,
-    numberOfSamples: data.num_samples,
-    numberOfLabProcedures: data.num_lab_procedures,
-    numberOfFiles: data.num_files,
-  };
-
   const columns = tableConfig.columns.map((column, index) => (
     {
       name: column.dataField,
@@ -128,10 +119,16 @@ const ArmDetail = ({ data, classes }) => {
       },
     }
   ));
+  const filter = [{
+    groupName: 'Arm',
+    name: data.study_info ? data.study_info : '',
+    datafield: 'study_info',
+    isChecked: true,
+  }];
 
   return (
     <>
-      <StatsView data={stat} />
+      <StatsView filter={filter} />
       <div className={classes.container}>
         <div className={classes.header}>
           <div className={classes.logo}>

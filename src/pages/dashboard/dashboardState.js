@@ -105,13 +105,13 @@ function getStatInit(input) {
   return initStats;
 }
 
-function getFilteredStat(input) {
-  const filteredStats = statsCount.reduce((acc, widget) => (
+export function getFilteredStat(input) {
+  const filteredStats = statsCount.reduce((acc, stat) => (
     {
       ...acc,
-      [widget.statAPI]:
+      [stat.statAPI]:
        getStatDataFromDashboardData(
-         input, widget.type, widget.datatable_field, widget.datatable_sub_field,
+         input, stat.type, stat.datatable_field, stat.datatable_sub_field,
        ),
     }
   ), {});

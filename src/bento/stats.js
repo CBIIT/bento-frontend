@@ -45,6 +45,7 @@ export const globalStatsQuery = gql`{
   numberOfStudies
   numberOfSubjects
   numberOfSamples
+  numberOfLabProcedures
   numberOfFiles
   }
   `;
