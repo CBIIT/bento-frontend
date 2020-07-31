@@ -15,36 +15,16 @@ import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
 import {
   header,
-  armProperties,
+  subsections,
+  maxSections,
   tableConfig,
+  maxColumns,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
 import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
-
-const PropertyItem = ({
-  label, value, linkUrl, labelLinkUrl, classes,
-}) => {
-  const defaultValue = '';
-  return (
-    <Grid item>
-      <Grid container>
-        <Grid item xs={12}>
-          <span className={classes.title}>
-            {labelLinkUrl ? <Link to={labelLinkUrl.replace('{}', value)}>{label}</Link> : label}
-          </span>
-        </Grid>
-        <Grid item xs={12} className={classes.content}>
-          {value || value === 0 ? (
-            linkUrl ? <Link to={linkUrl.replace('{}', value)} className={classes.link}>{value}</Link>
-              : value
-          ) : defaultValue}
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-};
+import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 
 const FileCount = ({ num_files: numFiles, classes }) => (
   <>
@@ -201,15 +181,9 @@ const ArmDetail = ({ data, classes }) => {
           {/* Left panel */}
           <Grid item sm={8} xs={12} className={classes.detailPannel}>
             <div className={classes.innerPanel}>
-              <Grid container spacing={2} direction="column">
-                {armProperties.map((prop) => (
-                  <PropertyItem
-                    label={prop.label}
-                    value={data[prop.dataField]}
-                    linkUrl={prop.linkUrl}
-                    labelLinkUrl={prop.labelLinkUrl}
-                    classes={classes}
-                  />
+              <Grid container spacing={2}>
+                { subsections.slice(0, maxSections).map((section, index) => (
+                  <PropertySubsection key={index} section={section} data={data} classes={classes} />
                 ))}
               </Grid>
             </div>
@@ -266,7 +240,7 @@ const ArmDetail = ({ data, classes }) => {
                     <Grid item xs={12}>
                       <CustomDataTable
                         data={data[tableConfig.filesField]}
-                        columns={columns}
+                        columns={columns.slice(0, maxColumns)}
                         options={options(classes)}
                       />
                     </Grid>
@@ -392,28 +366,6 @@ const styles = (theme) => ({
     overflowX: 'hidden',
     paddingLeft: '16px',
     scrollbarColor: '#697270',
-  },
-  title: {
-    color: '#0296C9',
-    fontFamily: theme.custom.fontFamilySans,
-    fontSize: '15px',
-    lineHeight: '12px',
-    letterSpacing: '0.017em',
-    fontWeight: '600',
-    textTransform: 'uppercase',
-  },
-  content: {
-    fontSize: '14px',
-  },
-  link: {
-    color: '#DD401C',
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-    '&:visited': {
-      color: '#9F3D26',
-    },
   },
   fileCountContainer: {
     marginLeft: 'auto',
