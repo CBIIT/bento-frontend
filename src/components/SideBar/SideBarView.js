@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import cn from '../../utils/classNameConcat';
 import FacetFilter from './SideBarComponents/FacetFilters';
+import { facetSearchData } from '../../bento/dashboardData';
 import { toggleCheckBox } from '../../pages/dashboard/dashboardState';
 import { unselectFilters } from '../../utils/dashboardUtilFunctions';
 
@@ -16,6 +17,8 @@ const SideBarContent = ({ classes }) => {
     state.dashboard.datatable
       && state.dashboard.datatable.filters
       ? state.dashboard.datatable.filters : []));
+  const countFilters = facetSearchData
+    ? facetSearchData.reduce((n, facet) => n + (facet.show === true), 0) : 0;
   return (
     <Drawer
       variant="persistent"
@@ -31,27 +34,31 @@ const SideBarContent = ({ classes }) => {
         paper: classes.drawerPaper,
       }}
     >
-      <div className={classes.drawerAppBar}>
-        <div className={cn(classes.floatLeft, classes.filterTitle)}> Filter Cases</div>
-        <div className={classes.floatRight}>
-          <Button
-            id="button_sidebar_clear_all_filters"
-            variant="outlined"
-            disabled={activeFilters.length === 0}
-            onCl
-            className={classes.customButton}
-            classes={{ root: classes.clearAllButtonRoot }}
-            onClick={() => dispatch(toggleCheckBox(unselectFilters(activeFilters)))}
-            disableRipple
-          >
-            CLEAR ALL
-          </Button>
+      { countFilters > 0 && (
+      <div>
+        <div className={classes.drawerAppBar}>
+          <div className={cn(classes.floatLeft, classes.filterTitle)}> Filter Cases</div>
+          <div className={classes.floatRight}>
+            <Button
+              id="button_sidebar_clear_all_filters"
+              variant="outlined"
+              disabled={activeFilters.length === 0}
+              onCl
+              className={classes.customButton}
+              classes={{ root: classes.clearAllButtonRoot }}
+              onClick={() => dispatch(toggleCheckBox(unselectFilters(activeFilters)))}
+              disableRipple
+            >
+              CLEAR ALL
+            </Button>
+          </div>
         </div>
+        <Divider variant="middle" classes={{ root: classes.dividerRoot }} />
+        <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>
+          <FacetFilter />
+        </List>
       </div>
-      <Divider variant="middle" classes={{ root: classes.dividerRoot }} />
-      <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>
-        <FacetFilter />
-      </List>
+      )}
     </Drawer>
   );
 };
