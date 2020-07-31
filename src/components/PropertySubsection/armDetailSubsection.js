@@ -42,9 +42,10 @@ const PropertySubsection = ({ section: config, data, classes }) => {
           ) : ''
       }
       <Grid item xs={12} className={classes.propertyPanel}>
-        <Grid container spacing={2} direction="column">
-          {properties.slice(0, maxProperties).map((prop) => (
+        <Grid container spacing={4} direction="column">
+          {properties.slice(0, maxProperties).map((prop, index) => (
             <PropertyItem
+              key={index}
               label={prop.label}
               value={data[prop.dataField]}
               link={prop.link}

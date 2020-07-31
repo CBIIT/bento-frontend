@@ -41,9 +41,9 @@ const Subsection = ({ config, data, classes }) => {
               </Grid>
             ) : ''
         }
-        {properties.map((prop) => (
+        {properties.map((prop, index) => (
           <PropertyItem
-            key={prop.label}
+            key={index}
             label={prop.label}
             value={data[prop.dataField]}
             classes={classes}

@@ -27,8 +27,8 @@ import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDo
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 
 const FileCount = ({ num_files: numFiles, classes }) => (
-  <>
-    <div>Number of Files</div>
+  <div className={classes.fileCount}>
+    <div className={classes.widgetTitle}>Number of Files</div>
 
     <Grid container className={classes.fileCountContainer}>
       <Grid item xs={12}>
@@ -38,13 +38,13 @@ const FileCount = ({ num_files: numFiles, classes }) => (
             alt="Bento file count icon"
             className={classes.fileIcon}
           />
-          <div className={classes.fileCount}>
+          <div className={classes.fileCountText}>
             <span className={classes.fileNumber}>{numFiles}</span>
           </div>
         </div>
       </Grid>
     </Grid>
-  </>
+  </div>
 );
 
 const options = (classes) => ({
@@ -158,25 +158,24 @@ const ArmDetail = ({ data, classes }) => {
           </div>
           { /* Case Count */ }
           <div className={classes.headerButton}>
-            <span className={classes.headerButtonLinkSpan}>
-              <span className={classes.headerButtonLinkText}>Number of cases</span>
+            <div className={classes.headerButtonLinkArea}>
+              <span className={classes.headerButtonLinkText}>Number of cases:</span>
               <Link
                 className={classes.headerButtonLink}
                 to={(location) => ({ ...location, pathname: '/cases' })}
                 onClick={() => redirectTo()}
               >
-                {' '}
                 <span className={classes.headerButtonLinkNumber}>
                   {data.num_subjects}
                 </span>
               </Link>
-            </span>
+            </div>
           </div>
         </div>
 
-        <Grid container spacing={1} className={classes.detailContainer}>
+        <Grid container className={classes.detailContainer}>
           {/* Left panel */}
-          <Grid item sm={8} xs={12} className={classes.detailPannel}>
+          <Grid item sm={8} xs={12} className={classes.detailPanel}>
             <div className={classes.innerPanel}>
               <Grid container spacing={2}>
                 { subsections.slice(0, maxSections).map((section, index) => (
@@ -187,7 +186,7 @@ const ArmDetail = ({ data, classes }) => {
           </Grid>
           {/* Left panel end */}
           {/* Right panel */}
-          <Grid item sm={4} xs={12} className={classes.detailPannel}>
+          <Grid item sm={4} xs={12} className={classes.detailPanel}>
             <div className={classes.innerPanel}>
               {/* Diagnosis donut */}
               <Grid
@@ -197,7 +196,6 @@ const ArmDetail = ({ data, classes }) => {
               >
                 <Widget
                   title="Diagnosis"
-                  upperTitle
                   bodyClass={classes.fullHeightBody}
                   className={classes.card}
                   titleClass={classes.widgetTitle}
@@ -207,8 +205,8 @@ const ArmDetail = ({ data, classes }) => {
                     data={data.diagnoses.map((diag) => (
                       { item: diag.group, cases: diag.subjects }
                     ))}
-                    width={400}
-                    height={225}
+                    width={208}
+                    height={210}
                     innerRadius={50}
                     outerRadius={75}
                     cx="50%"
@@ -224,11 +222,11 @@ const ArmDetail = ({ data, classes }) => {
           {/* Right panel end */}
         </Grid>
       </div>
-      {
-        tableConfig.display
-          ? (
-            <div id="table_case_detail" className={classes.tableContainer}>
-              <div className={classes.tableDiv}>
+      <div id="table_case_detail" className={classes.tableContainer}>
+        <div className={classes.tableDiv}>
+          { tableConfig.display
+            ? (
+              <>
                 <div className={classes.tableTitle}>
                   <span className={classes.tableHeader}>{tableConfig.title}</span>
                 </div>
@@ -246,10 +244,10 @@ const ArmDetail = ({ data, classes }) => {
                     </Grid>
                   </Grid>
                 </Grid>
-              </div>
-            </div>
-          ) : ''
-      }
+              </>
+            ) : null}
+        </div>
+      </div>
     </>
   );
 };
@@ -273,8 +271,8 @@ const styles = (theme) => ({
     display: 'none',
   },
   header: {
-    paddingRight: '32px',
-    borderBottom: '#42779A 10px solid',
+    paddingRight: '12px',
+    borderBottom: '#737DB8 10px solid',
     height: '80px',
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto auto 10px auto',
@@ -308,61 +306,67 @@ const styles = (theme) => ({
     filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
   headerButton: {
-    fontFamily: theme.custom.fontFamily,
     float: 'right',
-    marginTop: '15px',
-    width: '200px',
-    height: '33px',
-    background: '#F6F4F4',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    marginRight: '-20px',
-
+    width: '186px',
+    height: '39px',
+    marginTop: '20px',
+    background: '#F4F4F4',
   },
-  headerButtonLinkSpan: {
-    fontFamily: theme.custom.fontFamily,
-    height: '50px',
-    background: '#F5F3EE',
-    width: '200px',
-    fontSize: '8pt',
+  headerButtonLinkArea: {
+    marginLeft: '27px',
+    paddingTop: '4px',
   },
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamily,
-    color: '#0B3556',
-    fontSize: '8pt',
+    color: '#7747FF',
+    fontSize: '10px',
     textTransform: 'uppercase',
+    paddingRight: '2px',
+    fontWeight: 600,
   },
   headerButtonLinkNumber: {
     fontFamily: theme.custom.fontFamily,
-    borderBottom: 'solid',
+    borderBottom: 'solid #0077E3 3px',
     lineHeight: '30px',
-    paddingBottom: '3px',
+    paddingBottom: '2px',
     margin: '0 4px',
-    fontSize: '8pt',
+    fontSize: '14px',
+  },
+  headerButtonLink: {
+    color: 'black',
+    textDecoration: 'none',
+    '&:visited': {
+      color: 'black',
+    },
   },
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    padding: '26px 10px',
+    padding: '3px 0 3px 10px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
     size: '12px',
     lineHeight: '23px',
+    borderBottom: 'solid 10px #737DB8',
   },
   detailPanel: {
-    paddingTop: '0 !important',
-    paddingBottom: '0 !important',
-    borderRight: '1px solid #81A6BA',
+    borderRight: 'solid 1px #81A6BA',
   },
   innerPanel: {
     height: '100%',
-    minHeight: '209px',
-    maxHeight: '617px',
+    minHeight: '590px',
+    maxHeight: '700px',
     overflowY: 'auto',
     overflowX: 'hidden',
     paddingLeft: '16px',
+    paddingRight: '40px',
     scrollbarColor: '#697270',
+  },
+  fileCount: {
+    width: '250px',
+    height: '200px',
+    margin: '60px auto auto auto',
   },
   fileCountContainer: {
     marginLeft: 'auto',
@@ -372,7 +376,13 @@ const styles = (theme) => ({
     backgroundColor: '#F3F3F3',
     borderRadius: '100px',
   },
-  fileCount: {
+  widgetTitle: {
+    textTransform: 'uppercase',
+    margin: 'auto auto 30px 0',
+    color: '#0296C9',
+    fontSize: '15px',
+  },
+  fileCountText: {
     paddingTop: '10px',
     margin: 'auto',
     textAlign: 'center',
@@ -392,7 +402,7 @@ const styles = (theme) => ({
     width: '59px',
   },
   tableContainer: {
-    background: '#f3f3f3',
+    background: '#FFFFFF',
   },
   tableHeader: {
     paddingLeft: '32px',
@@ -400,12 +410,12 @@ const styles = (theme) => ({
   tableDiv: {
     maxWidth: theme.custom.maxContentWidth,
     margin: '0 auto auto auto',
-    paddingTop: '50px',
+    paddingTop: '30px',
   },
   tableTitle: {
     textTransform: 'uppercase',
     fontFamily: 'Lato',
-    fontSize: '22px',
+    fontSize: '18px',
     letterSpacing: '0.025em',
     color: '#3695A9',
     paddingBottom: '19px',
