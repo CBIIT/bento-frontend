@@ -179,7 +179,7 @@ const ArmDetail = ({ data, classes }) => {
             <div className={classes.innerPanel}>
               <Grid container spacing={2}>
                 { subsections.slice(0, maxSections).map((section, index) => (
-                  <PropertySubsection key={index} section={section} data={data} classes={classes} />
+                  <PropertySubsection key={index} section={section} data={data} />
                 ))}
               </Grid>
             </div>
