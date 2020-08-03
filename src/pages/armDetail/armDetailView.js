@@ -256,8 +256,8 @@ const styles = (theme) => ({
   container: {
     paddingTop: '38px',
     fontFamily: theme.custom.fontFamily,
-    paddingLeft: '32px',
-    paddingRight: '32px',
+    paddingLeft: '117px',
+    paddingRight: '117px',
     background: '#FFFF',
   },
   root: {
@@ -403,6 +403,7 @@ const styles = (theme) => ({
   },
   tableContainer: {
     background: '#FFFFFF',
+    padding: '0 117px',
   },
   tableHeader: {
     paddingLeft: '32px',
@@ -419,25 +420,6 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#3695A9',
     paddingBottom: '19px',
-  },
-  tableCell1: {
-    paddingLeft: '25px',
-    width: '440px',
-  },
-  tableCell2: {
-    width: '260px',
-  },
-  tableCell3: {
-    width: '220px',
-  },
-  tableCell4: {
-    width: '200px',
-  },
-  tableCell5: {
-    width: '110px',
-  },
-  tableCell6: {
-    width: '110px',
   },
 });
 
