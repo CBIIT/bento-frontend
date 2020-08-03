@@ -36,10 +36,11 @@ const PropertySubsection = ({ section: config, data, classes }) => {
         config.sectionDesc
           ? (
             <Grid item container className={classes.descriptionPart} xs={12}>
-              <Grid item><span className={classes.description}>Description -</span></Grid>
               <Grid item><span>{config.sectionDesc}</span></Grid>
             </Grid>
-          ) : ''
+          ) : (
+            <Grid item className={classes.descriptionPart} xs={12} />
+          )
       }
       <Grid item xs={12} className={classes.propertyPanel}>
         <Grid container spacing={4} direction="column">
@@ -60,17 +61,20 @@ const PropertySubsection = ({ section: config, data, classes }) => {
 };
 
 const styles = (theme) => ({
+  subsection: {
+    marginTop: '20px',
+  },
   detailContainerHeader: {
     textTransform: 'uppercase',
     fontFamily: 'Lato',
     fontSize: '17px',
+    fontWeight: 'bold',
+    color: '#2f519f',
     letterSpacing: '0.025em',
   },
   descriptionPart: {
     paddingBottom: '26px',
-  },
-  description: {
-    fontWeight: 'bold',
+    fontSize: '14px',
   },
   propertyPanel: {
     marginTop: '15px',
