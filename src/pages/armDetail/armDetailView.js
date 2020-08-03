@@ -27,7 +27,7 @@ import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDo
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 
 const FileCount = ({ num_files: numFiles, classes }) => (
-  <div className={classes.fileCount}>
+  <div className={classes.widgetContainer}>
     <div className={classes.widgetTitle}>Number of Files</div>
 
     <Grid container className={classes.fileCountContainer}>
@@ -119,6 +119,7 @@ const ArmDetail = ({ data, classes }) => {
       },
     }
   ));
+
   const filter = [{
     groupName: 'Arm',
     name: data.study_info ? data.study_info : '',
@@ -189,17 +190,14 @@ const ArmDetail = ({ data, classes }) => {
           <Grid item sm={4} xs={12} className={classes.detailPanel}>
             <div className={classes.innerPanel}>
               {/* Diagnosis donut */}
-              <Grid
-                item
-                xs={12}
-                className={classes.marginTopN37}
-              >
+              <div className={classes.widgetContainer}>
                 <Widget
                   title="Diagnosis"
+                  color="#0296C9"
                   bodyClass={classes.fullHeightBody}
                   className={classes.card}
                   titleClass={classes.widgetTitle}
-                  customBackGround
+                  noPaddedTitle
                 >
                   <CustomActiveDonut
                     data={data.diagnoses.map((diag) => (
@@ -214,7 +212,7 @@ const ArmDetail = ({ data, classes }) => {
                     fontSize="15px"
                   />
                 </Widget>
-              </Grid>
+              </div>
               {/* File count */}
               <FileCount classes={classes} num_files={data.num_files} />
             </div>
@@ -342,7 +340,7 @@ const styles = (theme) => ({
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    padding: '3px 0 3px 10px',
+    padding: '5px 0 10px 10px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -363,10 +361,13 @@ const styles = (theme) => ({
     paddingRight: '40px',
     scrollbarColor: '#697270',
   },
-  fileCount: {
+  widgetContainer: {
     width: '250px',
-    height: '200px',
-    margin: '60px auto auto auto',
+    height: '255px',
+    margin: '45px auto',
+    '&:first-child': {
+      marginTop: '10px',
+    },
   },
   fileCountContainer: {
     marginLeft: 'auto',
