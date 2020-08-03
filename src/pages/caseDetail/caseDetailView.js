@@ -7,6 +7,7 @@ import { CustomDataTable } from 'bento-components';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
+import { useDispatch } from 'react-redux';
 import StatsView from '../../components/Stats/pageSpecificStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Cases.Icon.svg';
@@ -19,6 +20,7 @@ import {
   rightPanelSubsections,
   tableConfig,
 } from '../../bento/caseDetailData';
+import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
 const options = (classes) => ({
   selectableRows: 'none',
@@ -53,6 +55,19 @@ const options = (classes) => ({
 
 // Main case detail component
 const CaseDetail = ({ data, classes }) => {
+  const dispatch = useDispatch();
+
+  // initDashboardStatus will be used in dispatch to
+  // make sure dashboard data has be loaded first.
+  const initDashboardStatus = () => () => Promise.resolve(
+    dispatch(fetchDataForDashboardDataTable()),
+  );
+
+  React.useEffect(() => {
+    // Update dashboard first
+    dispatch(initDashboardStatus());
+  }, []);
+
   const filter = [{
     groupName: caseHeader.label,
     name: data[caseHeader.dataField],
