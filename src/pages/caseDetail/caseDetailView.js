@@ -127,7 +127,6 @@ const CaseDetail = ({ data, classes }) => {
                   <Subsection
                     key={section.sectionHeader}
                     config={section}
-                    classes={classes}
                     data={data}
                   />
                 ))}
@@ -143,7 +142,6 @@ const CaseDetail = ({ data, classes }) => {
                   <Subsection
                     key={section.sectionHeader}
                     config={section}
-                    classes={classes}
                     data={data}
                   />
                 ))}
