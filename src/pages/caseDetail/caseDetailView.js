@@ -185,11 +185,9 @@ const CaseDetail = ({ data, classes }) => {
 
 const styles = (theme) => ({
   container: {
-    paddingTop: '38px',
+    padding: '38px 117px 0 117px',
     fontFamily: theme.custom.fontFamily,
-    paddingLeft: '32px',
-    paddingRight: '32px',
-    background: '#FFFF',
+    background: '#FFFFFF',
   },
   root: {
     fontFamily: theme.custom.fontFamily,
@@ -254,13 +252,14 @@ const styles = (theme) => ({
   innerPanel: {
     height: '100%',
     minHeight: '209px',
-    maxHeight: '617px',
+    maxHeight: '380px',
     overflowY: 'auto',
     overflowX: 'hidden',
     paddingLeft: '16px',
     scrollbarColor: '#697270',
   },
   tableContainer: {
+    padding: '0 117px',
     background: '#f3f3f3',
   },
   tableHeader: {
@@ -281,25 +280,6 @@ const styles = (theme) => ({
   },
   breadCrumb: {
     paddingTop: '3px',
-  },
-  tableCell1: {
-    paddingLeft: '25px',
-    width: '440px',
-  },
-  tableCell2: {
-    width: '260px',
-  },
-  tableCell3: {
-    width: '220px',
-  },
-  tableCell4: {
-    width: '200px',
-  },
-  tableCell5: {
-    width: '110px',
-  },
-  tableCell6: {
-    width: '110px',
   },
 });
 
