@@ -36,15 +36,17 @@ const PropertySubsection = ({ section: config, data, classes }) => {
         config.sectionDesc
           ? (
             <Grid item container className={classes.descriptionPart} xs={12}>
-              <Grid item><span className={classes.description}>Description -</span></Grid>
               <Grid item><span>{config.sectionDesc}</span></Grid>
             </Grid>
-          ) : ''
+          ) : (
+            <Grid item className={classes.descriptionPart} xs={12} />
+          )
       }
       <Grid item xs={12} className={classes.propertyPanel}>
-        <Grid container spacing={2} direction="column">
-          {properties.slice(0, maxProperties).map((prop) => (
+        <Grid container spacing={4} direction="column">
+          {properties.slice(0, maxProperties).map((prop, index) => (
             <PropertyItem
+              key={index}
               label={prop.label}
               value={data[prop.dataField]}
               link={prop.link}
@@ -59,24 +61,27 @@ const PropertySubsection = ({ section: config, data, classes }) => {
 };
 
 const styles = (theme) => ({
+  subsection: {
+    marginTop: '20px',
+  },
   detailContainerHeader: {
     textTransform: 'uppercase',
     fontFamily: 'Lato',
     fontSize: '17px',
+    fontWeight: 'bold',
+    color: '#2f519f',
     letterSpacing: '0.025em',
   },
   descriptionPart: {
     paddingBottom: '26px',
-  },
-  description: {
-    fontWeight: 'bold',
+    fontSize: '14px',
   },
   propertyPanel: {
     marginTop: '15px',
   },
   title: {
     color: '#0296C9',
-    fontFamily: theme.custom.fontFamilySans,
+    fontFamily: theme.custom.fontFamily,
     fontSize: '15px',
     lineHeight: '12px',
     letterSpacing: '0.017em',
