@@ -16,7 +16,6 @@ const ArmDetailContainer = ({ match }) => (
             </Typography>
           )
           : <ArmDetailView data={data[dataRoot]} />
-          // : <h1>Hello arm detail</h1>
         )
     )}
   </Query>

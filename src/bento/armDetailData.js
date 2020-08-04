@@ -13,7 +13,7 @@ const subsections = [
   // Each object here represents a subsection in the panel
   {
     sectionHeader: 'Arm Summary',
-    // sectionDesc: '',
+    // sectionDesc: 'Some descriptions for arm summary',
     properties: [
       // Each object here represents a set of label:value pair of a property
       {
