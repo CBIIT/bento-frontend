@@ -57,15 +57,9 @@ const options = (classes) => ({
 const CaseDetail = ({ data, classes }) => {
   const dispatch = useDispatch();
 
-  // initDashboardStatus will be used in dispatch to
-  // make sure dashboard data has be loaded first.
-  const initDashboardStatus = () => () => Promise.resolve(
-    dispatch(fetchDataForDashboardDataTable()),
-  );
-
+  // make sure dashboard data has been loaded first for stats bar to work
   React.useEffect(() => {
-    // Update dashboard first
-    dispatch(initDashboardStatus());
+    dispatch(fetchDataForDashboardDataTable());
   }, []);
 
   const filter = [{
