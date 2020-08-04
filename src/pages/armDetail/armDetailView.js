@@ -82,26 +82,19 @@ const options = (classes) => ({
 const ArmDetail = ({ data, classes }) => {
   const dispatch = useDispatch();
 
-  // initDashboardStatus will be used in dispatch to
-  // make sure dashboard data has be loaded first.
-  const initDashboardStatus = () => () => Promise.resolve(
-    dispatch(fetchDataForDashboardDataTable()),
-  );
-
   React.useEffect(() => {
     // Update dashboard first
-    dispatch(initDashboardStatus());
+    dispatch(fetchDataForDashboardDataTable());
   }, []);
 
-  const redirectTo = () => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
-        groupName: 'Arm',
-        name: data.study_info,
-        datafield: 'study_info',
-        isChecked: true,
-      }]));
-    });
+  const redirectTo = async () => {
+    await dispatch(fetchDataForDashboardDataTable());
+    dispatch(singleCheckBox([{
+      groupName: 'Arm',
+      name: data.study_info,
+      datafield: 'study_info',
+      isChecked: true,
+    }]));
   };
 
   const columns = tableConfig.columns.map((column, index) => (
