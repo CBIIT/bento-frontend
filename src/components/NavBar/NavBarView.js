@@ -111,7 +111,7 @@ const NavBar = ({
                   <Button id="button_navbar_navButton" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
                     <NavLink
                       className={classes.firstLink}
-                      activeStyle={{ borderBottom: '2px solid  #FFFFFF' }}
+                      activeStyle={{ borderBottom: '1.5px solid  #FFFFFF' }}
                       to={navButton.link ? navButton.link : '/'}
                       onClick={() => handleButtonClickEvent(`${navButton.labelText}`)}
                     >
@@ -371,8 +371,8 @@ const styles = (theme) => ({
   },
   toolbar: {
     minHeight: 39,
-    paddingRight: '35px',
-    paddingLeft: '35px',
+    paddingRight: '45px',
+    paddingLeft: '45px',
     alignItems: 'flex-start',
   },
   buttonRoot: {
@@ -419,7 +419,7 @@ const styles = (theme) => ({
     },
   },
   drawerAppBar: {
-    height: '39px',
+    height: '45px',
   },
   badge: {
     display: 'inline-flex',

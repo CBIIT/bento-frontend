@@ -146,7 +146,7 @@ const styles = () => ({
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',
-    marginLeft: '39px',
+    marginLeft: '45px',
     height: '1px',
   },
   panelSummaryText: {

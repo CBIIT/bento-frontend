@@ -284,7 +284,7 @@ const styles = (theme) => ({
     borderBottom: '#42779A 6px solid',
   },
   margin16: {
-    margin: '16px 32px',
+    margin: '16px 45px',
   },
   chips: {
     position: 'absolute',

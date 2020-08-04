@@ -268,7 +268,7 @@ const styles = () => ({
     fontWeight: 'bold',
     textTransform: 'capitalize',
     lineHeight: '36px',
-    padding: '16px 75px 26px 26px',
+    padding: '15px 75px 26px 26px',
     fontFamily: 'Lato',
   },
   landingContainer: {
