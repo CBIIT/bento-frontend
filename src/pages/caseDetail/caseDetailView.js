@@ -7,6 +7,7 @@ import { CustomDataTable } from 'bento-components';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
+import { useDispatch } from 'react-redux';
 import StatsView from '../../components/Stats/pageSpecificStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Cases.Icon.svg';
@@ -19,6 +20,7 @@ import {
   rightPanelSubsections,
   tableConfig,
 } from '../../bento/caseDetailData';
+import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
 const options = (classes) => ({
   selectableRows: 'none',
@@ -53,6 +55,13 @@ const options = (classes) => ({
 
 // Main case detail component
 const CaseDetail = ({ data, classes }) => {
+  const dispatch = useDispatch();
+
+  // make sure dashboard data has been loaded first for stats bar to work
+  React.useEffect(() => {
+    dispatch(fetchDataForDashboardDataTable());
+  }, []);
+
   const filter = [{
     groupName: caseHeader.label,
     name: data[caseHeader.dataField],
@@ -127,7 +136,6 @@ const CaseDetail = ({ data, classes }) => {
                   <Subsection
                     key={section.sectionHeader}
                     config={section}
-                    classes={classes}
                     data={data}
                   />
                 ))}
@@ -143,7 +151,6 @@ const CaseDetail = ({ data, classes }) => {
                   <Subsection
                     key={section.sectionHeader}
                     config={section}
-                    classes={classes}
                     data={data}
                   />
                 ))}
@@ -185,11 +192,9 @@ const CaseDetail = ({ data, classes }) => {
 
 const styles = (theme) => ({
   container: {
-    paddingTop: '38px',
+    padding: '38px 117px 0 117px',
     fontFamily: theme.custom.fontFamily,
-    paddingLeft: '32px',
-    paddingRight: '32px',
-    background: '#FFFF',
+    background: '#FFFFFF',
   },
   root: {
     fontFamily: theme.custom.fontFamily,
@@ -254,13 +259,14 @@ const styles = (theme) => ({
   innerPanel: {
     height: '100%',
     minHeight: '209px',
-    maxHeight: '617px',
+    maxHeight: '380px',
     overflowY: 'auto',
     overflowX: 'hidden',
     paddingLeft: '16px',
     scrollbarColor: '#697270',
   },
   tableContainer: {
+    padding: '0 117px',
     background: '#f3f3f3',
   },
   tableHeader: {
@@ -281,25 +287,6 @@ const styles = (theme) => ({
   },
   breadCrumb: {
     paddingTop: '3px',
-  },
-  tableCell1: {
-    paddingLeft: '25px',
-    width: '440px',
-  },
-  tableCell2: {
-    width: '260px',
-  },
-  tableCell3: {
-    width: '220px',
-  },
-  tableCell4: {
-    width: '200px',
-  },
-  tableCell5: {
-    width: '110px',
-  },
-  tableCell6: {
-    width: '110px',
   },
 });
 
