@@ -26,6 +26,10 @@ export default [
         labelText: 'Resources',
         link: '/resources',
       },
+      {
+        labelText: 'Graphql',
+        link: '/graphql',
+      },
     ],
   },
 ];
