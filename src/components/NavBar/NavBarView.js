@@ -97,7 +97,7 @@ const NavBar = ({
 
           {/* End Sidebar button */}
           <div id="navbar" className={classes.buttonContainer}>
-            {navBarData.length < 5 ? navBarData.map((navButton) => (
+            {navBarData.slice(0, 4).map((navButton) => (
               navButton.type === 'dropdown'
                 ? (
                   <DropdownMenu
@@ -119,7 +119,7 @@ const NavBar = ({
                     </NavLink>
                   </Button>
                 )
-            )) : 'The maximum value of Nav items is 4'}
+            ))}
           </div>
           {/* Start of Theme Switching Icon and logic */}
           <div className={classes.myCasesPosition}>

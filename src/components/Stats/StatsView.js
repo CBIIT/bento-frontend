@@ -12,8 +12,7 @@ const StatsView = ({ classes, data }) => (
       <div
         className={classes.box}
       >
-        {
-        statsCount.length < 7 ? statsCount.map((stat) => (
+        {statsCount.slice(0, 6).map((stat) => (
           <div className={classes.statsGroup}>
             <div className={classes.statsText}>
               <div className={classes.statTitle}>
@@ -24,8 +23,7 @@ const StatsView = ({ classes, data }) => (
               </div>
             </div>
           </div>
-        )): 'The maximum value for stats is 6'
-        }
+        ))}
       </div>
     </div>
   </>
