@@ -1,28 +1,24 @@
 import uuid from 'uuid';
 import { facetSearchData } from '../bento/dashboardData';
 
-export const COLORS = [
-  '#39C0F0',
-  '#194563',
-  '#fc4b5b',
-  '#2b69a3',
-  '#287d6d',
-  '#af66ff',
-];
 export const COLORS_LEVEL_1 = [
-  '#c2e5dc',
-  '#af66ff',
-  '#6ac6b6',
-  '#2b69a3',
-  '#287d6d',
+  '#D4D4D4',
+  '#057EBD',
+  '#0C3151',
+  '#F78F49',
+  '#79287C',
+  '#7CC242',
+  '#61479D',
 ];
 
 export const COLORS_LEVEL_2 = [
-  '#302059',
-  '#007ea5',
-  '#fdb915',
-  '#287d6d',
-  '#302059',
+  '#F78F49',
+  '#79287C',
+  '#7CC242',
+  '#61479D',
+  '#D4D4D4',
+  '#057EBD',
+  '#0C3151',
 ];
 
 const NOT_PROVIDED = 'Not Specified';
