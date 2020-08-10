@@ -348,6 +348,9 @@ export default {
       active: {
         color: '#ff8a00',
       },
+      icon: {
+        marginTop: '12px',
+      },
     },
     MUIDataTableBodyRow: {
       root: {
