@@ -1,3 +1,4 @@
+// A maximum of 4 nav bar items are allowed
 export default [
   {
     labelText: 'home',

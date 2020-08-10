@@ -2,7 +2,6 @@
 import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
 import { Anchor, prepareLinks } from '../../utils/anchor';
-import { maxProperties } from '../../bento/caseDetailData';
 
 const PropertyItem = ({
   label, value, link, labelLink, classes,
@@ -42,7 +41,7 @@ const Subsection = ({ config, data, classes }) => {
               </Grid>
             ) : ''
         }
-        {properties.slice(0, maxProperties).map((prop, index) => (
+        {properties.slice(0, 10).map((prop, index) => (
           <PropertyItem
             key={index}
             label={prop.label}
