@@ -11,7 +11,10 @@ import manipultateLinks from '../../utils/helpers';
 import CustomFooter from './customFooter';
 import { deleteCasesAction } from './selectedCasesState';
 
-const updatedTableWithLinks = manipultateLinks(dashboardTable.tableData);
+const displayTableColumns = dashboardTable.tableData
+  .filter((tableData) => tableData.display === true).slice(0, 10);
+
+const updatedTableWithLinks = manipultateLinks(displayTableColumns);
 
 const columns = updatedTableWithLinks.map((column) => ({
   name: column.field,
