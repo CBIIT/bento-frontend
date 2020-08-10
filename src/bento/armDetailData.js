@@ -6,16 +6,16 @@ const header = {
   dataField: 'study_acronym',
 };
 
-const maxSections = 6;
-const maxProperties = 10;
 // --------------- Data panel configuration --------------
 const subsections = [
   // Each object here represents a subsection in the panel
+  // A maximum of 6 subsections are allowed
   {
     sectionHeader: 'Arm Summary',
     // sectionDesc: 'Some descriptions for arm summary',
     properties: [
       // Each object here represents a set of label:value pair of a property
+      // A maximum of 10 properties are allowed
       {
         label: 'Arm',
         dataField: 'study_acronym',
@@ -45,7 +45,6 @@ const subsections = [
 
 // --------------- File table configuration --------------
 
-const maxColumns = 10;
 const tableConfig = {
   // Set 'display' to false to hide the table entirely
   display: false,
@@ -57,7 +56,7 @@ const tableConfig = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // Columns
+  // A maximum of 10 columns are allowed
   columns: [
     {
       dataField: 'file_name',
@@ -129,9 +128,6 @@ export {
   dataRoot,
   armIDField,
   subsections,
-  maxSections,
-  maxProperties,
   tableConfig,
   GET_ARM_DETAIL_DATA_QUERY,
-  maxColumns,
 };

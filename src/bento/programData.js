@@ -23,7 +23,7 @@ const table = {
   defaultSortField: 'program_acronym',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // Columns
+  // A maximum of 10 columns are allowed
   columns: [
     {
       field: 'program_acronym',

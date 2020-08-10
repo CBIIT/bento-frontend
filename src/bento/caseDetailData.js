@@ -7,14 +7,14 @@ const caseHeader = {
 };
 
 // --------------- Data panel configuration --------------
-const maxProperties = 10;
-const maxSectionsLeft = 3;
 const leftPanelSubsections = [
   // Each object here represents a subsection in the panel
+  // A maximum of 3 subsections are allowed
   {
     sectionHeader: 'Program',
     // sectionDesc: 'Subsection description goes here',
     properties: [
+      // A maximum of 10 properties are allowed
       {
         label: 'Assigned to Program',
         dataField: 'program_acronym',
@@ -40,6 +40,7 @@ const leftPanelSubsections = [
     sectionHeader: 'Demographics',
     // sectionDesc: 'Demographic Related Info',
     properties: [
+      // A maximum of 10 properties are allowed
       {
         label: 'Gender',
         dataField: 'gender',
@@ -110,12 +111,14 @@ const leftPanelSubsections = [
   },
 ];
 
-const maxSectionsRight = 3;
 const rightPanelSubsections = [
+  // Each object here represents a subsection in the panel
+  // A maximum of 3 subsections are allowed
   {
     sectionHeader: 'Treatment',
     // sectionDesc: 'Treatment Related Info',
     properties: [
+      // A maximum of 10 properties are allowed
       {
         label: 'Primary Surgical Procedure',
         dataField: 'primary_surgical_procedure',
@@ -138,6 +141,7 @@ const rightPanelSubsections = [
     sectionHeader: 'Follow Up',
     // sectionDesc: 'Follow Up Related Info',
     properties: [
+      // A maximum of 10 properties are allowed
       {
         label: 'Is Disease Free',
         dataField: 'dfs_event_indicator',
@@ -172,7 +176,6 @@ const rightPanelSubsections = [
 
 // --------------- File table configuration --------------
 
-const maxColumns = 10;
 const tableConfig = {
   // Set 'display' to false to hide the table entirely
   display: true,
@@ -184,7 +187,7 @@ const tableConfig = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // Columns
+  // A maximum of 10 columns are allowed
   columns: [
     {
       dataField: 'file_name',
@@ -277,12 +280,8 @@ export {
   caseHeader,
   dataRoot,
   caseIDField,
-  maxProperties,
   leftPanelSubsections,
-  maxSectionsLeft,
   rightPanelSubsections,
-  maxSectionsRight,
   tableConfig,
-  maxColumns,
   GET_CASE_DETAIL_DATA_QUERY,
 };

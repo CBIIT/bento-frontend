@@ -5,9 +5,9 @@ export default {
   footerLogoImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/footer/FNL_logo.png',
   footerLogoAltText: 'Footer Logo',
   footerStaticText: 'NIH … Turning Discovery Into Health®',
-  maxSubsections: 3,
-  maxSubsectionsLinks: 4,
-  maxAnchorLinks: 4,
+  // A maximum of 3 Subsections (link_sections) are allowed
+  // A maximum of 4 Subsection Links ('items' under link_sections) are allowed
+  // A maximum of 4 Anchor Links (nci_links) are allowed
   link_sections: [
     {
       title: 'About Bento',

@@ -16,9 +16,7 @@ import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
 import {
   header,
   subsections,
-  maxSections,
   tableConfig,
-  maxColumns,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
 import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
@@ -172,7 +170,7 @@ const ArmDetail = ({ data, classes }) => {
           <Grid item sm={8} xs={12} className={classes.detailPanel}>
             <div className={classes.innerPanel}>
               <Grid container spacing={2}>
-                { subsections.slice(0, maxSections).map((section, index) => (
+                { subsections.slice(0, 6).map((section, index) => (
                   <PropertySubsection key={index} section={section} data={data} />
                 ))}
               </Grid>
@@ -226,7 +224,7 @@ const ArmDetail = ({ data, classes }) => {
                     <Grid item xs={12}>
                       <CustomDataTable
                         data={data[tableConfig.filesField]}
-                        columns={columns.slice(0, maxColumns)}
+                        columns={columns.slice(0, 10)}
                         options={options(classes)}
                       />
                     </Grid>

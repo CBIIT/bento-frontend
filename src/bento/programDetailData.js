@@ -35,6 +35,7 @@ const externalLinkIcon = {
 };
 
 // --------------- Left Pannel configuration --------------
+// A maximum of 6 leftPanelattributes are allowed
 const leftPanelattributes = {
   data: [
     {
@@ -97,7 +98,7 @@ const table = {
   defaultSortField: 'study_acronym',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // Columns
+  // A maximum of 10 columns are allowed
   columns: [
     {
       field: 'study_acronym',
