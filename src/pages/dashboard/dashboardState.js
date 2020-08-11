@@ -98,6 +98,16 @@ function getWidgetsData(input) {
   return donut;
 }
 
+function getWidgetsInitData(data) {
+  const donut = widgetsData.reduce((acc, widget) => {
+    const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(data.subjectOverView, widget.datatable_level1_field, widget.datatable_level2_field) : data[widget.dataName];
+    const label = widget.dataName;
+    return { ...acc, [label]: Data };
+  }, {});
+
+  return donut;
+}
+
 function getStatInit(input) {
   const initStats = statsCount.reduce((acc, widget) => (
     { ...acc, [widget.statAPI]: input[widget.statAPI] }
@@ -221,7 +231,7 @@ export default function dashboardReducer(state = initialState, action) {
             data: action.payload.data.subjectOverView,
             filters: [],
           },
-          widgets: getWidgetsData(action.payload.data.subjectOverView),
+          widgets: getWidgetsInitData(action.payload.data),
 
         } : { ...state };
     }

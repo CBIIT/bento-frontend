@@ -146,7 +146,7 @@ export function getDonutDataFromDashboardData(data, widgetName) {
     return accumulator;
   }, new Map()).forEach(
     (value, key) => {
-      output.push({ item: key, cases: [...new Set(value)].length });
+      output.push({ group: key, subjects: [...new Set(value)].length });
     },
   );
   return output;
