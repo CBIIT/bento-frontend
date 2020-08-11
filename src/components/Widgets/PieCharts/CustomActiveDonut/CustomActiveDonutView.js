@@ -84,8 +84,8 @@ export default class CustomActiveDonut extends PureComponent {
       data: DataObj, textColor,
     } = this.props;
     const data = DataObj.map((obj) => ({
-      name: obj.item,
-      value: obj.cases,
+      name: obj.group,
+      value: obj.subjects,
     }));
 
     const { activeIndex } = this.state;
