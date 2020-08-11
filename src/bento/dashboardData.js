@@ -257,7 +257,7 @@ export const DASHBOARD_QUERY = gql`{
 // --------------- Dashboard Query configuration --------------
 export const DASHBOARD_TABLE_QUERY = gql`{
 
-  subjectOverViewPaged(first: 10000) {
+  subjectOverViewPaged(first: 1000000) {
       subject_id
       program_id
       study_info
