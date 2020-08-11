@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
 // --------------- Dashboard Sidebar Filters configuration --------------
+// A maximum of 12 facetSearchData are allowed
 export const facetSearchData = [
   {
     group: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'program', show: true,
@@ -41,6 +42,7 @@ export const facetSearchData = [
 ];
 
 // --------------- Dashboard Widgets configuration --------------
+// A maximum of 6 widgets are allowed
 export const widgetsData = [
   {
     type: 'sunburst',
@@ -97,6 +99,7 @@ export const externalLinkIcon = {
 export const dashboardTable = {
   tableTitle: 'Cases',
   tableData: [
+    // A maximum of 10 columns (tableData) are allowed
     {
       field: 'subject_id',
       label: 'Case ID',

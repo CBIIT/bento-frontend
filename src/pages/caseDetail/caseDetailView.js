@@ -75,7 +75,7 @@ const CaseDetail = ({ data, classes }) => {
     isALink: true,
   }];
 
-  const columns = tableConfig.columns.map((column, index) => (
+  const columns = tableConfig.columns.slice(0, 10).map((column, index) => (
     {
       name: column.dataField,
       label: column.header,
@@ -132,7 +132,7 @@ const CaseDetail = ({ data, classes }) => {
           <Grid item sm={6} xs={12} className={classes.detailPanel}>
             <div className={classes.innerPanel}>
               <Grid container spacing={2}>
-                {leftPanelSubsections.map((section) => (
+                {leftPanelSubsections.slice(0, 3).map((section) => (
                   <Subsection
                     key={section.sectionHeader}
                     config={section}
@@ -147,7 +147,7 @@ const CaseDetail = ({ data, classes }) => {
           <Grid item sm={6} xs={12} className={classes.detailPanel}>
             <div className={classes.innerPanel}>
               <Grid container spacing={2}>
-                {rightPanelSubsections.map((section) => (
+                {rightPanelSubsections.slice(0, 3).map((section) => (
                   <Subsection
                     key={section.sectionHeader}
                     config={section}

@@ -9,10 +9,12 @@ const caseHeader = {
 // --------------- Data panel configuration --------------
 const leftPanelSubsections = [
   // Each object here represents a subsection in the panel
+  // A maximum of 3 subsections are allowed
   {
     sectionHeader: 'Program',
-    sectionDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    // sectionDesc: 'Subsection description goes here',
     properties: [
+      // A maximum of 10 properties are allowed
       {
         label: 'Assigned to Program',
         dataField: 'program_acronym',
@@ -38,6 +40,7 @@ const leftPanelSubsections = [
     sectionHeader: 'Demographics',
     // sectionDesc: 'Demographic Related Info',
     properties: [
+      // A maximum of 10 properties are allowed
       {
         label: 'Gender',
         dataField: 'gender',
@@ -109,10 +112,13 @@ const leftPanelSubsections = [
 ];
 
 const rightPanelSubsections = [
+  // Each object here represents a subsection in the panel
+  // A maximum of 3 subsections are allowed
   {
     sectionHeader: 'Treatment',
     // sectionDesc: 'Treatment Related Info',
     properties: [
+      // A maximum of 10 properties are allowed
       {
         label: 'Primary Surgical Procedure',
         dataField: 'primary_surgical_procedure',
@@ -135,6 +141,7 @@ const rightPanelSubsections = [
     sectionHeader: 'Follow Up',
     // sectionDesc: 'Follow Up Related Info',
     properties: [
+      // A maximum of 10 properties are allowed
       {
         label: 'Is Disease Free',
         dataField: 'dfs_event_indicator',
@@ -180,7 +187,7 @@ const tableConfig = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // Columns
+  // A maximum of 10 columns are allowed
   columns: [
     {
       dataField: 'file_name',

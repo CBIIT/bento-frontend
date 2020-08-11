@@ -37,6 +37,7 @@ export const cartSelectionMessages = {
   selectionsRemovedMessage: 'Case(s) successfully removed from the My Cases list',
 };
 
+// --------------- GraphQL query - Retrieve selected cases info --------------
 export const GET_MY_CASES_DATA_QUERY = gql`
 query subjectsInList($subject_ids: [String!]!) {
 

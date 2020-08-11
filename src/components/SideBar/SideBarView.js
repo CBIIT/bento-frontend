@@ -93,7 +93,7 @@ const styles = (theme) => ({
   },
   filterTitle: {
     marginTop: '18px',
-    marginLeft: '39px',
+    marginLeft: '45px',
     color: '#218CD3',
     fontFamily: 'Lato',
     fontSize: '18px',
@@ -126,7 +126,7 @@ const styles = (theme) => ({
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',
-    marginLeft: '39px',
+    marginLeft: '45px',
     height: '1px',
   },
 });

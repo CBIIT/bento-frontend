@@ -41,7 +41,7 @@ const Subsection = ({ config, data, classes }) => {
               </Grid>
             ) : ''
         }
-        {properties.map((prop, index) => (
+        {properties.slice(0, 10).map((prop, index) => (
           <PropertyItem
             key={index}
             label={prop.label}

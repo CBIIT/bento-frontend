@@ -84,7 +84,10 @@ const Cases = ({ classes, data }) => {
     saveButton.current.style.cursor = 'auto';
   });
 
-  const updatedTableWithLinks = manipultateLinks(dashboardTable.tableData);
+  const displayTableColumns = dashboardTable.tableData
+    .filter((tableData) => tableData.display === true).slice(0, 10);
+
+  const updatedTableWithLinks = manipultateLinks(displayTableColumns);
 
   const columns = updatedTableWithLinks.map((column) => ({
     name: column.field,
@@ -284,7 +287,7 @@ const styles = (theme) => ({
     borderBottom: '#42779A 6px solid',
   },
   margin16: {
-    margin: '16px 32px',
+    margin: '16px 45px',
   },
   chips: {
     position: 'absolute',

@@ -1,3 +1,4 @@
+// A maximum of 4 nav bar items are allowed
 export default [
   {
     labelText: 'home',
@@ -25,6 +26,10 @@ export default [
       {
         labelText: 'Resources',
         link: '/resources',
+      },
+      {
+        labelText: 'Graphql',
+        link: '/graphql',
       },
     ],
   },

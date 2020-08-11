@@ -188,8 +188,7 @@ const styles = (theme) => ({
     float: 'left',
   },
   aboutSection: {
-    paddingTop: '60px',
-    paddingBottom: '60px',
+    padding: '60px 45px',
   },
   img: {
     width: '100%',

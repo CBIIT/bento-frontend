@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
 export const statsData = [
+  // A maximum of 6 stats are allowed
   {
     statTitle: 'Programs',
     datatable_field: 'program',
@@ -40,6 +41,7 @@ export const statsData = [
   },
 ];
 
+// --------------- GraphQL query - Retrieve stats details --------------
 export const globalStatsQuery = gql`{
   numberOfPrograms
   numberOfStudies
