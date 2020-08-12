@@ -13,7 +13,10 @@ class DashboardController extends Component {
 
   componentDidUpdate() {
     const { dispatch } = this.props;
-    dispatch(fetchAllDataForDashboardDataTable());
+    // Need to find a better way to handle the DOM is completly updated
+    setTimeout(() => {
+      dispatch(fetchAllDataForDashboardDataTable());
+    }, 2000);
   }
 
   render() {
