@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import uuid from 'uuid';
 import { facetSearchData } from '../bento/dashboardData';
 
