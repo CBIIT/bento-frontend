@@ -11,6 +11,7 @@ const LandingStatsView = ({ classes, stats, statsData }) => (
       [classes.statsSectionCenter]: stats.length === 5,
     })}
     >
+      { stats.length > 0 && (
       <div
         className={classnames({
           [classes.boxCut]: stats.length < 5,
@@ -33,6 +34,7 @@ const LandingStatsView = ({ classes, stats, statsData }) => (
         ))
         }
       </div>
+      ) }
     </div>
   </>
 );

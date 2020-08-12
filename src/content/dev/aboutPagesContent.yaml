@@ -8,15 +8,10 @@
   primaryContentImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/about/About_Resources.png'
   title: "Resources"
   content:
-    - paragraph: "The BENTO System features a GraphQL API to enable querying of the entire data model."
-    - paragraph: "https://dev.bento-tools.org/.gov/v1/graphql/"
-    - paragraph: "The BENTO metadata is open to the public and will not require authentication to the system. However, some clinical data and all Data Files are not public so require permission."
-    - paragraph: "Users can query the BENTO data via Graphical User Interface (GUI) or API. The GUI provides users a distilled set of parameters (faceted querying) they can use to explore a subset of the CTDC data model. The API provide access to the full collection of parameters as seen in the $$[CTDC Data Model](https://github.com/CBIIT/ctdc-codebase)$$."
-    - paragraph: "The API is provided “as is”; there are no warranties or conditions arising out of usage of these services. "
-    - paragraph: "$$#GITHUB:#$$"
-    - paragraph: "As a resource for the public and cancer research, $$[the BENTO GitHub repo](https://github.com/CBIIT/bento-frontend)$$ is available for research,
-        usage, forking, and pull requests. The codebase is intended for sharing and building frameworks for related initiatives 
-        and projects. The BENTO GitHub repo has documentation about how to access the system, including endpoints and recommendations for 
-        tools and example queries. Both the project and documentation are currently maintained and updated. "
-    - paragraph: "BENTO is based on a Graph database, and features a GraphQL API (Java) and a React front-end (JavaScript). 
-        Each tier in the application stack is designed to be modular and adaptable for a variety of use-cases and scenarios. "
+    - paragraph: "Bento is a modular, data agnostic, cloud-enable software framework for building data sharing platforms, for life science and clinical research. Instructions on using the Bento framework to set up your own platform may be found $$[here](https://cbiit.github.io/bento-docs/)."
+    - paragraph: "All code necessary to use Bento is provided in the form of Docker containers. However, we do provide our code to the public for research, usage, forking and pull requests. Here are the repos for:"
+    - paragraph: "•	Core Data Model: $$[https://github.com/CBIIT/bento-model](https://github.com/CBIIT/bento-model)$$"
+    - paragraph: "•	Frontend: $$[https://github.com/CBIIT/bento-frontend](https://github.com/CBIIT/bento-frontend)"
+    - paragraph: "•	File and Data Loaders: $$[https://github.com/CBIIT/icdc-dataloader](https://github.com/CBIIT/icdc-dataloader)"
+  secondaryZoomImageTitle: "The Bento Core Data Model"
+  secondaryZoomImage: 'https://cbiit.github.io/bento-model/model-desc/bento-model.svg'
