@@ -36,6 +36,7 @@ const About = ({ match }) => {
         content: data.content ? data.content : '',
         table: data.table ? data.table : '',
         secondaryZoomImage: data.secondaryZoomImage ? data.secondaryZoomImage : null,
+        secondaryZoomImageTitle: data.secondaryZoomImageTitle ? data.secondaryZoomImageTitle : null,
       }}
       />
     </>
