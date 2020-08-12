@@ -230,10 +230,10 @@ export const DASHBOARD_QUERY = gql`{
     subjects
   }
     armsByPrograms {
-        title
+        program
         caseSize
         children {
-            title
+            arm
             caseSize
             size
         }
