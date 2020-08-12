@@ -229,7 +229,15 @@ export const DASHBOARD_QUERY = gql`{
     group
     subjects
   }
-    
+    armsByPrograms {
+        title
+        caseSize
+        children {
+            title
+            caseSize
+            size
+        }
+    }
     subjectOverViewPaged(first: 100) {
       subject_id
       program_id

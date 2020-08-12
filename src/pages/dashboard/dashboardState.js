@@ -10,6 +10,7 @@ import {
   getFilters,
   getCheckBoxData,
   customCheckBox,
+  transformInitialDataForSunburst,
 } from '../../utils/dashboardUtilFunctions';
 
 export const initialState = {
@@ -44,7 +45,7 @@ export const DASHBOARD_QUERY_ERR = 'DASHBOARD_QUERY_ERR';
 export const READY_DASHBOARD = 'READY_DASHBOARD';
 export const REQUEST_DASHBOARD = 'REQUEST_DASHBOARD';
 export const SINGLE_CHECKBOX = 'SINGLE_CHECKBOX';
-export const FETCHALL_TABLEDATA = 'FETCHALL_TABLEDATA';
+export const FETCH_ALL_DATA_FOR_DASHBOARDTABLE = 'FETCH_ALL_DATA_FOR_DASHBOARDTABLE';
 
 // Actions
 
@@ -87,9 +88,9 @@ function readyDashboard() {
   };
 }
 
-function fetchAllDashboardTableData(json) {
+function fetchAllDataForDashboardTable(json) {
   return {
-    type: FETCHALL_TABLEDATA,
+    type: FETCH_ALL_DATA_FOR_DASHBOARDTABLE,
     payload:
     {
       data: json.data,
@@ -109,7 +110,7 @@ function getWidgetsData(input) {
 
 function getWidgetsInitData(data) {
   const donut = widgetsData.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(data.subjectOverViewPaged, widget.datatable_level1_field, widget.datatable_level2_field) : data[widget.dataName];
+    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : data[widget.dataName];
     const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});
@@ -157,7 +158,8 @@ export function fetchAllDataForDataTable() {
       .query({
         query: DASHBOARD_TABLE_QUERY,
       })
-      .then((result) => dispatch(fetchAllDashboardTableData(result)));
+      .then((result) => dispatch(fetchAllDataForDashboardTable(result)))
+      .catch((error) => dispatch(errorhandler(error, DASHBOARD_QUERY_ERR)));
   };
 }
 
@@ -170,9 +172,11 @@ export function fetchAllDataForDashboardDataTable() {
     if (shouldFetchAllDataForDashboardData(getState())) {
       return dispatch(fetchAllDataForDataTable());
     }
-    return dispatch(readyDashboard());
+    // Let the calling code know there's nothing to wait for.
+    return Promise.resolve();
   };
 }
+
 function shouldFetchDataForDashboardData(state) {
   return !(state.dashboard.isFetched);
 }
@@ -279,7 +283,7 @@ export default function dashboardReducer(state = initialState, action) {
         isLoading: false,
         isFetched: false,
       };
-    case FETCHALL_TABLEDATA:
+    case FETCH_ALL_DATA_FOR_DASHBOARDTABLE:
       return {
         ...state,
         isDataTableUptoDate: true,

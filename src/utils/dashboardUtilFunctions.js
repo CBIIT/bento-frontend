@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import uuid from 'uuid';
 import { facetSearchData } from '../bento/dashboardData';
 
@@ -305,6 +306,25 @@ export const getCheckBoxData = (data, allCheckBoxs, activeCheckBoxs, filters) =>
     return checkbox;
   })
 );
+
+export function transformInitialDataForSunburst(data) {
+  const output = {};
+  output.key = uuid();
+  output.title = 'root';
+  output.color = COLORS_LEVEL_1[parseInt(1, 10)];
+  output.children = data.map((level1Child, index) => ({
+    title: level1Child.title,
+    color: COLORS_LEVEL_1[parseInt(index, 10)],
+    caseSize: level1Child.caseSize,
+    children: level1Child.children.map((level2Child, index2) => ({
+      title: level2Child.title,
+      color: COLORS_LEVEL_2[parseInt(index2, 10)],
+      caseSize: level2Child.caseSize,
+      size: level2Child.caseSize,
+    })),
+  }));
+  return output;
+}
 
 export function transformAPIDataIntoCheckBoxData(data, field) {
   const result = [];
