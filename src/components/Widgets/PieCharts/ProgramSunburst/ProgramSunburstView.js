@@ -72,7 +72,7 @@ class ProgramSunburst extends PureComponent {
     const { data } = this.props;
     this.state = {
       widgetData: data,
-      size: data.children[0].size,
+      size: findCaseSizeOfTitle(data, ''),
       title: '',
       caseSize: data.children[0].caseSize,
     };
@@ -125,7 +125,7 @@ class ProgramSunburst extends PureComponent {
               });
             }}
           >
-            {caseSize && (
+            {caseSize > 0 && (
             <LabelSeries data={[{
               x: 0,
               y: 0,

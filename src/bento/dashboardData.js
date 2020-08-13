@@ -55,35 +55,35 @@ export const widgetsData = [
   {
     type: 'donut',
     label: 'Diagnosis',
-    dataName: 'caseCountByDiagnosis',
+    dataName: 'subjectCountByDiagnoses',
     datatable_field: 'diagnosis',
     show: true,
   },
   {
     type: 'donut',
     label: 'Recurrence Score',
-    dataName: 'caseCountByRecurrenceScore',
+    dataName: 'subjectCountByRecurrenceScore',
     datatable_field: 'recurrence_score',
     show: true,
   },
   {
     type: 'donut',
     label: 'Tumor Size',
-    dataName: 'caseCountByTumorSize',
+    dataName: 'subjectCountByTumorSize',
     datatable_field: 'tumor_size',
     show: true,
   },
   {
     type: 'donut',
     label: 'Chemotherapy',
-    dataName: 'caseCountByChemotherapy',
+    dataName: 'subjectCountByChemotherapyRegimen',
     datatable_field: 'chemotherapy',
     show: true,
   },
   {
     type: 'donut',
     label: 'Endocrine Therapy',
-    dataName: 'caseCountByEndocrineTherapy',
+    dataName: 'subjectCountByEndocrineTherapy',
     datatable_field: 'endocrine_therapy',
     show: true,
   },
@@ -229,16 +229,22 @@ export const DASHBOARD_QUERY = gql`{
     group
     subjects
   }
-    
-    subjectOverView {
+    armsByPrograms {
+        program
+        caseSize
+        children {
+            arm
+            caseSize
+            size
+        }
+    }
+    subjectOverViewPaged(first: 100) {
       subject_id
       program_id
       study_info
       samples
-      lab_procedures
       program
       study_acronym
-      study_short_description
       diagnosis
       recurrence_score
       tumor_size
@@ -250,17 +256,35 @@ export const DASHBOARD_QUERY = gql`{
       menopause_status
       age_at_index
       survival_time
-      survival_time_unit
       files{
         file_id
-        file_type
-        file_description
-        file_format
-        file_size
-        file_name
-        file_location
-        md5sum
-        file_status
+      }
+  }
+  }`;
+
+// --------------- Dashboard Query configuration --------------
+export const DASHBOARD_TABLE_QUERY = gql`{
+
+  subjectOverViewPaged(first: 1000000) {
+      subject_id
+      program_id
+      study_info
+      samples
+      program
+      study_acronym
+      diagnosis
+      recurrence_score
+      tumor_size
+      tumor_grade
+      er_status
+      pr_status
+      chemotherapy
+      endocrine_therapy
+      menopause_status
+      age_at_index
+      survival_time
+      files{
+        file_id
       }
   }
   }`;

@@ -1,5 +1,5 @@
 import client from '../../utils/graphqlClient';
-import { DASHBOARD_QUERY, widgetsData } from '../../bento/dashboardData';
+import { DASHBOARD_QUERY, widgetsData, DASHBOARD_TABLE_QUERY } from '../../bento/dashboardData';
 import { statsData as statsCount } from '../../bento/stats';
 
 import {
@@ -10,10 +10,12 @@ import {
   getFilters,
   getCheckBoxData,
   customCheckBox,
+  transformInitialDataForSunburst,
 } from '../../utils/dashboardUtilFunctions';
 
 export const initialState = {
   dashboard: {
+    isDataTableUptoDate: false,
     isFetched: false,
     isLoading: false,
     error: '',
@@ -43,6 +45,8 @@ export const DASHBOARD_QUERY_ERR = 'DASHBOARD_QUERY_ERR';
 export const READY_DASHBOARD = 'READY_DASHBOARD';
 export const REQUEST_DASHBOARD = 'REQUEST_DASHBOARD';
 export const SINGLE_CHECKBOX = 'SINGLE_CHECKBOX';
+export const FETCH_ALL_DATA_FOR_DASHBOARDTABLE = 'FETCH_ALL_DATA_FOR_DASHBOARDTABLE';
+
 // Actions
 
 export const toggleCheckBox = (payload) => ({
@@ -54,10 +58,6 @@ export const singleCheckBox = (payload) => ({
   type: SINGLE_CHECKBOX,
   payload,
 });
-
-function shouldFetchDataForDashboardDataTable(state) {
-  return !(state.dashboard.isFetched);
-}
 
 function postRequestFetchDataDashboard() {
   return {
@@ -88,9 +88,29 @@ function readyDashboard() {
   };
 }
 
+function fetchAllDataForDashboardTable(json) {
+  return {
+    type: FETCH_ALL_DATA_FOR_DASHBOARDTABLE,
+    payload:
+    {
+      data: json.data,
+    },
+  };
+}
+
 function getWidgetsData(input) {
   const donut = widgetsData.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input, widget.datatable_level1_field, widget.datatable_level2_field) : getDonutDataFromDashboardData(input, widget.datatable_field);
+    const label = widget.dataName;
+    return { ...acc, [label]: Data };
+  }, {});
+
+  return donut;
+}
+
+function getWidgetsInitData(data) {
+  const donut = widgetsData.reduce((acc, widget) => {
+    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : data[widget.dataName];
     const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});
@@ -132,9 +152,38 @@ function fetchDashboard() {
   };
 }
 
+export function fetchAllDataForDataTable() {
+  return (dispatch) => {
+    client
+      .query({
+        query: DASHBOARD_TABLE_QUERY,
+      })
+      .then((result) => dispatch(fetchAllDataForDashboardTable(result)))
+      .catch((error) => dispatch(errorhandler(error, DASHBOARD_QUERY_ERR)));
+  };
+}
+
+function shouldFetchAllDataForDashboardData(state) {
+  return !(state.dashboard.isDataTableUptoDate);
+}
+
+export function fetchAllDataForDashboardDataTable() {
+  return (dispatch, getState) => {
+    if (shouldFetchAllDataForDashboardData(getState())) {
+      return dispatch(fetchAllDataForDataTable());
+    }
+    // Let the calling code know there's nothing to wait for.
+    return Promise.resolve();
+  };
+}
+
+function shouldFetchDataForDashboardData(state) {
+  return !(state.dashboard.isFetched);
+}
+
 export function fetchDataForDashboardDataTable() {
   return (dispatch, getState) => {
-    if (shouldFetchDataForDashboardDataTable(getState())) {
+    if (shouldFetchDataForDashboardData(getState())) {
       return dispatch(fetchDashboard());
     }
     return dispatch(readyDashboard());
@@ -209,7 +258,7 @@ export default function dashboardReducer(state = initialState, action) {
           error: '',
           stats: getStatInit(action.payload.data),
           subjectOverView: {
-            data: action.payload.data.subjectOverView,
+            data: action.payload.data.subjectOverViewPaged,
           },
           checkboxForAll: {
             data: checkboxData,
@@ -218,10 +267,10 @@ export default function dashboardReducer(state = initialState, action) {
             data: checkboxData,
           },
           datatable: {
-            data: action.payload.data.subjectOverView,
+            data: action.payload.data.subjectOverViewPaged,
             filters: [],
           },
-          widgets: getWidgetsData(action.payload.data.subjectOverView),
+          widgets: getWidgetsInitData(action.payload.data),
 
         } : { ...state };
     }
@@ -233,6 +282,18 @@ export default function dashboardReducer(state = initialState, action) {
         error: action.error,
         isLoading: false,
         isFetched: false,
+      };
+    case FETCH_ALL_DATA_FOR_DASHBOARDTABLE:
+      return {
+        ...state,
+        isDataTableUptoDate: true,
+        subjectOverView: {
+          data: action.payload.data.subjectOverViewPaged,
+        },
+        datatable: {
+          data: action.payload.data.subjectOverViewPaged,
+          filters: [],
+        },
       };
     case READY_DASHBOARD:
       return {

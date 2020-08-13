@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dashboard from './dashboard';
-import { fetchDataForDashboardDataTable } from './dashboardState';
+import { fetchDataForDashboardDataTable, fetchAllDataForDashboardDataTable } from './dashboardState';
 import { Typography } from '../../components/Wrappers/Wrappers';
 
 class DashboardController extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchDataForDashboardDataTable());
+  }
+
+  componentDidUpdate() {
+    const { dispatch } = this.props;
+    // Need to find a better way to handle the DOM is completly updated
+    setTimeout(() => {
+      dispatch(fetchAllDataForDashboardDataTable());
+    }, 2000);
   }
 
   render() {

@@ -151,6 +151,8 @@ const AboutBody = ({ classes, data }) => {
           </Grid>
         </div>
       </div>
+      {data.secondaryZoomImageTitle
+      && <div className={classes.secondayTitle}>{data.secondaryZoomImageTitle}</div>}
       {data.secondaryZoomImage && <XoomInOut><img src={data.secondaryZoomImage} alt="secondary zoominout" className={classes.img} /></XoomInOut>}
     </>
   );
@@ -167,6 +169,13 @@ const styles = (theme) => ({
   maxWidthContainer: {
     margin: '0px auto 0px auto',
     maxWidth: '1440px',
+  },
+  secondayTitle: {
+    display: 'block',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: '24px',
+    marginBottom: '70px',
   },
   text: {
     // height: '476px',
