@@ -33,7 +33,7 @@ const Widget = ({
           props.header
         ) : (
           <>
-            <Typography className={titleClass} size="md" weight="normal" family="Nunito" color={color}>
+            <Typography className={titleClass} size="md" weight="normal" family="Nunito" color={color} align='center'>
               {title}
             </Typography>
           </>

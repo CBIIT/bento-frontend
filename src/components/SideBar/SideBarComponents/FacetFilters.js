@@ -118,7 +118,10 @@ const FacetPanel = ({ classes }) => {
                     color="secondary"
                     classes={{ root: classes.checkboxRoot }}
                   />
-                  <div className={classes.panelDetailText}>{`${checkboxItem.name}  (${checkboxItem.subjects})`}</div>
+                  <div className={classes.panelDetailText}>
+                    {`${checkboxItem.name}`}
+                    <span className={classes.panelDetailTextSubjectCount}>{`(${checkboxItem.subjects})`}</span>
+                  </div>
                 </ListItem>
               );
             })
@@ -164,6 +167,9 @@ const styles = () => ({
     fontFamily: 'Nunito',
     fontSize: '14px',
     marginRight: '12px',
+  },
+  panelDetailTextSubjectCount: {
+    color: '#137fbe',
   },
   checkboxRoot: {
     color: '#000000',

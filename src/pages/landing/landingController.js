@@ -6,7 +6,7 @@ import { landingPageQuery } from '../../bento/landingPageData';
 
 const landingController = () => (
   <Query query={landingPageQuery}>
-    {({ data, loading }) => (loading ? <CircularProgress /> : <LandingView statsData={data} />
+    {({ data, loading, error }) => (loading ? <CircularProgress /> : (error ? <div>{error && `An error has occurred in loading stats component: ${error}`}</div> : <LandingView statsData={data} />)
     )}
   </Query>
 );

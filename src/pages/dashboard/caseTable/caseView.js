@@ -84,8 +84,7 @@ const Cases = ({ classes, data }) => {
     saveButton.current.style.cursor = 'auto';
   });
 
-  const displayTableColumns = dashboardTable.tableData
-    .filter((tableData) => tableData.display === true).slice(0, 10);
+  const displayTableColumns = dashboardTable.tableData;
 
   const updatedTableWithLinks = manipultateLinks(displayTableColumns);
 
@@ -223,7 +222,9 @@ const Cases = ({ classes, data }) => {
           <Grid item xs={12} id="table_cases">
             <CustomDataTable
               data={data}
-              columns={columns}
+              columns={columns.filter(
+                (tableData) => tableData.options.display === true,
+              ).slice(0, 10)}
               options={options()}
             />
           </Grid>

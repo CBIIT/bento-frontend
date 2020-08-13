@@ -335,7 +335,7 @@ const styles = () => ({
     overflowY: 'auto',
     background: '#fff',
     paddingLeft: '30px',
-    paddingTop: '6px',
+    paddingTop: '5px',
     minHeight: '138px',
   },
   contentHeader: {
