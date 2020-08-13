@@ -17,10 +17,10 @@ const displaywidgets = widgetsData.filter((widget) => widget.show === true).slic
 const Dashboard = ({
   classes, data, theme,
 }) => {
-  const [checked, setChecked] = React.useState(true);
+  const [collapse, setCollapse] = React.useState(true);
   const themeChanger = useTheme();
   const handleChange = () => {
-    setChecked((prev) => !prev);
+    setCollapse((prev) => !prev);
   };
 
   return (
@@ -40,7 +40,7 @@ const Dashboard = ({
                     <FormControlLabel
                       control={(
                         <Button className={classes.customButton} onClick={handleChange}>
-                          {checked ? 'COLLAPSE VIEW' : 'OPEN VIEW' }
+                          {collapse ? 'COLLAPSE VIEW' : 'OPEN VIEW' }
                         </Button>
 )}
                     />
@@ -60,7 +60,7 @@ const Dashboard = ({
                     />
                   </div>
                 </div>
-                <Collapse in={checked} className={classes.backgroundShawdowWidgets}>
+                <Collapse in={collapse} className={classes.backgroundShawdowWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget) => {
                       if (widget.type === 'sunburst' && widget.show) {
@@ -118,7 +118,7 @@ const Dashboard = ({
                   </Grid>
                 </Collapse>
               </div>
-              { checked && <div className={classes.dashboardDivider} />}
+              { collapse && <div className={classes.dashboardDivider} />}
               <Cases />
             </div>
           </div>

@@ -306,6 +306,25 @@ export const getCheckBoxData = (data, allCheckBoxs, activeCheckBoxs, filters) =>
   })
 );
 
+export function transformInitialDataForSunburst(data) {
+  const output = {};
+  output.key = uuid();
+  output.title = 'root';
+  output.color = COLORS_LEVEL_1[parseInt(1, 10)];
+  output.children = data.map((level1Child, index) => ({
+    title: level1Child.program,
+    color: COLORS_LEVEL_1[parseInt(index, 10)],
+    caseSize: level1Child.caseSize,
+    children: level1Child.children.map((level2Child, index2) => ({
+      title: `${level1Child.program} : ${level2Child.arm}`,
+      color: COLORS_LEVEL_2[parseInt(index2, 10)],
+      caseSize: level2Child.caseSize,
+      size: level2Child.caseSize,
+    })),
+  }));
+  return output;
+}
+
 export function transformAPIDataIntoCheckBoxData(data, field) {
   const result = [];
   let preElementIndex = 0;

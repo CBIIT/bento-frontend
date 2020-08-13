@@ -229,8 +229,43 @@ export const DASHBOARD_QUERY = gql`{
     group
     subjects
   }
-    
-    subjectOverView {
+    armsByPrograms {
+        program
+        caseSize
+        children {
+            arm
+            caseSize
+            size
+        }
+    }
+    subjectOverViewPaged(first: 100) {
+      subject_id
+      program_id
+      study_info
+      samples
+      program
+      study_acronym
+      diagnosis
+      recurrence_score
+      tumor_size
+      tumor_grade
+      er_status
+      pr_status
+      chemotherapy
+      endocrine_therapy
+      menopause_status
+      age_at_index
+      survival_time
+      files{
+        file_id
+      }
+  }
+  }`;
+
+// --------------- Dashboard Query configuration --------------
+export const DASHBOARD_TABLE_QUERY = gql`{
+
+  subjectOverViewPaged(first: 1000000) {
       subject_id
       program_id
       study_info
