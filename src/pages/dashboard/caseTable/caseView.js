@@ -222,9 +222,7 @@ const Cases = ({ classes, data }) => {
           <Grid item xs={12} id="table_cases">
             <CustomDataTable
               data={data}
-              columns={columns.filter(
-                (tableData) => tableData.options.display === true,
-              ).slice(0, 10)}
+              columns={columns.slice(0, 11)}
               options={options()}
             />
           </Grid>
