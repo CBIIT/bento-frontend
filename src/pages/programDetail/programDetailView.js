@@ -154,17 +154,23 @@ const ProgramView = ({ classes, data, theme }) => {
     },
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <TableFooter>
-        <TableRow>
-          <TablePagination
-            className={count >= 11 ? classes.root : classes.noDisplay}
-            count={count}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
+        <div>
+          {count >= 11
+            ? (
+              <TableRow>
+                <TablePagination
+                  className={count >= 11 ? classes.root : classes.noDisplay}
+                  count={count}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
           // eslint-disable-next-line no-shadow
-            onChangePage={(_, page) => changePage(page)}
-          />
-        </TableRow>
+                  onChangePage={(_, page) => changePage(page)}
+                />
+              </TableRow>
+            )
+            : ''}
+        </div>
       </TableFooter>
     ),
   };
