@@ -191,9 +191,7 @@ const ArmDetail = ({ data, classes }) => {
                   noPaddedTitle
                 >
                   <CustomActiveDonut
-                    data={data.diagnoses.map((diag) => (
-                      { item: diag.group, cases: diag.subjects }
-                    ))}
+                    data={data.diagnoses}
                     width={208}
                     height={210}
                     innerRadius={50}
