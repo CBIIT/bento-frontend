@@ -49,12 +49,12 @@ export const FETCH_ALL_DATA_FOR_DASHBOARDTABLE = 'FETCH_ALL_DATA_FOR_DASHBOARDTA
 
 // Actions
 
-export const toggleCheckBox = (payload) => ({
+export const toggleCheckBoxAction = (payload) => ({
   type: TOGGLE_CHECKBOX,
   payload,
 });
 
-export const singleCheckBox = (payload) => ({
+export const singleCheckBoxAction = (payload) => ({
   type: SINGLE_CHECKBOX,
   payload,
 });
@@ -164,7 +164,7 @@ export function fetchAllDataForDataTable() {
 }
 
 function shouldFetchAllDataForDashboardData(state) {
-  return !(state.dashboard.isDataTableUptoDate);
+  return state === undefined ? true : !(state.dashboard.isDataTableUptoDate);
 }
 
 export function fetchAllDataForDashboardDataTable() {
@@ -178,12 +178,41 @@ export function fetchAllDataForDashboardDataTable() {
 }
 
 function shouldFetchDataForDashboardData(state) {
-  return !(state.dashboard.isFetched);
+  return state === undefined ? true : !(state.dashboard.isFetched);
+}
+
+export function toggleCheckBox(payload) {
+  return async (dispatch, getState) => {
+    if (shouldFetchDataForDashboardData(getState())) {
+      await dispatch(fetchDashboard());
+    }
+    if (shouldFetchAllDataForDashboardData(getState())) {
+      await dispatch(fetchAllDataForDashboardDataTable());
+    }
+    dispatch(toggleCheckBoxAction(payload));
+  };
+}
+
+export function singleCheckBox(payload) {
+  return async (dispatch, getState) => {
+    if (shouldFetchDataForDashboardData(getState())) {
+      await dispatch(fetchDashboard());
+    }
+    if (shouldFetchAllDataForDashboardData(getState())) {
+      await dispatch(fetchAllDataForDashboardDataTable());
+    }
+    dispatch(singleCheckBoxAction(payload));
+  };
 }
 
 export function fetchDataForDashboardDataTable() {
   return (dispatch, getState) => {
     if (shouldFetchDataForDashboardData(getState())) {
+      if (shouldFetchAllDataForDashboardData(getState())) {
+        setTimeout(() => {
+          dispatch(fetchAllDataForDashboardDataTable());
+        }, 1000);
+      }
       return dispatch(fetchDashboard());
     }
     return dispatch(readyDashboard());
