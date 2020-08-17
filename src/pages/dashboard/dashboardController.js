@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dashboard from './dashboard';
-import { fetchDataForDashboardDataTable, fetchAllDataForDashboardDataTable } from './dashboardState';
+import { fetchDataForDashboardDataTable } from './dashboardState';
 import { Typography } from '../../components/Wrappers/Wrappers';
 
 class DashboardController extends Component {
@@ -11,13 +11,13 @@ class DashboardController extends Component {
     dispatch(fetchDataForDashboardDataTable());
   }
 
-  componentDidUpdate() {
-    const { dispatch } = this.props;
-    // Need to find a better way to handle the DOM is completly updated
-    setTimeout(() => {
-      dispatch(fetchAllDataForDashboardDataTable());
-    }, 2000);
-  }
+  // componentDidUpdate() {
+  //   const { dispatch } = this.props;
+  //   // Need to find a better way to handle the DOM is completly updated
+  //   setTimeout(() => {
+  //     dispatch(fetchAllDataForDashboardDataTable());
+  //   }, 2000);
+  // }
 
   render() {
     const {
@@ -34,8 +34,14 @@ class DashboardController extends Component {
     if (isLoading) {
       return <CircularProgress />;
     }
+
     if (isFetched) {
-      return <Dashboard data={widgets} isSidebarOpened={isSidebarOpened} />;
+      return (
+        <Dashboard
+          data={widgets}
+          isSidebarOpened={isSidebarOpened}
+        />
+      );
     }
     return (
       <Typography variant="headline" size="sm">

@@ -8,7 +8,7 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
-import StatsView from '../../components/Stats/pageSpecificStatsController';
+import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Cases.Icon.svg';
 import formatBytes from '../../utils/formatBytes';
@@ -62,12 +62,14 @@ const CaseDetail = ({ data, classes }) => {
     dispatch(fetchDataForDashboardDataTable());
   }, []);
 
-  const filter = [{
-    groupName: caseHeader.label,
-    name: data[caseHeader.dataField],
-    datafield: caseHeader.dataField,
-    isChecked: true,
-  }];
+  const stat = {
+    numberOfPrograms: 1,
+    numberOfStudies: 1,
+    numberOfSubjects: 1,
+    numberOfSamples: data.num_samples,
+    numberOfLabProcedures: data.num_lab_procedures,
+    numberOfFiles: data[tableConfig.filesField].length,
+  };
 
   const breadCrumbJson = [{
     name: 'ALL CASES /',
@@ -93,7 +95,7 @@ const CaseDetail = ({ data, classes }) => {
 
   return (
     <>
-      <StatsView filter={filter} />
+      <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.header}>
           <div className={classes.logo}>
