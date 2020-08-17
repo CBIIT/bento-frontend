@@ -445,6 +445,8 @@ const styles = (theme) => ({
     textTransform: 'uppercase',
     fontFamily: 'Lato !important',
     fontWeight: '500 !important',
+    fontSize: '15px !important',
+    letterSpacing: '0.025em',
   },
   borderLeft: {
     borderLeft: '#81A6BA 1px solid',
@@ -753,7 +755,7 @@ const styles = (theme) => ({
     paddingTop: '36px !important',
   },
   marginTopN37: {
-    marginTop: '8px',
+    marginTop: '15px',
   },
   tableCell1: {
     paddingLeft: '25px',

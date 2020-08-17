@@ -57,7 +57,7 @@ const table = {
     },
     {
       field: 'num_subjects',
-      label: 'Cases',
+      label: 'Associated Cases',
     },
   ],
 };
