@@ -123,117 +123,119 @@ const ArmDetail = ({ data, classes }) => {
     <>
       <StatsView data={stat} />
       <div className={classes.container}>
-        <div className={classes.header}>
-          <div className={classes.logo}>
-            <img
-              className={classes.caseIcon}
-              src={icon}
-              alt="Bento arm detail header logo"
-            />
+        <div className={classes.innerContainer}>
+          <div className={classes.header}>
+            <div className={classes.logo}>
+              <img
+                className={classes.caseIcon}
+                src={icon}
+                alt="Bento arm detail header logo"
+              />
 
-          </div>
-          <div className={classes.headerTitle}>
-            <div className={classes.headerMainTitle}>
-              {`${header.label} :`}
-              { data[header.dataField]
-                ? (
-                  <span className={classes.headerMainTitleTwo}>
-                    {' '}
-                    {data[header.dataField]}
-                  </span>
-                )
-                : (
-                  <Typography variant="h5" color="error" size="sm">
-                    {`"${header.dataField}" is not a valid property name`}
-                  </Typography>
-                )}
             </div>
-          </div>
-          { /* Case Count */ }
-          <div className={classes.headerButton}>
-            <div className={classes.headerButtonLinkArea}>
-              <span className={classes.headerButtonLinkText}>Number of cases:</span>
-              <Link
-                className={classes.headerButtonLink}
-                to={(location) => ({ ...location, pathname: '/cases' })}
-                onClick={() => redirectTo()}
-              >
-                <span className={classes.headerButtonLinkNumber}>
-                  {data.num_subjects}
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <Grid container className={classes.detailContainer}>
-          {/* Left panel */}
-          <Grid item sm={8} xs={12} className={classes.detailPanel}>
-            <div className={classes.innerPanel}>
-              <Grid container spacing={2}>
-                { subsections.slice(0, 6).map((section, index) => (
-                  <PropertySubsection key={index} section={section} data={data} />
-                ))}
-              </Grid>
-            </div>
-          </Grid>
-          {/* Left panel end */}
-          {/* Right panel */}
-          <Grid item sm={4} xs={12} className={classes.detailPanel}>
-            <div className={classes.innerPanel}>
-              {/* Diagnosis donut */}
-              <div className={classes.widgetContainer}>
-                <Widget
-                  title="Diagnosis"
-                  color="#0296C9"
-                  bodyClass={classes.fullHeightBody}
-                  className={classes.card}
-                  titleClass={classes.widgetTitle}
-                  noPaddedTitle
-                >
-                  <CustomActiveDonut
-                    data={data.diagnoses}
-                    width={208}
-                    height={210}
-                    innerRadius={50}
-                    outerRadius={75}
-                    cx="50%"
-                    cy="50%"
-                    fontSize="15px"
-                  />
-                </Widget>
+            <div className={classes.headerTitle}>
+              <div className={classes.headerMainTitle}>
+                {`${header.label} :`}
+                { data[header.dataField]
+                  ? (
+                    <span className={classes.headerMainTitleTwo}>
+                      {' '}
+                      {data[header.dataField]}
+                    </span>
+                  )
+                  : (
+                    <Typography variant="h5" color="error" size="sm">
+                      {`"${header.dataField}" is not a valid property name`}
+                    </Typography>
+                  )}
               </div>
-              {/* File count */}
-              <FileCount classes={classes} num_files={data.num_files} />
             </div>
-          </Grid>
-          {/* Right panel end */}
-        </Grid>
-      </div>
-      <div id="table_case_detail" className={classes.tableContainer}>
-        <div className={classes.tableDiv}>
-          { tableConfig.display
-            ? (
-              <>
-                <div className={classes.tableTitle}>
-                  <span className={classes.tableHeader}>{tableConfig.title}</span>
-                </div>
-                <Grid item xs={12}>
-                  <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                      <CustomDataTable
-                        data={data[tableConfig.filesField]}
-                        columns={columns.slice(0, 10)}
-                        options={options(classes)}
-                      />
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography />
-                    </Grid>
-                  </Grid>
+            { /* Case Count */ }
+            <div className={classes.headerButton}>
+              <div className={classes.headerButtonLinkArea}>
+                <span className={classes.headerButtonLinkText}>Number of cases:</span>
+                <Link
+                  className={classes.headerButtonLink}
+                  to={(location) => ({ ...location, pathname: '/cases' })}
+                  onClick={() => redirectTo()}
+                >
+                  <span className={classes.headerButtonLinkNumber}>
+                    {data.num_subjects}
+                  </span>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <Grid container className={classes.detailContainer}>
+            {/* Left panel */}
+            <Grid item lg={7} sm={6} xs={12} className={classes.detailPanel}>
+              <div className={classes.innerPanel}>
+                <Grid container spacing={2}>
+                  { subsections.slice(0, 6).map((section, index) => (
+                    <PropertySubsection key={index} section={section} data={data} />
+                  ))}
                 </Grid>
-              </>
-            ) : null}
+              </div>
+            </Grid>
+            {/* Left panel end */}
+            {/* Right panel */}
+            <Grid item lg={5} sm={6} xs={12} className={classes.detailPanel}>
+              <div className={classes.innerPanel}>
+                {/* Diagnosis donut */}
+                <div className={classes.widgetContainer}>
+                  <Widget
+                    title="Diagnosis"
+                    color="#0296C9"
+                    bodyClass={classes.fullHeightBody}
+                    className={classes.card}
+                    titleClass={classes.widgetTitle}
+                    noPaddedTitle
+                  >
+                    <CustomActiveDonut
+                      data={data.diagnoses}
+                      width={208}
+                      height={210}
+                      innerRadius={50}
+                      outerRadius={75}
+                      cx="50%"
+                      cy="50%"
+                      fontSize="15px"
+                    />
+                  </Widget>
+                </div>
+                {/* File count */}
+                <FileCount classes={classes} num_files={data.num_files} />
+              </div>
+            </Grid>
+            {/* Right panel end */}
+          </Grid>
+          <div id="table_case_detail" className={classes.tableContainer}>
+            <div className={classes.tableDiv}>
+              { tableConfig.display
+                ? (
+                  <>
+                    <div className={classes.tableTitle}>
+                      <span className={classes.tableHeader}>{tableConfig.title}</span>
+                    </div>
+                    <Grid item xs={12}>
+                      <Grid container spacing={4}>
+                        <Grid item xs={12}>
+                          <CustomDataTable
+                            data={data[tableConfig.filesField]}
+                            columns={columns.slice(0, 10)}
+                            options={options(classes)}
+                          />
+                        </Grid>
+                        <Grid item xs={8}>
+                          <Typography />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </>
+                ) : null}
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -242,10 +244,14 @@ const ArmDetail = ({ data, classes }) => {
 
 const styles = (theme) => ({
   container: {
+    backgroundColor: '#FFFFFF',
+    padding: '0 32px',
+  },
+  innerContainer: {
+    maxWidth: '1340px',
+    margin: '0 auto',
     paddingTop: '38px',
     fontFamily: theme.custom.fontFamily,
-    paddingLeft: '117px',
-    paddingRight: '117px',
     background: '#FFFF',
   },
   root: {
@@ -319,6 +325,7 @@ const styles = (theme) => ({
     paddingBottom: '2px',
     margin: '0 4px',
     fontSize: '14px',
+    fontWeight: 'bold',
   },
   headerButtonLink: {
     color: 'black',
@@ -369,9 +376,10 @@ const styles = (theme) => ({
   },
   widgetTitle: {
     textTransform: 'uppercase',
-    margin: 'auto auto 30px 0',
+    margin: '9px auto 10px 0',
     color: '#0296C9',
     fontSize: '15px',
+    fontFamily: theme.custom.fontFamily,
   },
   fileCountText: {
     paddingTop: '10px',
