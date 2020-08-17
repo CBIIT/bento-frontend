@@ -136,6 +136,8 @@ query programDetail($program_id: String!) {
     program_external_url
     num_subjects
     num_files
+    num_samples
+    num_lab_procedures
     disease_subtypes
     studies { 
       study_name
