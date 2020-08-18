@@ -120,7 +120,10 @@ const FacetPanel = ({ classes }) => {
                   />
                   <div className={classes.panelDetailText}>
                     {`${checkboxItem.name}`}
-                    <span className={classes.panelDetailTextSubjectCount}>{`(${checkboxItem.subjects})`}</span>
+                    <span className={classes.panelDetailTextSubjectCount}>
+                      &nbsp;
+                      {`(${checkboxItem.subjects})`}
+                    </span>
                   </div>
                 </ListItem>
               );
