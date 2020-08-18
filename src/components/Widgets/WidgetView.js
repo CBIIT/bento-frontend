@@ -58,7 +58,7 @@ const styles = (theme) => ({
     minHeight: '100%',
   },
   widgetDivider:{
-    background: '#E2E7EC',
+    background: theme.custom.widgetDivider,
     height: '6px',
     width: '180px',
     border: 'none',

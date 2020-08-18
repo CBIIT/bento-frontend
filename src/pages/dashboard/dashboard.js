@@ -60,7 +60,7 @@ const Dashboard = ({
                     />
                   </div>
                 </div>
-                <Collapse in={collapse} className={classes.backgroundShawdowWidgets}>
+                <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget) => {
                       if (widget.type === 'sunburst' && widget.show) {
@@ -73,6 +73,7 @@ const Dashboard = ({
                               className={classes.card}
                               color={theme.palette.lochmara.contrastText}
                               widgetBorderDivider
+                              customBackGround
                             >
                               <ProgramSunburst
                                 data={data[widget.dataName]}
@@ -98,6 +99,7 @@ const Dashboard = ({
                               className={classes.card}
                               color={theme.palette.lochmara.contrastText}
                               widgetBorderDivider
+                              customBackGround
                             >
                               <CustomActiveDonut
                                 data={data[widget.dataName]}
@@ -118,6 +120,7 @@ const Dashboard = ({
                   </Grid>
                 </Collapse>
               </div>
+              { collapse && <div className={classes.dashboardDividerTop} />}
               { collapse && <div className={classes.dashboardDivider} />}
               <Cases />
             </div>
@@ -138,7 +141,10 @@ const styles = (theme) => ({
   dashboardDivider: {
     height: 16,
     backgroundColor: '#E2E7EC',
-    marginTop: 16,
+  },
+  dashboardDividerTop: {
+    height: 16,
+    backgroundColor: theme.palette.widgetBackground.main,
   },
   rightContent: {
     maxWidth: 'calc(100% - 250px)',
@@ -205,8 +211,8 @@ const styles = (theme) => ({
       backgroundColor: '#566672',
     },
   },
-  backgroundShawdowWidgets: {
-    background: '#FFFFFF',
+  backgroundWidgets: {
+    background: theme.palette.widgetBackground.main,
   },
   sideBar: {
     width: '250px',
@@ -220,7 +226,7 @@ const styles = (theme) => ({
   switchBase: {
     color: theme.palette.widgetBackground.contrastText,
     '&$checked': {
-      color: theme.palette.widgetBackground.contrastText,
+      color: theme.palette.widgetBackground.contrastSwicthColor,
     },
     '&$checked + $track': {
       backgroundColor: theme.palette.widgetBackground.contrastText,
