@@ -41,6 +41,7 @@
     "jest-watch-typeahead": "^0.2.1",
     "js-yaml": "^3.13.1",
     "line-awesome": "github:icons8/line-awesome",
+    "lodash": "^4.17.20",
     "mini-css-extract-plugin": "0.5.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.2.1",

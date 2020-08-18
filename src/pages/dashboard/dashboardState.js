@@ -125,19 +125,6 @@ function getStatInit(input) {
   return initStats;
 }
 
-export function getFilteredStat(input) {
-  const filteredStats = statsCount.reduce((acc, stat) => (
-    {
-      ...acc,
-      [stat.statAPI]:
-       getStatDataFromDashboardData(
-         input, stat.type, stat.datatable_field, stat.datatable_sub_field,
-       ),
-    }
-  ), {});
-  return filteredStats;
-}
-
 // This need to go to dashboard controller
 
 function fetchDashboard() {
@@ -197,7 +184,6 @@ export function toggleCheckBox(payload) {
 
 export function singleCheckBox(payload) {
   return async (dispatch, getState) => {
-    dispatch(postRequestFetchDataDashboard());
     if (shouldFetchDataForDashboardData(getState())) {
       await dispatch(fetchDashboard());
     }
@@ -240,7 +226,7 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        stats: getFilteredStat(tableData, dataTableFilters),
+        stats: getStatDataFromDashboardData(tableData, statsCount),
         checkbox: {
           data: updatedCheckboxData,
           defaultPanel: action.payload[0].groupName,
@@ -268,7 +254,7 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         isCalulatingDashboard: false,
-        stats: getFilteredStat(tableData, dataTableFilters),
+        stats: getStatDataFromDashboardData(tableData, statsCount),
         checkbox: {
           data: updatedCheckboxData,
         },

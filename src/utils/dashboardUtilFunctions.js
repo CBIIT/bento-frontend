@@ -1,4 +1,5 @@
 import uuid from 'uuid';
+import { mergeWith, isArray } from 'lodash';
 import { facetSearchData } from '../bento/dashboardData';
 
 export const COLORS_LEVEL_1 = [
@@ -43,22 +44,47 @@ export const unselectFilters = (filtersObj) => filtersObj.map((filterElement) =>
   isChecked: false,
 }));
 
-export function getStatDataFromDashboardData(data, type, datatableField, datatableSubField = 'uuid') {
-  if (type === 'field') {
-    return [...new Set(data.map((d) => d[datatableField]))].length;
+// eslint-disable-next-line consistent-return
+function customizer(objValue, srcValue) {
+  if (isArray(objValue)) {
+    return objValue.concat(srcValue);
   }
-  if (type === 'array') {
-    return [...new Set(data.reduce((output, d) => output.concat(d[datatableField]
-      ? d[[datatableField]] : []), []))].length;
-  }
-  if (type === 'object') {
-    const test = [...new Set(data.reduce((output, d) => output.concat(d[datatableField]
-      ? d[datatableField] : []), []).map((f) => f[datatableSubField]))].length;
-    return test;
-  }
-  return 0;
 }
 
+export function getStatDataFromDashboardData(dashboardData, stats) {
+  const statsWithArraySubj = dashboardData.reduce((acc, subjectRow) => {
+    const calculatedStats = stats.map((stat) => {
+      if (stat.type === 'field') {
+        return {
+          [stat.statAPI]: [...(acc[stat.statAPI] || []), ...[subjectRow[stat.datatable_field]]],
+        };
+      }
+      if (stat.type === 'array') {
+        return {
+          [stat.statAPI]: [...(acc[stat.statAPI] || []), ...(subjectRow[[stat.datatable_field]]
+            ? subjectRow[[stat.datatable_field]] : [])],
+        };
+      }
+      if (stat.type === 'object') {
+        const statObj = (subjectRow[stat.datatable_field]
+          ? subjectRow[stat.datatable_field] : []).map((f) => f[stat.datatable_sub_field]);
+        return {
+          [stat.statAPI]: [...(acc[stat.statAPI] || []), ...statObj],
+        };
+      }
+      return {
+        [stat.statAPI]: [],
+      };
+    });
+    return mergeWith(acc, calculatedStats, customizer);
+  }, {});
+
+  const output = {};
+  stats.forEach((stat, index) => {
+    output[stat.statAPI] = [...new Set(statsWithArraySubj[index][stat.statAPI])].length;
+  });
+  return output;
+}
 // getStudiesProgramWidgetFromDT
 
 export function getSunburstDataFromDashboardData(data, level1, level2) {
