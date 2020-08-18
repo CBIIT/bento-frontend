@@ -16,7 +16,7 @@ import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
 import {
   header,
   subsections,
-  tableConfig,
+  table,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
 import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
@@ -56,8 +56,8 @@ const options = (classes) => ({
   viewColumns: false,
   pagination: true,
   sortOrder: {
-    name: tableConfig.defaultSortField,
-    direction: tableConfig.defaultSortDirection,
+    name: table.defaultSortField,
+    direction: table.defaultSortDirection,
   },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
@@ -95,7 +95,7 @@ const ArmDetail = ({ data, classes }) => {
     }]));
   };
 
-  const columns = tableConfig.columns.map((column, index) => (
+  const columns = table.columns.map((column, index) => (
     {
       name: column.dataField,
       label: column.header,
@@ -212,17 +212,17 @@ const ArmDetail = ({ data, classes }) => {
           </Grid>
           <div id="table_case_detail" className={classes.tableContainer}>
             <div className={classes.tableDiv}>
-              { tableConfig.display
+              { table.display
                 ? (
                   <>
                     <div className={classes.tableTitle}>
-                      <span className={classes.tableHeader}>{tableConfig.title}</span>
+                      <span className={classes.tableHeader}>{table.title}</span>
                     </div>
                     <Grid item xs={12}>
                       <Grid container spacing={4}>
                         <Grid item xs={12}>
                           <CustomDataTable
-                            data={data[tableConfig.filesField]}
+                            data={data[table.filesField]}
                             columns={columns.slice(0, 10)}
                             options={options(classes)}
                           />

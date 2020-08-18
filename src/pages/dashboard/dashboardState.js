@@ -1,6 +1,6 @@
 import client from '../../utils/graphqlClient';
-import { DASHBOARD_QUERY, widgetsData, DASHBOARD_TABLE_QUERY } from '../../bento/dashboardData';
-import { statsData as statsCount } from '../../bento/stats';
+import { GET_DASHBOARD_DATA_QUERY, widgetsData, GET_DASHBOARD_TABLE_DATA_QUERY } from '../../bento/dashboardData';
+import { globalStatsData as statsCount } from '../../bento/stats';
 
 import {
   getStatDataFromDashboardData,
@@ -41,7 +41,7 @@ export const initialState = {
 
 export const TOGGLE_CHECKBOX = 'TOGGLE_CHECKBOX';
 export const RECEIVE_DASHBOARD = 'RECEIVE_DASHBOARD';
-export const DASHBOARD_QUERY_ERR = 'DASHBOARD_QUERY_ERR';
+export const GET_DASHBOARD_DATA_QUERY_ERR = 'GET_DASHBOARD_DATA_QUERY_ERR';
 export const READY_DASHBOARD = 'READY_DASHBOARD';
 export const REQUEST_DASHBOARD = 'REQUEST_DASHBOARD';
 export const SINGLE_CHECKBOX = 'SINGLE_CHECKBOX';
@@ -145,10 +145,10 @@ function fetchDashboard() {
     dispatch(postRequestFetchDataDashboard());
     return client
       .query({
-        query: DASHBOARD_QUERY,
+        query: GET_DASHBOARD_DATA_QUERY,
       })
       .then((result) => dispatch(receiveDashboard(result)))
-      .catch((error) => dispatch(errorhandler(error, DASHBOARD_QUERY_ERR)));
+      .catch((error) => dispatch(errorhandler(error, GET_DASHBOARD_DATA_QUERY_ERR)));
   };
 }
 
@@ -156,10 +156,10 @@ export function fetchAllDataForDataTable() {
   return (dispatch) => {
     client
       .query({
-        query: DASHBOARD_TABLE_QUERY,
+        query: GET_DASHBOARD_TABLE_DATA_QUERY,
       })
       .then((result) => dispatch(fetchAllDataForDashboardTable(result)))
-      .catch((error) => dispatch(errorhandler(error, DASHBOARD_QUERY_ERR)));
+      .catch((error) => dispatch(errorhandler(error, GET_DASHBOARD_DATA_QUERY_ERR)));
   };
 }
 
@@ -308,7 +308,7 @@ export default function dashboardReducer(state = initialState, action) {
 
         } : { ...state };
     }
-    case DASHBOARD_QUERY_ERR:
+    case GET_DASHBOARD_DATA_QUERY_ERR:
       // get action data
       return {
         ...state,

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const statsData = [
+export const globalStatsData = [
   // A maximum of 6 stats are allowed
   {
     statTitle: 'Programs',
@@ -42,7 +42,7 @@ export const statsData = [
 ];
 
 // --------------- GraphQL query - Retrieve stats details --------------
-export const globalStatsQuery = gql`{
+export const GET_GLOBAL_STATS_DATA_QUERY = gql`{
   numberOfPrograms
   numberOfStudies
   numberOfSubjects
