@@ -172,7 +172,7 @@ const styles = () => ({
     color: '#137fbe',
   },
   checkboxRoot: {
-    color: '#000000',
+    color: '#344B5A',
     height: 12,
   },
   listItemGutters: {
