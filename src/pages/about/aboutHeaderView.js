@@ -28,9 +28,9 @@ const styles = () => ({
     height: '65px',
     width: '252px',
     color: '#0077E3',
-    fontFamily: 'Inter',
+    fontFamily: 'Lato',
     fontSize: '35px',
-    fontWeight: 500,
+    fontWeight: 'bold',
   },
 });
 

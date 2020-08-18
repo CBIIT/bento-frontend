@@ -4,7 +4,7 @@ import Easter from '../assets/header/headerGraphic.png';
 // globalHeaderImage: image 2200x100
 export default {
   globalHeaderLogo: 'https://raw.githubusercontent.com/CBIIT/bento-tools/master/src/components/assets/header/CTDC_Logo.svg',
-  globalHeaderLogoLink: 'https://frederick.cancer.gov/',
+  globalHeaderLogoLink: '/',
   globalHeaderLogoAltText: 'Bento Logo',
   globalHeaderImage: Easter,
 };
