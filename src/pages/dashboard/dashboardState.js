@@ -125,6 +125,10 @@ function getStatInit(input) {
   return initStats;
 }
 
+export function getFilteredStat(input) {
+  return getStatDataFromDashboardData(input, statsCount);
+}
+
 // This need to go to dashboard controller
 
 function fetchDashboard() {
@@ -140,8 +144,8 @@ function fetchDashboard() {
 }
 
 export function fetchAllDataForDataTable() {
-  return (dispatch) => {
-    client
+  return async (dispatch) => {
+    await client
       .query({
         query: DASHBOARD_TABLE_QUERY,
       })
@@ -165,6 +169,16 @@ export function fetchAllDataForDashboardDataTable() {
   };
 }
 
+export function AsyncFetchAllDataForDashboardDataTable() {
+  return async (dispatch, getState) => {
+    if (shouldFetchAllDataForDashboardData(getState())) {
+      await dispatch(fetchAllDataForDataTable());
+    }
+    // Let the calling code know there's nothing to wait for.
+    return Promise.resolve();
+  };
+}
+
 function shouldFetchDataForDashboardData(state) {
   // Incase state null when coming from arm detail and program detail
   return state === undefined ? true : !(state.dashboard.isFetched);
@@ -176,7 +190,7 @@ export function toggleCheckBox(payload) {
       await dispatch(fetchDashboard());
     }
     if (shouldFetchAllDataForDashboardData(getState())) {
-      await dispatch(fetchAllDataForDashboardDataTable());
+      await dispatch(AsyncFetchAllDataForDashboardDataTable());
     }
     dispatch(toggleCheckBoxAction(payload));
   };
@@ -188,7 +202,7 @@ export function singleCheckBox(payload) {
       await dispatch(fetchDashboard());
     }
     if (shouldFetchAllDataForDashboardData(getState())) {
-      await dispatch(fetchAllDataForDashboardDataTable());
+      await dispatch(AsyncFetchAllDataForDashboardDataTable());
     }
     dispatch(singleCheckBoxAction(payload));
   };
