@@ -330,6 +330,7 @@ export default {
         fontStyle: 'normal',
         fontSize: '11pt',
         fontWeight: 'bold',
+        paddingLeft: '20px',
         '&:first-child': {
           paddingLeft: '30px',
         },
@@ -387,7 +388,7 @@ export default {
         fontSize: '16px',
         fontFamily: 'Nunito',
         fontWeight: 'normal',
-        paddingLeft: '8px',
+        paddingLeft: '20px',
       },
       head: {
         fontSize: '0.95rem',

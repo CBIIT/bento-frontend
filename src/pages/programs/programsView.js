@@ -83,17 +83,23 @@ const Programs = ({ classes, data }) => {
     },
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <TableFooter>
-        <TableRow>
-          <TablePagination
-            className={count >= 11 ? classes.root : classes.noDisplay}
-            count={count}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
+        <div>
+          {count >= 11
+            ? (
+              <TableRow>
+                <TablePagination
+                  className={classes.root}
+                  count={count}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
               // eslint-disable-next-line no-shadow
-            onChangePage={(_, page) => changePage(page)}
-          />
-        </TableRow>
+                  onChangePage={(_, page) => changePage(page)}
+                />
+              </TableRow>
+            )
+            : ''}
+        </div>
       </TableFooter>
     ),
   });
@@ -175,9 +181,6 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#000',
     background: '#eee',
-  },
-  noDisplay: {
-    display: 'none',
   },
   header: {
     background: '#eee',
