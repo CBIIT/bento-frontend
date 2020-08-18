@@ -250,7 +250,7 @@ const styles = (theme) => ({
   innerContainer: {
     maxWidth: '1340px',
     margin: '0 auto',
-    paddingTop: '38px',
+    paddingTop: '50px',
     fontFamily: theme.custom.fontFamily,
     background: '#FFFF',
   },
@@ -362,7 +362,7 @@ const styles = (theme) => ({
     height: '255px',
     margin: '45px auto',
     '&:first-child': {
-      marginTop: '10px',
+      marginTop: '21px',
     },
   },
   fileCountContainer: {
