@@ -26,7 +26,7 @@ import PropertySubsection from '../../components/PropertySubsection/armDetailSub
 
 const FileCount = ({ num_files: numFiles, classes }) => (
   <div className={classes.widgetContainer}>
-    <div className={classes.widgetTitle}>Number of Files</div>
+    <div className={classes.numberOfFiles}>Number of Files</div>
 
     <Grid container className={classes.fileCountContainer}>
       <Grid item xs={12}>
@@ -359,7 +359,6 @@ const styles = (theme) => ({
     scrollbarColor: '#697270',
   },
   widgetContainer: {
-    width: '250px',
     height: '255px',
     margin: '45px auto',
     '&:first-child': {
@@ -376,7 +375,14 @@ const styles = (theme) => ({
   },
   widgetTitle: {
     textTransform: 'uppercase',
-    margin: '9px auto 10px 0',
+    marginTop: '9px',
+    color: '#0296C9',
+    fontSize: '15px',
+    fontFamily: theme.custom.fontFamily,
+  },
+  numberOfFiles: {
+    textTransform: 'uppercase',
+    marginBottom: '10px',
     color: '#0296C9',
     fontSize: '15px',
     fontFamily: theme.custom.fontFamily,
