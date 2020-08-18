@@ -84,7 +84,6 @@ const styles = (theme) => ({
     fontSize: '15px',
     lineHeight: '12px',
     letterSpacing: '0.017em',
-    fontWeight: '600',
     textTransform: 'uppercase',
   },
   content: {

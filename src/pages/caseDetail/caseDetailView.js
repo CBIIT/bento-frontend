@@ -97,96 +97,98 @@ const CaseDetail = ({ data, classes }) => {
     <>
       <StatsView data={stat} />
       <div className={classes.container}>
-        <div className={classes.header}>
-          <div className={classes.logo}>
-            <img
-              className={classes.caseIcon}
-              src={icon}
-              alt="Bento case detail header logo"
-            />
+        <div className={classes.innerContainer}>
+          <div className={classes.header}>
+            <div className={classes.logo}>
+              <img
+                className={classes.caseIcon}
+                src={icon}
+                alt="Bento case detail header logo"
+              />
 
-          </div>
-          <div className={classes.headerTitle}>
-            <div className={classes.headerMainTitle}>
-              {`${caseHeader.label} :`}
-              { data[caseHeader.dataField]
-                ? (
-                  <span className={classes.headerMainTitleTwo}>
-                    {' '}
-                    {data[caseHeader.dataField]}
-                  </span>
-                )
-                : (
-                  <Typography variant="h5" color="error" size="sm">
-                    {`"${caseHeader.dataField}" is not a valid property name`}
-                  </Typography>
-                )}
             </div>
-            <div className={classes.breadCrumb}>
-              {' '}
-              <CustomBreadcrumb data={breadCrumbJson} />
+            <div className={classes.headerTitle}>
+              <div className={classes.headerMainTitle}>
+                {`${caseHeader.label} :`}
+                { data[caseHeader.dataField]
+                  ? (
+                    <span className={classes.headerMainTitleTwo}>
+                      {' '}
+                      {data[caseHeader.dataField]}
+                    </span>
+                  )
+                  : (
+                    <Typography variant="h5" color="error" size="sm">
+                      {`"${caseHeader.dataField}" is not a valid property name`}
+                    </Typography>
+                  )}
+              </div>
+              <div className={classes.breadCrumb}>
+                {' '}
+                <CustomBreadcrumb data={breadCrumbJson} />
+              </div>
             </div>
           </div>
+
+          <Grid container spacing={1} className={classes.detailContainer}>
+            {/* Left panel */}
+            <Grid item sm={6} xs={12} className={classes.detailPanel}>
+              <div className={classes.innerPanel}>
+                <Grid container spacing={2}>
+                  {leftPanelSubsections.slice(0, 3).map((section) => (
+                    <Subsection
+                      key={section.sectionHeader}
+                      config={section}
+                      data={data}
+                    />
+                  ))}
+                </Grid>
+              </div>
+            </Grid>
+            {/* Left panel end */}
+            {/* Right panel */}
+            <Grid item sm={6} xs={12} className={classes.detailPanel}>
+              <div className={classes.innerPanel}>
+                <Grid container spacing={2}>
+                  {rightPanelSubsections.slice(0, 3).map((section) => (
+                    <Subsection
+                      key={section.sectionHeader}
+                      config={section}
+                      data={data}
+                    />
+                  ))}
+                </Grid>
+              </div>
+            </Grid>
+            {/* Right panel end */}
+          </Grid>
         </div>
-
-        <Grid container spacing={1} className={classes.detailContainer}>
-          {/* Left panel */}
-          <Grid item sm={6} xs={12} className={classes.detailPanel}>
-            <div className={classes.innerPanel}>
-              <Grid container spacing={2}>
-                {leftPanelSubsections.slice(0, 3).map((section) => (
-                  <Subsection
-                    key={section.sectionHeader}
-                    config={section}
-                    data={data}
-                  />
-                ))}
-              </Grid>
-            </div>
-          </Grid>
-          {/* Left panel end */}
-          {/* Right panel */}
-          <Grid item sm={6} xs={12} className={classes.detailPanel}>
-            <div className={classes.innerPanel}>
-              <Grid container spacing={2}>
-                {rightPanelSubsections.slice(0, 3).map((section) => (
-                  <Subsection
-                    key={section.sectionHeader}
-                    config={section}
-                    data={data}
-                  />
-                ))}
-              </Grid>
-            </div>
-          </Grid>
-          {/* Right panel end */}
-        </Grid>
       </div>
       {
-      tableConfig.display
-        ? (
-          <div id="table_case_detail" className={classes.tableContainer}>
-            <div className={classes.tableDiv}>
-              <div className={classes.tableTitle}>
-                <span className={classes.tableHeader}>{tableConfig.title}</span>
-              </div>
-              <Grid item xs={12}>
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
-                    <CustomDataTable
-                      data={data[tableConfig.filesField]}
-                      columns={columns}
-                      options={options(classes)}
-                    />
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Typography />
+        tableConfig.display
+          ? (
+            <div id="table_case_detail" className={classes.tableContainer}>
+              <div className={classes.tableDiv}>
+                <div className={classes.tableTitle}>
+                  <span className={classes.tableHeader}>{tableConfig.title}</span>
+                </div>
+                <Grid item xs={12}>
+                  <Grid container spacing={4}>
+                    <Grid item xs={12}>
+                      <CustomDataTable
+                        data={data[tableConfig.filesField]}
+                        columns={columns}
+                        options={options(classes)}
+                      />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Typography />
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
+              </div>
             </div>
-          </div>
-        ) : ''
+          ) : ''
       }
     </>
   );
@@ -194,7 +196,13 @@ const CaseDetail = ({ data, classes }) => {
 
 const styles = (theme) => ({
   container: {
-    padding: '38px 117px 0 117px',
+    backgroundColor: '#FFFFFF',
+    padding: '0 32px',
+  },
+  innerContainer: {
+    maxWidth: '1340px',
+    margin: '0 auto',
+    padding: '38px 0 0 0',
     fontFamily: theme.custom.fontFamily,
     background: '#FFFFFF',
   },

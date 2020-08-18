@@ -164,6 +164,7 @@ export function fetchAllDataForDataTable() {
 }
 
 function shouldFetchAllDataForDashboardData(state) {
+// Incase state null when coming from arm detail and program detail
   return state === undefined ? true : !(state.dashboard.isDataTableUptoDate);
 }
 
@@ -178,6 +179,7 @@ export function fetchAllDataForDashboardDataTable() {
 }
 
 function shouldFetchDataForDashboardData(state) {
+  // Incase state null when coming from arm detail and program detail
   return state === undefined ? true : !(state.dashboard.isFetched);
 }
 
@@ -195,6 +197,7 @@ export function toggleCheckBox(payload) {
 
 export function singleCheckBox(payload) {
   return async (dispatch, getState) => {
+    dispatch(postRequestFetchDataDashboard());
     if (shouldFetchDataForDashboardData(getState())) {
       await dispatch(fetchDashboard());
     }
@@ -211,7 +214,7 @@ export function fetchDataForDashboardDataTable() {
       if (shouldFetchAllDataForDashboardData(getState())) {
         setTimeout(() => {
           dispatch(fetchAllDataForDashboardDataTable());
-        }, 1000);
+        }, 2000);
       }
       return dispatch(fetchDashboard());
     }
@@ -236,6 +239,7 @@ export default function dashboardReducer(state = initialState, action) {
         : state.checkboxForAll.data;
       return {
         ...state,
+        isLoading: false,
         stats: getFilteredStat(tableData, dataTableFilters),
         checkbox: {
           data: updatedCheckboxData,
@@ -263,6 +267,7 @@ export default function dashboardReducer(state = initialState, action) {
         : state.checkboxForAll.data;
       return {
         ...state,
+        isCalulatingDashboard: false,
         stats: getFilteredStat(tableData, dataTableFilters),
         checkbox: {
           data: updatedCheckboxData,

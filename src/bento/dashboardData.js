@@ -256,6 +256,7 @@ export const DASHBOARD_QUERY = gql`{
       menopause_status
       age_at_index
       survival_time
+      lab_procedures
       files{
         file_id
       }
@@ -283,6 +284,7 @@ export const DASHBOARD_TABLE_QUERY = gql`{
       menopause_status
       age_at_index
       survival_time
+      lab_procedures
       files{
         file_id
       }

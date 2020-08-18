@@ -25,7 +25,6 @@ import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDo
 import {
   filterData,
   getDonutDataFromDashboardData,
-  getStatDataFromDashboardData,
 } from '../../utils/dashboardUtilFunctions';
 
 const ProgramView = ({ classes, data, theme }) => {
@@ -41,7 +40,7 @@ const ProgramView = ({ classes, data, theme }) => {
         function extraData(d) {
           return {
             diagnosis: getDonutDataFromDashboardData(d, 'diagnosis'),
-            file: getStatDataFromDashboardData(d, 'file'),
+            file: programData.num_files,
           };
         }(state.dashboard.subjectOverView.data.filter(
           (d) => (filterData(d,
@@ -95,10 +94,10 @@ const ProgramView = ({ classes, data, theme }) => {
   const stat = {
     numberOfPrograms: 1,
     numberOfStudies: 1,
-    numberOfSubjects: data.num_subjects,
-    numberOfSamples: data.num_samples,
-    numberOfLabProcedures: data.num_lab_procedures,
-    numberOfFiles: data.num_files,
+    numberOfSubjects: programData.num_subjects !== undefined ? programData.num_subjects : 'undefined',
+    numberOfSamples: programData.num_samples !== undefined ? programData.num_subjects : 'undefined',
+    numberOfLabProcedures: programData.num_lab_procedures !== undefined ? programData.num_subjects : 'undefined',
+    numberOfFiles: programData.num_files !== undefined ? programData.num_subjects : 'undefined',
   };
 
   const breadCrumbJson = [{
@@ -156,17 +155,23 @@ const ProgramView = ({ classes, data, theme }) => {
     },
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <TableFooter>
-        <TableRow>
-          <TablePagination
-            className={count >= 11 ? classes.root : classes.noDisplay}
-            count={count}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
+        <div>
+          {count >= 11
+            ? (
+              <TableRow>
+                <TablePagination
+                  className={classes.root}
+                  count={count}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
           // eslint-disable-next-line no-shadow
-            onChangePage={(_, page) => changePage(page)}
-          />
-        </TableRow>
+                  onChangePage={(_, page) => changePage(page)}
+                />
+              </TableRow>
+            )
+            : ''}
+        </div>
       </TableFooter>
     ),
   };
@@ -441,6 +446,8 @@ const styles = (theme) => ({
     textTransform: 'uppercase',
     fontFamily: 'Lato !important',
     fontWeight: '500 !important',
+    fontSize: '15px !important',
+    letterSpacing: '0.025em',
   },
   borderLeft: {
     borderLeft: '#81A6BA 1px solid',
@@ -488,9 +495,6 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#000',
     background: '#f3f3f3',
-  },
-  noDisplay: {
-    display: 'none',
   },
   header: {
     paddingLeft: '21px',
@@ -749,7 +753,7 @@ const styles = (theme) => ({
     paddingTop: '36px !important',
   },
   marginTopN37: {
-    marginTop: '8px',
+    marginTop: '15px',
   },
   tableCell1: {
     paddingLeft: '25px',
