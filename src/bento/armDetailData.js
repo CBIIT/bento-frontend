@@ -11,8 +11,6 @@ const subsections = [
   // Each object here represents a subsection in the panel
   // A maximum of 6 subsections are allowed
   {
-    sectionHeader: 'Arm Summary',
-    // sectionDesc: 'Some descriptions for arm summary',
     properties: [
       // Each object here represents a set of label:value pair of a property
       // A maximum of 10 properties are allowed
