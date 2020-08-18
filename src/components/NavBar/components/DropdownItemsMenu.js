@@ -27,10 +27,11 @@ const styles = () => ({
   paper: {
     background: '#142D64',
     width: '170px',
-    padding: '0px 16px 16px 16px',
+    padding: '0px 16px 16px 22px',
     position: 'absolute',
     marginTop: '-5px',
     borderRadius: '0',
+    marginLeft: '18px',
   },
   link: {
     textDecoration: 'none',
@@ -38,7 +39,7 @@ const styles = () => ({
     fontFamily: 'Lato',
     fontSize: '13px',
     fontWeight: '800',
-    lineSpacing: '1px',
+    lineHeight: '12px',
     display: 'block',
     marginTop: '13px',
     '&:hover': {

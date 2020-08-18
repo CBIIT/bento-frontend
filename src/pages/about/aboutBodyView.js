@@ -174,8 +174,10 @@ const styles = (theme) => ({
     display: 'block',
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: '24px',
     marginBottom: '70px',
+    color: '#033D6F',
+    fontSize: '28px',
+    fontFamily: 'Lato',
   },
   text: {
     // height: '476px',
@@ -190,7 +192,7 @@ const styles = (theme) => ({
     fontWeight: 'bold',
   },
   rightSection: {
-    padding: '8px 25px !important',
+    padding: '8px 25px 8px 0px !important',
     float: 'left',
   },
   leftSection: {
