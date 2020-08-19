@@ -104,7 +104,7 @@ const NavBar = ({
                     handleButtonClickEvent={handleButtonClickEvent}
                     clickedEl={clickedEl}
                     linkText={navButton.labelText}
-                    dropDownElements={navButton.dropDownLinks}
+                    dropDownElements={navButton.dropDownLinks.slice(0, 6)}
                   />
                 )
                 : (
