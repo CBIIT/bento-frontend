@@ -1,6 +1,6 @@
 import client from '../../utils/graphqlClient';
-import { DASHBOARD_QUERY, widgetsData, DASHBOARD_TABLE_QUERY } from '../../bento/dashboardData';
-import { statsData as statsCount } from '../../bento/stats';
+import { GET_DASHBOARD_DATA_QUERY, widgetsData, GET_DASHBOARD_TABLE_DATA_QUERY } from '../../bento/dashboardData';
+import { globalStatsData as statsCount } from '../../bento/stats';
 
 import {
   getStatDataFromDashboardData,
@@ -41,7 +41,7 @@ export const initialState = {
 
 export const TOGGLE_CHECKBOX = 'TOGGLE_CHECKBOX';
 export const RECEIVE_DASHBOARD = 'RECEIVE_DASHBOARD';
-export const DASHBOARD_QUERY_ERR = 'DASHBOARD_QUERY_ERR';
+export const GET_DASHBOARD_DATA_QUERY_ERR = 'GET_DASHBOARD_DATA_QUERY_ERR';
 export const READY_DASHBOARD = 'READY_DASHBOARD';
 export const REQUEST_DASHBOARD = 'REQUEST_DASHBOARD';
 export const SINGLE_CHECKBOX = 'SINGLE_CHECKBOX';
@@ -126,16 +126,7 @@ function getStatInit(input) {
 }
 
 export function getFilteredStat(input) {
-  const filteredStats = statsCount.reduce((acc, stat) => (
-    {
-      ...acc,
-      [stat.statAPI]:
-       getStatDataFromDashboardData(
-         input, stat.type, stat.datatable_field, stat.datatable_sub_field,
-       ),
-    }
-  ), {});
-  return filteredStats;
+  return getStatDataFromDashboardData(input, statsCount);
 }
 
 // This need to go to dashboard controller
@@ -145,21 +136,21 @@ function fetchDashboard() {
     dispatch(postRequestFetchDataDashboard());
     return client
       .query({
-        query: DASHBOARD_QUERY,
+        query: GET_DASHBOARD_DATA_QUERY,
       })
       .then((result) => dispatch(receiveDashboard(result)))
-      .catch((error) => dispatch(errorhandler(error, DASHBOARD_QUERY_ERR)));
+      .catch((error) => dispatch(errorhandler(error, GET_DASHBOARD_DATA_QUERY_ERR)));
   };
 }
 
 export function fetchAllDataForDataTable() {
-  return (dispatch) => {
-    client
+  return async (dispatch) => {
+    await client
       .query({
-        query: DASHBOARD_TABLE_QUERY,
+        query: GET_DASHBOARD_TABLE_DATA_QUERY,
       })
       .then((result) => dispatch(fetchAllDataForDashboardTable(result)))
-      .catch((error) => dispatch(errorhandler(error, DASHBOARD_QUERY_ERR)));
+      .catch((error) => dispatch(errorhandler(error, GET_DASHBOARD_DATA_QUERY_ERR)));
   };
 }
 
@@ -178,6 +169,16 @@ export function fetchAllDataForDashboardDataTable() {
   };
 }
 
+export function AsyncFetchAllDataForDashboardDataTable() {
+  return async (dispatch, getState) => {
+    if (shouldFetchAllDataForDashboardData(getState())) {
+      await dispatch(fetchAllDataForDataTable());
+    }
+    // Let the calling code know there's nothing to wait for.
+    return Promise.resolve();
+  };
+}
+
 function shouldFetchDataForDashboardData(state) {
   // Incase state null when coming from arm detail and program detail
   return state === undefined ? true : !(state.dashboard.isFetched);
@@ -189,7 +190,7 @@ export function toggleCheckBox(payload) {
       await dispatch(fetchDashboard());
     }
     if (shouldFetchAllDataForDashboardData(getState())) {
-      await dispatch(fetchAllDataForDashboardDataTable());
+      await dispatch(AsyncFetchAllDataForDashboardDataTable());
     }
     dispatch(toggleCheckBoxAction(payload));
   };
@@ -197,12 +198,11 @@ export function toggleCheckBox(payload) {
 
 export function singleCheckBox(payload) {
   return async (dispatch, getState) => {
-    dispatch(postRequestFetchDataDashboard());
     if (shouldFetchDataForDashboardData(getState())) {
       await dispatch(fetchDashboard());
     }
     if (shouldFetchAllDataForDashboardData(getState())) {
-      await dispatch(fetchAllDataForDashboardDataTable());
+      await dispatch(AsyncFetchAllDataForDashboardDataTable());
     }
     dispatch(singleCheckBoxAction(payload));
   };
@@ -240,7 +240,7 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        stats: getFilteredStat(tableData, dataTableFilters),
+        stats: getStatDataFromDashboardData(tableData, statsCount),
         checkbox: {
           data: updatedCheckboxData,
           defaultPanel: action.payload[0].groupName,
@@ -268,7 +268,7 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         isCalulatingDashboard: false,
-        stats: getFilteredStat(tableData, dataTableFilters),
+        stats: getStatDataFromDashboardData(tableData, statsCount),
         checkbox: {
           data: updatedCheckboxData,
         },
@@ -308,7 +308,7 @@ export default function dashboardReducer(state = initialState, action) {
 
         } : { ...state };
     }
-    case DASHBOARD_QUERY_ERR:
+    case GET_DASHBOARD_DATA_QUERY_ERR:
       // get action data
       return {
         ...state,

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 // --------------- Icons configuration --------------
-const icon = {
+const programListingIcon = {
   src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/programIcon.svg',
   alt: 'Bento program logo',
 };
@@ -26,44 +26,44 @@ const table = {
   // A maximum of 10 columns are allowed
   columns: [
     {
-      field: 'program_acronym',
-      label: 'Program Code',
+      dataField: 'program_acronym',
+      header: 'Program Code',
       link: '/program/{program_id}',
     },
     {
-      field: 'program_id',
-      label: 'Program ID',
+      dataField: 'program_id',
+      header: 'Program ID',
     },
     {
-      field: 'program_name',
-      label: 'Program Name',
+      dataField: 'program_name',
+      header: 'Program Name',
     },
     {
-      field: 'start_date',
-      label: 'Start Date',
+      dataField: 'start_date',
+      header: 'Start Date',
     },
     {
-      field: 'end_date',
-      label: 'End Date',
+      dataField: 'end_date',
+      header: 'End Date',
     },
     {
-      field: 'pubmed_id',
-      label: 'PubMed ID',
+      dataField: 'pubmed_id',
+      header: 'PubMed ID',
       link: 'https://pubmed.ncbi.nlm.nih.gov/{pubmed_id}',
     },
     {
-      field: 'num_studies',
-      label: 'Number of ARMs',
+      dataField: 'num_studies',
+      header: 'Number of ARMs',
     },
     {
-      field: 'num_subjects',
-      label: 'Associated Cases',
+      dataField: 'num_subjects',
+      header: 'Associated Cases',
     },
   ],
 };
 
 // --------------- GraphQL query - Retrieve program info --------------
-const PROGRAMS_QUERY = gql`{
+const GET_PROGRAMS_DATA_QUERY = gql`{
   programInfo {
  program_acronym
  program_id
@@ -78,8 +78,8 @@ const PROGRAMS_QUERY = gql`{
  `;
 
 export {
-  icon,
+  programListingIcon,
   externalLinkIcon,
   table,
-  PROGRAMS_QUERY,
+  GET_PROGRAMS_DATA_QUERY,
 };

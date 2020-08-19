@@ -16,17 +16,19 @@ import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
 import {
   header,
   subsections,
-  tableConfig,
+  table,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
-import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
+// import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
+
+import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 
 const FileCount = ({ num_files: numFiles, classes }) => (
   <div className={classes.widgetContainer}>
-    <div className={classes.widgetTitle}>Number of Files</div>
+    <div className={classes.numberOfFiles}>Number of Files</div>
 
     <Grid container className={classes.fileCountContainer}>
       <Grid item xs={12}>
@@ -56,8 +58,8 @@ const options = (classes) => ({
   viewColumns: false,
   pagination: true,
   sortOrder: {
-    name: tableConfig.defaultSortField,
-    direction: tableConfig.defaultSortDirection,
+    name: table.defaultSortField,
+    direction: table.defaultSortDirection,
   },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
@@ -80,13 +82,12 @@ const options = (classes) => ({
 const ArmDetail = ({ data, classes }) => {
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    // Update dashboard first
-    dispatch(fetchDataForDashboardDataTable());
-  }, []);
+  // React.useEffect(() => {
+  //   // Update dashboard first
+  //   dispatch(fetchDataForDashboardDataTable());
+  // }, []);
 
   const redirectTo = async () => {
-    await dispatch(fetchDataForDashboardDataTable());
     dispatch(singleCheckBox([{
       groupName: 'Arm',
       name: data.study_info,
@@ -95,7 +96,7 @@ const ArmDetail = ({ data, classes }) => {
     }]));
   };
 
-  const columns = tableConfig.columns.map((column, index) => (
+  const columns = table.columns.map((column, index) => (
     {
       name: column.dataField,
       label: column.header,
@@ -212,17 +213,17 @@ const ArmDetail = ({ data, classes }) => {
           </Grid>
           <div id="table_case_detail" className={classes.tableContainer}>
             <div className={classes.tableDiv}>
-              { tableConfig.display
+              { table.display
                 ? (
                   <>
                     <div className={classes.tableTitle}>
-                      <span className={classes.tableHeader}>{tableConfig.title}</span>
+                      <span className={classes.tableHeader}>{table.title}</span>
                     </div>
                     <Grid item xs={12}>
                       <Grid container spacing={4}>
                         <Grid item xs={12}>
                           <CustomDataTable
-                            data={data[tableConfig.filesField]}
+                            data={data[table.filesField]}
                             columns={columns.slice(0, 10)}
                             options={options(classes)}
                           />
@@ -250,7 +251,7 @@ const styles = (theme) => ({
   innerContainer: {
     maxWidth: '1340px',
     margin: '0 auto',
-    paddingTop: '38px',
+    paddingTop: '50px',
     fontFamily: theme.custom.fontFamily,
     background: '#FFFF',
   },
@@ -359,11 +360,10 @@ const styles = (theme) => ({
     scrollbarColor: '#697270',
   },
   widgetContainer: {
-    width: '250px',
     height: '255px',
     margin: '45px auto',
     '&:first-child': {
-      marginTop: '10px',
+      marginTop: '21px',
     },
   },
   fileCountContainer: {
@@ -376,7 +376,14 @@ const styles = (theme) => ({
   },
   widgetTitle: {
     textTransform: 'uppercase',
-    margin: '9px auto 10px 0',
+    marginTop: '9px',
+    color: '#0296C9',
+    fontSize: '15px',
+    fontFamily: theme.custom.fontFamily,
+  },
+  numberOfFiles: {
+    textTransform: 'uppercase',
+    marginBottom: '10px',
     color: '#0296C9',
     fontSize: '15px',
     fontFamily: theme.custom.fontFamily,

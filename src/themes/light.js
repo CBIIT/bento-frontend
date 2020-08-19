@@ -35,6 +35,7 @@ export default {
     fontFamily: 'Lato,"Open Sans", sans-serif',
     fontFamilyRaleway: "'Raleway', sans-serif",
     drawerWidth: '240px',
+    widgetDivider: '#E2E7EC',
   },
   palette: {
     primary: {
@@ -169,7 +170,7 @@ export default {
       contrastText: '#FFFFFF',
     },
     widgetBackground: {
-      main: '#FAFEFF',
+      main: '#FFFFFF',
       light: tinycolor(black)
         .lighten(lightenRate)
         .toHexString(),
@@ -177,7 +178,7 @@ export default {
         .darken(darkenRate)
         .toHexString(),
       contrastText: 'black',
-      lattice: '#E2E7EC',
+      contrastSwicthColor: '#CBCACA',
     },
     warning: {
       main: warning,
@@ -443,9 +444,6 @@ export default {
     MuiIconButton: {
       root: {
         padding: '5px',
-      },
-      label: {
-        color: '#344B5A',
       },
     },
     MuiTablePagination: {

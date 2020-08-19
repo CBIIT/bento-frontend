@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Button, withStyles,
 } from '@material-ui/core';
-import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+// import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import DropdownItemsMenu from './DropdownItemsMenu';
 
 const DropdownMenu = ({
@@ -41,7 +41,7 @@ const DropdownMenu = ({
         <span className={clickedEl === 'aboutMenu' ? classes.buttonRootClicked : ''}>
           { linkText }
         </span>
-        <ExpandMoreRoundedIcon className={classes.icon} />
+        {/* <ExpandMoreRoundedIcon className={classes.icon} /> */}
       </Button>
       {displayDropDownMenu ? <DropdownItemsMenu handleClick={dropdownMenuClickEvent} dropDownElements={dropDownElements} /> : ''}
     </div>

@@ -99,10 +99,9 @@ const styles = () => ({
     fontWeight: 'bold',
   },
   button: {
-    margin: '10px 2px',
     color: 'white',
     '& img': {
-      width: '50px',
+      width: '40px',
     },
   },
   container: {
@@ -134,9 +133,21 @@ const styles = () => ({
     width: '100%',
   },
   modelContainer: {
+    display: 'flex',
     maxWidth: '1440px',
-    margin: '-67px auto 60px auto',
+    margin: '-67px 40px 60px 40px',
     textAlign: 'center',
+    '@media (min-width: 1400px)': {
+      margin: '-67px auto 60px auto',
+    },
+  },
+  tools: {
+    maxWidth: '60px',
+    height: '168px',
+    padding: '4px',
+    marginTop: '100px',
+    background: '#7D92AE',
+    borderRadius: '23px 0px 0px 23px',
   },
 });
 

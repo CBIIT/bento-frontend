@@ -16,7 +16,7 @@ const success = '#3CD4A0';
 const info = '#3f2b2f';
 const tableHeader = '#ffffff';
 const black = 'black';
-const lochmara = '#3478A5';
+const lochmara = '#B7C5CF';
 const lightenRate = 7.5;
 const darkenRate = 15;
 const tableHeaderBorder = '#42779A 3px solid';
@@ -35,6 +35,7 @@ export default {
     fontFamily: 'Lato,"Open Sans", sans-serif',
     fontFamilyRaleway: "'Raleway', sans-serif",
     drawerWidth: '240px',
+    widgetDivider: '#181918',
   },
   palette: {
     primary: {
@@ -169,15 +170,15 @@ export default {
       contrastText: '#FFFFFF',
     },
     widgetBackground: {
-      main: '#2C3038',
+      main: '#3A3B3B',
       light: tinycolor(black)
         .lighten(lightenRate)
         .toHexString(),
       dark: tinycolor(black)
         .darken(darkenRate)
         .toHexString(),
-      contrastText: 'white',
-      lattice: '#24292f',
+      contrastText: '#CBCACA',
+      contrastSwicthColor: '#60479D',
     },
     warning: {
       main: warning,
@@ -442,9 +443,6 @@ export default {
     MuiIconButton: {
       root: {
         padding: '5px',
-      },
-      label: {
-        color: '#344B5A',
       },
     },
     MuiTablePagination: {

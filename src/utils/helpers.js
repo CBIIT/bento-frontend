@@ -13,7 +13,7 @@ export default function manipultateLinks(tableData) {
       } else {
         tableData[index].externalLink = true;
       }
-      const arrayIndex = tableData.findIndex((p) => p.field === linkKey);
+      const arrayIndex = tableData.findIndex((p) => p.dataField === linkKey);
       tableData[index].actualLink = linktext;
       tableData[index].actualLinkId = arrayIndex;
     }

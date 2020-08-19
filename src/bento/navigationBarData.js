@@ -18,7 +18,7 @@ export default [
   {
     labelText: 'about',
     type: 'dropdown',
-    dropDonwLinks: [
+    dropDownLinks: [
       {
         labelText: 'Bento',
         link: '/bento',

@@ -7,7 +7,7 @@ const caseHeader = {
 };
 
 // --------------- Data panel configuration --------------
-const leftPanelSubsections = [
+const leftPanel = [
   // Each object here represents a subsection in the panel
   // A maximum of 3 subsections are allowed
   {
@@ -111,7 +111,7 @@ const leftPanelSubsections = [
   },
 ];
 
-const rightPanelSubsections = [
+const rightPanel = [
   // Each object here represents a subsection in the panel
   // A maximum of 3 subsections are allowed
   {
@@ -176,7 +176,7 @@ const rightPanelSubsections = [
 
 // --------------- File table configuration --------------
 
-const tableConfig = {
+const table = {
   // Set 'display' to false to hide the table entirely
   display: true,
   // Table title
@@ -280,8 +280,8 @@ export {
   caseHeader,
   dataRoot,
   caseIDField,
-  leftPanelSubsections,
-  rightPanelSubsections,
-  tableConfig,
+  leftPanel,
+  rightPanel,
+  table,
   GET_CASE_DETAIL_DATA_QUERY,
 };

@@ -4,40 +4,40 @@ import gql from 'graphql-tag';
 // A maximum of 12 facetSearchData are allowed
 export const facetSearchData = [
   {
-    group: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'program', show: true,
+    label: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'program', show: true,
   },
   {
-    group: 'Arm', field: 'group', api: 'subjectCountByStudy', datafield: 'study_info', show: true,
+    label: 'Arm', field: 'group', api: 'subjectCountByStudy', datafield: 'study_info', show: true,
   },
   {
-    group: 'Diagnosis', field: 'group', api: 'subjectCountByDiagnoses', datafield: 'diagnosis', show: true,
+    label: 'Diagnosis', field: 'group', api: 'subjectCountByDiagnoses', datafield: 'diagnosis', show: true,
   },
   {
-    group: 'Recurrence Score', field: 'group', api: 'subjectCountByRecurrenceScore', datafield: 'recurrence_score', show: true,
+    label: 'Recurrence Score', field: 'group', api: 'subjectCountByRecurrenceScore', datafield: 'recurrence_score', show: true,
   },
   {
-    group: 'Tumor Size', field: 'group', api: 'subjectCountByTumorSize', datafield: 'tumor_size', show: true,
+    label: 'Tumor Size', field: 'group', api: 'subjectCountByTumorSize', datafield: 'tumor_size', show: true,
   },
   {
-    group: 'Chemotherapy Regimen', field: 'group', api: 'subjectCountByChemotherapyRegimen', datafield: 'chemotherapy', show: true,
+    label: 'Chemotherapy Regimen', field: 'group', api: 'subjectCountByChemotherapyRegimen', datafield: 'chemotherapy', show: true,
   },
   {
-    group: 'Tumor Grade', field: 'group', api: 'subjectCountByTumorGrade', datafield: 'tumor_grade', show: true,
+    label: 'Tumor Grade', field: 'group', api: 'subjectCountByTumorGrade', datafield: 'tumor_grade', show: true,
   },
   {
-    group: 'ER Status', field: 'group', api: 'subjectCountByErStatus', datafield: 'er_status', show: true,
+    label: 'ER Status', field: 'group', api: 'subjectCountByErStatus', datafield: 'er_status', show: true,
   },
   {
-    group: 'PR Status', field: 'group', api: 'subjectCountByPrStatus', datafield: 'pr_status', show: true,
+    label: 'PR Status', field: 'group', api: 'subjectCountByPrStatus', datafield: 'pr_status', show: true,
   },
   {
-    group: 'Chemotherapy', field: 'group', api: 'subjectCountByChemotherapyRegimen', datafield: 'chemotherapy', show: true,
+    label: 'Chemotherapy', field: 'group', api: 'subjectCountByChemotherapyRegimen', datafield: 'chemotherapy', show: true,
   },
   {
-    group: 'Endocrine Therapy', field: 'group', api: 'subjectCountByEndocrineTherapy', datafield: 'endocrine_therapy', show: true,
+    label: 'Endocrine Therapy', field: 'group', api: 'subjectCountByEndocrineTherapy', datafield: 'endocrine_therapy', show: true,
   },
   {
-    group: 'Menopause Status', field: 'group', api: 'subjectCountByMenopauseStatus', datafield: 'menopause_status', show: true,
+    label: 'Menopause Status', field: 'group', api: 'subjectCountByMenopauseStatus', datafield: 'menopause_status', show: true,
   },
 ];
 
@@ -101,72 +101,72 @@ export const dashboardTable = {
   tableData: [
     // A maximum of 10 columns (tableData) are allowed
     {
-      field: 'subject_id',
-      label: 'Case ID',
+      dataField: 'subject_id',
+      header: 'Case ID',
       sort: 'asc',
       link: '/case/{subject_id}',
       primary: true,
       display: true,
     },
     {
-      field: 'program',
-      label: 'Program Code',
+      dataField: 'program',
+      header: 'Program Code',
       sort: 'asc',
       link: '/program/{program_id}',
       display: true,
     },
     {
-      field: 'program_id',
-      label: 'Program ID',
+      dataField: 'program_id',
+      header: 'Program ID',
       sort: 'asc',
       display: false,
     },
     {
-      field: 'study_acronym',
-      label: 'Arm',
+      dataField: 'study_acronym',
+      header: 'Arm',
       sort: 'asc',
       link: '/arm/{study_acronym}',
       display: true,
     },
     {
-      field: 'diagnosis',
-      label: 'Diagnosis',
+      dataField: 'diagnosis',
+      header: 'Diagnosis',
       sort: 'asc',
       display: true,
     },
     {
-      field: 'recurrence_score',
-      label: 'Recurrence Score',
+      dataField: 'recurrence_score',
+      header: 'Recurrence Score',
       sort: 'asc',
       display: true,
     },
     {
-      field: 'tumor_size',
-      label: 'Tumor Size (cm)',
+      dataField: 'tumor_size',
+      header: 'Tumor Size (cm)',
       sort: 'asc',
       display: true,
     },
     {
-      field: 'er_status',
-      label: 'ER Status',
+      dataField: 'er_status',
+      header: 'ER Status',
       sort: 'asc',
       display: true,
     },
     {
-      field: 'pr_status',
-      label: 'PR Status',
+      dataField: 'pr_status',
+      header: 'PR Status',
       sort: 'asc',
       display: true,
     },
     {
-      field: 'age_at_index',
-      label: 'Age (years)',
+      dataField: 'age_at_index',
+      header: 'Age (years)',
       sort: 'asc',
       display: true,
     },
     {
-      field: 'survival_time',
-      label: 'Survival (days)',
+      dataField: 'survival_time',
+      header: 'Survival (days)',
       sort: 'asc',
       display: true,
     },
@@ -174,7 +174,7 @@ export const dashboardTable = {
 };
 
 // --------------- Dashboard Query configuration --------------
-export const DASHBOARD_QUERY = gql`{
+export const GET_DASHBOARD_DATA_QUERY = gql`{
   numberOfPrograms
   numberOfStudies
   numberOfSubjects
@@ -264,7 +264,7 @@ export const DASHBOARD_QUERY = gql`{
   }`;
 
 // --------------- Dashboard Query configuration --------------
-export const DASHBOARD_TABLE_QUERY = gql`{
+export const GET_DASHBOARD_TABLE_DATA_QUERY = gql`{
 
   subjectOverViewPaged(first: 1000000) {
       subject_id

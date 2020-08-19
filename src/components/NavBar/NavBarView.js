@@ -104,14 +104,14 @@ const NavBar = ({
                     handleButtonClickEvent={handleButtonClickEvent}
                     clickedEl={clickedEl}
                     linkText={navButton.labelText}
-                    dropDownElements={navButton.dropDonwLinks}
+                    dropDownElements={navButton.dropDownLinks.slice(0, 6)}
                   />
                 )
                 : (
                   <Button id="button_navbar_navButton" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
                     <NavLink
                       className={classes.firstLink}
-                      activeStyle={{ borderBottom: '1.5px solid  #FFFFFF' }}
+                      activeStyle={{ borderBottom: '1px solid  #FFFFFF' }}
                       to={navButton.link ? navButton.link : '/'}
                       onClick={() => handleButtonClickEvent(`${navButton.labelText}`)}
                     >

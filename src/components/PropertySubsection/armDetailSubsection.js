@@ -27,42 +27,24 @@ const PropertyItem = ({
 const PropertySubsection = ({ section: config, data, classes }) => {
   const properties = prepareLinks(config.properties, data);
   return (
-    <Grid item container className={classes.subsection}>
-      <Grid item xs={12}>
-        <span className={classes.detailContainerHeader}>{config.sectionHeader}</span>
-      </Grid>
-      {
-        config.sectionDesc
-          ? (
-            <Grid item container className={classes.descriptionPart} xs={12}>
-              <Grid item><span>{config.sectionDesc}</span></Grid>
-            </Grid>
-          ) : (
-            <Grid item className={classes.descriptionPart} xs={12} />
-          )
-      }
-      <Grid item xs={12} className={classes.propertyPanel}>
-        <Grid container spacing={4} direction="column">
-          {properties.slice(0, 10).map((prop, index) => (
-            <PropertyItem
-              key={index}
-              label={prop.label}
-              value={data[prop.dataField]}
-              link={prop.link}
-              labelLink={prop.labelLink}
-              classes={classes}
-            />
-          ))}
-        </Grid>
+    <Grid item xs={12} className={classes.propertyPanel}>
+      <Grid container spacing={4} direction="column">
+        {properties.slice(0, 10).map((prop, index) => (
+          <PropertyItem
+            key={index}
+            label={prop.label}
+            value={data[prop.dataField]}
+            link={prop.link}
+            labelLink={prop.labelLink}
+            classes={classes}
+          />
+        ))}
       </Grid>
     </Grid>
   );
 };
 
 const styles = (theme) => ({
-  subsection: {
-    marginTop: '20px',
-  },
   detailContainerHeader: {
     textTransform: 'uppercase',
     fontFamily: 'Lato',
@@ -76,7 +58,7 @@ const styles = (theme) => ({
     fontSize: '14px',
   },
   propertyPanel: {
-    marginTop: '15px',
+    marginTop: '30px',
   },
   title: {
     color: '#0296C9',
