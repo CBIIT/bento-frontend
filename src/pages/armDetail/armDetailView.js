@@ -19,7 +19,9 @@ import {
   table,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
-import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
+// import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
+
+import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
@@ -80,13 +82,12 @@ const options = (classes) => ({
 const ArmDetail = ({ data, classes }) => {
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    // Update dashboard first
-    dispatch(fetchDataForDashboardDataTable());
-  }, []);
+  // React.useEffect(() => {
+  //   // Update dashboard first
+  //   dispatch(fetchDataForDashboardDataTable());
+  // }, []);
 
   const redirectTo = async () => {
-    await dispatch(fetchDataForDashboardDataTable());
     dispatch(singleCheckBox([{
       groupName: 'Arm',
       name: data.study_info,
