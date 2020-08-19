@@ -12,7 +12,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
-  table, icon, externalLinkIcon,
+  table, programListingIcon, externalLinkIcon,
 } from '../../bento/programData';
 import manipultateLinks from '../../utils/helpers';
 import Stats from '../../components/Stats/AllStatsController';
@@ -39,8 +39,8 @@ const Programs = ({ classes, data }) => {
   };
 
   const columns = updatedData.slice(0, 10).map((column) => ({
-    name: column.field,
-    label: column.label,
+    name: column.dataField,
+    label: column.header,
     options: {
       display: column.display ? column.display : true,
       filter: false,
@@ -58,7 +58,7 @@ const Programs = ({ classes, data }) => {
                 />
               </span>
             )
-              : column.field === 'num_subjects' ? <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo('TAILORx')}>{value}</Link>
+              : column.dataField === 'num_subjects' ? <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo('TAILORx')}>{value}</Link>
                 : `${value}`
 }
         </div>
@@ -112,8 +112,8 @@ const Programs = ({ classes, data }) => {
           <div className={classes.header}>
             <div className={classes.logo}>
               <img
-                src={icon.src}
-                alt={icon.alt}
+                src={programListingIcon.src}
+                alt={programListingIcon.alt}
               />
 
             </div>

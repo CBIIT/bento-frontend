@@ -16,9 +16,9 @@ import Subsection from '../../components/PropertySubsection/caseDetailSubsection
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import {
   caseHeader,
-  leftPanelSubsections,
-  rightPanelSubsections,
-  tableConfig,
+  leftPanel,
+  rightPanel,
+  table,
 } from '../../bento/caseDetailData';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
@@ -33,8 +33,8 @@ const options = (classes) => ({
   viewColumns: false,
   pagination: true,
   sortOrder: {
-    name: tableConfig.defaultSortField,
-    direction: tableConfig.defaultSortDirection,
+    name: table.defaultSortField,
+    direction: table.defaultSortDirection,
   },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
@@ -68,7 +68,7 @@ const CaseDetail = ({ data, classes }) => {
     numberOfSubjects: 1,
     numberOfSamples: data.num_samples,
     numberOfLabProcedures: data.num_lab_procedures,
-    numberOfFiles: data[tableConfig.filesField].length,
+    numberOfFiles: data[table.filesField].length,
   };
 
   const breadCrumbJson = [{
@@ -77,7 +77,7 @@ const CaseDetail = ({ data, classes }) => {
     isALink: true,
   }];
 
-  const columns = tableConfig.columns.slice(0, 10).map((column, index) => (
+  const columns = table.columns.slice(0, 10).map((column, index) => (
     {
       name: column.dataField,
       label: column.header,
@@ -135,7 +135,7 @@ const CaseDetail = ({ data, classes }) => {
             <Grid item sm={6} xs={12} className={classes.detailPanel}>
               <div className={classes.innerPanel}>
                 <Grid container spacing={2}>
-                  {leftPanelSubsections.slice(0, 3).map((section) => (
+                  {leftPanel.slice(0, 3).map((section) => (
                     <Subsection
                       key={section.sectionHeader}
                       config={section}
@@ -150,7 +150,7 @@ const CaseDetail = ({ data, classes }) => {
             <Grid item sm={6} xs={12} className={classes.detailPanel}>
               <div className={classes.innerPanel}>
                 <Grid container spacing={2}>
-                  {rightPanelSubsections.slice(0, 3).map((section) => (
+                  {rightPanel.slice(0, 3).map((section) => (
                     <Subsection
                       key={section.sectionHeader}
                       config={section}
@@ -165,18 +165,18 @@ const CaseDetail = ({ data, classes }) => {
         </div>
       </div>
       {
-        tableConfig.display
+        table.display
           ? (
             <div id="table_case_detail" className={classes.tableContainer}>
               <div className={classes.tableDiv}>
                 <div className={classes.tableTitle}>
-                  <span className={classes.tableHeader}>{tableConfig.title}</span>
+                  <span className={classes.tableHeader}>{table.title}</span>
                 </div>
                 <Grid item xs={12}>
                   <Grid container spacing={4}>
                     <Grid item xs={12}>
                       <CustomDataTable
-                        data={data[tableConfig.filesField]}
+                        data={data[table.filesField]}
                         columns={columns}
                         options={options(classes)}
                       />

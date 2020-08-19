@@ -92,8 +92,8 @@ const Cases = ({ classes, data }) => {
   const updatedTableWithLinks = manipultateLinks(displayTableColumns);
 
   const columns = updatedTableWithLinks.map((column) => ({
-    name: column.field,
-    label: column.label,
+    name: column.dataField,
+    label: column.header,
     options: {
       display: column.display ? column.display : false,
       filter: false,

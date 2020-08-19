@@ -11,8 +11,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { Link } from 'react-router-dom';
 import {
   pageTitle, table, externalLinkIcon,
-  icon, breadCrumb, aggregateCount,
-  pageSubTitle, leftPanelattributes, rightpannel,
+  programDetailIcon, breadCrumb, aggregateCount,
+  pageSubTitle, leftPanel, rightPanel,
 } from '../../bento/programDetailData';
 import manipultateLinks from '../../utils/helpers';
 import StatsView from '../../components/Stats/StatsView';
@@ -107,11 +107,11 @@ const ProgramView = ({ classes, data, theme }) => {
   }];
 
   const updatedTableData = manipultateLinks(table.columns);
-  const updatedAttributesData = manipultateLinks(leftPanelattributes.data);
+  const updatedAttributesData = manipultateLinks(leftPanel.attributes);
 
   const columns = updatedTableData.slice(0, 10).map((column) => ({
-    name: column.field,
-    label: column.label,
+    name: column.dataField,
+    label: column.header,
     options: {
       display: column.display ? column.display : true,
       filter: false,
@@ -129,7 +129,7 @@ const ProgramView = ({ classes, data, theme }) => {
                 />
               </span>
             )
-              : column.field === 'num_subjects' ? (
+              : column.dataField === 'num_subjects' ? (
                 <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectToArm(`${tableMeta.rowData[0]}: ${tableMeta.rowData[1]}`)}>{value}</Link>
               )
                 : `${value}`
@@ -183,8 +183,8 @@ const ProgramView = ({ classes, data, theme }) => {
         <div className={classes.header}>
           <div className={classes.logo}>
             <img
-              src={icon.src}
-              alt={icon.alt}
+              src={programDetailIcon.src}
+              alt={programDetailIcon.alt}
             />
 
           </div>
@@ -196,14 +196,14 @@ const ProgramView = ({ classes, data, theme }) => {
                 <span>
                   {' '}
                   {' '}
-                  {programData[pageTitle.field]}
+                  {programData[pageTitle.dataField]}
                 </span>
               </span>
             </div>
             <div className={cn(classes.headerMSubTitle, classes.headerSubTitleCate)}>
               <span>
                 {' '}
-                {programData[pageSubTitle.field]}
+                {programData[pageSubTitle.dataField]}
               </span>
 
             </div>
@@ -223,7 +223,7 @@ const ProgramView = ({ classes, data, theme }) => {
                   <span className={classes.headerButtonColumn}>{': '}</span>
                   <span className={classes.headerButtonLinkNumber}>
 
-                    {programData[aggregateCount.field]}
+                    {programData[aggregateCount.dataField]}
 
                   </span>
                 </Link>
@@ -250,9 +250,9 @@ const ProgramView = ({ classes, data, theme }) => {
                                 {' '}
                                 <Link
                                   className={classes.link}
-                                  to={`${attribute.actualLink}${programData[updatedAttributesData[attribute.actualLinkId].field]}`}
+                                  to={`${attribute.actualLink}${programData[updatedAttributesData[attribute.actualLinkId].dataField]}`}
                                 >
-                                  {programData[attribute.field]}
+                                  {programData[attribute.dataField]}
                                 </Link>
                                 {' '}
                               </span>
@@ -271,12 +271,12 @@ const ProgramView = ({ classes, data, theme }) => {
                                 <span className={classes.content}>
                                   {' '}
                                   <a
-                                    href={`${attribute.actualLink}${programData[updatedAttributesData[attribute.actualLinkId].field]}`}
+                                    href={`${attribute.actualLink}${programData[updatedAttributesData[attribute.actualLinkId].dataField]}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={classes.link}
                                   >
-                                    {programData[attribute.field]}
+                                    {programData[attribute.dataField]}
                                   </a>
                                   <img
                                     src={externalLinkIcon.src}
@@ -294,7 +294,7 @@ const ProgramView = ({ classes, data, theme }) => {
                                 <span
                                   className={classes.detailContainerHeaderLink}
                                 >
-                                  <a href={`${programData[attribute.field]}`} rel="noopener noreferrer">{attribute.label}</a>
+                                  <a href={`${programData[attribute.dataField]}`} rel="noopener noreferrer">{attribute.label}</a>
                                 </span>
                               </div>
                             )
@@ -304,7 +304,7 @@ const ProgramView = ({ classes, data, theme }) => {
                                   <span
                                     className={classes.detailContainerHeaderLink}
                                   >
-                                    <a href={`${programData[attribute.field]}`} target="_blank" rel="noopener noreferrer">{attribute.label}</a>
+                                    <a href={`${programData[attribute.dataField]}`} target="_blank" rel="noopener noreferrer">{attribute.label}</a>
                                     <img
                                       src={externalLinkIcon.src}
                                       alt={externalLinkIcon.alt}
@@ -323,7 +323,7 @@ const ProgramView = ({ classes, data, theme }) => {
                                   <div>
                                     <span className={classes.content}>
                                       {' '}
-                                      {programData[attribute.field]}
+                                      {programData[attribute.dataField]}
                                       {' '}
                                     </span>
                                   </div>
@@ -344,14 +344,14 @@ const ProgramView = ({ classes, data, theme }) => {
               xs={12}
             >
               <Grid container spacing={16} direction="row" className={classes.detailContainerRight}>
-                { rightpannel.widjet[0].display ? (
+                { rightPanel.widget[0].display ? (
                   <Grid
                     item
                     xs={12}
                     className={classes.marginTopN37}
                   >
                     <Widget
-                      title={rightpannel.widjet[0].label}
+                      title={rightPanel.widget[0].label}
                       upperTitle
                       bodyClass={classes.fullHeightBody}
                       className={classes.card}
@@ -360,7 +360,7 @@ const ProgramView = ({ classes, data, theme }) => {
                       noPaddedTitle
                     >
                       <CustomActiveDonut
-                        data={widgetData[rightpannel.widjet[0].field]}
+                        data={widgetData[rightPanel.widget[0].dataField]}
                         width={400}
                         height={225}
                         innerRadius={50}
@@ -373,23 +373,23 @@ const ProgramView = ({ classes, data, theme }) => {
                   </Grid>
                 ) : ''}
 
-                { rightpannel.files[0].display ? (
+                { rightPanel.files[0].display ? (
                   <Grid item xs={12}>
                     <div className={classes.fileContainer}>
                       <span
                         className={classes.detailContainerHeader}
                       >
-                        {rightpannel.files[0].label}
+                        {rightPanel.files[0].label}
                       </span>
                       <div className={classes.fileContent}>
                         <div className={classes.fileIcon}>
                           <img
-                            src={rightpannel.files[0].fileIconSrc}
-                            alt={rightpannel.files[0].fileIconAlt}
+                            src={rightPanel.files[0].fileIconSrc}
+                            alt={rightPanel.files[0].fileIconAlt}
                           />
                         </div>
                         <div className={classes.fileCount}>
-                          {programData[rightpannel.files[0].field]}
+                          {programData[rightPanel.files[0].dataField]}
                         </div>
                       </div>
                     </div>
@@ -670,7 +670,7 @@ const styles = (theme) => ({
   tableDiv: {
     maxWidth: '1340px',
     margin: 'auto',
-    paddingTop: '53px',
+    paddingTop: '65px',
   },
 
   headerButtonLink: {

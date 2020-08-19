@@ -43,7 +43,7 @@ const subsections = [
 
 // --------------- File table configuration --------------
 
-const tableConfig = {
+const table = {
   // Set 'display' to false to hide the table entirely
   display: false,
   // Table title
@@ -126,6 +126,6 @@ export {
   dataRoot,
   armIDField,
   subsections,
-  tableConfig,
+  table,
   GET_ARM_DETAIL_DATA_QUERY,
 };

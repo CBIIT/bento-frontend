@@ -358,7 +358,7 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
 export function customCheckBox(data) {
   return (
     facetSearchData.map((mapping) => ({
-      groupName: mapping.group,
+      groupName: mapping.label,
       checkboxItems: transformAPIDataIntoCheckBoxData(data[mapping.api], mapping.field),
       datafield: mapping.datafield,
       show: mapping.show,
