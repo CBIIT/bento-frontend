@@ -40,7 +40,7 @@ export default {
       ],
     },
   ],
-  nci_links: [
+  global_footer_links: [
     {
       text: 'U.S. Department of Health and Human Services',
       link: 'https://www.hhs.gov',
