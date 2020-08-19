@@ -95,9 +95,9 @@ const ProgramView = ({ classes, data, theme }) => {
     numberOfPrograms: 1,
     numberOfStudies: 1,
     numberOfSubjects: programData.num_subjects !== undefined ? programData.num_subjects : 'undefined',
-    numberOfSamples: programData.num_samples !== undefined ? programData.num_subjects : 'undefined',
-    numberOfLabProcedures: programData.num_lab_procedures !== undefined ? programData.num_subjects : 'undefined',
-    numberOfFiles: programData.num_files !== undefined ? programData.num_subjects : 'undefined',
+    numberOfSamples: programData.num_samples !== undefined ? programData.num_samples : 'undefined',
+    numberOfLabProcedures: programData.num_lab_procedures !== undefined ? programData.num_lab_procedures : 'undefined',
+    numberOfFiles: programData.num_files !== undefined ? programData.num_files : 'undefined',
   };
 
   const breadCrumbJson = [{
