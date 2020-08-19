@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { globalStatsData as statsCount } from '../../bento/stats';
+import { globalStatsData as statsCount } from '../../bento/globalStatsData';
 
 import {
   withStyles,
