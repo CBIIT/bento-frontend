@@ -670,7 +670,7 @@ const styles = (theme) => ({
   tableDiv: {
     maxWidth: '1340px',
     margin: 'auto',
-    paddingTop: '53px',
+    paddingTop: '65px',
   },
 
   headerButtonLink: {
