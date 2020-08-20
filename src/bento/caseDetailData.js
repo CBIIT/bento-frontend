@@ -20,7 +20,7 @@ const leftPanel = [
         dataField: 'program_acronym',
         // link property specify URL value should link to
         // space holder "{program_id}" will be replaced by actual value in the property program_id
-        link: 'https://google/{program_id}',
+        link: '/program/{program_id}',
         // labelLink property specify URL label should link to
         // labelLink: '/programs',
         // external links must have URL scheme part such as "https://"
