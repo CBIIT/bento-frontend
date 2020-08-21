@@ -7,7 +7,8 @@ export default {
   footerStaticText: 'NIH … Turning Discovery Into Health®',
   // A maximum of 3 Subsections (link_sections) are allowed
   // A maximum of 4 Subsection Links ('items' under link_sections) are allowed
-  // A maximum of 4 Anchor Links (nci_links) are allowed
+  // A maximum of 4 Anchor Links (global_footer_links) are allowed
+  // Ideal size for icon is 20x20 px
   link_sections: [
     {
       title: 'About Bento',
