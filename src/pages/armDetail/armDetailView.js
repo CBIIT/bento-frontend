@@ -378,14 +378,14 @@ const styles = (theme) => ({
     textTransform: 'uppercase',
     marginTop: '9px',
     color: '#0296C9',
-    fontSize: '15px',
+    fontSize: '17px !important',
     fontFamily: theme.custom.fontFamily,
   },
   numberOfFiles: {
     textTransform: 'uppercase',
     marginBottom: '10px',
     color: '#0296C9',
-    fontSize: '15px',
+    fontSize: '17px',
     fontFamily: theme.custom.fontFamily,
   },
   fileCountText: {

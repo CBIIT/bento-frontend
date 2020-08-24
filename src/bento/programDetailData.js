@@ -122,7 +122,7 @@ const table = {
     },
     {
       dataField: 'num_subjects',
-      header: 'Cases',
+      header: 'Associated Cases',
     },
   ],
 };
