@@ -63,7 +63,7 @@ const styles = (theme) => ({
   title: {
     color: '#0296C9',
     fontFamily: theme.custom.fontFamily,
-    fontSize: '15px',
+    fontSize: '17px',
     lineHeight: '12px',
     letterSpacing: '0.017em',
     textTransform: 'uppercase',

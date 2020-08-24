@@ -446,7 +446,7 @@ const styles = (theme) => ({
     textTransform: 'uppercase',
     fontFamily: 'Lato !important',
     fontWeight: '500 !important',
-    fontSize: '15px !important',
+    fontSize: '17px !important',
     letterSpacing: '0.025em',
   },
   borderLeft: {
@@ -604,6 +604,7 @@ const styles = (theme) => ({
   detailContainer: {
     maxWidth: '1340px',
     margin: 'auto',
+    marginBlockEnd: '24px',
     paddingTop: '24px',
     paddingLeft: '36px',
     fontFamily: theme.custom.fontFamily,
@@ -617,7 +618,7 @@ const styles = (theme) => ({
   detailContainerHeader: {
     textTransform: 'uppercase',
     fontFamily: 'Lato',
-    fontSize: '15px',
+    fontSize: '17px',
     letterSpacing: '0.025em',
     color: '#0296C9',
   },
@@ -670,7 +671,8 @@ const styles = (theme) => ({
   tableDiv: {
     maxWidth: '1340px',
     margin: 'auto',
-    paddingTop: '65px',
+    paddingTop: '50px',
+    paddingLeft: '30px',
   },
 
   headerButtonLink: {

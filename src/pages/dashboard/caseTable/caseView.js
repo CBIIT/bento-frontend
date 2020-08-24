@@ -249,7 +249,7 @@ const Cases = ({ classes, data }) => {
 const styles = (theme) => ({
   saveButtonDiv: {
     margin: '-26px 25px 40px 0',
-    // paddingLeft: '25px',
+    position: 'relative',
   },
   saveButton: {
     color: '#FFFF',

@@ -38,17 +38,23 @@ const options = (classes) => ({
   },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
-      <TableRow>
-        <TablePagination
-          className={count >= 11 ? classes.root : classes.noDisplay}
-          count={count}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
+      <div>
+        {count >= 11
+          ? (
+            <TableRow>
+              <TablePagination
+                className={classes.root}
+                count={count}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
           // eslint-disable-next-line no-shadow
-          onChangePage={(_, page) => changePage(page)}
-        />
-      </TableRow>
+                onChangePage={(_, page) => changePage(page)}
+              />
+            </TableRow>
+          )
+          : ''}
+      </div>
     </TableFooter>
   ),
 });
@@ -213,9 +219,6 @@ const styles = (theme) => ({
     color: '#000',
     background: '#f3f3f3',
   },
-  noDisplay: {
-    display: 'none',
-  },
   header: {
     paddingRight: '32px',
     borderBottom: '#42779A 10px solid',
@@ -276,21 +279,21 @@ const styles = (theme) => ({
     scrollbarColor: '#697270',
   },
   tableContainer: {
-    padding: '0 117px',
     background: '#f3f3f3',
   },
   tableHeader: {
     paddingLeft: '32px',
   },
   tableDiv: {
-    maxWidth: theme.custom.maxContentWidth,
-    margin: '0 auto auto auto',
+    maxWidth: '1340px',
+    margin: 'auto',
     paddingTop: '50px',
+    paddingLeft: '30px',
   },
   tableTitle: {
     textTransform: 'uppercase',
     fontFamily: 'Lato',
-    fontSize: '22px',
+    fontSize: '17px',
     letterSpacing: '0.025em',
     color: '#3695A9',
     paddingBottom: '19px',
