@@ -86,7 +86,7 @@ const styles = (theme) => ({
   floatRight: {
     float: 'right',
     marginTop: '13px',
-    marginRight: '12px',
+    marginRight: '10px',
   },
   floatLeft: {
     float: 'left',
