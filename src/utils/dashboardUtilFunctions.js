@@ -241,22 +241,31 @@ export function getFilters(orginFilter, newCheckBoxs) {
   return ogFilter;
 }
 
-export function customSorting(a, b, flag, i = 0) {
-  if (flag === 'alphabetical') {
-    if (b[i] && !a[i]) {
-      return -1;
-    }
-    if (!b[i] && a[i]) {
-      return 1;
-    }
-    if (b[i] > a[i]) { return -1; }
-    if (b[i] < a[i]) { return 1; }
+function isNumeric(value) {
+  return /^-?\d+$/.test(value);
+}
+
+export function customSorting(a, b, i = 0) {
+  if (b[i] && !a[i]) {
+    return -1;
+  }
+  if (!b[i] && a[i]) {
+    return 1;
+  }
+  if (isNumeric(b[i]) && isNumeric(a[i])) {
     if (b[i] === a[i]) {
-      if (b[i] && a[i]) {
-        return customSorting(a, b, flag, i + 1);
-      }
-      return 0;
+      return customSorting(a, b, i + 1);
     }
+    return (parseInt(a, 10) - parseInt(b, 10));
+  }
+
+  if (b[i] > a[i]) { return -1; }
+  if (b[i] < a[i]) { return 1; }
+  if (b[i] === a[i]) {
+    if (b[i] && a[i]) {
+      return customSorting(a, b, i + 1);
+    }
+    return 0;
   }
   return -1;
 }
@@ -325,7 +334,7 @@ export const getCheckBoxData = (data, allCheckBoxs, activeCheckBoxs, filters) =>
           }
         });
         return item;
-      }).sort((a, b) => customSorting(a.name, b.name, 'alphabetical'));
+      }).sort((a, b) => customSorting(a.name, b.name));
     }
 
     return checkbox;
@@ -360,7 +369,7 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
     isChecked: false,
     subjects: el.subjects,
   }))
-    .sort((a, b) => customSorting(a.name, b.name, 'alphabetical'))
+    .sort((a, b) => customSorting(a.name, b.name))
     .forEach((el) => {
       // reduce the duplication
       if (result[parseInt(preElementIndex, 10)] && result[parseInt(preElementIndex, 10)].name) {
