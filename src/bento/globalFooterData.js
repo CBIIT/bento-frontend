@@ -1,10 +1,12 @@
 // import Test from '../assets/header/CTDC_Logo.svg';
 
 // footerLogoImage ideal image size 310x80 px
+
 export default {
   footerLogoImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/footer/FNL_logo.png',
   footerLogoAltText: 'Footer Logo',
   footerStaticText: 'NIH … Turning Discovery Into Health®',
+  version: process.env.REACT_APP_APPLICATION_VERSION,
   // A maximum of 3 Subsections (link_sections) are allowed
   // A maximum of 4 Subsection Links ('items' under link_sections) are allowed
   // A maximum of 4 Anchor Links (global_footer_links) are allowed
