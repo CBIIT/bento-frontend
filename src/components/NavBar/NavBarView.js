@@ -10,12 +10,9 @@ import {
   withStyles,
 } from '@material-ui/core';
 import classnames from 'classnames';
-import { navBarCartData } from '../../bento/cartWorkflowData';
+import { navBarCartData } from '../../bento/fileCentricCartWorkflowData';
 import navBarData from '../../bento/navigationBarData';
-
-// import { useTheme } from '../ThemeContext';
-
-import { initCart } from '../../pages/selectedCases/selectedCasesState';
+import { initCart } from '../../pages/fileCentricCart/store/cartAction';
 import DropdownMenu from './components/DropdownMenu';
 
 const drawerWidth = 240;
