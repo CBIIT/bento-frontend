@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Tabs, Tab,
+  Tabs, Tab, withStyles,
 } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import SwipeableViews from 'react-swipeable-views';
@@ -10,6 +10,7 @@ import TabView from './tabView';
 import { dashboardTable, externalLinkIcon } from '../../../bento/dashboardTabData';
 import { cartSelectionMessages } from '../../../bento/cartWorkflowData';
 import { receiveCases } from '../../selectedCases/selectedCasesState';
+import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 
 function TabContainer({ children, dir }) {
   return (
@@ -19,7 +20,8 @@ function TabContainer({ children, dir }) {
   );
 }
 
-const TabController = () => {
+const TabController = (classes) => {
+  const dispatch = useDispatch();
   // data from store
   const tableData = useSelector((state) => (state.dashboard
         && state.dashboard.datatable
@@ -108,8 +110,7 @@ const TabController = () => {
               dashboardTable={table}
               externalLinkIcon={externalLinkIcon}
               buttonText={buttonText}
-              exportCases={exportCases}
-
+              customExportCases={exportCases}
             />
           </TabContainer>
         ))}
@@ -117,5 +118,12 @@ const TabController = () => {
     </>
   );
 };
+
+const styles = () => ({
+
+  snackBarMessageIcon: {
+    verticalAlign: 'middle',
+  },
+});
 
 export default withStyles(styles, { withTheme: true })(TabController);

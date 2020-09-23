@@ -3,21 +3,16 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { CustomDataTable } from 'bento-components';
 import manipultateLinks from '../../../utils/helpers';
-import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import CustomFooter from './customFooter';
 
 const TabView = ({
-  classes, data, dashboardTable, externalLinkIcon, cartSelectionMessages, buttonText,exportCases
+  classes, data, dashboardTable, externalLinkIcon, buttonText, customExportCases,
 }) => {
- 
   const dispatch = useDispatch();
-
-  // Get the existing caseIds from MyCases cart state
-  const caseIds = useSelector((state) => state.cart.cases);
 
   const saveButton = useRef(null);
 
@@ -67,7 +62,7 @@ const TabView = ({
   let selectedCaseIds = [];
 
   function exportCases() {
-    exportCases(selectedCaseIds);
+    customExportCases(selectedCaseIds);
     selectedCaseIds = [];
   }
 
@@ -131,7 +126,7 @@ const TabView = ({
 
   return (
     <>
-     
+
       <div className={classes.margin16}>
         <Grid container>
           <Grid item xs={12} className={classes.caseTitle}>
