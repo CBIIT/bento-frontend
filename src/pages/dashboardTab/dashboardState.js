@@ -1,7 +1,6 @@
 import client from '../../utils/graphqlClient';
 import { GET_DASHBOARD_DATA_QUERY, widgetsData, GET_DASHBOARD_TABLE_DATA_QUERY } from '../../bento/dashboardData';
 import { globalStatsData as statsCount } from '../../bento/globalStatsData';
-
 import {
   getStatDataFromDashboardData,
   getSunburstDataFromDashboardData,
