@@ -280,6 +280,9 @@ export default {
       responsiveStacked: {
         transform: 'rotateX(180deg)',
       },
+      responsiveBase: {
+        transform: 'rotateX(180deg)',
+      },
       tableRoot: {
         transform: 'rotateX(180deg)',
       },

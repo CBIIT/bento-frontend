@@ -15,7 +15,7 @@ import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import { cartSelectionMessages } from '../../../bento/cartWorkflowData';
 import CustomFooter from './customFooter';
 import { toggleCheckBox } from '../dashboardState';
-import { receiveCases } from '../../selectedCases/selectedCasesState';
+import { addSubjects } from '../../fileCentricCart/store/cartAction';
 
 // const tableStyle = (ratio = 1) => ({
 //   : ((((document.documentElement.clientWidth - 280) * 0.6) / 10) * ratio),
@@ -45,7 +45,7 @@ const Cases = ({ classes, data }) => {
       ? state.dashboard.datatable.filters : []));
 
   // Get the existing caseIds from MyCases cart state
-  const caseIds = useSelector((state) => state.cart.cases);
+  const caseIds = useSelector((state) => state.cart.subjectIds);
 
   // The bubble below will shows in the dashboard and work as
   // When user select and filters
@@ -129,7 +129,7 @@ const Cases = ({ classes, data }) => {
     if (uniqueCases > 0) {
       openSnack(uniqueCases);
     }
-    dispatch(receiveCases(selectedCaseIds));
+    dispatch(addSubjects({ subjectIds: selectedCaseIds }));
     selectedCaseIds = [];
   }
 
