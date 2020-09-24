@@ -12,7 +12,8 @@ import SkeletonTable from './components/skeletonTable';
 import { myFilesPageData } from '../../bento/fileCentricCartWorkflowData';
 import CustomFooter from './customFooter';
 import { deleteSubjects } from './store/cartAction';
-import { downloadJson, formatBytes } from '../../utils/utils';
+import { downloadJson } from './utils';
+import formatBytes from '../../utils/formatBytes';
 
 const cartView = ({ classes, data, isLoading }) => {
   const dispatch = useDispatch();
