@@ -19,6 +19,7 @@ const cartView = ({ classes, data, isLoading }) => {
   const dispatch = useDispatch();
   const deleteButton = useRef(null);
   const downloadButton = useRef(null);
+
   const [modalStatus, setModalStatus] = React.useState({ open: false, selectedSubjectIds: [] });
 
   let globalData = [];
