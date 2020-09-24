@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Query } from 'react-apollo';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { useDispatch, useSelector } from 'react-redux';
 import { initCart } from './store/cartAction';
 import { Typography } from '../../components/Wrappers/Wrappers';
@@ -19,7 +18,7 @@ const cartController = () => {
   return (
     <Query query={GET_MY_CASES_DATA_QUERY} variables={{ subject_ids: ids }}>
       {({ data, loading, error }) => (
-        loading ? <CircularProgress />
+        loading ? <CartView isLoading data={[]} />
           : (
             error || !data
               ? <Typography variant="headline" color="error" size="sm">{error && `An error has occurred in loading CART : ${error}`}</Typography>
