@@ -1,17 +1,17 @@
 import { fetchDataForDashboardDataTable } from '../../dashboard/dashboardState';
 
-export const ADD_FILES = 'ADD_FILES';
+export const ADD_SUBJECTS = 'ADD_SUBJECTS';
 export const INIT_CART = 'INIT_CART';
 export const READY_CART = 'READY_CART';
-export const DELETE_FILES = 'DELETE_CASES';
+export const DELETE_SUBJECTS = 'DELETE_SUBJECTS';
 
-export const addFiles = (payload) => ({
-  type: ADD_FILES,
+export const addSubjects = (payload) => ({
+  type: ADD_SUBJECTS,
   payload,
 });
 
-export const deleteFiles = (payload) => ({
-  type: DELETE_FILES,
+export const deleteSubjects = (payload) => ({
+  type: DELETE_SUBJECTS,
   payload,
 });
 
@@ -23,7 +23,7 @@ const readyCart = () => ({
   type: READY_CART,
 });
 
-const shouldInitCart = (state) => state.cart.files !== JSON.parse(localStorage.getItem('cartFiles'));
+const shouldInitCart = (state) => state.cart.subjectIds !== JSON.parse(localStorage.getItem('CartSubjectIds'));
 
 export function initCart() {
   return (dispatch, getState) => {

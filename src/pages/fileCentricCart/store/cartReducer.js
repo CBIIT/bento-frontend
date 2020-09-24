@@ -1,47 +1,48 @@
 import * as Actions from './cartAction';
 
 export const initialState = {
-  files: [],
+  subjectIds: [],
+  error: '',
+  isError: false,
 };
 
-const deleteFiles = (selectedFiles, existingFiles) => {
-  if (!selectedFiles || selectedFiles.length === 0) return existingFiles;
-  return existingFiles.filter((id) => !selectedFiles.includes(id));
+const deleteSubjects = (selectedSubjects, existingSubjects) => {
+  if (!selectedSubjects || selectedSubjects.length === 0) return existingSubjects;
+  return existingSubjects.filter((id) => !selectedSubjects.includes(id));
 };
 
 export default function CARTReducer(state = initialState, action) {
   switch (action.type) {
-    case Actions.ADD_FILES: {
-      // action.payload.files = [fileIDs]
-      const previousStatFiles = Object.assign([], state.files);
-      // remove duplicates in case's ids.
-      const uniqueFiles = action.payload.files.length > 0
+    case Actions.ADD_SUBJECTS: {
+      const previousSubjectIds = Object.assign([], state.subjectIds);
+
+      const uniqueSubjectIds = action.payload.subjectIds.length > 0
         ? Array.from(
           new Set(
-            previousStatFiles.concat(action.payload.files),
+            previousSubjectIds.concat(action.payload.subjectIds),
           ),
-        ) : previousStatFiles;
+        ) : previousSubjectIds;
 
-      localStorage.setItem('cartFiles', JSON.stringify(uniqueFiles) || []);
+      localStorage.setItem('CartSubjectIds', JSON.stringify(uniqueSubjectIds) || []);
       return {
         ...state,
-        files: uniqueFiles,
+        subjectIds: uniqueSubjectIds,
       };
     }
-    case Actions.DELETE_FILES: {
+    case Actions.DELETE_SUBJECTS: {
       // action.payload.files = [fileIDs]
-      const filesAfterDeletion = deleteFiles(action.payload.files, state.files);
-      localStorage.setItem('cartFiles', JSON.stringify(filesAfterDeletion));
+      const subjectIdsAfterDeletion = deleteSubjects(action.payload.subjectIds, state.subjectIds);
+      localStorage.setItem('CartSubjectIds', JSON.stringify(subjectIdsAfterDeletion));
       return {
         ...state,
-        files: filesAfterDeletion,
+        subjectIds: subjectIdsAfterDeletion,
       };
     }
 
     case Actions.INIT_CART: {
       return {
         ...state,
-        files: JSON.parse(localStorage.getItem('cartFiles')) || [],
+        subjectIds: JSON.parse(localStorage.getItem('CartSubjectIds')) || [],
       };
     }
     case Actions.READY_CART: {

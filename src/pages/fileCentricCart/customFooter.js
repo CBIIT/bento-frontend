@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import externalIcon from '../../assets/cart/ExternalLink.svg';
+import externalIcon from '../../assets/icons/ExternalLinkIcon.svg';
 
 const defaultFooterStyles = {
   link: {
@@ -54,36 +54,34 @@ const CustomFooter = ({
       />
     </TableRow>
     <TableRow className={classes.comment}>
-      <div>
-        <div className={classes.message}>
-          <span>
-            To access and analyze files: select and remove unwanted files,
-            click the “Download Manifest” button, and upload the resulting
-            Manifest file to your
-            {' '}
-            <Link target="_blank" className={classes.link} href="http://www.cancergenomicscloud.org/">
-              Seven Bridges Genomics
-            </Link>
-            <img
-              src={externalIcon}
-              alt="outbounnd web site icon"
-              className={classes.linkIcon}
-            />
-            {' '}
-            account.
-          </span>
-        </div>
-        <TextField
-          id="multiline-user-coments"
-          label={label}
-          multiline
-          rows={6}
-          style={{ minWidth: '500px' }}
-          className={classes.textField}
-          margin="dense"
-          variant="filled"
-        />
+      <div className={classes.message}>
+        <span>
+          To access and analyze files: select and remove unwanted files,
+          click the “Download Manifest” button, and upload the resulting
+          Manifest file to your
+          {' '}
+          <Link target="_blank" className={classes.link} href="http://www.cancergenomicscloud.org/">
+            Seven Bridges Genomics
+          </Link>
+          <img
+            src={externalIcon}
+            alt="outbounnd web site icon"
+            className={classes.linkIcon}
+          />
+          {' '}
+          account.
+        </span>
       </div>
+      <TextField
+        id="multiline-user-coments"
+        label={label}
+        multiline
+        rows={6}
+        style={{ minWidth: '500px' }}
+        className={classes.textField}
+        margin="dense"
+        variant="filled"
+      />
     </TableRow>
     <TableRow />
   </TableFooter>

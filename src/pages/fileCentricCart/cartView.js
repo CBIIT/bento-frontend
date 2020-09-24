@@ -11,25 +11,17 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import SkeletonTable from './components/skeletonTable';
 import { myFilesPageData } from '../../bento/fileCentricCartWorkflowData';
 import CustomFooter from './customFooter';
-import { deleteFiles } from './store/cartAction';
-
-const tableStyle = (ratio = 1) => ({
-  width: (((document.documentElement.clientWidth * 0.6) / 10) * ratio),
-  overflow: 'hidden',
-  wordBreak: 'break-word',
-  maxWidth: (((document.documentElement.clientWidth * 0.6) / 10) * ratio),
-  minWidth: '80px',
-}
-);
+import { deleteSubjects } from './store/cartAction';
+import { downloadJson, formatBytes } from '../../utils/utils';
 
 const cartView = ({ classes, data, isLoading }) => {
   const dispatch = useDispatch();
   const deleteButton = useRef(null);
   const downloadButton = useRef(null);
-  const [modalStatus, setModalStatus] = React.useState({ open: false, selectedFiles: [] });
+  const [modalStatus, setModalStatus] = React.useState({ open: false, selectedSubjectIds: [] });
 
   let globalData = [];
-  let selectedFileIDs = [];
+  let selectedSubjectIds = [];
 
   function closeModal() {
     const status = { ...modalStatus };
@@ -37,14 +29,14 @@ const cartView = ({ classes, data, isLoading }) => {
     setModalStatus(status);
   }
 
-  function removeFiles() {
-    selectedFileIDs = [...new Set(selectedFileIDs)];
-    setModalStatus({ open: true, selectedFiles: selectedFileIDs });
+  function removeSubjects() {
+    selectedSubjectIds = [...new Set(selectedSubjectIds)];
+    setModalStatus({ open: true, selectedSubjectIds });
   }
-  function deleteFilesAndCloseModal() {
+  function deleteSubjectsAndCloseModal() {
     closeModal();
-    dispatch(deleteFiles({ files: modalStatus.selectedFiles }));
-    selectedFileIDs = [];
+    dispatch(deleteSubjects({ subjectIds: modalStatus.selectedSubjectIds }));
+    selectedSubjectIds = [];
   }
 
   useEffect(() => {
@@ -64,85 +56,21 @@ const cartView = ({ classes, data, isLoading }) => {
     downloadButton.current.style.border = 'unset';
   });
 
-  function fileName() {
-    const date = new Date();
-    const yyyy = date.getFullYear();
-    let dd = date.getDate();
-    let mm = (date.getMonth() + 1);
-
-    if (dd < 10) { dd = `0${dd}`; }
-
-    if (mm < 10) { mm = `0${mm}`; }
-
-    const todaysDate = `${yyyy}-${mm}-${dd}`;
-
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let seconds = date.getSeconds();
-
-    if (hours < 10) { hours = `0${hours}`; }
-
-    if (minutes < 10) { minutes = `0${minutes}`; }
-
-    if (seconds < 10) { seconds = `0${seconds}`; }
-
-    return `${'ICDC File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
-  }
-
-  function convertToCSV(jsonse) {
-    const objArray = jsonse;
-    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
-    let str = '';
-    array.map((entry, index) => {
-      const keysToInclude = ['case_id', 'file_name', 'uuid', 'md5sum'];
-      let line = '';
-
-      keysToInclude.map((keyName) => {
-        if (line !== '') line += ',';
-        line += entry[keyName];
-        return line;
-      });
-
-      if (index === 0) {
-        str = ['Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments'].join(',');
-        str += `\r\n${line},${document.getElementById('multiline-user-coments').value}\r\n`;
-      } else {
-        str += `${line}\r\n`;
-      }
-      return str;
-    });
-    return str;
-  }
-
-  function downloadJson() {
-    const jsonse = JSON.stringify(data);
-    const csv = convertToCSV(jsonse);
-    const exportData = new Blob([csv], { type: 'text/csv' });
-    const JsonURL = window.URL.createObjectURL(exportData);
-    let tempLink = '';
-    tempLink = document.createElement('a');
-    tempLink.setAttribute('href', JsonURL);
-    tempLink.setAttribute('download', fileName());
-    document.body.appendChild(tempLink);
-    tempLink.click();
-    document.body.removeChild(tempLink);
-  }
-
   function onRowsSelect(curr, allRowsSelected) {
     globalData = [];
-    selectedFileIDs = [];
+    selectedSubjectIds = [];
     allRowsSelected.forEach((row) => {
-      const file = data[row.dataIndex];
-      selectedFileIDs.push(file.uuid);
+      const subject = data[row.dataIndex];
+      selectedSubjectIds.push(subject.subject_id);
       globalData.push({
-        caseId: file.case_id,
-        fileName: file.file_name,
-        uuid: file.uuid,
-        md5Sum: file.md5sum,
+        caseId: subject.subject_id,
+        fileName: subject.file_name,
+        uuid: subject.uuid,
+        md5Sum: subject.md5sum,
       });
     });
     // filter out the duplicate file ids.
-    selectedFileIDs = [...new Set(selectedFileIDs)];
+    selectedSubjectIds = [...new Set(selectedSubjectIds)];
     if (allRowsSelected.length === 0) {
       deleteButton.current.disabled = true;
       deleteButton.current.style.color = '#FFFFFF';
@@ -161,14 +89,30 @@ const cartView = ({ classes, data, isLoading }) => {
     }
   }
 
+  const comments = '';
+
   const columns = [
+    {
+      name: 'subject_id',
+      label: 'Case ID',
+      sortDirection: 'asc',
+      options: {
+        customBodyRender: (value) => (
+          <div className={classes.tableCell1}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
     {
       name: 'file_name',
       label: 'File Name',
+      sortDirection: 'asc',
       options: {
-        sortDirection: 'asc',
         customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(2.5)}>
+          <div className={classes.tableCell2}>
             {' '}
             {value}
             {' '}
@@ -181,7 +125,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'File Type',
       options: {
         customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(1)}>
+          <div className={classes.tableCell3}>
             {' '}
             {value}
             {' '}
@@ -190,11 +134,11 @@ const cartView = ({ classes, data, isLoading }) => {
       },
     },
     {
-      name: 'parent',
+      name: 'association',
       label: 'Association',
       options: {
         customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(1)}>
+          <div className={classes.tableCell4}>
             {' '}
             {value}
             {' '}
@@ -207,7 +151,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'Description',
       options: {
         customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(2.5)}>
+          <div className={classes.tableCell5}>
             {' '}
             {value}
             {' '}
@@ -220,7 +164,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'Format',
       options: {
         customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(0.5)}>
+          <div className={classes.tableCell6}>
             {' '}
             {value}
             {' '}
@@ -232,46 +176,23 @@ const cartView = ({ classes, data, isLoading }) => {
       name: 'file_size',
       label: 'Size',
       options: {
-        customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(0.5)}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
+        customBodyRender(bytes) {
+          return (
+            <div className={classes.tableCell7}>
+              {' '}
+              {formatBytes(bytes)}
+              {' '}
+            </div>
+          );
+        },
       },
     },
     {
-      name: 'case_id',
-      label: 'Case ID',
-      options: {
-        customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(1.5)}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'study_code',
-      label: 'Study Code',
-      options: {
-        customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(1)}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'uuid',
+      name: 'file_id',
       label: 'UUID',
       options: {
         display: false,
+
       },
     },
     {
@@ -306,7 +227,7 @@ const cartView = ({ classes, data, isLoading }) => {
         className={classes.customFooterStyle}
         text="DOWNLOAD MANIFEST"
         label="User Comments"
-        onClick={downloadJson}
+        onClick={() => downloadJson(globalData, comments)}
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -366,13 +287,13 @@ const cartView = ({ classes, data, isLoading }) => {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            { modalStatus.selectedFiles.length }
+            { modalStatus.selectedSubjectIds.length }
             {' '}
             File(s) will be removed from your Files
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => deleteFilesAndCloseModal()} color="primary">
+          <Button onClick={() => deleteSubjectsAndCloseModal()} color="primary">
             Ok
           </Button>
           <Button onClick={() => closeModal()} color="primary" autoFocus>
@@ -410,7 +331,7 @@ const cartView = ({ classes, data, isLoading }) => {
                 type="button"
                 style={btnStyle}
                 ref={downloadButton}
-                onClick={downloadJson}
+                onClick={() => downloadJson(globalData, comments)}
               >
                 {myFilesPageData.downButtonText}
                 {' '}
@@ -421,7 +342,7 @@ const cartView = ({ classes, data, isLoading }) => {
                 type="button"
                 style={btnStyle}
                 ref={deleteButton}
-                onClick={removeFiles}
+                onClick={removeSubjects}
               >
                 {myFilesPageData.deleteButtonText}
               </button>
