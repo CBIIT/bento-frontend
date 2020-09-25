@@ -3,17 +3,21 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
+
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
+import Snackbar from '@material-ui/core/Snackbar';
 import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
+import FileGridView from '../../components/FileGridWithCart/FileGridView';
 import icon from '../../assets/icons/Cases.Icon.svg';
 import formatBytes from '../../utils/formatBytes';
 import Subsection from '../../components/PropertySubsection/caseDetailSubsection';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
+import { FileOnRowsSelect, FileDisableRowSelection } from '../../utils/fileTable';
+import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import {
   caseHeader,
   leftPanel,
@@ -22,8 +26,9 @@ import {
 } from '../../bento/caseDetailData';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
+// eslint-disable-next-line no-unused-vars
 const options = (classes) => ({
-  selectableRows: 'none',
+  selectableRows: true,
   responsive: 'stacked',
   search: false,
   filter: false,
@@ -39,9 +44,9 @@ const options = (classes) => ({
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
       <div>
-        {count >= 11
-          ? (
-            <TableRow>
+        <TableRow>
+          {count >= 11
+            ? (
               <TablePagination
                 className={classes.root}
                 count={count}
@@ -51,9 +56,10 @@ const options = (classes) => ({
           // eslint-disable-next-line no-shadow
                 onChangePage={(_, page) => changePage(page)}
               />
-            </TableRow>
-          )
-          : ''}
+
+            )
+            : ''}
+        </TableRow>
       </div>
     </TableFooter>
   ),
@@ -61,6 +67,16 @@ const options = (classes) => ({
 
 // Main case detail component
 const CaseDetail = ({ data, classes }) => {
+  const [snackbarState, setsnackbarState] = React.useState({
+    open: false,
+    value: 0,
+  });
+  function openSnack(value1) {
+    setsnackbarState({ open: true, value: value1 });
+  }
+  function closeSnack() {
+    setsnackbarState({ open: false });
+  }
   const dispatch = useDispatch();
 
   // make sure dashboard data has been loaded first for stats bar to work
@@ -101,6 +117,32 @@ const CaseDetail = ({ data, classes }) => {
 
   return (
     <>
+      <Snackbar
+        className={classes.snackBar}
+        open={snackbarState.open}
+        onClose={closeSnack}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        message={(
+          <div className={classes.snackBarMessage}>
+            <span className={classes.snackBarMessageIcon}>
+              <SuccessOutlinedIcon />
+              {' '}
+            </span>
+            <span className={classes.snackBarText}>
+
+              {snackbarState.value}
+              {'    '}
+              File(s) successfully
+              {' '}
+              {snackbarState.action}
+              {' '}
+              to your files
+
+            </span>
+          </div>
+)}
+      />
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -181,10 +223,15 @@ const CaseDetail = ({ data, classes }) => {
                 <Grid item xs={12}>
                   <Grid container spacing={4}>
                     <Grid item xs={12}>
-                      <CustomDataTable
+                      <FileGridView
                         data={data[table.filesField]}
                         columns={columns}
                         options={options(classes)}
+                        customOnRowsSelect={FileOnRowsSelect}
+                        openSnack={openSnack}
+                        closeSnack={closeSnack}
+                        disableRowSelection={FileDisableRowSelection}
+                        bottonText="Add Associated Files to My Files"
                       />
                     </Grid>
                     <Grid item xs={8}>
@@ -300,6 +347,9 @@ const styles = (theme) => ({
   },
   breadCrumb: {
     paddingTop: '3px',
+  },
+  snackBarMessageIcon: {
+    verticalAlign: 'middle',
   },
 });
 
