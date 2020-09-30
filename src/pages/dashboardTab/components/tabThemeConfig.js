@@ -1,6 +1,5 @@
-/* eslint-disable */
 import React from 'react';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import themes, { overrides } from '../../../themes';
 
 export default ({
@@ -21,12 +20,19 @@ export default ({
     overridesObj.MUIDataTableToolbar = { root: { minHeight: '15px' } };
   }
 
+  const PrivateTabIndicator = {
+    root: {
+      transitionProperty: 'none',
+      height: '0px',
+    },
+  };
+
   const MuiTabs = {
     root: {
       marginTop: '15px',
     },
     flexContainer: {
-      borderBottom: '1px solid #6B6B6B',
+      borderBottom: '2px solid #6B6B6B',
       overflow: 'visible !important',
     },
   };
@@ -38,29 +44,31 @@ export default ({
       minHeight: '40px',
       marginRight: '10px',
       background: '#EAEAEA',
-    },
-    selected: {
-        background: tablecolor,
-    },
-    labelContainer: {
       fontSize: '18px',
       fontFamily: 'Raleway',
       fontWeight: 'bold',
       lineHeight: '18px',
       paddingLeft: '5px',
       letterSpacing: '0.25px',
+      '&$selected': {
+        background: tablecolor,
+      },
+    },
+    labelContainer: {
+
     },
   };
 
   overridesObj.MuiTabs = MuiTabs;
   overridesObj.MuiTab = MuiTab;
+  overridesObj.PrivateTabIndicator = PrivateTabIndicator;
 
   style.push(overridesObj);
   const computedTheme = createMuiTheme({ ...themes.light, ...overrides, ...style });
 
   return (
-    <MuiThemeProvider theme={computedTheme}>
+    <ThemeProvider theme={computedTheme}>
       {children}
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 };
