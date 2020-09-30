@@ -753,7 +753,7 @@ export function formatFileSize(bytes, decimals = 2) {
   return `${parseFloat((bytes / (1024 ** i)).toFixed(dm))} ${sizes[i]}`;
 }
 
-export function FileData(fileData) {
+export function fileData(fileData) {
   // combine case properties with files.
   const transform = (accumulator, currentValue) => {
     const caseAttrs = {};
@@ -795,7 +795,7 @@ export function FileData(fileData) {
   return tableDataAfterFilter;
 }
 
-export function SampleData(sampleData) {
+export function sampleData(sampleData) {
   // combine case properties with samples.
   const transform = (accumulator, currentValue) => {
     const caseAttrs = {};

@@ -1,5 +1,8 @@
+/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { addSubjects } from '../../../fileCentricCart/store/cartAction';
+import { useDispatch } from 'react-redux';
 
 const tableStyle = (ratio = 1) => ({
   width: (((document.documentElement.clientWidth * 0.6) / 10) * ratio),
@@ -10,7 +13,7 @@ const tableStyle = (ratio = 1) => ({
 }
 );
 
-export function SampleColumns(classes) {
+export function sampleColumns(classes) {
   return ([
     {
       name: 'sample_id',
@@ -194,7 +197,7 @@ export function SampleColumns(classes) {
     @output  boolean true-> selectable
 */
 // eslint-disable-next-line no-unused-vars
-export function SampleDisableRowSelection(data, cartData) {
+export function sampleDisableRowSelection(data, cartData) {
   // if (cartData.length > 0) {
   //   if (data.files && data.files.length > 0) {
   //     // check each files of cases
@@ -220,7 +223,7 @@ export function SampleDisableRowSelection(data, cartData) {
     @param  allRowsSelected : selected rows
     @output [f.uuid]
 */
-export function SampleOnRowsSelect(data, allRowsSelected) {
+export function sampleOnRowsSelect(data, allRowsSelected) {
   // use reduce to combine all the files' id into single array
   return allRowsSelected.reduce((accumulator, currentValue) => {
     const { files } = data[currentValue.dataIndex];
@@ -230,4 +233,10 @@ export function SampleOnRowsSelect(data, allRowsSelected) {
     }
     return accumulator;
   }, []);
+}
+
+export function sampleTabExport(selectedFileIDs) {
+    const dispatch = useDispatch();
+    dispatch(addSubjects({ subjectIds: selectedFileIDs }));
+  return null;
 }

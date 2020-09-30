@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
@@ -7,14 +8,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import CustomFooter from './tabFooter';
 import { addSubjects } from '../../fileCentricCart/store/cartAction';
-import { FileData } from '../utils/dashboardUtilFunctions';
+import { fileData } from '../utils/dashboardUtilFunctions';
 
 const TabView = ({
   classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID,
 }) => {
   const dispatch = useDispatch();
   // Get the existing files ids from  cart state
-  const fileIDs = useSelector((state) => state.cart.files);
+  const fileIDs = useSelector((state) => state.cart.subjectIds);
 
   const dashboard = useSelector((state) => (state.dashboard
 && state.dashboard.datatable
@@ -32,26 +33,20 @@ const TabView = ({
     saveButton.current.style.cursor = 'auto';
   });
 
-  let selectedFileIDs = [];
+  let selectedIDs = [];
 
   function exportFiles() {
-    // filter out the ones  which are not int the file tab.
-    const files = FileData(dashboard).map((f) => f.uuid);
-
-    if (files && files.length > 0) {
-      selectedFileIDs = selectedFileIDs.filter((uuid) => files.includes(uuid));
-    }
     // Find the newly added files by comparing
-    const newFileIDS = fileIDs !== null ? selectedFileIDs.filter(
+    const newFileIDS = fileIDs !== null ? selectedIDs.filter(
       (e) => !fileIDs.find((a) => e === a),
-    ).length : selectedFileIDs.length;
+    ).length : selectedIDs.length;
+    dispatch(addSubjects({ subjectIds: selectedIDs }));
     openSnack(newFileIDS);
-    dispatch(addSubjects({ files: selectedFileIDs }));
-    selectedFileIDs = [];
+    selectedIDs = [];
   }
 
   function onRowsSelect(curr, allRowsSelected) {
-    selectedFileIDs = [...new Set(selectedFileIDs.concat(
+    selectedIDs = [...new Set(selectedIDs.concat(
       customOnRowsSelect(data, allRowsSelected),
     ))];
 
@@ -97,7 +92,6 @@ const TabView = ({
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <CustomFooter
         text="SAVE TO MY CASES"
-        onClick={() => exportFiles(dispatch)}
         classes={classes}
         count={count}
         page={page}

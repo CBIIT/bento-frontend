@@ -1,5 +1,9 @@
+/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { addSubjects } from '../../../fileCentricCart/store/cartAction';
+import { useDispatch } from 'react-redux';
+
 
 const tableStyle = (ratio = 1) => ({
   width: (((document.documentElement.clientWidth * 0.4) / 10) * ratio),
@@ -10,7 +14,7 @@ const tableStyle = (ratio = 1) => ({
 }
 );
 
-export function FileColumns(classes) {
+export function fileColumns(classes) {
   return ([
     {
       name: 'file_name',
@@ -166,7 +170,7 @@ export function FileColumns(classes) {
     @output  boolean true-> selectable
 */
 // eslint-disable-next-line no-unused-vars
-export function FileDisableRowSelection(data, cartData) {
+export function fileDisableRowSelection(data, cartData) {
   // if (cartData.length > 0) {
   //   if (cartData.includes(data.uuid)) {
   //     return false;
@@ -182,7 +186,7 @@ export function FileDisableRowSelection(data, cartData) {
     @output [f.uuid]
 */
 
-export function FileOnRowsSelect(data, allRowsSelected) {
+export function fileOnRowsSelect(data, allRowsSelected) {
   return allRowsSelected.map((row) => data[row.dataIndex].uuid);
 }
 
@@ -197,4 +201,10 @@ export function formatBytes(bytes, decimals = 2) {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
 
   return `${parseFloat((bytes / (1024 ** i)).toFixed(dm))} ${sizes[i]}`;
+}
+
+export function fileTabExport(selectedFileIDs) {
+    const dispatch = useDispatch();
+    dispatch(addSubjects({ subjectIds: selectedFileIDs }));
+  return null;
 }

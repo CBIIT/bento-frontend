@@ -7,10 +7,10 @@ import {
 import Typography from '@material-ui/core/Typography';
 import SwipeableViews from 'react-swipeable-views';
 import Snackbar from '@material-ui/core/Snackbar';
-import { CaseOnRowsSelect, CaseDisableRowSelection, CaseColumns } from './tabConfigs/caseConfig';
-import { FileData, SampleData } from '../utils/dashboardUtilFunctions';
-import { FileOnRowsSelect, FileDisableRowSelection, FileColumns } from './tabConfigs/fileConfig';
-import { SampleOnRowsSelect, SampleDisableRowSelection, SampleColumns } from './tabConfigs/sampleConfig';
+import { caseOnRowsSelect, caseDisableRowSelection, caseColumns, caseTabExport} from './tabConfigs/caseConfig';
+import { fileData, sampleData } from '../utils/dashboardUtilFunctions';
+import { fileOnRowsSelect, fileDisableRowSelection, fileColumns, fileTabExport} from './tabConfigs/fileConfig';
+import { sampleOnRowsSelect, sampleDisableRowSelection, sampleColumns,sampleTabExport} from './tabConfigs/sampleConfig';
 import TabView from './tabView';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import TabThemeProvider from './tabThemeConfig';
@@ -147,37 +147,40 @@ const tabController = (classes) => {
           <TabContainer id="case_tab_view">
             <TabView
               data={caseData}
-              Columns={CaseColumns}
-              customOnRowsSelect={CaseOnRowsSelect}
+              Columns={caseColumns}
+              customOnRowsSelect={caseOnRowsSelect}
               openSnack={openSnack}
               closeSnack={closeSnack}
-              disableRowSelection={CaseDisableRowSelection}
+              disableRowSelection={caseDisableRowSelection}
               buttonTitle="Add Filtered Files Associated With Selected Case(s)"
               tableID="case_tab_table"
+              tabExport={caseTabExport}
             />
           </TabContainer>
           <TabContainer id="sample_tab_view">
             <TabView
               data={sampleData}
-              Columns={SampleColumns}
-              customOnRowsSelect={SampleOnRowsSelect}
+              Columns={sampleColumns}
+              customOnRowsSelect={sampleOnRowsSelect}
               openSnack={openSnack}
               closeSnack={closeSnack}
-              disableRowSelection={SampleDisableRowSelection}
+              disableRowSelection={sampleDisableRowSelection}
               buttonTitle="Add Filtered Files Associated With Selected Sample(s)"
               tableID="sample_tab_table"
+              tabExport={sampleTabExport}
             />
           </TabContainer>
           <TabContainer id="file_tab_view">
             <TabView
               data={fileData}
-              Columns={FileColumns}
-              customOnRowsSelect={FileOnRowsSelect}
+              Columns={fileColumns}
+              customOnRowsSelect={fileOnRowsSelect}
               openSnack={openSnack}
               closeSnack={closeSnack}
-              disableRowSelection={FileDisableRowSelection}
+              disableRowSelection={fileDisableRowSelection}
               buttonTitle=" Add Selected Files to My Cart"
               tableID="file_tab_table"
+              tabExport={fileTabExport}
             />
           </TabContainer>
         </SwipeableViews>

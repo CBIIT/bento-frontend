@@ -1,5 +1,8 @@
+/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { addSubjects } from '../../../fileCentricCart/store/cartAction';
+import { useDispatch } from 'react-redux';
 
 const tableStyle = (ratio = 1) => ({
   width: (((document.documentElement.clientWidth * 0.6) / 10) * ratio),
@@ -10,7 +13,7 @@ const tableStyle = (ratio = 1) => ({
 }
 );
 
-export function CaseColumns(classes) {
+export function caseColumns(classes) {
   return ([
     {
       name: 'subject_id',
@@ -193,7 +196,7 @@ export function CaseColumns(classes) {
     @output  boolean true-> selectable
 */
 // eslint-disable-next-line no-unused-vars
-export function CaseDisableRowSelection(data, cartData) {
+export function caseDisableRowSelection(data, cartData) {
   // if (cartData.length > 0) {
   //   if (data.files && data.files.length > 0) {
   //     // check each files of cases
@@ -220,14 +223,20 @@ export function CaseDisableRowSelection(data, cartData) {
     @param  allRowsSelected : selected rows
     @output [f.uuid]
 */
-export function CaseOnRowsSelect(data, allRowsSelected) {
+export function caseOnRowsSelect(data, allRowsSelected) {
   // use reduce to combine all the files' id into single array
   return allRowsSelected.reduce((accumulator, currentValue) => {
     const { files } = data[currentValue.dataIndex];
     // check if file
     if (files && files.length > 0) {
-      return accumulator.concat(files.map((f) => f.uuid));
+      return accumulator.concat(files.map((f) => f.file_id));
     }
     return accumulator;
   }, []);
+}
+
+export function caseTabExport(selectedFileIDs) {
+    const dispatch = useDispatch();
+    dispatch(addSubjects({ subjectIds: selectedFileIDs }));
+  return null;
 }
