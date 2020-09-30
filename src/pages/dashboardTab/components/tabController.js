@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -7,10 +6,9 @@ import {
 import Typography from '@material-ui/core/Typography';
 import SwipeableViews from 'react-swipeable-views';
 import Snackbar from '@material-ui/core/Snackbar';
-import { caseOnRowsSelect, caseDisableRowSelection, caseColumns, caseTabExport} from './tabConfigs/caseConfig';
-import { fileData, sampleData } from '../utils/dashboardUtilFunctions';
-import { fileOnRowsSelect, fileDisableRowSelection, fileColumns, fileTabExport} from './tabConfigs/fileConfig';
-import { sampleOnRowsSelect, sampleDisableRowSelection, sampleColumns,sampleTabExport} from './tabConfigs/sampleConfig';
+import { caseOnRowsSelect, caseDisableRowSelection, caseColumns } from './tabConfigs/caseConfig';
+import { fileOnRowsSelect, fileDisableRowSelection, fileColumns } from './tabConfigs/fileConfig';
+import { sampleOnRowsSelect, sampleDisableRowSelection, sampleColumns } from './tabConfigs/sampleConfig';
 import TabView from './tabView';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import TabThemeProvider from './tabThemeConfig';
@@ -154,7 +152,6 @@ const tabController = (classes) => {
               disableRowSelection={caseDisableRowSelection}
               buttonTitle="Add Filtered Files Associated With Selected Case(s)"
               tableID="case_tab_table"
-              tabExport={caseTabExport}
             />
           </TabContainer>
           <TabContainer id="sample_tab_view">
@@ -167,7 +164,6 @@ const tabController = (classes) => {
               disableRowSelection={sampleDisableRowSelection}
               buttonTitle="Add Filtered Files Associated With Selected Sample(s)"
               tableID="sample_tab_table"
-              tabExport={sampleTabExport}
             />
           </TabContainer>
           <TabContainer id="file_tab_view">
@@ -180,7 +176,6 @@ const tabController = (classes) => {
               disableRowSelection={fileDisableRowSelection}
               buttonTitle=" Add Selected Files to My Cart"
               tableID="file_tab_table"
-              tabExport={fileTabExport}
             />
           </TabContainer>
         </SwipeableViews>

@@ -1,9 +1,5 @@
-/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { addSubjects } from '../../../fileCentricCart/store/cartAction';
-import { useDispatch } from 'react-redux';
-
 
 const tableStyle = (ratio = 1) => ({
   width: (((document.documentElement.clientWidth * 0.4) / 10) * ratio),
@@ -203,8 +199,3 @@ export function formatBytes(bytes, decimals = 2) {
   return `${parseFloat((bytes / (1024 ** i)).toFixed(dm))} ${sizes[i]}`;
 }
 
-export function fileTabExport(selectedFileIDs) {
-    const dispatch = useDispatch();
-    dispatch(addSubjects({ subjectIds: selectedFileIDs }));
-  return null;
-}

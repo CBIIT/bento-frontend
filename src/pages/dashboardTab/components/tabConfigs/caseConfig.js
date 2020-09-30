@@ -1,8 +1,5 @@
-/* eslint-disable */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { addSubjects } from '../../../fileCentricCart/store/cartAction';
-import { useDispatch } from 'react-redux';
 
 const tableStyle = (ratio = 1) => ({
   width: (((document.documentElement.clientWidth * 0.6) / 10) * ratio),
@@ -233,10 +230,4 @@ export function caseOnRowsSelect(data, allRowsSelected) {
     }
     return accumulator;
   }, []);
-}
-
-export function caseTabExport(selectedFileIDs) {
-    const dispatch = useDispatch();
-    dispatch(addSubjects({ subjectIds: selectedFileIDs }));
-  return null;
 }

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { v1 as uuid } from 'uuid';
 import { _, mergeWith, isArray } from 'lodash';
 
@@ -742,95 +741,11 @@ export function customCheckBox(data) {
   );
 }
 
-export function formatFileSize(bytes, decimals = 2) {
-  if (bytes === 0) return '0 Bytes';
-
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-
-  return `${parseFloat((bytes / (1024 ** i)).toFixed(dm))} ${sizes[i]}`;
-}
-
-export function fileData(fileData) {
-  // combine case properties with files.
-  const transform = (accumulator, currentValue) => {
-    const caseAttrs = {};
-    Object.keys(currentValue).forEach((key) => {
-      if (key && !Array.isArray(currentValue[key])) {
-        caseAttrs[key] = currentValue[key];
-      }
-    });
-    if (currentValue.files) {
-      return accumulator.concat(currentValue.files.map((f) => ({ ...f, ...caseAttrs })));
-    }
-    return accumulator;
-  };
-
-  const tableData = fileData.data.reduce(transform, []);
-
-  // reduce duplicated records based on file's uuid
-  const result = [];
-  const map = new Map();
-  tableData.forEach((item) => {
-    if (!map.has(item.uuid)) {
-      map.set(item.uuid, true); // set any value to Map
-      result.push(item);
-    }
-  });
-
-  // get files filters
-  const filesFilters = JSON.parse(JSON.stringify(fileData)).filters
-    .filter((f) => f.section === 'file')
-    .map((f) => {
-      const tmpF = f;
-      tmpF.datafield = tmpF.datafield.includes('@') ? tmpF.datafield.split('@').pop() : tmpF.datafield;
-      return tmpF;
-    });
-
-  // filter out the records which does not match the filters
-  const tableDataAfterFilter = result.filter((row) => filterData(row, filesFilters));
-
-  return tableDataAfterFilter;
-}
-
-export function sampleData(sampleData) {
-  // combine case properties with samples.
-  const transform = (accumulator, currentValue) => {
-    const caseAttrs = {};
-    Object.keys(currentValue).forEach((key) => {
-      if (key && !Array.isArray(currentValue[key])) {
-        caseAttrs[key] = currentValue[key];
-      }
-    });
-    if (currentValue.sample_list) {
-      return accumulator.concat(currentValue.sample_list.map((f) => ({ ...f, ...caseAttrs })));
-    }
-    return accumulator;
-  };
-  const tableData = sampleData.data.reduce(transform, []);
-
-  // get sample filters
-  const sampleFilters = JSON.parse(JSON.stringify(sampleData)).filters
-    .filter((f) => f.section === 'sample')
-    .map((f) => {
-      const tmpF = f;
-      tmpF.datafield = tmpF.datafield.includes('@') ? tmpF.datafield.split('@').pop() : tmpF.datafield;
-      return tmpF;
-    });
-
-  // filter out the records which does not match the filters, plus case_id should not be null.
-  const tableDataAfterFilter = tableData
-    .filter((row) => filterData(row, sampleFilters))
-    .filter((d) => {
-      if (d.case_id) {
-        return true;
-      }
-      return false;
-    });
-
-  return tableDataAfterFilter;
+// eslint-disable-next-line consistent-return
+function customizer(objValue, srcValue) {
+  if (isArray(objValue)) {
+    return objValue.concat(srcValue);
+  }
 }
 
 export function getStatDataFromDashboardData(dashboardData, stats) {

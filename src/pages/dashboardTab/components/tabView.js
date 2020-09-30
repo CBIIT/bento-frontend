@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
@@ -8,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import CustomFooter from './tabFooter';
 import { addSubjects } from '../../fileCentricCart/store/cartAction';
-import { fileData } from '../utils/dashboardUtilFunctions';
 
 const TabView = ({
   classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID,
@@ -16,10 +14,6 @@ const TabView = ({
   const dispatch = useDispatch();
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.subjectIds);
-
-  const dashboard = useSelector((state) => (state.dashboard
-&& state.dashboard.datatable
-    ? state.dashboard.datatable : {}));
 
   const saveButton = useRef(null);
 
