@@ -12,16 +12,14 @@ export default ({
 
   if (extraStyles) style.push(extraStyles);
 
-  // if (tableBorder) {
-  //   overridesObj.MUIDataTableSelectCell.headerCell.borderTop = tableBorder;
-  //   overridesObj.MUIDataTableSelectCell.headerCell.borderBottom = tableBorder;
-  //   overridesObj.MUIDataTableHeadCell.fixedHeaderCommon.borderTop = tableBorder;
-  //   overridesObj.MUIDataTableHeadCell.fixedHeaderCommon.borderBottom = tableBorder;
-  //   overridesObj.MuiPrivateTabIndicator.root.transitionProperty = 'none';
-  //   overridesObj.MuiPrivateTabIndicator.colorPrimary = { backgroundColor: tableBorder.split(' ')[0] };
-  //   overridesObj.MuiTableFooter = { root: { borderTop: tableBorder } };
-  //   overridesObj.MUIDataTableToolbar = { root: { minHeight: '15px' } };
-  // }
+  if (tableBorder) {
+    overridesObj.MUIDataTableSelectCell.headerCell.borderTop = tableBorder;
+    overridesObj.MUIDataTableSelectCell.headerCell.borderBottom = tableBorder;
+    overridesObj.MUIDataTableHeadCell.fixedHeader.borderTop = tableBorder;
+    overridesObj.MUIDataTableHeadCell.fixedHeader.borderBottom = tableBorder;
+    overridesObj.MuiTableFooter = { root: { borderTop: tableBorder } };
+    overridesObj.MUIDataTableToolbar = { root: { minHeight: '15px' } };
+  }
 
   const MuiTabs = {
     root: {
@@ -42,7 +40,7 @@ export default ({
       background: '#EAEAEA',
     },
     selected: {
-      background: tablecolor,
+        background: tablecolor,
     },
     labelContainer: {
       fontSize: '18px',

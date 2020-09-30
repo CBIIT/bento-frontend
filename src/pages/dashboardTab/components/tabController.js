@@ -136,6 +136,7 @@ const tabController = (classes) => {
           <Tab
             id="file_tab"
             label={getTabLalbel('Files', fileData.length)}
+
           />
         </Tabs>
         <SwipeableViews
