@@ -1,19 +1,16 @@
 import React, { useEffect } from 'react';
 import { Query } from 'react-apollo';
-import { useDispatch, useSelector } from 'react-redux';
-import { initCart } from './store/cartAction';
+import { initCart, getCart } from './store/cart';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_MY_CART_DATA_QUERY } from '../../bento/fileCentricCartWorkflowData';
 import CartView from './cartView';
 
 const cartController = () => {
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(initCart());
+    initCart();
   }, []);
 
-  const cart = useSelector((state) => state.cart);
+  const cart = getCart();
   const ids = cart.subjectIds ? cart.subjectIds : [];
   return (
     <Query query={GET_MY_CART_DATA_QUERY} variables={{ file_ids: ids }}>

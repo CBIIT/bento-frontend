@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Grid, withStyles, Link } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { CustomDataTable } from 'bento-components';
@@ -13,14 +12,13 @@ import IconButton from '@material-ui/core/IconButton';
 import SkeletonTable from './components/skeletonTable';
 import { myFilesPageData } from '../../bento/fileCentricCartWorkflowData';
 import CustomFooter from './customFooter';
-import { deleteSubjects } from './store/cartAction';
+import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
 import formatBytes from '../../utils/formatBytes';
 import externalIcon from '../../assets/icons/ExternalLinkIcon.svg';
 import Message from './components/message';
 
 const cartView = ({ classes, data, isLoading }) => {
-  const dispatch = useDispatch();
   const deleteButtonTop = useRef(null);
   const downloadButtonTop = useRef(null);
   const downloadButtonBottom = useRef(null);
@@ -60,7 +58,7 @@ const cartView = ({ classes, data, isLoading }) => {
   }
   function deleteSubjectsAndCloseModal() {
     closeModal();
-    dispatch(deleteSubjects({ subjectIds: modalStatus.selectedSubjectIds }));
+    deleteFromCart({ subjectIds: modalStatus.selectedSubjectIds });
     selectedSubjectIds = [];
   }
 

@@ -15,7 +15,7 @@ import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import { cartSelectionMessages } from '../../../bento/cartWorkflowData';
 import CustomFooter from './customFooter';
 import { toggleCheckBox } from '../dashboardState';
-import { addSubjects } from '../../fileCentricCart/store/cartAction';
+import { addToCart } from '../../fileCentricCart/store/cart';
 
 // const tableStyle = (ratio = 1) => ({
 //   : ((((document.documentElement.clientWidth - 280) * 0.6) / 10) * ratio),
@@ -129,7 +129,7 @@ const Cases = ({ classes, data }) => {
     if (uniqueCases > 0) {
       openSnack(uniqueCases);
     }
-    dispatch(addSubjects({ subjectIds: selectedCaseIds }));
+    addToCart({ subjectIds: selectedCaseIds });
     selectedCaseIds = [];
   }
 

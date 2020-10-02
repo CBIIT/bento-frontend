@@ -1,14 +1,25 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-import reducers from './reducers';
+import layout from '../components/Layout/LayoutState';
+import dashboard from '../pages/dashboard/dashboardState';
+import stats from '../components/Stats/StatsState';
 
+const reducers = {
+  layout,
+  dashboard,
+  stats,
+};
 const loggerMiddleware = createLogger();
 
 const store = createStore(
-  reducers,
-
+  combineReducers(reducers),
   applyMiddleware(ReduxThunk, loggerMiddleware),
 );
+
+store.injectReducer = (key, reducer) => {
+  reducers[key] = reducer;
+  store.replaceReducer(combineReducers(reducers));
+};
 
 export default store;
