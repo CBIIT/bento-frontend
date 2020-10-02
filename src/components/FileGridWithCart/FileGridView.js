@@ -4,15 +4,16 @@ import {
   withStyles,
 } from '@material-ui/core';
 import _ from 'lodash';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
 import CustomFooter from './customFooter';
-import { addSubjects } from '../../pages/fileCentricCart/store/cartAction';
+// import { addFiles } from '../../pages/fileCentricCart/store/cartAction';
+import { addFiles } from '../../pages/fileCentricCart/store/cartLocalStore';
 
 const FileGridView = ({
   classes, data, columns, customOnRowsSelect, openSnack, disableRowSelection, bottonText, options,
 }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.subjectIds);
 
@@ -36,7 +37,7 @@ const FileGridView = ({
       (e) => !fileIDs.find((a) => e === a),
     ).length : selectedFileIDs.length;
     openSnack(newFileIDS);
-    dispatch(addSubjects({ subjectIds: selectedFileIDs }));
+    addFiles(selectedFileIDs);
     selectedFileIDs = [];
   }
 
