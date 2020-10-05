@@ -36,11 +36,8 @@ const cartView = ({ classes, data, isLoading }) => {
     return location === 'top' ? setTopMessageStatus(false) : setBottomMessageStatus(false);
   }
 
-  function toggleMessageStatus(location) {
-    if (location === 'top') {
-      return TopMessageStatus ? closeMessage(location) : openMessage(location);
-    }
-    return BottomMessageStatus ? closeMessage(location) : openMessage(location);
+  function toggleMessageStatus(location, status) {
+    return status === 'close' ? closeMessage(location) : openMessage(location);
   }
 
   let globalData = [];
@@ -382,8 +379,8 @@ const cartView = ({ classes, data, isLoading }) => {
             >
               {myFilesPageData.deleteButtonText}
             </button>
-            <IconButton aria-label="help" onClick={() => toggleMessageStatus('top')}>
-              <HelpIcon className={classes.helpIcon} />
+            <IconButton aria-label="help">
+              <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
             </IconButton>
             { TopMessageStatus ? (
               <div className={classes.messageTop}>
@@ -417,8 +414,8 @@ const cartView = ({ classes, data, isLoading }) => {
                   >
                     {myFilesPageData.deleteButtonText}
                   </button>
-                  <IconButton aria-label="help" onClick={() => toggleMessageStatus('bottom')}>
-                    <HelpIcon className={classes.helpIcon} />
+                  <IconButton aria-label="help">
+                    <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
                   </IconButton>
                   { BottomMessageStatus ? (
                     <div className={classes.messageBottom}>
@@ -550,6 +547,7 @@ const styles = (theme) => ({
   },
   helpIcon: {
     verticalAlign: 'top',
+    zIndex: '600',
   },
   bottomButtonGroup: {
     textAlign: 'right',
@@ -566,11 +564,13 @@ const styles = (theme) => ({
     position: 'absolute',
     right: '-24px',
     bottom: '253px',
+    zIndex: '400',
   },
   messageTop: {
     position: 'absolute',
     right: '16px',
     top: '-140px',
+    zIndex: '400',
   },
   manifestButtonGroup: {
     marginTop: '10px',
