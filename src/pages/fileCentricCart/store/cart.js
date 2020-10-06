@@ -82,12 +82,12 @@ const reducers = {
       fileIds: uniqueFileIds,
     };
   },
-  deleteSubjects: (state, item) => {
+  deleteFiles: (state, item) => {
     const fileIdsAfterDeletion = filterOutIDs(item.fileIds, state.fileIds);
     localStorage.setItem('CartFileIds', JSON.stringify(fileIdsAfterDeletion));
     return {
       ...state,
-      subjectIds: fileIdsAfterDeletion,
+      fileIds: fileIdsAfterDeletion,
     };
   },
   initCart: (state) => ({
