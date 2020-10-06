@@ -6,8 +6,8 @@ export const DASHBOARD_QUERY_TMP = gql`{ sample{
       uuid
     }
    } }`;
-export const DASHBOARD_QUERY = gql`{
 
+export const DASHBOARD_QUERY = gql`{
   numberOfPrograms
   numberOfStudies
   numberOfSubjects

@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dashboard from './dashboard';
 import { fetchDataForDashboardTabDataTable } from './store/dashboardAction';
+import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import { Typography } from '../../components/Wrappers/Wrappers';
 
 class DashboardController extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchDataForDashboardTabDataTable());
+    dispatch(fetchDataForDashboardDataTable());
   }
 
   render() {
@@ -46,7 +48,7 @@ class DashboardController extends Component {
 function mapStateToProps(state) {
   const {
     isLoading, isFetched, hasError, error, widgets,
-  } = state.dashboard;
+  } = state.dashboardTab;
 
   const { isSidebarOpened } = state.layout;
   return {

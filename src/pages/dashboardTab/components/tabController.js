@@ -100,13 +100,13 @@ const tabController = (classes) => {
     );
   }
 
-  // const caseData = dashboard.dataCase ? dashboard.dataCase : [];
-  // const sampleData = dashboard.dataSample ? dashboard.dataSample : [];
-  // const fileData = dashboard.dataFile ? dashboard.dataFile : [];
+  const caseData = dashboard.dataCase ? dashboard.dataCase : [];
+  const sampleData = dashboard.dataSample ? dashboard.dataSample : [];
+  const fileData = dashboard.dataFile ? dashboard.dataFile : [];
 
-   const caseData = [];
-  const sampleData =  [];
-  const fileData =  [];
+  //  const caseData = [];
+  // const sampleData =  [];
+  // const fileData =  [];
   return (
     <>
       <Snackbar

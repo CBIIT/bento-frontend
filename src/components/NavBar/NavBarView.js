@@ -1,7 +1,7 @@
 import React from 'react';
 import queryString from 'query-string';
 import { withRouter, NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   AppBar,
   Button,
@@ -12,7 +12,7 @@ import {
 import classnames from 'classnames';
 import { navBarCartData } from '../../bento/fileCentricCartWorkflowData';
 import navBarData from '../../bento/navigationBarData';
-import { initCart } from '../../pages/fileCentricCart/store/cartAction';
+import { initCart } from '../../pages/fileCentricCart/store/cart';
 import DropdownMenu from './components/DropdownMenu';
 
 const drawerWidth = 240;
@@ -31,7 +31,6 @@ const NavBar = ({
   // Similar to componentDidMount and componentDidUpdate:
   // Empty second argument of react useEffect will avoid the infinte loop that
   // caused due to component update
-  const dispatch = useDispatch();
   const [clickedEl, setClickedEl] = React.useState(null);
 
   function handleButtonClickEvent(eventName) {
@@ -39,7 +38,7 @@ const NavBar = ({
   }
 
   React.useEffect(() => {
-    dispatch(initCart());
+    initCart();
     const values = queryString.parse(window.location.search);
 
     if (values.code) {
@@ -69,8 +68,8 @@ const NavBar = ({
   }, []);
 
   const numberOfCases = useSelector((state) => {
-    if (state.cart.cases) {
-      return state.cart.cases.length;
+    if (state.cart.subjectIds) {
+      return state.cart.subjectIds.length;
     }
     return 0;
   });

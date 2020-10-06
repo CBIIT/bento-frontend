@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Grid, withStyles } from '@material-ui/core';
+import { Grid, withStyles, Link } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { CustomDataTable } from 'bento-components';
 import _ from 'lodash';
@@ -8,19 +7,38 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import HelpIcon from '@material-ui/icons/Help';
+import IconButton from '@material-ui/core/IconButton';
 import SkeletonTable from './components/skeletonTable';
 import { myFilesPageData } from '../../bento/fileCentricCartWorkflowData';
 import CustomFooter from './customFooter';
-import { deleteSubjects } from './store/cartAction';
+import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
 import formatBytes from '../../utils/formatBytes';
+import externalIcon from '../../assets/icons/ExternalLinkIcon.svg';
+import Message from './components/message';
 
 const cartView = ({ classes, data, isLoading }) => {
-  const dispatch = useDispatch();
-  const deleteButton = useRef(null);
-  const downloadButton = useRef(null);
+  const deleteButtonTop = useRef(null);
+  const downloadButtonTop = useRef(null);
+  const downloadButtonBottom = useRef(null);
+  const deleteButtonBottom = useRef(null);
 
   const [modalStatus, setModalStatus] = React.useState({ open: false, selectedSubjectIds: [] });
+  const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
+  const [BottomMessageStatus, setBottomMessageStatus] = React.useState(false);
+
+  function openMessage(location) {
+    return location === 'top' ? setTopMessageStatus(true) : setBottomMessageStatus(true);
+  }
+
+  function closeMessage(location) {
+    return location === 'top' ? setTopMessageStatus(false) : setBottomMessageStatus(false);
+  }
+
+  function toggleMessageStatus(location, status) {
+    return status === 'close' ? closeMessage(location) : openMessage(location);
+  }
 
   let globalData = [];
   let selectedSubjectIds = [];
@@ -37,25 +55,35 @@ const cartView = ({ classes, data, isLoading }) => {
   }
   function deleteSubjectsAndCloseModal() {
     closeModal();
-    dispatch(deleteSubjects({ subjectIds: modalStatus.selectedSubjectIds }));
+    deleteFromCart({ subjectIds: modalStatus.selectedSubjectIds });
     selectedSubjectIds = [];
   }
 
-  useEffect(() => {
-    deleteButton.current.disabled = true;
-    deleteButton.current.style.color = '#FFFF';
-    deleteButton.current.style.backgroundColor = '#C53B27';
-    deleteButton.current.style.opacity = '0.3';
-    deleteButton.current.style.border = '3px solid grey';
-    deleteButton.current.style.fontWeight = '600';
-    deleteButton.current.style.cursor = 'auto';
+  /* eslint-disable no-return-assign, no-param-reassign */
+  function toggleButtonStyle(button, disabled) {
+    button.current.disabled = disabled;
+    button.current.style.color = '#FFFF';
+    button.current.style.backgroundColor = '#03A383';
+    if (disabled) {
+      button.current.style.opacity = '0.3';
+    } else {
+      button.current.style.opacity = '1';
+    }
+    button.current.style.fontWeight = '600';
+    button.current.style.cursor = 'auto';
+    button.current.style.cursor = 'pointer';
+  }
+  /* eslint-enable no-return-assign, no-param-reassign */
 
-    downloadButton.current.disabled = false;
-    downloadButton.current.style.color = '#FFFFFF';
-    downloadButton.current.style.backgroundColor = '#3890c5';
-    downloadButton.current.style.cursor = 'pointer';
-    downloadButton.current.style.opacity = 'unset';
-    downloadButton.current.style.border = 'unset';
+  function disableDeleteButton(disabled) {
+    toggleButtonStyle(deleteButtonTop, disabled);
+    toggleButtonStyle(deleteButtonBottom, disabled);
+  }
+
+  useEffect(() => {
+    toggleButtonStyle(downloadButtonTop, false);
+    toggleButtonStyle(downloadButtonBottom, false);
+    disableDeleteButton(true);
   });
 
   function onRowsSelect(curr, allRowsSelected) {
@@ -63,7 +91,7 @@ const cartView = ({ classes, data, isLoading }) => {
     selectedSubjectIds = [];
     allRowsSelected.forEach((row) => {
       const subject = data[row.dataIndex];
-      selectedSubjectIds.push(subject.subject_id);
+      selectedSubjectIds.push(subject.file_id);
       globalData.push({
         caseId: subject.subject_id,
         fileName: subject.file_name,
@@ -74,20 +102,9 @@ const cartView = ({ classes, data, isLoading }) => {
     // filter out the duplicate file ids.
     selectedSubjectIds = [...new Set(selectedSubjectIds)];
     if (allRowsSelected.length === 0) {
-      deleteButton.current.disabled = true;
-      deleteButton.current.style.color = '#FFFFFF';
-      deleteButton.current.style.backgroundColor = '#C53B27';
-      deleteButton.current.style.opacity = '0.3';
-      deleteButton.current.style.border = '3px solid grey';
-      deleteButton.current.style.fontWeight = '600';
-      deleteButton.current.style.cursor = 'auto';
+      disableDeleteButton(true);
     } else {
-      deleteButton.current.disabled = false;
-      deleteButton.current.style.color = '#FFFFFF';
-      deleteButton.current.style.backgroundColor = '#C53B27';
-      deleteButton.current.style.cursor = 'pointer';
-      deleteButton.current.style.opacity = 'unset';
-      deleteButton.current.style.border = 'unset';
+      disableDeleteButton(false);
     }
   }
 
@@ -228,7 +245,6 @@ const cartView = ({ classes, data, isLoading }) => {
       <CustomFooter
         className={classes.customFooterStyle}
         text="DOWNLOAD MANIFEST"
-        label="User Comments"
         onClick={() => downloadJson(globalData, comments)}
         count={count}
         page={page}
@@ -241,23 +257,38 @@ const cartView = ({ classes, data, isLoading }) => {
   });
 
   function divStyle() {
-    const css = {
-      position: 'absolute',
-      marginTop: '-31px',
-      marginLeft: '0px',
-      display: 'none',
-      padding: '0',
-    };
+    const css = {};
     if (isLoading === false) {
-      css.display = 'block';
+      css.display = 'inherit';
+    } else {
+      css.display = 'none';
     }
     return css;
   }
 
+  const messageData = (
+    <span>
+      To access and analyze files: select and remove unwanted files,
+      click the “Download Manifest” button, and upload the resulting
+      Manifest file to your
+      {' '}
+      <Link target="_blank" className={classes.link} href="http://www.cancergenomicscloud.org/">
+        Seven Bridges Genomics
+      </Link>
+      <img
+        src={externalIcon}
+        alt="outbounnd web site icon"
+        className={classes.linkIcon}
+      />
+      {' '}
+      account.
+    </span>
+  );
+
   const btnStyle = {
-    color: 'rgba(0, 0, 0,0.26)',
+    color: '#fff',
     boxShadow: 'none',
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+    backgroundColor: '#03A383',
     padding: '6px 16px',
     fontSize: '0.875rem',
     minWidth: '64px',
@@ -266,8 +297,10 @@ const cartView = ({ classes, data, isLoading }) => {
     lineHeight: '1.75',
     fontWeight: '500',
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    borderRadius: '4px',
+    borderRadius: '10px',
     textTransform: 'uppercase',
+    border: 'none',
+    verticalAlign: 'top',
   };
 
   const dataTable = isLoading ? <SkeletonTable />
@@ -326,28 +359,80 @@ const cartView = ({ classes, data, isLoading }) => {
             </div>
           </div>
 
+          <div className={classes.topButtonGroup} style={divStyle(isLoading)}>
+            <button
+              type="button"
+              style={btnStyle}
+              ref={downloadButtonTop}
+              onClick={() => downloadJson(globalData, comments)}
+            >
+              {myFilesPageData.downButtonText}
+              {' '}
+            </button>
+            {' '}
+            <button
+              type="button"
+              style={btnStyle}
+              ref={deleteButtonTop}
+              onClick={removeSubjects}
+            >
+              {myFilesPageData.deleteButtonText}
+            </button>
+            <IconButton aria-label="help">
+              <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
+            </IconButton>
+            { TopMessageStatus ? (
+              <div className={classes.messageTop}>
+                {' '}
+                <Message data={messageData} />
+                {' '}
+              </div>
+            ) : ''}
+          </div>
           <div id="table_selected_files" className={classes.tableWrapper}>
             {dataTable}
-            <div style={divStyle(isLoading)}>
-              <button
-                type="button"
-                style={btnStyle}
-                ref={downloadButton}
-                onClick={() => downloadJson(globalData, comments)}
-              >
-                {myFilesPageData.downButtonText}
-                {' '}
-                download manifest
-              </button>
-              {' '}
-              <button
-                type="button"
-                style={btnStyle}
-                ref={deleteButton}
-                onClick={removeSubjects}
-              >
-                {myFilesPageData.deleteButtonText}
-              </button>
+            <div className={classes.bottomButtonGroup} style={divStyle(isLoading)}>
+              <div>
+
+                <div className={classes.manifestButtonGroup}>
+                  <button
+                    type="button"
+                    style={btnStyle}
+                    ref={downloadButtonBottom}
+                    onClick={() => downloadJson(globalData, comments)}
+                  >
+                    {myFilesPageData.downButtonText}
+                    {' '}
+                  </button>
+                  {' '}
+                  <button
+                    type="button"
+                    style={btnStyle}
+                    ref={deleteButtonBottom}
+                    onClick={removeSubjects}
+                  >
+                    {myFilesPageData.deleteButtonText}
+                  </button>
+                  <IconButton aria-label="help">
+                    <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+                  </IconButton>
+                  { BottomMessageStatus ? (
+                    <div className={classes.messageBottom}>
+                      {' '}
+                      <Message data={messageData} />
+                      {' '}
+                    </div>
+                  ) : ''}
+
+                </div>
+                <div className={classes.manifestTextarea}>
+                  <textarea
+                    id="multiline-user-coments"
+                    className={classes.textField}
+                    placeholder="Please add a description for the XML file you are about to download."
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </Grid>
@@ -442,6 +527,57 @@ const styles = (theme) => ({
   },
   tableCell7: {
     width: '80px',
+  },
+  linkIcon: {
+    color: '#dc762f',
+    width: '20px',
+    verticalAlign: 'sub',
+    margin: '0px 0px 0px 2px',
+  },
+  textField: {
+    minWidth: '438px',
+    marginRight: '10px',
+    resize: 'none',
+    borderRadius: '10px',
+    border: '2px solid #bbb',
+    background: '#efefef',
+    height: '250px',
+    padding: '15px',
+  },
+  helpIcon: {
+    verticalAlign: 'top',
+    zIndex: '600',
+  },
+  bottomButtonGroup: {
+    textAlign: 'right',
+    padding: '0px',
+    position: 'relative',
+    minHeight: '275px',
+  },
+  topButtonGroup: {
+    textAlign: 'right',
+    padding: '10px 39px 0px 0px',
+    position: 'relative',
+  },
+  messageBottom: {
+    position: 'absolute',
+    right: '-24px',
+    bottom: '253px',
+    zIndex: '400',
+  },
+  messageTop: {
+    position: 'absolute',
+    right: '16px',
+    top: '-140px',
+    zIndex: '400',
+  },
+  manifestButtonGroup: {
+    marginTop: '10px',
+    float: 'right',
+  },
+  manifestTextarea: {
+    marginTop: '10px',
+    float: 'right',
   },
 });
 export default withStyles(styles, { withTheme: true })(cartView);

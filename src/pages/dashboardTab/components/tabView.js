@@ -4,10 +4,10 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
 import CustomFooter from './tabFooter';
-import { addSubjects } from '../../fileCentricCart/store/cartAction';
+import { addToCart } from '../../fileCentricCart/store/cart';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import Message from './message';
@@ -15,7 +15,6 @@ import Message from './message';
 const TabView = ({
   classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID, messageData
 }) => {
-  const dispatch = useDispatch();
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.subjectIds);
 
@@ -54,7 +53,7 @@ const TabView = ({
     const newFileIDS = fileIDs !== null ? selectedIDs.filter(
       (e) => !fileIDs.find((a) => e === a),
     ).length : selectedIDs.length;
-    dispatch(addSubjects({ subjectIds: selectedIDs }));
+    addToCart({ subjectIds: selectedIDs });
     openSnack(newFileIDS);
     selectedIDs = [];
   }
