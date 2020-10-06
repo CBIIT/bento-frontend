@@ -245,7 +245,6 @@ const cartView = ({ classes, data, isLoading }) => {
       <CustomFooter
         className={classes.customFooterStyle}
         text="DOWNLOAD MANIFEST"
-
         onClick={() => downloadJson(globalData, comments)}
         count={count}
         page={page}

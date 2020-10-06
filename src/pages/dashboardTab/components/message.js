@@ -1,17 +1,21 @@
+/* eslint-disable */
 import React from 'react';
 import { withStyles } from '@material-ui/core';
 
-const message = ({ classes, data }) => (
-  <div className={classes.message}>
-    <div className={classes.messageTextArea}>{data}</div>
-    <div className={classes.arrayIcon}>
-      <div className={classes.arrayIconCover} />
-      <div className={classes.arrayIconBase} />
-    </div>
-  </div>
-);
+const message = ({ classes, data }) => {
+  
+  return (
+       <div className={classes.message} >    
+                <div className={classes.messageTextArea}>{data}</div>
+                <div className={classes.arrayIcon}>
+                <div className={classes.arrayIconCover}></div>
+                <div className={classes.arrayIconBase}></div>
+                </div>
+      </div>
+  );
+};
 
-const styles = () => ({
+const styles = (theme) => ({
   arrayIconBase: {
     width: '0px',
     height: '0px',
@@ -40,8 +44,8 @@ const styles = () => ({
     padding: '5px 5px 5px 10px',
     textAlign: 'left',
   },
-  arrayIcon: {
-    marginLeft: '205px',
+  arrayIcon:{
+    marginLeft: '205px'
   },
 });
 export default withStyles(styles, { withTheme: true })(message);
