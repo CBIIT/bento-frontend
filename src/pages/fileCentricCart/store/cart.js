@@ -5,7 +5,7 @@ import store from '../../../store';
 const storeKey = 'cart';
 
 const initialState = {
-  subjectIds: [],
+  fileIds: [],
   error: '',
   isError: false,
 };
@@ -20,7 +20,7 @@ const filterOutIDs = (targetIds, existingIds) => {
   return existingIds.filter((id) => !targetIds.includes(id));
 };
 
-const shouldInitCart = (state) => state.subjectIds !== JSON.parse(localStorage.getItem('CartSubjectIds'));
+const shouldInitCart = (state) => state.fileIds !== JSON.parse(localStorage.getItem('CartFileIds'));
 
 // HELPERS
 const getState = () => store.getState()[storeKey];
@@ -35,9 +35,9 @@ const subscribe = (f) => {
 /* eslint-disable no-return-assign */
 
 // actions
-export const addToCart = (item) => store.dispatch({ type: 'addSubjects', payload: item });
+export const addToCart = (item) => store.dispatch({ type: 'addFiles', payload: item });
 
-export const deleteFromCart = (item) => store.dispatch({ type: 'deleteSubjects', payload: item });
+export const deleteFromCart = (item) => store.dispatch({ type: 'deleteFiles', payload: item });
 
 export const initCart = () => {
 // load dashboard data.
@@ -62,37 +62,37 @@ export const getCart = () => {
 
 // reducers
 const reducers = {
-  addSubjects: (state, item) => {
+  addFiles: (state, item) => {
     // get previous subject's id
-    const previousSubjectIds = Object.assign([], state.subjectIds);
+    const previousFileIds = Object.assign([], state.fileIds);
 
     // remove duplicated subject's id
-    const uniqueSubjectIds = item.subjectIds.length > 0
+    const uniqueFileIds = item.fileIds.length > 0
       ? Array.from(
         new Set(
-          previousSubjectIds.concat(item.subjectIds),
+          previousFileIds.concat(item.fileIds),
         ),
-      ) : previousSubjectIds;
+      ) : previousFileIds;
 
     // store ids in the localstorage.
-    localStorage.setItem('CartSubjectIds', JSON.stringify(uniqueSubjectIds) || []);
+    localStorage.setItem('CartFileIds', JSON.stringify(uniqueFileIds) || []);
 
     return {
       ...state,
-      subjectIds: uniqueSubjectIds,
+      fileIds: uniqueFileIds,
     };
   },
   deleteSubjects: (state, item) => {
-    const subjectIdsAfterDeletion = filterOutIDs(item.subjectIds, state.subjectIds);
-    localStorage.setItem('CartSubjectIds', JSON.stringify(subjectIdsAfterDeletion));
+    const fileIdsAfterDeletion = filterOutIDs(item.fileIds, state.fileIds);
+    localStorage.setItem('CartFileIds', JSON.stringify(fileIdsAfterDeletion));
     return {
       ...state,
-      subjectIds: subjectIdsAfterDeletion,
+      subjectIds: fileIdsAfterDeletion,
     };
   },
   initCart: (state) => ({
     ...state,
-    subjectIds: JSON.parse(localStorage.getItem('CartSubjectIds')) || [],
+    fileIds: JSON.parse(localStorage.getItem('CartFileIds')) || [],
   }),
   readyCart: (state) => state,
 };

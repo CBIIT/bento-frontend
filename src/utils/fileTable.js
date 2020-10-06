@@ -7,8 +7,8 @@
     @output  boolean true-> selectable
 */
 export function FileDisableRowSelection(data, cartData) {
-  if (cartData.length > 0) {
-    if (cartData.includes(data.uuid)) {
+  if (cartData && cartData.length > 0) {
+    if (cartData.includes(data.file_id)) {
       return false;
     }
     return true;

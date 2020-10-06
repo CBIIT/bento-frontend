@@ -6,23 +6,41 @@ import {
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
+import HelpIcon from '@material-ui/icons/Help';
+import IconButton from '@material-ui/core/IconButton';
 import CustomFooter from './customFooter';
-// import { addFiles } from '../../pages/fileCentricCart/store/cartAction';
-import { addFiles } from '../../pages/fileCentricCart/store/cartLocalStore';
+import { addToCart } from '../../pages/fileCentricCart/store/cart';
 
 const FileGridView = ({
   classes, data, columns, customOnRowsSelect, openSnack, disableRowSelection, bottonText, options,
 }) => {
-  // const dispatch = useDispatch();
   // Get the existing files ids from  cart state
-  const fileIDs = useSelector((state) => state.cart.subjectIds);
+  const fileIDs = useSelector((state) => state.cart.fileIds);
 
   const saveButton = useRef(null);
+
+  const btnStyle = {
+    color: '#fff',
+    boxShadow: 'none',
+    backgroundColor: '#03A383',
+    padding: '6px 16px',
+    fontSize: '0.875rem',
+    minWidth: '64px',
+    boxSizing: 'border-box',
+    transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    lineHeight: '1.75',
+    fontWeight: '500',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    borderRadius: '10px',
+    textTransform: 'uppercase',
+    border: 'none',
+    verticalAlign: 'top',
+  };
 
   useEffect(() => {
     saveButton.current.disabled = true;
     saveButton.current.style.color = '#FFFF';
-    saveButton.current.style.backgroundColor = '#C53B27';
+    saveButton.current.style.backgroundColor = '#03A383';
     saveButton.current.style.opacity = '0.3';
     saveButton.current.style.border = '3px solid grey';
     saveButton.current.style.fontWeight = '600';
@@ -37,8 +55,14 @@ const FileGridView = ({
       (e) => !fileIDs.find((a) => e === a),
     ).length : selectedFileIDs.length;
     openSnack(newFileIDS);
-    addFiles(selectedFileIDs);
+    addToCart({ fileIds: selectedFileIDs });
     selectedFileIDs = [];
+  }
+
+  function divStyle() {
+    const css = {};
+    css.display = 'inherit';
+    return css;
   }
 
   function onRowsSelect(curr, allRowsSelected) {
@@ -49,7 +73,7 @@ const FileGridView = ({
     if (allRowsSelected.length === 0) {
       saveButton.current.disabled = true;
       saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#C53B27';
+      saveButton.current.style.backgroundColor = '#03A383';
       saveButton.current.style.opacity = '0.3';
       saveButton.current.style.border = '3px solid grey';
       saveButton.current.style.fontWeight = '600';
@@ -57,7 +81,7 @@ const FileGridView = ({
     } else {
       saveButton.current.disabled = false;
       saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#C53B27';
+      saveButton.current.style.backgroundColor = '#03A383';
       saveButton.current.style.cursor = 'pointer';
       saveButton.current.style.opacity = 'unset';
       saveButton.current.style.border = 'unset';
@@ -100,20 +124,7 @@ const FileGridView = ({
 
   });
 
-  const x = { ...defaultOptions(), ...options };
-
-  function saveButtonDiv(flag) {
-    const css = {
-      position: 'absolute',
-      margin: '-35px 0 0 0',
-      paddingLeft: '25px',
-      display: 'none',
-    };
-    if (flag) {
-      css.display = 'block';
-    }
-    return css;
-  }
+  const finalOptions = { ...defaultOptions(), ...options };
 
   return (
     <div>
@@ -122,21 +133,26 @@ const FileGridView = ({
           <CustomDataTable
             data={_.cloneDeep(data)}
             columns={columns}
-            options={x}
+            options={finalOptions}
           />
         </Grid>
 
       </Grid>
-      <Grid item xs={12} style={saveButtonDiv(data.length > 0)}>
+      <div className={classes.topButtonGroup} style={divStyle()}>
         <button
           type="button"
+          style={btnStyle}
           ref={saveButton}
           onClick={exportFiles}
-          className={classes.button}
         >
           { bottonText }
+          {' '}
         </button>
-      </Grid>
+        {' '}
+        <IconButton aria-label="help">
+          <HelpIcon className={classes.helpIcon} onMouseEnter={() => {}} onMouseLeave={() => {}} />
+        </IconButton>
+      </div>
     </div>
   );
 };
@@ -198,7 +214,22 @@ const styles = () => ({
     lineHeight: '18px',
     fontSize: '10pt',
     color: '#fff',
-    backgroundColor: '#ff7f15',
+    // backgroundColor: '#ff7f15',
+  },
+  helpIcon: {
+    verticalAlign: 'top',
+    zIndex: '600',
+  },
+  topButtonGroup: {
+    textAlign: 'right',
+    padding: '10px 39px 0px 0px',
+    position: 'relative',
+  },
+  messageBottom: {
+    position: 'absolute',
+    right: '-24px',
+    bottom: '253px',
+    zIndex: '400',
   },
 });
 

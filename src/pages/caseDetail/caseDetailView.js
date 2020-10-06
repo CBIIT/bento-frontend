@@ -231,7 +231,7 @@ const CaseDetail = ({ data, classes }) => {
                         openSnack={openSnack}
                         closeSnack={closeSnack}
                         disableRowSelection={FileDisableRowSelection}
-                        bottonText="Add Associated Files to My Files"
+                        bottonText="Add Selected Files"
                       />
                     </Grid>
                     <Grid item xs={8}>
