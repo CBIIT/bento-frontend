@@ -7,7 +7,7 @@ import CartView from './cartView';
 
 const cartController = () => {
   const cart = getCart();
-  const ids = cart.subjectIds ? cart.subjectIds : [];
+  const ids = cart.fileIds ? cart.fileIds : [];
   return (
     <Query query={GET_MY_CART_DATA_QUERY} variables={{ file_ids: ids }}>
       {({ data, loading, error }) => (

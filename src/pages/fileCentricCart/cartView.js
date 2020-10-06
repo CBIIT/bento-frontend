@@ -14,7 +14,7 @@ import { myFilesPageData } from '../../bento/fileCentricCartWorkflowData';
 import CustomFooter from './customFooter';
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
-import formatBytes from '../../utils/formatBytes';
+// import formatBytes from '../../utils/formatBytes';
 import externalIcon from '../../assets/icons/ExternalLinkIcon.svg';
 import Message from './components/message';
 
@@ -112,26 +112,12 @@ const cartView = ({ classes, data, isLoading }) => {
 
   const columns = [
     {
-      name: 'subject_id',
-      label: 'Case ID',
-      sortDirection: 'asc',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell1}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
       name: 'file_name',
       label: 'File Name',
-      sortDirection: 'asc',
       options: {
+        sortDirection: 'asc',
         customBodyRender: (value) => (
-          <div className={classes.tableCell2}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -144,7 +130,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'File Type',
       options: {
         customBodyRender: (value) => (
-          <div className={classes.tableCell3}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -153,11 +139,11 @@ const cartView = ({ classes, data, isLoading }) => {
       },
     },
     {
-      name: 'association',
+      name: 'parent',
       label: 'Association',
       options: {
         customBodyRender: (value) => (
-          <div className={classes.tableCell4}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -170,7 +156,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'Description',
       options: {
         customBodyRender: (value) => (
-          <div className={classes.tableCell5}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -183,7 +169,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'Format',
       options: {
         customBodyRender: (value) => (
-          <div className={classes.tableCell6}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -195,23 +181,46 @@ const cartView = ({ classes, data, isLoading }) => {
       name: 'file_size',
       label: 'Size',
       options: {
-        customBodyRender(bytes) {
-          return (
-            <div className={classes.tableCell7}>
-              {' '}
-              {formatBytes(bytes)}
-              {' '}
-            </div>
-          );
-        },
+        customBodyRender: (value) => (
+          <div className="mui_td">
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
       },
     },
     {
-      name: 'file_id',
+      name: 'case_id',
+      label: 'Case ID',
+      options: {
+        customBodyRender: (value) => (
+          <div className="mui_td">
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'study_code',
+      label: 'Study Code',
+      options: {
+        customBodyRender: (value) => (
+          <div className="mui_td">
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'uuid',
       label: 'UUID',
       options: {
         display: false,
-
       },
     },
     {
