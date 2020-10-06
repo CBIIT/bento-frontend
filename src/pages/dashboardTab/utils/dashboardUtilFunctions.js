@@ -1,5 +1,6 @@
 import { v1 as uuid } from 'uuid';
 import { _, mergeWith, isArray } from 'lodash';
+import { facetSearchData } from '../../../bento/dashboardData';
 
 const COLORS = [
   '#39C0F0',
@@ -728,15 +729,43 @@ export const updateCheckBoxData = (data, allCheckBoxes, activeCheckBoxes, filter
   })
 );
 
+export function transformAPIDataIntoCheckBoxData(data, field) {
+  const result = [];
+  let preElementIndex = 0;
+  data.map((el) => ({
+    name: el[field.toString()] === '' || !el[field.toString()]
+      ? NOT_PROVIDED : el[field.toString()],
+    isChecked: false,
+    subjects: el.subjects,
+  }))
+    .sort((a, b) => customSorting(a.name, b.name))
+    .forEach((el) => {
+      // reduce the duplication
+      if (result[parseInt(preElementIndex, 10)] && result[parseInt(preElementIndex, 10)].name) {
+        if (result[parseInt(preElementIndex, 10)].name === el.name) {
+          result[parseInt(preElementIndex, 10)].subjects += el.subjects;
+        } else {
+          preElementIndex += 1;
+          result.push(el);
+        }
+      } else {
+        result.push(el);
+      }
+    });
+
+  return result;
+}
+
+// CustomCheckBox works for first time init Checkbox,
+// that function transforms the data which returns from API into a another format
+// so it contains more information and easy for front-end to show it correctly.
 export function customCheckBox(data) {
   return (
-    mappingCheckBoxToDataTable.map((mapping) => ({
-      groupName: mapping.group,
-      checkboxItems: initCheckBoxData(data[mapping.api], mapping.field, mapping.type, mapping.key),
+    facetSearchData.map((mapping) => ({
+      groupName: mapping.label,
+      checkboxItems: transformAPIDataIntoCheckBoxData(data[mapping.api], mapping.field),
       datafield: mapping.datafield,
       show: mapping.show,
-      section: mapping.section,
-      key: mapping.key,
     }))
   );
 }

@@ -3,10 +3,10 @@ import client from '../../../utils/graphqlClient';
 import { DASHBOARD_QUERY } from '../utils/graphqlQueries';
 
 export const TOGGLE_CHECKBOX = 'TOGGLE_CHECKBOX';
-export const RECEIVE_DASHBOARD = 'RECEIVE_DASHBOARD';
-export const DASHBOARD_QUERY_ERR = 'DASHBOARD_QUERY_ERR';
-export const READY_DASHBOARD = 'READY_DASHBOARD';
-export const REQUEST_DASHBOARD = 'REQUEST_DASHBOARD';
+export const RECEIVE_DASHBOARDTAB = 'RECEIVE_DASHBOARDTAB';
+export const DASHBOARDTAB_QUERY_ERR = 'DASHBOARDTAB_QUERY_ERR';
+export const READY_DASHBOARDTAB = 'READY_DASHBOARDTAB';
+export const REQUEST_DASHBOARDTAB = 'REQUEST_DASHBOARDTAB';
 export const SINGLE_CHECKBOX = 'SINGLE_CHECKBOX';
 
 export const toggleCheckBox = (payload) => ({
@@ -19,39 +19,19 @@ export const singleCheckBox = (payload) => ({
   payload,
 });
 
-function shouldFetchDataForDashboardDataTable(state) {
+function shouldFetchDataForDashboardTabDataTable(state) {
   return !(state.dashboard.isFetched);
 }
 
-function postRequestFetchDataDashboard() {
+function postRequestFetchDataDashboardTab() {
   return {
-    type: REQUEST_DASHBOARD,
+    type: REQUEST_DASHBOARDTAB,
   };
 }
 
-function receiveDashboard(json) {
-  const { data } = json;
-  const cohortData = data.case.reduce((a, c) => {
-    const accumulator = a;
-    accumulator[c.case_id] = c.cohort;
-    return accumulator;
-  }, {});
-
-  data.caseOverview = data.caseOverview.map((c) => {
-    const currentValue = c;
-    currentValue.cohort_description = (cohortData[c.case_id]
-      && cohortData[c.case_id].cohort_description)
-      ? cohortData[c.case_id].cohort_description
-      : '';
-    currentValue.weight = (currentValue.demographic
-      && currentValue.demographic.weight)
-      ? currentValue.demographic.weight
-      : '';
-    return currentValue;
-  });
-
+function receiveDashboardTab(json) {
   return {
-    type: RECEIVE_DASHBOARD,
+    type: RECEIVE_DASHBOARDTAB,
     payload:
     {
       data: json.data,
@@ -59,36 +39,36 @@ function receiveDashboard(json) {
   };
 }
 
-function errorhandler(error, type) {
+function dashboardTaberrorHandler(error, type) {
   return {
     type,
     error,
   };
 }
 
-function readyDashboard() {
+function readyDashboardTab() {
   return {
-    type: READY_DASHBOARD,
+    type: READY_DASHBOARDTAB,
   };
 }
 
-function fetchDashboard() {
+function fetchDashboardTab() {
   return (dispatch) => {
-    dispatch(postRequestFetchDataDashboard());
+    dispatch(postRequestFetchDataDashboardTab());
     return client
       .query({
         query: DASHBOARD_QUERY,
       })
-      .then((result) => dispatch(receiveDashboard(_.cloneDeep(result))))
-      .catch((error) => dispatch(errorhandler(error, DASHBOARD_QUERY_ERR)));
+      .then((result) => dispatch(receiveDashboardTab(_.cloneDeep(result))))
+      .catch((error) => dispatch(dashboardTaberrorHandler(error, DASHBOARDTAB_QUERY_ERR)));
   };
 }
 
-export function fetchDataForDashboardDataTable() {
+export function fetchDataForDashboardTabDataTable() {
   return (dispatch, getState) => {
-    if (shouldFetchDataForDashboardDataTable(getState())) {
-      return dispatch(fetchDashboard());
+    if (shouldFetchDataForDashboardTabDataTable(getState())) {
+      return dispatch(fetchDashboardTab());
     }
-    return dispatch(readyDashboard());
+    return dispatch(readyDashboardTab());
   };
 }

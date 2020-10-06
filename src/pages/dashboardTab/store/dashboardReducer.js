@@ -13,7 +13,7 @@ import {
 } from '../../../utils/dashboardUtilFunctions';
 
 export const initialState = {
-  dashboard: {
+  dashboardTab: {
     isDataTableUptoDate: false,
     isFetched: false,
     isLoading: false,
@@ -65,7 +65,7 @@ function getStatInit(input) {
   return initStats;
 }
 
-export default function dashboardReducer(state = initialState, action) {
+export default function dashboardReducerTab(state = initialState, action) {
   switch (action.type) {
     case Actions.SINGLE_CHECKBOX: {
       const dataTableFilters = action.payload;
@@ -121,7 +121,7 @@ export default function dashboardReducer(state = initialState, action) {
         widgets: getWidgetsData(tableData),
       };
     }
-    case Actions.RECEIVE_DASHBOARD: {
+    case Actions.RECEIVE_DASHBOARDTAB: {
       // get action data
       const checkboxData = customCheckBox(action.payload.data);
       return action.payload.data
@@ -142,14 +142,16 @@ export default function dashboardReducer(state = initialState, action) {
             data: checkboxData,
           },
           datatable: {
-            data: action.payload.data.subjectOverViewPaged,
+            dataCase: action.payload.data.subjectOverViewPaged,
+            dataSample: action.payload.data.sampleOverview,
+            dataFile: action.payload.data.fileOverview,
             filters: [],
           },
           widgets: getWidgetsInitData(action.payload.data),
 
         } : { ...state };
     }
-    case Actions.DASHBOARD_QUERY_ERR:
+    case Actions.DASHBOARDTAB_QUERY_ERR:
       // get action data
       return {
         ...state,
@@ -158,13 +160,13 @@ export default function dashboardReducer(state = initialState, action) {
         isLoading: false,
         isFetched: false,
       };
-    case Actions.READY_DASHBOARD:
+    case Actions.READY_DASHBOARDTAB:
       return {
         ...state,
         isLoading: false,
         isFetched: true,
       };
-    case Actions.REQUEST_DASHBOARD:
+    case Actions.REQUEST_DASHBOARDTAB:
       return { ...state, isLoading: true };
     default:
       return state;

@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import MUIDataTable from 'mui-datatables';
+import { CustomDataTable } from 'bento-components';
 import CustomFooter from './tabFooter';
 import { addSubjects } from '../../fileCentricCart/store/cartAction';
 
@@ -102,7 +102,7 @@ const TabView = ({
     <div>
       <Grid container>
         <Grid item xs={12} id={tableID}>
-          <MUIDataTable
+          <CustomDataTable
             data={data}
             columns={columns}
             options={options()}

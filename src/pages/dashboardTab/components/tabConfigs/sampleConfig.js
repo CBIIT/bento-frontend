@@ -28,7 +28,7 @@ export function sampleColumns(classes) {
       },
     },
     {
-      name: 'case_id',
+      name: 'subject_id',
       label: 'Case ID',
       options: {
         filter: false,
@@ -42,8 +42,8 @@ export function sampleColumns(classes) {
       },
     },
     {
-      name: 'breed',
-      label: 'Breed',
+      name: 'program',
+      label: 'Program Code',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -56,8 +56,8 @@ export function sampleColumns(classes) {
       },
     },
     {
-      name: 'diagnosis',
-      label: 'Diagnosis',
+      name: 'arm',
+      label: 'Arm',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -71,8 +71,8 @@ export function sampleColumns(classes) {
     },
 
     {
-      name: 'sample_site',
-      label: 'Sample Site',
+      name: 'diagnosis',
+      label: 'Diagnosis',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -85,8 +85,8 @@ export function sampleColumns(classes) {
       },
     },
     {
-      name: 'summarized_sample_type',
-      label: 'Sample Type',
+      name: 'tissue_type',
+      label: 'Tissue Type',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -99,8 +99,8 @@ export function sampleColumns(classes) {
       },
     },
     {
-      name: 'specific_sample_pathology',
-      label: 'Pathology/Morphology',
+      name: 'tissue_composition',
+      label: 'Tissue Composition',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -113,8 +113,8 @@ export function sampleColumns(classes) {
       },
     },
     {
-      name: 'tumor_grade',
-      label: 'Tumor Grade',
+      name: 'sample_anatomic_site',
+      label: 'Sample Anatomic Site',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -127,8 +127,8 @@ export function sampleColumns(classes) {
       },
     },
     {
-      name: 'sample_chronology',
-      label: 'Sample Chronology',
+      name: 'sample_procurement_method',
+      label: 'Sample Procurement Method',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -141,36 +141,8 @@ export function sampleColumns(classes) {
       },
     },
     {
-      name: 'percentage_tumor',
-      label: 'Percentage Tumor',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(0.8)}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'necropsy_sample',
-      label: 'Necropsy Sample',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(0.8)}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'sample_preservation',
-      label: 'Sample Preservation',
+      name: 'platform',
+      label: 'Platform',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -226,7 +198,7 @@ export function sampleOnRowsSelect(data, allRowsSelected) {
     const { files } = data[currentValue.dataIndex];
     // check if file
     if (files && files.length > 0) {
-      return accumulator.concat(files.map((f) => f.uuid));
+      return accumulator.concat(files.map((f) => f.file_id));
     }
     return accumulator;
   }, []);

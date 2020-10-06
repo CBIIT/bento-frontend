@@ -13,6 +13,20 @@ const tableStyle = (ratio = 1) => ({
 export function fileColumns(classes) {
   return ([
     {
+      name: 'file_id',
+      label: 'File ID',
+      options: {
+        filter: false,
+        customBodyRender: (value) => (
+          <div className="mui_td" style={tableStyle(2)}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
       name: 'file_name',
       label: 'File Name',
       options: {
@@ -28,21 +42,7 @@ export function fileColumns(classes) {
       },
     },
     {
-      name: 'file_type',
-      label: 'File Type',
-      options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <div className="mui_td" style={tableStyle(2)}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
-      name: 'parent',
+      name: 'association',
       label: 'Association',
       options: {
         filter: false,
@@ -98,8 +98,8 @@ export function fileColumns(classes) {
       },
     },
     {
-      name: 'case_id',
-      label: 'Case ID',
+      name: 'program',
+      label: 'Program Code',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -112,8 +112,8 @@ export function fileColumns(classes) {
       },
     },
     {
-      name: 'breed',
-      label: 'Breed',
+      name: 'arm',
+      label: 'Arm',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -126,8 +126,8 @@ export function fileColumns(classes) {
       },
     },
     {
-      name: 'diagnosis',
-      label: 'Diagnosis',
+      name: 'subject_id',
+      label: 'Case ID',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -140,8 +140,22 @@ export function fileColumns(classes) {
       },
     },
     {
-      name: 'study_code',
-      label: 'Study Code',
+      name: 'sample_id',
+      label: 'Sample ID',
+      options: {
+        filter: false,
+        customBodyRender: (value) => (
+          <div className="mui_td" style={tableStyle(1.8)}>
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'diagnosis',
+      label: 'Diagnosis',
       options: {
         filter: false,
         customBodyRender: (value) => (
@@ -183,7 +197,7 @@ export function fileDisableRowSelection(data, cartData) {
 */
 
 export function fileOnRowsSelect(data, allRowsSelected) {
-  return allRowsSelected.map((row) => data[row.dataIndex].uuid);
+  return allRowsSelected.map((row) => data[row.dataIndex].file_id);
 }
 
 

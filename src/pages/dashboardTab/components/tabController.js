@@ -27,9 +27,9 @@ const tabController = (classes) => {
   const [currentTab, setCurrentTab] = React.useState(0);
 
   // data from store
-  const dashboard = useSelector((state) => (state.dashboard
-&& state.dashboard.datatable
-    ? state.dashboard.datatable : {}));
+  const dashboard = useSelector((state) => (state.dashboardTab
+&& state.dashboardTab.datatable
+    ? state.dashboardTab.datatable : {}));
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
@@ -91,9 +91,9 @@ const tabController = (classes) => {
     );
   }
 
-  const caseData = dashboard.data;
-  const sampleData = [];
-  const fileData = [];
+  const caseData = dashboard.dataCase ? dashboard.dataCase : [];
+  const sampleData = dashboard.dataSample ? dashboard.dataSample : [];
+  const fileData = dashboard.dataFile ? dashboard.dataFile : [];
   return (
     <>
       <Snackbar

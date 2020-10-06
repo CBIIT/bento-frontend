@@ -8,6 +8,70 @@ export const DASHBOARD_QUERY_TMP = gql`{ sample{
    } }`;
 export const DASHBOARD_QUERY = gql`{
 
+  numberOfPrograms
+  numberOfStudies
+  numberOfSubjects
+  numberOfSamples
+  numberOfLabProcedures
+  numberOfFiles
+  subjectCountByProgram{
+        group
+        subjects
+      }
+    subjectCountByStudy{
+        group
+        subjects
+      }
+    subjectCountByDiagnoses{
+        group
+        subjects
+      }
+    subjectCountByRecurrenceScore{
+        group
+        subjects
+      }
+    subjectCountByTumorSize{
+        group
+        subjects
+      }
+    subjectCountByChemotherapyRegimen{
+        group
+        subjects
+      }
+    subjectCountByTumorGrade{
+        group
+        subjects
+      }
+  subjectCountByErStatus{
+        group
+        subjects
+      }
+  subjectCountByPrStatus{
+        group
+        subjects
+      }
+  subjectCountByMenopauseStatus{
+        group
+        subjects
+      }
+  subjectCountByChemotherapyRegimen{
+        group
+        subjects
+      }
+      subjectCountByEndocrineTherapy{
+    group
+    subjects
+  }
+    armsByPrograms {
+        program
+        caseSize
+        children {
+            arm
+            caseSize
+            size
+        }
+    }
+
   subjectOverViewPaged(first: 1000000) {
       subject_id
       program_id
@@ -31,4 +95,31 @@ export const DASHBOARD_QUERY = gql`{
         file_id
       }
   }
+    sampleOverview {
+        sample_id
+        subject_id
+        program
+        arm
+        diagnosis
+        tissue_type
+        tissue_composition
+        sample_anatomic_site
+        sample_procurement_method
+        platform
+        files 
+    }
+    
+    fileOverview {
+        file_id
+        file_name
+        association
+        file_description
+        file_format
+        file_size
+        program
+        arm
+        subject_id
+        sample_id
+        diagnosis
+    }
   }`;
