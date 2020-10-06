@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -21,6 +22,14 @@ function TabContainer({ children, dir }) {
     </Typography>
   );
 }
+
+
+const caseMessageData= "Click button to add selected files associated with selected cases(s)";
+
+const fileMessageData= "Click button to add selected files to Cart";
+
+const sampleMessageData= "Click button to add selected files associated with selected Sample(s)";
+
 
 const tabController = (classes) => {
   // tab settings
@@ -91,9 +100,13 @@ const tabController = (classes) => {
     );
   }
 
-  const caseData = dashboard.dataCase ? dashboard.dataCase : [];
-  const sampleData = dashboard.dataSample ? dashboard.dataSample : [];
-  const fileData = dashboard.dataFile ? dashboard.dataFile : [];
+  // const caseData = dashboard.dataCase ? dashboard.dataCase : [];
+  // const sampleData = dashboard.dataSample ? dashboard.dataSample : [];
+  // const fileData = dashboard.dataFile ? dashboard.dataFile : [];
+
+   const caseData = [];
+  const sampleData =  [];
+  const fileData =  [];
   return (
     <>
       <Snackbar
@@ -150,8 +163,9 @@ const tabController = (classes) => {
               openSnack={openSnack}
               closeSnack={closeSnack}
               disableRowSelection={caseDisableRowSelection}
-              buttonTitle="Add Filtered Files Associated With Selected Case(s)"
+              buttonTitle="Add  Selected Files"
               tableID="case_tab_table"
+              messageData={caseMessageData}
             />
           </TabContainer>
           <TabContainer id="sample_tab_view">
@@ -162,8 +176,9 @@ const tabController = (classes) => {
               openSnack={openSnack}
               closeSnack={closeSnack}
               disableRowSelection={sampleDisableRowSelection}
-              buttonTitle="Add Filtered Files Associated With Selected Sample(s)"
+              buttonTitle="Add  Selected Files"
               tableID="sample_tab_table"
+              messageData={sampleMessageData}
             />
           </TabContainer>
           <TabContainer id="file_tab_view">
@@ -174,8 +189,9 @@ const tabController = (classes) => {
               openSnack={openSnack}
               closeSnack={closeSnack}
               disableRowSelection={fileDisableRowSelection}
-              buttonTitle=" Add Selected Files to My Cart"
+              buttonTitle="Add  Selected Files"
               tableID="file_tab_table"
+              messageData={fileMessageData}
             />
           </TabContainer>
         </SwipeableViews>

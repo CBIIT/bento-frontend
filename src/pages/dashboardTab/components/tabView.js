@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
@@ -7,9 +8,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
 import CustomFooter from './tabFooter';
 import { addSubjects } from '../../fileCentricCart/store/cartAction';
+import HelpIcon from '@material-ui/icons/Help';
+import IconButton from '@material-ui/core/IconButton';
+import Message from './message';
 
 const TabView = ({
-  classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID,
+  classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID, messageData
 }) => {
   const dispatch = useDispatch();
   // Get the existing files ids from  cart state
@@ -26,6 +30,22 @@ const TabView = ({
     saveButton.current.style.fontWeight = '600';
     saveButton.current.style.cursor = 'auto';
   });
+
+  const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
+  const [BottomMessageStatus, setBottomMessageStatus] = React.useState(false);
+
+  function openMessage(location) {
+    return location === 'top' ? setTopMessageStatus(true) : setBottomMessageStatus(true);
+  }
+
+  function closeMessage(location) {
+    return location === 'top' ? setTopMessageStatus(true) : setBottomMessageStatus(true);
+  }
+
+  function toggleMessageStatus(location, status) {
+    return status === 'close' ? closeMessage(location) : openMessage(location);
+  }
+
 
   let selectedIDs = [];
 
@@ -100,6 +120,27 @@ const TabView = ({
 
   return (
     <div>
+           { TopMessageStatus ? (
+              <div className={classes.messageTop}>
+                {' '}
+                <Message data={messageData} />
+                {' '}
+              </div>
+            ) : ''}
+     <Grid item xs={12} className={classes.saveButtonDiv}>
+        <button
+          type="button"
+          ref={saveButton}
+          onClick={exportFiles}
+          className={classes.button}
+        >
+          { buttonTitle }
+        </button>
+               <IconButton aria-label="help">
+              <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
+            </IconButton>
+       
+      </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
           <CustomDataTable
@@ -119,6 +160,18 @@ const TabView = ({
         >
           { buttonTitle }
         </button>
+           <IconButton aria-label="help">
+                    <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+                  </IconButton>
+
+                   { BottomMessageStatus ? (
+                    <div className={classes.messageBottom}>
+                      {' '}
+                      <Message data={messageData} />
+                      {' '}
+                    </div>
+                  ) : ''}
+
       </Grid>
     </div>
   );
@@ -170,14 +223,15 @@ const styles = () => ({
     color: '#000',
   },
   saveButtonDiv: {
-    position: 'absolute',
-    margin: '-50px 0 0 0',
-    paddingLeft: '25px',
+    paddingTop: '5px',
+    paddingRight: '25px',
+    textAlign: 'right',
+
   },
   button: {
     borderRadius: '10px',
-    width: '230px',
-    lineHeight: '18px',
+    width: '150px',
+    lineHeight: '20px',
     fontSize: '10pt',
     color: '#fff',
     backgroundColor: '#ff7f15',
@@ -190,6 +244,12 @@ const styles = () => ({
   },
   sampleTableBorder: {
     borderTopColor: '#05C5CC',
+  },
+  messageBottom: {
+    zIndex: '900',
+  },
+  messageTop: {
+    zIndex: '900',
   },
 });
 
