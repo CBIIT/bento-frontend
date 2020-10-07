@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /*  To check if this row is selectable or not.
     I want the system to visually communicate ("flag") which of
     the samples being displayed have already had all of their files added to the cart.
@@ -43,4 +45,3 @@ export function SampleOnRowsSelect(data, allRowsSelected) {
     return accumulator;
   }, []);
 }
-
