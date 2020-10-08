@@ -17,9 +17,9 @@ const TabView = ({
 }) => {
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.subjectIds);
-
+  let selectedIDs = [];
   const saveButton = useRef(null);
-
+  const saveButton2 = useRef(null);
   useEffect(() => {
     saveButton.current.disabled = true;
     saveButton.current.style.color = '#FFFF';
@@ -28,6 +28,32 @@ const TabView = ({
     saveButton.current.style.border = '3px solid grey';
     saveButton.current.style.fontWeight = '600';
     saveButton.current.style.cursor = 'auto';
+    saveButton2.current.disabled = true;
+    saveButton2.current.style.color = '#FFFF';
+    saveButton2.current.style.backgroundColor = '#C53B27';
+    saveButton2.current.style.opacity = '0.3';
+    saveButton2.current.style.border = '3px solid grey';
+    saveButton2.current.style.fontWeight = '600';
+    saveButton2.current.style.cursor = 'auto';
+    
+     if (selectedIDs.length === 0) {
+      saveButton.current.disabled = true;
+      saveButton.current.style.opacity = '0.3';
+      saveButton.current.style.cursor = 'auto';
+      saveButton2.current.disabled = true;
+      saveButton2.current.style.opacity = '0.3';
+      saveButton2.current.style.cursor = 'auto';
+    } else {
+      saveButton.current.disabled = false;
+      saveButton.current.style.cursor = 'pointer';
+      saveButton.current.style.opacity = 'unset';
+      saveButton.current.style.border = 'unset';
+
+      saveButton2.current.disabled = false;
+      saveButton2.current.style.cursor = 'pointer';
+      saveButton2.current.style.opacity = 'unset';
+      saveButton2.current.style.border = 'unset';
+    }
   });
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
@@ -38,7 +64,7 @@ const TabView = ({
   }
 
   function closeMessage(location) {
-    return location === 'top' ? setTopMessageStatus(true) : setBottomMessageStatus(true);
+    return location === 'top' ? setTopMessageStatus(false) : setBottomMessageStatus(false);
   }
 
   function toggleMessageStatus(location, status) {
@@ -46,7 +72,7 @@ const TabView = ({
   }
 
 
-  let selectedIDs = [];
+
 
   function exportFiles() {
     // Find the newly added files by comparing
@@ -65,19 +91,21 @@ const TabView = ({
 
     if (allRowsSelected.length === 0) {
       saveButton.current.disabled = true;
-      saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#C53B27';
       saveButton.current.style.opacity = '0.3';
-      saveButton.current.style.border = '3px solid grey';
-      saveButton.current.style.fontWeight = '600';
       saveButton.current.style.cursor = 'auto';
+      saveButton2.current.disabled = true;
+      saveButton2.current.style.opacity = '0.3';
+      saveButton2.current.style.cursor = 'auto';
     } else {
       saveButton.current.disabled = false;
-      saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#C53B27';
       saveButton.current.style.cursor = 'pointer';
       saveButton.current.style.opacity = 'unset';
       saveButton.current.style.border = 'unset';
+
+      saveButton2.current.disabled = false;
+      saveButton2.current.style.cursor = 'pointer';
+      saveButton2.current.style.opacity = 'unset';
+      saveButton2.current.style.border = 'unset';
     }
   }
 
@@ -129,7 +157,7 @@ const TabView = ({
      <Grid item xs={12} className={classes.saveButtonDiv}>
         <button
           type="button"
-          ref={saveButton}
+          ref={saveButton2}
           onClick={exportFiles}
           className={classes.button}
         >
@@ -245,11 +273,21 @@ const styles = () => ({
     borderTopColor: '#05C5CC',
   },
   messageBottom: {
-    zIndex: '900',
+    position: 'absolute',
+    zIndex: '400',
+    marginTop: '-145px',
+    right: '6px',
   },
   messageTop: {
-    zIndex: '900',
+    position: 'absolute',
+    marginTop: '-25px',
+    zIndex: '400',
+    marginTop: '-105px',
+    right: '6px',
   },
+  helpIcon: {
+    zIndex: '500',
+  }
 });
 
 export default withStyles(styles, { withTheme: true })(TabView);

@@ -60,23 +60,26 @@ const tabController = (classes) => {
   const tabIndex = {
     0: {
       title: 'Cases',
-      primaryColor: '#F48439',
+      primaryColor: '#D7F3EA',
       secondaryColor: '#FFDFB8',
+      selectedColor: '#45B492',
     },
     1: {
       title: 'Samples',
-      primaryColor: '#05C5CC',
+      primaryColor: '#D0EDF9',
       secondaryColor: '#C9F1F1',
+      selectedColor:'#06B1EC',
     },
     2: {
       title: 'Files',
-      primaryColor: '#2446C6',
-      secondaryColor: '#E1E5FF',
+      primaryColor: '#F7D8F7',
+      secondaryColor: '#86D6F0',
+      selectedColor:'#CA2AC8',
     },
   };
 
   function getBorderStyle() {
-    const style = '3px solid';
+    const style = '3px solid #000' ;
     return `${tabIndex[currentTab].primaryColor} ${style}`;
   }
 
@@ -87,7 +90,7 @@ const tabController = (classes) => {
   function getTabLalbel(title, count) {
     const tabObj = tabIndex[currentTab];
     // NOTE: refactor white color to theme's white color.
-    const primaryColor = (tabObj.title === title) ? '#FFF' : undefined;
+    const primaryColor = (tabObj.title === title) ? tabIndex[currentTab].selectedColor : undefined;
     const secondaryColor = (tabObj.title === title) ? tabObj.secondaryColor : undefined;
 
     return (
@@ -104,9 +107,6 @@ const tabController = (classes) => {
   const sampleData = dashboard.dataSample ? dashboard.dataSample : [];
   const fileData = dashboard.dataFile ? dashboard.dataFile : [];
 
-  //  const caseData = [];
-  // const sampleData =  [];
-  // const fileData =  [];
   return (
     <>
       <Snackbar
@@ -131,10 +131,12 @@ const tabController = (classes) => {
       />
       <TabThemeProvider tableBorder={getBorderStyle()} tablecolor={getTableColor()}>
         <Tabs
+          classes
           value={currentTab}
           onChange={handleTabChange}
           indicatorColor="primary"
           textColor="primary"
+          textColorPrimary
         >
           <Tab
             id="case_tab"
@@ -154,6 +156,7 @@ const tabController = (classes) => {
           index={currentTab}
           onChangeIndex={handleTabChange}
           animateTransitions={false}
+          style={{'overflow-x':'visible','overflow-y':'visible'}}
         >
           <TabContainer id="case_tab_view">
             <TabView
