@@ -2,8 +2,9 @@
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
-  withStyles,
+  withStyles
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
 import CustomFooter from './tabFooter';
@@ -13,47 +14,60 @@ import IconButton from '@material-ui/core/IconButton';
 import Message from './message';
 
 const TabView = ({
-  classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID, messageData
+  classes, 
+  data, 
+  Columns, 
+  customOnRowsSelect, 
+  openSnack, 
+  disableRowSelection, 
+  buttonTitle, 
+  tableID, 
+  messageData ,
+  saveButtonDefaultStyle,
+  DeactiveSaveButtonDefaultStyle,
+  ActiveSaveButtonDefaultStyle,
 }) => {
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.subjectIds);
   let selectedIDs = [];
   const saveButton = useRef(null);
   const saveButton2 = useRef(null);
-  useEffect(() => {
+
+
+
+const buildButtonStyle=(saveButton,styleObject)=>{
+  for (const [key, value] of Object.entries(styleObject)) {
+     saveButton.current.style[key]= value;
+  }
+}
+  const initSaveButtonDefaultStyle = (saveButton)=>{
     saveButton.current.disabled = true;
-    saveButton.current.style.color = '#FFFF';
-    saveButton.current.style.backgroundColor = '#C53B27';
-    saveButton.current.style.opacity = '0.3';
-    saveButton.current.style.border = '3px solid grey';
-    saveButton.current.style.fontWeight = '600';
-    saveButton.current.style.cursor = 'auto';
-    saveButton2.current.disabled = true;
-    saveButton2.current.style.color = '#FFFF';
-    saveButton2.current.style.backgroundColor = '#C53B27';
-    saveButton2.current.style.opacity = '0.3';
-    saveButton2.current.style.border = '3px solid grey';
-    saveButton2.current.style.fontWeight = '600';
-    saveButton2.current.style.cursor = 'auto';
+    buildButtonStyle(saveButton,saveButtonDefaultStyle)
+  }
+
+
+ const updateActiveSaveButtonStyle=(flag, saveButton)=>{
+  if(flag){
+      saveButton.current.disabled = true;
+      buildButtonStyle(saveButton,ActiveSaveButtonDefaultStyle)
+  }else{
+      saveButton.current.disabled = false;
+      buildButtonStyle(saveButton,DeactiveSaveButtonDefaultStyle)
+  }
+ }
+
+  useEffect(() => {
+    
+     initSaveButtonDefaultStyle(saveButton);
+     initSaveButtonDefaultStyle(saveButton2);
     
      if (selectedIDs.length === 0) {
-      saveButton.current.disabled = true;
-      saveButton.current.style.opacity = '0.3';
-      saveButton.current.style.cursor = 'auto';
-      saveButton2.current.disabled = true;
-      saveButton2.current.style.opacity = '0.3';
-      saveButton2.current.style.cursor = 'auto';
-    } else {
-      saveButton.current.disabled = false;
-      saveButton.current.style.cursor = 'pointer';
-      saveButton.current.style.opacity = 'unset';
-      saveButton.current.style.border = 'unset';
-
-      saveButton2.current.disabled = false;
-      saveButton2.current.style.cursor = 'pointer';
-      saveButton2.current.style.opacity = 'unset';
-      saveButton2.current.style.border = 'unset';
-    }
+        updateActiveSaveButtonStyle(true,saveButton);
+        updateActiveSaveButtonStyle(true,saveButton2);
+      } else {
+        updateActiveSaveButtonStyle(false,saveButton);
+        updateActiveSaveButtonStyle(false,saveButton2);
+      }
   });
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
@@ -90,23 +104,12 @@ const TabView = ({
     ))];
 
     if (allRowsSelected.length === 0) {
-      saveButton.current.disabled = true;
-      saveButton.current.style.opacity = '0.3';
-      saveButton.current.style.cursor = 'auto';
-      saveButton2.current.disabled = true;
-      saveButton2.current.style.opacity = '0.3';
-      saveButton2.current.style.cursor = 'auto';
-    } else {
-      saveButton.current.disabled = false;
-      saveButton.current.style.cursor = 'pointer';
-      saveButton.current.style.opacity = 'unset';
-      saveButton.current.style.border = 'unset';
-
-      saveButton2.current.disabled = false;
-      saveButton2.current.style.cursor = 'pointer';
-      saveButton2.current.style.opacity = 'unset';
-      saveButton2.current.style.border = 'unset';
-    }
+        updateActiveSaveButtonStyle(true,saveButton);
+        updateActiveSaveButtonStyle(true,saveButton2);
+      } else {
+        updateActiveSaveButtonStyle(false,saveButton);
+        updateActiveSaveButtonStyle(false,saveButton2);
+      }
   }
 
   const columns = Columns(classes);
@@ -178,7 +181,7 @@ const TabView = ({
         </Grid>
 
       </Grid>
-      <Grid item xs={12} className={classes.saveButtonDiv}>
+      <Grid item xs={12} className={classes.saveButtonDivBottom}>
         <button
           type="button"
           ref={saveButton}
@@ -187,6 +190,7 @@ const TabView = ({
         >
           { buttonTitle }
         </button>
+
            <IconButton aria-label="help">
                     <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
                   </IconButton>
@@ -198,6 +202,17 @@ const TabView = ({
                       {' '}
                     </div>
                   ) : ''}
+                    <div>
+                        <Link
+                              target="_blank"
+                              rel="noreferrer"
+                              to={(location) => ({ ...location, pathname: '/fileCentricCart' })}
+                              color="inherit"
+                              className={classes.cartlink}
+                            >
+                             Go to Cart >
+                            </Link>
+                          </div>
 
       </Grid>
     </div>
@@ -209,11 +224,17 @@ const styles = () => ({
   link: {
     color: '#DC762F',
     textDecoration: 'none',
+
     '&:hover': {
       textDecoration: 'underline',
     },
   },
-
+  cartlink: {
+    fontFamily: 'Lato',
+    color: '#3E6886',
+    fontSize: '12px',
+    marginRight: '70px',
+  },
   caseTitle: {
     color: '#194563',
     fontSize: '25.2pt',
@@ -253,15 +274,21 @@ const styles = () => ({
     paddingTop: '5px',
     paddingRight: '25px',
     textAlign: 'right',
-
+  },
+  saveButtonDivBottom: {
+    paddingTop: '5px',
+    paddingRight: '25px',
+    textAlign: 'right',
+    marginBottom: '30px',
   },
   button: {
     borderRadius: '10px',
-    width: '150px',
-    lineHeight: '20px',
+    width: '156px',
+    lineHeight: '37px',
     fontSize: '10pt',
+    fontFamily: 'Lato',
     color: '#fff',
-    backgroundColor: '#ff7f15',
+    backgroundColor: '#10A075',
   },
   caseTableBorder: {
     borderTopColor: '#F48439',

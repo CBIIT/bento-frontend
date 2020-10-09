@@ -31,6 +31,68 @@ const fileMessageData= "Click button to add selected files to Cart";
 const sampleMessageData= "Click button to add selected files associated with selected Sample(s)";
 
 
+const caseSaveButtonDefaultStyle = {
+  color : '#fff',
+  backgroundColor:'#09A175',
+  opacity: '1',
+  border: '0px',
+  cursor:  'pointer',
+}
+
+const sampleSaveButtonDefaultStyle={
+    color : '#fff',
+    backgroundColor:'#00AEEF',
+    opacity: '1',
+    border: '0px',
+    cursor:  'pointer',
+}
+
+
+const fileSaveButtonDefaultStyle={
+    color : '#fff',
+    backgroundColor:'#DC2FDA',
+    opacity: '1',
+    border: '0px',
+    cursor:  'pointer',
+}
+
+const caseActiveSaveButtonDefaultStyle = {
+      disabled: 'true',
+      opacity: '0.3',
+      cursor:'auto',
+}
+
+const sampleActiveSaveButtonDefaultStyle={
+      opacity: '0.3',
+      cursor:'auto',
+}
+
+
+const fileActiveSaveButtonDefaultStyle={
+      opacity: '0.3',
+      cursor:'auto',
+}
+
+const caseDeactiveSaveButtonDefaultStyle = {
+     cursor :'pointer',
+     opacity : 'unset',
+     border :'unset',
+}
+
+const sampleDeactiveSaveButtonDefaultStyle={
+     cursor :'pointer',
+     opacity : 'unset',
+     border :'unset',
+}
+
+const fileDeactiveSaveButtonDefaultStyle={
+     cursor :'pointer',
+     opacity : 'unset',
+     border :'unset',
+}
+
+
+
 const tabController = (classes) => {
   // tab settings
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -60,26 +122,26 @@ const tabController = (classes) => {
   const tabIndex = {
     0: {
       title: 'Cases',
-      primaryColor: '#D7F3EA',
+      primaryColor: '#D6F2EA',
       secondaryColor: '#FFDFB8',
-      selectedColor: '#45B492',
+      selectedColor: '#10A075',
     },
     1: {
       title: 'Samples',
-      primaryColor: '#D0EDF9',
+      primaryColor: '#CFEDF9',
       secondaryColor: '#C9F1F1',
-      selectedColor:'#06B1EC',
+      selectedColor:'#0DAFEC',
     },
     2: {
       title: 'Files',
-      primaryColor: '#F7D8F7',
+      primaryColor: '#F7D7F7',
       secondaryColor: '#86D6F0',
-      selectedColor:'#CA2AC8',
+      selectedColor:'#C92EC7',
     },
   };
 
   function getBorderStyle() {
-    const style = '3px solid #000' ;
+    const style = '2px solid #898989' ;
     return `${tabIndex[currentTab].primaryColor} ${style}`;
   }
 
@@ -156,7 +218,7 @@ const tabController = (classes) => {
           index={currentTab}
           onChangeIndex={handleTabChange}
           animateTransitions={false}
-          style={{'overflow-x':'visible','overflow-y':'visible'}}
+          style={{'overflow-x':'hidden'}}
         >
           <TabContainer id="case_tab_view">
             <TabView
@@ -169,6 +231,9 @@ const tabController = (classes) => {
               buttonTitle="Add  Selected Files"
               tableID="case_tab_table"
               messageData={caseMessageData}
+              saveButtonDefaultStyle={caseSaveButtonDefaultStyle}
+              ActiveSaveButtonDefaultStyle={caseActiveSaveButtonDefaultStyle}
+              DeactiveSaveButtonDefaultStyle={caseDeactiveSaveButtonDefaultStyle}
             />
           </TabContainer>
           <TabContainer id="sample_tab_view">
@@ -182,6 +247,9 @@ const tabController = (classes) => {
               buttonTitle="Add  Selected Files"
               tableID="sample_tab_table"
               messageData={sampleMessageData}
+              saveButtonDefaultStyle={sampleSaveButtonDefaultStyle}
+              ActiveSaveButtonDefaultStyle={sampleActiveSaveButtonDefaultStyle}
+              DeactiveSaveButtonDefaultStyle={sampleDeactiveSaveButtonDefaultStyle}
             />
           </TabContainer>
           <TabContainer id="file_tab_view">
@@ -195,6 +263,9 @@ const tabController = (classes) => {
               buttonTitle="Add  Selected Files"
               tableID="file_tab_table"
               messageData={fileMessageData}
+              saveButtonDefaultStyle={fileSaveButtonDefaultStyle}
+              ActiveSaveButtonDefaultStyle={fileActiveSaveButtonDefaultStyle}
+              DeactiveSaveButtonDefaultStyle={fileDeactiveSaveButtonDefaultStyle}
             />
           </TabContainer>
         </SwipeableViews>
