@@ -23,7 +23,7 @@ export function createFileName() {
   return `${'Bento File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
 }
 
-export function convertToCSV(jsonse, comments, keysToInclude = ['case_id', 'file_name', 'uuid', 'md5sum'], header = ['Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments']) {
+export function convertToCSV(jsonse, comments, keysToInclude = ['subject_id', 'file_name', 'file_id', 'md5sum'], header = ['Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments']) {
   const objArray = jsonse;
   const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
   let str = '';
@@ -31,7 +31,7 @@ export function convertToCSV(jsonse, comments, keysToInclude = ['case_id', 'file
     let line = '';
     keysToInclude.map((keyName) => {
       if (line !== '') line += ',';
-      line += entry[keyName];
+      line += entry[keyName] !== null ? entry[keyName] : ' ';
       return line;
     });
     if (index === 0) {
