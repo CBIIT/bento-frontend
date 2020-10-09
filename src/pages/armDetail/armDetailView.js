@@ -5,14 +5,17 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { CustomDataTable } from 'bento-components';
+import Snackbar from '@material-ui/core/Snackbar';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
+import FileGridView from '../../components/FileGridWithCart/FileGridView';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
+import { FileOnRowsSelect, FileDisableRowSelection } from '../../utils/fileTable';
+import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import {
   header,
   subsections,
@@ -48,7 +51,7 @@ const FileCount = ({ num_files: numFiles, classes }) => (
 );
 
 const options = (classes) => ({
-  selectableRows: 'none',
+  selectableRows: true,
   responsive: 'stacked',
   search: false,
   filter: false,
@@ -86,6 +89,16 @@ const ArmDetail = ({ data, classes }) => {
   //   // Update dashboard first
   //   dispatch(fetchDataForDashboardDataTable());
   // }, []);
+  const [snackbarState, setsnackbarState] = React.useState({
+    open: false,
+    value: 0,
+  });
+  function openSnack(value1) {
+    setsnackbarState({ open: true, value: value1 });
+  }
+  function closeSnack() {
+    setsnackbarState({ open: false });
+  }
 
   const redirectTo = async () => {
     dispatch(singleCheckBox([{
@@ -122,6 +135,32 @@ const ArmDetail = ({ data, classes }) => {
 
   return (
     <>
+      <Snackbar
+        className={classes.snackBar}
+        open={snackbarState.open}
+        onClose={closeSnack}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        message={(
+          <div className={classes.snackBarMessage}>
+            <span className={classes.snackBarMessageIcon}>
+              <SuccessOutlinedIcon />
+              {' '}
+            </span>
+            <span className={classes.snackBarText}>
+
+              {snackbarState.value}
+              {'    '}
+              File(s) successfully
+              {' '}
+              {snackbarState.action}
+              {' '}
+              to your files
+
+            </span>
+          </div>
+)}
+      />
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -222,10 +261,15 @@ const ArmDetail = ({ data, classes }) => {
                     <Grid item xs={12}>
                       <Grid container spacing={4}>
                         <Grid item xs={12}>
-                          <CustomDataTable
+                          <FileGridView
                             data={data[table.filesField]}
                             columns={columns.slice(0, 10)}
                             options={options(classes)}
+                            customOnRowsSelect={FileOnRowsSelect}
+                            openSnack={openSnack}
+                            closeSnack={closeSnack}
+                            disableRowSelection={FileDisableRowSelection}
+                            bottonText="Add Selected Files"
                           />
                         </Grid>
                         <Grid item xs={8}>

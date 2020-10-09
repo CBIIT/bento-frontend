@@ -68,8 +68,8 @@ const NavBar = ({
   }, []);
 
   const numberOfCases = useSelector((state) => {
-    if (state.cart.subjectIds) {
-      return state.cart.subjectIds.length;
+    if (state.cart.fileIds) {
+      return state.cart.fileIds.length;
     }
     return 0;
   });

@@ -14,7 +14,7 @@ import { myFilesPageData } from '../../bento/fileCentricCartWorkflowData';
 import CustomFooter from './customFooter';
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
-import formatBytes from '../../utils/formatBytes';
+// import formatBytes from '../../utils/formatBytes';
 import externalIcon from '../../assets/icons/ExternalLinkIcon.svg';
 import Message from './components/message';
 
@@ -24,7 +24,7 @@ const cartView = ({ classes, data, isLoading }) => {
   const downloadButtonBottom = useRef(null);
   const deleteButtonBottom = useRef(null);
 
-  const [modalStatus, setModalStatus] = React.useState({ open: false, selectedSubjectIds: [] });
+  const [modalStatus, setModalStatus] = React.useState({ open: false, selectedFileIds: [] });
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
   const [BottomMessageStatus, setBottomMessageStatus] = React.useState(false);
 
@@ -41,7 +41,7 @@ const cartView = ({ classes, data, isLoading }) => {
   }
 
   let globalData = [];
-  let selectedSubjectIds = [];
+  let selectedFileIds = [];
 
   function closeModal() {
     const status = { ...modalStatus };
@@ -50,13 +50,13 @@ const cartView = ({ classes, data, isLoading }) => {
   }
 
   function removeSubjects() {
-    selectedSubjectIds = [...new Set(selectedSubjectIds)];
-    setModalStatus({ open: true, selectedSubjectIds });
+    selectedFileIds = [...new Set(selectedFileIds)];
+    setModalStatus({ open: true, selectedFileIds });
   }
   function deleteSubjectsAndCloseModal() {
     closeModal();
-    deleteFromCart({ subjectIds: modalStatus.selectedSubjectIds });
-    selectedSubjectIds = [];
+    deleteFromCart({ fileIds: modalStatus.selectedFileIds });
+    selectedFileIds = [];
   }
 
   /* eslint-disable no-return-assign, no-param-reassign */
@@ -88,10 +88,10 @@ const cartView = ({ classes, data, isLoading }) => {
 
   function onRowsSelect(curr, allRowsSelected) {
     globalData = [];
-    selectedSubjectIds = [];
+    selectedFileIds = [];
     allRowsSelected.forEach((row) => {
       const subject = data[row.dataIndex];
-      selectedSubjectIds.push(subject.file_id);
+      selectedFileIds.push(subject.file_id);
       globalData.push({
         caseId: subject.subject_id,
         fileName: subject.file_name,
@@ -100,7 +100,7 @@ const cartView = ({ classes, data, isLoading }) => {
       });
     });
     // filter out the duplicate file ids.
-    selectedSubjectIds = [...new Set(selectedSubjectIds)];
+    selectedFileIds = [...new Set(selectedFileIds)];
     if (allRowsSelected.length === 0) {
       disableDeleteButton(true);
     } else {
@@ -112,26 +112,12 @@ const cartView = ({ classes, data, isLoading }) => {
 
   const columns = [
     {
-      name: 'subject_id',
-      label: 'Case ID',
-      sortDirection: 'asc',
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes.tableCell1}>
-            {' '}
-            {value}
-            {' '}
-          </div>
-        ),
-      },
-    },
-    {
       name: 'file_name',
       label: 'File Name',
-      sortDirection: 'asc',
       options: {
+        sortDirection: 'asc',
         customBodyRender: (value) => (
-          <div className={classes.tableCell2}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -144,7 +130,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'File Type',
       options: {
         customBodyRender: (value) => (
-          <div className={classes.tableCell3}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -157,7 +143,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'Association',
       options: {
         customBodyRender: (value) => (
-          <div className={classes.tableCell4}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -170,7 +156,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'Description',
       options: {
         customBodyRender: (value) => (
-          <div className={classes.tableCell5}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -183,7 +169,7 @@ const cartView = ({ classes, data, isLoading }) => {
       label: 'Format',
       options: {
         customBodyRender: (value) => (
-          <div className={classes.tableCell6}>
+          <div className="mui_td">
             {' '}
             {value}
             {' '}
@@ -195,23 +181,46 @@ const cartView = ({ classes, data, isLoading }) => {
       name: 'file_size',
       label: 'Size',
       options: {
-        customBodyRender(bytes) {
-          return (
-            <div className={classes.tableCell7}>
-              {' '}
-              {formatBytes(bytes)}
-              {' '}
-            </div>
-          );
-        },
+        customBodyRender: (value) => (
+          <div className="mui_td">
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
       },
     },
     {
-      name: 'file_id',
+      name: 'subject_id',
+      label: 'Case ID',
+      options: {
+        customBodyRender: (value) => (
+          <div className="mui_td">
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'study_code',
+      label: 'Study Code',
+      options: {
+        customBodyRender: (value) => (
+          <div className="mui_td">
+            {' '}
+            {value}
+            {' '}
+          </div>
+        ),
+      },
+    },
+    {
+      name: 'uuid',
       label: 'UUID',
       options: {
         display: false,
-
       },
     },
     {
@@ -322,7 +331,7 @@ const cartView = ({ classes, data, isLoading }) => {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            { modalStatus.selectedSubjectIds.length }
+            { modalStatus.selectedFileIds.length }
             {' '}
             File(s) will be removed from your Files
           </DialogContentText>
