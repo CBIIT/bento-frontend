@@ -22,10 +22,12 @@ const TabView = ({
   disableRowSelection, 
   buttonTitle, 
   tableID, 
-  messageData ,
   saveButtonDefaultStyle,
   DeactiveSaveButtonDefaultStyle,
   ActiveSaveButtonDefaultStyle,
+  toggleMessageStatus,
+  BottomMessageStatus,
+  tabIndex,
 }) => {
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.subjectIds);
@@ -69,24 +71,6 @@ const buildButtonStyle=(saveButton,styleObject)=>{
         updateActiveSaveButtonStyle(false,saveButton2);
       }
   });
-
-  const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
-  const [BottomMessageStatus, setBottomMessageStatus] = React.useState(false);
-
-  function openMessage(location) {
-    return location === 'top' ? setTopMessageStatus(true) : setBottomMessageStatus(true);
-  }
-
-  function closeMessage(location) {
-    return location === 'top' ? setTopMessageStatus(false) : setBottomMessageStatus(false);
-  }
-
-  function toggleMessageStatus(location, status) {
-    return status === 'close' ? closeMessage(location) : openMessage(location);
-  }
-
-
-
 
   function exportFiles() {
     // Find the newly added files by comparing
@@ -136,7 +120,6 @@ const buildButtonStyle=(saveButton,styleObject)=>{
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <CustomFooter
         text="SAVE TO MY CASES"
-        classes={classes}
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -150,13 +133,7 @@ const buildButtonStyle=(saveButton,styleObject)=>{
 
   return (
     <div>
-           { TopMessageStatus ? (
-              <div className={classes.messageTop}>
-                {' '}
-                <Message data={messageData} />
-                {' '}
-              </div>
-            ) : ''}
+           
      <Grid item xs={12} className={classes.saveButtonDiv}>
         <button
           type="button"
@@ -194,15 +171,14 @@ const buildButtonStyle=(saveButton,styleObject)=>{
            <IconButton aria-label="help">
                     <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
                   </IconButton>
-
-                   { BottomMessageStatus ? (
+                    <div style={{"position": "relative"}}>
+                    { BottomMessageStatus.isActive && tabIndex === BottomMessageStatus.currentTab ? (
                     <div className={classes.messageBottom}>
                       {' '}
-                      <Message data={messageData} />
+                      <Message data={BottomMessageStatus.text} />
                       {' '}
                     </div>
                   ) : ''}
-                    <div>
                         <Link
                               target="_blank"
                               rel="noreferrer"
@@ -280,6 +256,7 @@ const styles = () => ({
     paddingRight: '25px',
     textAlign: 'right',
     marginBottom: '30px',
+    position: 'relative',
   },
   button: {
     borderRadius: '10px',
@@ -300,18 +277,11 @@ const styles = () => ({
   sampleTableBorder: {
     borderTopColor: '#05C5CC',
   },
-  messageBottom: {
+   messageBottom: {
+    zIndex: '500',
     position: 'absolute',
-    zIndex: '400',
-    marginTop: '-145px',
-    right: '6px',
-  },
-  messageTop: {
-    position: 'absolute',
-    marginTop: '-25px',
-    zIndex: '400',
-    marginTop: '-105px',
-    right: '6px',
+    marginTop: '-156px',
+    marginLeft: 'calc(100% - 233px)',
   },
   helpIcon: {
     zIndex: '500',

@@ -14,6 +14,7 @@ import TabView from './tabView';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import TabThemeProvider from './tabThemeConfig';
 import TabLabel from './tabLabel';
+import Message from './message';
 
 function TabContainer({ children, dir }) {
   return (
@@ -22,13 +23,6 @@ function TabContainer({ children, dir }) {
     </Typography>
   );
 }
-
-
-const caseMessageData= "Click button to add selected files associated with selected cases(s)";
-
-const fileMessageData= "Click button to add selected files to Cart";
-
-const sampleMessageData= "Click button to add selected files associated with selected Sample(s)";
 
 
 const caseSaveButtonDefaultStyle = {
@@ -93,6 +87,8 @@ const fileDeactiveSaveButtonDefaultStyle={
 
 
 
+
+
 const tabController = (classes) => {
   // tab settings
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -101,6 +97,51 @@ const tabController = (classes) => {
   const dashboard = useSelector((state) => (state.dashboardTab
 && state.dashboardTab.datatable
     ? state.dashboardTab.datatable : {}));
+
+   const tooltipContent ={
+    0:"Click button to add selected files associated with selected cases(s)",
+    1:"Click button to add selected files associated with selected Sample(s)",
+    2:"Click button to add selected files to Cart",
+  }
+
+  const [TopMessageStatus, setTopMessageStatus] = React.useState({
+    text: tooltipContent[currentTab],
+    isActive: false,
+    currentTab:currentTab,
+  });
+  const [BottomMessageStatus, setBottomMessageStatus] = React.useState({
+    text: tooltipContent[currentTab],
+    isActive: false,
+    currentTab:currentTab,
+  });
+
+
+
+  function setTooltip(status, tabInfo = ""){
+    return {
+        text:tabInfo,
+        isActive:status,
+        currentTab:currentTab,
+    }
+  }
+ 
+  const tooltipConfig ={
+    location:{
+         top:{
+      open: ()=>setTopMessageStatus(setTooltip(true,tooltipContent[currentTab])),
+      close: ()=>setTopMessageStatus(setTooltip(false,tooltipContent[currentTab])),
+      },
+      bottom:{
+        open: ()=>setBottomMessageStatus(setTooltip(true,tooltipContent[currentTab])),
+        close: ()=>setBottomMessageStatus(setTooltip(false,tooltipContent[currentTab])),
+      },
+    }
+   
+  }
+
+  function toggleMessageStatus(location, status) {
+    return tooltipConfig.location[location][status]();
+  }
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
@@ -191,6 +232,13 @@ const tabController = (classes) => {
           </div>
 )}
       />
+{ TopMessageStatus.isActive ? (
+              <div className={classes.classes.messageTop}>
+                {' '}
+                <Message data={TopMessageStatus.text} />
+                {' '}
+              </div>
+            ) : ' '}
       <TabThemeProvider tableBorder={getBorderStyle()} tablecolor={getTableColor()}>
         <Tabs
           classes
@@ -230,10 +278,12 @@ const tabController = (classes) => {
               disableRowSelection={caseDisableRowSelection}
               buttonTitle="Add  Selected Files"
               tableID="case_tab_table"
-              messageData={caseMessageData}
               saveButtonDefaultStyle={caseSaveButtonDefaultStyle}
               ActiveSaveButtonDefaultStyle={caseActiveSaveButtonDefaultStyle}
               DeactiveSaveButtonDefaultStyle={caseDeactiveSaveButtonDefaultStyle}
+              toggleMessageStatus={toggleMessageStatus}
+              BottomMessageStatus= {BottomMessageStatus}
+              tabIndex ={0}
             />
           </TabContainer>
           <TabContainer id="sample_tab_view">
@@ -246,10 +296,12 @@ const tabController = (classes) => {
               disableRowSelection={sampleDisableRowSelection}
               buttonTitle="Add  Selected Files"
               tableID="sample_tab_table"
-              messageData={sampleMessageData}
               saveButtonDefaultStyle={sampleSaveButtonDefaultStyle}
               ActiveSaveButtonDefaultStyle={sampleActiveSaveButtonDefaultStyle}
               DeactiveSaveButtonDefaultStyle={sampleDeactiveSaveButtonDefaultStyle}
+              toggleMessageStatus={toggleMessageStatus}
+              BottomMessageStatus= {BottomMessageStatus}
+              tabIndex ={1}
             />
           </TabContainer>
           <TabContainer id="file_tab_view">
@@ -262,14 +314,19 @@ const tabController = (classes) => {
               disableRowSelection={fileDisableRowSelection}
               buttonTitle="Add  Selected Files"
               tableID="file_tab_table"
-              messageData={fileMessageData}
               saveButtonDefaultStyle={fileSaveButtonDefaultStyle}
               ActiveSaveButtonDefaultStyle={fileActiveSaveButtonDefaultStyle}
               DeactiveSaveButtonDefaultStyle={fileDeactiveSaveButtonDefaultStyle}
+              toggleMessageStatus={toggleMessageStatus}
+              BottomMessageStatus= {BottomMessageStatus}
+              tabIndex ={2}
             />
           </TabContainer>
         </SwipeableViews>
+
       </TabThemeProvider>
+
+                  
     </>
   );
 };
@@ -287,6 +344,12 @@ const styles = () => ({
   },
   snackBarMessageIcon: {
     verticalAlign: 'middle',
+  },
+  messageTop: {
+    position: 'absolute',
+    right: '18px',
+    zIndex: '300',
+    marginTop: '-12px',
   },
 });
 export default withStyles(styles, { withTheme: true })(tabController);

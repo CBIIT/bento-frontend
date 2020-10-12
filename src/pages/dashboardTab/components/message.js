@@ -36,12 +36,12 @@ const styles = (theme) => ({
     borderBottom: '20px solid transparent',
   },
   messageTextArea: {
-    width: '250px',
-    minHeight: '100px',
+    width: '240px',
+    minHeight: '50px',
     border: '2px solid #03A383',
     borderRadius: '10px',
     background: '#fff',
-    padding: '5px 5px 5px 10px',
+    padding: '10px 10px 10px 10px',
     textAlign: 'left',
   },
   arrayIcon:{
