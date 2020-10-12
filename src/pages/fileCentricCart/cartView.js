@@ -285,25 +285,6 @@ const cartView = ({ classes, data, isLoading }) => {
     </span>
   );
 
-  const btnStyle = {
-    color: '#fff',
-    boxShadow: 'none',
-    backgroundColor: '#03A383',
-    padding: '6px 16px',
-    fontSize: '0.875rem',
-    minWidth: '64px',
-    boxSizing: 'border-box',
-    transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-    lineHeight: '1.75',
-    fontWeight: '500',
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    borderRadius: '10px',
-    textTransform: 'uppercase',
-    border: 'none',
-    verticalAlign: 'top',
-    marginTop: '6px',
-  };
-
   const dataTable = isLoading ? <SkeletonTable />
     : (
       <CustomDataTable
@@ -363,7 +344,7 @@ const cartView = ({ classes, data, isLoading }) => {
           <div className={classes.topButtonGroup} style={divStyle(isLoading)}>
             <button
               type="button"
-              style={btnStyle}
+              className={classes.button}
               ref={downloadButtonTop}
               onClick={() => downloadJson(globalData, comments)}
             >
@@ -373,7 +354,7 @@ const cartView = ({ classes, data, isLoading }) => {
             {' '}
             <button
               type="button"
-              style={btnStyle}
+              className={classes.button}
               ref={deleteButtonTop}
               onClick={removeSubjects}
             >
@@ -398,7 +379,7 @@ const cartView = ({ classes, data, isLoading }) => {
                 <div className={classes.manifestButtonGroup}>
                   <button
                     type="button"
-                    style={btnStyle}
+                    className={classes.button}
                     ref={downloadButtonBottom}
                     onClick={() => downloadJson(globalData, comments)}
                   >
@@ -408,7 +389,7 @@ const cartView = ({ classes, data, isLoading }) => {
                   {' '}
                   <button
                     type="button"
-                    style={btnStyle}
+                    className={classes.button}
                     ref={deleteButtonBottom}
                     onClick={removeSubjects}
                   >
@@ -582,6 +563,25 @@ const styles = (theme) => ({
   },
   helpIconButton: {
     verticalAlign: 'top',
+  },
+  button: {
+    color: '#fff',
+    boxShadow: 'none',
+    backgroundColor: '#03A383',
+    padding: '6px 16px',
+    fontSize: '0.875rem',
+    minWidth: '64px',
+    boxSizing: 'border-box',
+    transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    lineHeight: '1.75',
+    fontWeight: '500',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    borderRadius: '10px',
+    textTransform: 'uppercase',
+    border: 'none',
+    verticalAlign: 'top',
+    marginTop: '6px',
+    marginRight: '5px',
   },
 });
 export default withStyles(styles, { withTheme: true })(cartView);

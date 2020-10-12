@@ -269,6 +269,7 @@ const styles = () => ({
     backgroundColor: '#10A075',
     marginTop: '6px',
     marginBottom: '10px',
+    marginRight: '5px',
   },
   caseTableBorder: {
     borderTopColor: '#F48439',
@@ -282,7 +283,7 @@ const styles = () => ({
    messageBottom: {
     zIndex: '500',
     position: 'absolute',
-    marginTop: '-166px',
+    marginTop: '-170px',
     marginLeft: 'calc(100% - 233px)',
   },
   helpIcon: {
