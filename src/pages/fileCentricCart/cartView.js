@@ -301,6 +301,7 @@ const cartView = ({ classes, data, isLoading }) => {
     textTransform: 'uppercase',
     border: 'none',
     verticalAlign: 'top',
+    marginTop: '6px',
   };
 
   const dataTable = isLoading ? <SkeletonTable />
@@ -378,8 +379,8 @@ const cartView = ({ classes, data, isLoading }) => {
             >
               {myFilesPageData.deleteButtonText}
             </button>
-            <IconButton aria-label="help">
-              <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
+            <IconButton aria-label="help" className={classes.helpIconButton}>
+              <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
             </IconButton>
             { TopMessageStatus ? (
               <div className={classes.messageTop}>
@@ -414,7 +415,7 @@ const cartView = ({ classes, data, isLoading }) => {
                     {myFilesPageData.deleteButtonText}
                   </button>
                   <IconButton aria-label="help">
-                    <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+                    <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
                   </IconButton>
                   { BottomMessageStatus ? (
                     <div className={classes.messageBottom}>
@@ -576,8 +577,11 @@ const styles = (theme) => ({
     float: 'right',
   },
   manifestTextarea: {
-    marginTop: '10px',
-    float: 'right',
+    marginTop: '18px',
+    float: 'left',
+  },
+  helpIconButton: {
+    verticalAlign: 'top',
   },
 });
 export default withStyles(styles, { withTheme: true })(cartView);

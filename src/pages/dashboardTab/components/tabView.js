@@ -104,14 +104,14 @@ const buildButtonStyle=(saveButton,styleObject)=>{
     filter: false,
     searchable: false,
     print: false,
-    download: true,
+    download: false,
     downloadOptions: {
       filename: 'tableDownload.csv',
       filterOptions: {
         useDisplayedColumnsOnly: true,
       },
     },
-    viewColumns: true,
+    viewColumns: false,
     pagination: true,
     isRowSelectable: (dataIndex) => disableRowSelection(data[dataIndex], fileIDs),
     onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
@@ -143,8 +143,8 @@ const buildButtonStyle=(saveButton,styleObject)=>{
         >
           { buttonTitle }
         </button>
-               <IconButton aria-label="help">
-              <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
+               <IconButton aria-label="help" className={classes.helpIconButton}>
+              <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
             </IconButton>
        
       </Grid>
@@ -168,8 +168,8 @@ const buildButtonStyle=(saveButton,styleObject)=>{
           { buttonTitle }
         </button>
 
-           <IconButton aria-label="help">
-                    <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+           <IconButton aria-label="help"  className={classes.helpIconButton} >
+                    <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
                   </IconButton>
                     <div style={{"position": "relative"}}>
                     { BottomMessageStatus.isActive && tabIndex === BottomMessageStatus.currentTab ? (
@@ -267,6 +267,8 @@ const styles = () => ({
     fontFamily: 'Lato',
     color: '#fff',
     backgroundColor: '#10A075',
+    marginTop: '6px',
+    marginBottom: '10px',
   },
   caseTableBorder: {
     borderTopColor: '#F48439',
@@ -280,12 +282,15 @@ const styles = () => ({
    messageBottom: {
     zIndex: '500',
     position: 'absolute',
-    marginTop: '-156px',
+    marginTop: '-166px',
     marginLeft: 'calc(100% - 233px)',
   },
   helpIcon: {
     zIndex: '500',
-  }
+  },
+  helpIconButton: {
+    verticalAlign: 'top',
+  },
 });
 
 export default withStyles(styles, { withTheme: true })(TabView);
