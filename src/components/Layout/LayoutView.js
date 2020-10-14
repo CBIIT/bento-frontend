@@ -6,12 +6,7 @@ import Header from '../Header/HeaderView';
 import NavBar from '../NavBar/NavBarContainer';
 import Footer from '../Footer/FooterView';
 import Error from '../../pages/error/Error';
-
-// import Sidebar from '../Sidebar';
-
-// pages
-
-import Dashboard from '../../pages/dashboard/dashboardController';
+import Dashboard from '../../pages/dashboardTab/dashboardController';
 import CaseDetail from '../../pages/caseDetail/caseDetailController';
 import ArmDetail from '../../pages/armDetail/armDetailController';
 import modelPage from '../../pages/modelPage/modelPageView';
@@ -24,6 +19,7 @@ import DataDictonary from '../../pages/dataDictionary/dataDictonaryController';
 import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
+import fileCentricCart from '../../pages/fileCentricCart/cartController';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -53,6 +49,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/table" component={table} />
             <Route path="/myCases" component={SelectedCases} />
             <Route path="/myCasesFiles" component={SelectedFiles} />
+            <Route path="/fileCentricCart" component={fileCentricCart} />
 
             <Route path="/program/:id" component={ProgramDetail} />
             <Route path="/case/:id" component={CaseDetail} />

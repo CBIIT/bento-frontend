@@ -45,7 +45,7 @@ const subsections = [
 
 const table = {
   // Set 'display' to false to hide the table entirely
-  display: false,
+  display: true,
   // Table title
   title: 'ASSOCIATED FILES',
   // Field name for files data, need to be updated only when using a different GraphQL query
