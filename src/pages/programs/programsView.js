@@ -14,12 +14,12 @@ import { Link } from 'react-router-dom';
 import {
   table, programListingIcon, externalLinkIcon,
 } from '../../bento/programData';
-import manipultateLinks from '../../utils/helpers';
+import { manipulateLinks } from '../../utils/helpers';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
-const updatedData = manipultateLinks(table.columns);
+const updatedData = manipulateLinks(table.columns);
 
 const Programs = ({ classes, data }) => {
   const initDashboardStatus = () => (dispatch) => Promise.resolve(
