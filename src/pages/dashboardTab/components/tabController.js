@@ -13,7 +13,7 @@ import TabView from './tabView';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import TabThemeProvider from './tabThemeConfig';
 import TabLabel from './tabLabel';
-import Message from './message';
+import Message from '../../../components/Message';
 
 function TabContainer({ children, dir }) {
   return (

@@ -10,7 +10,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import CustomFooter from './tabFooter';
 import { addToCart } from '../../fileCentricCart/store/cart';
-import Message from './message';
+import Message from '../../../components/Message';
 
 const TabView = ({
   classes,
@@ -285,7 +285,7 @@ const styles = () => ({
   messageBottom: {
     zIndex: '500',
     position: 'absolute',
-    marginTop: '-133px',
+    marginTop: '-135px',
     marginLeft: 'calc(100% - 213px)',
   },
   helpIcon: {
