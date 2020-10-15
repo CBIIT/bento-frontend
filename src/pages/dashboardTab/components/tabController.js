@@ -339,9 +339,9 @@ const styles = () => ({
   },
   messageTop: {
     position: 'absolute',
-    right: '18px',
+    right: '12px',
     zIndex: '300',
-    marginTop: '-12px',
+    marginTop: '-8px',
   },
 });
 export default withStyles(styles, { withTheme: true })(tabController);

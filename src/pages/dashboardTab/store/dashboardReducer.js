@@ -1,18 +1,17 @@
+import _ from 'lodash';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData } from '../../../bento/dashboardData';
-import * as Actions from './dashboardAction';
+import store from '../../../store';
+import client from '../../../utils/graphqlClient';
+import { DASHBOARD_QUERY } from '../utils/graphqlQueries';
 import {
-  getStatDataFromDashboardData,
-  getSunburstDataFromDashboardData,
-  getDonutDataFromDashboardData,
-  filterData,
-  getFilters,
-  getCheckBoxData,
   customCheckBox,
   transformInitialDataForSunburst,
 } from '../../../utils/dashboardUtilFunctions';
 
-export const initialState = {
+const storeKey = 'dashboardTab';
+
+const initialState = {
   dashboardTab: {
     isDataTableUptoDate: false,
     isFetched: false,
@@ -38,14 +37,18 @@ export const initialState = {
   },
 };
 
-function getWidgetsData(input) {
-  const donut = widgetsData.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input, widget.datatable_level1_field, widget.datatable_level2_field) : getDonutDataFromDashboardData(input, widget.datatable_field);
-    const label = widget.dataName;
-    return { ...acc, [label]: Data };
-  }, {});
+// HELPERS
+const getState = () => store.getState()[storeKey];
 
-  return donut;
+function shouldFetchDataForDashboardTabDataTable(state) {
+  return !(state[storeKey].isFetched);
+}
+
+function getStatInit(input) {
+  const initStats = statsCount.reduce((acc, widget) => (
+    { ...acc, [widget.statAPI]: input[widget.statAPI] }
+  ), {});
+  return initStats;
 }
 
 function getWidgetsInitData(data) {
@@ -58,117 +61,73 @@ function getWidgetsInitData(data) {
   return donut;
 }
 
-function getStatInit(input) {
-  const initStats = statsCount.reduce((acc, widget) => (
-    { ...acc, [widget.statAPI]: input[widget.statAPI] }
-  ), {});
-  return initStats;
+function fetchDashboardTab() {
+  return () => {
+    store.dispatch({ type: 'REQUEST_DASHBOARDTAB' });
+    return client
+      .query({
+        query: DASHBOARD_QUERY,
+      })
+      .then((result) => store.dispatch({ type: 'RECEIVE_DASHBOARDTAB', payload: _.cloneDeep(result) }))
+      .catch((error) => store.dispatch({ type: 'DASHBOARDTAB_QUERY_ERR', error }));
+  };
 }
 
-export default function dashboardReducerTab(state = initialState, action) {
-  switch (action.type) {
-    case Actions.SINGLE_CHECKBOX: {
-      const dataTableFilters = action.payload;
-      const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
-      const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
-        ? getCheckBoxData(
-          state.subjectOverView.data,
-          state.checkboxForAll.data,
-          state.checkbox.data.filter((d) => action.payload[0].groupName === d.groupName)[0],
-          dataTableFilters,
-        )
-        : state.checkboxForAll.data;
-      return {
-        ...state,
-        isLoading: false,
-        stats: getStatDataFromDashboardData(tableData, statsCount),
-        checkbox: {
-          data: updatedCheckboxData,
-          defaultPanel: action.payload[0].groupName,
-        },
-        datatable: {
-          ...state.datatable,
-          data: tableData,
-          filters: dataTableFilters,
-        },
-        widgets: getWidgetsData(tableData),
-      };
-    }
-    // if checkbox status has been changed, dashboard data table need to be update as well.
-    case Actions.TOGGLE_CHECKBOX: {
-      const dataTableFilters = getFilters(state.datatable.filters, action.payload);
-      const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
-      const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
-        ? getCheckBoxData(
-          state.subjectOverView.data,
-          state.checkboxForAll.data,
-          state.checkbox.data.filter((d) => action.payload[0].groupName === d.groupName)[0],
-          dataTableFilters,
-        )
-        : state.checkboxForAll.data;
-      return {
-        ...state,
-        isCalulatingDashboard: false,
-        stats: getStatDataFromDashboardData(tableData, statsCount),
-        checkbox: {
-          data: updatedCheckboxData,
-        },
-        datatable: {
-          ...state.datatable,
-          data: tableData,
-          filters: dataTableFilters,
-        },
-        widgets: getWidgetsData(tableData),
-      };
-    }
-    case Actions.RECEIVE_DASHBOARDTAB: {
-      // get action data
-      const checkboxData = customCheckBox(action.payload.data);
-      return action.payload.data
-        ? {
-          ...state.dashboard,
-          isFetched: true,
-          isLoading: false,
-          hasError: false,
-          error: '',
-          stats: getStatInit(action.payload.data),
-          subjectOverView: {
-            data: action.payload.data.subjectOverViewPaged,
-          },
-          checkboxForAll: {
-            data: checkboxData,
-          },
-          checkbox: {
-            data: checkboxData,
-          },
-          datatable: {
-            dataCase: action.payload.data.subjectOverViewPaged,
-            dataSample: action.payload.data.sampleOverview,
-            dataFile: action.payload.data.fileOverview,
-            filters: [],
-          },
-          widgets: getWidgetsInitData(action.payload.data),
-
-        } : { ...state };
-    }
-    case Actions.DASHBOARDTAB_QUERY_ERR:
-      // get action data
-      return {
-        ...state,
-        hasError: true,
-        error: action.error,
-        isLoading: false,
-        isFetched: false,
-      };
-    case Actions.READY_DASHBOARDTAB:
-      return {
-        ...state,
-        isLoading: false,
-        isFetched: true,
-      };
-    case Actions.REQUEST_DASHBOARDTAB:
-      return { ...state, isLoading: true };
-    default:
-      return state;
+export function fetchDataForDashboardTabDataTable() {
+  if (shouldFetchDataForDashboardTabDataTable(getState())) {
+    return store.dispatch(fetchDashboardTab());
   }
+  return store.dispatch({ type: 'READY_DASHBOARDTAB' });
 }
+
+export const getDashboard = () => getState();
+
+// reducers
+const reducers = {
+  DASHBOARDTAB_QUERY_ERR: (state, item) => ({
+    ...state,
+    hasError: true,
+    error: item.error,
+    isLoading: false,
+    isFetched: false,
+  }),
+  READY_DASHBOARDTAB: (state) => ({
+    ...state,
+    isLoading: false,
+    isFetched: true,
+  }),
+  REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
+  RECEIVE_DASHBOARDTAB: (state, item) => {
+    const checkboxData = customCheckBox(item.data);
+    return item.data
+      ? {
+        ...state.dashboard,
+        isFetched: true,
+        isLoading: false,
+        hasError: false,
+        error: '',
+        stats: getStatInit(item.data),
+        subjectOverView: {
+          data: item.data.subjectOverViewPaged,
+        },
+        checkboxForAll: {
+          data: checkboxData,
+        },
+        checkbox: {
+          data: checkboxData,
+        },
+        datatable: {
+          dataCase: item.data.subjectOverViewPaged,
+          dataSample: item.data.sampleOverview,
+          dataFile: item.data.fileOverview,
+          filters: [],
+        },
+        widgets: getWidgetsInitData(item.data),
+
+      } : { ...state };
+  },
+};
+
+// INJECT-REDUCERS INTO REDUX STORE
+store.injectReducer(storeKey, (state = initialState, { type, payload }) => (
+  reducers[type] ? reducers[type](state, payload) : state));

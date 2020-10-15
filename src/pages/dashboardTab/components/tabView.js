@@ -285,8 +285,8 @@ const styles = () => ({
   messageBottom: {
     zIndex: '500',
     position: 'absolute',
-    marginTop: '-170px',
-    marginLeft: 'calc(100% - 233px)',
+    marginTop: '-133px',
+    marginLeft: 'calc(100% - 213px)',
   },
   helpIcon: {
     zIndex: '500',

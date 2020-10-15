@@ -102,10 +102,10 @@ export function fileColumns(classes) {
       label: 'Program Code',
       options: {
         filter: false,
-        customBodyRender: (value) => (
+        customBodyRender: (value, tableMeta) => (
           <div className="mui_td" style={tableStyle(0.8)}>
             {' '}
-            <Link to={`/case/${value}`} className={classes.link}>{value}</Link>
+            <Link to={`/program/${tableMeta.rowData[2]}`} className={classes.link}>{value}</Link>
             {' '}
           </div>
         ),
