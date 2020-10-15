@@ -14,7 +14,7 @@ import {
   programDetailIcon, breadCrumb, aggregateCount,
   pageSubTitle, leftPanel, rightPanel,
 } from '../../bento/programDetailData';
-import manipultateLinks from '../../utils/helpers';
+import { manipulateLinks } from '../../utils/helpers';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import cn from '../../utils/classNameConcat';
@@ -93,7 +93,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
   const stat = {
     numberOfPrograms: 1,
-    numberOfStudies: 1,
+    numberOfStudies: programData.num_subjects !== undefined ? programData.studies.length : 'undefined',
     numberOfSubjects: programData.num_subjects !== undefined ? programData.num_subjects : 'undefined',
     numberOfSamples: programData.num_samples !== undefined ? programData.num_samples : 'undefined',
     numberOfLabProcedures: programData.num_lab_procedures !== undefined ? programData.num_lab_procedures : 'undefined',
@@ -106,8 +106,8 @@ const ProgramView = ({ classes, data, theme }) => {
     isALink: true,
   }];
 
-  const updatedTableData = manipultateLinks(table.columns);
-  const updatedAttributesData = manipultateLinks(leftPanel.attributes);
+  const updatedTableData = manipulateLinks(table.columns);
+  const updatedAttributesData = manipulateLinks(leftPanel.attributes);
 
   const columns = updatedTableData.slice(0, 10).map((column) => ({
     name: column.dataField,
