@@ -22,24 +22,31 @@ import {
   caseHeader,
   leftPanel,
   rightPanel,
-  table,
+  filesTable,
+  samplesTable,
 } from '../../bento/caseDetailData';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
+import { dateTimeStamp } from '../../utils/helpers';
 
-// eslint-disable-next-line no-unused-vars
-const options = (classes) => ({
+const options = (classes, tableConfig) => ({
   selectableRows: true,
   responsive: 'stacked',
   search: false,
   filter: false,
   searchable: false,
   print: false,
-  download: false,
-  viewColumns: false,
+  viewColumns: true,
   pagination: true,
   sortOrder: {
-    name: table.defaultSortField,
-    direction: table.defaultSortDirection,
+    name: tableConfig.defaultSortField,
+    direction: tableConfig.defaultSortDirection,
+  },
+  download: true,
+  downloadOptions: {
+    filename: 'Bento_case_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filterOptions: {
+      useDisplayedColumnsOnly: true,
+    },
   },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
@@ -90,7 +97,7 @@ const CaseDetail = ({ data, classes }) => {
     numberOfSubjects: 1,
     numberOfSamples: data.num_samples,
     numberOfLabProcedures: data.num_lab_procedures,
-    numberOfFiles: data[table.filesField].length,
+    numberOfFiles: data[filesTable.filesField].length,
   };
 
   const breadCrumbJson = [{
@@ -99,7 +106,7 @@ const CaseDetail = ({ data, classes }) => {
     isALink: true,
   }];
 
-  const columns = table.columns.slice(0, 10).map((column, index) => (
+  const columns = (tableConfig) => tableConfig.columns.slice(0, 10).map((column, index) => (
     {
       name: column.dataField,
       label: column.header,
@@ -107,7 +114,8 @@ const CaseDetail = ({ data, classes }) => {
         customBodyRender: (value) => (
           <div className={classes[`tableCell${index + 1}`]}>
             {' '}
-            {column.formatBytes ? formatBytes(value) : value}
+            {column.dataFromRoot ? data[column.dataField]
+              : (column.formatBytes ? formatBytes(value) : value)}
             {' '}
           </div>
         ),
@@ -213,25 +221,58 @@ const CaseDetail = ({ data, classes }) => {
         </div>
       </div>
       {
-        table.display
+        samplesTable.display
           ? (
-            <div id="table_case_detail" className={classes.tableContainer}>
+            <div id="table_case_detail_samples" className={classes.tableContainer}>
               <div className={classes.tableDiv}>
                 <div className={classes.tableTitle}>
-                  <span className={classes.tableHeader}>{table.title}</span>
+                  <span className={classes.tableHeader}>{samplesTable.title}</span>
                 </div>
                 <Grid item xs={12}>
                   <Grid container spacing={4}>
                     <Grid item xs={12}>
                       <FileGridView
-                        data={data[table.filesField]}
-                        columns={columns}
-                        options={options(classes)}
+                        data={data[samplesTable.filesField]}
+                        columns={columns(samplesTable)}
+                        options={options(classes, samplesTable)}
                         customOnRowsSelect={FileOnRowsSelect}
                         openSnack={openSnack}
                         closeSnack={closeSnack}
                         disableRowSelection={FileDisableRowSelection}
-                        bottonText="Add Selected Files"
+                        bottonText={samplesTable.bottonText}
+                        messageData={samplesTable.helpMessage}
+                      />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Typography />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </div>
+            </div>
+          ) : ''
+      }
+      {
+        filesTable.display
+          ? (
+            <div id="table_case_detail_files" className={classes.tableContainer}>
+              <div className={classes.tableDiv}>
+                <div className={classes.tableTitle}>
+                  <span className={classes.tableHeader}>{filesTable.title}</span>
+                </div>
+                <Grid item xs={12}>
+                  <Grid container spacing={4}>
+                    <Grid item xs={12}>
+                      <FileGridView
+                        data={data[filesTable.filesField]}
+                        columns={columns(filesTable)}
+                        options={options(classes, filesTable)}
+                        customOnRowsSelect={FileOnRowsSelect}
+                        openSnack={openSnack}
+                        closeSnack={closeSnack}
+                        disableRowSelection={FileDisableRowSelection}
+                        bottonText={filesTable.bottonText}
+                        messageData={filesTable.helpMessage}
                       />
                     </Grid>
                     <Grid item xs={8}>

@@ -11,9 +11,10 @@ import { addToCart } from '../../fileCentricCart/store/cart';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import Message from './message';
+import { dateTimeStamp } from '../../../utils/helpers';
 
 const TabView = ({
-  classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID, messageData
+  classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID, messageData, downloadFileName
 }) => {
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.subjectIds);
@@ -82,8 +83,7 @@ const TabView = ({
   }
 
   const columns = Columns(classes);
-
-  const options = () => ({
+  const options = (downloadFileName) => ({
     selectableRows: true,
     search: false,
     filter: false,
@@ -91,7 +91,7 @@ const TabView = ({
     print: false,
     download: true,
     downloadOptions: {
-      filename: 'tableDownload.csv',
+      filename: downloadFileName.concat(dateTimeStamp()).concat('.csv'),
       filterOptions: {
         useDisplayedColumnsOnly: true,
       },
@@ -145,7 +145,7 @@ const TabView = ({
           <CustomDataTable
             data={data}
             columns={columns}
-            options={options()}
+            options={options(downloadFileName)}
           />
         </Grid>
 

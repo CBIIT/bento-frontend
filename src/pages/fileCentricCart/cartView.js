@@ -27,6 +27,7 @@ const cartView = ({ classes, data, isLoading }) => {
   const [modalStatus, setModalStatus] = React.useState({ open: false, selectedFileIds: [] });
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
   const [BottomMessageStatus, setBottomMessageStatus] = React.useState(false);
+  const [userComments, setUserComments] = React.useState('');
 
   function openMessage(location) {
     return location === 'top' ? setTopMessageStatus(true) : setBottomMessageStatus(true);
@@ -86,7 +87,7 @@ const cartView = ({ classes, data, isLoading }) => {
     disableDeleteButton(true);
   });
 
-  function onRowsSelect(curr, allRowsSelected) {
+  function onRowSelectionChange(curr, allRowsSelected) {
     globalData = [];
     selectedFileIds = [];
     allRowsSelected.forEach((row) => {
@@ -108,14 +109,14 @@ const cartView = ({ classes, data, isLoading }) => {
     }
   }
 
-  const comments = '';
-
   const columns = [
     {
       name: 'file_name',
       label: 'File Name',
       options: {
-        sortDirection: 'asc',
+        sortOrder: {
+          direction: 'asc',
+        },
         customBodyRender: (value) => (
           <div className="mui_td">
             {' '}
@@ -233,7 +234,7 @@ const cartView = ({ classes, data, isLoading }) => {
   ];
 
   const options = () => ({
-    selectableRows: true,
+    selectableRows: 'multiple',
     search: false,
     filter: false,
     searchable: false,
@@ -247,14 +248,14 @@ const cartView = ({ classes, data, isLoading }) => {
     },
     viewColumns: true,
     pagination: true,
-    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    onRowSelectionChange: (curr, allRowsSelected) => onRowSelectionChange(curr, allRowsSelected),
     // eslint-disable-next-line no-unused-vars
     customToolbarSelect: (selectedRows, displayData) => '',
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <CustomFooter
         className={classes.customFooterStyle}
         text="DOWNLOAD MANIFEST"
-        onClick={() => downloadJson(globalData, comments)}
+        onClick={() => downloadJson(data, userComments)}
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -373,7 +374,7 @@ const cartView = ({ classes, data, isLoading }) => {
               type="button"
               style={btnStyle}
               ref={downloadButtonTop}
-              onClick={() => downloadJson(globalData, comments)}
+              onClick={() => downloadJson(data, userComments)}
             >
               {myFilesPageData.downButtonText}
               {' '}
@@ -408,7 +409,7 @@ const cartView = ({ classes, data, isLoading }) => {
                     type="button"
                     style={btnStyle}
                     ref={downloadButtonBottom}
-                    onClick={() => downloadJson(globalData, comments)}
+                    onClick={() => downloadJson(data, userComments)}
                   >
                     {myFilesPageData.downButtonText}
                     {' '}
@@ -439,6 +440,7 @@ const cartView = ({ classes, data, isLoading }) => {
                     id="multiline-user-coments"
                     className={classes.textField}
                     placeholder="Please add a description for the XML file you are about to download."
+                    onChange={(e) => setUserComments(e.target.value)}
                   />
                 </div>
               </div>

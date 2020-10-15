@@ -28,6 +28,7 @@ import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
+import { dateTimeStamp } from '../../utils/helpers';
 
 const FileCount = ({ num_files: numFiles, classes }) => (
   <div className={classes.widgetContainer}>
@@ -57,8 +58,14 @@ const options = (classes) => ({
   filter: false,
   searchable: false,
   print: false,
-  download: false,
-  viewColumns: false,
+  download: true,
+  downloadOptions: {
+    filename: 'Bento_arm_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filterOptions: {
+      useDisplayedColumnsOnly: true,
+    },
+  },
+  viewColumns: true,
   pagination: true,
   sortOrder: {
     name: table.defaultSortField,
@@ -269,7 +276,8 @@ const ArmDetail = ({ data, classes }) => {
                             openSnack={openSnack}
                             closeSnack={closeSnack}
                             disableRowSelection={FileDisableRowSelection}
-                            bottonText="Add Selected Files"
+                            bottonText={table.bottonText}
+                            messageData={table.helpMessage}
                           />
                         </Grid>
                         <Grid item xs={8}>

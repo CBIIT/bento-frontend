@@ -30,5 +30,6 @@ query filesInList($file_ids: [String]) {
         file_format
         file_size
         file_id
+        md5sum
     }
 }`;
