@@ -25,6 +25,7 @@ import {
   table,
 } from '../../bento/caseDetailData';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
+import { dateTimeStamp } from '../../utils/helpers';
 
 // eslint-disable-next-line no-unused-vars
 const options = (classes) => ({
@@ -34,12 +35,18 @@ const options = (classes) => ({
   filter: false,
   searchable: false,
   print: false,
-  download: false,
-  viewColumns: false,
+  viewColumns: true,
   pagination: true,
   sortOrder: {
     name: table.defaultSortField,
     direction: table.defaultSortDirection,
+  },
+  download: true,
+  downloadOptions: {
+    filename: 'Bento_case_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filterOptions: {
+      useDisplayedColumnsOnly: true,
+    },
   },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
