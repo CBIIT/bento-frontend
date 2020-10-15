@@ -176,7 +176,7 @@ const rightPanel = [
 
 // --------------- File table configuration --------------
 
-const table = {
+const filesTable = {
   // Set 'display' to false to hide the table entirely
   display: true,
   // Table title
@@ -214,6 +214,54 @@ const table = {
       header: 'Size',
       // set formatBytes to true to display file size (in bytes) in a more human readable format
       formatBytes: true,
+    },
+  ],
+};
+
+// --------------- File table configuration --------------
+
+const samplesTable = {
+  // Set 'display' to false to hide the table entirely
+  display: true,
+  // Table title
+  title: 'ASSOCIATED SAMPLE',
+  // Field name for files data, need to be updated only when using a different GraphQL query
+  filesField: 'samples',
+  // Value must be one of the 'dataField's in fileTableColumns
+  defaultSortField: 'sample_id',
+  // 'asc' or 'desc'
+  defaultSortDirection: 'asc',
+  // A maximum of 10 columns are allowed
+  columns: [
+    {
+      dataField: 'sample_id',
+      header: 'Sample ID',
+    },
+    {
+      dataField: 'disease_subtype',
+      header: 'Diagnosis',
+      dataFromRoot: true,
+    },
+    {
+      dataField: 'tissue_type',
+      header: 'Tissue Type',
+    },
+    {
+      dataField: 'composition',
+      header: 'Tissue Composition',
+    },
+    {
+      dataField: 'sample_anatomic_site',
+      header: 'Sample Anatomic Site',
+    },
+    {
+      dataField: 'method_of_sample_procurement',
+      header: 'Sample Procurement Method',
+    },
+    {
+      dataField: 'test_name',
+      header: 'Platform',
+      dataFromRoot: true,
     },
   ],
 };
@@ -259,6 +307,7 @@ const GET_CASE_DETAIL_DATA_QUERY = gql`
       first_recurrence_type
       days_to_progression
       days_to_recurrence
+      test_name
       files {
         subject_id
         file_name
@@ -269,6 +318,14 @@ const GET_CASE_DETAIL_DATA_QUERY = gql`
         file_size
         file_id
         md5sum
+      }
+      samples {
+        sample_id
+        sample_anatomic_site
+        composition
+        method_of_sample_procurement
+        tissue_type
+        sample_type
       }
       num_samples
       num_lab_procedures
@@ -282,6 +339,7 @@ export {
   caseIDField,
   leftPanel,
   rightPanel,
-  table,
+  filesTable,
+  samplesTable,
   GET_CASE_DETAIL_DATA_QUERY,
 };
