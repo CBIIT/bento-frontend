@@ -91,7 +91,7 @@ const TabView = ({
     print: false,
     download: true,
     downloadOptions: {
-      filename: downloadFileName.concat(dateTimeStamp()),
+      filename: downloadFileName.concat(dateTimeStamp()).concat('.csv'),
       filterOptions: {
         useDisplayedColumnsOnly: true,
       },

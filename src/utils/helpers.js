@@ -43,5 +43,5 @@ export function dateTimeStamp() {
 
   if (seconds < 10) { seconds = `0${seconds}`; }
 
-  return `_${todaysDate}_${hours}-${minutes}-${seconds}${'.csv'}`;
+  return `_${todaysDate}_${hours}-${minutes}-${seconds}`;
 }

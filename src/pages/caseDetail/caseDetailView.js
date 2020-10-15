@@ -43,7 +43,7 @@ const options = (classes) => ({
   },
   download: true,
   downloadOptions: {
-    filename: 'Bento_case_files_download'.concat(dateTimeStamp()),
+    filename: 'Bento_case_files_download'.concat(dateTimeStamp()).concat('.csv'),
     filterOptions: {
       useDisplayedColumnsOnly: true,
     },
