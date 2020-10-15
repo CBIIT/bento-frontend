@@ -1,27 +1,26 @@
-/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
-  withStyles
+  withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
-import CustomFooter from './tabFooter';
-import { addToCart } from '../../fileCentricCart/store/cart';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
+import CustomFooter from './tabFooter';
+import { addToCart } from '../../fileCentricCart/store/cart';
 import Message from './message';
 
 const TabView = ({
-  classes, 
-  data, 
-  Columns, 
-  customOnRowsSelect, 
-  openSnack, 
-  disableRowSelection, 
-  buttonTitle, 
-  tableID, 
+  classes,
+  data,
+  Columns,
+  customOnRowsSelect,
+  openSnack,
+  disableRowSelection,
+  buttonTitle,
+  tableID,
   saveButtonDefaultStyle,
   DeactiveSaveButtonDefaultStyle,
   ActiveSaveButtonDefaultStyle,
@@ -35,41 +34,43 @@ const TabView = ({
   const saveButton = useRef(null);
   const saveButton2 = useRef(null);
 
+  const buildButtonStyle = (button, styleObject) => {
+    const styleKV = Object.entries(styleObject);
+    // eslint-disable-next-line  no-restricted-syntax, no-unused-vars
+    for (const [key, value] of styleKV) {
+      // eslint-disable-next-line no-param-reassign
+      button.current.style[key] = value;
+    }
+  };
+  const initSaveButtonDefaultStyle = (button) => {
+    // eslint-disable-next-line no-param-reassign
+    button.current.disabled = true;
+    buildButtonStyle(button, saveButtonDefaultStyle);
+  };
 
-
-const buildButtonStyle=(saveButton,styleObject)=>{
-  for (const [key, value] of Object.entries(styleObject)) {
-     saveButton.current.style[key]= value;
-  }
-}
-  const initSaveButtonDefaultStyle = (saveButton)=>{
-    saveButton.current.disabled = true;
-    buildButtonStyle(saveButton,saveButtonDefaultStyle)
-  }
-
-
- const updateActiveSaveButtonStyle=(flag, saveButton)=>{
-  if(flag){
-      saveButton.current.disabled = true;
-      buildButtonStyle(saveButton,ActiveSaveButtonDefaultStyle)
-  }else{
-      saveButton.current.disabled = false;
-      buildButtonStyle(saveButton,DeactiveSaveButtonDefaultStyle)
-  }
- }
+  const updateActiveSaveButtonStyle = (flag, button) => {
+    if (flag) {
+      // eslint-disable-next-line no-param-reassign
+      button.current.disabled = true;
+      buildButtonStyle(button, ActiveSaveButtonDefaultStyle);
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      button.current.disabled = false;
+      buildButtonStyle(button, DeactiveSaveButtonDefaultStyle);
+    }
+  };
 
   useEffect(() => {
-    
-     initSaveButtonDefaultStyle(saveButton);
-     initSaveButtonDefaultStyle(saveButton2);
-    
-     if (selectedIDs.length === 0) {
-        updateActiveSaveButtonStyle(true,saveButton);
-        updateActiveSaveButtonStyle(true,saveButton2);
-      } else {
-        updateActiveSaveButtonStyle(false,saveButton);
-        updateActiveSaveButtonStyle(false,saveButton2);
-      }
+    initSaveButtonDefaultStyle(saveButton);
+    initSaveButtonDefaultStyle(saveButton2);
+
+    if (selectedIDs.length === 0) {
+      updateActiveSaveButtonStyle(true, saveButton);
+      updateActiveSaveButtonStyle(true, saveButton2);
+    } else {
+      updateActiveSaveButtonStyle(false, saveButton);
+      updateActiveSaveButtonStyle(false, saveButton2);
+    }
   });
 
   function exportFiles() {
@@ -88,12 +89,12 @@ const buildButtonStyle=(saveButton,styleObject)=>{
     ))];
 
     if (allRowsSelected.length === 0) {
-        updateActiveSaveButtonStyle(true,saveButton);
-        updateActiveSaveButtonStyle(true,saveButton2);
-      } else {
-        updateActiveSaveButtonStyle(false,saveButton);
-        updateActiveSaveButtonStyle(false,saveButton2);
-      }
+      updateActiveSaveButtonStyle(true, saveButton);
+      updateActiveSaveButtonStyle(true, saveButton2);
+    } else {
+      updateActiveSaveButtonStyle(false, saveButton);
+      updateActiveSaveButtonStyle(false, saveButton2);
+    }
   }
 
   const columns = Columns(classes);
@@ -133,8 +134,8 @@ const buildButtonStyle=(saveButton,styleObject)=>{
 
   return (
     <div>
-           
-     <Grid item xs={12} className={classes.saveButtonDiv}>
+
+      <Grid item xs={12} className={classes.saveButtonDiv}>
         <button
           type="button"
           ref={saveButton2}
@@ -143,10 +144,10 @@ const buildButtonStyle=(saveButton,styleObject)=>{
         >
           { buttonTitle }
         </button>
-               <IconButton aria-label="help" className={classes.helpIconButton}>
-              <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
-            </IconButton>
-       
+        <IconButton aria-label="help" className={classes.helpIconButton}>
+          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
+        </IconButton>
+
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
@@ -168,27 +169,28 @@ const buildButtonStyle=(saveButton,styleObject)=>{
           { buttonTitle }
         </button>
 
-           <IconButton aria-label="help"  className={classes.helpIconButton} >
-                    <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
-                  </IconButton>
-                    <div style={{"position": "relative"}}>
-                    { BottomMessageStatus.isActive && tabIndex === BottomMessageStatus.currentTab ? (
-                    <div className={classes.messageBottom}>
-                      {' '}
-                      <Message data={BottomMessageStatus.text} />
-                      {' '}
-                    </div>
-                  ) : ''}
-                        <Link
-                              target="_blank"
-                              rel="noreferrer"
-                              to={(location) => ({ ...location, pathname: '/fileCentricCart' })}
-                              color="inherit"
-                              className={classes.cartlink}
-                            >
-                             Go to Cart >
-                            </Link>
-                          </div>
+        <IconButton aria-label="help" className={classes.helpIconButton}>
+          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+        </IconButton>
+        <div style={{ position: 'relative' }}>
+          { BottomMessageStatus.isActive
+            && tabIndex === BottomMessageStatus.currentTab.toString() ? (
+              <div className={classes.messageBottom}>
+                {' '}
+                <Message data={BottomMessageStatus.text} />
+                {' '}
+              </div>
+            ) : ''}
+          <Link
+            target="_blank"
+            rel="noreferrer"
+            to={(location) => ({ ...location, pathname: '/fileCentricCart' })}
+            color="inherit"
+            className={classes.cartlink}
+          >
+            Go to Cart >
+          </Link>
+        </div>
 
       </Grid>
     </div>
@@ -280,7 +282,7 @@ const styles = () => ({
   sampleTableBorder: {
     borderTopColor: '#05C5CC',
   },
-   messageBottom: {
+  messageBottom: {
     zIndex: '500',
     position: 'absolute',
     marginTop: '-170px',

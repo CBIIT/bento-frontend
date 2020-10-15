@@ -32,10 +32,10 @@ export function caseColumns(classes) {
       label: 'Program Code',
       options: {
         filter: false,
-        customBodyRender: (value) => (
+        customBodyRender: (value, tableMeta) => (
           <div className="mui_td" style={tableStyle(0.6)}>
 
-            <Link to={`/study/${value}`} className={classes.link}>{value}</Link>
+            <Link to={`/program/${tableMeta.rowData[2]}`} className={classes.link}>{value}</Link>
 
           </div>
         ),

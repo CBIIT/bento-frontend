@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -24,70 +23,63 @@ function TabContainer({ children, dir }) {
   );
 }
 
-
 const caseSaveButtonDefaultStyle = {
-  color : '#fff',
-  backgroundColor:'#09A175',
+  color: '#fff',
+  backgroundColor: '#09A175',
   opacity: '1',
   border: '0px',
-  cursor:  'pointer',
-}
+  cursor: 'pointer',
+};
 
-const sampleSaveButtonDefaultStyle={
-    color : '#fff',
-    backgroundColor:'#00AEEF',
-    opacity: '1',
-    border: '0px',
-    cursor:  'pointer',
-}
+const sampleSaveButtonDefaultStyle = {
+  color: '#fff',
+  backgroundColor: '#00AEEF',
+  opacity: '1',
+  border: '0px',
+  cursor: 'pointer',
+};
 
-
-const fileSaveButtonDefaultStyle={
-    color : '#fff',
-    backgroundColor:'#DC2FDA',
-    opacity: '1',
-    border: '0px',
-    cursor:  'pointer',
-}
+const fileSaveButtonDefaultStyle = {
+  color: '#fff',
+  backgroundColor: '#DC2FDA',
+  opacity: '1',
+  border: '0px',
+  cursor: 'pointer',
+};
 
 const caseActiveSaveButtonDefaultStyle = {
-      disabled: 'true',
-      opacity: '0.3',
-      cursor:'auto',
-}
+  disabled: 'true',
+  opacity: '0.3',
+  cursor: 'auto',
+};
 
-const sampleActiveSaveButtonDefaultStyle={
-      opacity: '0.3',
-      cursor:'auto',
-}
+const sampleActiveSaveButtonDefaultStyle = {
+  opacity: '0.3',
+  cursor: 'auto',
+};
 
-
-const fileActiveSaveButtonDefaultStyle={
-      opacity: '0.3',
-      cursor:'auto',
-}
+const fileActiveSaveButtonDefaultStyle = {
+  opacity: '0.3',
+  cursor: 'auto',
+};
 
 const caseDeactiveSaveButtonDefaultStyle = {
-     cursor :'pointer',
-     opacity : 'unset',
-     border :'unset',
-}
+  cursor: 'pointer',
+  opacity: 'unset',
+  border: 'unset',
+};
 
-const sampleDeactiveSaveButtonDefaultStyle={
-     cursor :'pointer',
-     opacity : 'unset',
-     border :'unset',
-}
+const sampleDeactiveSaveButtonDefaultStyle = {
+  cursor: 'pointer',
+  opacity: 'unset',
+  border: 'unset',
+};
 
-const fileDeactiveSaveButtonDefaultStyle={
-     cursor :'pointer',
-     opacity : 'unset',
-     border :'unset',
-}
-
-
-
-
+const fileDeactiveSaveButtonDefaultStyle = {
+  cursor: 'pointer',
+  opacity: 'unset',
+  border: 'unset',
+};
 
 const tabController = (classes) => {
   // tab settings
@@ -98,46 +90,44 @@ const tabController = (classes) => {
 && state.dashboardTab.datatable
     ? state.dashboardTab.datatable : {}));
 
-   const tooltipContent ={
-    0:"Click button to add selected files associated with selected cases(s)",
-    1:"Click button to add selected files associated with selected Sample(s)",
-    2:"Click button to add selected files to Cart",
-  }
+  const tooltipContent = {
+    0: 'Click button to add selected files associated with selected cases(s)',
+    1: 'Click button to add selected files associated with selected Sample(s)',
+    2: 'Click button to add selected files to Cart',
+  };
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
     isActive: false,
-    currentTab:currentTab,
+    currentTab,
   });
   const [BottomMessageStatus, setBottomMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
     isActive: false,
-    currentTab:currentTab,
+    currentTab,
   });
 
-
-
-  function setTooltip(status, tabInfo = ""){
+  function setTooltip(status, tabInfo = '') {
     return {
-        text:tabInfo,
-        isActive:status,
-        currentTab:currentTab,
-    }
+      text: tabInfo,
+      isActive: status,
+      currentTab,
+    };
   }
- 
-  const tooltipConfig ={
-    location:{
-         top:{
-      open: ()=>setTopMessageStatus(setTooltip(true,tooltipContent[currentTab])),
-      close: ()=>setTopMessageStatus(setTooltip(false,tooltipContent[currentTab])),
+
+  const tooltipConfig = {
+    location: {
+      top: {
+        open: () => setTopMessageStatus(setTooltip(true, tooltipContent[currentTab])),
+        close: () => setTopMessageStatus(setTooltip(false, tooltipContent[currentTab])),
       },
-      bottom:{
-        open: ()=>setBottomMessageStatus(setTooltip(true,tooltipContent[currentTab])),
-        close: ()=>setBottomMessageStatus(setTooltip(false,tooltipContent[currentTab])),
+      bottom: {
+        open: () => setBottomMessageStatus(setTooltip(true, tooltipContent[currentTab])),
+        close: () => setBottomMessageStatus(setTooltip(false, tooltipContent[currentTab])),
       },
-    }
-   
-  }
+    },
+
+  };
 
   function toggleMessageStatus(location, status) {
     return tooltipConfig.location[location][status]();
@@ -171,18 +161,18 @@ const tabController = (classes) => {
       title: 'Samples',
       primaryColor: '#CFEDF9',
       secondaryColor: '#C9F1F1',
-      selectedColor:'#0DAFEC',
+      selectedColor: '#0DAFEC',
     },
     2: {
       title: 'Files',
       primaryColor: '#F7D7F7',
       secondaryColor: '#86D6F0',
-      selectedColor:'#C92EC7',
+      selectedColor: '#C92EC7',
     },
   };
 
   function getBorderStyle() {
-    const style = '2px solid #898989' ;
+    const style = '2px solid #898989';
     return `${tabIndex[currentTab].primaryColor} ${style}`;
   }
 
@@ -232,13 +222,13 @@ const tabController = (classes) => {
           </div>
 )}
       />
-{ TopMessageStatus.isActive ? (
-              <div className={classes.classes.messageTop}>
-                {' '}
-                <Message data={TopMessageStatus.text} />
-                {' '}
-              </div>
-            ) : ' '}
+      { TopMessageStatus.isActive ? (
+        <div className={classes.classes.messageTop}>
+          {' '}
+          <Message data={TopMessageStatus.text} />
+          {' '}
+        </div>
+      ) : ' '}
       <TabThemeProvider tableBorder={getBorderStyle()} tablecolor={getTableColor()}>
         <Tabs
           classes
@@ -266,7 +256,7 @@ const tabController = (classes) => {
           index={currentTab}
           onChangeIndex={handleTabChange}
           animateTransitions={false}
-          style={{'overflow-x':'hidden'}}
+          style={{ 'overflow-x': 'hidden' }}
         >
           <TabContainer id="case_tab_view">
             <TabView
@@ -282,8 +272,9 @@ const tabController = (classes) => {
               ActiveSaveButtonDefaultStyle={caseActiveSaveButtonDefaultStyle}
               DeactiveSaveButtonDefaultStyle={caseDeactiveSaveButtonDefaultStyle}
               toggleMessageStatus={toggleMessageStatus}
-              BottomMessageStatus= {BottomMessageStatus}
-              tabIndex ={0}
+              BottomMessageStatus={BottomMessageStatus}
+              // eslint-disable-next-line jsx-a11y/tabindex-no-positive
+              tabIndex="0"
             />
           </TabContainer>
           <TabContainer id="sample_tab_view">
@@ -300,8 +291,9 @@ const tabController = (classes) => {
               ActiveSaveButtonDefaultStyle={sampleActiveSaveButtonDefaultStyle}
               DeactiveSaveButtonDefaultStyle={sampleDeactiveSaveButtonDefaultStyle}
               toggleMessageStatus={toggleMessageStatus}
-              BottomMessageStatus= {BottomMessageStatus}
-              tabIndex ={1}
+              BottomMessageStatus={BottomMessageStatus}
+              // eslint-disable-next-line jsx-a11y/tabindex-no-positive
+              tabIndex="1"
             />
           </TabContainer>
           <TabContainer id="file_tab_view">
@@ -318,15 +310,15 @@ const tabController = (classes) => {
               ActiveSaveButtonDefaultStyle={fileActiveSaveButtonDefaultStyle}
               DeactiveSaveButtonDefaultStyle={fileDeactiveSaveButtonDefaultStyle}
               toggleMessageStatus={toggleMessageStatus}
-              BottomMessageStatus= {BottomMessageStatus}
-              tabIndex ={2}
+              BottomMessageStatus={BottomMessageStatus}
+              // eslint-disable-next-line jsx-a11y/tabindex-no-positive
+              tabIndex="2"
             />
           </TabContainer>
         </SwipeableViews>
 
       </TabThemeProvider>
 
-                  
     </>
   );
 };
