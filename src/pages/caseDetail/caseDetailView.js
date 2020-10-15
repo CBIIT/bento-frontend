@@ -3,45 +3,57 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
+
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
+import Snackbar from '@material-ui/core/Snackbar';
 import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
+import FileGridView from '../../components/FileGridWithCart/FileGridView';
 import icon from '../../assets/icons/Cases.Icon.svg';
 import formatBytes from '../../utils/formatBytes';
 import Subsection from '../../components/PropertySubsection/caseDetailSubsection';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
+import { FileOnRowsSelect, FileDisableRowSelection } from '../../utils/fileTable';
+import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import {
   caseHeader,
   leftPanel,
   rightPanel,
-  table,
+  filesTable,
+  samplesTable,
 } from '../../bento/caseDetailData';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
+import { dateTimeStamp } from '../../utils/helpers';
 
-const options = (classes) => ({
-  selectableRows: 'none',
+const options = (classes, tableConfig) => ({
+  selectableRows: true,
   responsive: 'stacked',
   search: false,
   filter: false,
   searchable: false,
   print: false,
-  download: false,
-  viewColumns: false,
+  viewColumns: true,
   pagination: true,
   sortOrder: {
-    name: table.defaultSortField,
-    direction: table.defaultSortDirection,
+    name: tableConfig.defaultSortField,
+    direction: tableConfig.defaultSortDirection,
+  },
+  download: true,
+  downloadOptions: {
+    filename: 'Bento_case_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filterOptions: {
+      useDisplayedColumnsOnly: true,
+    },
   },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
       <div>
-        {count >= 11
-          ? (
-            <TableRow>
+        <TableRow>
+          {count >= 11
+            ? (
               <TablePagination
                 className={classes.root}
                 count={count}
@@ -51,9 +63,10 @@ const options = (classes) => ({
           // eslint-disable-next-line no-shadow
                 onChangePage={(_, page) => changePage(page)}
               />
-            </TableRow>
-          )
-          : ''}
+
+            )
+            : ''}
+        </TableRow>
       </div>
     </TableFooter>
   ),
@@ -61,6 +74,16 @@ const options = (classes) => ({
 
 // Main case detail component
 const CaseDetail = ({ data, classes }) => {
+  const [snackbarState, setsnackbarState] = React.useState({
+    open: false,
+    value: 0,
+  });
+  function openSnack(value1) {
+    setsnackbarState({ open: true, value: value1 });
+  }
+  function closeSnack() {
+    setsnackbarState({ open: false });
+  }
   const dispatch = useDispatch();
 
   // make sure dashboard data has been loaded first for stats bar to work
@@ -74,7 +97,7 @@ const CaseDetail = ({ data, classes }) => {
     numberOfSubjects: 1,
     numberOfSamples: data.num_samples,
     numberOfLabProcedures: data.num_lab_procedures,
-    numberOfFiles: data[table.filesField].length,
+    numberOfFiles: data[filesTable.filesField].length,
   };
 
   const breadCrumbJson = [{
@@ -83,7 +106,7 @@ const CaseDetail = ({ data, classes }) => {
     isALink: true,
   }];
 
-  const columns = table.columns.slice(0, 10).map((column, index) => (
+  const columns = (tableConfig) => tableConfig.columns.slice(0, 10).map((column, index) => (
     {
       name: column.dataField,
       label: column.header,
@@ -91,7 +114,8 @@ const CaseDetail = ({ data, classes }) => {
         customBodyRender: (value) => (
           <div className={classes[`tableCell${index + 1}`]}>
             {' '}
-            {column.formatBytes ? formatBytes(value) : value}
+            {column.dataFromRoot ? data[column.dataField]
+              : (column.formatBytes ? formatBytes(value) : value)}
             {' '}
           </div>
         ),
@@ -101,6 +125,32 @@ const CaseDetail = ({ data, classes }) => {
 
   return (
     <>
+      <Snackbar
+        className={classes.snackBar}
+        open={snackbarState.open}
+        onClose={closeSnack}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        message={(
+          <div className={classes.snackBarMessage}>
+            <span className={classes.snackBarMessageIcon}>
+              <SuccessOutlinedIcon />
+              {' '}
+            </span>
+            <span className={classes.snackBarText}>
+
+              {snackbarState.value}
+              {'    '}
+              File(s) successfully
+              {' '}
+              {snackbarState.action}
+              {' '}
+              to your files
+
+            </span>
+          </div>
+)}
+      />
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -171,20 +221,58 @@ const CaseDetail = ({ data, classes }) => {
         </div>
       </div>
       {
-        table.display
+        samplesTable.display
           ? (
-            <div id="table_case_detail" className={classes.tableContainer}>
+            <div id="table_case_detail_samples" className={classes.tableContainer}>
               <div className={classes.tableDiv}>
                 <div className={classes.tableTitle}>
-                  <span className={classes.tableHeader}>{table.title}</span>
+                  <span className={classes.tableHeader}>{samplesTable.title}</span>
                 </div>
                 <Grid item xs={12}>
                   <Grid container spacing={4}>
                     <Grid item xs={12}>
-                      <CustomDataTable
-                        data={data[table.filesField]}
-                        columns={columns}
-                        options={options(classes)}
+                      <FileGridView
+                        data={data[samplesTable.filesField]}
+                        columns={columns(samplesTable)}
+                        options={options(classes, samplesTable)}
+                        customOnRowsSelect={FileOnRowsSelect}
+                        openSnack={openSnack}
+                        closeSnack={closeSnack}
+                        disableRowSelection={FileDisableRowSelection}
+                        bottonText={samplesTable.bottonText}
+                        messageData={samplesTable.helpMessage}
+                      />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Typography />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </div>
+            </div>
+          ) : ''
+      }
+      {
+        filesTable.display
+          ? (
+            <div id="table_case_detail_files" className={classes.tableContainer}>
+              <div className={classes.tableDiv}>
+                <div className={classes.tableTitle}>
+                  <span className={classes.tableHeader}>{filesTable.title}</span>
+                </div>
+                <Grid item xs={12}>
+                  <Grid container spacing={4}>
+                    <Grid item xs={12}>
+                      <FileGridView
+                        data={data[filesTable.filesField]}
+                        columns={columns(filesTable)}
+                        options={options(classes, filesTable)}
+                        customOnRowsSelect={FileOnRowsSelect}
+                        openSnack={openSnack}
+                        closeSnack={closeSnack}
+                        disableRowSelection={FileDisableRowSelection}
+                        bottonText={filesTable.bottonText}
+                        messageData={filesTable.helpMessage}
                       />
                     </Grid>
                     <Grid item xs={8}>
@@ -300,6 +388,9 @@ const styles = (theme) => ({
   },
   breadCrumb: {
     paddingTop: '3px',
+  },
+  snackBarMessageIcon: {
+    verticalAlign: 'middle',
   },
 });
 

@@ -45,7 +45,7 @@ const subsections = [
 
 const table = {
   // Set 'display' to false to hide the table entirely
-  display: false,
+  display: true,
   // Table title
   title: 'ASSOCIATED FILES',
   // Field name for files data, need to be updated only when using a different GraphQL query
@@ -54,6 +54,10 @@ const table = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  // Text to appear on Add to cart button
+  bottonText: 'Add Selected Files',
+  // Help Icon Message
+  helpMessage: 'Here help message',
   // A maximum of 10 columns are allowed
   columns: [
     {

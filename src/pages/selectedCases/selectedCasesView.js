@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import { myCasesPageData, cartSelectionMessages } from '../../bento/cartWorkflowData';
 import { dashboardTable, externalLinkIcon } from '../../bento/dashboardData';
-import manipultateLinks from '../../utils/helpers';
+import { manipulateLinks } from '../../utils/helpers';
 import CustomFooter from './customFooter';
 import { deleteCasesAction } from './selectedCasesState';
 
@@ -16,7 +16,7 @@ const displayFalseTableColumns = dashboardTable.tableData
 
 const displayTableColumns = dashboardTable.tableData.slice(0, displayFalseTableColumns + 10);
 
-const updatedTableWithLinks = manipultateLinks(displayTableColumns);
+const updatedTableWithLinks = manipulateLinks(displayTableColumns);
 
 const columns = updatedTableWithLinks.map((column) => ({
   name: column.dataField,

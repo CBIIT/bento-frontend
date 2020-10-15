@@ -275,6 +275,7 @@ const tabController = (classes) => {
               BottomMessageStatus={BottomMessageStatus}
               // eslint-disable-next-line jsx-a11y/tabindex-no-positive
               tabIndex="0"
+              downloadFileName="Bento_Dashboard_cases_download"
             />
           </TabContainer>
           <TabContainer id="sample_tab_view">
@@ -294,6 +295,7 @@ const tabController = (classes) => {
               BottomMessageStatus={BottomMessageStatus}
               // eslint-disable-next-line jsx-a11y/tabindex-no-positive
               tabIndex="1"
+              downloadFileName="Bento_Dashboard_samples_download"
             />
           </TabContainer>
           <TabContainer id="file_tab_view">
@@ -313,6 +315,7 @@ const tabController = (classes) => {
               BottomMessageStatus={BottomMessageStatus}
               // eslint-disable-next-line jsx-a11y/tabindex-no-positive
               tabIndex="2"
+              downloadFileName="Bento_Dashboard_files_download"
             />
           </TabContainer>
         </SwipeableViews>
