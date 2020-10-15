@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import {
   Grid,
   withStyles,
+  Link,
 } from '@material-ui/core';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
@@ -10,14 +11,29 @@ import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import CustomFooter from './customFooter';
 import { addToCart } from '../../pages/fileCentricCart/store/cart';
+import externalIcon from '../../assets/icons/ExternalLinkIcon.svg';
+import Message from '../../pages/fileCentricCart/components/message';
 
 const FileGridView = ({
   classes, data, columns, customOnRowsSelect, openSnack, disableRowSelection, bottonText, options,
 }) => {
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.fileIds);
+  const [BottomMessageStatus, setBottomMessageStatus] = React.useState(false);
 
   const saveButton = useRef(null);
+
+  function openMessage() {
+    return setBottomMessageStatus(true);
+  }
+
+  function closeMessage() {
+    return setBottomMessageStatus(false);
+  }
+
+  function toggleMessageStatus(location, status) {
+    return status === 'close' ? closeMessage(location) : openMessage(location);
+  }
 
   const btnStyle = {
     color: '#fff',
@@ -64,6 +80,25 @@ const FileGridView = ({
     css.display = 'inherit';
     return css;
   }
+
+  const messageData = (
+    <span>
+      To access and analyze files: select and remove unwanted files,
+      click the “Download Manifest” button, and upload the resulting
+      Manifest file to your
+      {' '}
+      <Link target="_blank" className={classes.link} href="http://www.cancergenomicscloud.org/">
+        Seven Bridges Genomics
+      </Link>
+      <img
+        src={externalIcon}
+        alt="outbounnd web site icon"
+        className={classes.linkIcon}
+      />
+      {' '}
+      account.
+    </span>
+  );
 
   function onRowsSelect(curr, allRowsSelected) {
     selectedFileIDs = [...new Set(selectedFileIDs.concat(
@@ -150,8 +185,15 @@ const FileGridView = ({
         </button>
         {' '}
         <IconButton aria-label="help">
-          <HelpIcon className={classes.helpIcon} onMouseEnter={() => {}} onMouseLeave={() => {}} />
+          <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
         </IconButton>
+        { BottomMessageStatus ? (
+          <div className={classes.messageBottom}>
+            {' '}
+            <Message data={messageData} />
+            {' '}
+          </div>
+        ) : ''}
       </div>
     </div>
   );
@@ -227,9 +269,15 @@ const styles = () => ({
   },
   messageBottom: {
     position: 'absolute',
-    right: '-24px',
-    bottom: '253px',
+    right: '20px',
+    bottom: '20px',
     zIndex: '400',
+  },
+  linkIcon: {
+    color: '#dc762f',
+    width: '20px',
+    verticalAlign: 'sub',
+    margin: '0px 0px 0px 2px',
   },
 });
 
