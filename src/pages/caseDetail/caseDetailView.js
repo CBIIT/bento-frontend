@@ -26,6 +26,7 @@ import {
   samplesTable,
 } from '../../bento/caseDetailData';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
+import { dateTimeStamp } from '../../utils/helpers';
 
 const options = (classes, tableConfig) => ({
   selectableRows: true,
@@ -34,12 +35,18 @@ const options = (classes, tableConfig) => ({
   filter: false,
   searchable: false,
   print: false,
-  download: false,
-  viewColumns: false,
+  viewColumns: true,
   pagination: true,
   sortOrder: {
     name: tableConfig.defaultSortField,
     direction: tableConfig.defaultSortDirection,
+  },
+  download: true,
+  downloadOptions: {
+    filename: 'Bento_case_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filterOptions: {
+      useDisplayedColumnsOnly: true,
+    },
   },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>

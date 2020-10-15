@@ -165,6 +165,7 @@ const tabController = (classes) => {
               disableRowSelection={caseDisableRowSelection}
               buttonTitle="Add  Selected Files"
               tableID="case_tab_table"
+              downloadFileName="Bento_Dashboard_cases_download"
               messageData={caseMessageData}
             />
           </TabContainer>
@@ -178,6 +179,7 @@ const tabController = (classes) => {
               disableRowSelection={sampleDisableRowSelection}
               buttonTitle="Add  Selected Files"
               tableID="sample_tab_table"
+              downloadFileName="Bento_Dashboard_samples_download"
               messageData={sampleMessageData}
             />
           </TabContainer>
@@ -191,6 +193,7 @@ const tabController = (classes) => {
               disableRowSelection={fileDisableRowSelection}
               buttonTitle="Add  Selected Files"
               tableID="file_tab_table"
+              downloadFileName="Bento_Dashboard_files_download"
               messageData={fileMessageData}
             />
           </TabContainer>
