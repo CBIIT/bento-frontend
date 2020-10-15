@@ -216,7 +216,7 @@ const CaseDetail = ({ data, classes }) => {
       {
         samplesTable.display
           ? (
-            <div id="table_case_detail" className={classes.tableContainer}>
+            <div id="table_case_detail_samples" className={classes.tableContainer}>
               <div className={classes.tableDiv}>
                 <div className={classes.tableTitle}>
                   <span className={classes.tableHeader}>{samplesTable.title}</span>
@@ -232,7 +232,8 @@ const CaseDetail = ({ data, classes }) => {
                         openSnack={openSnack}
                         closeSnack={closeSnack}
                         disableRowSelection={FileDisableRowSelection}
-                        bottonText="Add Selected Samples"
+                        bottonText={samplesTable.bottonText}
+                        messageData={samplesTable.helpMessage}
                       />
                     </Grid>
                     <Grid item xs={8}>
@@ -247,7 +248,7 @@ const CaseDetail = ({ data, classes }) => {
       {
         filesTable.display
           ? (
-            <div id="table_case_detail" className={classes.tableContainer}>
+            <div id="table_case_detail_files" className={classes.tableContainer}>
               <div className={classes.tableDiv}>
                 <div className={classes.tableTitle}>
                   <span className={classes.tableHeader}>{filesTable.title}</span>
@@ -263,7 +264,8 @@ const CaseDetail = ({ data, classes }) => {
                         openSnack={openSnack}
                         closeSnack={closeSnack}
                         disableRowSelection={FileDisableRowSelection}
-                        bottonText="Add Selected Files"
+                        bottonText={filesTable.bottonText}
+                        messageData={filesTable.helpMessage}
                       />
                     </Grid>
                     <Grid item xs={8}>

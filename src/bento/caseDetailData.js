@@ -174,7 +174,7 @@ const rightPanel = [
   },
 ];
 
-// --------------- File table configuration --------------
+// --------------- Files table configuration --------------
 
 const filesTable = {
   // Set 'display' to false to hide the table entirely
@@ -187,6 +187,10 @@ const filesTable = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  // Text to appear on Add to cart button
+  bottonText: 'Add Selected Files',
+  // Help Icon Message
+  helpMessage: 'Here help message',
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -218,7 +222,7 @@ const filesTable = {
   ],
 };
 
-// --------------- File table configuration --------------
+// --------------- Samples table configuration --------------
 
 const samplesTable = {
   // Set 'display' to false to hide the table entirely
@@ -231,6 +235,10 @@ const samplesTable = {
   defaultSortField: 'sample_id',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  // Text to appear on Add to cart button
+  bottonText: 'Add Selected Samples',
+  // Help Icon Message
+  helpMessage: 'Here help message',
   // A maximum of 10 columns are allowed
   columns: [
     {
