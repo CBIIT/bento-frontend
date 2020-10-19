@@ -14,11 +14,12 @@ import { navBarCartData } from '../../bento/fileCentricCartWorkflowData';
 import navBarData from '../../bento/navigationBarData';
 import { initCart } from '../../pages/fileCentricCart/store/cart';
 import DropdownMenu from './components/DropdownMenu';
+import env from '../../utils/env';
 
 const drawerWidth = 240;
 // const FENCE_LOGIN_URL = process.env.FENCE_LOGIN_URL;
 // const FENCE_LOGIN_URL = process.env.REACT_APP_LOGIN_URL;
-const BACKEND_GETUSERINFO_API = process.env.REACT_APP_BACKEND_GETUSERINFO_API;
+const BACKEND_GETUSERINFO_API = env.REACT_APP_BACKEND_GETUSERINFO_API;
 
 const NavBar = ({
   classes, isSidebarOpened,

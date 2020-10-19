@@ -7,8 +7,9 @@ import {
   Person as PersonIcon,
 } from '@material-ui/icons';
 import { Typography } from '../Wrappers/Wrappers';
+import env from '../../utils/env';
 
-const USER_LOGOUT_URL = process.env.REACT_APP_USER_LOGOUT_URL;
+const USER_LOGOUT_URL = env.REACT_APP_USER_LOGOUT_URL;
 
 export default function ProfileMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
