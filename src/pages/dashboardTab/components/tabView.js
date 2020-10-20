@@ -4,9 +4,9 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { CustomDataTable } from 'bento-components';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
+import ServerPaginatedDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
 import CustomFooter from './tabFooter';
 import { addToCart, getCart } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
@@ -193,7 +193,7 @@ const TabView = ({
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
-          <CustomDataTable
+          <ServerPaginatedDataTable
             data={data}
             columns={columns}
             options={options(downloadFileName)}
@@ -230,7 +230,9 @@ const TabView = ({
             color="inherit"
             className={classes.cartlink}
           >
-            Go to Cart >
+            Go to Cart
+            {' '}
+            {'>'}
           </Link>
         </div>
 
