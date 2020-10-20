@@ -9,12 +9,11 @@ import Snackbar from '@material-ui/core/Snackbar';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
-import FileGridView from '../../components/FileGridWithCart/FileGridView';
+import GridWithFooter from '../../components/GridWithFooter/GridView';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
-import { FileOnRowsSelect, FileDisableRowSelection } from '../../utils/fileTable';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import {
   header,
@@ -268,16 +267,16 @@ const ArmDetail = ({ data, classes }) => {
                     <Grid item xs={12}>
                       <Grid container spacing={4}>
                         <Grid item xs={12}>
-                          <FileGridView
+                          <GridWithFooter
                             data={data[table.filesField]}
                             columns={columns.slice(0, 10)}
                             options={options(classes)}
-                            customOnRowsSelect={FileOnRowsSelect}
+                            customOnRowsSelect={table.customOnRowsSelect}
                             openSnack={openSnack}
                             closeSnack={closeSnack}
-                            disableRowSelection={FileDisableRowSelection}
-                            bottonText={table.bottonText}
-                            messageData={table.helpMessage}
+                            disableRowSelection={table.disableRowSelection}
+                            buttonText={table.buttonText}
+                            messageData={table.tooltipMessage}
                           />
                         </Grid>
                         <Grid item xs={8}>

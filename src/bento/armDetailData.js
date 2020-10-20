@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { FileOnRowsSelect, FileDisableRowSelection } from '../utils/fileTable';
 
 // -------------- Case ID area configurations --------------
 const header = {
@@ -55,9 +56,9 @@ const table = {
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
   // Text to appear on Add to cart button
-  bottonText: 'Add Selected Files',
+  buttonText: 'Add Selected Files',
   // Help Icon Message
-  helpMessage: 'Here help message',
+  tooltipMessage: 'Click button to add selected files.',
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -87,6 +88,11 @@ const table = {
       formatBytes: true,
     },
   ],
+  // Util Functions
+  // Custom function on selct checkbox is selected.
+  customOnRowsSelect: FileOnRowsSelect,
+  // Custom function disable selct checkbox in table if related files are in cart
+  disableRowSelection: FileDisableRowSelection,
 };
 
 // --------------- GraphQL query configuration --------------
