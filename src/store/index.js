@@ -3,14 +3,12 @@ import ReduxThunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import layout from '../components/Layout/LayoutState';
 import dashboard from '../pages/dashboard/dashboardState';
-import dashboardTab from '../pages/dashboardTab/store/dashboardReducer';
 import stats from '../components/Stats/StatsState';
 
 const reducers = {
   layout,
   dashboard,
   stats,
-  dashboardTab,
 };
 const loggerMiddleware = createLogger();
 

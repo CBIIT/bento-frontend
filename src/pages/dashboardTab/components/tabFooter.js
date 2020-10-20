@@ -6,7 +6,12 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { withStyles } from '@material-ui/core/styles';
 
 const defaultFooterStyles = {
-
+  root: {
+    fontFamily: '"Open Sans", sans-serif',
+    fontSize: '9pt',
+    letterSpacing: '0.025em',
+    color: '#000',
+  },
 };
 
 const TabFooter = ({

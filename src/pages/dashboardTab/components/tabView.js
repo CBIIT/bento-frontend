@@ -1,111 +1,130 @@
-/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { CustomDataTable } from 'bento-components';
-import CustomFooter from './tabFooter';
-import { addToCart } from '../../fileCentricCart/store/cart';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
-import Message from './message';
-import { dateTimeStamp } from '../../../utils/helpers';
+import CustomFooter from './tabFooter';
+import { addToCart, getCart } from '../../fileCentricCart/store/cart';
+import Message from '../../../components/Message';
+import { dateTimeStamp, manipulateLinks } from '../../../utils/helpers';
+import formatBytes from '../../../utils/formatBytes';
 
 const TabView = ({
-  classes, data, Columns, customOnRowsSelect, openSnack, disableRowSelection, buttonTitle, tableID, messageData, downloadFileName
+  classes,
+  data,
+  customColumn,
+  customOnRowsSelect,
+  openSnack,
+  disableRowSelection,
+  buttonTitle,
+  tableID,
+  saveButtonDefaultStyle,
+  DeactiveSaveButtonDefaultStyle,
+  ActiveSaveButtonDefaultStyle,
+  toggleMessageStatus,
+  BottomMessageStatus,
+  tabIndex,
+  downloadFileName,
+  externalLinkIcon,
 }) => {
   // Get the existing files ids from  cart state
-  const fileIDs = useSelector((state) => state.cart.subjectIds);
-
+  const cart = getCart();
+  const fileIDs = cart.fileIds ? cart.fileIds : [];
+  let selectedIDs = [];
   const saveButton = useRef(null);
+  const saveButton2 = useRef(null);
+
+  const buildButtonStyle = (button, styleObject) => {
+    const styleKV = Object.entries(styleObject);
+    // eslint-disable-next-line  no-restricted-syntax, no-unused-vars
+    for (const [key, value] of styleKV) {
+      // eslint-disable-next-line no-param-reassign
+      button.current.style[key] = value;
+    }
+  };
+  const initSaveButtonDefaultStyle = (button) => {
+    // eslint-disable-next-line no-param-reassign
+    button.current.disabled = true;
+    buildButtonStyle(button, saveButtonDefaultStyle);
+  };
+
+  const updateActiveSaveButtonStyle = (flag, button) => {
+    if (flag) {
+      // eslint-disable-next-line no-param-reassign
+      button.current.disabled = true;
+      buildButtonStyle(button, ActiveSaveButtonDefaultStyle);
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      button.current.disabled = false;
+      buildButtonStyle(button, DeactiveSaveButtonDefaultStyle);
+    }
+  };
 
   useEffect(() => {
-    saveButton.current.disabled = true;
-    saveButton.current.style.color = '#FFFF';
-    saveButton.current.style.backgroundColor = '#C53B27';
-    saveButton.current.style.opacity = '0.3';
-    saveButton.current.style.border = '3px solid grey';
-    saveButton.current.style.fontWeight = '600';
-    saveButton.current.style.cursor = 'auto';
+    initSaveButtonDefaultStyle(saveButton);
+    initSaveButtonDefaultStyle(saveButton2);
+
+    if (selectedIDs.length === 0) {
+      updateActiveSaveButtonStyle(true, saveButton);
+      updateActiveSaveButtonStyle(true, saveButton2);
+    } else {
+      updateActiveSaveButtonStyle(false, saveButton);
+      updateActiveSaveButtonStyle(false, saveButton2);
+    }
   });
-
-  const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
-  const [BottomMessageStatus, setBottomMessageStatus] = React.useState(false);
-
-  function openMessage(location) {
-    return location === 'top' ? setTopMessageStatus(true) : setBottomMessageStatus(true);
-  }
-
-  function closeMessage(location) {
-    return location === 'top' ? setTopMessageStatus(true) : setBottomMessageStatus(true);
-  }
-
-  function toggleMessageStatus(location, status) {
-    return status === 'close' ? closeMessage(location) : openMessage(location);
-  }
-
-
-  let selectedIDs = [];
 
   function exportFiles() {
     // Find the newly added files by comparing
     const newFileIDS = fileIDs !== null ? selectedIDs.filter(
       (e) => !fileIDs.find((a) => e === a),
     ).length : selectedIDs.length;
-    addToCart({ subjectIds: selectedIDs });
-    openSnack(newFileIDS);
+    addToCart({ fileIds: selectedIDs });
+    if (newFileIDS > 0) {
+      openSnack(newFileIDS);
+    }
     selectedIDs = [];
   }
 
   function onRowsSelect(curr, allRowsSelected) {
-    selectedIDs = [...new Set(selectedIDs.concat(
+    selectedIDs = [...new Set(
       customOnRowsSelect(data, allRowsSelected),
-    ))];
+    )];
 
     if (allRowsSelected.length === 0) {
-      saveButton.current.disabled = true;
-      saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#C53B27';
-      saveButton.current.style.opacity = '0.3';
-      saveButton.current.style.border = '3px solid grey';
-      saveButton.current.style.fontWeight = '600';
-      saveButton.current.style.cursor = 'auto';
+      updateActiveSaveButtonStyle(true, saveButton);
+      updateActiveSaveButtonStyle(true, saveButton2);
     } else {
-      saveButton.current.disabled = false;
-      saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#C53B27';
-      saveButton.current.style.cursor = 'pointer';
-      saveButton.current.style.opacity = 'unset';
-      saveButton.current.style.border = 'unset';
+      updateActiveSaveButtonStyle(false, saveButton);
+      updateActiveSaveButtonStyle(false, saveButton2);
     }
   }
 
-  const columns = Columns(classes);
-  const options = (downloadFileName) => ({
+  const options = () => ({
     selectableRows: true,
     search: false,
     filter: false,
     searchable: false,
     print: false,
-    download: true,
+    download: false,
     downloadOptions: {
       filename: downloadFileName.concat(dateTimeStamp()).concat('.csv'),
       filterOptions: {
         useDisplayedColumnsOnly: true,
       },
     },
-    viewColumns: true,
+    viewColumns: false,
     pagination: true,
     isRowSelectable: (dataIndex) => disableRowSelection(data[dataIndex], fileIDs),
-    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    onRowSelectionChange: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
     // eslint-disable-next-line no-unused-vars
     customToolbarSelect: () => '',
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
       <CustomFooter
         text="SAVE TO MY CASES"
-        classes={classes}
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -117,28 +136,60 @@ const TabView = ({
 
   });
 
+  const displayFalseTableColumns = customColumn
+    .filter((col) => col.display === false).length;
+
+  const displayTableColumns = customColumn.slice(0, displayFalseTableColumns + 10);
+
+  const updatedTableWithLinks = manipulateLinks(displayTableColumns);
+
+  const columns = updatedTableWithLinks.map((column) => ({
+    name: column.dataField,
+    label: column.header,
+    options: {
+      display: column.display ? column.display : false,
+      filter: false,
+      customBodyRender: (value, tableMeta) => (
+        <div>
+          {
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
+                  {' '}
+                  {column.formatBytes ? formatBytes(value) : value}
+                  {' '}
+                </a>
+                <img
+                  src={externalLinkIcon ? externalLinkIcon.src : ''}
+                  alt={externalLinkIcon.alt ? externalLinkIcon.alt : ''}
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : `${column.formatBytes ? formatBytes(value) : value}`
+}
+        </div>
+      ),
+    },
+  }));
+
   return (
     <div>
-           { TopMessageStatus ? (
-              <div className={classes.messageTop}>
-                {' '}
-                <Message data={messageData} />
-                {' '}
-              </div>
-            ) : ''}
-     <Grid item xs={12} className={classes.saveButtonDiv}>
+
+      <Grid item xs={12} className={classes.saveButtonDiv}>
         <button
           type="button"
-          ref={saveButton}
+          ref={saveButton2}
           onClick={exportFiles}
           className={classes.button}
         >
           { buttonTitle }
         </button>
-               <IconButton aria-label="help">
-              <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
-            </IconButton>
-       
+        <IconButton aria-label="help" className={classes.helpIconButton}>
+          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
+        </IconButton>
+
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
@@ -150,7 +201,7 @@ const TabView = ({
         </Grid>
 
       </Grid>
-      <Grid item xs={12} className={classes.saveButtonDiv}>
+      <Grid item xs={12} className={classes.saveButtonDivBottom}>
         <button
           type="button"
           ref={saveButton}
@@ -159,17 +210,29 @@ const TabView = ({
         >
           { buttonTitle }
         </button>
-           <IconButton aria-label="help">
-                    <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
-                  </IconButton>
 
-                   { BottomMessageStatus ? (
-                    <div className={classes.messageBottom}>
-                      {' '}
-                      <Message data={messageData} />
-                      {' '}
-                    </div>
-                  ) : ''}
+        <IconButton aria-label="help" className={classes.helpIconButton}>
+          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+        </IconButton>
+        <div style={{ position: 'relative' }}>
+          { BottomMessageStatus.isActive
+            && tabIndex === BottomMessageStatus.currentTab.toString() ? (
+              <div className={classes.messageBottom}>
+                {' '}
+                <Message data={BottomMessageStatus.text} />
+                {' '}
+              </div>
+            ) : ''}
+          <Link
+            target="_blank"
+            rel="noreferrer"
+            to={(location) => ({ ...location, pathname: '/fileCentricCart' })}
+            color="inherit"
+            className={classes.cartlink}
+          >
+            Go to Cart >
+          </Link>
+        </div>
 
       </Grid>
     </div>
@@ -181,11 +244,17 @@ const styles = () => ({
   link: {
     color: '#DC762F',
     textDecoration: 'none',
+
     '&:hover': {
       textDecoration: 'underline',
     },
   },
-
+  cartlink: {
+    fontFamily: 'Lato',
+    color: '#3E6886',
+    fontSize: '12px',
+    marginRight: '70px',
+  },
   caseTitle: {
     color: '#194563',
     fontSize: '25.2pt',
@@ -225,15 +294,26 @@ const styles = () => ({
     paddingTop: '5px',
     paddingRight: '25px',
     textAlign: 'right',
-
+  },
+  saveButtonDivBottom: {
+    paddingTop: '5px',
+    paddingRight: '25px',
+    textAlign: 'right',
+    marginBottom: '30px',
+    position: 'relative',
   },
   button: {
     borderRadius: '10px',
-    width: '150px',
-    lineHeight: '20px',
-    fontSize: '10pt',
+    width: '156px',
+    lineHeight: '37px',
+    fontSize: '12px',
+    textTransform: 'uppercase',
+    fontFamily: 'Lato',
     color: '#fff',
-    backgroundColor: '#ff7f15',
+    backgroundColor: '#10A075',
+    marginTop: '6px',
+    marginBottom: '10px',
+    marginRight: '5px',
   },
   caseTableBorder: {
     borderTopColor: '#F48439',
@@ -245,10 +325,16 @@ const styles = () => ({
     borderTopColor: '#05C5CC',
   },
   messageBottom: {
-    zIndex: '900',
+    zIndex: '500',
+    position: 'absolute',
+    marginTop: '-148px',
+    marginLeft: 'calc(100% - 212px)',
   },
-  messageTop: {
-    zIndex: '900',
+  helpIcon: {
+    zIndex: '600',
+  },
+  helpIconButton: {
+    verticalAlign: 'top',
   },
 });
 

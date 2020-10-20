@@ -12,8 +12,9 @@ import AboutBody from '../about/aboutBodyView';
 import CenterIcon from '../../assets/about/Model-Buttons-Center.svg';
 import ZoomInIcon from '../../assets/about/Model-Buttons-ZoomIn.svg';
 import ZoomOutIcon from '../../assets/about/Model-Buttons-ZoomOut.svg';
+import env from '../../utils/env';
 
-const ABOUT_CONTENT_URL = process.env.REACT_APP_ABOUT_CONTENT_URL;
+const ABOUT_CONTENT_URL = env.REACT_APP_ABOUT_CONTENT_URL;
 
 const limitToBounds = false;
 const panningEnabled = true;

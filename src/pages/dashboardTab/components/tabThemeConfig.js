@@ -32,7 +32,7 @@ export default ({
       marginTop: '15px',
     },
     flexContainer: {
-      borderBottom: '2px solid #6B6B6B',
+      borderBottom: '10px solid #40789C',
       overflow: 'visible !important',
     },
   };
@@ -46,12 +46,16 @@ export default ({
       background: '#EAEAEA',
       fontSize: '18px',
       fontFamily: 'Raleway',
-      fontWeight: 'bold',
+      fontWeight: '400',
       lineHeight: '18px',
       paddingLeft: '5px',
       letterSpacing: '0.25px',
+      borderTop: '1px solid black',
+      borderLeft: '1px solid black',
+      borderRight: '1px solid black',
       '&$selected': {
         background: tablecolor,
+        fontWeight: 'bolder',
       },
     },
     labelContainer: {
