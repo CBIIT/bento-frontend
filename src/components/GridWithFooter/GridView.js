@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
+
 import { CustomDataTable } from 'bento-components';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,14 +13,14 @@ import CustomFooter from './customFooter';
 import { addToCart } from '../../pages/fileCentricCart/store/cart';
 import Message from '../../pages/fileCentricCart/components/message';
 
-const FileGridView = ({
+const GridView = ({
   classes,
   data,
   columns,
   customOnRowsSelect,
   openSnack,
   disableRowSelection,
-  bottonText,
+  buttonText,
   options,
   messageData,
 }) => {
@@ -110,8 +111,6 @@ const FileGridView = ({
     }
   }
 
-  // const Columns = columns(classes);
-
   const defaultOptions = () => ({
     selectableRows: true,
     responsive: 'stacked',
@@ -167,12 +166,12 @@ const FileGridView = ({
           ref={saveButton}
           onClick={exportFiles}
         >
-          { bottonText }
+          { buttonText }
           {' '}
         </button>
         {' '}
         <IconButton aria-label="help">
-          <HelpIcon className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
         </IconButton>
         { BottomMessageStatus ? (
           <div className={classes.messageBottom}>
@@ -187,7 +186,6 @@ const FileGridView = ({
 };
 
 const styles = () => ({
-
   link: {
     color: '#DC762F',
     textDecoration: 'none',
@@ -195,7 +193,6 @@ const styles = () => ({
       textDecoration: 'underline',
     },
   },
-
   caseTitle: {
     color: '#194563',
     fontSize: '25.2pt',
@@ -268,4 +265,4 @@ const styles = () => ({
   },
 });
 
-export default withStyles(styles, { withTheme: true })(FileGridView);
+export default withStyles(styles, { withTheme: true })(GridView);

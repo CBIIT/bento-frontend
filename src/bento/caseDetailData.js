@@ -1,4 +1,6 @@
 import gql from 'graphql-tag';
+import { FileOnRowsSelect, FileDisableRowSelection } from '../utils/fileTable';
+import { SampleOnRowsSelect, SampleDisableRowSelection } from '../utils/sampleFileTable';
 
 // -------------- Case ID area configurations --------------
 const caseHeader = {
@@ -174,22 +176,29 @@ const rightPanel = [
   },
 ];
 
-// --------------- Files table configuration --------------
+// --------------- Dahboard Table external link configuration --------------
+// Ideal size for externalLinkIcon is 16x16 px
+export const externalLinkIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+  alt: 'External link icon',
+};
 
-const filesTable = {
+// --------------- Table 1 configuration --------------
+const table1 = {
   // Set 'display' to false to hide the table entirely
   display: true,
   // Table title
-  title: 'ASSOCIATED FILES',
+  tableTitle: 'ASSOCIATED SAMPLE',
   // Field name for files data, need to be updated only when using a different GraphQL query
-  filesField: 'files',
+  subjectDetailField: 'samples',
   // Value must be one of the 'dataField's in fileTableColumns
-  defaultSortField: 'file_name',
+  defaultSortField: 'sample_id',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
   // Text to appear on Add to cart button
-  bottonText: 'Add Selected Files',
+  buttonText: 'Add Selected Files',
   // Help Icon Message
+  tooltipMessage: 'Click button to add selected files associated with the selected sample(s).',
   helpMessage: 'Here help message',
   // showHideColumns 'true' or 'false'
   showHideColumns: true,
@@ -197,6 +206,72 @@ const filesTable = {
   download: true,
   // downloaded File Name
   downloadFileName: 'Bento_case_files_download',
+  // A maximum of 10 columns are allowed
+  columns: [
+    {
+      dataField: 'sample_id',
+      header: 'Sample ID',
+      sort: 'asc',
+      primary: true,
+      display: true,
+    },
+    {
+      dataField: 'disease_subtype',
+      header: 'Diagnosis',
+      dataFromRoot: true,
+    },
+    {
+      dataField: 'tissue_type',
+      header: 'Tissue Type',
+    },
+    {
+      dataField: 'composition',
+      header: 'Tissue Composition',
+    },
+    {
+      dataField: 'sample_anatomic_site',
+      header: 'Sample Anatomic Site',
+    },
+    {
+      dataField: 'method_of_sample_procurement',
+      header: 'Sample Procurement Method',
+    },
+    {
+      dataField: 'test_name',
+      header: 'Platform',
+      dataFromRoot: true,
+    },
+  ],
+  // Util Functions
+  // Custom function on selct checkbox is selected.
+  customOnRowsSelect: SampleOnRowsSelect,
+  // Custom function disable selct checkbox in table if related files are in cart
+  disableRowSelection: SampleDisableRowSelection,
+};
+
+// --------------- Table 2 configuration --------------
+const table2 = {
+  // Set 'display' to false to hide the table entirely
+  display: true,
+  // Table title
+  tableTitle: 'ASSOCIATED FILES',
+  // Field name for files data, need to be updated only when using a different GraphQL query
+  subjectDetailField: 'files',
+  // Value must be one of the 'dataField's in fileTableColumns
+  defaultSortField: 'file_name',
+  // 'asc' or 'desc'
+  defaultSortDirection: 'asc',
+  // Text to appear on Add to cart button
+  buttonText: 'Add Selected Files',
+  // Help Icon Message
+  tooltipMessage: 'Click button to add selected files.',
+  helpMessage: 'Here help message',
+  // showHideColumns 'true' or 'false'
+  showHideColumns: true,
+  // download csv 'true' or 'false'
+  download: true,
+  // downloaded File Name
+  downloadFileName: 'Bento_case_samples_download',
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -226,75 +301,25 @@ const filesTable = {
       formatBytes: true,
     },
   ],
-};
-
-// --------------- Samples table configuration --------------
-
-const samplesTable = {
-  // Set 'display' to false to hide the table entirely
-  display: true,
-  // Table title
-  title: 'ASSOCIATED SAMPLE',
-  // Field name for files data, need to be updated only when using a different GraphQL query
-  filesField: 'samples',
-  // Value must be one of the 'dataField's in fileTableColumns
-  defaultSortField: 'sample_id',
-  // 'asc' or 'desc'
-  defaultSortDirection: 'asc',
-  // Text to appear on Add to cart button
-  bottonText: 'Add Selected Samples',
-  // Help Icon Message
-  helpMessage: 'Here help message',
-  // showHideColumns 'true' or 'false'
-  showHideColumns: true,
-  // download csv 'true' or 'false'
-  download: true,
-  // downloaded File Name
-  downloadFileName: 'Bento_case_samples_download',
-  // A maximum of 10 columns are allowed
-  columns: [
-    {
-      dataField: 'sample_id',
-      header: 'Sample ID',
-    },
-    {
-      dataField: 'disease_subtype',
-      header: 'Diagnosis',
-      dataFromRoot: true,
-    },
-    {
-      dataField: 'tissue_type',
-      header: 'Tissue Type',
-    },
-    {
-      dataField: 'composition',
-      header: 'Tissue Composition',
-    },
-    {
-      dataField: 'sample_anatomic_site',
-      header: 'Sample Anatomic Site',
-    },
-    {
-      dataField: 'method_of_sample_procurement',
-      header: 'Sample Procurement Method',
-    },
-    {
-      dataField: 'test_name',
-      header: 'Platform',
-      dataFromRoot: true,
-    },
-  ],
+  // Util Functions
+  // Custom function on selct checkbox is selected.
+  customOnRowsSelect: FileOnRowsSelect,
+  // Custom function disable selct checkbox in table if related files are in cart
+  disableRowSelection: FileDisableRowSelection,
 };
 
 // --------------- GraphQL query configuration --------------
 
 // query name, also used as root of returned data
 const dataRoot = 'subjectDetail';
+// query name, also used as key for files to Samples Mapping.
+const filesOfSamples = 'samplesForSubjectId';
 // Primary ID field used to query a case
 const caseIDField = 'subject_id';
+
 // GraphQL query to retrieve detailed info for a case
 const GET_CASE_DETAIL_DATA_QUERY = gql`
-  query subjectDetail($subject_id: String) {
+  query subjectDetail($subject_id: String!) {
     subjectDetail(subject_id: $subject_id) {
       subject_id
       program_acronym
@@ -350,6 +375,13 @@ const GET_CASE_DETAIL_DATA_QUERY = gql`
       num_samples
       num_lab_procedures
     }
+    samplesForSubjectId(subject_id: $subject_id) {
+      sample_id
+      files {
+        file_id
+        file_name
+      }
+    }
   }
 `;
 
@@ -357,9 +389,10 @@ export {
   caseHeader,
   dataRoot,
   caseIDField,
+  filesOfSamples,
   leftPanel,
   rightPanel,
-  filesTable,
-  samplesTable,
+  table1,
+  table2,
   GET_CASE_DETAIL_DATA_QUERY,
 };

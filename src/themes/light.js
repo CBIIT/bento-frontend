@@ -403,6 +403,7 @@ export default {
     MUIDataTableToolbar: {
       root: {
         backgroundColor: tableHeader,
+        minHeight: '44px',
       },
       titleText: {
 
