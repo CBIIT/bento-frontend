@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import gql from 'graphql-tag';
 import { FileOnRowsSelect, FileDisableRowSelection } from '../utils/fileTable';
 import { SampleOnRowsSelect, SampleDisableRowSelection } from '../utils/sampleFileTable';
