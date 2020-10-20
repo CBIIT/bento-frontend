@@ -58,14 +58,14 @@ const options = (classes) => ({
   filter: false,
   searchable: false,
   print: false,
-  download: true,
+  download: table.download,
   downloadOptions: {
-    filename: 'Bento_arm_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filename: table.downloadFileName ? table.downloadFileName.concat(dateTimeStamp()).concat('.csv') : 'tableDownload'.concat(dateTimeStamp()).concat('.csv'),
     filterOptions: {
       useDisplayedColumnsOnly: true,
     },
   },
-  viewColumns: true,
+  viewColumns: table.showHideColumns,
   pagination: true,
   sortOrder: {
     name: table.defaultSortField,

@@ -200,6 +200,13 @@ const table1 = {
   buttonText: 'Add Selected Files',
   // Help Icon Message
   tooltipMessage: 'Click button to add selected files associated with the selected sample(s).',
+  helpMessage: 'Here help message',
+  // showHideColumns 'true' or 'false'
+  showHideColumns: true,
+  // download csv
+  download: true,
+  // downloaded File Name
+  downloadFileName: 'Bento_case_files_download',
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -259,6 +266,13 @@ const table2 = {
   buttonText: 'Add Selected Files',
   // Help Icon Message
   tooltipMessage: 'Click button to add selected files.',
+  helpMessage: 'Here help message',
+  // showHideColumns 'true' or 'false'
+  showHideColumns: true,
+  // download csv 'true' or 'false'
+  download: true,
+  // downloaded File Name
+  downloadFileName: 'Bento_case_samples_download',
   // A maximum of 10 columns are allowed
   columns: [
     {
