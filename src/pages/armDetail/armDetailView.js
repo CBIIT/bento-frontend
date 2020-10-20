@@ -60,7 +60,7 @@ const options = (classes) => ({
   print: false,
   download: table.download,
   downloadOptions: {
-    filename: table.downloadFileName.concat(dateTimeStamp()).concat('.csv'),
+    filename: table.downloadFileName ? table.downloadFileName.concat(dateTimeStamp()).concat('.csv') : 'tableDownload'.concat(dateTimeStamp()).concat('.csv'),
     filterOptions: {
       useDisplayedColumnsOnly: true,
     },
