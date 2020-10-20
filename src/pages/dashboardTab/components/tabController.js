@@ -6,14 +6,14 @@ import {
 import Typography from '@material-ui/core/Typography';
 import SwipeableViews from 'react-swipeable-views';
 import Snackbar from '@material-ui/core/Snackbar';
-import { caseOnRowsSelect, caseDisableRowSelection, caseColumns } from './tabConfigs/caseConfig';
-import { fileOnRowsSelect, fileDisableRowSelection, fileColumns } from './tabConfigs/fileConfig';
-import { sampleOnRowsSelect, sampleDisableRowSelection, sampleColumns } from './tabConfigs/sampleConfig';
 import TabView from './tabView';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import TabThemeProvider from './tabThemeConfig';
 import TabLabel from './tabLabel';
 import Message from '../../../components/Message';
+import {
+  tabs, tooltipContent, tabContainers, tabIndex, externalLinkIcon,
+} from '../../../bento/dashboardTabData';
 
 function TabContainer({ children, dir }) {
   return (
@@ -23,64 +23,6 @@ function TabContainer({ children, dir }) {
   );
 }
 
-const caseSaveButtonDefaultStyle = {
-  color: '#fff',
-  backgroundColor: '#09A175',
-  opacity: '1',
-  border: '0px',
-  cursor: 'pointer',
-};
-
-const sampleSaveButtonDefaultStyle = {
-  color: '#fff',
-  backgroundColor: '#00AEEF',
-  opacity: '1',
-  border: '0px',
-  cursor: 'pointer',
-};
-
-const fileSaveButtonDefaultStyle = {
-  color: '#fff',
-  backgroundColor: '#DC2FDA',
-  opacity: '1',
-  border: '0px',
-  cursor: 'pointer',
-};
-
-const caseActiveSaveButtonDefaultStyle = {
-  disabled: 'true',
-  opacity: '0.3',
-  cursor: 'auto',
-};
-
-const sampleActiveSaveButtonDefaultStyle = {
-  opacity: '0.3',
-  cursor: 'auto',
-};
-
-const fileActiveSaveButtonDefaultStyle = {
-  opacity: '0.3',
-  cursor: 'auto',
-};
-
-const caseDeactiveSaveButtonDefaultStyle = {
-  cursor: 'pointer',
-  opacity: 'unset',
-  border: 'unset',
-};
-
-const sampleDeactiveSaveButtonDefaultStyle = {
-  cursor: 'pointer',
-  opacity: 'unset',
-  border: 'unset',
-};
-
-const fileDeactiveSaveButtonDefaultStyle = {
-  cursor: 'pointer',
-  opacity: 'unset',
-  border: 'unset',
-};
-
 const tabController = (classes) => {
   // tab settings
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -89,12 +31,6 @@ const tabController = (classes) => {
   const dashboard = useSelector((state) => (state.dashboardTab
 && state.dashboardTab.datatable
     ? state.dashboardTab.datatable : {}));
-
-  const tooltipContent = {
-    0: 'Click button to add selected files associated with selected cases(s)',
-    1: 'Click button to add selected files associated with selected Sample(s)',
-    2: 'Click button to add selected files to Cart',
-  };
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
@@ -150,27 +86,6 @@ const tabController = (classes) => {
     setsnackbarState({ open: false });
   }
 
-  const tabIndex = {
-    0: {
-      title: 'Cases',
-      primaryColor: '#D6F2EA',
-      secondaryColor: '#FFDFB8',
-      selectedColor: '#10A075',
-    },
-    1: {
-      title: 'Samples',
-      primaryColor: '#CFEDF9',
-      secondaryColor: '#C9F1F1',
-      selectedColor: '#0DAFEC',
-    },
-    2: {
-      title: 'Files',
-      primaryColor: '#F7D7F7',
-      secondaryColor: '#86D6F0',
-      selectedColor: '#C92EC7',
-    },
-  };
-
   function getBorderStyle() {
     const style = '2px solid #898989';
     return `${tabIndex[currentTab].primaryColor} ${style}`;
@@ -196,9 +111,116 @@ const tabController = (classes) => {
     );
   }
 
-  const caseData = dashboard.dataCase ? dashboard.dataCase : [];
-  const sampleData = dashboard.dataSample ? dashboard.dataSample : [];
-  const fileData = dashboard.dataFile ? dashboard.dataFile : [];
+  /* on row select event
+    @param  data  data for initial the table  sample -> [files]
+    @param  allRowsSelected : selected rows
+    @output [f.uuid]
+  */
+  function Type1OnRowsSelect(data, allRowsSelected) {
+  // use reduce to combine all the files' id into single array
+    return allRowsSelected.reduce((accumulator, currentValue) => {
+      const { files } = data[currentValue.dataIndex];
+      // check if file
+      if (files && files.length > 0) {
+        return accumulator.concat(files.map((f) => f.file_id));
+      }
+      return accumulator;
+    }, []);
+  }
+
+  /* on row select event
+    @param  data  data for initial the table  sample -> [files]
+    @param  allRowsSelected : selected rows
+    @output [f.uuid]
+  */
+  function Type2OnRowsSelect(data, allRowsSelected) {
+    return allRowsSelected.map((row) => data[row.dataIndex].file_id);
+  }
+
+  /* on row select event
+    @param  data  data for initial the table  sample -> [files]
+    @param  allRowsSelected : selected rows
+    @output [f.uuid]
+  */
+  function Type3OnRowsSelect(data, allRowsSelected) {
+  // use reduce to combine all the files' id into single array
+    return allRowsSelected.reduce((accumulator, currentValue) => {
+      const { files } = data[currentValue.dataIndex];
+      // check if file
+      if (files && files.length > 0) {
+        return accumulator.concat(files);
+      }
+      return accumulator;
+    }, []);
+  }
+
+  // onRowsSelectFunction contains all the onRowsSelection functions
+  // user can pick one for use.
+  const onRowsSelectFunction = {
+    type1: Type1OnRowsSelect,
+    type2: Type2OnRowsSelect,
+    type3: Type3OnRowsSelect,
+  };
+
+  // This function for future use
+  /*  To check if this row is selectable or not.
+    I want the system to visually communicate ("flag") which of
+    the samples being displayed have already had all of their files added to the cart.
+    @param  data  row of data from sample tab
+    @param  cartData, list of fileIDs
+    @output  boolean true-> selectable
+*/
+  // eslint-disable-next-line no-unused-vars
+  function disableRowSelection(data, cartData) {
+    return true;
+  }
+
+  // disableRowSelectionFunction contains all the disableRowSelection functions
+  // user can pick one for use.
+  const disableRowSelectionFunction = {
+    type1: disableRowSelection,
+    type2: disableRowSelection,
+    type3: disableRowSelection,
+  };
+
+  // Tab Header Generator
+  const TABs = tabs.map((tab) => (
+    <Tab
+      id={tab.id}
+      label={getTabLalbel(tab.name, dashboard[tab.dataField] ? dashboard[tab.dataField].length : 0)}
+    />
+  ));
+
+  // Calculate the properate marginTop value for the tooltip on the top
+  const tooltipStyle = (text) => {
+    const marginTopValue = text.length > 40 ? '-25px' : '-3px';
+    return { marginTop: marginTopValue };
+  };
+
+  // Tab table Generator
+  const TABContainers = tabContainers.map((container) => (
+    <TabContainer id={container.id}>
+      <TabView
+        data={dashboard[container.dataField] ? dashboard[container.dataField] : []}
+        customColumn={container.columns}
+        customOnRowsSelect={onRowsSelectFunction[container.onRowsSelect]}
+        openSnack={openSnack}
+        closeSnack={closeSnack}
+        disableRowSelection={disableRowSelectionFunction[container.disableRowSelection]}
+        buttonTitle={container.buttonTitle}
+        tableID={container.tableID}
+        saveButtonDefaultStyle={container.saveButtonDefaultStyle}
+        ActiveSaveButtonDefaultStyle={container.ActiveSaveButtonDefaultStyle}
+        DeactiveSaveButtonDefaultStyle={container.DeactiveSaveButtonDefaultStyle}
+        toggleMessageStatus={toggleMessageStatus}
+        BottomMessageStatus={BottomMessageStatus}
+         // eslint-disable-next-line jsx-a11y/tabindex-no-positive
+        tabIndex={container.tabIndex}
+        downloadFileName={container.downloadFileName}
+        externalLinkIcon={externalLinkIcon}
+      />
+    </TabContainer>
+  ));
 
   return (
     <>
@@ -223,7 +245,7 @@ const tabController = (classes) => {
 )}
       />
       { TopMessageStatus.isActive ? (
-        <div className={classes.classes.messageTop}>
+        <div className={classes.classes.messageTop} style={tooltipStyle(TopMessageStatus.text)}>
           {' '}
           <Message data={TopMessageStatus.text} />
           {' '}
@@ -238,96 +260,22 @@ const tabController = (classes) => {
           textColor="primary"
           textColorPrimary
         >
-          <Tab
-            id="case_tab"
-            label={getTabLalbel('Cases', caseData.length)}
-          />
-          <Tab
-            id="sample_tab"
-            label={getTabLalbel('Samples', sampleData.length)}
-          />
-          <Tab
-            id="file_tab"
-            label={getTabLalbel('Files', fileData.length)}
-
-          />
+          {TABs}
         </Tabs>
         <SwipeableViews
           index={currentTab}
           onChangeIndex={handleTabChange}
           animateTransitions={false}
-          style={{ 'overflow-x': 'hidden' }}
+          style={{ overflowX: 'hidden' }}
         >
-          <TabContainer id="case_tab_view">
-            <TabView
-              data={caseData}
-              Columns={caseColumns}
-              customOnRowsSelect={caseOnRowsSelect}
-              openSnack={openSnack}
-              closeSnack={closeSnack}
-              disableRowSelection={caseDisableRowSelection}
-              buttonTitle="Add  Selected Files"
-              tableID="case_tab_table"
-              saveButtonDefaultStyle={caseSaveButtonDefaultStyle}
-              ActiveSaveButtonDefaultStyle={caseActiveSaveButtonDefaultStyle}
-              DeactiveSaveButtonDefaultStyle={caseDeactiveSaveButtonDefaultStyle}
-              toggleMessageStatus={toggleMessageStatus}
-              BottomMessageStatus={BottomMessageStatus}
-              // eslint-disable-next-line jsx-a11y/tabindex-no-positive
-              tabIndex="0"
-              downloadFileName="Bento_Dashboard_cases_download"
-            />
-          </TabContainer>
-          <TabContainer id="sample_tab_view">
-            <TabView
-              data={sampleData}
-              Columns={sampleColumns}
-              customOnRowsSelect={sampleOnRowsSelect}
-              openSnack={openSnack}
-              closeSnack={closeSnack}
-              disableRowSelection={sampleDisableRowSelection}
-              buttonTitle="Add  Selected Files"
-              tableID="sample_tab_table"
-              saveButtonDefaultStyle={sampleSaveButtonDefaultStyle}
-              ActiveSaveButtonDefaultStyle={sampleActiveSaveButtonDefaultStyle}
-              DeactiveSaveButtonDefaultStyle={sampleDeactiveSaveButtonDefaultStyle}
-              toggleMessageStatus={toggleMessageStatus}
-              BottomMessageStatus={BottomMessageStatus}
-              // eslint-disable-next-line jsx-a11y/tabindex-no-positive
-              tabIndex="1"
-              downloadFileName="Bento_Dashboard_samples_download"
-            />
-          </TabContainer>
-          <TabContainer id="file_tab_view">
-            <TabView
-              data={fileData}
-              Columns={fileColumns}
-              customOnRowsSelect={fileOnRowsSelect}
-              openSnack={openSnack}
-              closeSnack={closeSnack}
-              disableRowSelection={fileDisableRowSelection}
-              buttonTitle="Add  Selected Files"
-              tableID="file_tab_table"
-              saveButtonDefaultStyle={fileSaveButtonDefaultStyle}
-              ActiveSaveButtonDefaultStyle={fileActiveSaveButtonDefaultStyle}
-              DeactiveSaveButtonDefaultStyle={fileDeactiveSaveButtonDefaultStyle}
-              toggleMessageStatus={toggleMessageStatus}
-              BottomMessageStatus={BottomMessageStatus}
-              // eslint-disable-next-line jsx-a11y/tabindex-no-positive
-              tabIndex="2"
-              downloadFileName="Bento_Dashboard_files_download"
-            />
-          </TabContainer>
+          {TABContainers}
         </SwipeableViews>
-
       </TabThemeProvider>
-
     </>
   );
 };
 
 const styles = () => ({
-
   button: {
     borderRadius: '10px',
     width: '330px',
@@ -344,7 +292,6 @@ const styles = () => ({
     position: 'absolute',
     right: '12px',
     zIndex: '300',
-    marginTop: '-8px',
   },
 });
 export default withStyles(styles, { withTheme: true })(tabController);

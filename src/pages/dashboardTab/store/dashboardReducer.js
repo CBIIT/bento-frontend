@@ -69,7 +69,9 @@ function fetchDashboardTab() {
         query: DASHBOARD_QUERY,
       })
       .then((result) => store.dispatch({ type: 'RECEIVE_DASHBOARDTAB', payload: _.cloneDeep(result) }))
-      .catch((error) => store.dispatch({ type: 'DASHBOARDTAB_QUERY_ERR', error }));
+      .catch((error) => store.dispatch(
+        { type: 'DASHBOARDTAB_QUERY_ERR', error },
+      ));
   };
 }
 
@@ -87,7 +89,7 @@ const reducers = {
   DASHBOARDTAB_QUERY_ERR: (state, item) => ({
     ...state,
     hasError: true,
-    error: item.error,
+    error: item,
     isLoading: false,
     isFetched: false,
   }),

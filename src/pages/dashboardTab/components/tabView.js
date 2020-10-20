@@ -4,19 +4,19 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import CustomFooter from './tabFooter';
-import { addToCart } from '../../fileCentricCart/store/cart';
+import { addToCart, getCart } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
-import { dateTimeStamp } from '../../../utils/helpers';
+import { dateTimeStamp, manipulateLinks } from '../../../utils/helpers';
+import formatBytes from '../../../utils/formatBytes';
 
 const TabView = ({
   classes,
   data,
-  Columns,
+  customColumn,
   customOnRowsSelect,
   openSnack,
   disableRowSelection,
@@ -28,10 +28,12 @@ const TabView = ({
   toggleMessageStatus,
   BottomMessageStatus,
   tabIndex,
-  downloadFileName
+  downloadFileName,
+  externalLinkIcon,
 }) => {
   // Get the existing files ids from  cart state
-  const fileIDs = useSelector((state) => state.cart.subjectIds);
+  const cart = getCart();
+  const fileIDs = cart.fileIds ? cart.fileIds : [];
   let selectedIDs = [];
   const saveButton = useRef(null);
   const saveButton2 = useRef(null);
@@ -80,15 +82,17 @@ const TabView = ({
     const newFileIDS = fileIDs !== null ? selectedIDs.filter(
       (e) => !fileIDs.find((a) => e === a),
     ).length : selectedIDs.length;
-    addToCart({ subjectIds: selectedIDs });
-    openSnack(newFileIDS);
+    addToCart({ fileIds: selectedIDs });
+    if (newFileIDS > 0) {
+      openSnack(newFileIDS);
+    }
     selectedIDs = [];
   }
 
   function onRowsSelect(curr, allRowsSelected) {
-    selectedIDs = [...new Set(selectedIDs.concat(
+    selectedIDs = [...new Set(
       customOnRowsSelect(data, allRowsSelected),
-    ))];
+    )];
 
     if (allRowsSelected.length === 0) {
       updateActiveSaveButtonStyle(true, saveButton);
@@ -99,8 +103,7 @@ const TabView = ({
     }
   }
 
-  const columns = Columns(classes);
-  const options = (downloadFileName) => ({
+  const options = () => ({
     selectableRows: true,
     search: false,
     filter: false,
@@ -116,7 +119,7 @@ const TabView = ({
     viewColumns: false,
     pagination: true,
     isRowSelectable: (dataIndex) => disableRowSelection(data[dataIndex], fileIDs),
-    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    onRowSelectionChange: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
     // eslint-disable-next-line no-unused-vars
     customToolbarSelect: () => '',
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
@@ -132,6 +135,44 @@ const TabView = ({
     ),
 
   });
+
+  const displayFalseTableColumns = customColumn
+    .filter((col) => col.display === false).length;
+
+  const displayTableColumns = customColumn.slice(0, displayFalseTableColumns + 10);
+
+  const updatedTableWithLinks = manipulateLinks(displayTableColumns);
+
+  const columns = updatedTableWithLinks.map((column) => ({
+    name: column.dataField,
+    label: column.header,
+    options: {
+      display: column.display ? column.display : false,
+      filter: false,
+      customBodyRender: (value, tableMeta) => (
+        <div>
+          {
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
+                  {' '}
+                  {column.formatBytes ? formatBytes(value) : value}
+                  {' '}
+                </a>
+                <img
+                  src={externalLinkIcon ? externalLinkIcon.src : ''}
+                  alt={externalLinkIcon.alt ? externalLinkIcon.alt : ''}
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : `${column.formatBytes ? formatBytes(value) : value}`
+}
+        </div>
+      ),
+    },
+  }));
 
   return (
     <div>
@@ -286,11 +327,11 @@ const styles = () => ({
   messageBottom: {
     zIndex: '500',
     position: 'absolute',
-    marginTop: '-135px',
-    marginLeft: 'calc(100% - 213px)',
+    marginTop: '-148px',
+    marginLeft: 'calc(100% - 212px)',
   },
   helpIcon: {
-    zIndex: '500',
+    zIndex: '600',
   },
   helpIconButton: {
     verticalAlign: 'top',
