@@ -42,6 +42,12 @@ const subsections = [
   },
 ];
 
+// Ideal size for externalLinkIcon is 16x16 px
+export const externalLinkIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+  alt: 'External link icon',
+};
+
 // --------------- File table configuration --------------
 
 const table = {

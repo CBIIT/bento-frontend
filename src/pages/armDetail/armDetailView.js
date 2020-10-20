@@ -19,6 +19,7 @@ import {
   header,
   subsections,
   table,
+  externalLinkIcon,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
 // import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
@@ -27,7 +28,7 @@ import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
-import { dateTimeStamp } from '../../utils/helpers';
+import { manipulateLinks, dateTimeStamp } from '../../utils/helpers';
 
 const FileCount = ({ num_files: numFiles, classes }) => (
   <div className={classes.widgetContainer}>
@@ -115,21 +116,43 @@ const ArmDetail = ({ data, classes }) => {
     }]));
   };
 
-  const columns = table.columns.map((column, index) => (
-    {
+  const processedColumns = (tableConfig) => {
+    const updatedTableWithLinks = manipulateLinks(tableConfig.columns);
+    return updatedTableWithLinks.slice(0, 10).map((column, index) => ({
       name: column.dataField,
       label: column.header,
       options: {
-        customBodyRender: (value) => (
-          <div className={classes[`tableCell${index + 1}`]}>
-            {' '}
-            {column.formatBytes ? formatBytes(value) : value}
-            {' '}
+        display: column.display ? column.display : true,
+        filter: false,
+        customBodyRender: (value, tableMeta) => (
+          <div>
+            {
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+                <img
+                  src={externalLinkIcon.src}
+                  alt={externalLinkIcon.alt}
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : (
+                <div className={classes[`tableCell${index + 1}`]}>
+                  {' '}
+                  {column.dataFromRoot ? data[column.dataField]
+                    : (column.formatBytes ? formatBytes(value) : value)}
+                  {' '}
+                </div>
+              )
+              }
           </div>
         ),
       },
-    }
-  ));
+    }));
+  };
+
   const stat = {
     numberOfPrograms: 1,
     numberOfStudies: 1,
@@ -269,7 +292,7 @@ const ArmDetail = ({ data, classes }) => {
                         <Grid item xs={12}>
                           <GridWithFooter
                             data={data[table.filesField]}
-                            columns={columns.slice(0, 10)}
+                            columns={processedColumns(table)}
                             options={options(classes)}
                             customOnRowsSelect={table.customOnRowsSelect}
                             openSnack={openSnack}
@@ -477,6 +500,19 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#3695A9',
     paddingBottom: '19px',
+  },
+  link: {
+    color: '#DC762F',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  externalLinkIcon: {
+    width: '14.5px',
+    verticalAlign: 'sub',
+    marginLeft: '4px',
+    paddingBottom: '2px',
   },
 });
 
