@@ -276,7 +276,8 @@ const ArmDetail = ({ data, classes }) => {
                             openSnack={openSnack}
                             closeSnack={closeSnack}
                             disableRowSelection={FileDisableRowSelection}
-                            bottonText="Add Selected Files"
+                            bottonText={table.bottonText}
+                            messageData={table.helpMessage}
                           />
                         </Grid>
                         <Grid item xs={8}>

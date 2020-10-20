@@ -2,8 +2,9 @@ import React from 'react';
 import GraphiQL from 'graphiql';
 import { withStyles } from '@material-ui/core';
 import fetch from 'isomorphic-fetch';
+import env from '../../utils/env';
 
-const BACKEND = process.env.REACT_APP_BACKEND_API;
+const BACKEND = env.REACT_APP_BACKEND_API;
 
 function graphQLFetcher(graphQLParams) {
   return fetch(BACKEND, {

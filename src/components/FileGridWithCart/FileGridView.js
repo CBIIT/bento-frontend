@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from 'react';
 import {
   Grid,
   withStyles,
-  Link,
 } from '@material-ui/core';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
@@ -11,11 +10,18 @@ import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import CustomFooter from './customFooter';
 import { addToCart } from '../../pages/fileCentricCart/store/cart';
-import externalIcon from '../../assets/icons/ExternalLinkIcon.svg';
 import Message from '../../pages/fileCentricCart/components/message';
 
 const FileGridView = ({
-  classes, data, columns, customOnRowsSelect, openSnack, disableRowSelection, bottonText, options,
+  classes,
+  data,
+  columns,
+  customOnRowsSelect,
+  openSnack,
+  disableRowSelection,
+  bottonText,
+  options,
+  messageData,
 }) => {
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.fileIds);
@@ -80,25 +86,6 @@ const FileGridView = ({
     css.display = 'inherit';
     return css;
   }
-
-  const messageData = (
-    <span>
-      To access and analyze files: select and remove unwanted files,
-      click the “Download Manifest” button, and upload the resulting
-      Manifest file to your
-      {' '}
-      <Link target="_blank" className={classes.link} href="http://www.cancergenomicscloud.org/">
-        Seven Bridges Genomics
-      </Link>
-      <img
-        src={externalIcon}
-        alt="outbounnd web site icon"
-        className={classes.linkIcon}
-      />
-      {' '}
-      account.
-    </span>
-  );
 
   function onRowsSelect(curr, allRowsSelected) {
     selectedFileIDs = [...new Set(selectedFileIDs.concat(

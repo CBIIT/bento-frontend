@@ -3,8 +3,9 @@ import yaml from 'js-yaml';
 import axios from 'axios';
 import YAMLData from '../../content/prod/aboutPagesContent.yaml';
 import AboutBody from './aboutBodyView';
+import env from '../../utils/env';
 
-const ABOUT_CONTENT_URL = process.env.REACT_APP_ABOUT_CONTENT_URL;
+const ABOUT_CONTENT_URL = env.REACT_APP_ABOUT_CONTENT_URL;
 
 const About = ({ match }) => {
   const [data, setData] = useState([]);

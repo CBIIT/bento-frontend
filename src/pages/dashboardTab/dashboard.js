@@ -217,7 +217,7 @@ const styles = (theme) => ({
     width: '250px',
     backgroundColor: '#FFFFFF',
     boxShadow: 'inset 0 0 87px 7px #E2E7EC',
-    // background: 'linear-gradient(to left, #E2E7EC, #FBFBFB ,)',
+    zIndex: '99',
   },
   statsBar: {
     position: 'fixed',

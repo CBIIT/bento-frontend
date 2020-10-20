@@ -3,8 +3,9 @@ import yaml from 'js-yaml';
 import axios from 'axios';
 import YAMLData from '../../content/stg/aboutPagesContent.yaml';
 import DataDictBody from './dataDictonaryView';
+import env from '../../utils/env';
 
-const ABOUT_CONTENT_URL = process.env.REACT_APP_ABOUT_CONTENT_URL;
+const ABOUT_CONTENT_URL = env.REACT_APP_ABOUT_CONTENT_URL;
 
 const About = () => {
   const [data, setData] = useState([]);

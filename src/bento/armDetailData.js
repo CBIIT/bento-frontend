@@ -54,6 +54,10 @@ const table = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  // Text to appear on Add to cart button
+  bottonText: 'Add Selected Files',
+  // Help Icon Message
+  helpMessage: 'Here help message',
   // A maximum of 10 columns are allowed
   columns: [
     {
