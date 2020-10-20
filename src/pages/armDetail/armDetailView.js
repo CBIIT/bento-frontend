@@ -9,17 +9,17 @@ import Snackbar from '@material-ui/core/Snackbar';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
-import FileGridView from '../../components/FileGridWithCart/FileGridView';
+import GridWithFooter from '../../components/GridWithFooter/GridView';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
-import { FileOnRowsSelect, FileDisableRowSelection } from '../../utils/fileTable';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import {
   header,
   subsections,
   table,
+  externalLinkIcon,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
 // import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
@@ -28,7 +28,7 @@ import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
-import { dateTimeStamp } from '../../utils/helpers';
+import { manipulateLinks, dateTimeStamp } from '../../utils/helpers';
 
 const FileCount = ({ num_files: numFiles, classes }) => (
   <div className={classes.widgetContainer}>
@@ -58,14 +58,14 @@ const options = (classes) => ({
   filter: false,
   searchable: false,
   print: false,
-  download: true,
+  download: table.download,
   downloadOptions: {
-    filename: 'Bento_arm_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filename: table.downloadFileName ? table.downloadFileName.concat(dateTimeStamp()).concat('.csv') : 'tableDownload'.concat(dateTimeStamp()).concat('.csv'),
     filterOptions: {
       useDisplayedColumnsOnly: true,
     },
   },
-  viewColumns: true,
+  viewColumns: table.showHideColumns,
   pagination: true,
   sortOrder: {
     name: table.defaultSortField,
@@ -116,21 +116,43 @@ const ArmDetail = ({ data, classes }) => {
     }]));
   };
 
-  const columns = table.columns.map((column, index) => (
-    {
+  const processedColumns = (tableConfig) => {
+    const updatedTableWithLinks = manipulateLinks(tableConfig.columns);
+    return updatedTableWithLinks.slice(0, 10).map((column, index) => ({
       name: column.dataField,
       label: column.header,
       options: {
-        customBodyRender: (value) => (
-          <div className={classes[`tableCell${index + 1}`]}>
-            {' '}
-            {column.formatBytes ? formatBytes(value) : value}
-            {' '}
+        display: column.display ? column.display : true,
+        filter: false,
+        customBodyRender: (value, tableMeta) => (
+          <div>
+            {
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+                <img
+                  src={externalLinkIcon.src}
+                  alt={externalLinkIcon.alt}
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : (
+                <div className={classes[`tableCell${index + 1}`]}>
+                  {' '}
+                  {column.dataFromRoot ? data[column.dataField]
+                    : (column.formatBytes ? formatBytes(value) : value)}
+                  {' '}
+                </div>
+              )
+              }
           </div>
         ),
       },
-    }
-  ));
+    }));
+  };
+
   const stat = {
     numberOfPrograms: 1,
     numberOfStudies: 1,
@@ -268,16 +290,16 @@ const ArmDetail = ({ data, classes }) => {
                     <Grid item xs={12}>
                       <Grid container spacing={4}>
                         <Grid item xs={12}>
-                          <FileGridView
+                          <GridWithFooter
                             data={data[table.filesField]}
-                            columns={columns.slice(0, 10)}
+                            columns={processedColumns(table)}
                             options={options(classes)}
-                            customOnRowsSelect={FileOnRowsSelect}
+                            customOnRowsSelect={table.customOnRowsSelect}
                             openSnack={openSnack}
                             closeSnack={closeSnack}
-                            disableRowSelection={FileDisableRowSelection}
-                            bottonText={table.bottonText}
-                            messageData={table.helpMessage}
+                            disableRowSelection={table.disableRowSelection}
+                            buttonText={table.buttonText}
+                            messageData={table.tooltipMessage}
                           />
                         </Grid>
                         <Grid item xs={8}>
@@ -478,6 +500,19 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#3695A9',
     paddingBottom: '19px',
+  },
+  link: {
+    color: '#DC762F',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  externalLinkIcon: {
+    width: '14.5px',
+    verticalAlign: 'sub',
+    marginLeft: '4px',
+    paddingBottom: '2px',
   },
 });
 

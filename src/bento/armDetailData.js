@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { FileOnRowsSelect, FileDisableRowSelection } from '../utils/fileTable';
 
 // -------------- Case ID area configurations --------------
 const header = {
@@ -41,6 +42,12 @@ const subsections = [
   },
 ];
 
+// Ideal size for externalLinkIcon is 16x16 px
+export const externalLinkIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+  alt: 'External link icon',
+};
+
 // --------------- File table configuration --------------
 
 const table = {
@@ -55,9 +62,16 @@ const table = {
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
   // Text to appear on Add to cart button
-  bottonText: 'Add Selected Files',
+  buttonText: 'Add Selected Files',
   // Help Icon Message
+  tooltipMessage: 'Click button to add selected files.',
   helpMessage: 'Here help message',
+  // showHideColumns 'true' or 'false'
+  showHideColumns: true,
+  // download csv 'true' or 'false'
+  download: true,
+  // downloaded File Name
+  downloadFileName: 'Bento_arm_files_download',
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -87,6 +101,11 @@ const table = {
       formatBytes: true,
     },
   ],
+  // Util Functions
+  // Custom function on selct checkbox is selected.
+  customOnRowsSelect: FileOnRowsSelect,
+  // Custom function disable selct checkbox in table if related files are in cart
+  disableRowSelection: FileDisableRowSelection,
 };
 
 // --------------- GraphQL query configuration --------------

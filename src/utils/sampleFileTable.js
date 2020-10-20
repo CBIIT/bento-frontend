@@ -13,7 +13,7 @@ export function SampleDisableRowSelection(data, cartData) {
     if (data.files && data.files.length > 0) {
       // check each files of cases
       const isAllfileBeSelected = _.cloneDeep(data.files).map((f) => {
-        if (cartData.includes(f.uuid)) {
+        if (cartData.includes(f.file_id)) {
           return true;
         }
         return false;
@@ -32,7 +32,7 @@ export function SampleDisableRowSelection(data, cartData) {
 /* on row select event
     @param  data  data for initial the table  sample -> [files]
     @param  allRowsSelected : selected rows
-    @output [f.uuid]
+    @output [f.file_id]
 */
 export function SampleOnRowsSelect(data, allRowsSelected) {
   // use reduce to combine all the files' id into single array
@@ -40,7 +40,7 @@ export function SampleOnRowsSelect(data, allRowsSelected) {
     const { files } = data[currentValue.dataIndex];
     // check if file
     if (files && files.length > 0) {
-      return accumulator.concat(files.map((f) => f.uuid));
+      return accumulator.concat(files.map((f) => f.file_id));
     }
     return accumulator;
   }, []);

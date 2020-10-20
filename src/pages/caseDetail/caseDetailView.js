@@ -9,24 +9,25 @@ import TableRow from '@material-ui/core/TableRow';
 import Snackbar from '@material-ui/core/Snackbar';
 import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import FileGridView from '../../components/FileGridWithCart/FileGridView';
+import GridWithFooter from '../../components/GridWithFooter/GridView';
 import icon from '../../assets/icons/Cases.Icon.svg';
-import formatBytes from '../../utils/formatBytes';
 import Subsection from '../../components/PropertySubsection/caseDetailSubsection';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
-import { FileOnRowsSelect, FileDisableRowSelection } from '../../utils/fileTable';
 import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import {
   caseHeader,
   leftPanel,
   rightPanel,
-  filesTable,
-  samplesTable,
+  table1,
+  table2,
+  externalLinkIcon,
 } from '../../bento/caseDetailData';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
-import { dateTimeStamp } from '../../utils/helpers';
+import { manipulateLinks, dateTimeStamp } from '../../utils/helpers';
+import formatBytes from '../../utils/formatBytes';
 
 const options = (classes, tableConfig) => ({
   selectableRows: true,
@@ -35,15 +36,15 @@ const options = (classes, tableConfig) => ({
   filter: false,
   searchable: false,
   print: false,
-  viewColumns: true,
+  viewColumns: tableConfig.showHideColumns,
   pagination: true,
   sortOrder: {
     name: tableConfig.defaultSortField,
     direction: tableConfig.defaultSortDirection,
   },
-  download: true,
+  download: tableConfig.download,
   downloadOptions: {
-    filename: 'Bento_case_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filename: tableConfig.downloadFileName ? tableConfig.downloadFileName.concat(dateTimeStamp()).concat('.csv') : 'tableDownload'.concat(dateTimeStamp()).concat('.csv'),
     filterOptions: {
       useDisplayedColumnsOnly: true,
     },
@@ -73,7 +74,7 @@ const options = (classes, tableConfig) => ({
 });
 
 // Main case detail component
-const CaseDetail = ({ data, classes }) => {
+const CaseDetail = ({ data, filesOfSamples, classes }) => {
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
     value: 0,
@@ -97,7 +98,7 @@ const CaseDetail = ({ data, classes }) => {
     numberOfSubjects: 1,
     numberOfSamples: data.num_samples,
     numberOfLabProcedures: data.num_lab_procedures,
-    numberOfFiles: data[filesTable.filesField].length,
+    numberOfFiles: data.files.length,
   };
 
   const breadCrumbJson = [{
@@ -106,22 +107,53 @@ const CaseDetail = ({ data, classes }) => {
     isALink: true,
   }];
 
-  const columns = (tableConfig) => tableConfig.columns.slice(0, 10).map((column, index) => (
-    {
+  const processedColumns = (tableConfig) => {
+    const updatedTableWithLinks = manipulateLinks(tableConfig.columns);
+    return updatedTableWithLinks.slice(0, 10).map((column, index) => ({
       name: column.dataField,
       label: column.header,
       options: {
-        customBodyRender: (value) => (
-          <div className={classes[`tableCell${index + 1}`]}>
-            {' '}
-            {column.dataFromRoot ? data[column.dataField]
-              : (column.formatBytes ? formatBytes(value) : value)}
-            {' '}
+        display: column.display ? column.display : true,
+        filter: false,
+        customBodyRender: (value, tableMeta) => (
+          <div>
+            {
+          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
+            : column.externalLink ? (
+              <span className={classes.linkSpan}>
+                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
+                <img
+                  src={externalLinkIcon.src}
+                  alt={externalLinkIcon.alt}
+                  className={classes.externalLinkIcon}
+                />
+              </span>
+            )
+              : (
+                <div className={classes[`tableCell${index + 1}`]}>
+                  {' '}
+                  {column.dataFromRoot ? data[column.dataField]
+                    : (column.formatBytes ? formatBytes(value) : value)}
+                  {' '}
+                </div>
+              )
+              }
           </div>
         ),
       },
-    }
-  ));
+    }));
+  };
+
+  const filesOfSamplesObj = filesOfSamples.reduce(
+    (obj, item) => ({ ...obj, [item.sample_id]: item.files }), {},
+  );
+
+  const samplesData = data.samples.map((s) => {
+    const files = filesOfSamplesObj[s.sample_id];
+    const sample = s;
+    sample.files = files;
+    return sample;
+  });
 
   return (
     <>
@@ -220,70 +252,66 @@ const CaseDetail = ({ data, classes }) => {
           </Grid>
         </div>
       </div>
-      {
-        samplesTable.display
-          ? (
-            <div id="table_case_detail_samples" className={classes.tableContainer}>
-              <div className={classes.tableDiv}>
-                <div className={classes.tableTitle}>
-                  <span className={classes.tableHeader}>{samplesTable.title}</span>
-                </div>
-                <Grid item xs={12}>
-                  <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                      <FileGridView
-                        data={data[samplesTable.filesField]}
-                        columns={columns(samplesTable)}
-                        options={options(classes, samplesTable)}
-                        customOnRowsSelect={FileOnRowsSelect}
-                        openSnack={openSnack}
-                        closeSnack={closeSnack}
-                        disableRowSelection={FileDisableRowSelection}
-                        bottonText={samplesTable.bottonText}
-                        messageData={samplesTable.helpMessage}
-                      />
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography />
-                    </Grid>
+      {table1.display
+        ? (
+          <div id="table_case_detail_samples" className={classes.tableContainer}>
+            <div className={classes.tableDiv}>
+              <div className={classes.tableTitle}>
+                <span className={classes.tableHeader}>{table1.tableTitle}</span>
+              </div>
+              <Grid item xs={12}>
+                <Grid container spacing={4}>
+                  <Grid item xs={12}>
+                    <GridWithFooter
+                      data={samplesData}
+                      columns={processedColumns(table1)}
+                      options={options(classes, table1)}
+                      customOnRowsSelect={table1.customOnRowsSelect}
+                      openSnack={openSnack}
+                      closeSnack={closeSnack}
+                      disableRowSelection={table1.disableRowSelection}
+                      buttonText={table1.buttonText}
+                      messageData={table1.tooltipMessage}
+                    />
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Typography />
                   </Grid>
                 </Grid>
-              </div>
+              </Grid>
             </div>
-          ) : ''
-      }
-      {
-        filesTable.display
-          ? (
-            <div id="table_case_detail_files" className={classes.tableContainer}>
-              <div className={classes.tableDiv}>
-                <div className={classes.tableTitle}>
-                  <span className={classes.tableHeader}>{filesTable.title}</span>
-                </div>
-                <Grid item xs={12}>
-                  <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                      <FileGridView
-                        data={data[filesTable.filesField]}
-                        columns={columns(filesTable)}
-                        options={options(classes, filesTable)}
-                        customOnRowsSelect={FileOnRowsSelect}
-                        openSnack={openSnack}
-                        closeSnack={closeSnack}
-                        disableRowSelection={FileDisableRowSelection}
-                        bottonText={filesTable.bottonText}
-                        messageData={filesTable.helpMessage}
-                      />
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography />
-                    </Grid>
+          </div>
+        ) : ''}
+      {table2.display
+        ? (
+          <div id="table_case_detail_samples" className={classes.tableContainer}>
+            <div className={classes.tableDiv}>
+              <div className={classes.tableTitle}>
+                <span className={classes.tableHeader}>{table2.tableTitle}</span>
+              </div>
+              <Grid item xs={12}>
+                <Grid container spacing={4}>
+                  <Grid item xs={12}>
+                    <GridWithFooter
+                      data={data[table2.subjectDetailField]}
+                      columns={processedColumns(table2)}
+                      options={options(classes, table2)}
+                      customOnRowsSelect={table2.customOnRowsSelect}
+                      openSnack={openSnack}
+                      closeSnack={closeSnack}
+                      disableRowSelection={table2.disableRowSelection}
+                      buttonText={table2.buttonText}
+                      messageData={table2.tooltipMessage}
+                    />
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Typography />
                   </Grid>
                 </Grid>
-              </div>
+              </Grid>
             </div>
-          ) : ''
-      }
+          </div>
+        ) : ''}
     </>
   );
 };
@@ -342,6 +370,13 @@ const styles = (theme) => ({
     marginTop: '-6px',
     filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
+  link: {
+    color: '#DC762F',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
@@ -375,7 +410,7 @@ const styles = (theme) => ({
   tableDiv: {
     maxWidth: '1340px',
     margin: 'auto',
-    paddingTop: '50px',
+    paddingTop: '30px',
     paddingLeft: '30px',
   },
   tableTitle: {
@@ -391,6 +426,12 @@ const styles = (theme) => ({
   },
   snackBarMessageIcon: {
     verticalAlign: 'middle',
+  },
+  externalLinkIcon: {
+    width: '14.5px',
+    verticalAlign: 'sub',
+    marginLeft: '4px',
+    paddingBottom: '2px',
   },
 });
 
