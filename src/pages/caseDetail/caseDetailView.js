@@ -48,6 +48,13 @@ const options = (classes, tableConfig) => ({
       useDisplayedColumnsOnly: true,
     },
   },
+  download: true,
+  downloadOptions: {
+    filename: 'Bento_case_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filterOptions: {
+      useDisplayedColumnsOnly: true,
+    },
+  },
   customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
     <TableFooter>
       <div>
