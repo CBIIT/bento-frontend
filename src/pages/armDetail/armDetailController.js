@@ -12,7 +12,7 @@ const ArmDetailContainer = ({ match }) => (
         : (error || !data || data[dataRoot][armIDField] !== match.params.id
           ? (
             <Typography variant="h5" color="error" size="sm">
-              {error && `An error has occurred in loading stats component: ${error}`}
+              {error ? `An error has occurred in loading stats component: ${error}` : 'Recieved wrong data'}
             </Typography>
           )
           : <ArmDetailView data={data[dataRoot]} />
