@@ -17,7 +17,9 @@ const tabLabel = ({
 
 const styles = () => ({
   defaultStyle: {
-    fontFamily: 'Open Sans',
+    fontFamily: 'Lato',
+    textTransform: 'capitalize',
+    fontSize: '21px',
   },
 });
 
