@@ -5,14 +5,12 @@ export const tooltipContent = {
   2: 'Click button to add selected files.',
 };
 
-
 // --------------- Dahboard Table external link configuration --------------
 // Ideal size for externalLinkIcon is 16x16 px
 export const externalLinkIcon = {
   src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
   alt: 'External link icon',
 };
-
 
 // --------------- Tabs Table configuration --------------
 export const tabContainers = [
@@ -361,11 +359,3 @@ export const tabIndex = {
     selectedColor: '#C92EC7',
   },
 };
-
-// --------------- Dahboard Table external link configuration --------------
-// Ideal size for externalLinkIcon is 16x16 px
-export const externalLinkIcon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
-  alt: 'External link icon',
-};
-
