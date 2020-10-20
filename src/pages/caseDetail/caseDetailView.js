@@ -35,15 +35,15 @@ const options = (classes, tableConfig) => ({
   filter: false,
   searchable: false,
   print: false,
-  viewColumns: true,
+  viewColumns: tableConfig.showHideColumns,
   pagination: true,
   sortOrder: {
     name: tableConfig.defaultSortField,
     direction: tableConfig.defaultSortDirection,
   },
-  download: true,
+  download: tableConfig.download,
   downloadOptions: {
-    filename: 'Bento_case_files_download'.concat(dateTimeStamp()).concat('.csv'),
+    filename: tableConfig.downloadFileName ? tableConfig.downloadFileName.concat(dateTimeStamp()).concat('.csv') : 'tableDownload'.concat(dateTimeStamp()).concat('.csv'),
     filterOptions: {
       useDisplayedColumnsOnly: true,
     },

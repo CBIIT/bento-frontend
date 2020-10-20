@@ -58,6 +58,12 @@ const table = {
   bottonText: 'Add Selected Files',
   // Help Icon Message
   helpMessage: 'Here help message',
+  // showHideColumns 'true' or 'false'
+  showHideColumns: true,
+  // download csv 'true' or 'false'
+  download: true,
+  // downloaded File Name
+  downloadFileName: 'Bento_arm_files_download',
   // A maximum of 10 columns are allowed
   columns: [
     {
