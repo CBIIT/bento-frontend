@@ -6,7 +6,7 @@ import {
 import cn from '../../utils/classNameConcat';
 import FacetFilter from './SideBarComponents/FacetFilters';
 import { facetSearchData } from '../../bento/dashboardData';
-import { toggleCheckBox } from '../../pages/dashboard/dashboardState';
+import { toggleCheckBox } from '../../pages/dashboardTab/store/dashboardReducer';
 import { unselectFilters } from '../../utils/dashboardUtilFunctions';
 
 const drawerWidth = 240;

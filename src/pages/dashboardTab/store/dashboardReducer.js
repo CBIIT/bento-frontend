@@ -47,7 +47,7 @@ const initialState = {
 const getState = () => store.getState()[storeKey];
 
 function shouldFetchDataForDashboardTabDataTable(state) {
-  return !(state[storeKey].isFetched);
+  return !(state.isFetched);
 }
 
 function getStatInit(input) {
