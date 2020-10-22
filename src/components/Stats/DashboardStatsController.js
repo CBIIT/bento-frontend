@@ -6,8 +6,8 @@ import StatsView from './StatsView';
 const Stats = () => {
   const data = useSelector((state) => (
     state.dashboard
-    && state.dashboard.stats
-      ? state.dashboard.stats : []));
+    && state.dashboardTab.stats
+      ? state.dashboardTab.stats : []));
 
   return (!data || data.length === 0 ? (<CircularProgress />) : <StatsView data={data} />);
 };
