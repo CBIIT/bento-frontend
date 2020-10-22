@@ -14,9 +14,9 @@ const drawerWidth = 240;
 const SideBarContent = ({ classes }) => {
   const dispatch = useDispatch();
   const activeFilters = useSelector((state) => (
-    state.dashboard.datatable
-      && state.dashboard.datatable.filters
-      ? state.dashboard.datatable.filters : []));
+    state.dashboardTab.datatable
+      && state.dashboardTab.datatable.filters
+      ? state.dashboardTab.datatable.filters : []));
   const countFilters = facetSearchData
     ? facetSearchData.reduce((n, facet) => n + (facet.show === true), 0) : 0;
   return (

@@ -7,6 +7,12 @@ import { DASHBOARD_QUERY } from '../utils/graphqlQueries';
 import {
   customCheckBox,
   transformInitialDataForSunburst,
+  getFilters,
+  filterData,
+  getCheckBoxData,
+  getStatDataFromDashboardData,
+  getSunburstDataFromDashboardData,
+  getDonutDataFromDashboardData,
 } from '../../../utils/dashboardUtilFunctions';
 
 const storeKey = 'dashboardTab';
@@ -75,6 +81,20 @@ function fetchDashboardTab() {
   };
 }
 
+export function toggleCheckBox(payload) {
+  return store.dispatch({ type: 'TOGGGLE_CHECKBOX', payload });
+}
+
+function getWidgetsData(input) {
+  const donut = widgetsData.reduce((acc, widget) => {
+    const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input, widget.datatable_level1_field, widget.datatable_level2_field) : getDonutDataFromDashboardData(input, widget.datatable_field);
+    const label = widget.dataName;
+    return { ...acc, [label]: Data };
+  }, {});
+
+  return donut;
+}
+
 export function fetchDataForDashboardTabDataTable() {
   if (shouldFetchDataForDashboardTabDataTable(getState())) {
     return store.dispatch(fetchDashboardTab());
@@ -99,6 +119,33 @@ const reducers = {
     isFetched: true,
   }),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
+  TOGGGLE_CHECKBOX: (state, item) => {
+    const dataTableFilters = getFilters(state.datatable.filters, item);
+    const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
+    const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
+      ? getCheckBoxData(
+        state.subjectOverView.data,
+        state.checkboxForAll.data,
+        state.checkbox.data.filter((d) => item[0].groupName === d.groupName)[0],
+        dataTableFilters,
+      )
+      : state.checkboxForAll.data;
+    return {
+      ...state,
+      isCalulatingDashboard: false,
+      stats: getStatDataFromDashboardData(tableData, statsCount),
+      checkbox: {
+        data: updatedCheckboxData,
+      },
+      datatable: {
+        ...state.datatable,
+        dataCase: tableData,
+        filters: dataTableFilters,
+      },
+      filters: dataTableFilters,
+      widgets: getWidgetsData(tableData),
+    };
+  },
   RECEIVE_DASHBOARDTAB: (state, item) => {
     const checkboxData = customCheckBox(item.data);
     return item.data
