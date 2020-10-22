@@ -1,4 +1,4 @@
-export function createFileName() {
+export function createFileName(fileName) {
   const date = new Date();
   const yyyy = date.getFullYear();
   let dd = date.getDate();
@@ -20,10 +20,10 @@ export function createFileName() {
 
   if (seconds < 10) { seconds = `0${seconds}`; }
 
-  return `${'Bento File Manifest'} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
+  return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
 }
 
-export function convertToCSV(jsonse, comments, keysToInclude = ['subject_id', 'file_name', 'file_id', 'md5sum'], header = ['Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments']) {
+export function convertToCSV(jsonse, comments, keysToInclude, header) {
   const objArray = jsonse;
   const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
   let str = '';
@@ -45,15 +45,15 @@ export function convertToCSV(jsonse, comments, keysToInclude = ['subject_id', 'f
   return str;
 }
 
-export function downloadJson(tableData, comments) {
+export function downloadJson(tableData, comments, fileName, manifestData) {
   const jsonse = JSON.stringify(tableData);
-  const csv = convertToCSV(jsonse, comments);
+  const csv = convertToCSV(jsonse, comments, manifestData.keysToInclude, manifestData.header);
   const exportData = new Blob([csv], { type: 'text/csv' });
   const JsonURL = window.URL.createObjectURL(exportData);
   let tempLink = '';
   tempLink = document.createElement('a');
   tempLink.setAttribute('href', JsonURL);
-  tempLink.setAttribute('download', createFileName());
+  tempLink.setAttribute('download', createFileName(fileName));
   document.body.appendChild(tempLink);
   tempLink.click();
   document.body.removeChild(tempLink);

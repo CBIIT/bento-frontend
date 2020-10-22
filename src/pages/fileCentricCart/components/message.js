@@ -32,16 +32,18 @@ const styles = () => ({
     borderBottom: '20px solid transparent',
   },
   messageTextArea: {
-    width: '250px',
-    minHeight: '100px',
+    width: '245px',
+    minHeight: '50px',
     border: '2px solid #03A383',
     borderRadius: '10px',
     background: '#fff',
-    padding: '5px 5px 5px 10px',
+    padding: '10px 10px 10px 13px',
     textAlign: 'left',
+    color: '#0D4659',
+    fontSize: '12px',
   },
   arrayIcon: {
-    marginLeft: '205px',
+    marginLeft: '22px',
   },
 });
 export default withStyles(styles, { withTheme: true })(message);

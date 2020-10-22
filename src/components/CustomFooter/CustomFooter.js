@@ -25,6 +25,7 @@ const CustomFooter = ({
         onChangeRowsPerPage={onChangeRowsPerPage}
       />
     </TableRow>
+    <TableRow />
   </TableFooter>
 );
 
