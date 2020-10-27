@@ -1,9 +1,10 @@
+/* eslint-disable */
 import _ from 'lodash';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData } from '../../../bento/dashboardData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
-import { DASHBOARD_QUERY } from '../utils/graphqlQueries';
+import { DASHBOARD_QUERY, FILTER_QUERY } from '../utils/graphqlQueries';
 import {
   customCheckBox,
   transformInitialDataForSunburst,
@@ -57,6 +58,13 @@ function getStatInit(input) {
   return initStats;
 }
 
+function getFilteredStat(input) {
+  const initStats = statsCount.reduce((acc, stat) => (
+    { ...acc, [stat.statAPI]: input[stat.datatable_field] }
+  ), {});
+  return initStats;
+}
+
 function getWidgetsInitData(data) {
   const donut = widgetsData.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : data[widget.dataName];
@@ -81,8 +89,36 @@ function fetchDashboardTab() {
   };
 }
 
+// export function toggleCheckBox(payload) {
+//   return store.dispatch({ type: 'TOGGGLE_CHECKBOX', payload });
+// }
+
 export function toggleCheckBox(payload) {
-  return store.dispatch({ type: 'TOGGGLE_CHECKBOX', payload });
+  return () => {
+    return client
+      .query({
+        query: FILTER_QUERY,
+        variables: {
+          "programs": [],
+          "studies": [],
+          "diagnoses": ["Adenocarcinoma"],
+          "rc_scores": [],
+          "tumor_sizes": [],
+          "chemo_regimen": [],
+          "tumor_grades": [],
+          "er_status": [],
+          "pr_status": [],
+          "endo_therapies": [],
+          "meno_status": [],
+          "first": 10,
+          "subject_ids": []
+        },
+      })
+      .then((result) => store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: _.cloneDeep(result) }))
+      .catch((error) => store.dispatch(
+        { type: 'DASHBOARDTAB_QUERY_ERR', error },
+      ));
+  };
 }
 
 function getWidgetsData(input) {
@@ -117,6 +153,10 @@ const reducers = {
     ...state,
     isLoading: false,
     isFetched: true,
+  }),
+  TOGGGLE_CHECKBOX2: (state, item) => ({
+    ...state,
+    stats: getFilteredStat(item.data.searchSubjects),
   }),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
