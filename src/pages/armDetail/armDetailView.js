@@ -4,6 +4,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
+import { CustomActiveDonut } from 'bento-components';
 import { Link } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import TableFooter from '@material-ui/core/TableFooter';
@@ -26,7 +27,6 @@ import formatBytes from '../../utils/formatBytes';
 
 import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
-import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 import { manipulateLinks, dateTimeStamp } from '../../utils/helpers';
 
