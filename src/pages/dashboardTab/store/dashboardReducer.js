@@ -4,7 +4,7 @@ import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData } from '../../../bento/dashboardData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
-import { DASHBOARD_QUERY, FILTER_QUERY } from '../utils/graphqlQueries';
+import { DASHBOARD_QUERY, FILTER_QUERY, FILTER_GROUP_QUERY } from '../utils/graphqlQueries';
 import {
   customCheckBox,
   transformInitialDataForSunburst,
@@ -117,7 +117,7 @@ function createFilterVariables(data) {
     return { ...acc , [key]: [] };
   }, {});
 
-  return filter;
+  return {...filter, "first": 10};
 }
 
 // export function toggleCheckBox(payload) {
@@ -127,11 +127,23 @@ function createFilterVariables(data) {
 export function toggleCheckBox(payload) {
   return () => {
     return client
-      .query({
+      .query({  //request to get the filtered subjects
         query: FILTER_QUERY,
         variables: createFilterVariables(payload),
       })
-      .then((result) =>  store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: Object.assign({filter: payload}, _.cloneDeep(result)) }))
+      .then((result) =>  { 
+        return client.query({  //request to get the filtered group counts
+        query: FILTER_GROUP_QUERY,
+        variables: { "subject_ids": result.data.searchSubjects.subjectIds},
+      })
+      .then((result2) => {
+      return store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: Object.assign({filter: payload},{groups: _.cloneDeep(result2)}, _.cloneDeep(result)) })
+    })
+      .catch((error) => store.dispatch(
+        { type: 'DASHBOARDTAB_QUERY_ERR', error },
+      ));
+        // return store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: Object.assign({filter: payload}, _.cloneDeep(result)) })
+      })
       .catch((error) => store.dispatch(
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
       ));
@@ -173,6 +185,8 @@ const reducers = {
   }),
   TOGGGLE_CHECKBOX2: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item.filter);
+    const updatedCheckboxData1 = customCheckBox(item.groups.data);
+
     // This function is to get updated checkbox data and counts this needs to be updated
     const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
       ? getCheckBoxData(
@@ -185,16 +199,17 @@ const reducers = {
     return{
     ...state,
     checkbox: {
-      data: updatedCheckboxData,
+      data: updatedCheckboxData1,
     },
     checkbox: {
-      data: updatedCheckboxData,
+      data: updatedCheckboxData1,
     },
     datatable: {
       ...state.datatable,
       filters: dataTableFilters,
     },
     stats: getFilteredStat(item.data.searchSubjects),
+    widgets: getWidgetsInitData(item.groups.data),
   }},
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {

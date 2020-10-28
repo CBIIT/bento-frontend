@@ -7,6 +7,71 @@ export const DASHBOARD_QUERY_TMP = gql`{ sample{
     }
    } }`;
 
+export const FILTER_GROUP_QUERY = gql`
+   query groupCounts($subject_ids: [String]){
+    subjectCountByProgram(subject_ids: $subject_ids) {
+        group
+        subjects
+    }
+    subjectCountByStudy(subject_ids: $subject_ids) {
+        group
+        subjects
+    }
+    subjectCountByDiagnoses (subject_ids: $subject_ids){
+        group
+        subjects
+    }
+    subjectCountByRecurrenceScore (subject_ids: $subject_ids){
+        group
+        subjects
+    }
+    subjectCountByTumorSize(subject_ids: $subject_ids) {
+        group
+        subjects
+    }
+    subjectCountByChemotherapyRegimen(subject_ids: $subject_ids) {
+        group
+        subjects
+    }
+    subjectCountByEndocrineTherapy (subject_ids: $subject_ids){
+        group
+        subjects
+    }
+    subjectCountByTumorGrade(subject_ids: $subject_ids){
+        group
+        subjects
+    }
+    subjectCountByErStatus(subject_ids: $subject_ids){
+        group
+        subjects
+    }
+    subjectCountByPrStatus(subject_ids: $subject_ids){
+        group
+        subjects
+    }
+    subjectCountByMenopauseStatus(subject_ids: $subject_ids){
+        group
+        subjects
+    }
+    subjectCountByFileType (subject_ids: $subject_ids){
+        group
+        subjects
+    }
+    subjectCountByFileAssociation(subject_ids: $subject_ids) {
+        group
+        subjects
+    }
+    subjectCountByTissueComposition(subject_ids: $subject_ids) {
+        group
+        subjects
+    }
+    subjectCountByTissueType(subject_ids: $subject_ids) {
+        group
+        subjects
+    }
+}
+  `;
+
 export const FILTER_QUERY = gql`
   query search (          
     $programs: [String] ,
@@ -44,38 +109,27 @@ export const FILTER_QUERY = gql`
         num_files
         subjectIds
         firstPage {
-            subject_id
-            program
-            program_id
-            study_acronym
-            study_short_description
-            study_info
-            diagnosis
-            recurrence_score
-            tumor_size
-            tumor_grade
-            er_status
-            pr_status
-            chemotherapy
-            endocrine_therapy
-            menopause_status
-            age_at_index
-            survival_time
-            survival_time_unit
-            files {
-                file_id
-                file_id
-                file_description
-                file_format
-                file_location
-                file_name
-                file_size
-                file_status
-                file_type
-                md5sum
-            }
-            lab_procedures
-            samples
+          subject_id
+          program_id
+          study_info
+          samples
+          program
+          study_acronym
+          diagnosis
+          recurrence_score
+          tumor_size
+          tumor_grade
+          er_status
+          pr_status
+          chemotherapy
+          endocrine_therapy
+          menopause_status
+          age_at_index
+          survival_time
+          lab_procedures
+          files{
+            file_id
+          }
         }
     }
 }`;
