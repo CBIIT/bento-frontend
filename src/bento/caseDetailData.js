@@ -203,7 +203,7 @@ const table1 = {
   // showHideColumns 'true' or 'false'
   showHideColumns: true,
   // download csv
-  download: true,
+  download: false,
   // downloaded File Name
   downloadFileName: 'Bento_case_files_download',
   // A maximum of 10 columns are allowed
@@ -269,7 +269,7 @@ const table2 = {
   // showHideColumns 'true' or 'false'
   showHideColumns: true,
   // download csv 'true' or 'false'
-  download: true,
+  download: false,
   // downloaded File Name
   downloadFileName: 'Bento_case_samples_download',
   // A maximum of 10 columns are allowed

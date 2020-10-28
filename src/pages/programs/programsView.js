@@ -1,24 +1,17 @@
-/* eslint-disable */
 import React from 'react';
 import {
   Grid,
   withStyles,
 } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
-
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
   table, programListingIcon, externalLinkIcon,
 } from '../../bento/programData';
-import { manipulateLinks } from '../../utils/helpers';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
-import { getOptions, getColumns} from '../../utils/tables';
+import { getOptions, getColumns } from '../../utils/tables';
 
 const Programs = ({ classes, data }) => {
   const initDashboardStatus = () => (dispatch) => Promise.resolve(
@@ -26,11 +19,11 @@ const Programs = ({ classes, data }) => {
   );
 
   const dispatch = useDispatch();
-  const redirectTo = (trial) => {
+  const redirectTo = () => {
     dispatch(initDashboardStatus()).then(() => {
       dispatch(singleCheckBox([{
         groupName: 'Program',
-        name: trial,
+        name: 'TAILORx',
         datafield: 'program',
         isChecked: true,
       }]));
@@ -67,8 +60,8 @@ const Programs = ({ classes, data }) => {
                 <Grid item xs={12}>
                   <CustomDataTable
                     data={data[table.dataField]}
-                    columns={getColumns(table,classes,data,externalLinkIcon)}
-                    options={getOptions(table,classes)}
+                    columns={getColumns(table, classes, data, externalLinkIcon, '/cases', redirectTo)}
+                    options={getOptions(table, classes)}
                   />
                 </Grid>
               </Grid>

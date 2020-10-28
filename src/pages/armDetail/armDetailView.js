@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
@@ -15,22 +14,17 @@ import {
   header,
   subsections,
   table,
-  externalLinkIcon,
 } from '../../bento/armDetailData';
-import formatBytes from '../../utils/formatBytes';
 import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
-import { manipulateLinks, dateTimeStamp } from '../../utils/helpers';
-import { getOptions, getColumns} from '../../utils/tables';
+import { getOptions, getColumns } from '../../utils/tables';
 import NumberOfThings from '../../components/NumberOfThings';
 import Snackbar from '../../components/Snackbar';
 
-
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
-
   const dispatch = useDispatch();
 
   const [snackbarState, setsnackbarState] = React.useState({
@@ -64,7 +58,12 @@ const ArmDetail = ({ data, classes }) => {
 
   return (
     <>
-      <Snackbar snackbarState={snackbarState} closeSnack={closeSnack} autoHideDuration={3000} classes={classes}/>
+      <Snackbar
+        snackbarState={snackbarState}
+        closeSnack={closeSnack}
+        autoHideDuration={3000}
+        classes={classes}
+      />
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -149,7 +148,7 @@ const ArmDetail = ({ data, classes }) => {
                   </Widget>
                 </div>
                 {/* File count */}
-                <NumberOfThings classes={classes} number={data.num_files}  icon={fileCountIcon} title="NUMBER OF FILES" alt="Bento file count icon" />
+                <NumberOfThings classes={classes} number={data.num_files} icon={fileCountIcon} title="NUMBER OF FILES" alt="Bento file count icon" />
               </div>
             </Grid>
             {/* Right panel end */}
@@ -168,8 +167,8 @@ const ArmDetail = ({ data, classes }) => {
                           <GridWithFooter
                             tableConfig={table}
                             data={data[table.filesField]}
-                            columns={getColumns(table,classes,data)}
-                            options={getOptions(table,classes)}
+                            columns={getColumns(table, classes, data)}
+                            options={getOptions(table, classes)}
                             customOnRowsSelect={table.customOnRowsSelect}
                             openSnack={openSnack}
                             closeSnack={closeSnack}

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -6,9 +5,6 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
 import { Link } from 'react-router-dom';
 import {
   pageTitle, table, externalLinkIcon,
@@ -27,7 +23,7 @@ import {
   filterData,
   getDonutDataFromDashboardData,
 } from '../../utils/dashboardUtilFunctions';
-import { getOptions, getColumns} from '../../utils/tables';
+import { getOptions, getColumns } from '../../utils/tables';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
@@ -86,7 +82,7 @@ const ProgramView = ({ classes, data, theme }) => {
     dispatch(initDashboardStatus()).then(() => {
       dispatch(singleCheckBox([{
         groupName: 'Arm',
-        name: programArm,
+        name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
         datafield: 'study_info',
         isChecked: true,
       }]));
@@ -348,8 +344,8 @@ const ProgramView = ({ classes, data, theme }) => {
                   <Typography>
                     <CustomDataTable
                       data={data.programDetail[table.dataField]}
-                      columns={getColumns(table,classes,data,externalLinkIcon)}
-                      options={getOptions(table,classes)}
+                      columns={getColumns(table, classes, data, externalLinkIcon, '/cases', redirectToArm)}
+                      options={getOptions(table, classes)}
                     />
                   </Typography>
                 </Grid>

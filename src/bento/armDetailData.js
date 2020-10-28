@@ -49,7 +49,6 @@ export const externalLinkIcon = {
 };
 
 // --------------- File table configuration --------------
-
 const table = {
   // Set 'display' to false to hide the table entirely
   display: true,
@@ -61,20 +60,12 @@ const table = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // Text to appear on Add to cart button
-  buttonText: 'Add Selected Files',
-  // Help Icon Message
-  tooltipMessage: 'Click button to add selected files.',
-  helpMessage: 'Here help message',
-  // showHideColumns 'true' or 'false'
-  showHideColumns: true,
-  // download csv 'true' or 'false'
-  download: true,
-  // downloaded File Name
-  downloadFileName: 'Bento_arm_files_download',
   // Set 'selectableRows' to true to show the row selection
   selectableRows: false,
-  // A maximum of 10 columns are allowed
+  tooltipMessage: 'Click button to add selected files.',
+  helpMessage: 'Here help message',
+  // Text to appear on Add to cart button
+  buttonText: 'Add Selected Files',
   columns: [
     {
       dataField: 'file_name',

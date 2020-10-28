@@ -1,16 +1,11 @@
-/* eslint-disable */
 import React from 'react';
 import {
   Grid,
   withStyles,
 } from '@material-ui/core';
 
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
 import Snackbar from '@material-ui/core/Snackbar';
-import TablePagination from '@material-ui/core/TablePagination';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import GridWithFooter from '../../components/GridWithFooter/GridView';
@@ -26,10 +21,7 @@ import {
   externalLinkIcon,
 } from '../../bento/caseDetailData';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
-import { manipulateLinks, dateTimeStamp } from '../../utils/helpers';
-import formatBytes from '../../utils/formatBytes';
-import { getOptions, getColumns} from '../../utils/tables';
-
+import { getOptions, getColumns } from '../../utils/tables';
 
 // Main case detail component
 const CaseDetail = ({ data, filesOfSamples, classes }) => {
@@ -65,7 +57,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
     isALink: true,
   }];
 
-  // those are questioning codes for ICDC only, need to remove from here. 
+  // those are questioning codes for ICDC only, need to remove from here.
   const filesOfSamplesObj = filesOfSamples.reduce(
     (obj, item) => ({ ...obj, [item.sample_id]: item.files }), {},
   );
@@ -79,7 +71,12 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
 
   return (
     <>
-      <Snackbar snackbarState={snackbarState} closeSnack={closeSnack} autoHideDuration={3000} classes={classes}/>
+      <Snackbar
+        snackbarState={snackbarState}
+        closeSnack={closeSnack}
+        autoHideDuration={3000}
+        classes={classes}
+      />
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -161,8 +158,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                   <Grid item xs={12}>
                     <GridWithFooter
                       data={samplesData}
-                      columns={getColumns(table1,classes,data)}
-                      options={getOptions(table1,classes)}
+                      columns={getColumns(table1, classes, data, externalLinkIcon)}
+                      options={getOptions(table1, classes)}
                       customOnRowsSelect={table1.customOnRowsSelect}
                       openSnack={openSnack}
                       closeSnack={closeSnack}
@@ -191,8 +188,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                   <Grid item xs={12}>
                     <GridWithFooter
                       data={data[table2.subjectDetailField]}
-                      columns={getColumns(table2,classes,data)}
-                      options={getOptions(table2,classes)}
+                      columns={getColumns(table2, classes, data)}
+                      options={getOptions(table2, classes)}
                       customOnRowsSelect={table2.customOnRowsSelect}
                       openSnack={openSnack}
                       closeSnack={closeSnack}
