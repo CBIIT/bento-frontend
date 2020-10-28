@@ -89,6 +89,37 @@ function fetchDashboardTab() {
   };
 }
 
+const allfilters = {
+  "programs": [],
+  "studies": [],
+  "diagnoses": [],
+  "rc_scores": [],
+  "tumor_sizes": [],
+  "chemo_regimen": [],
+  "tumor_grades": [],
+  "er_status": [],
+  "pr_status": [],
+  "endo_therapies": [],
+  "meno_status": [],
+}
+
+/**
+ * Returns filter variable for graphql query using the all filters.
+ *
+ * @param {object} data
+ * @return {json} 
+ */
+
+function createFilterVariables(data) {
+  const filter = Object.entries(allfilters).reduce((acc , [key, val]) => {
+    if(data[0].datafield == key)
+      return { ...acc , [key]: [data[0].name] }
+    return { ...acc , [key]: [] };
+  }, {});
+
+  return filter;
+}
+
 // export function toggleCheckBox(payload) {
 //   return store.dispatch({ type: 'TOGGGLE_CHECKBOX', payload });
 // }
@@ -98,23 +129,9 @@ export function toggleCheckBox(payload) {
     return client
       .query({
         query: FILTER_QUERY,
-        variables: {
-          "programs": [],
-          "studies": [],
-          "diagnoses": ["Adenocarcinoma"],
-          "rc_scores": [],
-          "tumor_sizes": [],
-          "chemo_regimen": [],
-          "tumor_grades": [],
-          "er_status": [],
-          "pr_status": [],
-          "endo_therapies": [],
-          "meno_status": [],
-          "first": 10,
-          "subject_ids": []
-        },
+        variables: createFilterVariables(payload),
       })
-      .then((result) => store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: _.cloneDeep(result) }))
+      .then((result) =>  store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: Object.assign({filter: payload}, _.cloneDeep(result)) }))
       .catch((error) => store.dispatch(
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
       ));
@@ -154,10 +171,31 @@ const reducers = {
     isLoading: false,
     isFetched: true,
   }),
-  TOGGGLE_CHECKBOX2: (state, item) => ({
+  TOGGGLE_CHECKBOX2: (state, item) => {
+    const dataTableFilters = getFilters(state.datatable.filters, item.filter);
+    // This function is to get updated checkbox data and counts this needs to be updated
+    const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
+      ? getCheckBoxData(
+        state.subjectOverView.data,
+        state.checkboxForAll.data,
+        state.checkbox.data.filter((d) => item.filter[0].groupName === d.groupName)[0],
+        dataTableFilters,
+      )
+      : state.checkboxForAll.data;
+    return{
     ...state,
+    checkbox: {
+      data: updatedCheckboxData,
+    },
+    checkbox: {
+      data: updatedCheckboxData,
+    },
+    datatable: {
+      ...state.datatable,
+      filters: dataTableFilters,
+    },
     stats: getFilteredStat(item.data.searchSubjects),
-  }),
+  }},
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);

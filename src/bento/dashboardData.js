@@ -4,19 +4,19 @@ import gql from 'graphql-tag';
 // A maximum of 12 facetSearchData are allowed
 export const facetSearchData = [
   {
-    label: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'program', show: true,
+    label: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'programs', show: true,
   },
   {
-    label: 'Arm', field: 'group', api: 'subjectCountByStudy', datafield: 'study_info', show: true,
+    label: 'Arm', field: 'group', api: 'subjectCountByStudy', datafield: 'studies', show: true,
   },
   {
-    label: 'Diagnosis', field: 'group', api: 'subjectCountByDiagnoses', datafield: 'diagnosis', show: true,
+    label: 'Diagnosis', field: 'group', api: 'subjectCountByDiagnoses', datafield: 'diagnoses', show: true,
   },
   {
-    label: 'Recurrence Score', field: 'group', api: 'subjectCountByRecurrenceScore', datafield: 'recurrence_score', show: true,
+    label: 'Recurrence Score', field: 'group', api: 'subjectCountByRecurrenceScore', datafield: 'rc_scores', show: true,
   },
   {
-    label: 'Tumor Size', field: 'group', api: 'subjectCountByTumorSize', datafield: 'tumor_size', show: true,
+    label: 'Tumor Size', field: 'group', api: 'subjectCountByTumorSize', datafield: 'tumor_sizes', show: true,
   },
   {
     label: 'Chemotherapy Regimen', field: 'group', api: 'subjectCountByChemotherapyRegimen', datafield: 'chemotherapy', show: true,
