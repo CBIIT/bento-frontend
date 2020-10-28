@@ -2,13 +2,12 @@ import React from 'react';
 import {
   Grid, withStyles, Button, Switch, Collapse, FormControlLabel,
 } from '@material-ui/core';
+import { ProgramSunburst, CustomActiveDonut } from 'bento-components';
 import { useTheme } from '../../components/ThemeContext';
 import Widget from '../../components/Widgets/WidgetView';
 import Stats from '../../components/Stats/DashboardStatsController';
 import Cases from './caseTable/caseController';
 // import PositionedSnackbar from '../../components/Disclaimer/DisclaimerView';
-import ProgramSunburst from '../../components/Widgets/PieCharts/ProgramSunburst/ProgramSunburstController';
-import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import SideBar from '../../components/SideBar/SideBarView';
 import { widgetsData } from '../../bento/dashboardData';
 

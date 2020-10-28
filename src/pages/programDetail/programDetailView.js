@@ -4,7 +4,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
+import { CustomDataTable, CustomActiveDonut } from 'bento-components';
 import { Link } from 'react-router-dom';
 import {
   pageTitle, table, externalLinkIcon,
@@ -18,7 +18,6 @@ import cn from '../../utils/classNameConcat';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
-import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import {
   filterData,
   getDonutDataFromDashboardData,
