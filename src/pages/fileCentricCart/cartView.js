@@ -15,7 +15,7 @@ import { myFilesPageData, table, manifestData } from '../../bento/fileCentricCar
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
 import {
-  getColumns, getOptions, getCustomFooter,
+  getColumns, getOptions, getDefaultCustomFooter,
 } from '../../utils/tables';
 import Message from './components/message';
 import { dateTimeStamp } from '../../utils/helpers';
@@ -66,7 +66,7 @@ const cartView = ({ classes, data, isLoading }) => {
     },
   }];
   const columns = getColumns(table).concat(deleteColumn);
-  const options = getOptions(table, getCustomFooter, onRowSelectionChange, dateTimeStamp);
+  const options = getOptions(table, classes, getDefaultCustomFooter, onRowSelectionChange);
 
   const messageData = (
     <span>

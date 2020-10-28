@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { FileOnRowsSelect, FileDisableRowSelection } from '../utils/fileTable';
+import { FileOnRowsSelect } from '../utils/fileTable';
 
 // -------------- Case ID area configurations --------------
 const header = {
@@ -72,6 +72,8 @@ const table = {
   download: true,
   // downloaded File Name
   downloadFileName: 'Bento_arm_files_download',
+  // Set 'selectableRows' to true to show the row selection
+  selectableRows: false,
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -105,7 +107,7 @@ const table = {
   // Custom function on selct checkbox is selected.
   customOnRowsSelect: FileOnRowsSelect,
   // Custom function disable selct checkbox in table if related files are in cart
-  disableRowSelection: FileDisableRowSelection,
+  disableRowSelection: null,
 };
 
 // --------------- GraphQL query configuration --------------

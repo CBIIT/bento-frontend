@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
@@ -9,7 +10,6 @@ import { useSelector } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
-import CustomFooter from './customFooter';
 import { addToCart } from '../../pages/fileCentricCart/store/cart';
 import Message from '../../pages/fileCentricCart/components/message';
 
@@ -26,16 +26,16 @@ const GridView = ({
 }) => {
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.fileIds);
-  const [BottomMessageStatus, setBottomMessageStatus] = React.useState(false);
+  const [messageStatus, setMessageStatus] = React.useState(false);
 
   const saveButton = useRef(null);
 
   function openMessage() {
-    return setBottomMessageStatus(true);
+    return setMessageStatus(true);
   }
 
   function closeMessage() {
-    return setBottomMessageStatus(false);
+    return setMessageStatus(false);
   }
 
   function toggleMessageStatus(location, status) {
@@ -111,40 +111,11 @@ const GridView = ({
     }
   }
 
-  const defaultOptions = () => ({
-    selectableRows: true,
-    responsive: 'stacked',
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: true,
-    downloadOptions: {
-      filename: 'tableDownload.csv',
-      filterOptions: {
-        useDisplayedColumnsOnly: true,
-      },
-    },
-    viewColumns: true,
-    pagination: true,
-    isRowSelectable: (dataIndex) => disableRowSelection(data[dataIndex], fileIDs),
+ // overwrite default options
+ const defaultOptions = () => ({
     onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
-    // eslint-disable-next-line no-unused-vars
-    customToolbarSelect: () => '',
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-      <CustomFooter
-        classes={classes}
-        count={count}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-      // eslint-disable-next-line no-shadow
-        onChangePage={(_, page) => changePage(page)}
-      />
-    ),
-
+    isRowSelectable: (dataIndex) => disableRowSelection ? disableRowSelection(data[dataIndex], fileIDs) : null,
   });
-
   const finalOptions = { ...defaultOptions(), ...options };
 
   return (
@@ -173,7 +144,7 @@ const GridView = ({
         <IconButton aria-label="help">
           <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
         </IconButton>
-        { BottomMessageStatus ? (
+        { messageStatus ? (
           <div className={classes.messageBottom}>
             {' '}
             <Message data={messageData} />

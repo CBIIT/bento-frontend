@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
@@ -5,16 +6,11 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import Snackbar from '@material-ui/core/Snackbar';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
 import GridWithFooter from '../../components/GridWithFooter/GridView';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
-import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import {
   header,
   subsections,
@@ -22,80 +18,21 @@ import {
   externalLinkIcon,
 } from '../../bento/armDetailData';
 import formatBytes from '../../utils/formatBytes';
-// import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
-
 import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 import { manipulateLinks, dateTimeStamp } from '../../utils/helpers';
+import { getOptions, getColumns} from '../../utils/tables';
+import NumberOfThings from '../../components/NumberOfThings';
+import Snackbar from '../../components/Snackbar';
 
-const FileCount = ({ num_files: numFiles, classes }) => (
-  <div className={classes.widgetContainer}>
-    <div className={classes.numberOfFiles}>Number of Files</div>
-
-    <Grid container className={classes.fileCountContainer}>
-      <Grid item xs={12}>
-        <div className={classes.fileIconContainer}>
-          <img
-            src={fileCountIcon}
-            alt="Bento file count icon"
-            className={classes.fileIcon}
-          />
-          <div className={classes.fileCountText}>
-            <span className={classes.fileNumber}>{numFiles}</span>
-          </div>
-        </div>
-      </Grid>
-    </Grid>
-  </div>
-);
-
-const options = (classes) => ({
-  selectableRows: true,
-  responsive: 'stacked',
-  search: false,
-  filter: false,
-  searchable: false,
-  print: false,
-  download: table.download,
-  downloadOptions: {
-    filename: table.downloadFileName ? table.downloadFileName.concat(dateTimeStamp()).concat('.csv') : 'tableDownload'.concat(dateTimeStamp()).concat('.csv'),
-    filterOptions: {
-      useDisplayedColumnsOnly: true,
-    },
-  },
-  viewColumns: table.showHideColumns,
-  pagination: true,
-  sortOrder: {
-    name: table.defaultSortField,
-    direction: table.defaultSortDirection,
-  },
-  customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-    <TableFooter>
-      <TableRow>
-        <TablePagination
-          className={count >= 11 ? classes.root : classes.noDisplay}
-          count={count}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-          // eslint-disable-next-line no-shadow
-          onChangePage={(_, page) => changePage(page)}
-        />
-      </TableRow>
-    </TableFooter>
-  ),
-});
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
+
   const dispatch = useDispatch();
 
-  // React.useEffect(() => {
-  //   // Update dashboard first
-  //   dispatch(fetchDataForDashboardDataTable());
-  // }, []);
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
     value: 0,
@@ -116,43 +53,6 @@ const ArmDetail = ({ data, classes }) => {
     }]));
   };
 
-  const processedColumns = (tableConfig) => {
-    const updatedTableWithLinks = manipulateLinks(tableConfig.columns);
-    return updatedTableWithLinks.slice(0, 10).map((column, index) => ({
-      name: column.dataField,
-      label: column.header,
-      options: {
-        display: column.display ? column.display : true,
-        filter: false,
-        customBodyRender: (value, tableMeta) => (
-          <div>
-            {
-          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
-            : column.externalLink ? (
-              <span className={classes.linkSpan}>
-                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
-                <img
-                  src={externalLinkIcon.src}
-                  alt={externalLinkIcon.alt}
-                  className={classes.externalLinkIcon}
-                />
-              </span>
-            )
-              : (
-                <div className={classes[`tableCell${index + 1}`]}>
-                  {' '}
-                  {column.dataFromRoot ? data[column.dataField]
-                    : (column.formatBytes ? formatBytes(value) : value)}
-                  {' '}
-                </div>
-              )
-              }
-          </div>
-        ),
-      },
-    }));
-  };
-
   const stat = {
     numberOfPrograms: 1,
     numberOfStudies: 1,
@@ -164,32 +64,7 @@ const ArmDetail = ({ data, classes }) => {
 
   return (
     <>
-      <Snackbar
-        className={classes.snackBar}
-        open={snackbarState.open}
-        onClose={closeSnack}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        message={(
-          <div className={classes.snackBarMessage}>
-            <span className={classes.snackBarMessageIcon}>
-              <SuccessOutlinedIcon />
-              {' '}
-            </span>
-            <span className={classes.snackBarText}>
-
-              {snackbarState.value}
-              {'    '}
-              File(s) successfully
-              {' '}
-              {snackbarState.action}
-              {' '}
-              to your files
-
-            </span>
-          </div>
-)}
-      />
+      <Snackbar snackbarState={snackbarState} closeSnack={closeSnack} autoHideDuration={3000} classes={classes}/>
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -274,7 +149,7 @@ const ArmDetail = ({ data, classes }) => {
                   </Widget>
                 </div>
                 {/* File count */}
-                <FileCount classes={classes} num_files={data.num_files} />
+                <NumberOfThings classes={classes} number={data.num_files}  icon={fileCountIcon} title="NUMBER OF FILES" alt="Bento file count icon" />
               </div>
             </Grid>
             {/* Right panel end */}
@@ -291,9 +166,10 @@ const ArmDetail = ({ data, classes }) => {
                       <Grid container spacing={4}>
                         <Grid item xs={12}>
                           <GridWithFooter
+                            tableConfig={table}
                             data={data[table.filesField]}
-                            columns={processedColumns(table)}
-                            options={options(classes)}
+                            columns={getColumns(table,classes,data)}
+                            options={getOptions(table,classes)}
                             customOnRowsSelect={table.customOnRowsSelect}
                             openSnack={openSnack}
                             closeSnack={closeSnack}

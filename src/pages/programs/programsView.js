@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable */
 import React from 'react';
 import {
   Grid,
@@ -18,8 +18,7 @@ import { manipulateLinks } from '../../utils/helpers';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
-
-const updatedData = manipulateLinks(table.columns);
+import { getOptions, getColumns} from '../../utils/tables';
 
 const Programs = ({ classes, data }) => {
   const initDashboardStatus = () => (dispatch) => Promise.resolve(
@@ -37,72 +36,6 @@ const Programs = ({ classes, data }) => {
       }]));
     });
   };
-
-  const columns = updatedData.slice(0, 10).map((column) => ({
-    name: column.dataField,
-    label: column.header,
-    options: {
-      display: column.display ? column.display : true,
-      filter: false,
-      customBodyRender: (value, tableMeta) => (
-        <div>
-          {
-          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
-            : column.externalLink ? (
-              <span className={classes.linkSpan}>
-                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
-                <img
-                  src={externalLinkIcon.src}
-                  alt={externalLinkIcon.alt}
-                  className={classes.externalLinkIcon}
-                />
-              </span>
-            )
-              : column.dataField === 'num_subjects' ? <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo('TAILORx')}>{value}</Link>
-                : `${value}`
-}
-        </div>
-      ),
-    },
-  }));
-
-  const options = () => ({
-    selectableRows: 'none',
-    responsive: 'stacked',
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    viewColumns: false,
-    pagination: true,
-    rowsPerPageOptions: [10, 25, 50, 100],
-    sortOrder: {
-      name: table.defaultSortField,
-      direction: table.defaultSortDirection,
-    },
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-      <TableFooter>
-        <div>
-          {count >= 11
-            ? (
-              <TableRow>
-                <TablePagination
-                  className={classes.root}
-                  count={count}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-              // eslint-disable-next-line no-shadow
-                  onChangePage={(_, page) => changePage(page)}
-                />
-              </TableRow>
-            )
-            : ''}
-        </div>
-      </TableFooter>
-    ),
-  });
 
   return (
     <>
@@ -134,8 +67,8 @@ const Programs = ({ classes, data }) => {
                 <Grid item xs={12}>
                   <CustomDataTable
                     data={data[table.dataField]}
-                    columns={columns}
-                    options={options(classes)}
+                    columns={getColumns(table,classes,data,externalLinkIcon)}
+                    options={getOptions(table,classes)}
                   />
                 </Grid>
               </Grid>

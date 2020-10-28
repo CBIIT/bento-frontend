@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import {
   Grid,
@@ -16,7 +17,6 @@ import GridWithFooter from '../../components/GridWithFooter/GridView';
 import icon from '../../assets/icons/Cases.Icon.svg';
 import Subsection from '../../components/PropertySubsection/caseDetailSubsection';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
-import SuccessOutlinedIcon from '../../utils/SuccessOutlined';
 import {
   caseHeader,
   leftPanel,
@@ -28,50 +28,8 @@ import {
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import { manipulateLinks, dateTimeStamp } from '../../utils/helpers';
 import formatBytes from '../../utils/formatBytes';
+import { getOptions, getColumns} from '../../utils/tables';
 
-const options = (classes, tableConfig) => ({
-  selectableRows: true,
-  responsive: 'stacked',
-  search: false,
-  filter: false,
-  searchable: false,
-  print: false,
-  viewColumns: tableConfig.showHideColumns,
-  pagination: true,
-  sortOrder: {
-    name: tableConfig.defaultSortField,
-    direction: tableConfig.defaultSortDirection,
-  },
-  download: tableConfig.download,
-  downloadOptions: {
-    filename: tableConfig.downloadFileName ? tableConfig.downloadFileName.concat(dateTimeStamp()).concat('.csv') : 'tableDownload'.concat(dateTimeStamp()).concat('.csv'),
-    filterOptions: {
-      useDisplayedColumnsOnly: true,
-    },
-  },
-  customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-    <TableFooter>
-      <div>
-        <TableRow>
-          {count >= 11
-            ? (
-              <TablePagination
-                className={classes.root}
-                count={count}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-          // eslint-disable-next-line no-shadow
-                onChangePage={(_, page) => changePage(page)}
-              />
-
-            )
-            : ''}
-        </TableRow>
-      </div>
-    </TableFooter>
-  ),
-});
 
 // Main case detail component
 const CaseDetail = ({ data, filesOfSamples, classes }) => {
@@ -107,43 +65,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
     isALink: true,
   }];
 
-  const processedColumns = (tableConfig) => {
-    const updatedTableWithLinks = manipulateLinks(tableConfig.columns);
-    return updatedTableWithLinks.slice(0, 10).map((column, index) => ({
-      name: column.dataField,
-      label: column.header,
-      options: {
-        display: column.display ? column.display : true,
-        filter: false,
-        customBodyRender: (value, tableMeta) => (
-          <div>
-            {
-          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
-            : column.externalLink ? (
-              <span className={classes.linkSpan}>
-                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
-                <img
-                  src={externalLinkIcon.src}
-                  alt={externalLinkIcon.alt}
-                  className={classes.externalLinkIcon}
-                />
-              </span>
-            )
-              : (
-                <div className={classes[`tableCell${index + 1}`]}>
-                  {' '}
-                  {column.dataFromRoot ? data[column.dataField]
-                    : (column.formatBytes ? formatBytes(value) : value)}
-                  {' '}
-                </div>
-              )
-              }
-          </div>
-        ),
-      },
-    }));
-  };
-
+  // those are questioning codes for ICDC only, need to remove from here. 
   const filesOfSamplesObj = filesOfSamples.reduce(
     (obj, item) => ({ ...obj, [item.sample_id]: item.files }), {},
   );
@@ -157,32 +79,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
 
   return (
     <>
-      <Snackbar
-        className={classes.snackBar}
-        open={snackbarState.open}
-        onClose={closeSnack}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        message={(
-          <div className={classes.snackBarMessage}>
-            <span className={classes.snackBarMessageIcon}>
-              <SuccessOutlinedIcon />
-              {' '}
-            </span>
-            <span className={classes.snackBarText}>
-
-              {snackbarState.value}
-              {'    '}
-              File(s) successfully
-              {' '}
-              {snackbarState.action}
-              {' '}
-              to your files
-
-            </span>
-          </div>
-)}
-      />
+      <Snackbar snackbarState={snackbarState} closeSnack={closeSnack} autoHideDuration={3000} classes={classes}/>
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -264,8 +161,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                   <Grid item xs={12}>
                     <GridWithFooter
                       data={samplesData}
-                      columns={processedColumns(table1)}
-                      options={options(classes, table1)}
+                      columns={getColumns(table1,classes,data)}
+                      options={getOptions(table1,classes)}
                       customOnRowsSelect={table1.customOnRowsSelect}
                       openSnack={openSnack}
                       closeSnack={closeSnack}
@@ -294,8 +191,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                   <Grid item xs={12}>
                     <GridWithFooter
                       data={data[table2.subjectDetailField]}
-                      columns={processedColumns(table2)}
-                      options={options(classes, table2)}
+                      columns={getColumns(table2,classes,data)}
+                      options={getOptions(table2,classes)}
                       customOnRowsSelect={table2.customOnRowsSelect}
                       openSnack={openSnack}
                       closeSnack={closeSnack}

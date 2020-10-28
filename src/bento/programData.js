@@ -25,12 +25,33 @@ const table = {
   defaultSortField: 'program_acronym',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  // Set 'selectableRows' to true to show the row selection
+  selectableRows: false,
+  // Set 'search' to true to show the table's search feature
+  search: false,
+  // Set 'filter' to true to show the table's filter feature
+  filter: false,
+  // Set 'searchable' to true to show the table's search feature
+  searchable: false,
+  // Set 'print' to true to show the table's print feature
+  print: false,
+  // Set 'pagination' to true to show the table's pagination feature
+  pagination: true,
+  // Set 'download' to true to show the table's download feature
+  download: false,
+  // Set 'rowsPerPageOptions' to [10, 25, 50, 100] to show the table's pagination option
+  rowsPerPageOptions: [10, 25, 50, 100],
+  downloadOptions: {
+    // Set 'downloadFileName' for table download file name
+    downloadFileName: 'Bento_files_download.csv',
+  },
   // A maximum of 10 columns are allowed
   columns: [
     {
       dataField: 'program_acronym',
       header: 'Program Code',
       link: '/program/{program_id}',
+      display: true,
     },
     {
       dataField: 'program_id',
