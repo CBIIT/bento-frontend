@@ -22,6 +22,7 @@ export const tabContainers = [
     disableRowSelection: 'type1',
     buttonTitle: 'Add Selected Files',
     tableID: 'case_tab_table',
+    selectableRows: true,
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#09A175',

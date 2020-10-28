@@ -124,7 +124,7 @@ export function getOptions(table, classes, customFooter, onRowSelectionChange, i
       : getDefaultCustomFooter(count, page, rowsPerPage, changeRowsPerPage, changePage, classes)),
     isRowSelectable: (dataIndex) => (isRowSelectable
       ? isRowSelectable(dataIndex)
-      : null),
+      : true),
     onRowSelectionChange: (curr, allRowsSelected) => (
       onRowSelectionChange
         ? onRowSelectionChange(curr, allRowsSelected)
