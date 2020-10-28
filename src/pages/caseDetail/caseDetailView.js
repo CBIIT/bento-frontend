@@ -3,8 +3,6 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-
-import Snackbar from '@material-ui/core/Snackbar';
 import { useDispatch } from 'react-redux';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
@@ -20,6 +18,7 @@ import {
   table2,
   externalLinkIcon,
 } from '../../bento/caseDetailData';
+import Snackbar from '../../components/Snackbar';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import { getOptions, getColumns } from '../../utils/tables';
 

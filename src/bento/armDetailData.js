@@ -61,7 +61,7 @@ const table = {
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
   // Set 'selectableRows' to true to show the row selection
-  selectableRows: false,
+  selectableRows: true,
   tooltipMessage: 'Click button to add selected files.',
   helpMessage: 'Here help message',
   // Text to appear on Add to cart button
@@ -97,8 +97,6 @@ const table = {
   // Util Functions
   // Custom function on selct checkbox is selected.
   customOnRowsSelect: FileOnRowsSelect,
-  // Custom function disable selct checkbox in table if related files are in cart
-  disableRowSelection: null,
 };
 
 // --------------- GraphQL query configuration --------------

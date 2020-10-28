@@ -9,14 +9,14 @@ import formatBytes from './formatBytes';
 //  Generate MuiTable's columns.
 export function getColumns(tableConfig, classes, data, externalLinkIcon, linkto, linkClick) {
   const updatedTableWithLinks = manipulateLinks(tableConfig.columns);
-  return updatedTableWithLinks.slice(0, 10).map((column) => ({
+  return updatedTableWithLinks.slice(0, 10).map((column, index) => ({
     name: column.dataField,
     label: column.header,
     options: {
       display: typeof (column.display) !== 'undefined' ? column.display : true,
       filter: typeof (column.filter) !== 'undefined' ? column.filter : false,
       customBodyRender: (value, tableMeta) => (
-        <div>
+        <div className={classes[`tableCell${index + 1}`]}>
           {
           column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
             : column.externalLink ? (
@@ -36,7 +36,7 @@ export function getColumns(tableConfig, classes, data, externalLinkIcon, linkto,
               </span>
             )
               : (
-                <div>
+                <div className={classes[`tableCell${index + 1}`]}>
                   {' '}
                   {column.dataFromRoot ? data[column.dataField]
                     : (column.formatBytes ? formatBytes(value)
@@ -118,14 +118,14 @@ export function getOptions(table, classes, customFooter, onRowSelectionChange, i
         && typeof (table.filterOptions.useDisplayedColumnsOnly) !== 'undefined' ? table.filterOptions.useDisplayedColumnsOnly : false,
       },
     },
-
+    customToolbarSelect: () => '',
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (customFooter
       ? customFooter(count, page, rowsPerPage, changeRowsPerPage, changePage, classes)
       : getDefaultCustomFooter(count, page, rowsPerPage, changeRowsPerPage, changePage, classes)),
     isRowSelectable: (dataIndex) => (isRowSelectable
       ? isRowSelectable(dataIndex)
       : true),
-    onRowSelectionChange: (curr, allRowsSelected) => (
+    onRowsSelect: (curr, allRowsSelected) => (
       onRowSelectionChange
         ? onRowSelectionChange(curr, allRowsSelected)
         : null),

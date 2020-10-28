@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
@@ -6,7 +5,6 @@ import {
 } from '@material-ui/core';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
-
 import { CustomDataTable } from 'bento-components';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
@@ -111,12 +109,14 @@ const GridView = ({
     }
   }
 
- // overwrite default options
- const defaultOptions = () => ({
+  // overwrite default options
+  const defaultOptions = () => ({
     onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
-    isRowSelectable: (dataIndex) => disableRowSelection ? disableRowSelection(data[dataIndex], fileIDs) : null,
+    isRowSelectable: (dataIndex) => (disableRowSelection
+      ? disableRowSelection(data[dataIndex], fileIDs)
+      : true),
   });
-  const finalOptions = { ...defaultOptions(), ...options };
+  const finalOptions = { ...options, ...defaultOptions() };
 
   return (
     <div>

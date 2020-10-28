@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import {
   Grid,
@@ -9,9 +8,11 @@ const defaultFooterStyles = {
 
 };
 
-const NumberOfThing = ({ number: numberOfThing,title, alt, icon, classes}) => (
+const NumberOfThing = ({
+  number: numberOfThing, title, alt, icon, classes,
+}) => (
 
-<div className={classes.widgetContainer}>
+  <div className={classes.widgetContainer}>
     <div className={classes.numberOfFiles}>{title}</div>
 
     <Grid container className={classes.fileCountContainer}>
@@ -19,7 +20,7 @@ const NumberOfThing = ({ number: numberOfThing,title, alt, icon, classes}) => (
         <div className={classes.fileIconContainer}>
           <img
             src={icon}
-            alt="Bento file count icon"
+            alt={alt}
             className={classes.fileIcon}
           />
           <div className={classes.fileCountText}>

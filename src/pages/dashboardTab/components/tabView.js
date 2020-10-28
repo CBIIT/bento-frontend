@@ -105,9 +105,9 @@ const TabView = ({
   const defaultOptions = () => ({
     onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
     isRowSelectable: (dataIndex) => (disableRowSelection
-      ? disableRowSelection(data[dataIndex], fileIDs) : null),
+      ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });
-  const finalOptions = { ...defaultOptions(), ...options };
+  const finalOptions = { ...options, ...defaultOptions() };
 
   return (
     <div>

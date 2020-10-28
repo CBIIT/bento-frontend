@@ -147,21 +147,8 @@ const styles = (theme) => ({
   tableDiv: {
     margin: 'auto',
   },
-  tableCell1: {
-    paddingLeft: '25px',
-    width: '230px',
-  },
-  tableCell2: {
-    width: '230px',
-  },
-  tableCell3: {
-    width: '530px',
-  },
-  tableCell4: {
-    width: '140px',
-  },
-  tableCell5: {
-    width: '140px',
+  tableCell6: {
+    width: '120px',
   },
   externalLinkIcon: {
     width: '14.5px',

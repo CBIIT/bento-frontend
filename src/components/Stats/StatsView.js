@@ -1,10 +1,8 @@
-/* eslint-disable */
 import React from 'react';
-import { globalStatsData as statsCount } from '../../bento/globalStatsData';
-
 import {
   withStyles,
 } from '@material-ui/core';
+import { globalStatsData as statsCount } from '../../bento/globalStatsData';
 
 const StatsView = ({ classes, data }) => (
   <>

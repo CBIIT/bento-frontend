@@ -65,7 +65,7 @@ const cartView = ({ classes, data, isLoading }) => {
       ),
     },
   }];
-  const columns = getColumns(table).concat(deleteColumn);
+  const columns = getColumns(table, classes).concat(deleteColumn);
   const options = getOptions(table, classes, getDefaultCustomFooter, onRowSelectionChange);
 
   const messageData = (
@@ -251,27 +251,6 @@ const styles = (theme) => ({
     marginRight: '3%',
     paddingBottom: '36px',
     background: 'white',
-  },
-  tableCell1: {
-    width: '130px',
-  },
-  tableCell2: {
-    width: '300px',
-  },
-  tableCell3: {
-    width: '190px',
-  },
-  tableCell4: {
-    width: '170px',
-  },
-  tableCell5: {
-    width: '120px',
-  },
-  tableCell6: {
-    width: '80px',
-  },
-  tableCell7: {
-    width: '80px',
   },
   linkIcon: {
     color: '#dc762f',
