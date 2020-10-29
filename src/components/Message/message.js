@@ -43,7 +43,7 @@ const styles = () => ({
     fontSize: '12px',
   },
   arrayIcon: {
-    marginLeft: '185px',
+    marginLeft: '192px',
   },
 });
 export default withStyles(styles, { withTheme: true })(message);

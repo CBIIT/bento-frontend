@@ -9,7 +9,7 @@ import { CustomDataTable } from 'bento-components';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import { addToCart } from '../../pages/fileCentricCart/store/cart';
-import Message from '../../pages/fileCentricCart/components/message';
+import Message from '../Message';
 
 const GridView = ({
   classes,
