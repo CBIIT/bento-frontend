@@ -5,9 +5,6 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
 import { Link } from 'react-router-dom';
 import {
   pageTitle, table, externalLinkIcon,
@@ -26,6 +23,7 @@ import {
   filterData,
   getDonutDataFromDashboardData,
 } from '../../utils/dashboardUtilFunctions';
+import { getOptions, getColumns } from '../../utils/tables';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
@@ -84,7 +82,7 @@ const ProgramView = ({ classes, data, theme }) => {
     dispatch(initDashboardStatus()).then(() => {
       dispatch(singleCheckBox([{
         groupName: 'Arm',
-        name: programArm,
+        name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
         datafield: 'study_info',
         isChecked: true,
       }]));
@@ -106,75 +104,7 @@ const ProgramView = ({ classes, data, theme }) => {
     isALink: true,
   }];
 
-  const updatedTableData = manipulateLinks(table.columns);
   const updatedAttributesData = manipulateLinks(leftPanel.attributes);
-
-  const columns = updatedTableData.slice(0, 10).map((column) => ({
-    name: column.dataField,
-    label: column.header,
-    options: {
-      display: column.display ? column.display : true,
-      filter: false,
-      customBodyRender: (value, tableMeta) => (
-        <div>
-          {
-          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
-            : column.externalLink ? (
-              <span className={classes.linkSpan}>
-                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
-                <img
-                  src={externalLinkIcon.src}
-                  alt={externalLinkIcon.alt}
-                  className={classes.externalLinkIcon}
-                />
-              </span>
-            )
-              : column.dataField === 'num_subjects' ? (
-                <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectToArm(`${tableMeta.rowData[0]}: ${tableMeta.rowData[1]}`)}>{value}</Link>
-              )
-                : `${value}`
-}
-        </div>
-      ),
-    },
-  }));
-
-  const options = {
-    selectableRows: 'none',
-    responsive: 'stacked',
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    viewColumns: false,
-    pagination: true,
-    sortOrder: {
-      name: table.defaultSortField,
-      direction: table.defaultSortDirection,
-    },
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-      <TableFooter>
-        <div>
-          {count >= 11
-            ? (
-              <TableRow>
-                <TablePagination
-                  className={classes.root}
-                  count={count}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-          // eslint-disable-next-line no-shadow
-                  onChangePage={(_, page) => changePage(page)}
-                />
-              </TableRow>
-            )
-            : ''}
-        </div>
-      </TableFooter>
-    ),
-  };
 
   return (
     <>
@@ -414,8 +344,8 @@ const ProgramView = ({ classes, data, theme }) => {
                   <Typography>
                     <CustomDataTable
                       data={data.programDetail[table.dataField]}
-                      columns={columns}
-                      options={options}
+                      columns={getColumns(table, classes, data, externalLinkIcon, '/cases', redirectToArm)}
+                      options={getOptions(table, classes)}
                     />
                   </Typography>
                 </Grid>

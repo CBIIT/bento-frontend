@@ -7,11 +7,9 @@ import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import ServerPaginatedDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
-import CustomFooter from './tabFooter';
 import { addToCart, getCart } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
-import { dateTimeStamp, manipulateLinks } from '../../../utils/helpers';
-import formatBytes from '../../../utils/formatBytes';
+import { getColumns } from '../../../utils/tables';
 
 const TabView = ({
   classes,
@@ -28,8 +26,8 @@ const TabView = ({
   toggleMessageStatus,
   BottomMessageStatus,
   tabIndex,
-  downloadFileName,
   externalLinkIcon,
+  options,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -103,80 +101,16 @@ const TabView = ({
     }
   }
 
-  const options = () => ({
-    selectableRows: true,
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    downloadOptions: {
-      filename: downloadFileName.concat(dateTimeStamp()).concat('.csv'),
-      filterOptions: {
-        useDisplayedColumnsOnly: true,
-      },
-    },
-    viewColumns: false,
-    pagination: true,
-    isRowSelectable: (dataIndex) => disableRowSelection(data[dataIndex], fileIDs),
-    onRowSelectionChange: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
-    // eslint-disable-next-line no-unused-vars
-    customToolbarSelect: () => '',
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-      <CustomFooter
-        text="SAVE TO MY CASES"
-        count={count}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-      // eslint-disable-next-line no-shadow
-        onChangePage={(_, page) => changePage(page)}
-      />
-    ),
-
+  // overwrite default options
+  const defaultOptions = () => ({
+    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    isRowSelectable: (dataIndex) => (disableRowSelection
+      ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });
-
-  const displayFalseTableColumns = customColumn
-    .filter((col) => col.display === false).length;
-
-  const displayTableColumns = customColumn.slice(0, displayFalseTableColumns + 10);
-
-  const updatedTableWithLinks = manipulateLinks(displayTableColumns);
-
-  const columns = updatedTableWithLinks.map((column) => ({
-    name: column.dataField,
-    label: column.header,
-    options: {
-      display: column.display ? column.display : false,
-      filter: false,
-      customBodyRender: (value, tableMeta) => (
-        <div>
-          {
-          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
-            : column.externalLink ? (
-              <span className={classes.linkSpan}>
-                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
-                  {' '}
-                  {column.formatBytes ? formatBytes(value) : value}
-                  {' '}
-                </a>
-                <img
-                  src={externalLinkIcon ? externalLinkIcon.src : ''}
-                  alt={externalLinkIcon.alt ? externalLinkIcon.alt : ''}
-                  className={classes.externalLinkIcon}
-                />
-              </span>
-            )
-              : `${column.formatBytes ? formatBytes(value) : value}`
-}
-        </div>
-      ),
-    },
-  }));
+  const finalOptions = { ...options, ...defaultOptions() };
 
   return (
     <div>
-
       <Grid item xs={12} className={classes.saveButtonDiv}>
         <button
           type="button"
@@ -195,8 +129,8 @@ const TabView = ({
         <Grid item xs={12} id={tableID}>
           <ServerPaginatedDataTable
             data={data}
-            columns={columns}
-            options={options(downloadFileName)}
+            columns={getColumns(customColumn, classes, data, externalLinkIcon)}
+            options={finalOptions}
           />
         </Grid>
 

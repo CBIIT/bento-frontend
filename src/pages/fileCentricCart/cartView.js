@@ -10,24 +10,30 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import SkeletonTable from './components/skeletonTable';
 import { myFilesPageData, table, manifestData } from '../../bento/fileCentricCartWorkflowData';
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
 import {
-  getColumns, getOptions, getCustomFooter,
+  getColumns, getOptions, getDefaultCustomFooter,
 } from '../../utils/tables';
-import Message from './components/message';
+import Message from '../../components/Message';
 import { dateTimeStamp } from '../../utils/helpers';
 import DialogThemeProvider from './dialogThemeConfig';
 
 const cartView = ({ classes, data, isLoading }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
+  const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
   const [userComments, setUserComments] = React.useState('');
 
   function toggleMessageStatus(status) {
     return status === 'close' ? setTopMessageStatus(false) : setTopMessageStatus(true);
+  }
+
+  function toggleRemoveAllMessageStatus(status) {
+    return status === 'close' ? setRemoveAllMessageStatus(false) : setRemoveAllMessageStatus(true);
   }
 
   function closeModal() {
@@ -54,7 +60,7 @@ const cartView = ({ classes, data, isLoading }) => {
     options: {
       sort: false,
       customBodyRender: (value, tableMeta) => (
-        <div>
+        <div className={classes.tableDeleteButtonDiv}>
           <Button
             className={classes.tableDeleteButton}
             onClick={() => deleteFromCart({ fileIds: tableMeta.rowData[fileIdIndex] })}
@@ -63,10 +69,38 @@ const cartView = ({ classes, data, isLoading }) => {
           </Button>
         </div>
       ),
+      customHeadRender: () => (
+        <th className={classes.removeThCell}>
+          <span role="button">
+            <div className={classes.removeHeadCell}>
+              <div
+                className={classes.removeHeadCellText}
+                onClick={() => removeSubjects()}
+              >
+                Remove
+              </div>
+              <div className={classes.removeHeadCellIcon}>
+                <ArrowDropDownIcon onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} />
+                { removeAllMessageStatus ? (
+                  <div className={classes.removeAllMessage}>
+                    {' '}
+                    Remove
+                    {' '}
+                    <b>All</b>
+                    {' '}
+                    items in cart.
+                    {' '}
+                  </div>
+                ) : ''}
+              </div>
+            </div>
+          </span>
+        </th>
+      ),
     },
   }];
-  const columns = getColumns(table).concat(deleteColumn);
-  const options = getOptions(table, getCustomFooter, onRowSelectionChange, dateTimeStamp);
+  const columns = getColumns(table, classes).concat(deleteColumn);
+  const options = getOptions(table, classes, getDefaultCustomFooter, onRowSelectionChange);
 
   const messageData = (
     <span>
@@ -159,14 +193,6 @@ const cartView = ({ classes, data, isLoading }) => {
                 {' '}
               </div>
             ) : ''}
-            <button
-              type="button"
-              className={classes.deleteButton}
-              onClick={removeSubjects}
-            >
-              {myFilesPageData.deleteButtonText}
-            </button>
-
           </div>
           <div id="table_selected_files" className={classes.tableWrapper}>
             {}
@@ -252,27 +278,6 @@ const styles = (theme) => ({
     paddingBottom: '36px',
     background: 'white',
   },
-  tableCell1: {
-    width: '130px',
-  },
-  tableCell2: {
-    width: '300px',
-  },
-  tableCell3: {
-    width: '190px',
-  },
-  tableCell4: {
-    width: '170px',
-  },
-  tableCell5: {
-    width: '120px',
-  },
-  tableCell6: {
-    width: '80px',
-  },
-  tableCell7: {
-    width: '80px',
-  },
   linkIcon: {
     color: '#dc762f',
     width: '20px',
@@ -303,8 +308,8 @@ const styles = (theme) => ({
   },
   messageTop: {
     position: 'absolute',
-    right: '33px',
-    top: '-120px',
+    right: '30px',
+    top: '-128px',
     zIndex: '400',
   },
   manifestButtonGroup: {
@@ -320,25 +325,6 @@ const styles = (theme) => ({
     color: '#fff',
     boxShadow: 'none',
     backgroundColor: '#03A383',
-    padding: '6px 16px',
-    fontSize: '0.875rem',
-    boxSizing: 'border-box',
-    transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-    lineHeight: '1.75',
-    fontWeight: '500',
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    borderRadius: '10px',
-    textTransform: 'uppercase',
-    border: 'none',
-    verticalAlign: 'top',
-    marginTop: '6px',
-  },
-  deleteButton: {
-    height: '45px',
-    minWidth: '191px',
-    color: '#fff',
-    boxShadow: 'none',
-    backgroundColor: '#A61401',
     padding: '6px 16px',
     fontSize: '0.875rem',
     boxSizing: 'border-box',
@@ -371,6 +357,58 @@ const styles = (theme) => ({
     border: '1px solid #ccc',
     minWidth: '31px',
     cursor: 'pointer',
+  },
+  tableDeleteButtonDiv: {
+  },
+  removeCell: {
+    cursor: 'pointer',
+    display: 'inline-flex',
+    outline: 'none',
+  },
+  removeThCell: {
+    top: '0px',
+    color: '#A61401',
+    zIndex: '100',
+    position: 'relative',
+    fontSize: '11pt',
+    borderTop: '#42779A 3px solid',
+    fontStyle: 'normal',
+    fontFamily: "'Lato Regular','Raleway', sans-serif",
+    fontWeight: 'bold',
+    paddingLeft: '20px',
+    borderBottom: '#42779A 3px solid',
+    letterSpacing: '0.06em',
+    textDecoration: 'underline',
+    backgroundColor: '#ffffff',
+    width: '120px',
+    textAlign: 'center',
+  },
+  removeHeadCell: {
+    cursor: 'pointer',
+    display: 'flex',
+    verticalAlign: 'top',
+  },
+  removeHeadCellText: {
+    display: 'inline-block',
+  },
+  removeHeadCellIcon: {
+    ursor: 'pointer',
+    display: 'flex',
+    verticalAlign: 'top',
+  },
+  removeAllMessage: {
+    fontWeight: '500',
+    position: 'absolute',
+    top: '36px',
+    right: '0',
+    zIndex: '400',
+    background: '#fff',
+    border: '2px solid #A61401',
+    borderRadius: '7px',
+    fontSize: '12px',
+    width: '110px',
+    height: '48px',
+    padding: '5px 0px',
   },
 });
 export default withStyles(styles, { withTheme: true })(cartView);

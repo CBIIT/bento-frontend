@@ -14,6 +14,7 @@ import Message from '../../../components/Message';
 import {
   tabs, tooltipContent, tabContainers, tabIndex, externalLinkIcon,
 } from '../../../bento/dashboardTabData';
+import { getOptions } from '../../../utils/tables';
 
 function TabContainer({ children, dir }) {
   return (
@@ -201,8 +202,9 @@ const tabController = (classes) => {
   const TABContainers = tabContainers.map((container) => (
     <TabContainer id={container.id}>
       <TabView
+        options={getOptions(container, classes)}
         data={dashboard[container.dataField] ? dashboard[container.dataField] : []}
-        customColumn={container.columns}
+        customColumn={container}
         customOnRowsSelect={onRowsSelectFunction[container.onRowsSelect]}
         openSnack={openSnack}
         closeSnack={closeSnack}
@@ -216,7 +218,6 @@ const tabController = (classes) => {
         BottomMessageStatus={BottomMessageStatus}
          // eslint-disable-next-line jsx-a11y/tabindex-no-positive
         tabIndex={container.tabIndex}
-        downloadFileName={container.downloadFileName}
         externalLinkIcon={externalLinkIcon}
       />
     </TabContainer>

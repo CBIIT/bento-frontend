@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { FileOnRowsSelect, FileDisableRowSelection } from '../utils/fileTable';
+import { FileOnRowsSelect } from '../utils/fileTable';
 
 // -------------- Case ID area configurations --------------
 const header = {
@@ -49,7 +49,6 @@ export const externalLinkIcon = {
 };
 
 // --------------- File table configuration --------------
-
 const table = {
   // Set 'display' to false to hide the table entirely
   display: true,
@@ -61,18 +60,12 @@ const table = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // Text to appear on Add to cart button
-  buttonText: 'Add Selected Files',
-  // Help Icon Message
+  // Set 'selectableRows' to true to show the row selection
+  selectableRows: true,
   tooltipMessage: 'Click button to add selected files.',
   helpMessage: 'Here help message',
-  // showHideColumns 'true' or 'false'
-  showHideColumns: true,
-  // download csv 'true' or 'false'
-  download: true,
-  // downloaded File Name
-  downloadFileName: 'Bento_arm_files_download',
-  // A maximum of 10 columns are allowed
+  // Text to appear on Add to cart button
+  buttonText: 'Add Selected Files',
   columns: [
     {
       dataField: 'file_name',
@@ -104,8 +97,6 @@ const table = {
   // Util Functions
   // Custom function on selct checkbox is selected.
   customOnRowsSelect: FileOnRowsSelect,
-  // Custom function disable selct checkbox in table if related files are in cart
-  disableRowSelection: FileDisableRowSelection,
 };
 
 // --------------- GraphQL query configuration --------------

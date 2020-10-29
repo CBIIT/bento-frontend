@@ -22,6 +22,7 @@ export const tabContainers = [
     disableRowSelection: 'type1',
     buttonTitle: 'Add Selected Files',
     tableID: 'case_tab_table',
+    selectableRows: true,
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#09A175',
@@ -128,6 +129,7 @@ export const tabContainers = [
     disableRowSelection: 'type2',
     buttonTitle: 'Add Selected Files',
     tableID: 'sample_tab_table',
+    selectableRows: true,
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',
@@ -227,6 +229,7 @@ export const tabContainers = [
     disableRowSelection: 'type3',
     buttonTitle: 'Add Selected Files',
     tableID: 'file_tab_table',
+    selectableRows: true,
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#DC2FDA',
