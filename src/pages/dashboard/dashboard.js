@@ -10,6 +10,7 @@ import Cases from './caseTable/caseController';
 // import PositionedSnackbar from '../../components/Disclaimer/DisclaimerView';
 import SideBar from '../../components/SideBar/SideBarView';
 import { widgetsData } from '../../bento/dashboardData';
+import colors from '../../utils/colors';
 
 const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
 
@@ -109,6 +110,7 @@ const Dashboard = ({
                                 cx="50%"
                                 cy="50%"
                                 textColor={theme.palette.widgetBackground.contrastText}
+                                colors={colors}
                               />
                             </Widget>
                           </Grid>

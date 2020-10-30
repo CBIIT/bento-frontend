@@ -11,6 +11,7 @@ import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
+import colors from '../../utils/colors';
 import {
   header,
   subsections,
@@ -144,6 +145,7 @@ const ArmDetail = ({ data, classes }) => {
                       cx="50%"
                       cy="50%"
                       fontSize="15px"
+                      colors={colors}
                     />
                   </Widget>
                 </div>

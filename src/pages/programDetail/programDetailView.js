@@ -23,6 +23,7 @@ import {
   getDonutDataFromDashboardData,
 } from '../../utils/dashboardUtilFunctions';
 import { getOptions, getColumns } from '../../utils/tables';
+import colors from '../../utils/colors';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
@@ -297,6 +298,7 @@ const ProgramView = ({ classes, data, theme }) => {
                         cx="50%"
                         cy="50%"
                         fontSize="15px"
+                        colors={colors}
                       />
                     </Widget>
                   </Grid>
