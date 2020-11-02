@@ -35,18 +35,24 @@ const tabController = (classes) => {
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
+    src: tooltipContent.icon,
+    alt: tooltipContent.alt,
     isActive: false,
     currentTab,
   });
   const [BottomMessageStatus, setBottomMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
+    src: tooltipContent.icon,
+    alt: tooltipContent.alt,
     isActive: false,
     currentTab,
   });
 
-  function setTooltip(status, tabInfo = '') {
+  function setTooltip(status, tabInfo = '', icon, alt) {
     return {
       text: tabInfo,
+      src: icon,
+      alt,
       isActive: status,
       currentTab,
     };
@@ -55,12 +61,21 @@ const tabController = (classes) => {
   const tooltipConfig = {
     location: {
       top: {
-        open: () => setTopMessageStatus(setTooltip(true, tooltipContent[currentTab])),
-        close: () => setTopMessageStatus(setTooltip(false, tooltipContent[currentTab])),
+        open: () => setTopMessageStatus(setTooltip(true,
+          tooltipContent[currentTab],
+          tooltipContent.icon,
+          tooltipContent.alt)),
+        close: () => setTopMessageStatus(setTooltip(false, tooltipContent[currentTab],
+          tooltipContent.icon,
+          tooltipContent.alt)),
       },
       bottom: {
-        open: () => setBottomMessageStatus(setTooltip(true, tooltipContent[currentTab])),
-        close: () => setBottomMessageStatus(setTooltip(false, tooltipContent[currentTab])),
+        open: () => setBottomMessageStatus(setTooltip(true, tooltipContent[currentTab],
+          tooltipContent.icon,
+          tooltipContent.alt)),
+        close: () => setBottomMessageStatus(setTooltip(false, tooltipContent[currentTab],
+          tooltipContent.icon,
+          tooltipContent.alt)),
       },
     },
 
@@ -209,14 +224,15 @@ const tabController = (classes) => {
         openSnack={openSnack}
         closeSnack={closeSnack}
         disableRowSelection={disableRowSelectionFunction[container.disableRowSelection]}
-        buttonTitle={container.buttonTitle}
+        buttonText={container.buttonText}
         tableID={container.tableID}
         saveButtonDefaultStyle={container.saveButtonDefaultStyle}
         ActiveSaveButtonDefaultStyle={container.ActiveSaveButtonDefaultStyle}
         DeactiveSaveButtonDefaultStyle={container.DeactiveSaveButtonDefaultStyle}
         toggleMessageStatus={toggleMessageStatus}
         BottomMessageStatus={BottomMessageStatus}
-         // eslint-disable-next-line jsx-a11y/tabindex-no-positive
+        TopMessageStatus={TopMessageStatus}
+        // eslint-disable-next-line jsx-a11y/tabindex-no-positive
         tabIndex={container.tabIndex}
         externalLinkIcon={externalLinkIcon}
       />

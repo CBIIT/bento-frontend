@@ -1,5 +1,9 @@
+import gql from 'graphql-tag';
+
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
+  icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
+  alt: 'tooltipIcon',
   0: 'Click button to add selected files associated with the selected case(s).',
   1: 'Click button to add selected files associated with the selected sample(s).',
   2: 'Click button to add selected files.',
@@ -15,14 +19,12 @@ export const externalLinkIcon = {
 // --------------- Tabs Table configuration --------------
 export const tabContainers = [
   {
-    id: 'case_tab',
+
     name: 'Cases',
     dataField: 'dataCase',
-    onRowsSelect: 'type1',
-    disableRowSelection: 'type1',
-    buttonTitle: 'Add Selected Files',
-    tableID: 'case_tab_table',
-    selectableRows: true,
+    defaultSortField: 'subject_id',
+    defaultSortDirection: 'asc',
+    buttonText: 'Add Selected Files',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#09A175',
@@ -40,8 +42,6 @@ export const tabContainers = [
       opacity: 'unset',
       border: 'unset',
     },
-    tabIndex: '0',
-    downloadFileName: 'Bento_Dashboard_cases_download',
     columns: [
       {
         dataField: 'subject_id',
@@ -120,16 +120,15 @@ export const tabContainers = [
         display: true,
       },
     ],
+    id: 'case_tab',
+    onRowsSelect: 'type1',
+    disableRowSelection: 'type1',
+    tableID: 'case_tab_table',
+    selectableRows: true,
+    tabIndex: '0',
+    downloadFileName: 'Bento_Dashboard_cases_download',
   },
   {
-    id: 'sample_tab',
-    name: 'Samples',
-    dataField: 'dataSample',
-    onRowsSelect: 'type3',
-    disableRowSelection: 'type2',
-    buttonTitle: 'Add Selected Files',
-    tableID: 'sample_tab_table',
-    selectableRows: true,
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',
@@ -146,8 +145,8 @@ export const tabContainers = [
       opacity: 'unset',
       border: 'unset',
     },
-    tabIndex: '1',
-    downloadFileName: 'Bento_Dashboard_cases_download',
+    name: 'Samples',
+    dataField: 'dataSample',
     columns: [
       {
         dataField: 'sample_id',
@@ -220,16 +219,19 @@ export const tabContainers = [
         display: true,
       },
     ],
+    id: 'sample_tab',
+    onRowsSelect: 'type3',
+    disableRowSelection: 'type2',
+    buttonText: 'Add Selected Files',
+    tableID: 'sample_tab_table',
+    selectableRows: true,
+    tabIndex: '1',
+    downloadFileName: 'Bento_Dashboard_cases_download',
   },
   {
-    id: 'file_tab',
     name: 'Files',
     dataField: 'dataFile',
-    onRowsSelect: 'type2',
-    disableRowSelection: 'type3',
-    buttonTitle: 'Add Selected Files',
-    tableID: 'file_tab_table',
-    selectableRows: true,
+    buttonText: 'Add Selected Files',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#DC2FDA',
@@ -246,8 +248,6 @@ export const tabContainers = [
       opacity: 'unset',
       border: 'unset',
     },
-    tabIndex: '2',
-    downloadFileName: 'Bento_Dashboard_cases_download',
     columns: [
       {
         dataField: 'file_id',
@@ -319,6 +319,14 @@ export const tabContainers = [
         display: true,
       },
     ],
+    id: 'file_tab',
+    onRowsSelect: 'type2',
+    disableRowSelection: 'type3',
+    tableID: 'file_tab_table',
+    selectableRows: true,
+
+    tabIndex: '2',
+    downloadFileName: 'Bento_Dashboard_cases_download',
   },
 ];
 
@@ -362,3 +370,120 @@ export const tabIndex = {
     selectedColor: '#C92EC7',
   },
 };
+
+export const DASHBOARD_QUERY = gql`{
+  numberOfPrograms
+  numberOfStudies
+  numberOfSubjects
+  numberOfSamples
+  numberOfLabProcedures
+  numberOfFiles
+  subjectCountByProgram{
+        group
+        subjects
+      }
+    subjectCountByStudy{
+        group
+        subjects
+      }
+    subjectCountByDiagnoses{
+        group
+        subjects
+      }
+    subjectCountByRecurrenceScore{
+        group
+        subjects
+      }
+    subjectCountByTumorSize{
+        group
+        subjects
+      }
+    subjectCountByChemotherapyRegimen{
+        group
+        subjects
+      }
+    subjectCountByTumorGrade{
+        group
+        subjects
+      }
+  subjectCountByErStatus{
+        group
+        subjects
+      }
+  subjectCountByPrStatus{
+        group
+        subjects
+      }
+  subjectCountByMenopauseStatus{
+        group
+        subjects
+      }
+  subjectCountByChemotherapyRegimen{
+        group
+        subjects
+      }
+      subjectCountByEndocrineTherapy{
+    group
+    subjects
+  }
+    armsByPrograms {
+        program
+        caseSize
+        children {
+            arm
+            caseSize
+            size
+        }
+    }
+
+  subjectOverViewPaged(first: 1000000) {
+      subject_id
+      program_id
+      study_info
+      samples
+      program
+      study_acronym
+      diagnosis
+      recurrence_score
+      tumor_size
+      tumor_grade
+      er_status
+      pr_status
+      chemotherapy
+      endocrine_therapy
+      menopause_status
+      age_at_index
+      survival_time
+      lab_procedures
+      files{
+        file_id
+      }
+  }
+    sampleOverview {
+        sample_id
+        subject_id
+        program
+        arm
+        diagnosis
+        tissue_type
+        tissue_composition
+        sample_anatomic_site
+        sample_procurement_method
+        platform
+        files 
+    }
+    
+    fileOverview {
+        file_id
+        file_name
+        association
+        file_description
+        file_format
+        file_size
+        program
+        arm
+        subject_id
+        sample_id
+        diagnosis
+    }
+  }`;
