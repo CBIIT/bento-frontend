@@ -369,6 +369,12 @@ export default {
         },
       },
     },
+    MUIDataTableFooter: {
+      root: {
+        borderBottom: '3px solid #e7e5e5',
+        borderTop: '5px solid #e7e5e5',
+      },
+    },
     MuiTableRow: {
       head: {
         height: 40,
