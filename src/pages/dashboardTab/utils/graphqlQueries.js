@@ -101,12 +101,12 @@ export const FILTER_QUERY = gql`
         meno_status: $meno_status,
         first: $first
     ) {
-        num_programs
-        num_studies
-        num_subjects
-        num_samples
-        num_lab_procedures
-        num_files
+      numberOfPrograms
+      numberOfStudies
+      numberOfSubjects
+      numberOfSamples
+      numberOfLabProcedures
+      numberOfFiles
         subjectIds
         firstPage {
           subject_id
@@ -199,7 +199,7 @@ export const DASHBOARD_QUERY = gql`{
         }
     }
 
-  subjectOverViewPaged(first: 1000000) {
+  subjectOverViewPaged(first: 100) {
       subject_id
       program_id
       study_info

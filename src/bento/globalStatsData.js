@@ -4,38 +4,38 @@ export const globalStatsData = [
   // A maximum of 6 stats are allowed
   {
     statTitle: 'Programs',
-    datatable_field: 'num_programs',
+    datatable_field: 'numberOfPrograms',
     type: 'field',
     statAPI: 'numberOfPrograms',
   },
   {
     statTitle: 'Arms',
-    datatable_field: 'num_studies',
+    datatable_field: 'numberOfStudies',
     type: 'field',
     statAPI: 'numberOfStudies',
   },
   {
     statTitle: 'Cases',
-    datatable_field: 'num_subjects',
+    datatable_field: 'numberOfSubjects',
     type: 'field',
     statAPI: 'numberOfSubjects',
   },
   {
     statTitle: 'samples',
     type: 'field',
-    datatable_field: 'num_samples',
+    datatable_field: 'numberOfSamples',
     statAPI: 'numberOfSamples',
   },
   {
     statTitle: 'Assays',
     type: 'field',
-    datatable_field: 'num_lab_procedures',
+    datatable_field: 'numberOfLabProcedures',
     statAPI: 'numberOfLabProcedures',
   },
   {
     statTitle: 'files',
     type: 'field',
-    datatable_field: 'num_files',
+    datatable_field: 'numberOfFiles',
     statAPI: 'numberOfFiles',
   },
 ];

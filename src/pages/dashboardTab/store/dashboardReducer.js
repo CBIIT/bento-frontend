@@ -7,6 +7,7 @@ import client from '../../../utils/graphqlClient';
 import { DASHBOARD_QUERY, FILTER_QUERY, FILTER_GROUP_QUERY } from '../utils/graphqlQueries';
 import {
   customCheckBox,
+  updateCheckBox,
   transformInitialDataForSunburst,
   getFilters,
   filterData,
@@ -14,6 +15,7 @@ import {
   getStatDataFromDashboardData,
   getSunburstDataFromDashboardData,
   getDonutDataFromDashboardData,
+  setSelectedFilterValues,
 } from '../../../utils/dashboardUtilFunctions';
 
 const storeKey = 'dashboardTab';
@@ -26,6 +28,7 @@ const initialState = {
     error: '',
     hasError: false,
     stats: {},
+    allActiveFilters: {},
     checkboxForAll: {
       data: [],
     },
@@ -37,7 +40,6 @@ const initialState = {
       defaultPanel: false,
     },
     datatable: {
-      filters: [],
       data: [],
     },
     widgets: {},
@@ -89,7 +91,7 @@ function fetchDashboardTab() {
   };
 }
 
-const allfilters = {
+const allFilters = {
   "programs": [],
   "studies": [],
   "diagnoses": [],
@@ -111,13 +113,15 @@ const allfilters = {
  */
 
 function createFilterVariables(data) {
-  const filter = Object.entries(allfilters).reduce((acc , [key, val]) => {
-    if(data[0].datafield == key)
-      return { ...acc , [key]: [data[0].name] }
-    return { ...acc , [key]: [] };
+  const currentAllActiveFilters = getState().allActiveFilters;
+  const filter = Object.entries(currentAllActiveFilters).reduce((acc , [key, val]) => {
+    if(data[0].datafield == key){
+     return  data[0].isChecked ? { ...acc , [key]: [...currentAllActiveFilters[key],...[data[0].name]] } : { ...acc , [key]: currentAllActiveFilters[key].filter(item => item !== data[0].name)} }
+      // return { ...acc , [key]: [...currentAllActiveFilters[key],...[data[0].name]] }
+    return { ...acc , [key]: currentAllActiveFilters[key] };
   }, {});
 
-  return {...filter, "first": 10};
+  return filter;
 }
 
 // export function toggleCheckBox(payload) {
@@ -126,10 +130,11 @@ function createFilterVariables(data) {
 
 export function toggleCheckBox(payload) {
   return () => {
+    const currentAllFilterVariables = createFilterVariables(payload);
     return client
       .query({  //request to get the filtered subjects
         query: FILTER_QUERY,
-        variables: createFilterVariables(payload),
+        variables: {...currentAllFilterVariables, "first": 100},
       })
       .then((result) =>  { 
         return client.query({  //request to get the filtered group counts
@@ -137,7 +142,7 @@ export function toggleCheckBox(payload) {
         variables: { "subject_ids": result.data.searchSubjects.subjectIds},
       })
       .then((result2) => {
-      return store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: Object.assign({filter: payload},{groups: _.cloneDeep(result2)}, _.cloneDeep(result)) })
+      return store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: Object.assign({filter: payload},{allFilters: currentAllFilterVariables},{groups: _.cloneDeep(result2)}, _.cloneDeep(result)) })
     })
       .catch((error) => store.dispatch(
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
@@ -184,29 +189,27 @@ const reducers = {
     isFetched: true,
   }),
   TOGGGLE_CHECKBOX2: (state, item) => {
-    const dataTableFilters = getFilters(state.datatable.filters, item.filter);
-    const updatedCheckboxData1 = customCheckBox(item.groups.data);
+    const dataTableFilters = getFilters(state.checkbox.data, item.filter);
+    const updatedCheckboxData1 = updateCheckBox(state.checkbox.data, item.groups.data, item.filter[0]);
+    const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters );
 
     // This function is to get updated checkbox data and counts this needs to be updated
-    const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
-      ? getCheckBoxData(
-        state.subjectOverView.data,
-        state.checkboxForAll.data,
-        state.checkbox.data.filter((d) => item.filter[0].groupName === d.groupName)[0],
-        dataTableFilters,
-      )
-      : state.checkboxForAll.data;
+    // const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
+    //   ? getCheckBoxData(
+    //     state.checkboxForAll.data,
+    //     state.checkbox.data.filter((d) => item.filter[0].groupName === d.groupName)[0],
+    //     dataTableFilters,
+    //   )
+    //   : state.checkboxForAll.data;
     return{
     ...state,
+    allActiveFilters: item.allFilters,
     checkbox: {
-      data: updatedCheckboxData1,
-    },
-    checkbox: {
-      data: updatedCheckboxData1,
+      data: checkboxData1,
     },
     datatable: {
       ...state.datatable,
-      filters: dataTableFilters,
+      dataCase: item.data.searchSubjects.firstPage,
     },
     stats: getFilteredStat(item.data.searchSubjects),
     widgets: getWidgetsInitData(item.groups.data),
@@ -249,6 +252,7 @@ const reducers = {
         hasError: false,
         error: '',
         stats: getStatInit(item.data),
+        allActiveFilters: allFilters,
         subjectOverView: {
           data: item.data.subjectOverViewPaged,
         },
