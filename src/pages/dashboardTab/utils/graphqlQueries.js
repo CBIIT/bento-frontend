@@ -69,6 +69,16 @@ export const FILTER_GROUP_QUERY = gql`
         group
         subjects
     }
+    armsByPrograms(subject_ids: $subject_ids) {
+      program
+      caseSize
+      children {
+          arm
+          caseSize
+          size
+      }
+  }
+    
 }
   `;
 
