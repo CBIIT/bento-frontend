@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const navBarCartData = {
-  cartLabel: 'MY Files',
+  cartLabel: 'Cart',
   cartLink: '/fileCentricCart',
   cartIcon: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Icon-Cart-Navbar.svg',
   cartIconAlt: 'cart_logo',
