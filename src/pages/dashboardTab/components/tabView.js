@@ -191,7 +191,7 @@ const TabView = ({
 const styles = () => ({
 
   link: {
-    color: '#DC762F',
+    color: '#7747ff',
     textDecoration: 'none',
 
     '&:hover': {
@@ -203,6 +203,9 @@ const styles = () => ({
     color: '#3E6886',
     fontSize: '12px',
     marginRight: '70px',
+    textDecoration: 'none',
+    borderBottom: '1px solid #3E6886',
+    paddingBottom: '6px',
   },
   caseTitle: {
     color: '#194563',

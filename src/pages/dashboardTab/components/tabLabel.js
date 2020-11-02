@@ -8,10 +8,14 @@ const tabLabel = ({
     <span style={{ color: primaryColor }}>
       {title}
       {' '}
+
+    </span>
+    <span style={{ fontSize: '17px', color: primaryColor }}>
       (
       {count}
       )
     </span>
+
   </div>
 );
 
