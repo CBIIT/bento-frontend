@@ -62,7 +62,7 @@ function getStatInit(input) {
 
 function getFilteredStat(input) {
   const initStats = statsCount.reduce((acc, stat) => (
-    { ...acc, [stat.statAPI]: input[stat.datatable_field] }
+    { ...acc, [stat.statAPI]: input[stat.statAPI] }
   ), {});
   return initStats;
 }

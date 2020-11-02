@@ -31,6 +31,9 @@ const tabController = (classes) => {
   const dashboard = useSelector((state) => (state.dashboardTab
 && state.dashboardTab.datatable
     ? state.dashboardTab.datatable : {}));
+    // data from store
+  const dashboardStats = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
@@ -187,7 +190,9 @@ const tabController = (classes) => {
   const TABs = tabs.map((tab) => (
     <Tab
       id={tab.id}
-      label={getTabLalbel(tab.name, dashboard[tab.dataField] ? dashboard[tab.dataField].length : 0)}
+      label={
+        getTabLalbel(tab.name, dashboardStats[tab.count] ? dashboardStats[tab.count] : 0)
+      }
     />
   ));
 

@@ -325,16 +325,19 @@ export const tabs = [
     id: 'case_tab',
     name: 'Cases',
     dataField: 'dataCase',
+    count: 'numberOfSubjects',
   },
   {
     id: 'sample_tab',
     name: 'Samples',
     dataField: 'dataSample',
+    count: 'numberOfSamples',
   },
   {
     id: 'file_tab',
     name: 'Files',
     dataField: 'dataFile',
+    count: 'numberOfFiles',
   },
 ];
 

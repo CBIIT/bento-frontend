@@ -222,4 +222,31 @@ export const DASHBOARD_QUERY = gql`{
         file_id
       }
   }
+  sampleOverview {
+    sample_id
+    subject_id
+    program
+    arm
+    diagnosis
+    tissue_type
+    tissue_composition
+    sample_anatomic_site
+    sample_procurement_method
+    platform
+    files 
+}
+
+fileOverview {
+    file_id
+    file_name
+    association
+    file_description
+    file_format
+    file_size
+    program
+    arm
+    subject_id
+    sample_id
+    diagnosis
+}
   }`;
