@@ -285,6 +285,7 @@ export default {
       },
       tableRoot: {
         transform: 'rotateX(180deg)',
+        borderTop: '3px solid #e7e5e5',
       },
     },
     MUIDataTableSelectCell: {
@@ -294,7 +295,6 @@ export default {
       },
       headerCell: {
         borderTop: '3px solid #42779A',
-        borderBottom: '3px solid #42779A',
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
 
@@ -365,7 +365,7 @@ export default {
         },
         '&:nth-child(odd)': {
           color: '#004C73 !important',
-          background: '#f3f3f3 !important',
+          background: '#f4f5f5 !important',
         },
       },
     },
