@@ -142,12 +142,12 @@ export function toggleCheckBox(payload) {
         variables: { "subject_ids": result.data.searchSubjects.subjectIds},
       })
       .then((result2) => {
-      return store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: Object.assign({filter: payload},{allFilters: currentAllFilterVariables},{groups: _.cloneDeep(result2)}, _.cloneDeep(result)) })
+      return store.dispatch({ type: 'TOGGGLE_CHECKBOX_WITH_API', payload: Object.assign({filter: payload},{allFilters: currentAllFilterVariables},{groups: _.cloneDeep(result2)}, _.cloneDeep(result)) })
     })
       .catch((error) => store.dispatch(
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
       ));
-        // return store.dispatch({ type: 'TOGGGLE_CHECKBOX2', payload: Object.assign({filter: payload}, _.cloneDeep(result)) })
+        // return store.dispatch({ type: 'TOGGGLE_CHECKBOX_WITH_API', payload: Object.assign({filter: payload}, _.cloneDeep(result)) })
       })
       .catch((error) => store.dispatch(
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
@@ -188,9 +188,8 @@ const reducers = {
     isLoading: false,
     isFetched: true,
   }),
-  TOGGGLE_CHECKBOX2: (state, item) => {
-    const dataTableFilters = getFilters(state.checkbox.data, item.filter);
-    const updatedCheckboxData1 = updateCheckBox(state.checkbox.data, item.groups.data, item.filter[0]);
+  TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
+    const updatedCheckboxData1 = updateCheckBox(state.checkbox.data, item.groups.data, item.filter[0], item.allFilters);
     const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters );
 
     // This function is to get updated checkbox data and counts this needs to be updated
