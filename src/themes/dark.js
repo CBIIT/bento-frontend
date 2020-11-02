@@ -359,6 +359,7 @@ export default {
     },
     MUIDataTableBodyRow: {
       root: {
+        backgroundColor: 'transparent !important',
         '&:nth-child(even)': {
           color: '#004C73',
         },
