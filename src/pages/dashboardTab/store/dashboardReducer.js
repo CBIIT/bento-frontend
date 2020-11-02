@@ -3,7 +3,7 @@ import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData } from '../../../bento/dashboardData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
-import { DASHBOARD_QUERY } from '../utils/graphqlQueries';
+import { DASHBOARD_QUERY } from '../../../bento/dashboardTabData';
 import {
   customCheckBox,
   transformInitialDataForSunburst,

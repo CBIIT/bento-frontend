@@ -6,7 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
-import ServerPaginatedDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
+import { CustomDataTable } from 'bento-components';
 import { addToCart, getCart } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
 import { getColumns } from '../../../utils/tables';
@@ -18,7 +18,7 @@ const TabView = ({
   customOnRowsSelect,
   openSnack,
   disableRowSelection,
-  buttonTitle,
+  buttonText,
   tableID,
   saveButtonDefaultStyle,
   DeactiveSaveButtonDefaultStyle,
@@ -28,6 +28,7 @@ const TabView = ({
   tabIndex,
   externalLinkIcon,
   options,
+  TopMessageStatus,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -118,16 +119,22 @@ const TabView = ({
           onClick={exportFiles}
           className={classes.button}
         >
-          { buttonTitle }
+          { buttonText }
         </button>
-        <IconButton aria-label="help" className={classes.helpIconButton}>
-          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
+          {TopMessageStatus.src ? (
+            <img
+              src={TopMessageStatus.src}
+              alt={TopMessageStatus.alt}
+              className={classes.helpIcon}
+            />
+          ) : <HelpIcon className={classes.helpIcon} fontSize="small" />}
         </IconButton>
 
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
-          <ServerPaginatedDataTable
+          <CustomDataTable
             data={data}
             columns={getColumns(customColumn, classes, data, externalLinkIcon)}
             options={finalOptions}
@@ -142,11 +149,17 @@ const TabView = ({
           onClick={exportFiles}
           className={classes.button}
         >
-          { buttonTitle }
+          { buttonText }
         </button>
 
-        <IconButton aria-label="help" className={classes.helpIconButton}>
-          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
+          {BottomMessageStatus.src ? (
+            <img
+              src={BottomMessageStatus.src}
+              alt={BottomMessageStatus.alt}
+              className={classes.helpIcon}
+            />
+          ) : <HelpIcon className={classes.helpIcon} fontSize="small" />}
         </IconButton>
         <div style={{ position: 'relative' }}>
           { BottomMessageStatus.isActive

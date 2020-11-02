@@ -201,7 +201,7 @@ const cartView = ({ classes, data, isLoading }) => {
               <textarea
                 id="multiline-user-coments"
                 className={classes.textField}
-                placeholder={myFilesPageData.textAresPlaceholder}
+                placeholder={myFilesPageData.textareaPlaceholder}
                 onChange={(e) => setUserComments(e.target.value)}
               />
             </div>

@@ -16,7 +16,7 @@ export const myFilesPageData = {
   headerIconAlt: 'Bento MyFiles header logo',
   manifestFileName: 'BENTO File Manifest',
   tooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
-  textAresPlaceholder: 'Please add a description for the XML file you are about to download.',
+  textareaPlaceholder: 'Please add a description for the XML file you are about to download.',
   errorMessage: 'An error has occurred in loading CART',
   popUpWindow: {
     display: true,
@@ -38,6 +38,7 @@ export const manifestData = {
 // --------------- File table configuration --------------
 
 export const table = {
+  dataField: 'filesInList',
   // Value must be one of the 'dataField's in "columns"
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
