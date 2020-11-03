@@ -1,9 +1,15 @@
+/* eslint-disable */
 import _ from 'lodash';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData } from '../../../bento/dashboardData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
-import { DASHBOARD_QUERY, FILTER_QUERY, FILTER_GROUP_QUERY } from '../../../bento/dashboardTabData';
+import { DASHBOARD_QUERY, 
+  FILTER_QUERY, 
+  FILTER_GROUP_QUERY, 
+  GET_FILES_OVERVIEW_QUERY,
+   GET_SAMPLES_OVERVIEW_QUERY, 
+   GET_CASES_OVERVIEW_QUERY } from '../../../bento/dashboardTabData';
 import {
   customCheckBox,
   updateCheckBox,
@@ -28,6 +34,7 @@ const initialState = {
     hasError: false,
     stats: {},
     allActiveFilters: {},
+    currentActiveTab: 'Cases',
     checkboxForAll: {
       data: [],
     },
@@ -161,6 +168,26 @@ export function toggleCheckBox(payload) {
   };
 }
 
+/**
+ * Updates the current active dashboard tab.
+ *
+ * @param {object} data
+ * @return {json}
+ */
+
+export function getDataForTab(payload) {
+
+    const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
+    return client
+      .query({
+        query: QUERY,
+      })
+      .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: {currentTab: payload, ..._.cloneDeep(result)} }))
+      .catch((error) => store.dispatch(
+        { type: 'DASHBOARDTAB_QUERY_ERR', error },
+      ));
+}
+
 function getWidgetsData(input) {
   const donut = widgetsData.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input, widget.datatable_level1_field, widget.datatable_level2_field) : getDonutDataFromDashboardData(input, widget.datatable_field);
@@ -222,6 +249,16 @@ const reducers = {
       widgets: getWidgetsInitData(item.groups.data),
     };
   },
+  UPDATE_CURRRENT_TAB_DATA : (state, item ) => (
+    { ...state, 
+      currentActiveTab:currentTab,
+      datatable: {
+      ...state.datatable,
+      dataCase: item.data.subjectOverViewPaged,
+      dataSample: item.data.sampleOverview,
+      dataFile: item.data.fileOverview,
+    },}
+  ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);
