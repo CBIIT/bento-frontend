@@ -251,7 +251,7 @@ const reducers = {
   },
   UPDATE_CURRRENT_TAB_DATA : (state, item ) => (
     { ...state, 
-      currentActiveTab:currentTab,
+      currentActiveTab: item.currentTab,
       datatable: {
       ...state.datatable,
       dataCase: item.data.subjectOverViewPaged,
