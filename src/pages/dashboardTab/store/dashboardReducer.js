@@ -68,13 +68,23 @@ function getStatInit(input) {
   return initStats;
 }
 
+/**
+ * Returns the filtered stats from inputAPT data.
+ * @param {object} data
+ * @return {json}
+ */
 function getFilteredStat(input) {
-  const initStats = statsCount.reduce((acc, stat) => (
+  const filteredStats = statsCount.reduce((acc, stat) => (
     { ...acc, [stat.statAPI]: input[stat.statAPI] }
   ), {});
-  return initStats;
+  return filteredStats;
 }
 
+/**
+ * Returns the widgets data.
+ * @param {object} data
+ * @return {json}r
+ */
 function getWidgetsInitData(data) {
   const donut = widgetsData.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : data[widget.dataName];
@@ -98,6 +108,13 @@ function fetchDashboardTab() {
       ));
   };
 }
+
+/**
+ * Generate a default varibles for filter query.
+ *
+ * Need to be updated with custodian of filter
+ * @return distpatcher
+ */
 
 const allFilters = {
   programs: [],
@@ -136,10 +153,12 @@ function createFilterVariables(data) {
   return filter;
 }
 
-// export function toggleCheckBox(payload) {
-//   return store.dispatch({ type: 'TOGGGLE_CHECKBOX', payload });
-// }
-
+/**
+ * Trigger respective API queries when checkbox is checked.
+ *
+ * @param {object} payload
+ * @return distpatcher
+ */
 export function toggleCheckBox(payload) {
   return () => {
     const currentAllFilterVariables = createFilterVariables(payload);
@@ -177,7 +196,7 @@ export function toggleCheckBox(payload) {
  * @return {json}
  */
 
-export function getDataForTab(payload, subjectIDsAfterFilter = null) {
+export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) {
   const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
   const VARIABLES = subjectIDsAfterFilter || getState().filteredSubjectIds;
   return client
@@ -230,7 +249,7 @@ const reducers = {
       state.checkbox.data, item.groups.data, item.filter[0], item.allFilters,
     );
     const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
-    getDataForTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
+    fetchDataForDashboardTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
     return {
       ...state,
       allActiveFilters: item.allFilters,
