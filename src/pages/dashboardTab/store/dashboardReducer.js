@@ -1,15 +1,16 @@
-/* eslint-disable */
 import _ from 'lodash';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData } from '../../../bento/dashboardData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
-import { DASHBOARD_QUERY, 
-  FILTER_QUERY, 
-  FILTER_GROUP_QUERY, 
+import {
+  DASHBOARD_QUERY,
+  FILTER_QUERY,
+  FILTER_GROUP_QUERY,
   GET_FILES_OVERVIEW_QUERY,
-   GET_SAMPLES_OVERVIEW_QUERY, 
-   GET_CASES_OVERVIEW_QUERY } from '../../../bento/dashboardTabData';
+  GET_SAMPLES_OVERVIEW_QUERY,
+  GET_CASES_OVERVIEW_QUERY,
+} from '../../../bento/dashboardTabData';
 import {
   customCheckBox,
   updateCheckBox,
@@ -176,20 +177,19 @@ export function toggleCheckBox(payload) {
  * @return {json}
  */
 
-export function getDataForTab(payload, subject_ids = null) {
+export function getDataForTab(payload, subjectIDsAfterFilter = null) {
+  const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
+  const VARIABLES = subjectIDsAfterFilter || getState().filteredSubjectIds;
+  return client
+    .query({
+      query: QUERY,
+      variables: { subject_ids: VARIABLES },
 
-    const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
-    const VARIABLES = subject_ids ? subject_ids : getState().filteredSubjectIds
-    return client
-      .query({
-        query: QUERY,
-        variables: { subject_ids: VARIABLES},
-
-      })
-      .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: {currentTab: payload, ..._.cloneDeep(result)} }))
-      .catch((error) => store.dispatch(
-        { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      ));
+    })
+    .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, ..._.cloneDeep(result) } }))
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
 }
 
 function getWidgetsData(input) {
@@ -246,15 +246,17 @@ const reducers = {
       widgets: getWidgetsInitData(item.groups.data),
     };
   },
-  UPDATE_CURRRENT_TAB_DATA : (state, item ) => (
-    { ...state, 
+  UPDATE_CURRRENT_TAB_DATA: (state, item) => (
+    {
+      ...state,
       currentActiveTab: item.currentTab,
       datatable: {
-      ...state.datatable,
-      dataCase: item.data.subjectOverViewPaged,
-      dataSample: item.data.sampleOverview,
-      dataFile: item.data.fileOverview,
-    },}
+        ...state.datatable,
+        dataCase: item.data.subjectOverViewPaged,
+        dataSample: item.data.sampleOverview,
+        dataFile: item.data.fileOverview,
+      },
+    }
   ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
