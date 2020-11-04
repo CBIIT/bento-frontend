@@ -3,7 +3,14 @@ import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData } from '../../../bento/dashboardData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
-import { DASHBOARD_QUERY, FILTER_QUERY, FILTER_GROUP_QUERY } from '../../../bento/dashboardTabData';
+import {
+  DASHBOARD_QUERY,
+  FILTER_QUERY,
+  FILTER_GROUP_QUERY,
+  GET_FILES_OVERVIEW_QUERY,
+  GET_SAMPLES_OVERVIEW_QUERY,
+  GET_CASES_OVERVIEW_QUERY,
+} from '../../../bento/dashboardTabData';
 import {
   customCheckBox,
   updateCheckBox,
@@ -28,6 +35,8 @@ const initialState = {
     hasError: false,
     stats: {},
     allActiveFilters: {},
+    currentActiveTab: 'Cases',
+    filteredSubjectIds: [],
     checkboxForAll: {
       data: [],
     },
@@ -59,13 +68,23 @@ function getStatInit(input) {
   return initStats;
 }
 
+/**
+ * Returns the filtered stats from inputAPT data.
+ * @param {object} data
+ * @return {json}
+ */
 function getFilteredStat(input) {
-  const initStats = statsCount.reduce((acc, stat) => (
+  const filteredStats = statsCount.reduce((acc, stat) => (
     { ...acc, [stat.statAPI]: input[stat.statAPI] }
   ), {});
-  return initStats;
+  return filteredStats;
 }
 
+/**
+ * Returns the widgets data.
+ * @param {object} data
+ * @return {json}r
+ */
 function getWidgetsInitData(data) {
   const donut = widgetsData.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : data[widget.dataName];
@@ -90,6 +109,13 @@ function fetchDashboardTab() {
   };
 }
 
+/**
+ * Generate a default varibles for filter query.
+ *
+ * Need to be updated with custodian of filter
+ * @return distpatcher
+ */
+
 const allFilters = {
   programs: [],
   studies: [],
@@ -102,6 +128,10 @@ const allFilters = {
   pr_status: [],
   endo_therapies: [],
   meno_status: [],
+  tissue_type: [],
+  composition: [],
+  association: [],
+  file_type: [],
 };
 
 /**
@@ -127,10 +157,12 @@ function createFilterVariables(data) {
   return filter;
 }
 
-// export function toggleCheckBox(payload) {
-//   return store.dispatch({ type: 'TOGGGLE_CHECKBOX', payload });
-// }
-
+/**
+ * Trigger respective API queries when checkbox is checked.
+ *
+ * @param {object} payload
+ * @return distpatcher
+ */
 export function toggleCheckBox(payload) {
   return () => {
     const currentAllFilterVariables = createFilterVariables(payload);
@@ -159,6 +191,28 @@ export function toggleCheckBox(payload) {
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
       ));
   };
+}
+
+/**
+ * Updates the current active dashboard tab.
+ *
+ * @param {object} data
+ * @return {json}
+ */
+
+export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) {
+  const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
+  const VARIABLES = subjectIDsAfterFilter || getState().filteredSubjectIds;
+  return client
+    .query({
+      query: QUERY,
+      variables: { subject_ids: VARIABLES },
+
+    })
+    .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, ..._.cloneDeep(result) } }))
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
 }
 
 function getWidgetsData(input) {
@@ -199,18 +253,11 @@ const reducers = {
       state.checkbox.data, item.groups.data, item.filter[0], item.allFilters,
     );
     const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
-
-    // This function is to get updated checkbox data and counts this needs to be updated
-    // const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
-    //   ? getCheckBoxData(
-    //     state.checkboxForAll.data,
-    //     state.checkbox.data.filter((d) => item.filter[0].groupName === d.groupName)[0],
-    //     dataTableFilters,
-    //   )
-    //   : state.checkboxForAll.data;
+    fetchDataForDashboardTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
     return {
       ...state,
       allActiveFilters: item.allFilters,
+      filteredSubjectIds: item.data.searchSubjects.subjectIds,
       checkbox: {
         data: checkboxData1,
       },
@@ -222,6 +269,18 @@ const reducers = {
       widgets: getWidgetsInitData(item.groups.data),
     };
   },
+  UPDATE_CURRRENT_TAB_DATA: (state, item) => (
+    {
+      ...state,
+      currentActiveTab: item.currentTab,
+      datatable: {
+        ...state.datatable,
+        dataCase: item.data.subjectOverViewPaged,
+        dataSample: item.data.sampleOverview,
+        dataFile: item.data.fileOverview,
+      },
+    }
+  ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);
@@ -261,6 +320,7 @@ const reducers = {
         error: '',
         stats: getStatInit(item.data),
         allActiveFilters: allFilters,
+        filteredSubjectIds: [],
         subjectOverView: {
           data: item.data.subjectOverViewPaged,
         },

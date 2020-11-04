@@ -14,6 +14,7 @@ import Message from '../../../components/Message';
 import {
   tabs, tooltipContent, tabContainers, tabIndex, externalLinkIcon,
 } from '../../../bento/dashboardTabData';
+import { fetchDataForDashboardTab } from '../store/dashboardReducer';
 import { getOptions } from '../../../utils/tables';
 
 function TabContainer({ children, dir }) {
@@ -90,6 +91,7 @@ const tabController = (classes) => {
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
+    fetchDataForDashboardTab(tabIndex[value].title);
   };
 
   const [snackbarState, setsnackbarState] = React.useState({

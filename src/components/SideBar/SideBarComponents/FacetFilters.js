@@ -70,7 +70,7 @@ const FacetPanel = ({ classes }) => {
   };
 
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
-    .slice(0, 12);
+    .slice(0, 15);
 
   return (
     <>
