@@ -602,8 +602,10 @@ export const FILTER_QUERY = gql`
 }`;
 
 // --------------- GraphQL query - Retrieve files tab details --------------
-export const GET_FILES_OVERVIEW_QUERY = gql`{
-  fileOverview {
+export const GET_FILES_OVERVIEW_QUERY = gql`
+query fileOverview($subject_ids: [String]){
+
+  fileOverview(subject_ids: $subject_ids, first: 1000) {
     file_id
     file_name
     association
@@ -615,14 +617,15 @@ export const GET_FILES_OVERVIEW_QUERY = gql`{
     subject_id
     sample_id
     diagnosis
-}
   }
+}
   `;
 
 // --------------- GraphQL query - Retrieve sample tab details --------------
 
-export const GET_SAMPLES_OVERVIEW_QUERY = gql`{
-  sampleOverview {
+export const GET_SAMPLES_OVERVIEW_QUERY = gql`
+  query sampleOverview($subject_ids: [String]){
+  sampleOverview(subject_ids: $subject_ids, first: 1000) {
     sample_id
     subject_id
     program
@@ -635,34 +638,36 @@ export const GET_SAMPLES_OVERVIEW_QUERY = gql`{
     platform
     files 
 }
-  }
+}
   `;
 
 // --------------- GraphQL query - Retrieve sample tab details --------------
 
-export const GET_CASES_OVERVIEW_QUERY = gql`{
-  subjectOverViewPaged(first: 10000) {
-    subject_id
-    program_id
-    study_info
-    samples
-    program
-    study_acronym
-    diagnosis
-    recurrence_score
-    tumor_size
-    tumor_grade
-    er_status
-    pr_status
-    chemotherapy
-    endocrine_therapy
-    menopause_status
-    age_at_index
-    survival_time
-    lab_procedures
-    files{
-      file_id
+export const GET_CASES_OVERVIEW_QUERY = gql`
+  query subjectOverview($subject_ids: [String]){
+    subjectOverViewPaged(subject_ids: $subject_ids, first: 1000) {
+        subject_id
+        program
+        program_id
+        study_acronym
+        study_short_description
+        study_info
+        diagnosis
+        recurrence_score
+        tumor_size
+        tumor_grade
+        er_status
+        pr_status
+        chemotherapy
+        endocrine_therapy
+        menopause_status
+        age_at_index
+        survival_time
+        files {
+              file_id
+        }
+        lab_procedures
     }
 }
-  }
+
   `;

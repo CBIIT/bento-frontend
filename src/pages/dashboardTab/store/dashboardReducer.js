@@ -35,6 +35,7 @@ const initialState = {
     stats: {},
     allActiveFilters: {},
     currentActiveTab: 'Cases',
+    filteredSubjectIds: [],
     checkboxForAll: {
       data: [],
     },
@@ -175,12 +176,15 @@ export function toggleCheckBox(payload) {
  * @return {json}
  */
 
-export function getDataForTab(payload) {
+export function getDataForTab(payload, subject_ids = null) {
 
     const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
+    const VARIABLES = subject_ids ? subject_ids : getState().filteredSubjectIds
     return client
       .query({
         query: QUERY,
+        variables: { subject_ids: VARIABLES},
+
       })
       .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: {currentTab: payload, ..._.cloneDeep(result)} }))
       .catch((error) => store.dispatch(
@@ -226,18 +230,11 @@ const reducers = {
       state.checkbox.data, item.groups.data, item.filter[0], item.allFilters,
     );
     const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
-
-    // This function is to get updated checkbox data and counts this needs to be updated
-    // const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
-    //   ? getCheckBoxData(
-    //     state.checkboxForAll.data,
-    //     state.checkbox.data.filter((d) => item.filter[0].groupName === d.groupName)[0],
-    //     dataTableFilters,
-    //   )
-    //   : state.checkboxForAll.data;
+    getDataForTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
     return {
       ...state,
       allActiveFilters: item.allFilters,
+      filteredSubjectIds: item.data.searchSubjects.subjectIds,
       checkbox: {
         data: checkboxData1,
       },
@@ -298,6 +295,7 @@ const reducers = {
         error: '',
         stats: getStatInit(item.data),
         allActiveFilters: allFilters,
+        filteredSubjectIds: [],
         subjectOverView: {
           data: item.data.subjectOverViewPaged,
         },
