@@ -13,7 +13,7 @@ import {
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { toggleCheckBox } from '../../../pages/dashboard/dashboardState';
+import { toggleCheckBox } from '../../../pages/dashboardTab/store/dashboardReducer';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
@@ -34,9 +34,9 @@ const CustomExpansionPanelSummary = withStyles({
 const FacetPanel = ({ classes }) => {
   // data from store
   const sideBarContent = useSelector((state) => (
-    state.dashboard
-    && state.dashboard.checkbox
-      ? state.dashboard.checkbox : {
+    state.dashboardTab
+    && state.dashboardTab.checkbox
+      ? state.dashboardTab.checkbox : {
         data: [],
         defaultPanel: false,
       }));
@@ -70,7 +70,7 @@ const FacetPanel = ({ classes }) => {
   };
 
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
-    .slice(0, 12);
+    .slice(0, 15);
 
   return (
     <>

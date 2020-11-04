@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import { FileOnRowsSelect, FileDisableRowSelection } from '../utils/fileTable';
-import { SampleOnRowsSelect, SampleDisableRowSelection } from '../utils/sampleFileTable';
+import { FileOnRowsSelect } from '../utils/fileTable';
+import { SampleOnRowsSelect } from '../utils/sampleFileTable';
 
 // -------------- Case ID area configurations --------------
 const caseHeader = {
@@ -203,9 +203,11 @@ const table1 = {
   // showHideColumns 'true' or 'false'
   showHideColumns: true,
   // download csv
-  download: true,
+  download: false,
   // downloaded File Name
   downloadFileName: 'Bento_case_files_download',
+  // Set 'selectableRows' to true to show the row selection
+  selectableRows: true,
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -245,8 +247,6 @@ const table1 = {
   // Util Functions
   // Custom function on selct checkbox is selected.
   customOnRowsSelect: SampleOnRowsSelect,
-  // Custom function disable selct checkbox in table if related files are in cart
-  disableRowSelection: SampleDisableRowSelection,
 };
 
 // --------------- Table 2 configuration --------------
@@ -269,9 +269,11 @@ const table2 = {
   // showHideColumns 'true' or 'false'
   showHideColumns: true,
   // download csv 'true' or 'false'
-  download: true,
+  download: false,
   // downloaded File Name
   downloadFileName: 'Bento_case_samples_download',
+  // Set 'selectableRows' to true to show the row selection
+  selectableRows: true,
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -304,8 +306,6 @@ const table2 = {
   // Util Functions
   // Custom function on selct checkbox is selected.
   customOnRowsSelect: FileOnRowsSelect,
-  // Custom function disable selct checkbox in table if related files are in cart
-  disableRowSelection: FileDisableRowSelection,
 };
 
 // --------------- GraphQL query configuration --------------

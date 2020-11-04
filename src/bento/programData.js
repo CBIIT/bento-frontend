@@ -25,12 +25,15 @@ const table = {
   defaultSortField: 'program_acronym',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  // Set 'selectableRows' to true to show the row selection
+  selectableRows: false,
   // A maximum of 10 columns are allowed
   columns: [
     {
       dataField: 'program_acronym',
       header: 'Program Code',
       link: '/program/{program_id}',
+      display: true,
     },
     {
       dataField: 'program_id',

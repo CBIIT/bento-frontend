@@ -387,9 +387,15 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
   return result;
 }
 
-// CustomCheckBox works for first time init Checkbox,
-// that function transforms the data which returns from API into a another format
-// so it contains more information and easy for front-end to show it correctly.
+/**
+ *  CustomCheckBox works for first time init Checkbox,
+that function transforms the data which returns from API into a another format
+so it contains more information and easy for front-end to show it correctly.
+ *  * @param {object} currentGroupCount
+ *  * @param {object} willUpdateGroupCount
+ * * @param {object} currentCheckboxSelection
+ * @return {json}
+ */
 export function customCheckBox(data) {
   return (
     facetSearchData.map((mapping) => ({
@@ -399,4 +405,94 @@ export function customCheckBox(data) {
       show: mapping.show,
     }))
   );
+}
+
+/**
+ * Sets the active filters checkboxes isChecked to true .
+ *
+ * @param {object} checkboxData
+ *  * @param {object} Filters
+ * @return {json}
+ */
+
+export function updateCurrentSelection(checkboxGroup, Filters) {
+  const result = checkboxGroup.checkboxItems.map((checkboxItem) => {
+    if (checkboxItem.name === Filters.name) {
+      return { ...checkboxItem, isChecked: Filters.isChecked };
+    }
+    return checkboxItem;
+  });
+  return { ...checkboxGroup, checkboxItems: result };
+}
+
+/**
+ *  Updates the checkboxes subject counts from newly recieved API data.
+ *  Doesn't updated the recent selected group
+ *  * @param {object} currentGroupCount
+ *  * @param {object} willUpdateGroupCount
+ * * @param {object} currentCheckboxSelection
+ * @return {json}
+ */
+
+export function updateCheckBox(currentGroupCount, willUpdateGroupCount, currentCheckboxSelection) {
+  return (
+    facetSearchData.map((mapping) => {
+      if (mapping.label === currentCheckboxSelection.groupName) {
+        const currentGroup = currentGroupCount.filter(
+          (data) => data.groupName === currentCheckboxSelection.groupName,
+        )[0];
+        return updateCurrentSelection(currentGroup, currentCheckboxSelection);
+      }
+      return {
+        groupName: mapping.label,
+        checkboxItems:
+          transformAPIDataIntoCheckBoxData(willUpdateGroupCount[mapping.api], mapping.field),
+        datafield: mapping.datafield,
+        show: mapping.show,
+      };
+    })
+  );
+}
+
+/**
+ * Sets the active filters  group checkboxes  isChecked to true .
+ *
+ * @param {object} checkboxData
+ *  * @param {array} filters
+ * @return {json}
+ */
+
+function setSelectedVlauesToTrue(checkboxItems, filters) {
+  const result = checkboxItems.map((checkboxItem) => {
+    if (filters.includes(checkboxItem.name)) return { ...checkboxItem, isChecked: true };
+    return checkboxItem;
+  });
+  return result;
+}
+
+/**
+ * Sets the active filters checkboxes isChecked to true .
+ *
+ * @param {object} checkboxData
+ *  * @param {object} Filters
+ * @return {json}
+ */
+
+export function setSelectedFilterValues(checkboxData, Filters) {
+  const result = checkboxData.map((filterGroup) => {
+    if (Array.isArray(Filters[filterGroup.datafield])
+     && Filters[filterGroup.datafield].length !== 0) {
+      return {
+        groupName: filterGroup.groupName,
+        checkboxItems: setSelectedVlauesToTrue(
+          filterGroup.checkboxItems,
+          Filters[filterGroup.datafield],
+        ),
+        datafield: filterGroup.datafield,
+        show: filterGroup.show,
+      };
+    }
+    return filterGroup;
+  });
+  return result;
 }

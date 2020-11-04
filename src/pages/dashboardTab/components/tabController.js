@@ -14,6 +14,8 @@ import Message from '../../../components/Message';
 import {
   tabs, tooltipContent, tabContainers, tabIndex, externalLinkIcon,
 } from '../../../bento/dashboardTabData';
+import { fetchDataForDashboardTab } from '../store/dashboardReducer';
+import { getOptions } from '../../../utils/tables';
 
 function TabContainer({ children, dir }) {
   return (
@@ -31,21 +33,30 @@ const tabController = (classes) => {
   const dashboard = useSelector((state) => (state.dashboardTab
 && state.dashboardTab.datatable
     ? state.dashboardTab.datatable : {}));
+    // data from store
+  const dashboardStats = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
+    src: tooltipContent.icon,
+    alt: tooltipContent.alt,
     isActive: false,
     currentTab,
   });
   const [BottomMessageStatus, setBottomMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
+    src: tooltipContent.icon,
+    alt: tooltipContent.alt,
     isActive: false,
     currentTab,
   });
 
-  function setTooltip(status, tabInfo = '') {
+  function setTooltip(status, tabInfo = '', icon, alt) {
     return {
       text: tabInfo,
+      src: icon,
+      alt,
       isActive: status,
       currentTab,
     };
@@ -54,12 +65,21 @@ const tabController = (classes) => {
   const tooltipConfig = {
     location: {
       top: {
-        open: () => setTopMessageStatus(setTooltip(true, tooltipContent[currentTab])),
-        close: () => setTopMessageStatus(setTooltip(false, tooltipContent[currentTab])),
+        open: () => setTopMessageStatus(setTooltip(true,
+          tooltipContent[currentTab],
+          tooltipContent.icon,
+          tooltipContent.alt)),
+        close: () => setTopMessageStatus(setTooltip(false, tooltipContent[currentTab],
+          tooltipContent.icon,
+          tooltipContent.alt)),
       },
       bottom: {
-        open: () => setBottomMessageStatus(setTooltip(true, tooltipContent[currentTab])),
-        close: () => setBottomMessageStatus(setTooltip(false, tooltipContent[currentTab])),
+        open: () => setBottomMessageStatus(setTooltip(true, tooltipContent[currentTab],
+          tooltipContent.icon,
+          tooltipContent.alt)),
+        close: () => setBottomMessageStatus(setTooltip(false, tooltipContent[currentTab],
+          tooltipContent.icon,
+          tooltipContent.alt)),
       },
     },
 
@@ -71,6 +91,7 @@ const tabController = (classes) => {
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
+    fetchDataForDashboardTab(tabIndex[value].title);
   };
 
   const [snackbarState, setsnackbarState] = React.useState({
@@ -187,7 +208,9 @@ const tabController = (classes) => {
   const TABs = tabs.map((tab) => (
     <Tab
       id={tab.id}
-      label={getTabLalbel(tab.name, dashboard[tab.dataField] ? dashboard[tab.dataField].length : 0)}
+      label={
+        getTabLalbel(tab.name, dashboardStats[tab.count] ? dashboardStats[tab.count] : 0)
+      }
     />
   ));
 
@@ -201,22 +224,23 @@ const tabController = (classes) => {
   const TABContainers = tabContainers.map((container) => (
     <TabContainer id={container.id}>
       <TabView
+        options={getOptions(container, classes)}
         data={dashboard[container.dataField] ? dashboard[container.dataField] : []}
-        customColumn={container.columns}
+        customColumn={container}
         customOnRowsSelect={onRowsSelectFunction[container.onRowsSelect]}
         openSnack={openSnack}
         closeSnack={closeSnack}
         disableRowSelection={disableRowSelectionFunction[container.disableRowSelection]}
-        buttonTitle={container.buttonTitle}
+        buttonText={container.buttonText}
         tableID={container.tableID}
         saveButtonDefaultStyle={container.saveButtonDefaultStyle}
         ActiveSaveButtonDefaultStyle={container.ActiveSaveButtonDefaultStyle}
         DeactiveSaveButtonDefaultStyle={container.DeactiveSaveButtonDefaultStyle}
         toggleMessageStatus={toggleMessageStatus}
         BottomMessageStatus={BottomMessageStatus}
-         // eslint-disable-next-line jsx-a11y/tabindex-no-positive
+        TopMessageStatus={TopMessageStatus}
+        // eslint-disable-next-line jsx-a11y/tabindex-no-positive
         tabIndex={container.tabIndex}
-        downloadFileName={container.downloadFileName}
         externalLinkIcon={externalLinkIcon}
       />
     </TabContainer>

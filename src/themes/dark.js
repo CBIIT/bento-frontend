@@ -285,15 +285,15 @@ export default {
       },
       tableRoot: {
         transform: 'rotateX(180deg)',
+        borderTop: '3px solid #e7e5e5',
       },
     },
     MUIDataTableSelectCell: {
       fixedHeader: {
         position: 'relative',
-
       },
       headerCell: {
-        borderBottom: '2px solid #42779A',
+        borderBottom: '3px solid #42779A',
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
 
@@ -359,6 +359,7 @@ export default {
     },
     MUIDataTableBodyRow: {
       root: {
+        backgroundColor: 'transparent !important',
         '&:nth-child(even)': {
           color: '#004C73',
         },
@@ -366,6 +367,12 @@ export default {
           color: '#004C73 !important',
           background: '#f3f3f3 !important',
         },
+      },
+    },
+    MUIDataTableFooter: {
+      root: {
+        borderBottom: '3px solid #e7e5e5',
+        borderTop: '5px solid #e7e5e5',
       },
     },
     MuiTableRow: {

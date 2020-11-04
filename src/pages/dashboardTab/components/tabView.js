@@ -6,12 +6,10 @@ import {
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
-import ServerPaginatedDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
-import CustomFooter from './tabFooter';
+import { CustomDataTable } from 'bento-components';
 import { addToCart, getCart } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
-import { dateTimeStamp, manipulateLinks } from '../../../utils/helpers';
-import formatBytes from '../../../utils/formatBytes';
+import { getColumns } from '../../../utils/tables';
 
 const TabView = ({
   classes,
@@ -20,7 +18,7 @@ const TabView = ({
   customOnRowsSelect,
   openSnack,
   disableRowSelection,
-  buttonTitle,
+  buttonText,
   tableID,
   saveButtonDefaultStyle,
   DeactiveSaveButtonDefaultStyle,
@@ -28,8 +26,9 @@ const TabView = ({
   toggleMessageStatus,
   BottomMessageStatus,
   tabIndex,
-  downloadFileName,
   externalLinkIcon,
+  options,
+  TopMessageStatus,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -103,80 +102,16 @@ const TabView = ({
     }
   }
 
-  const options = () => ({
-    selectableRows: true,
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    downloadOptions: {
-      filename: downloadFileName.concat(dateTimeStamp()).concat('.csv'),
-      filterOptions: {
-        useDisplayedColumnsOnly: true,
-      },
-    },
-    viewColumns: false,
-    pagination: true,
-    isRowSelectable: (dataIndex) => disableRowSelection(data[dataIndex], fileIDs),
-    onRowSelectionChange: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
-    // eslint-disable-next-line no-unused-vars
-    customToolbarSelect: () => '',
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-      <CustomFooter
-        text="SAVE TO MY CASES"
-        count={count}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-      // eslint-disable-next-line no-shadow
-        onChangePage={(_, page) => changePage(page)}
-      />
-    ),
-
+  // overwrite default options
+  const defaultOptions = () => ({
+    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    isRowSelectable: (dataIndex) => (disableRowSelection
+      ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });
-
-  const displayFalseTableColumns = customColumn
-    .filter((col) => col.display === false).length;
-
-  const displayTableColumns = customColumn.slice(0, displayFalseTableColumns + 10);
-
-  const updatedTableWithLinks = manipulateLinks(displayTableColumns);
-
-  const columns = updatedTableWithLinks.map((column) => ({
-    name: column.dataField,
-    label: column.header,
-    options: {
-      display: column.display ? column.display : false,
-      filter: false,
-      customBodyRender: (value, tableMeta) => (
-        <div>
-          {
-          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
-            : column.externalLink ? (
-              <span className={classes.linkSpan}>
-                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>
-                  {' '}
-                  {column.formatBytes ? formatBytes(value) : value}
-                  {' '}
-                </a>
-                <img
-                  src={externalLinkIcon ? externalLinkIcon.src : ''}
-                  alt={externalLinkIcon.alt ? externalLinkIcon.alt : ''}
-                  className={classes.externalLinkIcon}
-                />
-              </span>
-            )
-              : `${column.formatBytes ? formatBytes(value) : value}`
-}
-        </div>
-      ),
-    },
-  }));
+  const finalOptions = { ...options, ...defaultOptions() };
 
   return (
     <div>
-
       <Grid item xs={12} className={classes.saveButtonDiv}>
         <button
           type="button"
@@ -184,19 +119,25 @@ const TabView = ({
           onClick={exportFiles}
           className={classes.button}
         >
-          { buttonTitle }
+          { buttonText }
         </button>
-        <IconButton aria-label="help" className={classes.helpIconButton}>
-          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')} />
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
+          {TopMessageStatus.src ? (
+            <img
+              src={TopMessageStatus.src}
+              alt={TopMessageStatus.alt}
+              className={classes.helpIcon}
+            />
+          ) : <HelpIcon className={classes.helpIcon} fontSize="small" />}
         </IconButton>
 
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
-          <ServerPaginatedDataTable
+          <CustomDataTable
             data={data}
-            columns={columns}
-            options={options(downloadFileName)}
+            columns={getColumns(customColumn, classes, data, externalLinkIcon)}
+            options={finalOptions}
           />
         </Grid>
 
@@ -208,11 +149,17 @@ const TabView = ({
           onClick={exportFiles}
           className={classes.button}
         >
-          { buttonTitle }
+          { buttonText }
         </button>
 
-        <IconButton aria-label="help" className={classes.helpIconButton}>
-          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
+          {BottomMessageStatus.src ? (
+            <img
+              src={BottomMessageStatus.src}
+              alt={BottomMessageStatus.alt}
+              className={classes.helpIcon}
+            />
+          ) : <HelpIcon className={classes.helpIcon} fontSize="small" />}
         </IconButton>
         <div style={{ position: 'relative' }}>
           { BottomMessageStatus.isActive
@@ -244,7 +191,7 @@ const TabView = ({
 const styles = () => ({
 
   link: {
-    color: '#DC762F',
+    color: '#7747ff',
     textDecoration: 'none',
 
     '&:hover': {
@@ -256,6 +203,9 @@ const styles = () => ({
     color: '#3E6886',
     fontSize: '12px',
     marginRight: '70px',
+    textDecoration: 'none',
+    borderBottom: '1px solid #3E6886',
+    paddingBottom: '6px',
   },
   caseTitle: {
     color: '#194563',
