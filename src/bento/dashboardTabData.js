@@ -425,9 +425,25 @@ export const DASHBOARD_QUERY = gql`{
         group
         subjects
       }
-      subjectCountByEndocrineTherapy{
+  subjectCountByEndocrineTherapy{
     group
     subjects
+  }
+  subjectCountByFileType{
+    group
+    subjects
+  }
+  subjectCountByFileAssociation {
+      group
+      subjects
+  }
+  subjectCountByTissueComposition{
+      group
+      subjects
+  }
+  subjectCountByTissueType{
+      group
+      subjects
   }
     armsByPrograms {
         program
@@ -526,6 +542,22 @@ export const FILTER_GROUP_QUERY = gql`
        group
        subjects
    }
+   subjectCountByFileType (subject_ids: $subject_ids){
+    group
+    subjects
+}
+subjectCountByFileAssociation(subject_ids: $subject_ids) {
+    group
+    subjects
+}
+subjectCountByTissueComposition(subject_ids: $subject_ids) {
+    group
+    subjects
+}
+subjectCountByTissueType(subject_ids: $subject_ids) {
+    group
+    subjects
+}
    armsByPrograms(subject_ids: $subject_ids) {
      program
      caseSize
@@ -540,66 +572,86 @@ export const FILTER_GROUP_QUERY = gql`
  `;
 
 export const FILTER_QUERY = gql`
- query search (          
-   $programs: [String] ,
-   $studies: [String] ,
-   $diagnoses: [String] ,
-   $rc_scores: [String] ,
-   $tumor_sizes: [String] ,
-   $chemo_regimen: [String] ,
-   $tumor_grades: [String] ,
-   $er_status: [String] ,
-   $pr_status: [String] ,
-   $endo_therapies: [String] ,
-   $meno_status: [String] ,
-   $first: Int 
+query search (          
+  $programs: [String] ,
+  $studies: [String] ,
+  $diagnoses: [String] ,
+  $rc_scores: [String] ,
+  $tumor_sizes: [String] ,
+  $chemo_regimen: [String] ,
+  $tumor_grades: [String] ,
+  $er_status: [String] ,
+  $pr_status: [String] ,
+  $endo_therapies: [String] ,
+  $meno_status: [String] ,
+  $tissue_type: [String],
+  $composition: [String],
+  $association: [String],
+  $file_type: [String]
+  $first: Int 
 ){
-   searchSubjects (          
-       programs: $programs,
-       studies: $studies,
-       diagnoses: $diagnoses,
-       rc_scores: $rc_scores,
-       tumor_sizes: $tumor_sizes,
-       chemo_regimen: $chemo_regimen,
-       tumor_grades: $tumor_grades,
-       er_status: $er_status,
-       pr_status: $pr_status,
-       endo_therapies: $endo_therapies,
-       meno_status: $meno_status,
-       first: $first
-   ) {
-     numberOfPrograms
-     numberOfStudies
-     numberOfSubjects
-     numberOfSamples
-     numberOfLabProcedures
-     numberOfFiles
-       subjectIds
-       firstPage {
-         subject_id
-         program_id
-         study_info
-         samples
-         program
-         study_acronym
-         diagnosis
-         recurrence_score
-         tumor_size
-         tumor_grade
-         er_status
-         pr_status
-         chemotherapy
-         endocrine_therapy
-         menopause_status
-         age_at_index
-         survival_time
-         lab_procedures
-         files{
-           file_id
-         }
-       }
-   }
-}`;
+  searchSubjects (          
+      programs: $programs,
+      studies: $studies,
+      diagnoses: $diagnoses,
+      rc_scores: $rc_scores,
+      tumor_sizes: $tumor_sizes,
+      chemo_regimen: $chemo_regimen,
+      tumor_grades: $tumor_grades,
+      er_status: $er_status,
+      pr_status: $pr_status,
+      endo_therapies: $endo_therapies,
+      meno_status: $meno_status,
+      tissue_type: $tissue_type,
+      composition: $composition,
+      association: $association,       
+      file_type: $file_type
+      first: $first
+  ) {
+      numberOfPrograms
+      numberOfStudies
+      numberOfSubjects
+      numberOfSamples
+      numberOfLabProcedures
+      numberOfFiles
+      subjectIds
+      firstPage {
+          subject_id
+          program
+          program_id
+          study_acronym
+          study_short_description
+          study_info
+          diagnosis
+          recurrence_score
+          tumor_size
+          tumor_grade
+          er_status
+          pr_status
+          chemotherapy
+          endocrine_therapy
+          menopause_status
+          age_at_index
+          survival_time
+          survival_time_unit
+          files {
+              file_id
+              file_id
+              file_description
+              file_format
+              file_location
+              file_name
+              file_size
+              file_status
+              file_type
+              md5sum
+          }
+          lab_procedures
+          samples
+      }
+  }
+} 
+`;
 
 // --------------- GraphQL query - Retrieve files tab details --------------
 export const GET_FILES_OVERVIEW_QUERY = gql`

@@ -128,6 +128,10 @@ const allFilters = {
   pr_status: [],
   endo_therapies: [],
   meno_status: [],
+  tissue_type: [],
+  composition: [],
+  association: [],
+  file_type: [],
 };
 
 /**

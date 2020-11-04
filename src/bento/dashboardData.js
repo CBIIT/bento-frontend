@@ -36,6 +36,18 @@ export const facetSearchData = [
   {
     label: 'Menopause Status', field: 'group', api: 'subjectCountByMenopauseStatus', datafield: 'meno_status', show: true,
   },
+  {
+    label: 'Tissue Type', field: 'group', api: 'subjectCountByTissueType', datafield: 'tissue_type', show: true,
+  },
+  {
+    label: 'Tissue Composition', field: 'group', api: 'subjectCountByTissueComposition', datafield: 'composition', show: true,
+  },
+  {
+    label: 'File Association', field: 'group', api: 'subjectCountByFileAssociation', datafield: 'association', show: true,
+  },
+  {
+    label: 'File Type', field: 'group', api: 'subjectCountByFileType', datafield: 'file_type', show: true,
+  },
 ];
 
 // --------------- Dashboard Widgets configuration --------------
@@ -227,6 +239,22 @@ export const GET_DASHBOARD_DATA_QUERY = gql`{
     group
     subjects
   }
+  subjectCountByFileType{
+    group
+    subjects
+}
+subjectCountByFileAssociation {
+    group
+    subjects
+}
+subjectCountByTissueComposition{
+    group
+    subjects
+}
+subjectCountByTissueType{
+    group
+    subjects
+}
     armsByPrograms {
         program
         caseSize
