@@ -11,7 +11,6 @@ export const myFilesPageData = {
   mainTitle: 'Cart >',
   subTitle: 'Selected Files',
   downButtonText: 'DOWNLOAD MANIFEST',
-  deleteButtonText: 'EMPTY CART',
   headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Icon-Cart-Workflow.svg',
   headerIconAlt: 'Bento MyFiles header logo',
   manifestFileName: 'BENTO File Manifest',
@@ -19,7 +18,6 @@ export const myFilesPageData = {
   textareaPlaceholder: 'Please add a description for the XML file you are about to download.',
   errorMessage: 'An error has occurred in loading CART',
   popUpWindow: {
-    display: true,
     showNumberOfFileBeRemoved: true,
     messagePart1: 'Remove ',
     messagePart2: 'All files (',

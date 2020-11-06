@@ -205,7 +205,7 @@ const styles = () => ({
     marginRight: '70px',
     textDecoration: 'none',
     borderBottom: '1px solid #3E6886',
-    paddingBottom: '6px',
+    paddingBottom: '3px',
   },
   caseTitle: {
     color: '#194563',

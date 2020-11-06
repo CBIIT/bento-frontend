@@ -19,8 +19,8 @@ import {
   getColumns, getOptions, getDefaultCustomFooter,
 } from '../../utils/tables';
 import Message from '../../components/Message';
-import { dateTimeStamp } from '../../utils/helpers';
 import DialogThemeProvider from './dialogThemeConfig';
+import TableThemeProvider from './cartTableThemeConfig';
 
 const cartView = ({ classes, data, isLoading }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
@@ -61,12 +61,13 @@ const cartView = ({ classes, data, isLoading }) => {
       sort: false,
       customBodyRender: (value, tableMeta) => (
         <div className={classes.tableDeleteButtonDiv}>
-          <Button
+          <button
+            type="button"
             className={classes.tableDeleteButton}
             onClick={() => deleteFromCart({ fileIds: tableMeta.rowData[fileIdIndex] })}
           >
             <DeleteOutlineIcon fontSize="small" />
-          </Button>
+          </button>
         </div>
       ),
       customHeadRender: () => (
@@ -75,12 +76,13 @@ const cartView = ({ classes, data, isLoading }) => {
             <div className={classes.removeHeadCell}>
               <div
                 className={classes.removeHeadCellText}
-                onClick={() => removeSubjects()}
               >
                 Remove
               </div>
               <div className={classes.removeHeadCellIcon}>
-                <ArrowDropDownIcon onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} />
+                <IconButton aria-label="help">
+                  <ArrowDropDownIcon onClick={() => removeSubjects()} onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} />
+                </IconButton>
                 { removeAllMessageStatus ? (
                   <div className={classes.removeAllMessage}>
                     {' '}
@@ -178,7 +180,12 @@ const cartView = ({ classes, data, isLoading }) => {
             <button
               type="button"
               className={classes.downloadButton}
-              onClick={() => downloadJson(data, userComments, myFilesPageData.manifestFileName.concat(dateTimeStamp()).concat('.csv'), manifestData)}
+              onClick={() => downloadJson(
+                data,
+                userComments,
+                myFilesPageData.manifestFileName,
+                manifestData,
+              )}
             >
               {myFilesPageData.downButtonText}
               {' '}
@@ -196,7 +203,9 @@ const cartView = ({ classes, data, isLoading }) => {
           </div>
           <div id="table_selected_files" className={classes.tableWrapper}>
             {}
-            {dataTable}
+            <TableThemeProvider>
+              {dataTable}
+            </TableThemeProvider>
             <div className={classes.manifestTextarea}>
               <textarea
                 id="multiline-user-coments"
@@ -355,8 +364,11 @@ const styles = (theme) => ({
   tableDeleteButton: {
     background: '#fff',
     border: '1px solid #ccc',
-    minWidth: '31px',
+    width: '29px',
     cursor: 'pointer',
+    height: '26px',
+    borderRadius: '15%',
+    padding: '0',
   },
   tableDeleteButtonDiv: {
   },
@@ -378,7 +390,6 @@ const styles = (theme) => ({
     paddingLeft: '20px',
     borderBottom: '#42779A 3px solid',
     letterSpacing: '0.06em',
-    textDecoration: 'underline',
     backgroundColor: '#ffffff',
     width: '120px',
     textAlign: 'center',
@@ -390,6 +401,8 @@ const styles = (theme) => ({
   },
   removeHeadCellText: {
     display: 'inline-block',
+    cursor: 'default',
+    lineHeight: '37px',
   },
   removeHeadCellIcon: {
     ursor: 'pointer',
