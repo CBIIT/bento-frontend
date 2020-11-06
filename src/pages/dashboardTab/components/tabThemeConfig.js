@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import themes, { overrides } from '../../../themes';
 
 export default ({
@@ -12,12 +12,14 @@ export default ({
   if (extraStyles) style.push(extraStyles);
 
   if (tableBorder) {
+    overridesObj.MUIDataTableToolbarSelect.root.borderTop = '2px solid #e7e5e5';
     overridesObj.MUIDataTableSelectCell.headerCell.borderTop = tableBorder;
     overridesObj.MUIDataTableSelectCell.headerCell.borderBottom = tableBorder;
     overridesObj.MUIDataTableHeadCell.fixedHeader.borderTop = tableBorder;
     overridesObj.MUIDataTableHeadCell.fixedHeader.borderBottom = tableBorder;
     overridesObj.MuiTableFooter = { root: { borderTop: tableBorder } };
     overridesObj.MUIDataTableToolbar = { root: { minHeight: '15px' } };
+    overridesObj.MuiTablePagination.toolbar.paddingTop = '11px';
   }
 
   const PrivateTabIndicator = {
@@ -71,8 +73,8 @@ export default ({
   const computedTheme = createMuiTheme({ ...themes.light, ...overrides, ...style });
 
   return (
-    <ThemeProvider theme={computedTheme}>
+    <MuiThemeProvider theme={computedTheme}>
       {children}
-    </ThemeProvider>
+    </MuiThemeProvider>
   );
 };
