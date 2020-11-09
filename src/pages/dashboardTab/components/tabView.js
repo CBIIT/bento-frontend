@@ -280,10 +280,11 @@ const styles = () => ({
     zIndex: '500',
     position: 'absolute',
     marginTop: '-148px',
-    marginLeft: 'calc(100% - 212px)',
+    marginLeft: 'calc(100% - 220px)',
   },
   helpIcon: {
     zIndex: '600',
+    width: '20px',
   },
   helpIconButton: {
     verticalAlign: 'top',

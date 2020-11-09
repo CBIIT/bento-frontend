@@ -312,12 +312,12 @@ const styles = (theme) => ({
   },
   topButtonGroup: {
     textAlign: 'right',
-    padding: '10px 39px 15px 0px',
+    padding: '10px 43px 15px 0px',
     position: 'relative',
   },
   messageTop: {
     position: 'absolute',
-    right: '30px',
+    right: '33px',
     top: '-128px',
     zIndex: '400',
   },

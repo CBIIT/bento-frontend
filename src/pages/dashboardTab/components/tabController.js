@@ -314,7 +314,7 @@ const styles = () => ({
   },
   messageTop: {
     position: 'absolute',
-    right: '12px',
+    right: '20px',
     zIndex: '300',
   },
 });
