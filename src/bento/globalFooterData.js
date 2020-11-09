@@ -4,6 +4,7 @@ import env from '../utils/env';
 export default {
   footerLogoImage: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/footer/FNL_logo.png',
   footerLogoAltText: 'Footer Logo',
+  footerLogoHyperlink: 'https://frederick.cancer.gov/',
   footerStaticText: 'NIH … Turning Discovery Into Health®',
   version: env.REACT_APP_APPLICATION_VERSION,
   // A maximum of 3 Subsections (link_sections) are allowed
