@@ -242,6 +242,9 @@ const tabController = (classes) => {
         // eslint-disable-next-line jsx-a11y/tabindex-no-positive
         tabIndex={container.tabIndex}
         externalLinkIcon={externalLinkIcon}
+        count={dashboardStats[container.count] ? dashboardStats[container.count] : 0}
+        api={container.api}
+        paginationAPIField={container.paginationAPIField}
       />
     </TabContainer>
   ));

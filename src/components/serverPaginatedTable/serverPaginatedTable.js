@@ -1,12 +1,20 @@
-/* eslint-disable react/state-in-constructor */
 /* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/state-in-constructor */
+
 import React from 'react';
+import { connect } from 'react-redux';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 
 import { CircularProgress, Typography } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
+import {
+  GET_FILES_OVERVIEW_QUERY,
+  GET_SAMPLES_OVERVIEW_QUERY,
+  GET_CASES_OVERVIEW_QUERY,
+} from '../../bento/dashboardTabData';
+import client from '../../utils/graphqlClient';
 
 class ServerPaginatedTableView extends React.Component {
   state = {
@@ -31,7 +39,7 @@ class ServerPaginatedTableView extends React.Component {
   getData = (url, page) => {
     this.setState({ isLoading: true });
     this.xhrRequest(url, page).then((res) => {
-      this.setState({ data: res.data, isLoading: false, count: res.total });
+      this.setState({ data: res.data, isLoading: false, count: this.props.count });
     });
   }
 
@@ -44,53 +52,51 @@ class ServerPaginatedTableView extends React.Component {
         data: res.data,
         sortOrder,
         isLoading: false,
-        count: res.total,
       });
     });
   }
 
-  // mock async function
-  xhrRequest = (url, page, sortOrder = {}) => new Promise((resolve) => {
-    // mock page data
-    let fullData = this.getSrcData() !== {} ? this.getSrcData() : [{}];
-    // mock record count from server - normally this would be a number attached to the return data
-    const total = fullData.length;
+    // mock async function
+    xhrRequest = (url, page, sortOrder = {}) => new Promise((resolve) => {
+      // mock page data
+      let fullData = this.getSrcData() !== {} ? this.getSrcData() : [{}];
+      // mock record count from server - normally this would be a number attached to the return data
+      const total = 60;
 
-    const sortField = sortOrder.name;
-    const sortDir = sortOrder.direction;
+      const sortField = sortOrder.name;
+      const sortDir = sortOrder.direction;
 
-    if (sortField) {
-      fullData = fullData.sort((a, b) => {
-        if (a[sortField] < b[sortField]) {
-          return 1 * (sortDir === 'asc' ? -1 : 1);
-        } if (a[sortField] > b[sortField]) {
-          return -1 * (sortDir === 'asc' ? -1 : 1);
-        }
-        return 0;
-      });
-    }
+      if (sortField) {
+        fullData = fullData.sort((a, b) => {
+          if (a[sortField] < b[sortField]) {
+            return 1 * (sortDir === 'asc' ? -1 : 1);
+          } if (a[sortField] > b[sortField]) {
+            return -1 * (sortDir === 'asc' ? -1 : 1);
+          }
+          return 0;
+        });
+      }
 
-    // eslint-disable-next-line max-len
-    const srcData = fullData.slice(page * this.state.rowsPerPage, (page + 1) * this.state.rowsPerPage);
-    const data = srcData;
+      // eslint-disable-next-line max-len
+      const srcData = fullData.slice(page * this.state.rowsPerPage, (page + 1) * this.state.rowsPerPage);
+      const data = srcData;
 
-    setTimeout(() => {
-      resolve({
-        data, total, page,
-      });
-    }, 500);
-  })
+      setTimeout(() => {
+        resolve({
+          data, total, page,
+        });
+      }, 500);
+    })
 
   changePage = (page, sortOrder) => {
     this.setState({
       isLoading: true,
     });
-    this.xhrRequest(`/myApiServer?page=${page}`, page, sortOrder).then((res) => {
+    this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage).then((res) => {
       this.setState({
         isLoading: false,
         sortOrder,
-        data: res.data,
-        count: res.total,
+        data: res,
       });
     });
   };
@@ -104,6 +110,17 @@ class ServerPaginatedTableView extends React.Component {
       data: this.getSrcData(),
     });
   };
+
+  async fetchData(offset, rowsRequired) {
+    const QUERY = this.props.api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_QUERY : this.props.api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
+    const result1 = await client
+      .query({
+        query: QUERY,
+        variables: { subject_ids: this.props.filteredSubjectIds, offset, first: rowsRequired },
+      })
+      .then((result) => result.data[this.props.paginationAPIField]);
+    return result1;
+  }
 
   render() {
     const {
@@ -170,4 +187,14 @@ class ServerPaginatedTableView extends React.Component {
   }
 }
 
-export default ServerPaginatedTableView;
+function mapStateToProps(state) {
+  const {
+    filteredSubjectIds,
+  } = state.dashboardTab;
+
+  return {
+    filteredSubjectIds,
+  };
+}
+
+export default connect(mapStateToProps)(ServerPaginatedTableView);

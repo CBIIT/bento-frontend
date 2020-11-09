@@ -22,6 +22,9 @@ export const tabContainers = [
 
     name: 'Cases',
     dataField: 'dataCase',
+    api: 'GET_CASES_OVERVIEW_QUERY',
+    paginationAPIField: 'subjectOverViewPaged',
+    count: 'numberOfSubjects',
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
     buttonText: 'Add Selected Files',
@@ -129,6 +132,11 @@ export const tabContainers = [
     downloadFileName: 'Bento_Dashboard_cases_download',
   },
   {
+    name: 'Samples',
+    dataField: 'dataSample',
+    api: 'GET_SAMPLES_OVERVIEW_QUERY',
+    count: 'numberOfSamples',
+    paginationAPIField: 'sampleOverview',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',
@@ -145,8 +153,7 @@ export const tabContainers = [
       opacity: 'unset',
       border: 'unset',
     },
-    name: 'Samples',
-    dataField: 'dataSample',
+
     columns: [
       {
         dataField: 'sample_id',
@@ -231,6 +238,9 @@ export const tabContainers = [
   {
     name: 'Files',
     dataField: 'dataFile',
+    api: 'GET_FILES_OVERVIEW_QUERY',
+    paginationAPIField: 'fileOverview',
+    count: 'numberOfFiles',
     buttonText: 'Add Selected Files',
     saveButtonDefaultStyle: {
       color: '#fff',
@@ -655,9 +665,9 @@ query search (
 
 // --------------- GraphQL query - Retrieve files tab details --------------
 export const GET_FILES_OVERVIEW_QUERY = gql`
-query fileOverview($subject_ids: [String]){
+query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10){
 
-  fileOverview(subject_ids: $subject_ids, first: 1000) {
+  fileOverview(subject_ids: $subject_ids, offset: $offset,first: $first) {
     file_id
     file_name
     association
@@ -676,8 +686,8 @@ query fileOverview($subject_ids: [String]){
 // --------------- GraphQL query - Retrieve sample tab details --------------
 
 export const GET_SAMPLES_OVERVIEW_QUERY = gql`
-  query sampleOverview($subject_ids: [String]){
-  sampleOverview(subject_ids: $subject_ids, first: 1000) {
+  query sampleOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10){
+  sampleOverview(subject_ids: $subject_ids, offset: $offset,first: $first) {
     sample_id
     subject_id
     program
@@ -696,8 +706,8 @@ export const GET_SAMPLES_OVERVIEW_QUERY = gql`
 // --------------- GraphQL query - Retrieve sample tab details --------------
 
 export const GET_CASES_OVERVIEW_QUERY = gql`
-  query subjectOverview($subject_ids: [String]){
-    subjectOverViewPaged(subject_ids: $subject_ids, first: 1000) {
+  query subjectOverViewPaged($subject_ids: [String], $offset: Int = 0, $first: Int = 10){
+    subjectOverViewPaged(subject_ids: $subject_ids, first: $first, offset: $offset) {
         subject_id
         program
         program_id
