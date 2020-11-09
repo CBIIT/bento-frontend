@@ -334,19 +334,19 @@ export const tabContainers = [
 export const tabs = [
   {
     id: 'case_tab',
-    name: 'Cases',
+    title: 'Cases',
     dataField: 'dataCase',
     count: 'numberOfSubjects',
   },
   {
     id: 'sample_tab',
-    name: 'Samples',
+    title: 'Samples',
     dataField: 'dataSample',
     count: 'numberOfSamples',
   },
   {
     id: 'file_tab',
-    name: 'Files',
+    title: 'Files',
     dataField: 'dataFile',
     count: 'numberOfFiles',
   },

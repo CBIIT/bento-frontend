@@ -147,6 +147,7 @@ const styles = (theme) => ({
   },
   rightContent: {
     maxWidth: 'calc(100% - 250px)',
+    position: 'relative',
   },
   content: {
     // padding: theme.spacing.unit * 3,
