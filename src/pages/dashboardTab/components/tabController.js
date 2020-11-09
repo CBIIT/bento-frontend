@@ -108,8 +108,8 @@ const tabController = (classes) => {
   }
 
   function getBorderStyle() {
-    const style = '2px solid #898989';
-    return `${tabIndex[currentTab].primaryColor} ${style}`;
+    const style = '3px solid #42779a';
+    return `${style}`;
   }
 
   function getTableColor() {
@@ -209,7 +209,7 @@ const tabController = (classes) => {
     <Tab
       id={tab.id}
       label={
-        getTabLalbel(tab.name, dashboardStats[tab.count] ? dashboardStats[tab.count] : 0)
+        getTabLalbel(tab.title, dashboardStats[tab.count] ? dashboardStats[tab.count] : 0)
       }
     />
   ));
@@ -317,7 +317,7 @@ const styles = () => ({
   },
   messageTop: {
     position: 'absolute',
-    right: '12px',
+    right: '20px',
     zIndex: '300',
   },
 });

@@ -211,7 +211,7 @@ const styles = () => ({
     marginRight: '70px',
     textDecoration: 'none',
     borderBottom: '1px solid #3E6886',
-    paddingBottom: '6px',
+    paddingBottom: '3px',
   },
   caseTitle: {
     color: '#194563',
@@ -286,10 +286,11 @@ const styles = () => ({
     zIndex: '500',
     position: 'absolute',
     marginTop: '-148px',
-    marginLeft: 'calc(100% - 212px)',
+    marginLeft: 'calc(100% - 220px)',
   },
   helpIcon: {
     zIndex: '600',
+    width: '20px',
   },
   helpIconButton: {
     verticalAlign: 'top',
