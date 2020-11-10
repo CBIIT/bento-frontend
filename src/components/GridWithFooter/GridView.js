@@ -14,6 +14,7 @@ import Message from '../Message';
 const GridView = ({
   classes,
   data,
+  title,
   columns,
   customOnRowsSelect,
   openSnack,
@@ -21,6 +22,9 @@ const GridView = ({
   buttonText,
   options,
   messageData,
+  saveButtonDefaultStyle,
+  DeactiveSaveButtonDefaultStyle,
+  ActiveSaveButtonDefaultStyle,
 }) => {
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.fileIds);
@@ -40,35 +44,59 @@ const GridView = ({
     return status === 'close' ? closeMessage(location) : openMessage(location);
   }
 
-  const btnStyle = {
-    color: '#fff',
-    boxShadow: 'none',
-    backgroundColor: '#03A383',
-    padding: '6px 16px',
-    fontSize: '0.875rem',
-    minWidth: '64px',
-    boxSizing: 'border-box',
-    transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-    lineHeight: '1.75',
-    fontWeight: '500',
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    borderRadius: '10px',
-    textTransform: 'uppercase',
-    border: 'none',
-    verticalAlign: 'top',
+  // Button styling functions.
+  const buildButtonStyle = (button, styleObject) => {
+    const styleKV = Object.entries(styleObject);
+    // eslint-disable-next-line  no-restricted-syntax, no-unused-vars
+    for (const [key, value] of styleKV) {
+      // eslint-disable-next-line no-param-reassign
+      button.current.style[key] = value;
+    }
   };
 
-  useEffect(() => {
-    saveButton.current.disabled = true;
-    saveButton.current.style.color = '#FFFF';
-    saveButton.current.style.backgroundColor = '#03A383';
-    saveButton.current.style.opacity = '0.3';
-    saveButton.current.style.border = '3px solid grey';
-    saveButton.current.style.fontWeight = '600';
-    saveButton.current.style.cursor = 'auto';
-  });
+  const initSaveButtonDefaultStyle = (button) => {
+    // eslint-disable-next-line no-param-reassign
+    button.current.disabled = true;
+    buildButtonStyle(button, saveButtonDefaultStyle);
+  };
+
+  const updateActiveSaveButtonStyle = (flag, button) => {
+    if (flag) {
+      // eslint-disable-next-line no-param-reassign
+      button.current.disabled = true;
+      buildButtonStyle(button, ActiveSaveButtonDefaultStyle);
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      button.current.disabled = false;
+      buildButtonStyle(button, DeactiveSaveButtonDefaultStyle);
+    }
+  };
+
+  const btnStyle = {
+    borderRadius: '10px',
+    width: '156px',
+    lineHeight: '37px',
+    fontSize: '12px',
+    textTransform: 'uppercase',
+    fontFamily: 'Lato',
+    color: '#fff',
+    backgroundColor: '#10A075',
+    marginTop: '6px',
+    marginBottom: '10px',
+    marginRight: '5px',
+  };
 
   let selectedFileIDs = [];
+
+  useEffect(() => {
+    initSaveButtonDefaultStyle(saveButton);
+
+    if (selectedFileIDs.length === 0) {
+      updateActiveSaveButtonStyle(true, saveButton);
+    } else {
+      updateActiveSaveButtonStyle(false, saveButton);
+    }
+  });
 
   function exportFiles() {
     // Find the newly added files by comparing
@@ -92,20 +120,9 @@ const GridView = ({
     ))];
 
     if (allRowsSelected.length === 0) {
-      saveButton.current.disabled = true;
-      saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#03A383';
-      saveButton.current.style.opacity = '0.3';
-      saveButton.current.style.border = '3px solid grey';
-      saveButton.current.style.fontWeight = '600';
-      saveButton.current.style.cursor = 'auto';
+      updateActiveSaveButtonStyle(true, saveButton);
     } else {
-      saveButton.current.disabled = false;
-      saveButton.current.style.color = '#FFFFFF';
-      saveButton.current.style.backgroundColor = '#03A383';
-      saveButton.current.style.cursor = 'pointer';
-      saveButton.current.style.opacity = 'unset';
-      saveButton.current.style.border = 'unset';
+      updateActiveSaveButtonStyle(false, saveButton);
     }
   }
 
@@ -125,6 +142,7 @@ const GridView = ({
           <CustomDataTable
             data={_.cloneDeep(data)}
             columns={columns}
+            title={title}
             options={finalOptions}
           />
         </Grid>
@@ -219,7 +237,7 @@ const styles = () => ({
   },
   topButtonGroup: {
     textAlign: 'right',
-    padding: '10px 39px 0px 0px',
+    padding: '10px 0px 0px 0px',
     position: 'relative',
   },
   messageBottom: {

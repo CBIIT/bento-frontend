@@ -413,7 +413,7 @@ export default {
       titleText: {
 
         color: tableHeaderFontColor,
-        fontSize: '25.2pt',
+        // fontSize: '25.2pt',
         fontFamily: tableFontFamily,
         letterSpacing: '0.025em',
         fontStyle: 'normal',
