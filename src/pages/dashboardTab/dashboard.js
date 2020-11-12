@@ -139,6 +139,7 @@ const styles = (theme) => ({
   },
   dashboardDivider: {
     height: 16,
+    marginTop: '10px',
     backgroundColor: '#E2E7EC',
   },
   dashboardDividerTop: {
