@@ -9,7 +9,7 @@ import formatBytes from './formatBytes';
 //  Generate MuiTable's columns.
 export function getColumns(tableConfig, classes, data, externalLinkIcon, linkto, linkClick) {
   const updatedTableWithLinks = manipulateLinks(tableConfig.columns);
-  return updatedTableWithLinks.slice(0, 10).map((column, index) => ({
+  return updatedTableWithLinks.slice(0, 12).map((column, index) => ({
     name: column.dataField,
     label: column.header,
     options: {

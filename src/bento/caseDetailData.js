@@ -188,7 +188,7 @@ const table1 = {
   // Set 'display' to false to hide the table entirely
   display: true,
   // Table title
-  tableTitle: 'ASSOCIATED SAMPLE',
+  tableTitle: 'ASSOCIATED SAMPLES',
   // Field name for files data, need to be updated only when using a different GraphQL query
   subjectDetailField: 'samples',
   // Value must be one of the 'dataField's in fileTableColumns
@@ -197,6 +197,23 @@ const table1 = {
   defaultSortDirection: 'asc',
   // Text to appear on Add to cart button
   buttonText: 'Add Selected Files',
+  saveButtonDefaultStyle: {
+    color: '#fff',
+    backgroundColor: '#09A175',
+    opacity: '1',
+    border: '0px',
+    cursor: 'pointer',
+  },
+  ActiveSaveButtonDefaultStyle: {
+    disabled: 'true',
+    opacity: '0.3',
+    cursor: 'auto',
+  },
+  DeactiveSaveButtonDefaultStyle: {
+    cursor: 'pointer',
+    opacity: 'unset',
+    border: 'unset',
+  },
   // Help Icon Message
   tooltipMessage: 'Click button to add selected files associated with the selected sample(s).',
   helpMessage: 'Here help message',
@@ -263,6 +280,23 @@ const table2 = {
   defaultSortDirection: 'asc',
   // Text to appear on Add to cart button
   buttonText: 'Add Selected Files',
+  saveButtonDefaultStyle: {
+    color: '#fff',
+    backgroundColor: '#09A175',
+    opacity: '1',
+    border: '0px',
+    cursor: 'pointer',
+  },
+  ActiveSaveButtonDefaultStyle: {
+    disabled: 'true',
+    opacity: '0.3',
+    cursor: 'auto',
+  },
+  DeactiveSaveButtonDefaultStyle: {
+    cursor: 'pointer',
+    opacity: 'unset',
+    border: 'unset',
+  },
   // Help Icon Message
   tooltipMessage: 'Click button to add selected files.',
   helpMessage: 'Here help message',

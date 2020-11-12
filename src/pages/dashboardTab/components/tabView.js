@@ -6,7 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
-import { CustomDataTable } from 'bento-components';
+import CustomDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
 import { addToCart, getCart } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
 import { getColumns } from '../../../utils/tables';
@@ -29,6 +29,9 @@ const TabView = ({
   externalLinkIcon,
   options,
   TopMessageStatus,
+  count,
+  api,
+  paginationAPIField,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -138,6 +141,9 @@ const TabView = ({
             data={data}
             columns={getColumns(customColumn, classes, data, externalLinkIcon)}
             options={finalOptions}
+            count={count}
+            api={api}
+            paginationAPIField={paginationAPIField}
           />
         </Grid>
 
@@ -280,10 +286,11 @@ const styles = () => ({
     zIndex: '500',
     position: 'absolute',
     marginTop: '-148px',
-    marginLeft: 'calc(100% - 212px)',
+    marginLeft: 'calc(100% - 220px)',
   },
   helpIcon: {
     zIndex: '600',
+    width: '20px',
   },
   helpIconButton: {
     verticalAlign: 'top',

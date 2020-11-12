@@ -149,14 +149,16 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
         ? (
           <div id="table_case_detail_samples" className={classes.tableContainer}>
             <div className={classes.tableDiv}>
-              <div className={classes.tableTitle}>
-                <span className={classes.tableHeader}>{table1.tableTitle}</span>
-              </div>
               <Grid item xs={12}>
                 <Grid container spacing={4}>
                   <Grid item xs={12}>
                     <GridWithFooter
                       data={samplesData}
+                      title={(
+                        <div className={classes.tableTitle}>
+                          <span className={classes.tableHeader}>{table1.tableTitle}</span>
+                        </div>
+                      )}
                       columns={getColumns(table1, classes, data, externalLinkIcon)}
                       options={getOptions(table1, classes)}
                       customOnRowsSelect={table1.customOnRowsSelect}
@@ -164,11 +166,11 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                       closeSnack={closeSnack}
                       disableRowSelection={table1.disableRowSelection}
                       buttonText={table1.buttonText}
+                      saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
+                      ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
+                      DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
                       messageData={table1.tooltipMessage}
                     />
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Typography />
                   </Grid>
                 </Grid>
               </Grid>
@@ -179,14 +181,16 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
         ? (
           <div id="table_case_detail_samples" className={classes.tableContainer}>
             <div className={classes.tableDiv}>
-              <div className={classes.tableTitle}>
-                <span className={classes.tableHeader}>{table2.tableTitle}</span>
-              </div>
               <Grid item xs={12}>
                 <Grid container spacing={4}>
                   <Grid item xs={12}>
                     <GridWithFooter
                       data={data[table2.subjectDetailField]}
+                      title={(
+                        <div className={classes.tableTitle}>
+                          <span className={classes.tableHeader}>{table2.tableTitle}</span>
+                        </div>
+                      )}
                       columns={getColumns(table2, classes, data)}
                       options={getOptions(table2, classes)}
                       customOnRowsSelect={table2.customOnRowsSelect}
@@ -194,11 +198,11 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                       closeSnack={closeSnack}
                       disableRowSelection={table2.disableRowSelection}
                       buttonText={table2.buttonText}
+                      saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
+                      ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
+                      DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
                       messageData={table2.tooltipMessage}
                     />
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Typography />
                   </Grid>
                 </Grid>
               </Grid>
@@ -297,9 +301,6 @@ const styles = (theme) => ({
   tableContainer: {
     background: '#f3f3f3',
   },
-  tableHeader: {
-    paddingLeft: '32px',
-  },
   tableDiv: {
     maxWidth: '1340px',
     margin: 'auto',
@@ -312,7 +313,6 @@ const styles = (theme) => ({
     fontSize: '17px',
     letterSpacing: '0.025em',
     color: '#3695A9',
-    paddingBottom: '19px',
   },
   breadCrumb: {
     paddingTop: '3px',
