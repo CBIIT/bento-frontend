@@ -4,7 +4,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
+import { CustomDataTable, CustomActiveDonut } from 'bento-components';
 import { Link } from 'react-router-dom';
 import {
   pageTitle, table, externalLinkIcon,
@@ -18,12 +18,12 @@ import cn from '../../utils/classNameConcat';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
-import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import {
   filterData,
   getDonutDataFromDashboardData,
 } from '../../utils/dashboardUtilFunctions';
 import { getOptions, getColumns } from '../../utils/tables';
+import colors from '../../utils/colors';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
@@ -298,6 +298,7 @@ const ProgramView = ({ classes, data, theme }) => {
                         cx="50%"
                         cy="50%"
                         fontSize="15px"
+                        colors={colors}
                       />
                     </Widget>
                   </Grid>

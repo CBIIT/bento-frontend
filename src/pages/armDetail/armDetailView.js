@@ -5,6 +5,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { CustomActiveDonut } from 'bento-components';
 import GridWithFooter from '../../components/GridWithFooter/GridView';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
@@ -17,11 +18,11 @@ import {
 } from '../../bento/armDetailData';
 import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
-import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 import { getOptions, getColumns } from '../../utils/tables';
 import NumberOfThings from '../../components/NumberOfThings';
 import Snackbar from '../../components/Snackbar';
+import colors from '../../utils/colors';
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
@@ -144,6 +145,7 @@ const ArmDetail = ({ data, classes }) => {
                       cx="50%"
                       cy="50%"
                       fontSize="15px"
+                      colors={colors}
                     />
                   </Widget>
                 </div>
