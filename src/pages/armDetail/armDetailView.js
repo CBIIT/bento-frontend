@@ -174,6 +174,9 @@ const ArmDetail = ({ data, classes }) => {
                             closeSnack={closeSnack}
                             disableRowSelection={table.disableRowSelection}
                             buttonText={table.buttonText}
+                            saveButtonDefaultStyle={table.saveButtonDefaultStyle}
+                            ActiveSaveButtonDefaultStyle={table.ActiveSaveButtonDefaultStyle}
+                            DeactiveSaveButtonDefaultStyle={table.DeactiveSaveButtonDefaultStyle}
                             messageData={table.tooltipMessage}
                           />
                         </Grid>
