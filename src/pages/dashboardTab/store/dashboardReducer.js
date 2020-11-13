@@ -1,4 +1,3 @@
-/* eslint-disable */
 import _ from 'lodash';
 import {
   customCheckBox,
@@ -12,8 +11,6 @@ import {
   setSelectedFilterValues,
   transformInitialDataForSunburst,
 } from 'bento-components';
-import {
-} from '../../../utils/dashboardUtilFunctions';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
 import store from '../../../store';
