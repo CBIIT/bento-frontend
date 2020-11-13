@@ -7,7 +7,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -80,7 +79,7 @@ const cartView = ({ classes, data, isLoading }) => {
                 Remove
               </div>
               <div className={classes.removeHeadCellIcon}>
-                <IconButton aria-label="help">
+                <IconButton aria-label="help" className={classes.removeHeadCellIconButton}>
                   <ArrowDropDownIcon onClick={() => removeSubjects()} onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} />
                 </IconButton>
                 { removeAllMessageStatus ? (
@@ -190,8 +189,12 @@ const cartView = ({ classes, data, isLoading }) => {
               {myFilesPageData.downButtonText}
               {' '}
             </button>
-            <IconButton aria-label="help">
-              <HelpIcon fontSize="small" className={classes.helpIcon} onMouseEnter={() => toggleMessageStatus('open')} onMouseLeave={() => toggleMessageStatus('close')} />
+            <IconButton aria-label="help" onMouseEnter={() => toggleMessageStatus('open')} onMouseLeave={() => toggleMessageStatus('close')}>
+              <img
+                src={myFilesPageData.tooltipIcon}
+                alt={myFilesPageData.tooltipAlt}
+                className={classes.helpIcon}
+              />
             </IconButton>
             { TopMessageStatus ? (
               <div className={classes.messageTop}>
@@ -308,6 +311,7 @@ const styles = (theme) => ({
   },
   helpIcon: {
     verticalAlign: 'top',
+    width: '20px',
     zIndex: '600',
   },
   topButtonGroup: {
@@ -408,6 +412,12 @@ const styles = (theme) => ({
     ursor: 'pointer',
     display: 'flex',
     verticalAlign: 'top',
+  },
+  removeHeadCellIconButton: {
+    color: '#A61401',
+    width: '20px',
+    marginTop: '8px',
+    height: '20px',
   },
   removeAllMessage: {
     fontWeight: '500',

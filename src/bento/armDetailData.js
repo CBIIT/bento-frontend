@@ -66,6 +66,23 @@ const table = {
   helpMessage: 'Here help message',
   // Text to appear on Add to cart button
   buttonText: 'Add Selected Files',
+  saveButtonDefaultStyle: {
+    color: '#fff',
+    backgroundColor: '#09A175',
+    opacity: '1',
+    border: '0px',
+    cursor: 'pointer',
+  },
+  ActiveSaveButtonDefaultStyle: {
+    disabled: 'true',
+    opacity: '0.3',
+    cursor: 'auto',
+  },
+  DeactiveSaveButtonDefaultStyle: {
+    cursor: 'pointer',
+    opacity: 'unset',
+    border: 'unset',
+  },
   columns: [
     {
       dataField: 'file_name',

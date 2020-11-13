@@ -130,6 +130,8 @@ export const tabContainers = [
     selectableRows: true,
     tabIndex: '0',
     downloadFileName: 'Bento_Dashboard_cases_download',
+    headerPagination: true,
+    footerPagination: true,
   },
   {
     name: 'Samples',
@@ -234,6 +236,8 @@ export const tabContainers = [
     selectableRows: true,
     tabIndex: '1',
     downloadFileName: 'Bento_Dashboard_cases_download',
+    headerPagination: true,
+    footerPagination: true,
   },
   {
     name: 'Files',
@@ -337,6 +341,8 @@ export const tabContainers = [
 
     tabIndex: '2',
     downloadFileName: 'Bento_Dashboard_cases_download',
+    headerPagination: true,
+    footerPagination: true,
   },
 ];
 
