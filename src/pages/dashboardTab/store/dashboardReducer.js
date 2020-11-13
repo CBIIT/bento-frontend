@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
-import { widgetsData } from '../../../bento/dashboardData';
+import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
 import {
@@ -61,8 +61,14 @@ function shouldFetchDataForDashboardTabDataTable(state) {
   return !(state.isFetched);
 }
 
-function getStatInit(input) {
-  const initStats = statsCount.reduce((acc, widget) => (
+/**
+ * Returns the  stats from inputAPI data.
+ * @param {object} data
+ *  @param {json} statCountVariables
+ * @return {json}
+ */
+function getStatInit(input, statCountVariables) {
+  const initStats = statCountVariables.reduce((acc, widget) => (
     { ...acc, [widget.statAPI]: input[widget.statAPI] }
   ), {});
   return initStats;
@@ -71,10 +77,11 @@ function getStatInit(input) {
 /**
  * Returns the filtered stats from inputAPT data.
  * @param {object} data
+ *  @param {json} statCountVariables
  * @return {json}
  */
-function getFilteredStat(input) {
-  const filteredStats = statsCount.reduce((acc, stat) => (
+function getFilteredStat(input, statCountVariables) {
+  const filteredStats = statCountVariables.reduce((acc, stat) => (
     { ...acc, [stat.statAPI]: input[stat.statAPI] }
   ), {});
   return filteredStats;
@@ -83,10 +90,11 @@ function getFilteredStat(input) {
 /**
  * Returns the widgets data.
  * @param {object} data
+ * @param {json} widgetsInfoFromCustConfig
  * @return {json}r
  */
-function getWidgetsInitData(data) {
-  const donut = widgetsData.reduce((acc, widget) => {
+function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
+  const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : data[widget.dataName];
     const label = widget.dataName;
     return { ...acc, [label]: Data };
@@ -113,27 +121,15 @@ function fetchDashboardTab() {
  * Generate a default varibles for filter query.
  *
  * Need to be updated with custodian of filter
- * @return distpatcher
+ * @return json
  */
 
-const allFilters = {
-  programs: [],
-  studies: [],
-  diagnoses: [],
-  rc_scores: [],
-  tumor_sizes: [],
-  chemo_regimen: [],
-  tumor_grades: [],
-  er_status: [],
-  pr_status: [],
-  endo_therapies: [],
-  meno_status: [],
-  tissue_type: [],
-  composition: [],
-  association: [],
-  file_type: [],
-};
-
+function allFilters() {
+  const emptyFilters = facetSearchData.reduce((acc, facet) => (
+    { ...acc, [facet.datafield]: [] }
+  ), {});
+  return emptyFilters;
+}
 /**
  * Returns filter variable for graphql query using the all filters.
  *
@@ -215,8 +211,14 @@ export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) 
     ));
 }
 
-function getWidgetsData(input) {
-  const donut = widgetsData.reduce((acc, widget) => {
+/**
+ * Returns the widgets data.
+ * @param {object} data
+ * @param {json} widgetsInfoFromCustConfig
+ * @return {json}r
+ */
+function getWidgetsData(input, widgetsInfoFromCustConfig) {
+  const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input, widget.datatable_level1_field, widget.datatable_level2_field) : getDonutDataFromDashboardData(input, widget.datatable_field);
     const label = widget.dataName;
     return { ...acc, [label]: Data };
@@ -265,8 +267,8 @@ const reducers = {
         ...state.datatable,
         dataCase: item.data.searchSubjects.firstPage,
       },
-      stats: getFilteredStat(item.data.searchSubjects),
-      widgets: getWidgetsInitData(item.groups.data),
+      stats: getFilteredStat(item.data.searchSubjects, statsCount),
+      widgets: getWidgetsInitData(item.groups.data, widgetsData),
     };
   },
   UPDATE_CURRRENT_TAB_DATA: (state, item) => (
@@ -306,7 +308,7 @@ const reducers = {
         filters: dataTableFilters,
       },
       filters: dataTableFilters,
-      widgets: getWidgetsData(tableData),
+      widgets: getWidgetsData(tableData, widgetsData),
     };
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
@@ -318,8 +320,8 @@ const reducers = {
         isLoading: false,
         hasError: false,
         error: '',
-        stats: getStatInit(item.data),
-        allActiveFilters: allFilters,
+        stats: getStatInit(item.data, statsCount),
+        allActiveFilters: allFilters(),
         filteredSubjectIds: [],
         subjectOverView: {
           data: item.data.subjectOverViewPaged,
@@ -336,7 +338,7 @@ const reducers = {
           dataFile: item.data.fileOverview,
           filters: [],
         },
-        widgets: getWidgetsInitData(item.data),
+        widgets: getWidgetsInitData(item.data, widgetsData),
 
       } : { ...state };
   },
