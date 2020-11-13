@@ -1,7 +1,10 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import { CustomDataTable } from 'bento-components';
+import {
+  CustomDataTable,
+  getColumns, getOptions, getDefaultCustomFooter,
+} from 'bento-components';
 import _ from 'lodash';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,13 +14,11 @@ import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+
 import SkeletonTable from './components/skeletonTable';
 import { myFilesPageData, table, manifestData } from '../../bento/fileCentricCartWorkflowData';
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
-import {
-  getColumns, getOptions, getDefaultCustomFooter,
-} from '../../utils/tables';
 import Message from '../../components/Message';
 import DialogThemeProvider from './dialogThemeConfig';
 import TableThemeProvider from './cartTableThemeConfig';

@@ -1,6 +1,21 @@
+/* eslint-disable */
 import _ from 'lodash';
+import {
+  customCheckBox,
+  updateCheckBox,
+  getFilters,
+  filterData,
+  getCheckBoxData,
+  getStatDataFromDashboardData,
+  getSunburstDataFromDashboardData,
+  getDonutDataFromDashboardData,
+  setSelectedFilterValues,
+  transformInitialDataForSunburst,
+} from 'bento-components';
+import {
+} from '../../../utils/dashboardUtilFunctions';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
-import { widgetsData } from '../../../bento/dashboardData';
+import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
 import {
@@ -11,18 +26,6 @@ import {
   GET_SAMPLES_OVERVIEW_QUERY,
   GET_CASES_OVERVIEW_QUERY,
 } from '../../../bento/dashboardTabData';
-import {
-  customCheckBox,
-  updateCheckBox,
-  transformInitialDataForSunburst,
-  getFilters,
-  filterData,
-  getCheckBoxData,
-  getStatDataFromDashboardData,
-  getSunburstDataFromDashboardData,
-  getDonutDataFromDashboardData,
-  setSelectedFilterValues,
-} from '../../../utils/dashboardUtilFunctions';
 
 const storeKey = 'dashboardTab';
 
@@ -250,7 +253,7 @@ const reducers = {
   }),
   TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
     const updatedCheckboxData1 = updateCheckBox(
-      state.checkbox.data, item.groups.data, item.filter[0], item.allFilters,
+      state.checkbox.data, item.groups.data, item.filter[0], facetSearchData,
     );
     const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
     fetchDataForDashboardTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
@@ -310,7 +313,7 @@ const reducers = {
     };
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
-    const checkboxData = customCheckBox(item.data);
+    const checkboxData = customCheckBox(item.data, facetSearchData);
     return item.data
       ? {
         ...state.dashboard,

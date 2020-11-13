@@ -34,7 +34,6 @@ const NOT_PROVIDED = 'Not Specified';
   api : API that we are using to get data.
   dtatfield: datatable field that related
   show: control show this category on the page or not
-
 */
 
 export const unselectFilters = (filtersObj) => filtersObj.map((filterElement) => ({
@@ -180,7 +179,6 @@ export function getDonutDataFromDashboardData(data, widgetName) {
 
 /* filterData function evaluates a row of data with filters,
       to check if this row will be showed in the data table.
-
      If there is no filter, then display this row.
      If has filters and for each group of filters, at least has one filter option
      is related to the data.

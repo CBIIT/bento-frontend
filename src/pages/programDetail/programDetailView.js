@@ -4,26 +4,27 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
 import { Link } from 'react-router-dom';
+import {
+  CustomDataTable,
+  cn,
+  manipulateLinks,
+  filterData,
+  getDonutDataFromDashboardData,
+  getOptions,
+  getColumns,
+} from 'bento-components';
 import {
   pageTitle, table, externalLinkIcon,
   programDetailIcon, breadCrumb, aggregateCount,
   pageSubTitle, leftPanel, rightPanel,
 } from '../../bento/programDetailData';
-import { manipulateLinks } from '../../utils/helpers';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import cn from '../../utils/classNameConcat';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
 import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
-import {
-  filterData,
-  getDonutDataFromDashboardData,
-} from '../../utils/dashboardUtilFunctions';
-import { getOptions, getColumns } from '../../utils/tables';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
