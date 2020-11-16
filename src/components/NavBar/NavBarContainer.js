@@ -9,6 +9,7 @@ export default compose(
   connect(
     (state) => ({
       isSidebarOpened: state.layout.isSidebarOpened,
+      cartFieldIds: state.cart.fileIds,
     }),
     { toggleSidebar },
   ),

@@ -1,5 +1,14 @@
 import gql from 'graphql-tag';
 
+export const statsStyling = {
+  global: {
+    horizontalStyle: true,
+    statTitleFirst: true,
+    height: '47px',
+    background: '#8DCAFF',
+  },
+};
+
 export const globalStatsData = [
   // A maximum of 6 stats are allowed
   {
