@@ -383,9 +383,9 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
       }
     });
   // Sorting based on Filter Intm name
-  const sortBasedOnItemName = result.slice(0).sort((a, b) => {
-    const x = a.name.toLowerCase();
-    const y = b.name.toLowerCase();
+  const sortBasedOnItemName = result.slice(0).sort((obj1, obj2) => {
+    const x = obj1.name.toLowerCase();
+    const y = obj2.name.toLowerCase();
     return x < y ? -1 : x > y ? 1 : 0;
   });
   return sortBasedOnItemName;
