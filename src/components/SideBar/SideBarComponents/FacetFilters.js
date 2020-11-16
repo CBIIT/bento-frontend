@@ -71,6 +71,20 @@ const FacetPanel = ({ classes }) => {
 
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
     .slice(0, 15);
+  console.log(sideBarDisplay);
+
+  const arrangeBySections = (arr) => {
+    const sideBar = {};
+    arr.forEach(({ section, ...item }) => {
+      if (!sideBar[section]) {
+        sideBar[section] = { sectionName: section, items: [] };
+      }
+      sideBar[section].items.push({ section, ...item });
+    });
+    return Object.values(sideBar);
+  };
+  const sideBarSections = arrangeBySections(sideBarDisplay);
+  console.log(sideBarSections);
 
   return (
     <>

@@ -403,6 +403,7 @@ export function customCheckBox(data) {
       checkboxItems: transformAPIDataIntoCheckBoxData(data[mapping.api], mapping.field),
       datafield: mapping.datafield,
       show: mapping.show,
+      section: mapping.section,
     }))
   );
 }

@@ -4,49 +4,49 @@ import gql from 'graphql-tag';
 // A maximum of 12 facetSearchData are allowed
 export const facetSearchData = [
   {
-    label: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'programs', show: true,
+    label: 'Program', field: 'group', api: 'subjectCountByProgram', datafield: 'programs', section: 'case', show: true,
   },
   {
-    label: 'Arm', field: 'group', api: 'subjectCountByStudy', datafield: 'studies', show: true,
+    label: 'Arm', field: 'group', api: 'subjectCountByStudy', datafield: 'studies', section: 'case', show: true,
   },
   {
-    label: 'Diagnosis', field: 'group', api: 'subjectCountByDiagnoses', datafield: 'diagnoses', show: true,
+    label: 'Diagnosis', field: 'group', api: 'subjectCountByDiagnoses', datafield: 'diagnoses', section: 'case', show: true,
   },
   {
-    label: 'Recurrence Score', field: 'group', api: 'subjectCountByRecurrenceScore', datafield: 'rc_scores', show: true,
+    label: 'Recurrence Score', field: 'group', api: 'subjectCountByRecurrenceScore', datafield: 'rc_scores', section: 'case', show: true,
   },
   {
-    label: 'Tumor Size', field: 'group', api: 'subjectCountByTumorSize', datafield: 'tumor_sizes', show: true,
+    label: 'Tumor Size', field: 'group', api: 'subjectCountByTumorSize', datafield: 'tumor_sizes', section: 'case', show: true,
   },
   {
-    label: 'Chemotherapy', field: 'group', api: 'subjectCountByChemotherapyRegimen', datafield: 'chemo_regimen', show: true,
+    label: 'Chemotherapy', field: 'group', api: 'subjectCountByChemotherapyRegimen', datafield: 'chemo_regimen', section: 'case', show: true,
   },
   {
-    label: 'Tumor Grade', field: 'group', api: 'subjectCountByTumorGrade', datafield: 'tumor_grades', show: true,
+    label: 'Tumor Grade', field: 'group', api: 'subjectCountByTumorGrade', datafield: 'tumor_grades', section: 'case', show: true,
   },
   {
-    label: 'ER Status', field: 'group', api: 'subjectCountByErStatus', datafield: 'er_status', show: true,
+    label: 'ER Status', field: 'group', api: 'subjectCountByErStatus', datafield: 'er_status', section: 'case', show: true,
   },
   {
-    label: 'PR Status', field: 'group', api: 'subjectCountByPrStatus', datafield: 'pr_status', show: true,
+    label: 'PR Status', field: 'group', api: 'subjectCountByPrStatus', datafield: 'pr_status', section: 'case', show: true,
   },
   {
-    label: 'Endocrine Therapy', field: 'group', api: 'subjectCountByEndocrineTherapy', datafield: 'endo_therapies', show: true,
+    label: 'Endocrine Therapy', field: 'group', api: 'subjectCountByEndocrineTherapy', datafield: 'endo_therapies', section: 'case', show: true,
   },
   {
-    label: 'Menopause Status', field: 'group', api: 'subjectCountByMenopauseStatus', datafield: 'meno_status', show: true,
+    label: 'Menopause Status', field: 'group', api: 'subjectCountByMenopauseStatus', datafield: 'meno_status', section: 'case', show: true,
   },
   {
-    label: 'Tissue Type', field: 'group', api: 'subjectCountByTissueType', datafield: 'tissue_type', show: true,
+    label: 'Tissue Type', field: 'group', api: 'subjectCountByTissueType', datafield: 'tissue_type', section: 'sample', show: true,
   },
   {
-    label: 'Tissue Composition', field: 'group', api: 'subjectCountByTissueComposition', datafield: 'composition', show: true,
+    label: 'Tissue Composition', field: 'group', api: 'subjectCountByTissueComposition', datafield: 'composition', section: 'sample', show: true,
   },
   {
-    label: 'File Association', field: 'group', api: 'subjectCountByFileAssociation', datafield: 'association', show: true,
+    label: 'File Association', field: 'group', api: 'subjectCountByFileAssociation', datafield: 'association', section: 'file', show: true,
   },
   {
-    label: 'File Type', field: 'group', api: 'subjectCountByFileType', datafield: 'file_type', show: true,
+    label: 'File Type', field: 'group', api: 'subjectCountByFileType', datafield: 'file_type', section: 'file', show: true,
   },
 ];
 
