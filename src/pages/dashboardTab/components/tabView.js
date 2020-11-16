@@ -6,10 +6,23 @@ import {
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
+import {
+  GET_FILES_OVERVIEW_QUERY,
+  GET_SAMPLES_OVERVIEW_QUERY,
+  GET_CASES_OVERVIEW_QUERY,
+  GET_FILES_OVERVIEW_DESC_QUERY,
+  GET_SAMPLES_OVERVIEW_DESC_QUERY,
+  GET_CASES_OVERVIEW_DESC_QUERY,
+} from '../../../bento/dashboardTabData';
 import CustomDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
 import { addToCart, getCart } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
 import { getColumns } from '../../../utils/tables';
+
+const getOverviewQuery = (api) => (api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_QUERY : api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY);
+
+// Due to cypher limitation we have to send seperate query get descending list
+const getOverviewDescQuery = (api) => (api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_DESC_QUERY : api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_DESC_QUERY : GET_CASES_OVERVIEW_DESC_QUERY);
 
 const TabView = ({
   classes,
@@ -32,6 +45,7 @@ const TabView = ({
   count,
   api,
   paginationAPIField,
+  paginationAPIFieldDesc,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -142,8 +156,10 @@ const TabView = ({
             columns={getColumns(customColumn, classes, data, externalLinkIcon)}
             options={finalOptions}
             count={count}
-            api={api}
+            overview={getOverviewQuery(api)}
+            overviewDesc={getOverviewDescQuery(api)}
             paginationAPIField={paginationAPIField}
+            paginationAPIFieldDesc={paginationAPIFieldDesc}
           />
         </Grid>
 
