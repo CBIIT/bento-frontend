@@ -47,7 +47,7 @@ const FacetPanel = ({ classes }) => {
 
   const [expanded, setExpanded] = React.useState(false);
 
-  const [groupExpanded, setGroupExpanded] = React.useState(['CASE']);
+  const [groupExpanded, setGroupExpanded] = React.useState(['case']);
 
   React.useEffect(() => {
     if (!expanded || !(expanded === `${sideBarContent.defaultPanel}false` || expanded !== false)) {
@@ -108,7 +108,7 @@ const FacetPanel = ({ classes }) => {
       {sideBarSections.map((currentSection) => (
         <>
           <ExpansionPanel
-            expanded={groupExpanded === currentSection.sectionName}
+            expanded={groupExpanded.includes(currentSection.sectionName)}
             onChange={handleGroupChange(currentSection.sectionName)}
                 // className={classes.expansion}
             classes={{ root: classes.expansionPanelRoot }}
