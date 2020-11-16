@@ -10,6 +10,7 @@ import {
   withStyles,
   Divider,
 } from '@material-ui/core';
+import _ from 'lodash';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -46,6 +47,8 @@ const FacetPanel = ({ classes }) => {
 
   const [expanded, setExpanded] = React.useState(false);
 
+  const [groupExpanded, setGroupExpanded] = React.useState(['CASE']);
+
   React.useEffect(() => {
     if (!expanded || !(expanded === `${sideBarContent.defaultPanel}false` || expanded !== false)) {
       setExpanded(sideBarContent.defaultPanel);
@@ -56,6 +59,20 @@ const FacetPanel = ({ classes }) => {
     setExpanded(isExpanded ? panel : `${panel}false`);
 
     // set height of filters.
+  };
+
+  const handleGroupChange = (panel) => (event, isExpanded) => {
+    const groups = _.cloneDeep(groupExpanded);
+    if (isExpanded) {
+      groups.push(panel);
+    } else {
+      const index = groups.indexOf(panel);
+      if (index > -1) {
+        groups.splice(index, 1);
+      }
+    }
+
+    setGroupExpanded(groups);
   };
 
   const handleToggle = (value) => () => {
@@ -88,29 +105,47 @@ const FacetPanel = ({ classes }) => {
 
   return (
     <>
-      {sideBarDisplay.map((sideBarItem) => {
-        if (sideBarItem.show) {
-          return (
-            <>
-              <ExpansionPanel
-                expanded={expanded === sideBarItem.groupName}
-                onChange={handleChange(sideBarItem.groupName)}
+      {sideBarSections.map((currentSection) => (
+        <>
+          <ExpansionPanel
+            expanded={groupExpanded === currentSection.sectionName}
+            onChange={handleGroupChange(currentSection.sectionName)}
                 // className={classes.expansion}
-                classes={{ root: classes.expansionPanelRoot }}
-              >
-                <CustomExpansionPanelSummary
-                  expandIcon={<ArrowDropDownIcon style={{ fill: '#8DCAFF' }} />}
-                  aria-controls={sideBarItem.groupName}
-                  id={sideBarItem.groupName}
-                >
-                  {/* <ListItemText primary={sideBarItem.groupName} /> */}
-                  <div className={classes.panelSummaryText}>{sideBarItem.groupName}</div>
+            classes={{ root: classes.expansionPanelRoot }}
+          >
+            <CustomExpansionPanelSummary
+              expandIcon={<ArrowDropDownIcon style={{ fill: '#8DCAFF' }} />}
+              aria-controls={currentSection.sectionName}
+              id={currentSection.sectionName}
+            >
+              {/* <ListItemText primary={sideBarItem.groupName} /> */}
+              <div className={classes.panelSummaryText}>{currentSection.sectionName}</div>
 
-                </CustomExpansionPanelSummary>
+            </CustomExpansionPanelSummary>
 
-                <ExpansionPanelDetails classes={{ root: classes.expansionPanelDetailsRoot }}>
-                  <List component="div" disablePadding dense>
-                    {
+            <ExpansionPanelDetails classes={{ root: classes.expansionPanelDetailsRoot }}>
+              <List component="div" disablePadding dense>
+                {currentSection.items.map((sideBarItem) => (
+                  <>
+                    <ExpansionPanel
+                      expanded={expanded === sideBarItem.groupName}
+                      onChange={handleChange(sideBarItem.groupName)}
+                // className={classes.expansion}
+                      classes={{ root: classes.expansionPanelRoot }}
+                    >
+                      <CustomExpansionPanelSummary
+                        expandIcon={<ArrowDropDownIcon style={{ fill: '#8DCAFF' }} />}
+                        aria-controls={sideBarItem.groupName}
+                        id={sideBarItem.groupName}
+                      >
+                        {/* <ListItemText primary={sideBarItem.groupName} /> */}
+                        <div className={classes.panelSummaryText}>{sideBarItem.groupName}</div>
+
+                      </CustomExpansionPanelSummary>
+
+                      <ExpansionPanelDetails classes={{ root: classes.expansionPanelDetailsRoot }}>
+                        <List component="div" disablePadding dense>
+                          {
             sideBarItem.checkboxItems.map((checkboxItem) => {
               if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
                 return '';
@@ -143,15 +178,17 @@ const FacetPanel = ({ classes }) => {
               );
             })
           }
-                  </List>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-              <Divider variant="middle" classes={{ root: classes.dividerRoot }} />
-            </>
-          );
-        }
-        return '';
-      })}
+                        </List>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  </>
+                ))}
+              </List>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+          <Divider variant="middle" classes={{ root: classes.dividerRoot }} />
+        </>
+      ))}
     </>
   );
 };
