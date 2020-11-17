@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -110,9 +111,10 @@ const FacetPanel = ({ classes }) => {
           <Divider
             variant="middle"
             style={{
-              backgroundColor: facetSectionStyling[currentSection.sectionName].color ? facetSectionStyling[currentSection.sectionName].color : '#D6F2EA',
+              // backgroundColor: facetSectionStyling[currentSection.sectionName].color ?
+              // facetSectionStyling[currentSection.sectionName].color : '#D6F2EA',
               margin: '0px',
-              height: facetSectionStyling[currentSection.sectionName].height ? facetSectionStyling[currentSection.sectionName].height : '1px',
+              // height: facetSectionStyling[currentSection.sectionName].height ? facetSectionStyling[currentSection.sectionName].height : '1px',
             }}
           />
           <ExpansionPanel
