@@ -119,7 +119,9 @@ const FacetPanel = ({ classes }) => {
             expanded={groupExpanded.includes(currentSection.sectionName)}
             onChange={handleGroupChange(currentSection.sectionName)}
                 // className={classes.expansion}
-            classes={{ root: classes.expansionPanelRoot }}
+            classes={{
+              root: classes.expansionPanelRoot,
+            }}
           >
             <CustomExpansionPanelSummary
               expandIcon={<ArrowDropDownIcon classes={{ root: classes.dropDownIconSection }} />}
@@ -251,6 +253,7 @@ const styles = () => ({
   },
   expansionPanelDetailsRoot: {
     paddingBottom: '8px',
+    display: 'unset',
   },
 });
 

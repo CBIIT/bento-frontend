@@ -490,5 +490,12 @@ export default {
         },
       },
     },
+    MuiExpansionPanel: {
+      root: {
+        '&$expanded': {
+          margin: 'unset',
+        },
+      },
+    },
   },
 };
