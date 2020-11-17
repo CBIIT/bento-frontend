@@ -46,6 +46,7 @@ const TabView = ({
   api,
   paginationAPIField,
   paginationAPIFieldDesc,
+  filteredSubjectIds,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -160,6 +161,7 @@ const TabView = ({
             overviewDesc={getOverviewDescQuery(api)}
             paginationAPIField={paginationAPIField}
             paginationAPIFieldDesc={paginationAPIFieldDesc}
+            queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
           />
         </Grid>
 
