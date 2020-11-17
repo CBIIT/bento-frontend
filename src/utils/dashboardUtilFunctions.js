@@ -369,7 +369,6 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
     isChecked: false,
     subjects: el.subjects,
   }))
-    .sort((a, b) => customSorting(a.name, b.name))
     .forEach((el) => {
       // reduce the duplication
       if (result[parseInt(preElementIndex, 10)] && result[parseInt(preElementIndex, 10)].name) {
@@ -383,8 +382,13 @@ export function transformAPIDataIntoCheckBoxData(data, field) {
         result.push(el);
       }
     });
-
-  return result;
+  // Sorting based on Filter Intm name
+  const sortBasedOnItemName = result.slice(0).sort((obj1, obj2) => {
+    const x = obj1.name.toLowerCase();
+    const y = obj2.name.toLowerCase();
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+  return sortBasedOnItemName;
 }
 
 /**
