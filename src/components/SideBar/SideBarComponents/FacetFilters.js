@@ -15,6 +15,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { toggleCheckBox } from '../../../pages/dashboardTab/store/dashboardReducer';
+import { facetSectionStyling } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
@@ -83,12 +84,12 @@ const FacetPanel = ({ classes }) => {
       name: valueList[0],
       datafield: valueList[2],
       isChecked: !(valueList[3] === 'true'),
+      section: valueList[4],
     }]));
   };
 
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
     .slice(0, 15);
-  console.log(sideBarDisplay);
 
   const arrangeBySections = (arr) => {
     const sideBar = {};
@@ -101,12 +102,19 @@ const FacetPanel = ({ classes }) => {
     return Object.values(sideBar);
   };
   const sideBarSections = arrangeBySections(sideBarDisplay);
-  console.log(sideBarSections);
 
   return (
     <>
       {sideBarSections.map((currentSection) => (
         <>
+          <Divider
+            variant="middle"
+            style={{
+              backgroundColor: facetSectionStyling[currentSection.sectionName].color ? facetSectionStyling[currentSection.sectionName].color : '#D6F2EA',
+              margin: '0px',
+              height: facetSectionStyling[currentSection.sectionName].height ? facetSectionStyling[currentSection.sectionName].height : '1px',
+            }}
+          />
           <ExpansionPanel
             expanded={groupExpanded.includes(currentSection.sectionName)}
             onChange={handleGroupChange(currentSection.sectionName)}
@@ -114,7 +122,7 @@ const FacetPanel = ({ classes }) => {
             classes={{ root: classes.expansionPanelRoot }}
           >
             <CustomExpansionPanelSummary
-              expandIcon={<ArrowDropDownIcon style={{ fill: '#8DCAFF' }} />}
+              expandIcon={<ArrowDropDownIcon classes={{ root: classes.dropDownIconSection }} />}
               aria-controls={currentSection.sectionName}
               id={currentSection.sectionName}
             >
@@ -131,10 +139,14 @@ const FacetPanel = ({ classes }) => {
                       expanded={expanded === sideBarItem.groupName}
                       onChange={handleChange(sideBarItem.groupName)}
                 // className={classes.expansion}
-                      classes={{ root: classes.expansionPanelRoot }}
+                      // classes={{ root: classes.expansionPanelRoot }}
                     >
                       <CustomExpansionPanelSummary
-                        expandIcon={<ArrowDropDownIcon style={{ fill: '#8DCAFF' }} />}
+                        expandIcon={(
+                          <ArrowDropDownIcon
+                            classes={{ root: classes.dropDownIconSubSection }}
+                          />
+)}
                         aria-controls={sideBarItem.groupName}
                         id={sideBarItem.groupName}
                       >
@@ -153,7 +165,7 @@ const FacetPanel = ({ classes }) => {
               return (
                 <ListItem
                   button
-                  onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}`)}
+                  onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}$$${sideBarItem.section}`)}
                   className={classes.nested}
                   classes={{ gutters: classes.listItemGutters }}
                 >
@@ -186,7 +198,6 @@ const FacetPanel = ({ classes }) => {
               </List>
             </ExpansionPanelDetails>
           </ExpansionPanel>
-          <Divider variant="middle" classes={{ root: classes.dividerRoot }} />
         </>
       ))}
     </>
@@ -196,12 +207,18 @@ const FacetPanel = ({ classes }) => {
 const styles = () => ({
   expansionPanelRoot: {
     boxShadow: 'none',
-    background: 'transparent',
+    background: '#D2D2D2',
     margin: 'auto',
     position: 'initial',
     '&:before': {
       position: 'initial',
     },
+  },
+  dropDownIconSection: {
+    fill: '#000000',
+  },
+  dropDownIconSubSection: {
+    fill: '#3695A9',
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',
