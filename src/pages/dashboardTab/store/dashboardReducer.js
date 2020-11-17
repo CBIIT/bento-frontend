@@ -162,7 +162,6 @@ function createFilterVariables(data) {
 export function toggleCheckBox(payload) {
   return () => {
     const currentAllFilterVariables = createFilterVariables(payload);
-    console.log(currentAllFilterVariables);
     return client
       .query({ // request to get the filtered subjects
         query: FILTER_QUERY,
