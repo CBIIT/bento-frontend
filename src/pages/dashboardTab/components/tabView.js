@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import {
   Grid,
@@ -39,6 +40,14 @@ const TabView = ({
   let selectedIDs = [];
   const saveButton = useRef(null);
   const saveButton2 = useRef(null);
+
+
+  //Store current page selected info
+  const [rowSelection, setRowSelection] = React.useState({
+    selectedRowInfo:[],
+    selectedRowIndex:[]
+  });
+
 
   const buildButtonStyle = (button, styleObject) => {
     const styleKV = Object.entries(styleObject);
@@ -91,7 +100,44 @@ const TabView = ({
     selectedIDs = [];
   }
 
-  function onRowsSelect(curr, allRowsSelected) {
+
+  /*
+    Presist user selection
+  */
+  function onRowsSelect(curr, allRowsSelected,rowsSelected,displayData) {
+
+     const displayedDataKeies = displayData.map(d=>d.data[0]);
+     const selectedRowsKey = rowsSelected.map((index)=>displayedDataKeies[index]);
+     let newSelectedRowInfo=[];
+
+    //Remove the rowInfo from selectedRowInfo if this row currently be displayed and not be selected.
+    if(rowSelection.selectedRowInfo.length>0){
+      newSelectedRowInfo =rowSelection.selectedRowInfo.filter((key)=>{
+        if(displayedDataKeies.includes(key)){
+           return false;
+        }else{
+          return true;
+        }
+      })
+
+    }
+    newSelectedRowInfo = newSelectedRowInfo.concat(selectedRowsKey);
+
+    //Get selectedRowIndex by comparing current page data with selected row's key.
+    //if rowInfo from selectedRowInfo is currently be displayed
+    const newSelectedRowIndex = displayedDataKeies.reduce(function(accumulator, currentValue, currentIndex, array){
+      // 
+      if(newSelectedRowInfo.includes(currentValue)){
+        accumulator.push(currentIndex);
+      }
+      return accumulator;
+    },[]);
+
+    setRowSelection({
+      selectedRowInfo:newSelectedRowInfo,
+      selectedRowIndex:newSelectedRowIndex,
+    })
+
     selectedIDs = [...new Set(
       customOnRowsSelect(data, allRowsSelected),
     )];
@@ -107,7 +153,8 @@ const TabView = ({
 
   // overwrite default options
   const defaultOptions = () => ({
-    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    rowsSelectedInfo: rowSelection,
+    onRowSelectionChange: (curr, allRowsSelected,rowsSelected,displayData) => onRowsSelect(curr, allRowsSelected,rowsSelected,displayData),
     isRowSelectable: (dataIndex) => (disableRowSelection
       ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });

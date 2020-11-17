@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -6,7 +7,7 @@ import {
 import Typography from '@material-ui/core/Typography';
 import SwipeableViews from 'react-swipeable-views';
 import Snackbar from '@material-ui/core/Snackbar';
-import { getOptions } from 'bento-components';
+// import { getOptions } from 'bento-components';
 import TabView from './tabView';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import TabThemeProvider from './tabThemeConfig';
@@ -220,11 +221,43 @@ const tabController = (classes) => {
     return { marginTop: marginTopValue };
   };
 
+  function onRowSelectionChange(curr, allRowsSelected){
+    console.log(allRowsSelected);
+  }
+ function getOptions(table, classes, customFooter, onRowSelectionChange, isRowSelectable) {
+  return {
+    selectableRows: typeof (table.selectableRows) !== 'undefined' ? table.selectableRows : false,
+    responsive: typeof (table.responsive) !== 'undefined' ? table.responsive : false,
+    search: typeof (table.search) !== 'undefined' ? table.search : false,
+    filter: typeof (table.filter) !== 'undefined' ? table.filter : false,
+    searchable: typeof (table.searchable) !== 'undefined' ? table.searchable : false,
+    print: typeof (table.print) !== 'undefined' ? table.print : false,
+    viewColumns: typeof (table.viewColumns) !== 'undefined' ? table.viewColumns : false,
+    pagination: typeof (table.pagination) !== 'undefined' ? table.pagination : true,
+    headerPagination: typeof (table.headerPagination) !== 'undefined' ? table.headerPagination : false,
+    footerPagination: typeof (table.footerPagination) !== 'undefined' ? table.footerPagination : true,
+    download: typeof (table.download) !== 'undefined' ? table.download : false,
+    rowsPerPageOptions: table.rowsPerPageOptions ? table.rowsPerPageOptions : [10, 25, 50, 100],
+    sortOrder: {
+      name: table.defaultSortField,
+      direction: table.defaultSortDirection,
+    },
+    selectedRows: {
+    },
+    customToolbarSelect: () => '',
+    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (customFooter
+      ? customFooter(count, page, rowsPerPage, changeRowsPerPage, changePage, classes)
+      : getDefaultCustomFooter(count, page, rowsPerPage, changeRowsPerPage, changePage, classes)),
+    isRowSelectable: (dataIndex) => (isRowSelectable
+      ? isRowSelectable(dataIndex)
+      : true),
+  };
+}
   // Tab table Generator
   const TABContainers = tabContainers.map((container) => (
     <TabContainer id={container.id}>
       <TabView
-        options={getOptions(container, classes)}
+        options={getOptions(container, classes,undefined,onRowSelectionChange)}
         data={dashboard[container.dataField] ? dashboard[container.dataField] : []}
         customColumn={container}
         customOnRowsSelect={onRowsSelectFunction[container.onRowsSelect]}
