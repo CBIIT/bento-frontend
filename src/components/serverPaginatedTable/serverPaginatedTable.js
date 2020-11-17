@@ -1,6 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/state-in-constructor */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import TableFooter from '@material-ui/core/TableFooter';
@@ -9,11 +8,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 import { CircularProgress, Typography } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
-import {
-  GET_FILES_OVERVIEW_QUERY,
-  GET_SAMPLES_OVERVIEW_QUERY,
-  GET_CASES_OVERVIEW_QUERY,
-} from '../../bento/dashboardTabData';
 import client from '../../utils/graphqlClient';
 
 class ServerPaginatedTableView extends React.Component {
@@ -45,13 +39,18 @@ class ServerPaginatedTableView extends React.Component {
 
   getSrcData = () => this.props.data;
 
+  rowsSelectedTrigger = (displayedData) => this.props.options.rowsSelectedTrigger(
+    displayedData.map((d) => d[this.props.options.dataKey]),
+  );
+
   sort = (page, sortOrder) => {
     this.setState({ isLoading: true });
-    this.xhrRequest('', page, sortOrder).then((res) => {
+    this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage, sortOrder).then((res) => {
+      this.rowsSelectedTrigger(res);
       this.setState({
-        data: res.data,
-        sortOrder,
         isLoading: false,
+        sortOrder,
+        data: res,
       });
     });
   }
@@ -92,7 +91,12 @@ class ServerPaginatedTableView extends React.Component {
     this.setState({
       isLoading: true,
     });
-    this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage).then((res) => {
+    this.fetchData(
+      page * this.state.rowsPerPage,
+      this.state.rowsPerPage,
+      this.state.sortOrder,
+    ).then((res) => {
+      this.rowsSelectedTrigger(res);
       this.setState({
         isLoading: false,
         sortOrder,
@@ -111,15 +115,16 @@ class ServerPaginatedTableView extends React.Component {
     });
   };
 
-  async fetchData(offset, rowsRequired) {
-    const QUERY = this.props.api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_QUERY : this.props.api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
-    const result1 = await client
+  async fetchData(offset, rowsRequired, sortOrder = {}) {
+    const fetchResult = await client
       .query({
-        query: QUERY,
-        variables: { subject_ids: this.props.filteredSubjectIds, offset, first: rowsRequired },
+        query: sortOrder.direction !== 'asc' ? this.props.overviewDesc : this.props.overview,
+        variables: {
+          subject_ids: this.props.filteredSubjectIds, offset, first: rowsRequired, order_by: sortOrder.name || '',
+        },
       })
-      .then((result) => result.data[this.props.paginationAPIField]);
-    return result1;
+      .then((result) => (sortOrder.direction !== 'asc' ? result.data[this.props.paginationAPIFieldDesc] : result.data[this.props.paginationAPIField]));
+    return fetchResult;
   }
 
   render() {
