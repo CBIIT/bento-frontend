@@ -111,10 +111,11 @@ const FacetPanel = ({ classes }) => {
           <Divider
             variant="middle"
             style={{
-              // backgroundColor: facetSectionStyling[currentSection.sectionName].color ?
-              // facetSectionStyling[currentSection.sectionName].color : '#D6F2EA',
+              backgroundColor: facetSectionStyling[currentSection.sectionName].color ?
+              facetSectionStyling[currentSection.sectionName].color : '#D6F2EA',
               margin: '0px',
-              // height: facetSectionStyling[currentSection.sectionName].height ? facetSectionStyling[currentSection.sectionName].height : '1px',
+              height: facetSectionStyling[currentSection.sectionName].height ?
+              facetSectionStyling[currentSection.sectionName].height : '1px',
             }}
           />
           <ExpansionPanel
@@ -131,7 +132,7 @@ const FacetPanel = ({ classes }) => {
               id={currentSection.sectionName}
             >
               {/* <ListItemText primary={sideBarItem.groupName} /> */}
-              <div className={classes.panelSummaryText}>{currentSection.sectionName}</div>
+              <div className={classes.sectionSummaryText}>{currentSection.sectionName}</div>
 
             </CustomExpansionPanelSummary>
 
@@ -155,7 +156,7 @@ const FacetPanel = ({ classes }) => {
                         id={sideBarItem.groupName}
                       >
                         {/* <ListItemText primary={sideBarItem.groupName} /> */}
-                        <div className={classes.panelSummaryText}>{sideBarItem.groupName}</div>
+                        <div className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
 
                       </CustomExpansionPanelSummary>
 
@@ -229,13 +230,22 @@ const styles = () => ({
     marginLeft: '45px',
     height: '1px',
   },
-  panelSummaryText: {
+  sectionSummaryText: {
+    marginLeft: '-6px',
+    color: '#000000',
+    fontFamily: 'Lato',
+    fontSize: '20px',
+    lineHeight: '26px',
+    letterSpacing: 0,
+  },
+  subSectionSummaryText: {
     marginLeft: '24px',
-    color: '#3F799A',
+    color: '#000000',
     fontFamily: 'Lato',
     fontSize: '14px',
-    fontWeight: 'bold',
     textTransform: 'uppercase',
+    lineHeight: 0,
+    letterSpacing: 0,
   },
   panelDetailText: {
     color: '#000000',
@@ -251,7 +261,7 @@ const styles = () => ({
     height: 12,
   },
   listItemGutters: {
-    padding: '8px 0px 8px 30px',
+    padding: '8px 0px 8px 24px',
   },
   expansionPanelDetailsRoot: {
     paddingBottom: '8px',
