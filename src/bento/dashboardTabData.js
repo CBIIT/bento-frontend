@@ -24,6 +24,7 @@ export const tabContainers = [
     dataField: 'dataCase',
     api: 'GET_CASES_OVERVIEW_QUERY',
     paginationAPIField: 'subjectOverViewPaged',
+    paginationAPIFieldDesc: 'subjectOverViewPagedDesc',
     count: 'numberOfSubjects',
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
@@ -139,6 +140,7 @@ export const tabContainers = [
     api: 'GET_SAMPLES_OVERVIEW_QUERY',
     count: 'numberOfSamples',
     paginationAPIField: 'sampleOverview',
+    paginationAPIFieldDesc: 'sampleOverviewDesc',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',
@@ -244,6 +246,7 @@ export const tabContainers = [
     dataField: 'dataFile',
     api: 'GET_FILES_OVERVIEW_QUERY',
     paginationAPIField: 'fileOverview',
+    paginationAPIFieldDesc: 'fileOverviewDesc',
     count: 'numberOfFiles',
     buttonText: 'Add Selected Files',
     saveButtonDefaultStyle: {
@@ -291,7 +294,7 @@ export const tabContainers = [
       },
       {
         dataField: 'file_format',
-        header: 'Format',
+        header: 'File Format',
         sort: 'asc',
         display: true,
       },
@@ -671,9 +674,9 @@ query search (
 
 // --------------- GraphQL query - Retrieve files tab details --------------
 export const GET_FILES_OVERVIEW_QUERY = gql`
-query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10){
+query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
 
-  fileOverview(subject_ids: $subject_ids, offset: $offset,first: $first) {
+  fileOverview(subject_ids: $subject_ids, offset: $offset,first: $first, order_by: $order_by) {
     file_id
     file_name
     association
@@ -692,8 +695,8 @@ query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10){
 // --------------- GraphQL query - Retrieve sample tab details --------------
 
 export const GET_SAMPLES_OVERVIEW_QUERY = gql`
-  query sampleOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10){
-  sampleOverview(subject_ids: $subject_ids, offset: $offset,first: $first) {
+  query sampleOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
+  sampleOverview(subject_ids: $subject_ids, offset: $offset,first: $first, order_by: $order_by) {
     sample_id
     subject_id
     program
@@ -712,8 +715,77 @@ export const GET_SAMPLES_OVERVIEW_QUERY = gql`
 // --------------- GraphQL query - Retrieve sample tab details --------------
 
 export const GET_CASES_OVERVIEW_QUERY = gql`
-  query subjectOverViewPaged($subject_ids: [String], $offset: Int = 0, $first: Int = 10){
-    subjectOverViewPaged(subject_ids: $subject_ids, first: $first, offset: $offset) {
+  query subjectOverViewPaged($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
+    subjectOverViewPaged(subject_ids: $subject_ids, first: $first, offset: $offset, order_by: $order_by) {
+        subject_id
+        program
+        program_id
+        study_acronym
+        study_short_description
+        study_info
+        diagnosis
+        recurrence_score
+        tumor_size
+        tumor_grade
+        er_status
+        pr_status
+        chemotherapy
+        endocrine_therapy
+        menopause_status
+        age_at_index
+        survival_time
+        files {
+              file_id
+        }
+        lab_procedures
+    }
+}
+
+  `;
+export const GET_FILES_OVERVIEW_DESC_QUERY = gql`
+query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
+
+  fileOverviewDesc(subject_ids: $subject_ids, offset: $offset,first: $first, order_by: $order_by) {
+    file_id
+    file_name
+    association
+    file_description
+    file_format
+    file_size
+    program
+    arm
+    subject_id
+    sample_id
+    diagnosis
+  }
+}
+  `;
+
+// --------------- GraphQL query - Retrieve sample tab details --------------
+
+export const GET_SAMPLES_OVERVIEW_DESC_QUERY = gql`
+  query sampleOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
+  sampleOverviewDesc(subject_ids: $subject_ids, offset: $offset,first: $first, order_by: $order_by) {
+    sample_id
+    subject_id
+    program
+    arm
+    diagnosis
+    tissue_type
+    tissue_composition
+    sample_anatomic_site
+    sample_procurement_method
+    platform
+    files 
+}
+}
+  `;
+
+// --------------- GraphQL query - Retrieve sample tab details --------------
+
+export const GET_CASES_OVERVIEW_DESC_QUERY = gql`
+  query subjectOverViewPaged($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
+    subjectOverViewPagedDesc(subject_ids: $subject_ids, first: $first, offset: $offset, order_by: $order_by) {
         subject_id
         program
         program_id
