@@ -142,11 +142,20 @@ const TabView = ({
         <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
           {TopMessageStatus.src ? (
             <img
+              onMouseEnter={() => toggleMessageStatus('top', 'open')}
+              onMouseLeave={() => toggleMessageStatus('top', 'close')}
               src={TopMessageStatus.src}
               alt={TopMessageStatus.alt}
               className={classes.helpIcon}
             />
-          ) : <HelpIcon className={classes.helpIcon} fontSize="small" />}
+          ) : (
+            <HelpIcon
+              className={classes.helpIcon}
+              fontSize="small"
+              onMouseEnter={() => toggleMessageStatus('top', 'open')}
+              onMouseLeave={() => toggleMessageStatus('top', 'close')}
+            />
+          )}
         </IconButton>
 
       </Grid>
@@ -179,11 +188,20 @@ const TabView = ({
         <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
           {BottomMessageStatus.src ? (
             <img
+              onMouseEnter={() => toggleMessageStatus('bottom', 'open')}
+              onMouseLeave={() => toggleMessageStatus('bottom', 'close')}
               src={BottomMessageStatus.src}
               alt={BottomMessageStatus.alt}
               className={classes.helpIcon}
             />
-          ) : <HelpIcon className={classes.helpIcon} fontSize="small" />}
+          ) : (
+            <HelpIcon
+              onMouseEnter={() => toggleMessageStatus('bottom', 'open')}
+              onMouseLeave={() => toggleMessageStatus('bottom', 'close')}
+              className={classes.helpIcon}
+              fontSize="small"
+            />
+          )}
         </IconButton>
         <div style={{ position: 'relative' }}>
           { BottomMessageStatus.isActive
