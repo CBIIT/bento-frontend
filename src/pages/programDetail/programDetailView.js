@@ -299,8 +299,10 @@ const ProgramView = ({ classes, data, theme }) => {
                         outerRadius={75}
                         cx="50%"
                         cy="50%"
-                        fontSize="15px"
+                        fontSize="12px"
                         colors={colors}
+                        titleLocation="bottom"
+                        titleAlignment="center"
                       />
                     </Widget>
                   </Grid>
