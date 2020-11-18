@@ -13,6 +13,7 @@ import {
   getDonutDataFromDashboardData,
   getOptions,
   getColumns,
+  CustomActiveDonut,
 } from 'bento-components';
 import {
   pageTitle, table, externalLinkIcon,
@@ -24,7 +25,7 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
-import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
+import colors from '../../utils/colors';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
@@ -299,6 +300,7 @@ const ProgramView = ({ classes, data, theme }) => {
                         cx="50%"
                         cy="50%"
                         fontSize="15px"
+                        colors={colors}
                       />
                     </Widget>
                   </Grid>

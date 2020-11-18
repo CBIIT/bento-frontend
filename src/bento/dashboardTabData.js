@@ -296,7 +296,7 @@ export const tabContainers = [
       },
       {
         dataField: 'file_format',
-        header: 'Format',
+        header: 'File Format',
         sort: 'asc',
         display: true,
       },

@@ -37,6 +37,9 @@ const tabController = (classes) => {
   const dashboardStats = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
 
+  const filteredSubjectIds = useSelector((state) => (state.dashboardTab
+      && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : []));
+
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
     src: tooltipContent.icon,
@@ -247,6 +250,7 @@ const tabController = (classes) => {
         paginationAPIField={container.paginationAPIField}
         paginationAPIFieldDesc={container.paginationAPIFieldDesc}
         dataKey={container.dataKey}
+        filteredSubjectIds={filteredSubjectIds}
       />
     </TabContainer>
   ));
