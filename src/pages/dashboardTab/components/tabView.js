@@ -6,6 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
+import { getColumns } from 'bento-components';
 import {
   GET_FILES_OVERVIEW_QUERY,
   GET_SAMPLES_OVERVIEW_QUERY,
@@ -17,7 +18,6 @@ import {
 import CustomDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
 import { addToCart, getCart } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
-import { getColumns } from '../../../utils/tables';
 
 const getOverviewQuery = (api) => (api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_QUERY : api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY);
 
@@ -46,13 +46,23 @@ const TabView = ({
   api,
   paginationAPIField,
   paginationAPIFieldDesc,
+  dataKey,
+  filteredSubjectIds,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
   const fileIDs = cart.fileIds ? cart.fileIds : [];
-  let selectedIDs = [];
   const saveButton = useRef(null);
   const saveButton2 = useRef(null);
+
+  // Store current page selected info
+  const [rowSelection, setRowSelection] = React.useState({
+    selectedRowInfo: [],
+    selectedRowIndex: [],
+  });
+
+  // Store current page selected info
+  const [selectedIDs, setSelectedIDs] = React.useState([]);
 
   const buildButtonStyle = (button, styleObject) => {
     const styleKV = Object.entries(styleObject);
@@ -72,11 +82,11 @@ const TabView = ({
     if (flag) {
       // eslint-disable-next-line no-param-reassign
       button.current.disabled = true;
-      buildButtonStyle(button, ActiveSaveButtonDefaultStyle);
+      buildButtonStyle(button, DeactiveSaveButtonDefaultStyle);
     } else {
       // eslint-disable-next-line no-param-reassign
       button.current.disabled = false;
-      buildButtonStyle(button, DeactiveSaveButtonDefaultStyle);
+      buildButtonStyle(button, ActiveSaveButtonDefaultStyle);
     }
   };
 
@@ -84,7 +94,7 @@ const TabView = ({
     initSaveButtonDefaultStyle(saveButton);
     initSaveButtonDefaultStyle(saveButton2);
 
-    if (selectedIDs.length === 0) {
+    if (rowSelection.selectedRowIndex.length === 0) {
       updateActiveSaveButtonStyle(true, saveButton);
       updateActiveSaveButtonStyle(true, saveButton2);
     } else {
@@ -102,14 +112,58 @@ const TabView = ({
     if (newFileIDS > 0) {
       openSnack(newFileIDS);
     }
-    selectedIDs = [];
+    setSelectedIDs([]);
   }
 
-  function onRowsSelect(curr, allRowsSelected) {
-    selectedIDs = [...new Set(
-      customOnRowsSelect(data, allRowsSelected),
-    )];
+  function rowSelectionEvent(displayData, rowsSelected) {
+    const displayedDataKeies = displayData;
+    const selectedRowsKey = rowsSelected
+      ? rowsSelected.map((index) => displayedDataKeies[index])
+      : [];
+    let newSelectedRowInfo = [];
 
+    if (rowsSelected) {
+      // Remove the rowInfo from selectedRowInfo if this row currently be
+      // displayed and not be selected.
+      if (rowSelection.selectedRowInfo.length > 0) {
+        newSelectedRowInfo = rowSelection.selectedRowInfo.filter((key) => {
+          if (displayedDataKeies.includes(key)) {
+            return false;
+          }
+          return true;
+        });
+      }
+    } else {
+      newSelectedRowInfo = rowSelection.selectedRowInfo;
+    }
+    newSelectedRowInfo = newSelectedRowInfo.concat(selectedRowsKey);
+
+    // Get selectedRowIndex by comparing current page data with selected row's key.
+    // if rowInfo from selectedRowInfo is currently be displayed
+    const newSelectedRowIndex = displayedDataKeies.reduce(
+      (accumulator, currentValue, currentIndex) => {
+        if (newSelectedRowInfo.includes(currentValue)) {
+          accumulator.push(currentIndex);
+        }
+        return accumulator;
+      }, [],
+    );
+
+    setRowSelection({
+      selectedRowInfo: newSelectedRowInfo,
+      selectedRowIndex: newSelectedRowIndex,
+    });
+  }
+
+  /*
+    Presist user selection
+  */
+  function onRowsSelect(curr, allRowsSelected, rowsSelected, displayData) {
+    rowSelectionEvent(displayData.map((d) => d.data[0]), rowsSelected);
+
+    setSelectedIDs([...new Set(
+      customOnRowsSelect(data, allRowsSelected),
+    )]);
     if (allRowsSelected.length === 0) {
       updateActiveSaveButtonStyle(true, saveButton);
       updateActiveSaveButtonStyle(true, saveButton2);
@@ -121,7 +175,18 @@ const TabView = ({
 
   // overwrite default options
   const defaultOptions = () => ({
-    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    dataKey,
+    rowsSelectedTrigger: (displayData, rowsSelected) => rowSelectionEvent(
+      displayData,
+      rowsSelected,
+    ),
+    rowsSelected: rowSelection.selectedRowIndex,
+    onRowSelectionChange: (curr, allRowsSelected, rowsSelected, displayData) => onRowsSelect(
+      curr,
+      allRowsSelected,
+      rowsSelected,
+      displayData,
+    ),
     isRowSelectable: (dataIndex) => (disableRowSelection
       ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });
@@ -141,11 +206,20 @@ const TabView = ({
         <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
           {TopMessageStatus.src ? (
             <img
+              onMouseEnter={() => toggleMessageStatus('top', 'open')}
+              onMouseLeave={() => toggleMessageStatus('top', 'close')}
               src={TopMessageStatus.src}
               alt={TopMessageStatus.alt}
               className={classes.helpIcon}
             />
-          ) : <HelpIcon className={classes.helpIcon} fontSize="small" />}
+          ) : (
+            <HelpIcon
+              className={classes.helpIcon}
+              fontSize="small"
+              onMouseEnter={() => toggleMessageStatus('top', 'open')}
+              onMouseLeave={() => toggleMessageStatus('top', 'close')}
+            />
+          )}
         </IconButton>
 
       </Grid>
@@ -160,6 +234,7 @@ const TabView = ({
             overviewDesc={getOverviewDescQuery(api)}
             paginationAPIField={paginationAPIField}
             paginationAPIFieldDesc={paginationAPIFieldDesc}
+            queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
           />
         </Grid>
 
@@ -177,11 +252,20 @@ const TabView = ({
         <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
           {BottomMessageStatus.src ? (
             <img
+              onMouseEnter={() => toggleMessageStatus('bottom', 'open')}
+              onMouseLeave={() => toggleMessageStatus('bottom', 'close')}
               src={BottomMessageStatus.src}
               alt={BottomMessageStatus.alt}
               className={classes.helpIcon}
             />
-          ) : <HelpIcon className={classes.helpIcon} fontSize="small" />}
+          ) : (
+            <HelpIcon
+              onMouseEnter={() => toggleMessageStatus('bottom', 'open')}
+              onMouseLeave={() => toggleMessageStatus('bottom', 'close')}
+              className={classes.helpIcon}
+              fontSize="small"
+            />
+          )}
         </IconButton>
         <div style={{ position: 'relative' }}>
           { BottomMessageStatus.isActive

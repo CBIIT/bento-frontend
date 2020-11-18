@@ -26,6 +26,7 @@ export const tabContainers = [
     paginationAPIField: 'subjectOverViewPaged',
     paginationAPIFieldDesc: 'subjectOverViewPagedDesc',
     count: 'numberOfSubjects',
+    dataKey: 'subject_id',
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
     buttonText: 'Add Selected Files',
@@ -37,14 +38,13 @@ export const tabContainers = [
       cursor: 'pointer',
     },
     ActiveSaveButtonDefaultStyle: {
-      disabled: 'true',
-      opacity: '0.3',
-      cursor: 'auto',
-    },
-    DeactiveSaveButtonDefaultStyle: {
       cursor: 'pointer',
       opacity: 'unset',
       border: 'unset',
+    },
+    DeactiveSaveButtonDefaultStyle: {
+      opacity: '0.3',
+      cursor: 'auto',
     },
     columns: [
       {
@@ -141,6 +141,7 @@ export const tabContainers = [
     count: 'numberOfSamples',
     paginationAPIField: 'sampleOverview',
     paginationAPIFieldDesc: 'sampleOverviewDesc',
+    dataKey: 'sample_id',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',
@@ -148,11 +149,11 @@ export const tabContainers = [
       border: '0px',
       cursor: 'pointer',
     },
-    ActiveSaveButtonDefaultStyle: {
+    DeactiveSaveButtonDefaultStyle: {
       opacity: '0.3',
       cursor: 'auto',
     },
-    DeactiveSaveButtonDefaultStyle: {
+    ActiveSaveButtonDefaultStyle: {
       cursor: 'pointer',
       opacity: 'unset',
       border: 'unset',
@@ -249,6 +250,7 @@ export const tabContainers = [
     paginationAPIFieldDesc: 'fileOverviewDesc',
     count: 'numberOfFiles',
     buttonText: 'Add Selected Files',
+    dataKey: 'file_id',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#DC2FDA',
@@ -256,11 +258,11 @@ export const tabContainers = [
       border: '0px',
       cursor: 'pointer',
     },
-    ActiveSaveButtonDefaultStyle: {
+    DeactiveSaveButtonDefaultStyle: {
       opacity: '0.3',
       cursor: 'auto',
     },
-    DeactiveSaveButtonDefaultStyle: {
+    ActiveSaveButtonDefaultStyle: {
       cursor: 'pointer',
       opacity: 'unset',
       border: 'unset',
@@ -294,7 +296,7 @@ export const tabContainers = [
       },
       {
         dataField: 'file_format',
-        header: 'Format',
+        header: 'File Format',
         sort: 'asc',
         display: true,
       },

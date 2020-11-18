@@ -3,7 +3,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
+import { CustomDataTable, getOptions, getColumns } from 'bento-components';
 import { useDispatch } from 'react-redux';
 import {
   table, programListingIcon, externalLinkIcon,
@@ -11,7 +11,6 @@ import {
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
-import { getOptions, getColumns } from '../../utils/tables';
 
 const Programs = ({ classes, data }) => {
   const initDashboardStatus = () => (dispatch) => Promise.resolve(

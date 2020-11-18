@@ -11,8 +11,6 @@ import CaseDetail from '../../pages/caseDetail/caseDetailController';
 import ArmDetail from '../../pages/armDetail/armDetailController';
 import modelPage from '../../pages/modelPage/modelPageView';
 import table from '../../pages/table/tableView';
-import SelectedCases from '../../pages/selectedCases/selectedCasesController';
-import SelectedFiles from '../../pages/selectedFiles/selectedFilesController';
 import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
 import DataDictonary from '../../pages/dataDictionary/dataDictonaryController';
@@ -47,10 +45,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/programs" component={Programs} />
             <Route path="/model" component={modelPage} />
             <Route path="/table" component={table} />
-            <Route path="/myCases" component={SelectedCases} />
-            <Route path="/myCasesFiles" component={SelectedFiles} />
             <Route path="/fileCentricCart" component={fileCentricCart} />
-
             <Route path="/program/:id" component={ProgramDetail} />
             <Route path="/case/:id" component={CaseDetail} />
             <Route path="/arm/:id" component={ArmDetail} />

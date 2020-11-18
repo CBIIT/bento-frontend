@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   withStyles, Divider, Drawer, List, Button,
 } from '@material-ui/core';
+import { unselectFilters } from 'bento-components';
 import FacetFilter from './SideBarComponents/FacetFilters';
 import { facetSearchData } from '../../bento/dashboardData';
 import { toggleCheckBox } from '../../pages/dashboardTab/store/dashboardReducer';
-import { unselectFilters } from '../../utils/dashboardUtilFunctions';
 
 const drawerWidth = 240;
 
