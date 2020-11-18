@@ -1,6 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/state-in-constructor */
-
 import React from 'react';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
@@ -39,9 +38,18 @@ class ServerPaginatedTableView extends React.Component {
 
   getSrcData = () => this.props.data;
 
+  rowsSelectedTrigger = (displayedData) => {
+    if (this.props.options.rowsSelectedTrigger) {
+      this.props.options.rowsSelectedTrigger(
+        displayedData.map((d) => d[this.props.options.dataKey]),
+      );
+    }
+  }
+
   sort = (page, sortOrder) => {
     this.setState({ isLoading: true });
     this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage, sortOrder).then((res) => {
+      this.rowsSelectedTrigger(res);
       this.setState({
         isLoading: false,
         sortOrder,
@@ -91,6 +99,7 @@ class ServerPaginatedTableView extends React.Component {
       this.state.rowsPerPage,
       this.state.sortOrder,
     ).then((res) => {
+      this.rowsSelectedTrigger(res);
       this.setState({
         isLoading: false,
         sortOrder,

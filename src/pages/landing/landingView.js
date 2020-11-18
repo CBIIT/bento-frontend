@@ -9,7 +9,6 @@ import { Button } from '../../components/Wrappers/Wrappers';
 import { landingPageData } from '../../bento/landingPageData';
 import icon from '../../assets/landing/LP_ReadMore.svg';
 import iconAbout from '../../assets/landing/LP_About_Fullarticle.Arrow.svg';
-// import cn from '../../utils/classNameConcat';
 
 const LandingView = ({ classes, statsData }) => (
   <div className={classes.page}>

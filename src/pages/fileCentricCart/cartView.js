@@ -3,21 +3,19 @@ import {
   Grid, withStyles, Dialog, DialogActions, DialogContent, DialogContentText, IconButton,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import {
+  getColumns, getOptions, getDefaultCustomFooter,
+} from 'bento-components';
 import _ from 'lodash';
 import { DeleteOutline as DeleteOutlineIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
 import CustomDataTable from '../../components/serverPaginatedTable/serverPaginatedTable';
 import client from '../../utils/graphqlClient';
-
 import SkeletonTable from './components/skeletonTable';
 import {
   myFilesPageData, table, manifestData, GET_MY_CART_DATA_QUERY, GET_MY_CART_DATA_QUERY_DESC,
 } from '../../bento/fileCentricCartWorkflowData';
-
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
-import {
-  getColumns, getOptions, getDefaultCustomFooter,
-} from '../../utils/tables';
 import Message from '../../components/Message';
 import DialogThemeProvider from './dialogThemeConfig';
 import TableThemeProvider from './cartTableThemeConfig';
