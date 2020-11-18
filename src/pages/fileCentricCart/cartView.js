@@ -1,17 +1,18 @@
 import React from 'react';
-import { Grid, withStyles } from '@material-ui/core';
+import {
+  Grid, withStyles, Dialog, DialogActions, DialogContent, DialogContentText, IconButton,
+} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import { CustomDataTable } from 'bento-components';
 import _ from 'lodash';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { DeleteOutline as DeleteOutlineIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
+import CustomDataTable from '../../components/serverPaginatedTable/serverPaginatedTable';
+import client from '../../utils/graphqlClient';
+
 import SkeletonTable from './components/skeletonTable';
-import { myFilesPageData, table, manifestData } from '../../bento/fileCentricCartWorkflowData';
+import {
+  myFilesPageData, table, manifestData, GET_MY_CART_DATA_QUERY, GET_MY_CART_DATA_QUERY_DESC,
+} from '../../bento/fileCentricCartWorkflowData';
+
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
 import {
@@ -21,11 +22,24 @@ import Message from '../../components/Message';
 import DialogThemeProvider from './dialogThemeConfig';
 import TableThemeProvider from './cartTableThemeConfig';
 
-const cartView = ({ classes, data, isLoading }) => {
+const cartView = ({
+  classes, data, isLoading, fileIDs = [],
+}) => {
   const [modalStatus, setModalStatus] = React.useState(false);
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
   const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
   const [userComments, setUserComments] = React.useState('');
+  async function fetchData() {
+    const fetchResult = await client
+      .query({
+        query: GET_MY_CART_DATA_QUERY,
+        variables: {
+          first: fileIDs.length, ...{ file_ids: fileIDs },
+        },
+      })
+      .then((result) => result.data.filesInList);
+    return fetchResult;
+  }
 
   function toggleMessageStatus(status) {
     return status === 'close' ? setTopMessageStatus(false) : setTopMessageStatus(true);
@@ -44,11 +58,20 @@ const cartView = ({ classes, data, isLoading }) => {
   }
   function deleteSubjectsAndCloseModal() {
     setModalStatus(false);
-    deleteFromCart({ fileIds: data.map((d) => d.file_id) });
+    deleteFromCart({ fileIds: fileIDs });
   }
 
   function onRowSelectionChange(curr, allRowsSelected) {
     return (curr, allRowsSelected);
+  }
+  async function prepareDownload() {
+    const data1 = await fetchData();
+    return downloadJson(
+      data1,
+      userComments,
+      myFilesPageData.manifestFileName,
+      manifestData,
+    );
   }
 
   const fileIdIndex = table.columns.map((d) => d.dataField).findIndex((e) => e === 'file_id');
@@ -110,7 +133,7 @@ const cartView = ({ classes, data, isLoading }) => {
     </span>
   );
 
-  const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved ? data.length : '';
+  const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved ? fileIDs.length : '';
 
   const dataTable = isLoading ? <SkeletonTable />
     : (
@@ -119,6 +142,12 @@ const cartView = ({ classes, data, isLoading }) => {
         columns={columns}
         options={options}
         className={classes.tableStyle}
+        count={fileIDs.length || 0}
+        overview={GET_MY_CART_DATA_QUERY}
+        overviewDesc={GET_MY_CART_DATA_QUERY_DESC}
+        paginationAPIField="filesInList"
+        paginationAPIFieldDesc="filesInListDesc"
+        queryCustomVaribles={{ file_ids: fileIDs }}
       />
     );
   return (
@@ -179,12 +208,7 @@ const cartView = ({ classes, data, isLoading }) => {
             <button
               type="button"
               className={classes.downloadButton}
-              onClick={() => downloadJson(
-                data,
-                userComments,
-                myFilesPageData.manifestFileName,
-                manifestData,
-              )}
+              onClick={() => prepareDownload()}
             >
               {myFilesPageData.downButtonText}
               {' '}

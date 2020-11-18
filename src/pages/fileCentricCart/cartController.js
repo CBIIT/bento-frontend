@@ -15,7 +15,7 @@ const cartController = () => {
           : (
             error || !data
               ? <Typography variant="headline" color="error" size="sm">{error && `An error has occurred in loading CART : ${error}`}</Typography>
-              : <CartView isLoading={false} data={data.filesInList === null || data.filesInList === '' ? [] : data.filesInList} />
+              : <CartView isLoading={false} fileIDs={ids} data={data.filesInList === null || data.filesInList === '' ? [] : data.filesInList} />
           )
       )}
     </Query>
