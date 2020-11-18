@@ -84,6 +84,8 @@ const Dashboard = ({
                                 cx="50%"
                                 cy="50%"
                                 textColor={theme.palette.widgetBackground.contrastText}
+                                titleLocation="bottom"
+                                titleAlignment="center"
                               />
                             </Widget>
                           </Grid>
@@ -111,6 +113,8 @@ const Dashboard = ({
                                 cy="50%"
                                 textColor={theme.palette.widgetBackground.contrastText}
                                 colors={colors}
+                                titleLocation="bottom"
+                                titleAlignment="center"
                               />
                             </Widget>
                           </Grid>
