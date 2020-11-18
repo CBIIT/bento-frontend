@@ -224,7 +224,7 @@ const tabController = (classes) => {
   const TABContainers = tabContainers.map((container) => (
     <TabContainer id={container.id}>
       <TabView
-        options={getOptions(container, classes, undefined, undefined)}
+        options={getOptions(container, classes)}
         data={dashboard[container.dataField] ? dashboard[container.dataField] : []}
         customColumn={container}
         customOnRowsSelect={onRowsSelectFunction[container.onRowsSelect]}

@@ -39,9 +39,13 @@ class ServerPaginatedTableView extends React.Component {
 
   getSrcData = () => this.props.data;
 
-  rowsSelectedTrigger = (displayedData) => this.props.options.rowsSelectedTrigger(
-    displayedData.map((d) => d[this.props.options.dataKey]),
-  );
+  rowsSelectedTrigger = (displayedData) => {
+    if (this.props.options.rowsSelectedTrigger) {
+      this.props.options.rowsSelectedTrigger(
+        displayedData.map((d) => d[this.props.options.dataKey]),
+      );
+    }
+  }
 
   sort = (page, sortOrder) => {
     this.setState({ isLoading: true });
