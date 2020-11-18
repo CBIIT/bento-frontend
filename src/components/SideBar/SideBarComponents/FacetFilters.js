@@ -11,9 +11,10 @@ import {
   Divider,
 } from '@material-ui/core';
 import _ from 'lodash';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import {
+  CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
+  as ArrowDropDownIcon,
+} from '@material-ui/icons';
 import { toggleCheckBox } from '../../../pages/dashboardTab/store/dashboardReducer';
 import { facetSectionStyling } from '../../../bento/dashboardData';
 
