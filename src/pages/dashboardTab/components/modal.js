@@ -1,11 +1,9 @@
-/*eslint-disable*/
-
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Dialog, DialogActions, DialogContent, DialogContentText, Button,
-  } from '@material-ui/core';
+  Dialog, DialogActions, DialogContent, DialogContentText, Button,
+} from '@material-ui/core';
 import DialogThemeProvider from './dialogThemeConfig';
 import { addToCart } from '../../fileCentricCart/store/cart';
 import { fetchAllFileIDsForSelectAll, getFilesCount } from '../store/dashboardReducer';
@@ -48,61 +46,49 @@ function SimpleDialog(props) {
     onClose();
   };
 
-  async function fetchData() {
-    const fetchResult = await client
-      .query({
-        query: GET_MY_CART_DATA_QUERY,
-        variables: {
-          first: fileIDs.length, ...{ file_ids: fileIDs },
-        },
-      })
-      .then((result) => result.data.filesInList);
-    return fetchResult;
-  }
-
   async function exportFiles() {
     // Find the newly added files by comparing
     const getAllFilesData = await fetchAllFileIDsForSelectAll(getFilesCount());
     const selectedIDs = getAllFilesData.reduce((accumulator, currentValue) => {
-        const { files } = currentValue;
-        // check if file
-        if (files && files.length > 0) {
-          return accumulator.concat(files.map((f) => f.file_id));
-        }
-        return accumulator;
-      }, []);
+      const { files } = currentValue;
+      // check if file
+      if (files && files.length > 0) {
+        return accumulator.concat(files.map((f) => f.file_id));
+      }
+      return accumulator;
+    }, []);
     addToCart({ fileIds: selectedIDs });
     onClose();
-  };
-
-  const handleListItemClick = (value) => {
-    onClose(value);
-  };
+  }
 
   return (
-<DialogThemeProvider>
-<Dialog
-open={open}
-aria-labelledby="alert-dialog-title"
-aria-describedby="alert-dialog-description"
-className={classes.popUpWindow}
->
-<DialogContent className={classes.popUpWindowContent}>
-  <DialogContentText id="alert-dialog-description">
-    Are you sure to add All Files {getFilesCount()}to cart
-  </DialogContentText>
-</DialogContent>
-<DialogActions>
-  <Button onClick={() => exportFiles()} className={classes.okButton}>
-    Yes
-  </Button>
-  <Button onClick={() => handleClose()} className={classes.cancelButton}>
-    No
-  </Button>
-</DialogActions>
-</Dialog>
-</DialogThemeProvider>
-);
+    <DialogThemeProvider>
+      <Dialog
+        open={open}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        className={classes.popUpWindow}
+      >
+        <DialogContent className={classes.popUpWindowContent}>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure to add All Files
+            {' '}
+            {getFilesCount()}
+            {' '}
+            to cart
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => exportFiles()} className={classes.okButton}>
+            Yes
+          </Button>
+          <Button onClick={() => handleClose()} className={classes.cancelButton}>
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </DialogThemeProvider>
+  );
 }
 
 export default function SimpleDialogDemo() {
@@ -118,9 +104,9 @@ export default function SimpleDialogDemo() {
   };
 
   return (
-      <>
-      <button variant="outlined" color="primary" onClick={handleClickOpen} className={classes.button}>
-       Select All
+    <>
+      <button type="button" onClick={handleClickOpen} className={classes.button}>
+        Select All
       </button>
       <SimpleDialog open={open} onClose={handleClose} />
     </>
