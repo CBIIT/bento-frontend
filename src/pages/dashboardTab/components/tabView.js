@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import { getColumns } from 'bento-components';
+import SelectAllModal from './modal';
 import {
   GET_FILES_OVERVIEW_QUERY,
   GET_SAMPLES_OVERVIEW_QUERY,
@@ -176,6 +177,7 @@ const TabView = ({
   // overwrite default options
   const defaultOptions = () => ({
     dataKey,
+    selectableRowsHeader: false,
     rowsSelectedTrigger: (displayData, rowsSelected) => rowSelectionEvent(
       displayData,
       rowsSelected,
@@ -195,6 +197,7 @@ const TabView = ({
   return (
     <div>
       <Grid item xs={12} className={classes.saveButtonDiv}>
+        <SelectAllModal />
         <button
           type="button"
           ref={saveButton2}
