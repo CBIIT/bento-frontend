@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   withStyles, Divider, Drawer, List, Button,
 } from '@material-ui/core';
-import { unselectFilters, cn } from 'bento-components';
+import { unselectFilters } from 'bento-components';
 import FacetFilter from './SideBarComponents/FacetFilters';
 import { facetSearchData } from '../../bento/dashboardData';
 import { toggleCheckBox } from '../../pages/dashboardTab/store/dashboardReducer';
@@ -35,8 +35,7 @@ const SideBarContent = ({ classes }) => {
     >
       { countFilters > 0 && (
       <div>
-        <div className={classes.drawerAppBar}>
-          <div className={cn(classes.floatLeft, classes.filterTitle)}> Filter Cases</div>
+        <div>
           <div className={classes.floatRight}>
             <Button
               id="button_sidebar_clear_all_filters"
@@ -66,9 +65,6 @@ const styles = (theme) => ({
   drawerPaperRoot: {
     backgroundColor: 'transparent',
   },
-  drawerAppBar: {
-    height: '54px',
-  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -83,9 +79,7 @@ const styles = (theme) => ({
     border: 'none',
   },
   floatRight: {
-    float: 'right',
-    marginTop: '13px',
-    marginRight: '10px',
+    margin: '18px 0px 18px 9px',
   },
   floatLeft: {
     float: 'left',
