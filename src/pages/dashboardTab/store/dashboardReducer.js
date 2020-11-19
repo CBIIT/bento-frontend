@@ -22,6 +22,7 @@ import {
   GET_FILES_OVERVIEW_QUERY,
   GET_SAMPLES_OVERVIEW_QUERY,
   GET_CASES_OVERVIEW_QUERY,
+  GET_ALL_FILEIDS_FOR_SELECT_ALL,
 } from '../../../bento/dashboardTabData';
 
 const storeKey = 'dashboardTab';
@@ -210,6 +211,20 @@ export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) 
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
 }
+
+export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
+  const VARIABLES = getState().filteredSubjectIds;
+
+  const fetchResult = await client
+    .query({
+      query: GET_ALL_FILEIDS_FOR_SELECT_ALL,
+      variables: { subject_ids: VARIABLES, first: fileCount },
+    })
+    .then((result) => result.data.subjectOverViewPaged);
+  return fetchResult;
+}
+
+export const getFilesCount = () => getState().stats.numberOfFiles;
 
 /**
  * Returns the widgets data.

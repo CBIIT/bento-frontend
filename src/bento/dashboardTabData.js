@@ -744,6 +744,17 @@ export const GET_CASES_OVERVIEW_QUERY = gql`
 }
 
   `;
+
+export const GET_ALL_FILEIDS_FOR_SELECT_ALL = gql`
+  query subjectOverViewPaged($subject_ids: [String], $first: Int = 10000000){
+    subjectOverViewPaged(subject_ids: $subject_ids, first: $first) {
+        files {
+              file_id
+        }
+    }
+}
+
+  `;
 export const GET_FILES_OVERVIEW_DESC_QUERY = gql`
 query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
 
