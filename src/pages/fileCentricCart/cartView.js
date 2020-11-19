@@ -211,8 +211,11 @@ const cartView = ({
               {myFilesPageData.downButtonText}
               {' '}
             </button>
-            <IconButton aria-label="help" onMouseEnter={() => toggleMessageStatus('open')} onMouseLeave={() => toggleMessageStatus('close')}>
+            <IconButton aria-label="help" onFocus={() => toggleMessageStatus('top', 'open')} onMouseEnter={() => toggleMessageStatus('open')} onMouseOver={() => toggleMessageStatus('open')} onMouseLeave={() => toggleMessageStatus('close')}>
               <img
+                onMouseEnter={() => toggleMessageStatus('open')}
+                onMouseOver={() => toggleMessageStatus('open')}
+                onFocus={() => toggleMessageStatus('top', 'open')}
                 src={myFilesPageData.tooltipIcon}
                 alt={myFilesPageData.tooltipAlt}
                 className={classes.helpIcon}

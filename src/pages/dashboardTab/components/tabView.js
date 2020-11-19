@@ -203,11 +203,12 @@ const TabView = ({
         >
           { buttonText }
         </button>
-        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseOver={() => toggleMessageStatus('top', 'open')} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
           {TopMessageStatus.src ? (
             <img
               onMouseEnter={() => toggleMessageStatus('top', 'open')}
-              onMouseLeave={() => toggleMessageStatus('top', 'close')}
+              onMouseOver={() => toggleMessageStatus('top', 'open')}
+              onFocus={() => toggleMessageStatus('top', 'open')}
               src={TopMessageStatus.src}
               alt={TopMessageStatus.alt}
               className={classes.helpIcon}
@@ -216,8 +217,9 @@ const TabView = ({
             <HelpIcon
               className={classes.helpIcon}
               fontSize="small"
+              onMouseOver={() => toggleMessageStatus('top', 'open')}
               onMouseEnter={() => toggleMessageStatus('top', 'open')}
-              onMouseLeave={() => toggleMessageStatus('top', 'close')}
+              onFocus={() => toggleMessageStatus('top', 'open')}
             />
           )}
         </IconButton>
@@ -249,11 +251,12 @@ const TabView = ({
           { buttonText }
         </button>
 
-        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseOver={() => toggleMessageStatus('bottom', 'open')} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
           {BottomMessageStatus.src ? (
             <img
               onMouseEnter={() => toggleMessageStatus('bottom', 'open')}
-              onMouseLeave={() => toggleMessageStatus('bottom', 'close')}
+              onMouseOver={() => toggleMessageStatus('bottom', 'open')}
+              onFocus={() => toggleMessageStatus('bottom', 'open')}
               src={BottomMessageStatus.src}
               alt={BottomMessageStatus.alt}
               className={classes.helpIcon}
@@ -261,7 +264,8 @@ const TabView = ({
           ) : (
             <HelpIcon
               onMouseEnter={() => toggleMessageStatus('bottom', 'open')}
-              onMouseLeave={() => toggleMessageStatus('bottom', 'close')}
+              onMouseOver={() => toggleMessageStatus('bottom', 'open')}
+              onFocus={() => toggleMessageStatus('bottom', 'open')}
               className={classes.helpIcon}
               fontSize="small"
             />
