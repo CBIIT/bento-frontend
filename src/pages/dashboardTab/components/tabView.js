@@ -177,7 +177,6 @@ const TabView = ({
   // overwrite default options
   const defaultOptions = () => ({
     dataKey,
-    selectableRowsHeader: false,
     rowsSelectedTrigger: (displayData, rowsSelected) => rowSelectionEvent(
       displayData,
       rowsSelected,
