@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 import { withStyles, Divider } from '@material-ui/core';
+import { AboutHeader } from 'bento-components';
 import scrollUp from '../../assets/icons/ScrollUpButton.svg';
 import scrollUpHover from '../../assets/icons/ScrollUpHoverButton.svg';
 
-import AboutHeader from '../about/aboutHeaderView';
 import Stats from '../../components/Stats/AllStatsController';
 import AlphabetBar from './alphabetComponent';
 import Section from './attributeComponent';

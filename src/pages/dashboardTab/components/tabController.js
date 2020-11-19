@@ -6,6 +6,7 @@ import {
 import Typography from '@material-ui/core/Typography';
 import SwipeableViews from 'react-swipeable-views';
 import Snackbar from '@material-ui/core/Snackbar';
+import { getOptions } from 'bento-components';
 import TabView from './tabView';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import TabThemeProvider from './tabThemeConfig';
@@ -15,7 +16,6 @@ import {
   tabs, tooltipContent, tabContainers, tabIndex, externalLinkIcon,
 } from '../../../bento/dashboardTabData';
 import { fetchDataForDashboardTab } from '../store/dashboardReducer';
-import { getOptions } from '../../../utils/tables';
 
 function TabContainer({ children, dir }) {
   return (
@@ -36,6 +36,9 @@ const tabController = (classes) => {
     // data from store
   const dashboardStats = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
+
+  const filteredSubjectIds = useSelector((state) => (state.dashboardTab
+      && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : []));
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
@@ -246,6 +249,8 @@ const tabController = (classes) => {
         api={container.api}
         paginationAPIField={container.paginationAPIField}
         paginationAPIFieldDesc={container.paginationAPIFieldDesc}
+        dataKey={container.dataKey}
+        filteredSubjectIds={filteredSubjectIds}
       />
     </TabContainer>
   ));

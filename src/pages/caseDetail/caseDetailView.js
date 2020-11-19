@@ -4,6 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
+import { getOptions, getColumns } from 'bento-components';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import GridWithFooter from '../../components/GridWithFooter/GridView';
@@ -20,7 +21,6 @@ import {
 } from '../../bento/caseDetailData';
 import Snackbar from '../../components/Snackbar';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
-import { getOptions, getColumns } from '../../utils/tables';
 
 // Main case detail component
 const CaseDetail = ({ data, filesOfSamples, classes }) => {

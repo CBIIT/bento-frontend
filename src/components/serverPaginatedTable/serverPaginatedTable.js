@@ -1,13 +1,11 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/state-in-constructor */
-
 import React from 'react';
-import { connect } from 'react-redux';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 
-import { CircularProgress, Typography } from '@material-ui/core';
+// import { CircularProgress, Typography } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
 import client from '../../utils/graphqlClient';
 
@@ -40,9 +38,18 @@ class ServerPaginatedTableView extends React.Component {
 
   getSrcData = () => this.props.data;
 
+  rowsSelectedTrigger = (displayedData) => {
+    if (this.props.options.rowsSelectedTrigger) {
+      this.props.options.rowsSelectedTrigger(
+        displayedData.map((d) => d[this.props.options.dataKey]),
+      );
+    }
+  }
+
   sort = (page, sortOrder) => {
     this.setState({ isLoading: true });
     this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage, sortOrder).then((res) => {
+      this.rowsSelectedTrigger(res);
       this.setState({
         isLoading: false,
         sortOrder,
@@ -92,6 +99,7 @@ class ServerPaginatedTableView extends React.Component {
       this.state.rowsPerPage,
       this.state.sortOrder,
     ).then((res) => {
+      this.rowsSelectedTrigger(res);
       this.setState({
         isLoading: false,
         sortOrder,
@@ -115,7 +123,7 @@ class ServerPaginatedTableView extends React.Component {
       .query({
         query: sortOrder.direction !== 'asc' ? this.props.overviewDesc : this.props.overview,
         variables: {
-          subject_ids: this.props.filteredSubjectIds, offset, first: rowsRequired, order_by: sortOrder.name || '',
+          offset, first: rowsRequired, order_by: sortOrder.name || '', ...this.props.queryCustomVaribles,
         },
       })
       .then((result) => (sortOrder.direction !== 'asc' ? result.data[this.props.paginationAPIFieldDesc] : result.data[this.props.paginationAPIField]));
@@ -124,7 +132,7 @@ class ServerPaginatedTableView extends React.Component {
 
   render() {
     const {
-      data, count, isLoading, rowsPerPage, sortOrder,
+      data, count, isLoading, rowsPerPage, sortOrder, className,
     } = this.state;
     const options1 = {
       filterType: 'dropdown',
@@ -173,28 +181,15 @@ class ServerPaginatedTableView extends React.Component {
     return (
       <div>
         <CustomDataTable
-          title={(
-            <Typography variant="h6">
-              {isLoading && <CircularProgress size={24} style={{ marginLeft: 15, position: 'relative', top: 4 }} />}
-            </Typography>
-)}
           data={data}
+          isLoading={isLoading}
           columns={this.props.columns}
           options={({ ...this.props.options, ...options1 })}
+          className={className}
         />
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  const {
-    filteredSubjectIds,
-  } = state.dashboardTab;
-
-  return {
-    filteredSubjectIds,
-  };
-}
-
-export default connect(mapStateToProps)(ServerPaginatedTableView);
+export default ServerPaginatedTableView;
