@@ -117,12 +117,6 @@ export const tabContainers = [
         sort: 'asc',
         display: true,
       },
-      {
-        dataField: 'cohort_description',
-        header: 'Cohort',
-        sort: 'asc',
-        display: true,
-      },
     ],
     id: 'case_tab',
     onRowsSelect: 'type1',
