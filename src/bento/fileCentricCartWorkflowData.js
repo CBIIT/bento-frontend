@@ -31,8 +31,8 @@ export const myFilesPageData = {
 };
 
 export const manifestData = {
-  keysToInclude: ['subject_id', 'file_name', 'file_id', 'md5sum'],
-  header: ['Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments'],
+  keysToInclude: ['study_code', 'subject_id', 'file_name', 'file_id', 'md5sum'],
+  header: ['Study Code', 'Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments'],
 };
 
 // --------------- File table configuration --------------
