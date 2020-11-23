@@ -470,7 +470,7 @@ export const DASHBOARD_QUERY = gql`{
         }
     }
 
-  subjectOverViewPaged(first: 100) {
+  subjectOverViewPaged(first: 10) {
       subject_id
       program_id
       study_info
@@ -493,6 +493,32 @@ export const DASHBOARD_QUERY = gql`{
         file_id
       }
   }
+  sampleOverview(first: 10) {
+    sample_id
+    subject_id
+    program
+    arm
+    diagnosis
+    tissue_type
+    tissue_composition
+    sample_anatomic_site
+    sample_procurement_method
+    platform
+    files 
+}
+fileOverview(first: 10) {
+  file_id
+  file_name
+  association
+  file_description
+  file_format
+  file_size
+  program
+  arm
+  subject_id
+  sample_id
+  diagnosis
+}
   }`;
 
 export const FILTER_GROUP_QUERY = gql`

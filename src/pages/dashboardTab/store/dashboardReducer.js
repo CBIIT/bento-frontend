@@ -118,6 +118,17 @@ function fetchDashboardTab() {
   };
 }
 
+function fetchDashboardTabForClearAll() {
+  return () => client
+    .query({
+      query: DASHBOARD_QUERY,
+    })
+    .then((result) => store.dispatch({ type: 'CLEAR_ALL', payload: _.cloneDeep(result) }))
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
+}
+
 /**
  * Generate a default varibles for filter query.
  *
@@ -162,7 +173,7 @@ function createFilterVariables(data) {
  */
 export function toggleCheckBox(payload) {
   return () => {
-    const currentAllFilterVariables = createFilterVariables(payload);
+    const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
     return client
       .query({ // request to get the filtered subjects
         query: FILTER_QUERY,
@@ -249,6 +260,10 @@ export function fetchDataForDashboardTabDataTable() {
   return store.dispatch({ type: 'READY_DASHBOARDTAB' });
 }
 
+export function clearAllFilters() {
+  store.dispatch(fetchDashboardTabForClearAll());
+}
+
 export const getDashboard = () => getState();
 
 // reducers
@@ -327,6 +342,37 @@ const reducers = {
     };
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
+    const checkboxData = customCheckBox(item.data, facetSearchData);
+    return item.data
+      ? {
+        ...state.dashboard,
+        isFetched: true,
+        isLoading: false,
+        hasError: false,
+        error: '',
+        stats: getStatInit(item.data, statsCount),
+        allActiveFilters: allFilters(),
+        filteredSubjectIds: [],
+        subjectOverView: {
+          data: item.data.subjectOverViewPaged,
+        },
+        checkboxForAll: {
+          data: checkboxData,
+        },
+        checkbox: {
+          data: checkboxData,
+        },
+        datatable: {
+          dataCase: item.data.subjectOverViewPaged,
+          dataSample: item.data.sampleOverview,
+          dataFile: item.data.fileOverview,
+          filters: [],
+        },
+        widgets: getWidgetsInitData(item.data, widgetsData),
+
+      } : { ...state };
+  },
+  CLEAR_ALL: (state, item) => {
     const checkboxData = customCheckBox(item.data, facetSearchData);
     return item.data
       ? {

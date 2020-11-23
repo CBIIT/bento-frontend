@@ -1,21 +1,22 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   withStyles, Divider, Drawer, List, Button,
 } from '@material-ui/core';
-import { unselectFilters } from 'bento-components';
 import FacetFilter from './SideBarComponents/FacetFilters';
 import { facetSearchData } from '../../bento/dashboardData';
-import { toggleCheckBox } from '../../pages/dashboardTab/store/dashboardReducer';
+import { clearAllFilters } from '../../pages/dashboardTab/store/dashboardReducer';
 
 const drawerWidth = 240;
 
 const SideBarContent = ({ classes }) => {
-  const dispatch = useDispatch();
   const activeFilters = useSelector((state) => (
-    state.dashboardTab.datatable
-      && state.dashboardTab.datatable.filters
-      ? state.dashboardTab.datatable.filters : []));
+    state.dashboardTab
+      && state.dashboardTab.allActiveFilters
+      ? state.dashboardTab.allActiveFilters : {}));
+  const activeFiltersCount = Object.entries(activeFilters).reduce(
+    (acc, [key, val]) => acc + (val.length), 0, // eslint-disable-line no-unused-vars
+  );
   const countFilters = facetSearchData
     ? facetSearchData.reduce((n, facet) => n + (facet.show === true), 0) : 0;
   return (
@@ -40,11 +41,10 @@ const SideBarContent = ({ classes }) => {
             <Button
               id="button_sidebar_clear_all_filters"
               variant="outlined"
-              disabled={activeFilters.length === 0}
-              onCl
+              disabled={activeFiltersCount === 0}
               className={classes.customButton}
               classes={{ root: classes.clearAllButtonRoot }}
-              onClick={() => dispatch(toggleCheckBox(unselectFilters(activeFilters)))}
+              onClick={() => clearAllFilters()}
               disableRipple
             >
               CLEAR ALL
