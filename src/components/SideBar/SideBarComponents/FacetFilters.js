@@ -51,6 +51,8 @@ const FacetPanel = ({ classes }) => {
 
   const [groupExpanded, setGroupExpanded] = React.useState(['case']);
 
+  const [selectedLabels] = React.useState([]);
+
   React.useEffect(() => {
     if (!expanded || !(expanded === `${sideBarContent.defaultPanel}false` || expanded !== false)) {
       setExpanded(sideBarContent.defaultPanel);
@@ -77,8 +79,38 @@ const FacetPanel = ({ classes }) => {
     setGroupExpanded(groups);
   };
 
+  function selectionCounter(valueList) {
+    const selectedGroupNameIndex = selectedLabels.findIndex(
+      (selectedLabel) => selectedLabel.groupName === valueList[1],
+    );
+    const isChecked = !(valueList[3] === 'true');
+    if (selectedGroupNameIndex === -1) {
+      selectedLabels.push({ groupName: valueList[1], selectionCount: 1 });
+    } else if ((selectedGroupNameIndex !== -1) && (isChecked === true)) {
+      selectedLabels[selectedGroupNameIndex].selectionCount += 1;
+    } else if ((selectedGroupNameIndex !== -1) && (isChecked === false)) {
+      selectedLabels[selectedGroupNameIndex].selectionCount -= 1;
+    }
+    return selectedLabels;
+  }
+
+  function updateStyling() {
+    selectedLabels.map((groupName) => {
+      if (groupName.selectionCount >= 1) {
+        document.getElementById(`filterGroup_${groupName.groupName}`).innerHTML = `${groupName.groupName}*`;
+        document.getElementById(`filterGroup_${groupName.groupName}`).style.color = 'green';
+      } else {
+        document.getElementById(`filterGroup_${groupName.groupName}`).innerHTML = `${groupName.groupName}`;
+        document.getElementById(`filterGroup_${groupName.groupName}`).style.color = 'black';
+      }
+      return '';
+    });
+  }
+
   const handleToggle = (value) => () => {
     const valueList = value.split('$$');
+    selectionCounter(valueList);
+    updateStyling();
     // dispatch toggleCheckBox action
     dispatch(toggleCheckBox([{
       groupName: valueList[1],
@@ -156,7 +188,7 @@ const FacetPanel = ({ classes }) => {
                         id={sideBarItem.groupName}
                       >
                         {/* <ListItemText primary={sideBarItem.groupName} /> */}
-                        <div className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
+                        <div id={`filterGroup_${sideBarItem.groupName}`} style={{ color: 'black' }} className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
 
                       </CustomExpansionPanelSummary>
 
