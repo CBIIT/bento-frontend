@@ -117,12 +117,6 @@ export const tabContainers = [
         sort: 'asc',
         display: true,
       },
-      {
-        dataField: 'cohort_description',
-        header: 'Cohort',
-        sort: 'asc',
-        display: true,
-      },
     ],
     id: 'case_tab',
     onRowsSelect: 'type1',
@@ -476,7 +470,7 @@ export const DASHBOARD_QUERY = gql`{
         }
     }
 
-  subjectOverViewPaged(first: 100) {
+  subjectOverViewPaged(first: 10) {
       subject_id
       program_id
       study_info
@@ -499,6 +493,32 @@ export const DASHBOARD_QUERY = gql`{
         file_id
       }
   }
+  sampleOverview(first: 10) {
+    sample_id
+    subject_id
+    program
+    arm
+    diagnosis
+    tissue_type
+    tissue_composition
+    sample_anatomic_site
+    sample_procurement_method
+    platform
+    files 
+}
+fileOverview(first: 10) {
+  file_id
+  file_name
+  association
+  file_description
+  file_format
+  file_size
+  program
+  arm
+  subject_id
+  sample_id
+  diagnosis
+}
   }`;
 
 export const FILTER_GROUP_QUERY = gql`
@@ -740,6 +760,17 @@ export const GET_CASES_OVERVIEW_QUERY = gql`
               file_id
         }
         lab_procedures
+    }
+}
+
+  `;
+
+export const GET_ALL_FILEIDS_FOR_SELECT_ALL = gql`
+  query subjectOverViewPaged($subject_ids: [String], $first: Int = 10000000){
+    subjectOverViewPaged(subject_ids: $subject_ids, first: $first) {
+        files {
+              file_id
+        }
     }
 }
 
