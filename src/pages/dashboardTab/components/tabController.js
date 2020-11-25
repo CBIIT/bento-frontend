@@ -218,10 +218,10 @@ const tabController = (classes) => {
   ));
 
   // Calculate the properate marginTop value for the tooltip on the top
-  const tooltipStyle = (text) => {
+  function tooltipStyle(text) {
     const marginTopValue = text.length > 40 ? '-25px' : '-3px';
     return { marginTop: marginTopValue };
-  };
+  }
 
   // Tab table Generator
   const TABContainers = tabContainers.map((container) => (

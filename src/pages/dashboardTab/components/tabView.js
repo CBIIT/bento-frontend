@@ -156,6 +156,12 @@ const TabView = ({
     });
   }
 
+  // Calculate the properate marginTop value for the tooltip on the top
+  function tooltipStyle(text) {
+    const marginTopValue = text.length > 40 ? '-148px' : '-118px';
+    return { marginTop: marginTopValue };
+  }
+
   /*
     Presist user selection
   */
@@ -276,7 +282,7 @@ const TabView = ({
         <div style={{ position: 'relative' }}>
           { BottomMessageStatus.isActive
             && tabIndex === BottomMessageStatus.currentTab.toString() ? (
-              <div className={classes.messageBottom}>
+              <div className={classes.messageBottom} style={tooltipStyle(BottomMessageStatus.text)}>
                 {' '}
                 <Message data={BottomMessageStatus.text} />
                 {' '}
