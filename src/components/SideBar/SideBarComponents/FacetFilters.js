@@ -58,6 +58,7 @@ const FacetPanel = ({ classes }) => {
   });
 
   const handleChange = (panel) => (event, isExpanded) => {
+    console.log('expansion pannel clicked');
     setExpanded(isExpanded ? panel : `${panel}false`);
 
     // set height of filters.
@@ -123,7 +124,7 @@ const FacetPanel = ({ classes }) => {
             onChange={handleGroupChange(currentSection.sectionName)}
                 // className={classes.expansion}
             classes={{
-              root: classes.expansionPanelRoot,
+              root: classes.ExpansionPanelRoot,
             }}
           >
             <CustomExpansionPanelSummary
@@ -144,7 +145,7 @@ const FacetPanel = ({ classes }) => {
                       expanded={expanded === sideBarItem.groupName}
                       onChange={handleChange(sideBarItem.groupName)}
                 // className={classes.expansion}
-                      // classes={{ root: classes.expansionPanelRoot }}
+                      // classes={{ root: classes.expansionPanelDetailsRoot }}
                     >
                       <CustomExpansionPanelSummary
                         expandIcon={(
@@ -160,7 +161,9 @@ const FacetPanel = ({ classes }) => {
 
                       </CustomExpansionPanelSummary>
 
-                      <ExpansionPanelDetails classes={{ root: classes.expansionPanelDetailsRoot }}>
+                      <ExpansionPanelDetails
+                        classes={{ root: classes.testExpansionPanelDetailsRoot }}
+                      >
                         <List component="div" disablePadding dense>
                           {
             sideBarItem.checkboxItems.map((checkboxItem) => {
@@ -186,7 +189,7 @@ const FacetPanel = ({ classes }) => {
                   />
                   <div className={classes.panelDetailText}>
                     {`${checkboxItem.name}`}
-                    <span className={classes.panelDetailTextSubjectCount}>
+                    <span style={{ color: facetSectionStyling[sideBarItem.section].color ? facetSectionStyling[sideBarItem.section].color : '#137fbe' }}>
                       &nbsp;
                       {`(${checkboxItem.subjects})`}
                     </span>
@@ -219,16 +222,20 @@ const styles = () => ({
       position: 'initial',
     },
   },
+  expansionPanelDetailsRoot: {
+    paddingBottom: '8px',
+    display: 'unset',
+  },
+  testExpansionPanelDetailsRoot: {
+    borderTop: '10px solid black',
+    paddingBottom: '8px',
+    display: 'unset',
+  },
   dropDownIconSection: {
     fill: '#000000',
   },
   dropDownIconSubSection: {
     fill: '#3695A9',
-  },
-  dividerRoot: {
-    backgroundColor: '#B0CFE1',
-    marginLeft: '45px',
-    height: '1px',
   },
   sectionSummaryText: {
     marginLeft: '-6px',
@@ -253,19 +260,12 @@ const styles = () => ({
     fontSize: '14px',
     marginRight: '12px',
   },
-  panelDetailTextSubjectCount: {
-    color: '#137fbe',
-  },
   checkboxRoot: {
     color: '#344B5A',
     height: 12,
   },
   listItemGutters: {
     padding: '8px 0px 8px 24px',
-  },
-  expansionPanelDetailsRoot: {
-    paddingBottom: '8px',
-    display: 'unset',
   },
 });
 

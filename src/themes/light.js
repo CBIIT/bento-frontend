@@ -499,5 +499,12 @@ export default {
         },
       },
     },
+    MuiCheckbox: {
+      colorSecondary: {
+        '&:first-child': {
+          color: '#000000',
+        },
+      },
+    },
   },
 };
