@@ -32,6 +32,7 @@ const initialState = {
     isDataTableUptoDate: false,
     isFetched: false,
     isLoading: false,
+    isDashboardTableLoading: false,
     error: '',
     hasError: false,
     stats: {},
@@ -211,16 +212,19 @@ export function toggleCheckBox(payload) {
 export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) {
   const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
   const VARIABLES = subjectIDsAfterFilter || getState().filteredSubjectIds;
-  return client
-    .query({
-      query: QUERY,
-      variables: { subject_ids: VARIABLES },
+  return () => {
+    store.dispatch({ type: 'DASHBOARD_TABLE_LOADING' });
+    return client
+      .query({
+        query: QUERY,
+        variables: { subject_ids: VARIABLES },
 
-    })
-    .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, ..._.cloneDeep(result) } }))
-    .catch((error) => store.dispatch(
-      { type: 'DASHBOARDTAB_QUERY_ERR', error },
-    ));
+      })
+      .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, ..._.cloneDeep(result) } }))
+      .catch((error) => store.dispatch(
+        { type: 'DASHBOARDTAB_QUERY_ERR', error },
+      ));
+  };
 }
 
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
@@ -304,6 +308,7 @@ const reducers = {
   UPDATE_CURRRENT_TAB_DATA: (state, item) => (
     {
       ...state,
+      isDashboardTableLoading: false,
       currentActiveTab: item.currentTab,
       datatable: {
         ...state.datatable,
@@ -314,6 +319,7 @@ const reducers = {
     }
   ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
+  DASHBOARD_TABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);
     const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));

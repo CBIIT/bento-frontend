@@ -263,18 +263,18 @@ export const tabContainers = [
     },
     columns: [
       {
-        dataField: 'file_id',
-        header: 'File ID',
-        sort: 'asc',
-        display: true,
-      },
-      {
         dataField: 'file_name',
         header: 'File Name',
         sort: 'asc',
         link: '/program/{program_id}',
         primary: true,
         display: true,
+      },
+      {
+        dataField: 'file_id',
+        header: 'File ID',
+        sort: 'asc',
+        display: false,
       },
       {
         dataField: 'association',
@@ -696,7 +696,7 @@ query search (
 
 // --------------- GraphQL query - Retrieve files tab details --------------
 export const GET_FILES_OVERVIEW_QUERY = gql`
-query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
+query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name"){
 
   fileOverview(subject_ids: $subject_ids, offset: $offset,first: $first, order_by: $order_by) {
     file_id
@@ -776,7 +776,7 @@ export const GET_ALL_FILEIDS_FOR_SELECT_ALL = gql`
 
   `;
 export const GET_FILES_OVERVIEW_DESC_QUERY = gql`
-query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
+query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name"){
 
   fileOverviewDesc(subject_ids: $subject_ids, offset: $offset,first: $first, order_by: $order_by) {
     file_id
