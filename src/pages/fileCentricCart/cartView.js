@@ -171,10 +171,10 @@ const cartView = ({
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => deleteSubjectsAndCloseModal()} className={classes.okButton}>
+            <Button variant="contained" disableElevation onClick={() => deleteSubjectsAndCloseModal()} className={classes.okButton}>
               {myFilesPageData.popUpWindow.okButtonText}
             </Button>
-            <Button onClick={() => closeModal()} className={classes.cancelButton}>
+            <Button variant="contained" disableElevation onClick={() => closeModal()} className={classes.cancelButton}>
               {myFilesPageData.popUpWindow.cancelButtonText}
             </Button>
           </DialogActions>
@@ -312,7 +312,7 @@ const styles = (theme) => ({
     marginBottom: '80px',
     marginLeft: '3%',
     marginRight: '3%',
-    paddingBottom: '36px',
+    paddingBottom: '20px',
     background: 'white',
   },
   linkIcon: {
@@ -355,7 +355,7 @@ const styles = (theme) => ({
     float: 'right',
   },
   manifestTextarea: {
-    marginTop: '10px',
+    marginTop: '20px',
   },
   downloadButton: {
     height: '45px',
@@ -384,11 +384,17 @@ const styles = (theme) => ({
     background: '#98A19E',
     color: '#fff',
     cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: 'rgba(152,161,158,0.6)',
+    },
   },
   cancelButton: {
     background: '#42779A',
     color: '#fff',
     cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: 'rgba(66,119,154,0.6)',
+    },
   },
   tableDeleteButton: {
     background: '#fff',
@@ -436,13 +442,14 @@ const styles = (theme) => ({
   removeHeadCellIcon: {
     ursor: 'pointer',
     display: 'flex',
+    marginTop: '1px',
     verticalAlign: 'top',
   },
   removeHeadCellIconButton: {
     color: '#A61401',
-    width: '20px',
-    marginTop: '8px',
-    height: '20px',
+    width: '25px',
+    marginTop: '5px',
+    height: '25px',
   },
   removeAllMessage: {
     fontWeight: '500',

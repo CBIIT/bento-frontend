@@ -72,6 +72,12 @@ const GridView = ({
     }
   };
 
+  // Calculate the properate marginTop value for the tooltip on the top
+  function tooltipStyle(text) {
+    const topValue = text.length > 35 ? '-78px' : '-51px';
+    return { top: topValue };
+  }
+
   const btnStyle = {
     borderRadius: '10px',
     width: '156px',
@@ -159,11 +165,11 @@ const GridView = ({
           {' '}
         </button>
         {' '}
-        <IconButton aria-label="help">
-          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')} />
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseOver={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
+          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseOver={() => toggleMessageStatus('bottom', 'open')} />
         </IconButton>
         { messageStatus ? (
-          <div className={classes.messageBottom}>
+          <div className={classes.messageBottom} style={tooltipStyle(messageData)}>
             {' '}
             <Message data={messageData} />
             {' '}
@@ -242,7 +248,7 @@ const styles = () => ({
   },
   messageBottom: {
     position: 'absolute',
-    right: '20px',
+    right: '-8px',
     bottom: '20px',
     zIndex: '400',
   },
@@ -251,6 +257,11 @@ const styles = () => ({
     width: '20px',
     verticalAlign: 'sub',
     margin: '0px 0px 0px 2px',
+  },
+  helpIconButton: {
+    verticalAlign: 'top',
+    marginLeft: '-5px',
+    marginTop: '1px',
   },
 });
 
