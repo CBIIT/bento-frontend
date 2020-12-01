@@ -6,6 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { getColumns } from 'bento-components';
 import SelectAllModal from './modal';
 import {
@@ -49,6 +50,7 @@ const TabView = ({
   paginationAPIFieldDesc,
   dataKey,
   filteredSubjectIds,
+  tabDataLoading,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -235,17 +237,20 @@ const TabView = ({
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
-          <CustomDataTable
-            data={data}
-            columns={getColumns(customColumn, classes, data, externalLinkIcon)}
-            options={finalOptions}
-            count={count}
-            overview={getOverviewQuery(api)}
-            overviewDesc={getOverviewDescQuery(api)}
-            paginationAPIField={paginationAPIField}
-            paginationAPIFieldDesc={paginationAPIFieldDesc}
-            queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
-          />
+          {tabDataLoading ? <CircularProgress />
+            : (
+              <CustomDataTable
+                data={data}
+                columns={getColumns(customColumn, classes, data, externalLinkIcon)}
+                options={finalOptions}
+                count={count}
+                overview={getOverviewQuery(api)}
+                overviewDesc={getOverviewDescQuery(api)}
+                paginationAPIField={paginationAPIField}
+                paginationAPIFieldDesc={paginationAPIFieldDesc}
+                queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
+              />
+            )}
         </Grid>
 
       </Grid>
