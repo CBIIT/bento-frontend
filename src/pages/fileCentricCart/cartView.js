@@ -441,9 +441,9 @@ const styles = (theme) => ({
   },
   removeHeadCellIconButton: {
     color: '#A61401',
-    width: '22px',
-    marginTop: '8px',
-    height: '22px',
+    width: '25px',
+    marginTop: '5px',
+    height: '25px',
   },
   removeAllMessage: {
     fontWeight: '500',
