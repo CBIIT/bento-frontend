@@ -171,10 +171,10 @@ const cartView = ({
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => deleteSubjectsAndCloseModal()} className={classes.okButton}>
+            <Button variant="contained" disableElevation onClick={() => deleteSubjectsAndCloseModal()} className={classes.okButton}>
               {myFilesPageData.popUpWindow.okButtonText}
             </Button>
-            <Button onClick={() => closeModal()} className={classes.cancelButton}>
+            <Button variant="contained" disableElevation onClick={() => closeModal()} className={classes.cancelButton}>
               {myFilesPageData.popUpWindow.cancelButtonText}
             </Button>
           </DialogActions>
@@ -384,11 +384,17 @@ const styles = (theme) => ({
     background: '#98A19E',
     color: '#fff',
     cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: 'rgba(152,161,158,0.6)',
+    },
   },
   cancelButton: {
     background: '#42779A',
     color: '#fff',
     cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: 'rgba(66,119,154,0.6)',
+    },
   },
   tableDeleteButton: {
     background: '#fff',
