@@ -436,6 +436,7 @@ const styles = (theme) => ({
   removeHeadCellIcon: {
     ursor: 'pointer',
     display: 'flex',
+    marginTop: '1px',
     verticalAlign: 'top',
   },
   removeHeadCellIconButton: {
