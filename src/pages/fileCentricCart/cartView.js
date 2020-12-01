@@ -312,7 +312,7 @@ const styles = (theme) => ({
     marginBottom: '80px',
     marginLeft: '3%',
     marginRight: '3%',
-    paddingBottom: '36px',
+    paddingBottom: '20px',
     background: 'white',
   },
   linkIcon: {
@@ -355,7 +355,7 @@ const styles = (theme) => ({
     float: 'right',
   },
   manifestTextarea: {
-    marginTop: '10px',
+    marginTop: '20px',
   },
   downloadButton: {
     height: '45px',
