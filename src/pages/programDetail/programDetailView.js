@@ -541,7 +541,7 @@ const styles = (theme) => ({
     margin: 'auto',
     marginBlockEnd: '24px',
     paddingTop: '24px',
-    paddingLeft: '36px',
+    paddingLeft: '5px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -570,7 +570,7 @@ const styles = (theme) => ({
   },
   detailContainerLeft: {
     display: 'block',
-    padding: '5px  20px 5px 2px !important',
+    padding: '5px  20px 5px 0px !important',
     minHeight: '500px',
     maxHeight: '500px',
     overflowY: 'auto',
@@ -582,7 +582,7 @@ const styles = (theme) => ({
     borderRight: '#81a6b9 1px solid',
   },
   detailContainerRight: {
-    padding: '5px 0 5px 20px !important',
+    padding: '5px 0 5px 36px !important',
     minHeight: '500px',
     maxHeight: '500px',
     overflowY: 'auto',
@@ -607,7 +607,7 @@ const styles = (theme) => ({
     maxWidth: '1340px',
     margin: 'auto',
     paddingTop: '50px',
-    paddingLeft: '30px',
+    paddingLeft: '0px',
   },
 
   headerButtonLink: {

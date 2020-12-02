@@ -113,7 +113,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
 
           <Grid container spacing={1} className={classes.detailContainer}>
             {/* Left panel */}
-            <Grid item sm={6} xs={12} className={classes.detailPanel}>
+            <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.leftPanel]}>
               <div className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {leftPanel.slice(0, 3).map((section) => (
@@ -128,7 +128,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
             </Grid>
             {/* Left panel end */}
             {/* Right panel */}
-            <Grid item sm={6} xs={12} className={classes.detailPanel}>
+            <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.rightPanel]}>
               <div className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {rightPanel.slice(0, 3).map((section) => (
@@ -209,6 +209,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
             </div>
           </div>
         ) : ''}
+      <div className={classes.blankSpace} />
     </>
   );
 };
@@ -277,7 +278,7 @@ const styles = (theme) => ({
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    padding: '26px 10px',
+    padding: '26px 10px 26px 0px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -289,13 +290,19 @@ const styles = (theme) => ({
     paddingBottom: '0 !important',
     borderRight: '1px solid #81A6BA',
   },
+  leftPanel: {
+    paddingLeft: '0px',
+  },
+  rightPanel: {
+    paddingLeft: '16px !important',
+  },
   innerPanel: {
     height: '100%',
     minHeight: '209px',
     maxHeight: '380px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    paddingLeft: '16px',
+    paddingLeft: '0px',
     scrollbarColor: '#697270',
   },
   tableContainer: {
@@ -305,7 +312,7 @@ const styles = (theme) => ({
     maxWidth: '1340px',
     margin: 'auto',
     paddingTop: '30px',
-    paddingLeft: '30px',
+    paddingLeft: '0px',
   },
   tableTitle: {
     textTransform: 'uppercase',
@@ -325,6 +332,10 @@ const styles = (theme) => ({
     verticalAlign: 'sub',
     marginLeft: '4px',
     paddingBottom: '2px',
+  },
+  blankSpace: {
+    height: '73px',
+    background: '#f3f3f3',
   },
 });
 
