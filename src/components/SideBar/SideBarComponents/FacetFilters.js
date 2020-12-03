@@ -16,7 +16,7 @@ import {
   as ArrowDropDownIcon,
 } from '@material-ui/icons';
 import { toggleCheckBox } from '../../../pages/dashboardTab/store/dashboardReducer';
-import { facetSectionStyling } from '../../../bento/dashboardData';
+import { facetSectionStyling, facetSearchData } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
@@ -50,6 +50,24 @@ const FacetPanel = ({ classes }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const [groupExpanded, setGroupExpanded] = React.useState(['case']);
+
+  const activeFilters = useSelector((state) => (
+    state.dashboardTab
+      && state.dashboardTab.allActiveFilters
+      ? state.dashboardTab.allActiveFilters : {}));
+
+  Object.entries(activeFilters).map((filter) => {
+    if (filter[1].length >= 1) {
+      const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
+      document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}*`;
+      document.getElementById(`filterGroup_${filter[0]}`).style.color = 'green';
+    } else if (document.getElementById(`filterGroup_${filter[0]}`)) {
+      const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
+      document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
+      document.getElementById(`filterGroup_${filter[0]}`).style.color = 'black';
+    }
+    return '';
+  });
 
   React.useEffect(() => {
     if (!expanded || !(expanded === `${sideBarContent.defaultPanel}false` || expanded !== false)) {
@@ -156,7 +174,7 @@ const FacetPanel = ({ classes }) => {
                         id={sideBarItem.groupName}
                       >
                         {/* <ListItemText primary={sideBarItem.groupName} /> */}
-                        <div className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
+                        <div id={`filterGroup_${sideBarItem.datafield}`} style={{ color: 'black' }} className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
 
                       </CustomExpansionPanelSummary>
 
