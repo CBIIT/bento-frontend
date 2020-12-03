@@ -29,6 +29,14 @@ const GridView = ({
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.fileIds);
   const [messageStatus, setMessageStatus] = React.useState(false);
+  // Store current page selected info
+  const [rowSelection, setRowSelection] = React.useState({
+    selectedRowInfo: [],
+    selectedRowIndex: [],
+  });
+
+  // Store current page selected info
+  const [selectedIDs, setSelectedIDs] = React.useState([]);
 
   const saveButton = useRef(null);
 
@@ -92,12 +100,10 @@ const GridView = ({
     marginRight: '5px',
   };
 
-  let selectedFileIDs = [];
-
   useEffect(() => {
     initSaveButtonDefaultStyle(saveButton);
 
-    if (selectedFileIDs.length === 0) {
+    if (selectedIDs.length === 0) {
       updateActiveSaveButtonStyle(true, saveButton);
     } else {
       updateActiveSaveButtonStyle(false, saveButton);
@@ -106,12 +112,14 @@ const GridView = ({
 
   function exportFiles() {
     // Find the newly added files by comparing
-    const newFileIDS = fileIDs !== null ? selectedFileIDs.filter(
+    const newFileIDS = fileIDs !== null ? selectedIDs.filter(
       (e) => !fileIDs.find((a) => e === a),
-    ).length : selectedFileIDs.length;
-    openSnack(newFileIDS);
-    addToCart({ fileIds: selectedFileIDs });
-    selectedFileIDs = [];
+    ).length : selectedIDs.length;
+    addToCart({ fileIds: selectedIDs });
+    if (newFileIDS > 0) {
+      openSnack(newFileIDS);
+    }
+    setSelectedIDs([]);
   }
 
   function divStyle() {
@@ -120,10 +128,54 @@ const GridView = ({
     return css;
   }
 
-  function onRowsSelect(curr, allRowsSelected) {
-    selectedFileIDs = [...new Set(selectedFileIDs.concat(
+  function rowSelectionEvent(displayData, rowsSelected) {
+    const displayedDataKeies = displayData;
+    const selectedRowsKey = rowsSelected
+      ? rowsSelected.map((index) => displayedDataKeies[index])
+      : [];
+    let newSelectedRowInfo = [];
+
+    if (rowsSelected) {
+      // Remove the rowInfo from selectedRowInfo if this row currently be
+      // displayed and not be selected.
+      if (rowSelection.selectedRowInfo.length > 0) {
+        newSelectedRowInfo = rowSelection.selectedRowInfo.filter((key) => {
+          if (displayedDataKeies.includes(key)) {
+            return false;
+          }
+          return true;
+        });
+      }
+    } else {
+      newSelectedRowInfo = rowSelection.selectedRowInfo;
+    }
+    newSelectedRowInfo = newSelectedRowInfo.concat(selectedRowsKey);
+
+    // Get selectedRowIndex by comparing current page data with selected row's key.
+    // if rowInfo from selectedRowInfo is currently be displayed
+    const newSelectedRowIndex = displayedDataKeies.reduce(
+      (accumulator, currentValue, currentIndex) => {
+        if (newSelectedRowInfo.includes(currentValue)) {
+          accumulator.push(currentIndex);
+        }
+        return accumulator;
+      }, [],
+    );
+
+    setRowSelection({
+      selectedRowInfo: newSelectedRowInfo,
+      selectedRowIndex: newSelectedRowIndex,
+    });
+  }
+
+  /*
+    Presist user selection
+  */
+  function onRowsSelect(curr, allRowsSelected, rowsSelected, displayData) {
+    rowSelectionEvent(displayData.map((d) => d.data[0]), rowsSelected);
+    setSelectedIDs([...new Set(
       customOnRowsSelect(data, allRowsSelected),
-    ))];
+    )]);
 
     if (allRowsSelected.length === 0) {
       updateActiveSaveButtonStyle(true, saveButton);
@@ -134,11 +186,17 @@ const GridView = ({
 
   // overwrite default options
   const defaultOptions = () => ({
-    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    rowsSelected: rowSelection.selectedRowIndex,
+    onRowSelectionChange: (curr, allRowsSelected, rowsSelected, displayData) => onRowsSelect(
+      curr,
+      allRowsSelected,
+      rowsSelected,
+      displayData,
+    ),
     isRowSelectable: (dataIndex) => (disableRowSelection
-      ? disableRowSelection(data[dataIndex], fileIDs)
-      : true),
+      ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });
+
   const finalOptions = { ...options, ...defaultOptions() };
 
   return (
