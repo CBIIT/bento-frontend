@@ -242,6 +242,8 @@ export const tabContainers = [
     api: 'GET_FILES_OVERVIEW_QUERY',
     paginationAPIField: 'fileOverview',
     paginationAPIFieldDesc: 'fileOverviewDesc',
+    defaultSortField: 'file_name',
+    defaultSortDirection: 'asc',
     count: 'numberOfFiles',
     buttonText: 'Add Selected Files',
     dataKey: 'file_id',
@@ -776,7 +778,7 @@ export const GET_ALL_FILEIDS_FOR_SELECT_ALL = gql`
 
   `;
 export const GET_FILES_OVERVIEW_DESC_QUERY = gql`
-query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name"){
+query fileOverviewDesc($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name"){
 
   fileOverviewDesc(subject_ids: $subject_ids, offset: $offset,first: $first, order_by: $order_by) {
     file_id

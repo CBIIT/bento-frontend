@@ -51,6 +51,8 @@ const TabView = ({
   dataKey,
   filteredSubjectIds,
   tabDataLoading,
+  defaultSortCoulmn,
+  defaultSortDirection,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -249,6 +251,8 @@ const TabView = ({
                 paginationAPIField={paginationAPIField}
                 paginationAPIFieldDesc={paginationAPIFieldDesc}
                 queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
+                defaultSortCoulmn={defaultSortCoulmn}
+                defaultSortDirection={defaultSortDirection}
               />
             )}
         </Grid>

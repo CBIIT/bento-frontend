@@ -13,9 +13,11 @@ import {
 } from 'bento-components';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
+
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
 import {
+  tabContainers,
   DASHBOARD_QUERY,
   FILTER_QUERY,
   FILTER_GROUP_QUERY,
@@ -23,6 +25,9 @@ import {
   GET_SAMPLES_OVERVIEW_QUERY,
   GET_CASES_OVERVIEW_QUERY,
   GET_ALL_FILEIDS_FOR_SELECT_ALL,
+  GET_FILES_OVERVIEW_DESC_QUERY,
+  GET_SAMPLES_OVERVIEW_DESC_QUERY,
+  GET_CASES_OVERVIEW_DESC_QUERY,
 } from '../../../bento/dashboardTabData';
 
 const storeKey = 'dashboardTab';
@@ -203,6 +208,37 @@ export function toggleCheckBox(payload) {
 }
 
 /**
+ * Switch to get query sort dorection and sort field .
+ *
+ * @param {string} payload
+ *  @param {json} tabContainer
+ * @return {json} with three keys QUERY, sortfield, sortDirection
+ */
+
+const querySwitch = (payload, tabContainer) => {
+  switch (payload) {
+    case ('Samples'):
+      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_SAMPLES_OVERVIEW_DESC_QUERY : GET_SAMPLES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+    case ('Files'):
+      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_FILES_OVERVIEW_DESC_QUERY : GET_FILES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+    default:
+      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_CASES_OVERVIEW_DESC_QUERY : GET_CASES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+  }
+};
+
+/**
+ * Function to get getquery and default sort.
+ *
+ * @param {string} payload
+ * @return {json} with three keys QUERY,GET_CASES_OVERVIEW_DESC_QUERY, sortfield
+ */
+
+const getQueryAndDefaultSort = (payload = 'Cases') => {
+  const tabContainer = tabContainers.find((x) => x.name === payload);
+  return querySwitch(payload, tabContainer);
+};
+
+/**
  * Updates the current active dashboard tab.
  *
  * @param {object} data
@@ -210,21 +246,17 @@ export function toggleCheckBox(payload) {
  */
 
 export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) {
-  const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
+  const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
   const VARIABLES = subjectIDsAfterFilter || getState().filteredSubjectIds;
-  return () => {
-    store.dispatch({ type: 'DASHBOARD_TABLE_LOADING' });
-    return client
-      .query({
-        query: QUERY,
-        variables: { subject_ids: VARIABLES },
-
-      })
-      .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, ..._.cloneDeep(result) } }))
-      .catch((error) => store.dispatch(
-        { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      ));
-  };
+  return client
+    .query({
+      query: QUERY,
+      variables: { subject_ids: VARIABLES, order_by: sortfield || '' },
+    })
+    .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, sortDirection, ..._.cloneDeep(result) } }))
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
 }
 
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
@@ -297,10 +329,6 @@ const reducers = {
       checkbox: {
         data: checkboxData1,
       },
-      datatable: {
-        ...state.datatable,
-        dataCase: item.data.searchSubjects.firstPage,
-      },
       stats: getFilteredStat(item.data.searchSubjects, statsCount),
       widgets: getWidgetsInitData(item.groups.data, widgetsData),
     };
@@ -312,9 +340,9 @@ const reducers = {
       currentActiveTab: item.currentTab,
       datatable: {
         ...state.datatable,
-        dataCase: item.data.subjectOverViewPaged,
-        dataSample: item.data.sampleOverview,
-        dataFile: item.data.fileOverview,
+        dataCase: item.sortDirection === 'desc' ? item.data.subjectOverViewPagedDesc : item.data.subjectOverViewPaged,
+        dataSample: item.sortDirection === 'desc' ? item.data.sampleOverviewDesc : item.data.sampleOverview,
+        dataFile: item.sortDirection === 'desc' ? item.data.fileOverviewDesc : item.data.fileOverview,
       },
     }
   ),
@@ -349,6 +377,7 @@ const reducers = {
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
     const checkboxData = customCheckBox(item.data, facetSearchData);
+    fetchDataForDashboardTab('Cases', []);
     return item.data
       ? {
         ...state.dashboard,
@@ -359,9 +388,6 @@ const reducers = {
         stats: getStatInit(item.data, statsCount),
         allActiveFilters: allFilters(),
         filteredSubjectIds: [],
-        subjectOverView: {
-          data: item.data.subjectOverViewPaged,
-        },
         checkboxForAll: {
           data: checkboxData,
         },
@@ -369,9 +395,6 @@ const reducers = {
           data: checkboxData,
         },
         datatable: {
-          dataCase: item.data.subjectOverViewPaged,
-          dataSample: item.data.sampleOverview,
-          dataFile: item.data.fileOverview,
           filters: [],
         },
         widgets: getWidgetsInitData(item.data, widgetsData),

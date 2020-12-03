@@ -233,7 +233,7 @@ const tabController = (classes) => {
     <TabContainer id={container.id}>
       <TabView
         options={getOptions(container, classes)}
-        data={dashboard[container.dataField] ? dashboard[container.dataField] : []}
+        data={dashboard[container.dataField] ? dashboard[container.dataField] : 'undefined'}
         customColumn={container}
         customOnRowsSelect={onRowsSelectFunction[container.onRowsSelect]}
         openSnack={openSnack}
@@ -254,6 +254,8 @@ const tabController = (classes) => {
         api={container.api}
         paginationAPIField={container.paginationAPIField}
         paginationAPIFieldDesc={container.paginationAPIFieldDesc}
+        defaultSortCoulmn={container.defaultSortField || ''}
+        defaultSortDirection={container.defaultSortDirection || 'asc'}
         dataKey={container.dataKey}
         filteredSubjectIds={filteredSubjectIds}
         tabDataLoading={tabDataLoading}
