@@ -18,6 +18,7 @@ import {
   table1,
   table2,
   externalLinkIcon,
+  tooltipContent,
 } from '../../bento/caseDetailData';
 import Snackbar from '../../components/Snackbar';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
@@ -169,7 +170,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                       saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
                       ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
                       DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
-                      messageData={table1.tooltipMessage}
+                      tooltipMessage={table1.tooltipMessage}
+                      tooltipContent={tooltipContent}
                     />
                   </Grid>
                 </Grid>
@@ -201,7 +203,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                       saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
                       ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
                       DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
-                      messageData={table2.tooltipMessage}
+                      tooltipMessage={table2.tooltipMessage}
+                      tooltipContent={tooltipContent}
                     />
                   </Grid>
                 </Grid>
@@ -228,7 +231,7 @@ const styles = (theme) => ({
   },
   root: {
     fontFamily: theme.custom.fontFamily,
-    fontSize: '9px',
+    fontSize: '12px',
     letterSpacing: '0.025em',
     color: '#000',
     background: '#f3f3f3',
