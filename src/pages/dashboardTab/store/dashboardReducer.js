@@ -55,7 +55,9 @@ const initialState = {
       defaultPanel: false,
     },
     datatable: {
-      data: [],
+      dataCase: 'undefined',
+      dataSample: 'undefined',
+      dataFile: 'undefined',
     },
     widgets: {},
   },

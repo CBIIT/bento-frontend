@@ -121,8 +121,6 @@ class ServerPaginatedTableView extends React.Component {
   async fetchData(offset, rowsRequired, sortOrder = {}) {
     let sortDirection = 'asc';
     let sortColumn = 'arm';
-    // console.log('1', sortOrder === {});
-    // console.log('2', sortOrder == {});
 
     sortDirection = Object.keys(sortOrder).length === 0 ? this.props.defaultSortDirection || 'asc' : sortOrder.direction;
     sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
