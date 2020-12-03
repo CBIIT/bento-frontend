@@ -58,7 +58,6 @@ const FacetPanel = ({ classes }) => {
   });
 
   const handleChange = (panel) => (event, isExpanded) => {
-    console.log('expansion pannel clicked');
     setExpanded(isExpanded ? panel : `${panel}false`);
 
     // set height of filters.
@@ -124,7 +123,7 @@ const FacetPanel = ({ classes }) => {
             onChange={handleGroupChange(currentSection.sectionName)}
                 // className={classes.expansion}
             classes={{
-              root: classes.ExpansionPanelRoot,
+              root: classes.expansionPanelRoot,
             }}
           >
             <CustomExpansionPanelSummary
@@ -144,8 +143,9 @@ const FacetPanel = ({ classes }) => {
                     <ExpansionPanel
                       expanded={expanded === sideBarItem.groupName}
                       onChange={handleChange(sideBarItem.groupName)}
-                // className={classes.expansion}
-                      // classes={{ root: classes.expansionPanelDetailsRoot }}
+                      classes={{
+                        root: classes.expansionPanelsideBarItem,
+                      }}
                     >
                       <CustomExpansionPanelSummary
                         expandIcon={(
@@ -162,7 +162,7 @@ const FacetPanel = ({ classes }) => {
                       </CustomExpansionPanelSummary>
 
                       <ExpansionPanelDetails
-                        classes={{ root: classes.testExpansionPanelDetailsRoot }}
+                        classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
                           {
@@ -222,12 +222,16 @@ const styles = () => ({
       position: 'initial',
     },
   },
-  expansionPanelDetailsRoot: {
-    paddingBottom: '8px',
-    display: 'unset',
+  expansionPanelsideBarItem: {
+    boxShadow: 'none',
+    borderTop: '1px solid #000000',
+    margin: 'auto',
+    position: 'initial',
+    '&:before': {
+      position: 'initial',
+    },
   },
-  testExpansionPanelDetailsRoot: {
-    borderTop: '10px solid black',
+  expansionPanelDetailsRoot: {
     paddingBottom: '8px',
     display: 'unset',
   },

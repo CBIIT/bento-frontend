@@ -78,7 +78,7 @@ const styles = (theme) => ({
     border: 'none',
   },
   floatRight: {
-    margin: '18px 0px 18px 9px',
+    margin: '14px 0px 14px 9px',
   },
   floatLeft: {
     float: 'left',
@@ -115,6 +115,9 @@ const styles = (theme) => ({
   listRoot: {
     paddingTop: 0,
     paddingBottom: 1,
+    height: '900px',
+    overflowX: 'hidden',
+    overflowY: 'auto',
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',
