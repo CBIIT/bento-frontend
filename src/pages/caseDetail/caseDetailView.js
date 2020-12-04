@@ -77,7 +77,6 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
     }
     return sample;
   });
-  console.log(data);
 
   return (
     <>
