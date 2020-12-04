@@ -99,10 +99,6 @@ const table = {
       header: 'File Type',
     },
     {
-      dataField: 'association',
-      header: 'Association',
-    },
-    {
       dataField: 'file_description',
       header: 'Description',
     },
