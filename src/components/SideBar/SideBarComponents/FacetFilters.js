@@ -63,7 +63,7 @@ const FacetPanel = ({ classes }) => {
       ? state.dashboardTab.allActiveFilters : {}));
 
   Object.entries(activeFilters).map((filter) => {
-    if (filter[1].length >= 1) {
+    if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
       document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}*`;
       document.getElementById(`filterGroup_${filter[0]}`).style.color = 'green';
