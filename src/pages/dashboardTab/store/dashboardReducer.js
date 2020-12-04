@@ -38,6 +38,7 @@ const initialState = {
     isFetched: false,
     isLoading: false,
     isDashboardTableLoading: false,
+    setSideBarLoading: false,
     error: '',
     hasError: false,
     stats: {},
@@ -309,6 +310,14 @@ export function clearAllFilters() {
   store.dispatch(fetchDashboardTabForClearAll());
 }
 
+export function setSideBarToLoading() {
+  store.dispatch({ type: 'SET_SIDEBAR_LOADING' });
+}
+
+export function setDashboardTableLoading() {
+  store.dispatch({ type: 'SET_DASHBOARDTABLE_LOADING' });
+}
+
 export const getDashboard = () => getState();
 
 // reducers
@@ -333,6 +342,7 @@ const reducers = {
     fetchDataForDashboardTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
     return {
       ...state,
+      setSideBarLoading: false,
       allActiveFilters: item.allFilters,
       filteredSubjectIds: item.data.searchSubjects.subjectIds,
       checkbox: {
@@ -356,7 +366,8 @@ const reducers = {
     }
   ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
-  DASHBOARD_TABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
+  SET_SIDEBAR_LOADING: (state) => ({ ...state, setSideBarLoading: true }),
+  SET_DASHBOARDTABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);
     const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
@@ -393,6 +404,7 @@ const reducers = {
         isFetched: true,
         isLoading: false,
         hasError: false,
+        setSideBarLoading: false,
         error: '',
         stats: getStatInit(item.data, statsCount),
         allActiveFilters: allFilters(),

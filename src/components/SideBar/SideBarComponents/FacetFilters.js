@@ -9,13 +9,15 @@ import {
   ExpansionPanelSummary,
   withStyles,
   Divider,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import _ from 'lodash';
 import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
   as ArrowDropDownIcon,
 } from '@material-ui/icons';
-import { toggleCheckBox } from '../../../pages/dashboardTab/store/dashboardReducer';
+import { toggleCheckBox, setSideBarToLoading, setDashboardTableLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
 import { facetSectionStyling, facetSearchData } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
@@ -43,7 +45,11 @@ const FacetPanel = ({ classes }) => {
         data: [],
         defaultPanel: false,
       }));
-
+  // data from store for sidebar laoding
+  const isSidebarLoading = useSelector((state) => (
+    state.dashboardTab
+  && state.dashboardTab.setSideBarLoading
+      ? state.dashboardTab.setSideBarLoading : false));
   // redux use actions
   const dispatch = useDispatch();
 
@@ -97,6 +103,8 @@ const FacetPanel = ({ classes }) => {
 
   const handleToggle = (value) => () => {
     const valueList = value.split('$$');
+    setSideBarToLoading();
+    setDashboardTableLoading();
     // dispatch toggleCheckBox action
     dispatch(toggleCheckBox([{
       groupName: valueList[1],
@@ -224,6 +232,9 @@ const FacetPanel = ({ classes }) => {
               </List>
             </ExpansionPanelDetails>
           </ExpansionPanel>
+          <Backdrop className={classes.backdrop} open={isSidebarLoading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
         </>
       ))}
     </>
@@ -248,6 +259,11 @@ const styles = () => ({
     '&:before': {
       position: 'initial',
     },
+  },
+  backdrop: {
+    position: 'absolute',
+    zIndex: 99999,
+    background: 'rgba(0, 0, 0, 0.1)',
   },
   expansionPanelDetailsRoot: {
     paddingBottom: '8px',
