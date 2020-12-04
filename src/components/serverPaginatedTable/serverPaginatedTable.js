@@ -150,6 +150,18 @@ class ServerPaginatedTableView extends React.Component {
       rowsPerPage,
       rowsPerPageOptions: [],
       sortOrder,
+      onRowSelectionChange: (
+        curr,
+        allRowsSelected,
+        rowsSelected,
+        displayData,
+      ) => this.props.options.onRowSelectionChange(
+        curr,
+        allRowsSelected,
+        rowsSelected,
+        displayData,
+        data,
+      ),
       // eslint-disable-next-line no-shadow
       customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
         <TableFooter>

@@ -148,10 +148,12 @@ const tabController = (classes) => {
   function Type1OnRowsSelect(data, allRowsSelected) {
   // use reduce to combine all the files' id into single array
     return allRowsSelected.reduce((accumulator, currentValue) => {
-      const { files } = data[currentValue.dataIndex];
-      // check if file
-      if (files && files.length > 0) {
-        return accumulator.concat(files.map((f) => f.file_id));
+      if (data[currentValue.dataIndex]) {
+        const { files } = data[currentValue.dataIndex];
+        // check if file exists
+        if (files && files.length > 0) {
+          return accumulator.concat(files.map((f) => f.file_id));
+        }
       }
       return accumulator;
     }, []);
