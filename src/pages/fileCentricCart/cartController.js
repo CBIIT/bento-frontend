@@ -13,7 +13,7 @@ const cartController = () => {
   return (
     <Query query={CART_QUERY} variables={{ file_ids: ids, order_by: table.defaultSortField || '' }}>
       {({ data, loading, error }) => (
-        loading ? <CartView isLoading data={[]} />
+        loading ? <CartView isLoading data="undefined" />
           : (
             error || !data
               ? <Typography variant="headline" color="error" size="sm">{error && `An error has occurred in loading CART : ${error}`}</Typography>
