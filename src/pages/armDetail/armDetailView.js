@@ -15,6 +15,7 @@ import {
   header,
   subsections,
   table,
+  tooltipContent,
 } from '../../bento/armDetailData';
 import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
@@ -180,7 +181,8 @@ const ArmDetail = ({ data, classes }) => {
                             saveButtonDefaultStyle={table.saveButtonDefaultStyle}
                             ActiveSaveButtonDefaultStyle={table.ActiveSaveButtonDefaultStyle}
                             DeactiveSaveButtonDefaultStyle={table.DeactiveSaveButtonDefaultStyle}
-                            messageData={table.tooltipMessage}
+                            tooltipMessage={table.tooltipMessage}
+                            tooltipContent={tooltipContent}
                           />
                         </Grid>
                         <Grid item xs={8}>

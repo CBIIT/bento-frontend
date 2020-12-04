@@ -2,6 +2,12 @@ import gql from 'graphql-tag';
 import { FileOnRowsSelect } from '../utils/fileTable';
 import { SampleOnRowsSelect } from '../utils/sampleFileTable';
 
+// --------------- Tooltip configuration --------------
+export const tooltipContent = {
+  src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
+  alt: 'tooltipIcon',
+};
+
 // -------------- Case ID area configurations --------------
 const caseHeader = {
   label: 'Case ID',
