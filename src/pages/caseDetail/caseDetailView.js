@@ -62,12 +62,22 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
     (obj, item) => ({ ...obj, [item.sample_id]: item.files }), {},
   );
 
+  // NOTE: Needs improvement.
+  const datFieldsFromRoot = [];
+  table1.columns.forEach((e) => (e.dataFromRoot ? datFieldsFromRoot.push(e.dataField) : null));
+
   const samplesData = data.samples.map((s) => {
     const files = filesOfSamplesObj[s.sample_id];
     const sample = s;
     sample.files = files;
+    if (datFieldsFromRoot.length > 0) {
+      datFieldsFromRoot.forEach((e) => {
+        sample[e] = data[e];
+      });
+    }
     return sample;
   });
+  console.log(data);
 
   return (
     <>
