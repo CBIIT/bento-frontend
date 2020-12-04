@@ -15,6 +15,7 @@ import {
   header,
   subsections,
   table,
+  tooltipContent,
 } from '../../bento/armDetailData';
 import { singleCheckBox } from '../dashboard/dashboardState';
 import Widget from '../../components/Widgets/WidgetView';
@@ -112,7 +113,7 @@ const ArmDetail = ({ data, classes }) => {
 
           <Grid container className={classes.detailContainer}>
             {/* Left panel */}
-            <Grid item lg={7} sm={6} xs={12} className={classes.detailPanel}>
+            <Grid item lg={7} sm={6} xs={12} className={[classes.detailPanel, classes.leftPanel]}>
               <div className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   { subsections.slice(0, 6).map((section, index) => (
@@ -123,7 +124,7 @@ const ArmDetail = ({ data, classes }) => {
             </Grid>
             {/* Left panel end */}
             {/* Right panel */}
-            <Grid item lg={5} sm={6} xs={12} className={classes.detailPanel}>
+            <Grid item lg={5} sm={6} xs={12} className={[classes.detailPanel, classes.rightPanel]}>
               <div className={classes.innerPanel}>
                 {/* Diagnosis donut */}
                 <div className={classes.widgetContainer}>
@@ -180,7 +181,8 @@ const ArmDetail = ({ data, classes }) => {
                             saveButtonDefaultStyle={table.saveButtonDefaultStyle}
                             ActiveSaveButtonDefaultStyle={table.ActiveSaveButtonDefaultStyle}
                             DeactiveSaveButtonDefaultStyle={table.DeactiveSaveButtonDefaultStyle}
-                            messageData={table.tooltipMessage}
+                            tooltipMessage={table.tooltipMessage}
+                            tooltipContent={tooltipContent}
                           />
                         </Grid>
                         <Grid item xs={8}>
@@ -293,7 +295,7 @@ const styles = (theme) => ({
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    padding: '5px 0 10px 10px',
+    padding: '5px 0 10px 0px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -304,13 +306,19 @@ const styles = (theme) => ({
   detailPanel: {
     borderRight: 'solid 1px #81A6BA',
   },
+  leftPanel: {
+    paddingLeft: '0px',
+  },
+  rightPanel: {
+    paddingLeft: '16px !important',
+  },
   innerPanel: {
     height: '100%',
     minHeight: '590px',
     maxHeight: '700px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    paddingLeft: '16px',
+    paddingLeft: '0px',
     paddingRight: '40px',
     scrollbarColor: '#697270',
   },
@@ -364,7 +372,7 @@ const styles = (theme) => ({
   },
   tableContainer: {
     background: '#FFFFFF',
-    padding: '0 117px',
+    padding: '0 0px',
   },
   tableHeader: {
     paddingLeft: '32px',

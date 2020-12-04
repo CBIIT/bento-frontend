@@ -5,7 +5,7 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 
-// import { CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
 import client from '../../utils/graphqlClient';
 
@@ -14,7 +14,7 @@ class ServerPaginatedTableView extends React.Component {
     count: 1,
     rowsPerPage: 10,
     sortOrder: {},
-    data: [['Loading Data...']],
+    data: 'undefined',
     isLoading: false,
   };
 
@@ -119,14 +119,22 @@ class ServerPaginatedTableView extends React.Component {
   };
 
   async fetchData(offset, rowsRequired, sortOrder = {}) {
+    let sortDirection = 'asc';
+    let sortColumn = 'arm';
+
+    sortDirection = Object.keys(sortOrder).length === 0 ? this.props.defaultSortDirection || 'asc' : sortOrder.direction;
+    sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
     const fetchResult = await client
       .query({
-        query: sortOrder.direction !== 'asc' ? this.props.overviewDesc : this.props.overview,
+        query: sortDirection !== 'asc' ? this.props.overviewDesc : this.props.overview,
         variables: {
-          offset, first: rowsRequired, order_by: sortOrder.name || '', ...this.props.queryCustomVaribles,
+          offset,
+          first: this.props.count < rowsRequired ? this.props.count : rowsRequired,
+          order_by: sortColumn,
+          ...this.props.queryCustomVaribles,
         },
       })
-      .then((result) => (sortOrder.direction !== 'asc' ? result.data[this.props.paginationAPIFieldDesc] : result.data[this.props.paginationAPIField]));
+      .then((result) => (sortDirection !== 'asc' ? result.data[this.props.paginationAPIFieldDesc] : result.data[this.props.paginationAPIField]));
     return fetchResult;
   }
 
@@ -180,13 +188,15 @@ class ServerPaginatedTableView extends React.Component {
 
     return (
       <div>
-        <CustomDataTable
-          data={data}
-          isLoading={isLoading}
-          columns={this.props.columns}
-          options={({ ...this.props.options, ...options1 })}
-          className={className}
-        />
+        {data === 'undefined' ? <CircularProgress /> : (
+          <CustomDataTable
+            data={data}
+            isLoading={isLoading}
+            columns={this.props.columns}
+            options={({ ...this.props.options, ...options1 })}
+            className={className}
+          />
+        )}
       </div>
     );
   }

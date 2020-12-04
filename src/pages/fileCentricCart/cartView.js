@@ -10,7 +10,6 @@ import _ from 'lodash';
 import { DeleteOutline as DeleteOutlineIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
 import CustomDataTable from '../../components/serverPaginatedTable/serverPaginatedTable';
 import client from '../../utils/graphqlClient';
-import SkeletonTable from './components/skeletonTable';
 import {
   myFilesPageData, table, manifestData, GET_MY_CART_DATA_QUERY, GET_MY_CART_DATA_QUERY_DESC,
 } from '../../bento/fileCentricCartWorkflowData';
@@ -21,7 +20,7 @@ import DialogThemeProvider from './dialogThemeConfig';
 import TableThemeProvider from './cartTableThemeConfig';
 
 const cartView = ({
-  classes, data, isLoading, fileIDs = [],
+  classes, data, fileIDs = [],
 }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
@@ -133,21 +132,6 @@ const cartView = ({
 
   const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved ? fileIDs.length : '';
 
-  const dataTable = isLoading ? <SkeletonTable />
-    : (
-      <CustomDataTable
-        data={_.cloneDeep(data)}
-        columns={columns}
-        options={options}
-        className={classes.tableStyle}
-        count={fileIDs.length || 0}
-        overview={GET_MY_CART_DATA_QUERY}
-        overviewDesc={GET_MY_CART_DATA_QUERY_DESC}
-        paginationAPIField="filesInList"
-        paginationAPIFieldDesc="filesInListDesc"
-        queryCustomVaribles={{ file_ids: fileIDs }}
-      />
-    );
   return (
     <Grid>
       <DialogThemeProvider>
@@ -232,7 +216,18 @@ const cartView = ({
           <div id="table_selected_files" className={classes.tableWrapper}>
             {}
             <TableThemeProvider>
-              {dataTable}
+              <CustomDataTable
+                data={_.cloneDeep(data)}
+                columns={columns}
+                options={options}
+                className={classes.tableStyle}
+                count={fileIDs.length || 0}
+                overview={GET_MY_CART_DATA_QUERY}
+                overviewDesc={GET_MY_CART_DATA_QUERY_DESC}
+                paginationAPIField="filesInList"
+                paginationAPIFieldDesc="filesInListDesc"
+                queryCustomVaribles={{ file_ids: fileIDs }}
+              />
             </TableThemeProvider>
             <div className={classes.manifestTextarea}>
               <textarea

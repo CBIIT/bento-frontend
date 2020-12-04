@@ -18,6 +18,7 @@ import {
   table1,
   table2,
   externalLinkIcon,
+  tooltipContent,
 } from '../../bento/caseDetailData';
 import Snackbar from '../../components/Snackbar';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
@@ -61,10 +62,19 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
     (obj, item) => ({ ...obj, [item.sample_id]: item.files }), {},
   );
 
+  // NOTE: Needs improvement.
+  const datFieldsFromRoot = [];
+  table1.columns.forEach((e) => (e.dataFromRoot ? datFieldsFromRoot.push(e.dataField) : null));
+
   const samplesData = data.samples.map((s) => {
     const files = filesOfSamplesObj[s.sample_id];
     const sample = s;
     sample.files = files;
+    if (datFieldsFromRoot.length > 0) {
+      datFieldsFromRoot.forEach((e) => {
+        sample[e] = data[e];
+      });
+    }
     return sample;
   });
 
@@ -113,7 +123,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
 
           <Grid container spacing={1} className={classes.detailContainer}>
             {/* Left panel */}
-            <Grid item sm={6} xs={12} className={classes.detailPanel}>
+            <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.leftPanel]}>
               <div className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {leftPanel.slice(0, 3).map((section) => (
@@ -128,8 +138,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
             </Grid>
             {/* Left panel end */}
             {/* Right panel */}
-            <Grid item sm={6} xs={12} className={classes.detailPanel}>
-              <div className={classes.innerPanel}>
+            <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.rightPanel]}>
+              <div style={{ paddingLeft: '7px' }} className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {rightPanel.slice(0, 3).map((section) => (
                     <Subsection
@@ -169,7 +179,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                       saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
                       ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
                       DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
-                      messageData={table1.tooltipMessage}
+                      tooltipMessage={table1.tooltipMessage}
+                      tooltipContent={tooltipContent}
                     />
                   </Grid>
                 </Grid>
@@ -201,7 +212,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                       saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
                       ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
                       DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
-                      messageData={table2.tooltipMessage}
+                      tooltipMessage={table2.tooltipMessage}
+                      tooltipContent={tooltipContent}
                     />
                   </Grid>
                 </Grid>
@@ -209,6 +221,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
             </div>
           </div>
         ) : ''}
+      <div className={classes.blankSpace} />
     </>
   );
 };
@@ -227,7 +240,7 @@ const styles = (theme) => ({
   },
   root: {
     fontFamily: theme.custom.fontFamily,
-    fontSize: '9px',
+    fontSize: '12px',
     letterSpacing: '0.025em',
     color: '#000',
     background: '#f3f3f3',
@@ -277,7 +290,7 @@ const styles = (theme) => ({
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    padding: '26px 10px',
+    padding: '26px 10px 26px 0px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -289,14 +302,23 @@ const styles = (theme) => ({
     paddingBottom: '0 !important',
     borderRight: '1px solid #81A6BA',
   },
+  leftPanel: {
+    paddingLeft: '25px !important',
+  },
+  rightPanel: {
+    paddingLeft: '16px !important',
+  },
   innerPanel: {
     height: '100%',
     minHeight: '209px',
     maxHeight: '380px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    paddingLeft: '16px',
+    paddingLeft: '0px',
     scrollbarColor: '#697270',
+  },
+  innerPanelRight: {
+    paddingLeft: '30px',
   },
   tableContainer: {
     background: '#f3f3f3',
@@ -305,7 +327,7 @@ const styles = (theme) => ({
     maxWidth: '1340px',
     margin: 'auto',
     paddingTop: '30px',
-    paddingLeft: '30px',
+    paddingLeft: '0px',
   },
   tableTitle: {
     textTransform: 'uppercase',
@@ -325,6 +347,10 @@ const styles = (theme) => ({
     verticalAlign: 'sub',
     marginLeft: '4px',
     paddingBottom: '2px',
+  },
+  blankSpace: {
+    height: '73px',
+    background: '#f3f3f3',
   },
 });
 

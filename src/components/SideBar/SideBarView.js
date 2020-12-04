@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {
-  withStyles, Divider, Drawer, List, Button,
+  withStyles, Drawer, List, Button,
 } from '@material-ui/core';
 import FacetFilter from './SideBarComponents/FacetFilters';
 import { facetSearchData } from '../../bento/dashboardData';
@@ -51,7 +51,6 @@ const SideBarContent = ({ classes }) => {
             </Button>
           </div>
         </div>
-        <Divider variant="middle" classes={{ root: classes.dividerRoot }} />
         <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>
           <FacetFilter />
         </List>
@@ -79,7 +78,7 @@ const styles = (theme) => ({
     border: 'none',
   },
   floatRight: {
-    margin: '18px 0px 18px 9px',
+    margin: '14px 0px 14px 9px',
   },
   floatLeft: {
     float: 'left',
@@ -116,6 +115,9 @@ const styles = (theme) => ({
   listRoot: {
     paddingTop: 0,
     paddingBottom: 1,
+    height: '900px',
+    overflowX: 'hidden',
+    overflowY: 'auto',
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',

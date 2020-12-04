@@ -326,7 +326,6 @@ export default {
       fixedHeader: {
         position: 'relative',
         borderTop: tableHeaderBorder,
-        borderBottom: tableHeaderBorder,
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
         textDecoration: 'underline',
@@ -379,7 +378,7 @@ export default {
     MuiTableRow: {
       head: {
         height: 40,
-        borderBottom: '2px solid #42779A',
+        borderBottom: '3px solid #42779A',
       },
       root: {
         height: 40,
@@ -461,6 +460,7 @@ export default {
       toolbar: {
         textTransform: 'uppercase',
         marginTop: '-11px',
+        paddingTop: '11px',
       },
       select: {
         border: '2px #fff solid',
@@ -496,6 +496,13 @@ export default {
       root: {
         '&$expanded': {
           margin: 'unset',
+        },
+      },
+    },
+    MuiCheckbox: {
+      colorSecondary: {
+        '&:first-child': {
+          color: '#000000',
         },
       },
     },

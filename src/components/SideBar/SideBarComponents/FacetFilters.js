@@ -9,14 +9,16 @@ import {
   ExpansionPanelSummary,
   withStyles,
   Divider,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import _ from 'lodash';
 import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
   as ArrowDropDownIcon,
 } from '@material-ui/icons';
-import { toggleCheckBox } from '../../../pages/dashboardTab/store/dashboardReducer';
-import { facetSectionStyling } from '../../../bento/dashboardData';
+import { toggleCheckBox, setSideBarToLoading, setDashboardTableLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
+import { facetSectionStyling, facetSearchData } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
@@ -43,13 +45,35 @@ const FacetPanel = ({ classes }) => {
         data: [],
         defaultPanel: false,
       }));
-
+  // data from store for sidebar laoding
+  const isSidebarLoading = useSelector((state) => (
+    state.dashboardTab
+  && state.dashboardTab.setSideBarLoading
+      ? state.dashboardTab.setSideBarLoading : false));
   // redux use actions
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = React.useState(false);
 
   const [groupExpanded, setGroupExpanded] = React.useState(['case']);
+
+  const activeFilters = useSelector((state) => (
+    state.dashboardTab
+      && state.dashboardTab.allActiveFilters
+      ? state.dashboardTab.allActiveFilters : {}));
+
+  Object.entries(activeFilters).map((filter) => {
+    if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
+      const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
+      document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}*`;
+      document.getElementById(`filterGroup_${filter[0]}`).style.color = 'green';
+    } else if (document.getElementById(`filterGroup_${filter[0]}`)) {
+      const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
+      document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
+      document.getElementById(`filterGroup_${filter[0]}`).style.color = 'black';
+    }
+    return '';
+  });
 
   React.useEffect(() => {
     if (!expanded || !(expanded === `${sideBarContent.defaultPanel}false` || expanded !== false)) {
@@ -79,6 +103,8 @@ const FacetPanel = ({ classes }) => {
 
   const handleToggle = (value) => () => {
     const valueList = value.split('$$');
+    setSideBarToLoading();
+    setDashboardTableLoading();
     // dispatch toggleCheckBox action
     dispatch(toggleCheckBox([{
       groupName: valueList[1],
@@ -143,8 +169,9 @@ const FacetPanel = ({ classes }) => {
                     <ExpansionPanel
                       expanded={expanded === sideBarItem.groupName}
                       onChange={handleChange(sideBarItem.groupName)}
-                // className={classes.expansion}
-                      // classes={{ root: classes.expansionPanelRoot }}
+                      classes={{
+                        root: classes.expansionPanelsideBarItem,
+                      }}
                     >
                       <CustomExpansionPanelSummary
                         expandIcon={(
@@ -156,11 +183,13 @@ const FacetPanel = ({ classes }) => {
                         id={sideBarItem.groupName}
                       >
                         {/* <ListItemText primary={sideBarItem.groupName} /> */}
-                        <div className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
+                        <div id={`filterGroup_${sideBarItem.datafield}`} style={{ color: 'black' }} className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
 
                       </CustomExpansionPanelSummary>
 
-                      <ExpansionPanelDetails classes={{ root: classes.expansionPanelDetailsRoot }}>
+                      <ExpansionPanelDetails
+                        classes={{ root: classes.expansionPanelDetailsRoot }}
+                      >
                         <List component="div" disablePadding dense>
                           {
             sideBarItem.checkboxItems.map((checkboxItem) => {
@@ -186,7 +215,7 @@ const FacetPanel = ({ classes }) => {
                   />
                   <div className={classes.panelDetailText}>
                     {`${checkboxItem.name}`}
-                    <span className={classes.panelDetailTextSubjectCount}>
+                    <span style={{ color: facetSectionStyling[sideBarItem.section].color ? facetSectionStyling[sideBarItem.section].color : '#137fbe' }}>
                       &nbsp;
                       {`(${checkboxItem.subjects})`}
                     </span>
@@ -203,6 +232,9 @@ const FacetPanel = ({ classes }) => {
               </List>
             </ExpansionPanelDetails>
           </ExpansionPanel>
+          <Backdrop className={classes.backdrop} open={isSidebarLoading}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
         </>
       ))}
     </>
@@ -219,16 +251,29 @@ const styles = () => ({
       position: 'initial',
     },
   },
+  expansionPanelsideBarItem: {
+    boxShadow: 'none',
+    borderTop: '1px solid #000000',
+    margin: 'auto',
+    position: 'initial',
+    '&:before': {
+      position: 'initial',
+    },
+  },
+  backdrop: {
+    position: 'absolute',
+    zIndex: 99999,
+    background: 'rgba(0, 0, 0, 0.1)',
+  },
+  expansionPanelDetailsRoot: {
+    paddingBottom: '8px',
+    display: 'unset',
+  },
   dropDownIconSection: {
     fill: '#000000',
   },
   dropDownIconSubSection: {
     fill: '#3695A9',
-  },
-  dividerRoot: {
-    backgroundColor: '#B0CFE1',
-    marginLeft: '45px',
-    height: '1px',
   },
   sectionSummaryText: {
     marginLeft: '-6px',
@@ -253,19 +298,12 @@ const styles = () => ({
     fontSize: '14px',
     marginRight: '12px',
   },
-  panelDetailTextSubjectCount: {
-    color: '#137fbe',
-  },
   checkboxRoot: {
     color: '#344B5A',
     height: 12,
   },
   listItemGutters: {
     padding: '8px 0px 8px 24px',
-  },
-  expansionPanelDetailsRoot: {
-    paddingBottom: '8px',
-    display: 'unset',
   },
 });
 

@@ -21,7 +21,8 @@ const GridView = ({
   disableRowSelection,
   buttonText,
   options,
-  messageData,
+  tooltipMessage,
+  tooltipContent,
   saveButtonDefaultStyle,
   DeactiveSaveButtonDefaultStyle,
   ActiveSaveButtonDefaultStyle,
@@ -29,6 +30,14 @@ const GridView = ({
   // Get the existing files ids from  cart state
   const fileIDs = useSelector((state) => state.cart.fileIds);
   const [messageStatus, setMessageStatus] = React.useState(false);
+  // Store current page selected info
+  const [rowSelection, setRowSelection] = React.useState({
+    selectedRowInfo: [],
+    selectedRowIndex: [],
+  });
+
+  // Store current page selected info
+  const [selectedIDs, setSelectedIDs] = React.useState([]);
 
   const saveButton = useRef(null);
 
@@ -89,15 +98,13 @@ const GridView = ({
     backgroundColor: '#10A075',
     marginTop: '6px',
     marginBottom: '10px',
-    marginRight: '5px',
+    marginRight: '4px',
   };
-
-  let selectedFileIDs = [];
 
   useEffect(() => {
     initSaveButtonDefaultStyle(saveButton);
 
-    if (selectedFileIDs.length === 0) {
+    if (selectedIDs.length === 0) {
       updateActiveSaveButtonStyle(true, saveButton);
     } else {
       updateActiveSaveButtonStyle(false, saveButton);
@@ -106,12 +113,14 @@ const GridView = ({
 
   function exportFiles() {
     // Find the newly added files by comparing
-    const newFileIDS = fileIDs !== null ? selectedFileIDs.filter(
+    const newFileIDS = fileIDs !== null ? selectedIDs.filter(
       (e) => !fileIDs.find((a) => e === a),
-    ).length : selectedFileIDs.length;
-    openSnack(newFileIDS);
-    addToCart({ fileIds: selectedFileIDs });
-    selectedFileIDs = [];
+    ).length : selectedIDs.length;
+    addToCart({ fileIds: selectedIDs });
+    if (newFileIDS > 0) {
+      openSnack(newFileIDS);
+    }
+    setSelectedIDs([]);
   }
 
   function divStyle() {
@@ -120,10 +129,54 @@ const GridView = ({
     return css;
   }
 
-  function onRowsSelect(curr, allRowsSelected) {
-    selectedFileIDs = [...new Set(selectedFileIDs.concat(
+  function rowSelectionEvent(displayData, rowsSelected) {
+    const displayedDataKeies = displayData;
+    const selectedRowsKey = rowsSelected
+      ? rowsSelected.map((index) => displayedDataKeies[index])
+      : [];
+    let newSelectedRowInfo = [];
+
+    if (rowsSelected) {
+      // Remove the rowInfo from selectedRowInfo if this row currently be
+      // displayed and not be selected.
+      if (rowSelection.selectedRowInfo.length > 0) {
+        newSelectedRowInfo = rowSelection.selectedRowInfo.filter((key) => {
+          if (displayedDataKeies.includes(key)) {
+            return false;
+          }
+          return true;
+        });
+      }
+    } else {
+      newSelectedRowInfo = rowSelection.selectedRowInfo;
+    }
+    newSelectedRowInfo = newSelectedRowInfo.concat(selectedRowsKey);
+
+    // Get selectedRowIndex by comparing current page data with selected row's key.
+    // if rowInfo from selectedRowInfo is currently be displayed
+    const newSelectedRowIndex = displayedDataKeies.reduce(
+      (accumulator, currentValue, currentIndex) => {
+        if (newSelectedRowInfo.includes(currentValue)) {
+          accumulator.push(currentIndex);
+        }
+        return accumulator;
+      }, [],
+    );
+
+    setRowSelection({
+      selectedRowInfo: newSelectedRowInfo,
+      selectedRowIndex: newSelectedRowIndex,
+    });
+  }
+
+  /*
+    Presist user selection
+  */
+  function onRowsSelect(curr, allRowsSelected, rowsSelected, displayData) {
+    rowSelectionEvent(displayData.map((d) => d.data[0]), rowsSelected);
+    setSelectedIDs([...new Set(
       customOnRowsSelect(data, allRowsSelected),
-    ))];
+    )]);
 
     if (allRowsSelected.length === 0) {
       updateActiveSaveButtonStyle(true, saveButton);
@@ -134,11 +187,17 @@ const GridView = ({
 
   // overwrite default options
   const defaultOptions = () => ({
-    onRowsSelect: (curr, allRowsSelected) => onRowsSelect(curr, allRowsSelected),
+    rowsSelected: rowSelection.selectedRowIndex,
+    onRowSelectionChange: (curr, allRowsSelected, rowsSelected, displayData) => onRowsSelect(
+      curr,
+      allRowsSelected,
+      rowsSelected,
+      displayData,
+    ),
     isRowSelectable: (dataIndex) => (disableRowSelection
-      ? disableRowSelection(data[dataIndex], fileIDs)
-      : true),
+      ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });
+
   const finalOptions = { ...options, ...defaultOptions() };
 
   return (
@@ -162,16 +221,31 @@ const GridView = ({
           onClick={exportFiles}
         >
           { buttonText }
-          {' '}
         </button>
-        {' '}
-        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseOver={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
-          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseOver={() => toggleMessageStatus('bottom', 'open')} />
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseOver={() => toggleMessageStatus('top', 'open')} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
+          {tooltipContent.src ? (
+            <img
+              onMouseEnter={() => toggleMessageStatus('top', 'open')}
+              onMouseOver={() => toggleMessageStatus('top', 'open')}
+              onFocus={() => toggleMessageStatus('top', 'open')}
+              src={tooltipContent.src}
+              alt={tooltipContent.alt}
+              className={classes.helpIcon}
+            />
+          ) : (
+            <HelpIcon
+              className={classes.helpIcon}
+              fontSize="small"
+              onMouseOver={() => toggleMessageStatus('top', 'open')}
+              onMouseEnter={() => toggleMessageStatus('top', 'open')}
+              onFocus={() => toggleMessageStatus('top', 'open')}
+            />
+          )}
         </IconButton>
         { messageStatus ? (
-          <div className={classes.messageBottom} style={tooltipStyle(messageData)}>
+          <div className={classes.messageBottom} style={tooltipStyle(tooltipMessage)}>
             {' '}
-            <Message data={messageData} />
+            <Message data={tooltipMessage} />
             {' '}
           </div>
         ) : ''}
@@ -261,7 +335,6 @@ const styles = () => ({
   helpIconButton: {
     verticalAlign: 'top',
     marginLeft: '-5px',
-    marginTop: '1px',
   },
 });
 

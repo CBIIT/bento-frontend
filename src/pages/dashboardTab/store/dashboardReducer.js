@@ -13,9 +13,11 @@ import {
 } from 'bento-components';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
+
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
 import {
+  tabContainers,
   DASHBOARD_QUERY,
   FILTER_QUERY,
   FILTER_GROUP_QUERY,
@@ -23,6 +25,9 @@ import {
   GET_SAMPLES_OVERVIEW_QUERY,
   GET_CASES_OVERVIEW_QUERY,
   GET_ALL_FILEIDS_FOR_SELECT_ALL,
+  GET_FILES_OVERVIEW_DESC_QUERY,
+  GET_SAMPLES_OVERVIEW_DESC_QUERY,
+  GET_CASES_OVERVIEW_DESC_QUERY,
 } from '../../../bento/dashboardTabData';
 
 const storeKey = 'dashboardTab';
@@ -33,6 +38,7 @@ const initialState = {
     isFetched: false,
     isLoading: false,
     isDashboardTableLoading: false,
+    setSideBarLoading: false,
     error: '',
     hasError: false,
     stats: {},
@@ -50,7 +56,9 @@ const initialState = {
       defaultPanel: false,
     },
     datatable: {
-      data: [],
+      dataCase: 'undefined',
+      dataSample: 'undefined',
+      dataFile: 'undefined',
     },
     widgets: {},
   },
@@ -90,6 +98,13 @@ function getFilteredStat(input, statCountVariables) {
 }
 
 /**
+ * removes EmptySubjectsFromDonutDataa.
+ * @param {object} data
+ *  @param {object}
+ */
+const removeEmptySubjectsFromDonutData = (data) => data.filter((item) => item.subjects !== 0);
+
+/**
  * Returns the widgets data.
  * @param {object} data
  * @param {json} widgetsInfoFromCustConfig
@@ -97,7 +112,7 @@ function getFilteredStat(input, statCountVariables) {
  */
 function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
   const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : data[widget.dataName];
+    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : removeEmptySubjectsFromDonutData(data[widget.dataName]);
     const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});
@@ -203,6 +218,37 @@ export function toggleCheckBox(payload) {
 }
 
 /**
+ * Switch to get query sort dorection and sort field .
+ *
+ * @param {string} payload
+ *  @param {json} tabContainer
+ * @return {json} with three keys QUERY, sortfield, sortDirection
+ */
+
+const querySwitch = (payload, tabContainer) => {
+  switch (payload) {
+    case ('Samples'):
+      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_SAMPLES_OVERVIEW_DESC_QUERY : GET_SAMPLES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+    case ('Files'):
+      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_FILES_OVERVIEW_DESC_QUERY : GET_FILES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+    default:
+      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_CASES_OVERVIEW_DESC_QUERY : GET_CASES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+  }
+};
+
+/**
+ * Function to get getquery and default sort.
+ *
+ * @param {string} payload
+ * @return {json} with three keys QUERY,GET_CASES_OVERVIEW_DESC_QUERY, sortfield
+ */
+
+const getQueryAndDefaultSort = (payload = 'Cases') => {
+  const tabContainer = tabContainers.find((x) => x.name === payload);
+  return querySwitch(payload, tabContainer);
+};
+
+/**
  * Updates the current active dashboard tab.
  *
  * @param {object} data
@@ -210,21 +256,17 @@ export function toggleCheckBox(payload) {
  */
 
 export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) {
-  const QUERY = payload === 'Samples' ? GET_SAMPLES_OVERVIEW_QUERY : payload === 'Files' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY;
+  const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
   const VARIABLES = subjectIDsAfterFilter || getState().filteredSubjectIds;
-  return () => {
-    store.dispatch({ type: 'DASHBOARD_TABLE_LOADING' });
-    return client
-      .query({
-        query: QUERY,
-        variables: { subject_ids: VARIABLES },
-
-      })
-      .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, ..._.cloneDeep(result) } }))
-      .catch((error) => store.dispatch(
-        { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      ));
-  };
+  return client
+    .query({
+      query: QUERY,
+      variables: { subject_ids: VARIABLES, order_by: sortfield || '' },
+    })
+    .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, sortDirection, ..._.cloneDeep(result) } }))
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
 }
 
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
@@ -268,6 +310,14 @@ export function clearAllFilters() {
   store.dispatch(fetchDashboardTabForClearAll());
 }
 
+export function setSideBarToLoading() {
+  store.dispatch({ type: 'SET_SIDEBAR_LOADING' });
+}
+
+export function setDashboardTableLoading() {
+  store.dispatch({ type: 'SET_DASHBOARDTABLE_LOADING' });
+}
+
 export const getDashboard = () => getState();
 
 // reducers
@@ -292,14 +342,11 @@ const reducers = {
     fetchDataForDashboardTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
     return {
       ...state,
+      setSideBarLoading: false,
       allActiveFilters: item.allFilters,
       filteredSubjectIds: item.data.searchSubjects.subjectIds,
       checkbox: {
         data: checkboxData1,
-      },
-      datatable: {
-        ...state.datatable,
-        dataCase: item.data.searchSubjects.firstPage,
       },
       stats: getFilteredStat(item.data.searchSubjects, statsCount),
       widgets: getWidgetsInitData(item.groups.data, widgetsData),
@@ -312,14 +359,15 @@ const reducers = {
       currentActiveTab: item.currentTab,
       datatable: {
         ...state.datatable,
-        dataCase: item.data.subjectOverViewPaged,
-        dataSample: item.data.sampleOverview,
-        dataFile: item.data.fileOverview,
+        dataCase: item.sortDirection === 'desc' ? item.data.subjectOverViewPagedDesc : item.data.subjectOverViewPaged,
+        dataSample: item.sortDirection === 'desc' ? item.data.sampleOverviewDesc : item.data.sampleOverview,
+        dataFile: item.sortDirection === 'desc' ? item.data.fileOverviewDesc : item.data.fileOverview,
       },
     }
   ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
-  DASHBOARD_TABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
+  SET_SIDEBAR_LOADING: (state) => ({ ...state, setSideBarLoading: true }),
+  SET_DASHBOARDTABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);
     const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
@@ -349,19 +397,18 @@ const reducers = {
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
     const checkboxData = customCheckBox(item.data, facetSearchData);
+    fetchDataForDashboardTab('Cases', []);
     return item.data
       ? {
         ...state.dashboard,
         isFetched: true,
         isLoading: false,
         hasError: false,
+        setSideBarLoading: false,
         error: '',
         stats: getStatInit(item.data, statsCount),
         allActiveFilters: allFilters(),
         filteredSubjectIds: [],
-        subjectOverView: {
-          data: item.data.subjectOverViewPaged,
-        },
         checkboxForAll: {
           data: checkboxData,
         },
@@ -369,9 +416,6 @@ const reducers = {
           data: checkboxData,
         },
         datatable: {
-          dataCase: item.data.subjectOverViewPaged,
-          dataSample: item.data.sampleOverview,
-          dataFile: item.data.fileOverview,
           filters: [],
         },
         widgets: getWidgetsInitData(item.data, widgetsData),
