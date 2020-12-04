@@ -21,7 +21,8 @@ const GridView = ({
   disableRowSelection,
   buttonText,
   options,
-  messageData,
+  tooltipMessage,
+  tooltipContent,
   saveButtonDefaultStyle,
   DeactiveSaveButtonDefaultStyle,
   ActiveSaveButtonDefaultStyle,
@@ -97,7 +98,7 @@ const GridView = ({
     backgroundColor: '#10A075',
     marginTop: '6px',
     marginBottom: '10px',
-    marginRight: '5px',
+    marginRight: '4px',
   };
 
   useEffect(() => {
@@ -220,16 +221,31 @@ const GridView = ({
           onClick={exportFiles}
         >
           { buttonText }
-          {' '}
         </button>
-        {' '}
-        <IconButton aria-label="help" className={classes.helpIconButton} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseOver={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
-          <HelpIcon className={classes.helpIcon} fontSize="small" onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseOver={() => toggleMessageStatus('bottom', 'open')} />
+        <IconButton aria-label="help" className={classes.helpIconButton} onMouseOver={() => toggleMessageStatus('top', 'open')} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
+          {tooltipContent.src ? (
+            <img
+              onMouseEnter={() => toggleMessageStatus('top', 'open')}
+              onMouseOver={() => toggleMessageStatus('top', 'open')}
+              onFocus={() => toggleMessageStatus('top', 'open')}
+              src={tooltipContent.src}
+              alt={tooltipContent.alt}
+              className={classes.helpIcon}
+            />
+          ) : (
+            <HelpIcon
+              className={classes.helpIcon}
+              fontSize="small"
+              onMouseOver={() => toggleMessageStatus('top', 'open')}
+              onMouseEnter={() => toggleMessageStatus('top', 'open')}
+              onFocus={() => toggleMessageStatus('top', 'open')}
+            />
+          )}
         </IconButton>
         { messageStatus ? (
-          <div className={classes.messageBottom} style={tooltipStyle(messageData)}>
+          <div className={classes.messageBottom} style={tooltipStyle(tooltipMessage)}>
             {' '}
-            <Message data={messageData} />
+            <Message data={tooltipMessage} />
             {' '}
           </div>
         ) : ''}
@@ -319,7 +335,6 @@ const styles = () => ({
   helpIconButton: {
     verticalAlign: 'top',
     marginLeft: '-5px',
-    marginTop: '1px',
   },
 });
 

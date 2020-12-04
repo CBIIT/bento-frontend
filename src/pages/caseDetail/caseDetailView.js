@@ -18,6 +18,7 @@ import {
   table1,
   table2,
   externalLinkIcon,
+  tooltipContent,
 } from '../../bento/caseDetailData';
 import Snackbar from '../../components/Snackbar';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
@@ -61,10 +62,19 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
     (obj, item) => ({ ...obj, [item.sample_id]: item.files }), {},
   );
 
+  // NOTE: Needs improvement.
+  const datFieldsFromRoot = [];
+  table1.columns.forEach((e) => (e.dataFromRoot ? datFieldsFromRoot.push(e.dataField) : null));
+
   const samplesData = data.samples.map((s) => {
     const files = filesOfSamplesObj[s.sample_id];
     const sample = s;
     sample.files = files;
+    if (datFieldsFromRoot.length > 0) {
+      datFieldsFromRoot.forEach((e) => {
+        sample[e] = data[e];
+      });
+    }
     return sample;
   });
 
@@ -129,7 +139,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
             {/* Left panel end */}
             {/* Right panel */}
             <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.rightPanel]}>
-              <div className={classes.innerPanel}>
+              <div style={{ paddingLeft: '7px' }} className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {rightPanel.slice(0, 3).map((section) => (
                     <Subsection
@@ -169,7 +179,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                       saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
                       ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
                       DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
-                      messageData={table1.tooltipMessage}
+                      tooltipMessage={table1.tooltipMessage}
+                      tooltipContent={tooltipContent}
                     />
                   </Grid>
                 </Grid>
@@ -201,7 +212,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                       saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
                       ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
                       DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
-                      messageData={table2.tooltipMessage}
+                      tooltipMessage={table2.tooltipMessage}
+                      tooltipContent={tooltipContent}
                     />
                   </Grid>
                 </Grid>
@@ -228,7 +240,7 @@ const styles = (theme) => ({
   },
   root: {
     fontFamily: theme.custom.fontFamily,
-    fontSize: '9px',
+    fontSize: '12px',
     letterSpacing: '0.025em',
     color: '#000',
     background: '#f3f3f3',
@@ -291,7 +303,7 @@ const styles = (theme) => ({
     borderRight: '1px solid #81A6BA',
   },
   leftPanel: {
-    paddingLeft: '0px',
+    paddingLeft: '25px !important',
   },
   rightPanel: {
     paddingLeft: '16px !important',
@@ -304,6 +316,9 @@ const styles = (theme) => ({
     overflowX: 'hidden',
     paddingLeft: '0px',
     scrollbarColor: '#697270',
+  },
+  innerPanelRight: {
+    paddingLeft: '30px',
   },
   tableContainer: {
     background: '#f3f3f3',
