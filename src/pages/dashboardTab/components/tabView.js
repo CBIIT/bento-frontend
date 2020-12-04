@@ -170,11 +170,11 @@ const TabView = ({
   /*
     Presist user selection
   */
-  function onRowsSelect(curr, allRowsSelected, rowsSelected, displayData) {
+  function onRowsSelect(curr, allRowsSelected, rowsSelected, displayData, selectedData) {
     rowSelectionEvent(displayData.map((d) => d.data[0]), rowsSelected);
 
     setSelectedIDs([...new Set(
-      customOnRowsSelect(data, allRowsSelected),
+      customOnRowsSelect(selectedData, allRowsSelected),
     )]);
     if (allRowsSelected.length === 0) {
       updateActiveSaveButtonStyle(true, saveButton);
@@ -193,12 +193,7 @@ const TabView = ({
       rowsSelected,
     ),
     rowsSelected: rowSelection.selectedRowIndex,
-    onRowSelectionChange: (curr, allRowsSelected, rowsSelected, displayData) => onRowsSelect(
-      curr,
-      allRowsSelected,
-      rowsSelected,
-      displayData,
-    ),
+    onRowSelectionChange: onRowsSelect,
     isRowSelectable: (dataIndex) => (disableRowSelection
       ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });
