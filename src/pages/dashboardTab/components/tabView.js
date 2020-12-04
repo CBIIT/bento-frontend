@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import {
+  Backdrop,
+  CircularProgress,
   Grid,
+  IconButton,
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
-import IconButton from '@material-ui/core/IconButton';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { getColumns } from 'bento-components';
 import SelectAllModal from './modal';
 import {
@@ -239,24 +240,23 @@ const TabView = ({
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
-          {tabDataLoading ? <CircularProgress />
-            : (
-              <CustomDataTable
-                data={data}
-                columns={getColumns(customColumn, classes, data, externalLinkIcon)}
-                options={finalOptions}
-                count={count}
-                overview={getOverviewQuery(api)}
-                overviewDesc={getOverviewDescQuery(api)}
-                paginationAPIField={paginationAPIField}
-                paginationAPIFieldDesc={paginationAPIFieldDesc}
-                queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
-                defaultSortCoulmn={defaultSortCoulmn}
-                defaultSortDirection={defaultSortDirection}
-              />
-            )}
+          <CustomDataTable
+            data={data}
+            columns={getColumns(customColumn, classes, data, externalLinkIcon)}
+            options={finalOptions}
+            count={count}
+            overview={getOverviewQuery(api)}
+            overviewDesc={getOverviewDescQuery(api)}
+            paginationAPIField={paginationAPIField}
+            paginationAPIFieldDesc={paginationAPIFieldDesc}
+            queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
+            defaultSortCoulmn={defaultSortCoulmn}
+            defaultSortDirection={defaultSortDirection}
+          />
         </Grid>
-
+        <Backdrop className={classes.backdrop} open={tabDataLoading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Grid>
       <Grid item xs={12} className={classes.saveButtonDivBottom}>
         <button
@@ -415,6 +415,11 @@ const styles = () => ({
   helpIconButton: {
     verticalAlign: 'top',
     marginLeft: '-5px',
+  },
+  backdrop: {
+    position: 'absolute',
+    zIndex: 99999,
+    background: 'rgba(0, 0, 0, 0.1)',
   },
 });
 

@@ -17,7 +17,7 @@ import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
   as ArrowDropDownIcon,
 } from '@material-ui/icons';
-import { toggleCheckBox, setSideBarToLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
+import { toggleCheckBox, setSideBarToLoading, setDashboardTableLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
 import { facetSectionStyling } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
@@ -86,6 +86,7 @@ const FacetPanel = ({ classes }) => {
   const handleToggle = (value) => () => {
     const valueList = value.split('$$');
     setSideBarToLoading();
+    setDashboardTableLoading();
     // dispatch toggleCheckBox action
     dispatch(toggleCheckBox([{
       groupName: valueList[1],

@@ -314,6 +314,10 @@ export function setSideBarToLoading() {
   store.dispatch({ type: 'SET_SIDEBAR_LOADING' });
 }
 
+export function setDashboardTableLoading() {
+  store.dispatch({ type: 'SET_DASHBOARDTABLE_LOADING' });
+}
+
 export const getDashboard = () => getState();
 
 // reducers
@@ -362,8 +366,8 @@ const reducers = {
     }
   ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
-  DASHBOARD_TABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
   SET_SIDEBAR_LOADING: (state) => ({ ...state, setSideBarLoading: true }),
+  SET_DASHBOARDTABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);
     const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
