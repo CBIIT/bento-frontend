@@ -130,7 +130,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
             {/* Left panel end */}
             {/* Right panel */}
             <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.rightPanel]}>
-              <div className={classes.innerPanel}>
+              <div style={{ paddingLeft: '30px' }} className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {rightPanel.slice(0, 3).map((section) => (
                     <Subsection
@@ -294,7 +294,7 @@ const styles = (theme) => ({
     borderRight: '1px solid #81A6BA',
   },
   leftPanel: {
-    paddingLeft: '0px',
+    paddingLeft: '25px !important',
   },
   rightPanel: {
     paddingLeft: '16px !important',
@@ -307,6 +307,9 @@ const styles = (theme) => ({
     overflowX: 'hidden',
     paddingLeft: '0px',
     scrollbarColor: '#697270',
+  },
+  innerPanelRight: {
+    paddingLeft: '30px',
   },
   tableContainer: {
     background: '#f3f3f3',
