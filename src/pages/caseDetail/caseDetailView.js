@@ -130,7 +130,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
             {/* Left panel end */}
             {/* Right panel */}
             <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.rightPanel]}>
-              <div style={{ paddingLeft: '30px' }} className={classes.innerPanel}>
+              <div style={{ paddingLeft: '7px' }} className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {rightPanel.slice(0, 3).map((section) => (
                     <Subsection
