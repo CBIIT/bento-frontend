@@ -28,6 +28,7 @@ import {
   GET_FILES_OVERVIEW_DESC_QUERY,
   GET_SAMPLES_OVERVIEW_DESC_QUERY,
   GET_CASES_OVERVIEW_DESC_QUERY,
+  tabIndex,
 } from '../../../bento/dashboardTabData';
 
 const storeKey = 'dashboardTab';
@@ -43,7 +44,7 @@ const initialState = {
     hasError: false,
     stats: {},
     allActiveFilters: {},
-    currentActiveTab: 'Cases',
+    currentActiveTab: tabIndex[0].title,
     filteredSubjectIds: [],
     checkboxForAll: {
       data: [],
@@ -243,7 +244,7 @@ const querySwitch = (payload, tabContainer) => {
  * @return {json} with three keys QUERY,GET_CASES_OVERVIEW_DESC_QUERY, sortfield
  */
 
-const getQueryAndDefaultSort = (payload = 'Cases') => {
+const getQueryAndDefaultSort = (payload = tabIndex[0].title) => {
   const tabContainer = tabContainers.find((x) => x.name === payload);
   return querySwitch(payload, tabContainer);
 };
@@ -397,7 +398,7 @@ const reducers = {
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
     const checkboxData = customCheckBox(item.data, facetSearchData);
-    fetchDataForDashboardTab('Cases', []);
+    fetchDataForDashboardTab(tabIndex[0].title, []);
     return item.data
       ? {
         ...state.dashboard,
