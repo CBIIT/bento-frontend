@@ -254,6 +254,11 @@ const styles = () => ({
   expansionPanelsideBarItem: {
     boxShadow: 'none',
     borderTop: '1px solid #000000',
+    borderLeft: '1px solid #D2D2D2',
+    borderRight: '1px solid #D2D2D2',
+    '&:last-child': {
+      borderBottom: '1px solid #D2D2D2',
+    },
     margin: 'auto',
     position: 'initial',
     '&:before': {
@@ -284,7 +289,7 @@ const styles = () => ({
     letterSpacing: 0,
   },
   subSectionSummaryText: {
-    marginLeft: '24px',
+    marginLeft: '16px',
     color: '#000000',
     fontFamily: 'Lato',
     fontSize: '14px',
@@ -303,7 +308,7 @@ const styles = () => ({
     height: 12,
   },
   listItemGutters: {
-    padding: '8px 0px 8px 24px',
+    padding: '8px 0px 8px 15px',
   },
 });
 
