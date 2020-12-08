@@ -21,6 +21,8 @@ const cartController = () => {
                 <CartView
                   isLoading={false}
                   fileIDs={ids}
+                  defaultSortCoulmn={table.defaultSortField || ''}
+                  defaultSortDirection={defaultSortDirection}
                   data={
                 defaultSortDirection === 'desc'
                   ? data.filesInListDesc === null || data.filesInListDesc === '' ? [] : data.filesInListDesc

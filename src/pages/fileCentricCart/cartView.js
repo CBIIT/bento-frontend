@@ -20,7 +20,7 @@ import DialogThemeProvider from './dialogThemeConfig';
 import TableThemeProvider from './cartTableThemeConfig';
 
 const cartView = ({
-  classes, data, fileIDs = [],
+  classes, data, fileIDs = [], defaultSortCoulmn, defaultSortDirection,
 }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
@@ -227,6 +227,8 @@ const cartView = ({
                 paginationAPIField="filesInList"
                 paginationAPIFieldDesc="filesInListDesc"
                 queryCustomVaribles={{ file_ids: fileIDs }}
+                defaultSortCoulmn={defaultSortCoulmn}
+                defaultSortDirection={defaultSortDirection}
               />
             </TableThemeProvider>
             <div className={classes.manifestTextarea}>
