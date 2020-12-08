@@ -1,5 +1,5 @@
 import React from 'react';
-import useQuery from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CaseDetailView from './caseDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
