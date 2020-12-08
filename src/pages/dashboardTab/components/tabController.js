@@ -26,8 +26,13 @@ function TabContainer({ children, dir }) {
 }
 
 const tabController = (classes) => {
+  const currentActiveTabTitle = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.currentActiveTab
+    ? state.dashboardTab.currentActiveTab
+    : tabIndex[0].title));
+  const tabVlaue = tabIndex.map((el) => el.title).indexOf(currentActiveTabTitle) || 0;
   // tab settings
-  const [currentTab, setCurrentTab] = React.useState(0);
+  const [currentTab, setCurrentTab] = React.useState(tabVlaue);
 
   // data from store
   const dashboard = useSelector((state) => (state.dashboardTab

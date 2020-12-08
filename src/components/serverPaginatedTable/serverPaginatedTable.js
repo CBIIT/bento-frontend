@@ -5,7 +5,7 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Backdrop, withStyles } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
 import client from '../../utils/graphqlClient';
 
@@ -30,9 +30,8 @@ class ServerPaginatedTableView extends React.Component {
 
   // get data
   getData = (url, page) => {
-    this.setState({ isLoading: true });
     this.xhrRequest(url, page).then((res) => {
-      this.setState({ data: res.data, isLoading: false, count: this.props.count });
+      this.setState({ data: res.data, count: this.props.count });
     });
   }
 
@@ -200,10 +199,15 @@ class ServerPaginatedTableView extends React.Component {
 
     return (
       <div>
+        <Backdrop
+          open={isLoading}
+          className={this.props.classes.backdrop}
+        >
+          <CircularProgress />
+        </Backdrop>
         {data === 'undefined' ? <CircularProgress /> : (
           <CustomDataTable
             data={data}
-            isLoading={isLoading}
             columns={this.props.columns}
             options={({ ...this.props.options, ...options1 })}
             className={className}
@@ -214,4 +218,11 @@ class ServerPaginatedTableView extends React.Component {
   }
 }
 
-export default ServerPaginatedTableView;
+const styles = () => ({
+  backdrop: {
+    position: 'absolute',
+    zIndex: 99999,
+    background: 'rgba(0, 0, 0, 0.1)',
+  },
+});
+export default withStyles(styles)(ServerPaginatedTableView);
