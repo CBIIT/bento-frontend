@@ -29,10 +29,10 @@ const cartController = () => {
       defaultSortCoulmn={table.defaultSortField || ''}
       defaultSortDirection={defaultSortDirection}
       data={
-                defaultSortDirection === 'desc'
-                  ? data.filesInListDesc === null || data.filesInListDesc === '' ? [] : data.filesInListDesc
-                  : data.filesInList === null || data.filesInList === '' ? [] : data.filesInList
-              }
+        defaultSortDirection === 'desc'
+          ? data.filesInListDesc === null || data.filesInListDesc === '' ? [] : data.filesInListDesc
+          : data.filesInList === null || data.filesInList === '' ? [] : data.filesInList
+        }
     />
   );
 };
