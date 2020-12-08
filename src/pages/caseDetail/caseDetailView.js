@@ -3,6 +3,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
+import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { getOptions, getColumns } from 'bento-components';
 import StatsView from '../../components/Stats/StatsView';
@@ -68,7 +69,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
 
   const samplesData = data.samples.map((s) => {
     const files = filesOfSamplesObj[s.sample_id];
-    const sample = s;
+    const sample = _.cloneDeep(s);
     sample.files = files;
     if (datFieldsFromRoot.length > 0) {
       datFieldsFromRoot.forEach((e) => {
