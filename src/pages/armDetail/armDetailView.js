@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import {
   Grid,
   withStyles,
@@ -17,7 +17,9 @@ import {
   table,
   tooltipContent,
 } from '../../bento/armDetailData';
-import { singleCheckBox } from '../dashboard/dashboardState';
+import {
+  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
+} from '../dashboardTab/store/dashboardReducer';
 import Widget from '../../components/Widgets/WidgetView';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 import NumberOfThings from '../../components/NumberOfThings';
@@ -26,7 +28,7 @@ import colors from '../../utils/colors';
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
@@ -39,13 +41,16 @@ const ArmDetail = ({ data, classes }) => {
     setsnackbarState({ open: false });
   }
 
-  const redirectTo = async () => {
-    dispatch(singleCheckBox([{
+  const redirectTo = () => {
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    singleCheckBox([{
+      datafield: 'studies',
       groupName: 'Arm',
-      name: data.study_info,
-      datafield: 'study_info',
       isChecked: true,
-    }]));
+      name: data.study_info,
+      section: 'Filter By Cases',
+    }]);
   };
 
   const stat = {

@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import _ from 'lodash';
 import {
   customCheckBox,
@@ -185,42 +183,6 @@ function createFilterVariables(data) {
 }
 
 /**
- * Trigger respective API queries when checkbox is checked.
- *
- * @param {object} payload
- * @return distpatcher
- */
-export function toggleCheckBox(payload) {
-  return () => {
-    const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
-    return client
-      .query({ // request to get the filtered subjects
-        query: FILTER_QUERY,
-        variables: { ...currentAllFilterVariables, first: 100 },
-      })
-      .then((result) => client.query({ // request to get the filtered group counts
-        query: FILTER_GROUP_QUERY,
-        variables: { subject_ids: result.data.searchSubjects.subjectIds },
-      })
-        .then((result2) => store.dispatch({
-          type: 'TOGGGLE_CHECKBOX_WITH_API',
-          payload: {
-            filter: payload,
-            allFilters: currentAllFilterVariables,
-            groups: _.cloneDeep(result2),
-            ..._.cloneDeep(result),
-          },
-        }))
-        .catch((error) => store.dispatch(
-          { type: 'DASHBOARDTAB_QUERY_ERR', error },
-        )))
-      .catch((error) => store.dispatch(
-        { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      ));
-  };
-}
-
-/**
  * Switch to get query sort dorection and sort field .
  *
  * @param {string} payload
@@ -272,6 +234,12 @@ export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) 
     ));
 }
 
+/**
+ * Gets all file ids for active subjectIds.
+ *
+ * @param obj fileCoubt
+ * @return {json}
+ */
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
   const VARIABLES = getState().filteredSubjectIds;
 
@@ -302,6 +270,12 @@ function getWidgetsData(input, widgetsInfoFromCustConfig) {
   return donut;
 }
 
+/**
+ * Reducer for fetch dashboard data
+ *
+ * @return distpatcher
+ */
+
 export function fetchDataForDashboardTabDataTable() {
   if (shouldFetchDataForDashboardTabDataTable(getState())) {
     return store.dispatch(fetchDashboardTab());
@@ -309,51 +283,121 @@ export function fetchDataForDashboardTabDataTable() {
   return store.dispatch({ type: 'READY_DASHBOARDTAB' });
 }
 
-  export async function singleCheckBox(payload) {
-  await clearFilterState();
-    toggleCheckBoxWithAPIAction(payload);
-  };
+/**
+ * Helper function to create only one filter that was from payload payload
+ * @param {object} payload
+ * @return distpatcher
+ */
 
-  export async function clearFilterState(payload) {
-    store.dispatch({ type: 'CLEAR_FILTERS' });
-    };
+function createSingleFilterVariables(payload) {
+  const currentAllActiveFilters = allFilters();
+  // eslint-disable-next-line  no-unused-vars
+  const filter = Object.entries(currentAllActiveFilters).reduce((acc, [key, val]) => {
+    if (payload[0].datafield === key) {
+      return { ...acc, [key]: [...currentAllActiveFilters[key], ...[payload[0].name]] };
+    }
+    return { ...acc, [key]: currentAllActiveFilters[key] };
+  }, {});
+  return filter;
+}
 
-
-  function toggleCheckBoxWithAPIAction(payload) {
-    const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
-    return client
-      .query({ // request to get the filtered subjects
-        query: FILTER_QUERY,
-        variables: { ...currentAllFilterVariables, first: 100 },
-      })
-      .then((result) => client.query({ // request to get the filtered group counts
-        query: FILTER_GROUP_QUERY,
-        variables: { subject_ids: result.data.searchSubjects.subjectIds },
-      })
-        .then((result2) => store.dispatch({
-          type: 'TOGGGLE_CHECKBOX_WITH_API',
-          payload: {
-            filter: payload,
-            allFilters: currentAllFilterVariables,
-            groups: _.cloneDeep(result2),
-            ..._.cloneDeep(result),
-          },
-        }))
-        .catch((error) => store.dispatch(
-          { type: 'DASHBOARDTAB_QUERY_ERR', error },
-        )))
+/**
+ * Helper function to query and get filtered values for dashboard
+ * @param {object} payload ingeneral its a single filter variable used to set the checkbox
+ * @param {obj} currentAllFilterVariables gets the current active filters
+ * @return distpatcher
+ */
+function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
+  return client
+    .query({ // request to get the filtered subjects
+      query: FILTER_QUERY,
+      variables: { ...currentAllFilterVariables, first: 100 },
+    })
+    .then((result) => client.query({ // request to get the filtered group counts
+      query: FILTER_GROUP_QUERY,
+      variables: { subject_ids: result.data.searchSubjects.subjectIds },
+    })
+      .then((result2) => store.dispatch({
+        type: 'TOGGGLE_CHECKBOX_WITH_API',
+        payload: {
+          filter: payload,
+          allFilters: currentAllFilterVariables,
+          groups: _.cloneDeep(result2),
+          ..._.cloneDeep(result),
+        },
+      }))
       .catch((error) => store.dispatch(
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      ));
-  }
+      )))
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
+}
+
+/**
+ * Reducer for clear all
+ *
+ * @return distpatcher
+ */
 
 export function clearAllFilters() {
   store.dispatch(fetchDashboardTabForClearAll());
 }
 
+/**
+ * Sets the given filter variable as the only filter for the dasboard
+ * @param {object} data
+ * @return distpatcher
+ */
+export async function setSingleFilter(payload) {
+  // test weather there are active dashboard filters if so clear all filters
+  if (!_.isEqual(getState().allActiveFilters, allFilters())) {
+    await clearAllFilters();
+  }
+  const singlefiter = createSingleFilterVariables(payload);
+  store.dispatch({ type: 'SET_SINGLE_FILTER', payload: singlefiter });
+}
+
+/**
+ * Reducer for setting single checkbox filter
+ * @param {object} payload
+ * @return distpatcher
+ */
+
+export async function singleCheckBox(payload) {
+  await setSingleFilter(payload);
+  const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
+  toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+}
+
+/**
+ * Trigger respective API queries when checkbox is checked.
+ *
+ * @param {object} payload
+ * @return distpatcher
+ */
+export function toggleCheckBox(payload) {
+  return () => {
+    const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
+    toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+  };
+}
+
+/**
+ * Reducer for sidebar loading
+ *
+ * @return distpatcher
+ */
+
 export function setSideBarToLoading() {
   store.dispatch({ type: 'SET_SIDEBAR_LOADING' });
 }
+
+/**
+ * Reducer for setting dashboardtable loading loading
+ *
+ * @return distpatcher
+ */
 
 export function setDashboardTableLoading() {
   store.dispatch({ type: 'SET_DASHBOARDTABLE_LOADING' });
@@ -410,7 +454,12 @@ const reducers = {
   ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   SET_SIDEBAR_LOADING: (state) => ({ ...state, setSideBarLoading: true }),
-  CLEAR_FILTERS: (state) => ({ ...state, allActiveFilters: allFilters() }),
+  SET_SINGLE_FILTER: (state, item) => (
+    {
+      ...state,
+      allActiveFilters: item,
+    }
+  ),
   SET_DASHBOARDTABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);

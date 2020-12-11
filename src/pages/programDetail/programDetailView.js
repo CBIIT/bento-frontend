@@ -1,7 +1,5 @@
-/* eslint-disable */
-
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Grid,
   withStyles,
@@ -24,15 +22,15 @@ import {
 } from '../../bento/programDetailData';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { toggleCheckBox,singleCheckBox, fetchDataForDashboardTabDataTable,setSideBarToLoading, setDashboardTableLoading } from '../dashboardTab/store/dashboardReducer';
+import {
+  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
+} from '../dashboardTab/store/dashboardReducer';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
 import colors from '../../utils/colors';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
-
-  const dispatch = useDispatch();
 
   const widgetData = useSelector((state) => (
     state.dashboard
@@ -60,64 +58,29 @@ const ProgramView = ({ classes, data, theme }) => {
         file: 0,
       }));
 
-  // initDashboardStatus will be used in dispatch to
-  // make sure dashboard data has be loaded first.
-  // const initDashboardStatus = () => () => Promise.resolve(
-  //   dispatch(fetchDataForDashboardTabDataTable()),
-  // );
-
-  React.useEffect(() => {
-    // Update dashboard first
-    // fetchDataForDashboardTabDataTable();
-  }, []);
-
-  const redirectTo = () => ()=> {
-    dispatch(fetchDataForDashboardTabDataTable()).then(() => {
-      toggleCheckBox([{
-        datafield: 'programs',
-        groupName: 'Program',
-        isChecked: true,
-        name: programData.program_acronym,
-        section: 'Filter By Cases',
-      }]);
-    });
-  };
-
-
-  // const handleToggle = (value) => () => {
-  //   const valueList = value.split('$$');
-  //   setSideBarToLoading();
-  //   setDashboardTableLoading();
-  //   // dispatch toggleCheckBox action
-  //   dispatch(toggleCheckBox([{
-  //     datafield: 'studies',
-  //     groupName: 'Arm',
-  //     isChecked: true,
-  //     name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
-  //     section: 'Filter By Cases',
-  //   }]));
-  // };
-  const redirectToArm = (programArm) =>{
+  const redirectTo = () => {
     setSideBarToLoading();
-      setDashboardTableLoading();
-      // dispatch toggleCheckBox action
-      // dispatch(singleCheckBox([{
-      //   datafield: 'studies',
-      //   groupName: 'Arm',
-      //   isChecked: true,
-      //   name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
-      //   section: 'Filter By Cases',
-      // }]));
-      singleCheckBox([{
-        datafield: 'studies',
-        groupName: 'Arm',
-        isChecked: true,
-        name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
-        section: 'Filter By Cases',
-      }])
+    setDashboardTableLoading();
+    singleCheckBox([{
+      datafield: 'programs',
+      groupName: 'Program',
+      isChecked: true,
+      name: programData.program_acronym,
+      section: 'Filter By Cases',
+    }]);
   };
 
-  
+  const redirectToArm = (programArm) => {
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    singleCheckBox([{
+      datafield: 'studies',
+      groupName: 'Arm',
+      isChecked: true,
+      name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
+      section: 'Filter By Cases',
+    }]);
+  };
 
   const stat = {
     numberOfPrograms: 1,
