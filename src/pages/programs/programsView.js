@@ -4,29 +4,26 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { CustomDataTable, getOptions, getColumns } from 'bento-components';
-import { useDispatch } from 'react-redux';
 import {
   table, programListingIcon, externalLinkIcon,
 } from '../../bento/programData';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
+import {
+  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
+} from '../dashboardTab/store/dashboardReducer';
 
 const Programs = ({ classes, data }) => {
-  const initDashboardStatus = () => (dispatch) => Promise.resolve(
-    dispatch(fetchDataForDashboardDataTable()),
-  );
-
-  const dispatch = useDispatch();
-  const redirectTo = () => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
-        groupName: 'Program',
-        name: 'TAILORx',
-        datafield: 'program',
-        isChecked: true,
-      }]));
-    });
+  const redirectTo = (program) => {
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    singleCheckBox([{
+      datafield: 'programs',
+      groupName: 'Program',
+      isChecked: true,
+      name: program.rowData[0],
+      section: 'Filter By Cases',
+    }]);
   };
 
   return (
