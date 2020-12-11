@@ -1,7 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import {
-  Backdrop,
-  CircularProgress,
   Grid,
   IconButton,
   withStyles,
@@ -51,7 +49,6 @@ const TabView = ({
   paginationAPIFieldDesc,
   dataKey,
   filteredSubjectIds,
-  tabDataLoading,
   defaultSortCoulmn,
   defaultSortDirection,
 }) => {
@@ -249,9 +246,6 @@ const TabView = ({
             defaultSortDirection={defaultSortDirection}
           />
         </Grid>
-        <Backdrop className={classes.backdrop} open={tabDataLoading}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
       </Grid>
       <Grid item xs={12} className={classes.saveButtonDivBottom}>
         <button
@@ -293,7 +287,6 @@ const TabView = ({
               </div>
             ) : ''}
           <Link
-            target="_blank"
             rel="noreferrer"
             to={(location) => ({ ...location, pathname: '/fileCentricCart' })}
             color="inherit"
@@ -410,11 +403,6 @@ const styles = () => ({
   helpIconButton: {
     verticalAlign: 'top',
     marginLeft: '-5px',
-  },
-  backdrop: {
-    position: 'absolute',
-    zIndex: 99999,
-    background: 'rgba(0, 0, 0, 0.1)',
   },
 });
 

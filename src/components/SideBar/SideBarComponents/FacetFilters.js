@@ -50,6 +50,10 @@ const FacetPanel = ({ classes }) => {
     state.dashboardTab
   && state.dashboardTab.setSideBarLoading
       ? state.dashboardTab.setSideBarLoading : false));
+  const tabDataLoading = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.isDashboardTableLoading
+    ? state.dashboardTab.isDashboardTableLoading
+    : false));
   // redux use actions
   const dispatch = useDispatch();
 
@@ -232,7 +236,7 @@ const FacetPanel = ({ classes }) => {
               </List>
             </ExpansionPanelDetails>
           </ExpansionPanel>
-          <Backdrop className={classes.backdrop} open={isSidebarLoading}>
+          <Backdrop className={classes.backdrop} open={isSidebarLoading || tabDataLoading}>
             <CircularProgress color="inherit" />
           </Backdrop>
         </>
@@ -266,7 +270,7 @@ const styles = () => ({
     },
   },
   backdrop: {
-    position: 'absolute',
+    // position: 'absolute',
     zIndex: 99999,
     background: 'rgba(0, 0, 0, 0.1)',
   },

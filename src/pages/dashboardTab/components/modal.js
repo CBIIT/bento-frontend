@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   },
   button: {
     borderRadius: '10px',
-    width: '100px',
+    width: '120px',
     lineHeight: '37px',
     fontSize: '12px',
     textTransform: 'uppercase',
@@ -112,7 +112,7 @@ export default function SimpleDialogDemo() {
   return (
     <>
       <button type="button" onClick={handleClickOpen} className={classes.button}>
-        Select All
+        Add All Files
       </button>
       <SimpleDialog open={open} onClose={handleClose} />
     </>
