@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import _ from 'lodash';
 import {
   customCheckBox,
@@ -307,6 +309,44 @@ export function fetchDataForDashboardTabDataTable() {
   return store.dispatch({ type: 'READY_DASHBOARDTAB' });
 }
 
+  export async function singleCheckBox(payload) {
+  await clearFilterState();
+    toggleCheckBoxWithAPIAction(payload);
+  };
+
+  export async function clearFilterState(payload) {
+    store.dispatch({ type: 'CLEAR_FILTERS' });
+    };
+
+
+  function toggleCheckBoxWithAPIAction(payload) {
+    const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
+    return client
+      .query({ // request to get the filtered subjects
+        query: FILTER_QUERY,
+        variables: { ...currentAllFilterVariables, first: 100 },
+      })
+      .then((result) => client.query({ // request to get the filtered group counts
+        query: FILTER_GROUP_QUERY,
+        variables: { subject_ids: result.data.searchSubjects.subjectIds },
+      })
+        .then((result2) => store.dispatch({
+          type: 'TOGGGLE_CHECKBOX_WITH_API',
+          payload: {
+            filter: payload,
+            allFilters: currentAllFilterVariables,
+            groups: _.cloneDeep(result2),
+            ..._.cloneDeep(result),
+          },
+        }))
+        .catch((error) => store.dispatch(
+          { type: 'DASHBOARDTAB_QUERY_ERR', error },
+        )))
+      .catch((error) => store.dispatch(
+        { type: 'DASHBOARDTAB_QUERY_ERR', error },
+      ));
+  }
+
 export function clearAllFilters() {
   store.dispatch(fetchDashboardTabForClearAll());
 }
@@ -334,6 +374,8 @@ const reducers = {
     ...state,
     isLoading: false,
     isFetched: true,
+    setSideBarLoading: false,
+    isDashboardTableLoading: false,
   }),
   TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
     const updatedCheckboxData1 = updateCheckBox(
@@ -368,6 +410,7 @@ const reducers = {
   ),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   SET_SIDEBAR_LOADING: (state) => ({ ...state, setSideBarLoading: true }),
+  CLEAR_FILTERS: (state) => ({ ...state, allActiveFilters: allFilters() }),
   SET_DASHBOARDTABLE_LOADING: (state) => ({ ...state, isDashboardTableLoading: true }),
   TOGGGLE_CHECKBOX: (state, item) => {
     const dataTableFilters = getFilters(state.datatable.filters, item);

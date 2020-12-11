@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -22,7 +24,7 @@ import {
 } from '../../bento/programDetailData';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
+import { toggleCheckBox,singleCheckBox, fetchDataForDashboardTabDataTable,setSideBarToLoading, setDashboardTableLoading } from '../dashboardTab/store/dashboardReducer';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
 import colors from '../../utils/colors';
@@ -60,36 +62,62 @@ const ProgramView = ({ classes, data, theme }) => {
 
   // initDashboardStatus will be used in dispatch to
   // make sure dashboard data has be loaded first.
-  const initDashboardStatus = () => () => Promise.resolve(
-    dispatch(fetchDataForDashboardDataTable()),
-  );
+  // const initDashboardStatus = () => () => Promise.resolve(
+  //   dispatch(fetchDataForDashboardTabDataTable()),
+  // );
 
   React.useEffect(() => {
     // Update dashboard first
-    dispatch(initDashboardStatus());
+    // fetchDataForDashboardTabDataTable();
   }, []);
 
-  const redirectTo = () => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
+  const redirectTo = () => ()=> {
+    dispatch(fetchDataForDashboardTabDataTable()).then(() => {
+      toggleCheckBox([{
+        datafield: 'programs',
         groupName: 'Program',
-        name: programData.program_acronym,
-        datafield: 'program',
         isChecked: true,
-      }]));
+        name: programData.program_acronym,
+        section: 'Filter By Cases',
+      }]);
     });
   };
 
-  const redirectToArm = (programArm) => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
+
+  // const handleToggle = (value) => () => {
+  //   const valueList = value.split('$$');
+  //   setSideBarToLoading();
+  //   setDashboardTableLoading();
+  //   // dispatch toggleCheckBox action
+  //   dispatch(toggleCheckBox([{
+  //     datafield: 'studies',
+  //     groupName: 'Arm',
+  //     isChecked: true,
+  //     name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
+  //     section: 'Filter By Cases',
+  //   }]));
+  // };
+  const redirectToArm = (programArm) =>{
+    setSideBarToLoading();
+      setDashboardTableLoading();
+      // dispatch toggleCheckBox action
+      // dispatch(singleCheckBox([{
+      //   datafield: 'studies',
+      //   groupName: 'Arm',
+      //   isChecked: true,
+      //   name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
+      //   section: 'Filter By Cases',
+      // }]));
+      singleCheckBox([{
+        datafield: 'studies',
         groupName: 'Arm',
-        name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
-        datafield: 'study_info',
         isChecked: true,
-      }]));
-    });
+        name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
+        section: 'Filter By Cases',
+      }])
   };
+
+  
 
   const stat = {
     numberOfPrograms: 1,
