@@ -49,6 +49,12 @@ export const initCart = () => {
 
 export const readyCart = () => store.dispatch({ type: 'readyCart' });
 
+export const maximumNumberOfFilesAllowedInTheCart = 1000;
+
+export const cartWillFull = (numberOfFilesSelected) => numberOfFilesSelected
++ getState().fileIds.length
+> maximumNumberOfFilesAllowedInTheCart;
+
 export const getCart = () => {
   // make sure the redux store is sync with localstorage.
   useEffect(() => {

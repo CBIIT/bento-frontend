@@ -19,8 +19,9 @@ import {
   GET_CASES_OVERVIEW_DESC_QUERY,
 } from '../../../bento/dashboardTabData';
 import CustomDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
-import { addToCart, getCart } from '../../fileCentricCart/store/cart';
+import { addToCart, getCart, cartWillFull } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
+import AddToCartAlertDialog from '../../../components/AddToCartDialog';
 
 const getOverviewQuery = (api) => (api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_QUERY : api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY);
 
@@ -60,7 +61,7 @@ const TabView = ({
   const fileIDs = cart.fileIds ? cart.fileIds : [];
   const saveButton = useRef(null);
   const saveButton2 = useRef(null);
-
+  const AddToCartAlertDialogRef = useRef();
   // Store current page selected info
   const [rowSelection, setRowSelection] = React.useState({
     selectedRowInfo: [],
@@ -69,7 +70,7 @@ const TabView = ({
 
   // Store current page selected info
   const [selectedIDs, setSelectedIDs] = React.useState([]);
-
+  const [cartIsFull, setCartIsFull] = React.useState(false);
   const buildButtonStyle = (button, styleObject) => {
     const styleKV = Object.entries(styleObject);
     // eslint-disable-next-line  no-restricted-syntax, no-unused-vars
@@ -114,11 +115,15 @@ const TabView = ({
     const newFileIDS = fileIDs !== null ? selectedIDs.filter(
       (e) => !fileIDs.find((a) => e === a),
     ).length : selectedIDs.length;
-    addToCart({ fileIds: selectedIDs });
-    if (newFileIDS > 0) {
+    if (cartWillFull(newFileIDS)) {
+      // throw an alert
+      setCartIsFull(true);
+      AddToCartAlertDialogRef.current.open();
+    } else if (newFileIDS > 0) {
+      addToCart({ fileIds: selectedIDs });
       openSnack(newFileIDS);
+      setSelectedIDs([]);
     }
-    setSelectedIDs([]);
   }
 
   function rowSelectionEvent(displayData, rowsSelected) {
@@ -203,6 +208,7 @@ const TabView = ({
     <div>
       <Grid item xs={12} className={classes.saveButtonDiv}>
         <SelectAllModal />
+        <AddToCartAlertDialog cartWillFull={cartIsFull} ref={AddToCartAlertDialogRef} />
         <button
           type="button"
           ref={saveButton2}
