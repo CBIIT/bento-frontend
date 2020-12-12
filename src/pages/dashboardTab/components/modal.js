@@ -1,10 +1,8 @@
-/* eslint-disable */
-import React,{ useRef } from 'react';
+import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '../../../components/AddToCartDialog';
 import { addToCart, cartWillFull } from '../../fileCentricCart/store/cart';
 import { fetchAllFileIDsForSelectAll, getFilesCount } from '../store/dashboardReducer';
-
 
 const useStyles = makeStyles({
   button: {
@@ -22,9 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-
 export default function SimpleDialogDemo() {
-  
   const classes = useStyles();
   const childRef = useRef();
 
@@ -51,22 +47,21 @@ export default function SimpleDialogDemo() {
     handleClose();
   }
 
-
- const numberOfFilesSelected = getFilesCount();
- const OnYesClick = ()=>{ exportFiles();};
- const onNoClick = ()=>{handleClose(); };
+  const numberOfFilesSelected = getFilesCount();
+  const OnYesClick = () => { exportFiles(); };
+  const onNoClick = () => { handleClose(); };
 
   return (
     <>
       <button type="button" onClick={handleClickOpen} className={classes.button}>
         Select All
       </button>
-      <Dialog 
-      ref={childRef} 
-      onYesClick= {OnYesClick}
-      onNoClick={onNoClick}
-      numberOfFilesSelected={numberOfFilesSelected}
-      cartWillFull={cartWillFull(numberOfFilesSelected)}
+      <Dialog
+        ref={childRef}
+        onYesClick={OnYesClick}
+        onNoClick={onNoClick}
+        numberOfFilesSelected={numberOfFilesSelected}
+        cartWillFull={cartWillFull(numberOfFilesSelected)}
       />
     </>
   );
