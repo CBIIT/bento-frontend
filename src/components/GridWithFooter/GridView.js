@@ -8,8 +8,9 @@ import { useSelector } from 'react-redux';
 import { CustomDataTable } from 'bento-components';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
-import { addToCart } from '../../pages/fileCentricCart/store/cart';
+import { addToCart, cartWillFull } from '../../pages/fileCentricCart/store/cart';
 import Message from '../Message';
+import AddToCartAlertDialog from '../AddToCartDialog';
 
 const GridView = ({
   classes,
@@ -38,7 +39,8 @@ const GridView = ({
 
   // Store current page selected info
   const [selectedIDs, setSelectedIDs] = React.useState([]);
-
+  const AddToCartAlertDialogRef = useRef();
+  const [cartIsFull, setCartIsFull] = React.useState(false);
   const saveButton = useRef(null);
 
   function openMessage() {
@@ -116,11 +118,15 @@ const GridView = ({
     const newFileIDS = fileIDs !== null ? selectedIDs.filter(
       (e) => !fileIDs.find((a) => e === a),
     ).length : selectedIDs.length;
-    addToCart({ fileIds: selectedIDs });
-    if (newFileIDS > 0) {
+    if (cartWillFull(newFileIDS)) {
+      // throw an alert
+      setCartIsFull(true);
+      AddToCartAlertDialogRef.current.open();
+    } else if (newFileIDS > 0) {
+      addToCart({ fileIds: selectedIDs });
       openSnack(newFileIDS);
+      setSelectedIDs([]);
     }
-    setSelectedIDs([]);
   }
 
   function divStyle() {
@@ -202,6 +208,7 @@ const GridView = ({
 
   return (
     <div>
+      <AddToCartAlertDialog cartWillFull={cartIsFull} ref={AddToCartAlertDialogRef} />
       <Grid container>
         <Grid item xs={12} id="table_file">
           <CustomDataTable
