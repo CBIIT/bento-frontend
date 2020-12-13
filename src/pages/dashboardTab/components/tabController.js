@@ -41,11 +41,6 @@ const tabController = (classes) => {
     // get stats data from store
   const dashboardStats = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
-  // get weather tab is loading from store
-  const tabDataLoading = useSelector((state) => (state.dashboardTab
-    && state.dashboardTab.isDashboardTableLoading
-    ? state.dashboardTab.isDashboardTableLoading
-    : false));
 
   const filteredSubjectIds = useSelector((state) => (state.dashboardTab
       && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : []));
@@ -265,7 +260,6 @@ const tabController = (classes) => {
         defaultSortDirection={container.defaultSortDirection || 'asc'}
         dataKey={container.dataKey}
         filteredSubjectIds={filteredSubjectIds}
-        tabDataLoading={tabDataLoading}
       />
     </TabContainer>
   ));

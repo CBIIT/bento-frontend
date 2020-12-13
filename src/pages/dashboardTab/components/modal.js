@@ -1,37 +1,13 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
+import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Dialog, DialogActions, DialogContent, DialogContentText, Button,
-} from '@material-ui/core';
-import DialogThemeProvider from './dialogThemeConfig';
-import { addToCart } from '../../fileCentricCart/store/cart';
+import Dialog from '../../../components/AddToCartDialog';
+import { addToCart, cartWillFull } from '../../fileCentricCart/store/cart';
 import { fetchAllFileIDsForSelectAll, getFilesCount } from '../store/dashboardReducer';
 
 const useStyles = makeStyles({
-  popUpWindowText: {
-    fontFamily: 'Lato',
-    size: '16px',
-  },
-  okButton: {
-    background: '#98A19E',
-    color: '#fff',
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: 'rgba(152,161,158,0.6)',
-    },
-  },
-  cancelButton: {
-    background: '#42779A',
-    color: '#fff',
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: 'rgba(66,119,154,0.6)',
-    },
-  },
   button: {
     borderRadius: '10px',
-    width: '100px',
+    width: '120px',
     lineHeight: '37px',
     fontSize: '12px',
     textTransform: 'uppercase',
@@ -44,12 +20,16 @@ const useStyles = makeStyles({
   },
 });
 
-function SimpleDialog(props) {
+export default function SimpleDialogDemo() {
   const classes = useStyles();
-  const { onClose, open } = props;
+  const childRef = useRef();
+
+  const handleClickOpen = () => {
+    childRef.current.open();
+  };
 
   const handleClose = () => {
-    onClose();
+    childRef.current.close();
   };
 
   async function exportFiles() {
@@ -64,57 +44,25 @@ function SimpleDialog(props) {
       return accumulator;
     }, []);
     addToCart({ fileIds: selectedIDs });
-    onClose();
+    handleClose();
   }
 
-  return (
-    <DialogThemeProvider>
-      <Dialog
-        open={open}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        className={classes.popUpWindow}
-      >
-        <DialogContent className={classes.popUpWindowContent}>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure to add All Files
-            {' '}
-            {getFilesCount()}
-            {' '}
-            to cart
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => exportFiles()} className={classes.okButton}>
-            Yes
-          </Button>
-          <Button onClick={() => handleClose()} className={classes.cancelButton}>
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </DialogThemeProvider>
-  );
-}
-
-export default function SimpleDialogDemo() {
-  const [open, setOpen] = React.useState(false);
-  const classes = useStyles();
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const numberOfFilesSelected = getFilesCount();
+  const OnYesClick = () => { exportFiles(); };
+  const onNoClick = () => { handleClose(); };
 
   return (
     <>
       <button type="button" onClick={handleClickOpen} className={classes.button}>
-        Select All
+        Add All Files
       </button>
-      <SimpleDialog open={open} onClose={handleClose} />
+      <Dialog
+        ref={childRef}
+        onYesClick={OnYesClick}
+        onNoClick={onNoClick}
+        numberOfFilesSelected={numberOfFilesSelected}
+        cartWillFull={cartWillFull(numberOfFilesSelected)}
+      />
     </>
   );
 }
