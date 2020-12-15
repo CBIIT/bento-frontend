@@ -165,7 +165,7 @@ export const tabContainers = [
         dataField: 'subject_id',
         header: 'Case ID',
         sort: 'asc',
-        link: '/program/{subject_id}',
+        link: '/case/{subject_id}',
         display: true,
       },
       {
@@ -176,10 +176,16 @@ export const tabContainers = [
         display: true,
       },
       {
+        dataField: 'program_id',
+        header: 'Program ID',
+        sort: 'asc',
+        display: false,
+      },
+      {
         dataField: 'arm',
         header: 'Arm',
         sort: 'asc',
-        link: '/arm/{study_acronym}',
+        link: '/arm/{arm}',
         display: true,
       },
       {
@@ -268,7 +274,6 @@ export const tabContainers = [
         dataField: 'file_name',
         header: 'File Name',
         sort: 'asc',
-        link: '/program/{program_id}',
         primary: true,
         display: true,
       },
@@ -307,18 +312,27 @@ export const tabContainers = [
         dataField: 'program',
         header: 'Program Code',
         sort: 'asc',
+        link: '/program/{program_id}',
         display: true,
+      },
+      {
+        dataField: 'program_id',
+        header: 'Program ID',
+        sort: 'asc',
+        display: false,
       },
       {
         dataField: 'arm',
         header: 'Arm',
         sort: 'asc',
+        link: '/arm/{arm}',
         display: true,
       },
       {
         dataField: 'subject_id',
         header: 'Case ID',
         sort: 'asc',
+        link: '/case/{subject_id}',
         display: true,
       },
       {
@@ -499,6 +513,7 @@ export const DASHBOARD_QUERY = gql`{
     sample_id
     subject_id
     program
+    program_id
     arm
     diagnosis
     tissue_type
@@ -516,6 +531,7 @@ fileOverview(first: 10) {
   file_format
   file_size
   program
+  program_id
   arm
   subject_id
   sample_id
@@ -708,6 +724,7 @@ query fileOverview($subject_ids: [String], $offset: Int = 0, $first: Int = 10, $
     file_format
     file_size
     program
+    program_id
     arm
     subject_id
     sample_id
@@ -724,6 +741,7 @@ export const GET_SAMPLES_OVERVIEW_QUERY = gql`
     sample_id
     subject_id
     program
+    program_id
     arm
     diagnosis
     tissue_type
@@ -788,6 +806,7 @@ query fileOverviewDesc($subject_ids: [String], $offset: Int = 0, $first: Int = 1
     file_format
     file_size
     program
+    program_id
     arm
     subject_id
     sample_id
@@ -804,6 +823,7 @@ export const GET_SAMPLES_OVERVIEW_DESC_QUERY = gql`
     sample_id
     subject_id
     program
+    program_id
     arm
     diagnosis
     tissue_type

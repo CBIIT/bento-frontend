@@ -379,7 +379,10 @@ export async function singleCheckBox(payload) {
 export function toggleCheckBox(payload) {
   return () => {
     const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
-    toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+    // For performance issue we are using initial dasboardquery instead of fitered for empty filters
+    if (_.isEqual(currentAllFilterVariables, allFilters())) {
+      clearAllFilters();
+    } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
   };
 }
 
