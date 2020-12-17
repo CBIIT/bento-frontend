@@ -66,7 +66,7 @@ export const tabContainers = [
         dataField: 'program_id',
         header: 'Program ID',
         sort: 'asc',
-        display: false,
+        display: true,
       },
       {
         dataField: 'study_acronym',
