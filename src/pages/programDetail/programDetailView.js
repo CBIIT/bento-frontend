@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import {
   Grid,
   withStyles,
@@ -9,8 +8,6 @@ import {
   CustomDataTable,
   cn,
   manipulateLinks,
-  filterData,
-  getDonutDataFromDashboardData,
   getOptions,
   getColumns,
   CustomActiveDonut,
@@ -31,32 +28,6 @@ import colors from '../../utils/colors';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
-
-  const widgetData = useSelector((state) => (
-    state.dashboard
-      && state.dashboard.subjectOverView
-       && state.dashboard.subjectOverView.data
-      ? (
-        function extraData(d) {
-          return {
-            diagnosis: getDonutDataFromDashboardData(d, 'diagnosis'),
-            file: programData.num_files,
-          };
-        }(state.dashboard.subjectOverView.data.filter(
-          (d) => (filterData(d,
-            [{
-              groupName: 'Program',
-              name: programData.program_acronym,
-              datafield: 'program',
-              isChecked: true,
-            }])
-          ),
-        ))
-      )
-      : {
-        diagnosis: [],
-        file: 0,
-      }));
 
   const redirectTo = () => {
     setSideBarToLoading();
@@ -283,7 +254,7 @@ const ProgramView = ({ classes, data, theme }) => {
                       noPaddedTitle
                     >
                       <CustomActiveDonut
-                        data={widgetData[rightPanel.widget[0].dataField]}
+                        data={programData[rightPanel.widget[0].dataField] || []}
                         width={400}
                         height={225}
                         innerRadius={50}
