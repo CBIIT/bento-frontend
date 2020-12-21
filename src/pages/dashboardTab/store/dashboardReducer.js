@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import {
   customCheckBox,
-  updateCheckBox,
   getFilters,
   filterData,
   getCheckBoxData,
@@ -10,6 +9,7 @@ import {
   getDonutDataFromDashboardData,
   setSelectedFilterValues,
   transformInitialDataForSunburst,
+  transformAPIDataIntoCheckBoxData,
 } from 'bento-components';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
@@ -406,6 +406,27 @@ export function setDashboardTableLoading() {
   store.dispatch({ type: 'SET_DASHBOARDTABLE_LOADING' });
 }
 
+/**
+ *  updateFilteredAPIDataIntoCheckBoxData works for first time init Checkbox,
+that function transforms the data which returns from API into a another format
+so it contains more information and easy for front-end to show it correctly.
+ *  * @param {object} currentGroupCount
+ *  * @param {object} willUpdateGroupCount
+ * * @param {object} currentCheckboxSelection
+ * @return {json}
+ */
+export function updateFilteredAPIDataIntoCheckBoxData(data, facetSearchDataFromConfig) {
+  return (
+    facetSearchDataFromConfig.map((mapping) => ({
+      groupName: mapping.label,
+      checkboxItems: transformAPIDataIntoCheckBoxData(data[mapping.filterAPI], mapping.field),
+      datafield: mapping.datafield,
+      show: mapping.show,
+      section: mapping.section,
+    }))
+  );
+}
+
 export const getDashboard = () => getState();
 
 // reducers
@@ -425,8 +446,8 @@ const reducers = {
     isDashboardTableLoading: false,
   }),
   TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
-    const updatedCheckboxData1 = updateCheckBox(
-      state.checkbox.data, item.groups.data, item.filter[0], facetSearchData,
+    const updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
+      item.data, facetSearchData,
     );
     const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
     fetchDataForDashboardTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
