@@ -1,99 +1,61 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
 import { Link } from 'react-router-dom';
+import {
+  CustomDataTable,
+  cn,
+  manipulateLinks,
+  getOptions,
+  getColumns,
+  CustomActiveDonut,
+} from 'bento-components';
 import {
   pageTitle, table, externalLinkIcon,
   programDetailIcon, breadCrumb, aggregateCount,
   pageSubTitle, leftPanel, rightPanel,
 } from '../../bento/programDetailData';
-import manipultateLinks from '../../utils/helpers';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import cn from '../../utils/classNameConcat';
-import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
+import {
+  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
+} from '../dashboardTab/store/dashboardReducer';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import Widget from '../../components/Widgets/WidgetView';
-import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
-import {
-  filterData,
-  getDonutDataFromDashboardData,
-} from '../../utils/dashboardUtilFunctions';
+import colors from '../../utils/colors';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
 
-  const dispatch = useDispatch();
-
-  const widgetData = useSelector((state) => (
-    state.dashboard
-      && state.dashboard.subjectOverView
-       && state.dashboard.subjectOverView.data
-      ? (
-        function extraData(d) {
-          return {
-            diagnosis: getDonutDataFromDashboardData(d, 'diagnosis'),
-            file: programData.num_files,
-          };
-        }(state.dashboard.subjectOverView.data.filter(
-          (d) => (filterData(d,
-            [{
-              groupName: 'Program',
-              name: programData.program_acronym,
-              datafield: 'program',
-              isChecked: true,
-            }])
-          ),
-        ))
-      )
-      : {
-        diagnosis: [],
-        file: 0,
-      }));
-
-  // initDashboardStatus will be used in dispatch to
-  // make sure dashboard data has be loaded first.
-  const initDashboardStatus = () => () => Promise.resolve(
-    dispatch(fetchDataForDashboardDataTable()),
-  );
-
-  React.useEffect(() => {
-    // Update dashboard first
-    dispatch(initDashboardStatus());
-  }, []);
-
   const redirectTo = () => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
-        groupName: 'Program',
-        name: programData.program_acronym,
-        datafield: 'program',
-        isChecked: true,
-      }]));
-    });
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    singleCheckBox([{
+      datafield: 'programs',
+      groupName: 'Program',
+      isChecked: true,
+      name: programData.program_acronym,
+      section: 'Filter By Cases',
+    }]);
   };
 
   const redirectToArm = (programArm) => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
-        groupName: 'Arm',
-        name: programArm,
-        datafield: 'study_info',
-        isChecked: true,
-      }]));
-    });
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    singleCheckBox([{
+      datafield: 'studies',
+      groupName: 'Arm',
+      isChecked: true,
+      name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
+      section: 'Filter By Cases',
+    }]);
   };
 
   const stat = {
     numberOfPrograms: 1,
-    numberOfStudies: 1,
+    numberOfStudies: programData.num_subjects !== undefined ? programData.studies.length : 'undefined',
     numberOfSubjects: programData.num_subjects !== undefined ? programData.num_subjects : 'undefined',
     numberOfSamples: programData.num_samples !== undefined ? programData.num_samples : 'undefined',
     numberOfLabProcedures: programData.num_lab_procedures !== undefined ? programData.num_lab_procedures : 'undefined',
@@ -106,75 +68,7 @@ const ProgramView = ({ classes, data, theme }) => {
     isALink: true,
   }];
 
-  const updatedTableData = manipultateLinks(table.columns);
-  const updatedAttributesData = manipultateLinks(leftPanel.attributes);
-
-  const columns = updatedTableData.slice(0, 10).map((column) => ({
-    name: column.dataField,
-    label: column.header,
-    options: {
-      display: column.display ? column.display : true,
-      filter: false,
-      customBodyRender: (value, tableMeta) => (
-        <div>
-          {
-          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
-            : column.externalLink ? (
-              <span className={classes.linkSpan}>
-                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
-                <img
-                  src={externalLinkIcon.src}
-                  alt={externalLinkIcon.alt}
-                  className={classes.externalLinkIcon}
-                />
-              </span>
-            )
-              : column.dataField === 'num_subjects' ? (
-                <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectToArm(`${tableMeta.rowData[0]}: ${tableMeta.rowData[1]}`)}>{value}</Link>
-              )
-                : `${value}`
-}
-        </div>
-      ),
-    },
-  }));
-
-  const options = {
-    selectableRows: 'none',
-    responsive: 'stacked',
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    viewColumns: false,
-    pagination: true,
-    sortOrder: {
-      name: table.defaultSortField,
-      direction: table.defaultSortDirection,
-    },
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-      <TableFooter>
-        <div>
-          {count >= 11
-            ? (
-              <TableRow>
-                <TablePagination
-                  className={classes.root}
-                  count={count}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-          // eslint-disable-next-line no-shadow
-                  onChangePage={(_, page) => changePage(page)}
-                />
-              </TableRow>
-            )
-            : ''}
-        </div>
-      </TableFooter>
-    ),
-  };
+  const updatedAttributesData = manipulateLinks(leftPanel.attributes);
 
   return (
     <>
@@ -360,14 +254,17 @@ const ProgramView = ({ classes, data, theme }) => {
                       noPaddedTitle
                     >
                       <CustomActiveDonut
-                        data={widgetData[rightPanel.widget[0].dataField]}
+                        data={programData[rightPanel.widget[0].dataField] || []}
                         width={400}
                         height={225}
                         innerRadius={50}
                         outerRadius={75}
                         cx="50%"
                         cy="50%"
-                        fontSize="15px"
+                        fontSize="12px"
+                        colors={colors}
+                        titleLocation="bottom"
+                        titleAlignment="center"
                       />
                     </Widget>
                   </Grid>
@@ -414,8 +311,8 @@ const ProgramView = ({ classes, data, theme }) => {
                   <Typography>
                     <CustomDataTable
                       data={data.programDetail[table.dataField]}
-                      columns={columns}
-                      options={options}
+                      columns={getColumns(table, classes, data, externalLinkIcon, '/cases', redirectToArm)}
+                      options={getOptions(table, classes)}
                     />
                   </Typography>
                 </Grid>
@@ -606,7 +503,7 @@ const styles = (theme) => ({
     margin: 'auto',
     marginBlockEnd: '24px',
     paddingTop: '24px',
-    paddingLeft: '36px',
+    paddingLeft: '5px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -635,7 +532,7 @@ const styles = (theme) => ({
   },
   detailContainerLeft: {
     display: 'block',
-    padding: '5px  20px 5px 2px !important',
+    padding: '5px  20px 5px 0px !important',
     minHeight: '500px',
     maxHeight: '500px',
     overflowY: 'auto',
@@ -647,7 +544,7 @@ const styles = (theme) => ({
     borderRight: '#81a6b9 1px solid',
   },
   detailContainerRight: {
-    padding: '5px 0 5px 20px !important',
+    padding: '5px 0 5px 36px !important',
     minHeight: '500px',
     maxHeight: '500px',
     overflowY: 'auto',
@@ -672,7 +569,7 @@ const styles = (theme) => ({
     maxWidth: '1340px',
     margin: 'auto',
     paddingTop: '50px',
-    paddingLeft: '30px',
+    paddingLeft: '0px',
   },
 
   headerButtonLink: {

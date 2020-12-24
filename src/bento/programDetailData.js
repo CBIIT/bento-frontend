@@ -73,7 +73,7 @@ const leftPanel = {
 const rightPanel = {
   widget: [
     {
-      dataField: 'diagnosis',
+      dataField: 'diagnoses',
       label: 'Diagnosis',
       display: true,
     },
@@ -101,6 +101,8 @@ const table = {
   defaultSortField: 'study_acronym',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  // Set 'selectableRows' to true to show the row selection
+  selectableRows: false,
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -142,6 +144,10 @@ query programDetail($program_id: String!) {
     num_samples
     num_lab_procedures
     disease_subtypes
+    diagnoses {
+      group
+      subjects
+    }
     studies { 
       study_name
       study_type

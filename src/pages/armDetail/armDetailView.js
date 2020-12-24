@@ -1,14 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import {
   Grid,
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { CustomDataTable } from 'bento-components';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
+import { getOptions, getColumns, CustomActiveDonut } from 'bento-components';
+import GridWithFooter from '../../components/GridWithFooter/GridView';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
@@ -17,100 +15,44 @@ import {
   header,
   subsections,
   table,
+  tooltipContent,
 } from '../../bento/armDetailData';
-import formatBytes from '../../utils/formatBytes';
-// import { fetchDataForDashboardDataTable, singleCheckBox } from '../dashboard/dashboardState';
-
-import { singleCheckBox } from '../dashboard/dashboardState';
+import {
+  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
+} from '../dashboardTab/store/dashboardReducer';
 import Widget from '../../components/Widgets/WidgetView';
-import CustomActiveDonut from '../../components/Widgets/PieCharts/CustomActiveDonut/CustomActiveDonutController';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
-
-const FileCount = ({ num_files: numFiles, classes }) => (
-  <div className={classes.widgetContainer}>
-    <div className={classes.numberOfFiles}>Number of Files</div>
-
-    <Grid container className={classes.fileCountContainer}>
-      <Grid item xs={12}>
-        <div className={classes.fileIconContainer}>
-          <img
-            src={fileCountIcon}
-            alt="Bento file count icon"
-            className={classes.fileIcon}
-          />
-          <div className={classes.fileCountText}>
-            <span className={classes.fileNumber}>{numFiles}</span>
-          </div>
-        </div>
-      </Grid>
-    </Grid>
-  </div>
-);
-
-const options = (classes) => ({
-  selectableRows: 'none',
-  responsive: 'stacked',
-  search: false,
-  filter: false,
-  searchable: false,
-  print: false,
-  download: false,
-  viewColumns: false,
-  pagination: true,
-  sortOrder: {
-    name: table.defaultSortField,
-    direction: table.defaultSortDirection,
-  },
-  customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-    <TableFooter>
-      <TableRow>
-        <TablePagination
-          className={count >= 11 ? classes.root : classes.noDisplay}
-          count={count}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-          // eslint-disable-next-line no-shadow
-          onChangePage={(_, page) => changePage(page)}
-        />
-      </TableRow>
-    </TableFooter>
-  ),
-});
+import NumberOfThings from '../../components/NumberOfThings';
+import Snackbar from '../../components/Snackbar';
+import colors from '../../utils/colors';
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  // React.useEffect(() => {
-  //   // Update dashboard first
-  //   dispatch(fetchDataForDashboardDataTable());
-  // }, []);
+  const [snackbarState, setsnackbarState] = React.useState({
+    open: false,
+    value: 0,
+  });
+  function openSnack(value1) {
+    setsnackbarState({ open: true, value: value1 });
+  }
+  function closeSnack() {
+    setsnackbarState({ open: false });
+  }
 
-  const redirectTo = async () => {
-    dispatch(singleCheckBox([{
+  const redirectTo = () => {
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    singleCheckBox([{
+      datafield: 'studies',
       groupName: 'Arm',
-      name: data.study_info,
-      datafield: 'study_info',
       isChecked: true,
-    }]));
+      name: data.study_info,
+      section: 'Filter By Cases',
+    }]);
   };
 
-  const columns = table.columns.map((column, index) => (
-    {
-      name: column.dataField,
-      label: column.header,
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes[`tableCell${index + 1}`]}>
-            {' '}
-            {column.formatBytes ? formatBytes(value) : value}
-            {' '}
-          </div>
-        ),
-      },
-    }
-  ));
   const stat = {
     numberOfPrograms: 1,
     numberOfStudies: 1,
@@ -122,6 +64,12 @@ const ArmDetail = ({ data, classes }) => {
 
   return (
     <>
+      <Snackbar
+        snackbarState={snackbarState}
+        closeSnack={closeSnack}
+        autoHideDuration={3000}
+        classes={classes}
+      />
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -170,7 +118,7 @@ const ArmDetail = ({ data, classes }) => {
 
           <Grid container className={classes.detailContainer}>
             {/* Left panel */}
-            <Grid item lg={7} sm={6} xs={12} className={classes.detailPanel}>
+            <Grid item lg={7} sm={6} xs={12} className={[classes.detailPanel, classes.leftPanel]}>
               <div className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   { subsections.slice(0, 6).map((section, index) => (
@@ -181,7 +129,7 @@ const ArmDetail = ({ data, classes }) => {
             </Grid>
             {/* Left panel end */}
             {/* Right panel */}
-            <Grid item lg={5} sm={6} xs={12} className={classes.detailPanel}>
+            <Grid item lg={5} sm={6} xs={12} className={[classes.detailPanel, classes.rightPanel]}>
               <div className={classes.innerPanel}>
                 {/* Diagnosis donut */}
                 <div className={classes.widgetContainer}>
@@ -201,12 +149,15 @@ const ArmDetail = ({ data, classes }) => {
                       outerRadius={75}
                       cx="50%"
                       cy="50%"
-                      fontSize="15px"
+                      fontSize="12px"
+                      colors={colors}
+                      titleLocation="bottom"
+                      titleAlignment="center"
                     />
                   </Widget>
                 </div>
                 {/* File count */}
-                <FileCount classes={classes} num_files={data.num_files} />
+                <NumberOfThings classes={classes} number={data.num_files} icon={fileCountIcon} title="NUMBER OF FILES" alt="Bento file count icon" />
               </div>
             </Grid>
             {/* Right panel end */}
@@ -222,10 +173,21 @@ const ArmDetail = ({ data, classes }) => {
                     <Grid item xs={12}>
                       <Grid container spacing={4}>
                         <Grid item xs={12}>
-                          <CustomDataTable
+                          <GridWithFooter
+                            tableConfig={table}
                             data={data[table.filesField]}
-                            columns={columns.slice(0, 10)}
-                            options={options(classes)}
+                            columns={getColumns(table, classes, data)}
+                            options={getOptions(table, classes)}
+                            customOnRowsSelect={table.customOnRowsSelect}
+                            openSnack={openSnack}
+                            closeSnack={closeSnack}
+                            disableRowSelection={table.disableRowSelection}
+                            buttonText={table.buttonText}
+                            saveButtonDefaultStyle={table.saveButtonDefaultStyle}
+                            ActiveSaveButtonDefaultStyle={table.ActiveSaveButtonDefaultStyle}
+                            DeactiveSaveButtonDefaultStyle={table.DeactiveSaveButtonDefaultStyle}
+                            tooltipMessage={table.tooltipMessage}
+                            tooltipContent={tooltipContent}
                           />
                         </Grid>
                         <Grid item xs={8}>
@@ -338,7 +300,7 @@ const styles = (theme) => ({
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    padding: '5px 0 10px 10px',
+    padding: '5px 0 10px 0px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -349,13 +311,19 @@ const styles = (theme) => ({
   detailPanel: {
     borderRight: 'solid 1px #81A6BA',
   },
+  leftPanel: {
+    paddingLeft: '0px',
+  },
+  rightPanel: {
+    paddingLeft: '16px !important',
+  },
   innerPanel: {
     height: '100%',
     minHeight: '590px',
     maxHeight: '700px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    paddingLeft: '16px',
+    paddingLeft: '0px',
     paddingRight: '40px',
     scrollbarColor: '#697270',
   },
@@ -409,7 +377,7 @@ const styles = (theme) => ({
   },
   tableContainer: {
     background: '#FFFFFF',
-    padding: '0 117px',
+    padding: '0 0px',
   },
   tableHeader: {
     paddingLeft: '32px',
@@ -426,6 +394,19 @@ const styles = (theme) => ({
     letterSpacing: '0.025em',
     color: '#3695A9',
     paddingBottom: '19px',
+  },
+  link: {
+    color: '#DC762F',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  externalLinkIcon: {
+    width: '14.5px',
+    verticalAlign: 'sub',
+    marginLeft: '4px',
+    paddingBottom: '2px',
   },
 });
 

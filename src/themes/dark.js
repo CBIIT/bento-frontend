@@ -280,17 +280,20 @@ export default {
       responsiveStacked: {
         transform: 'rotateX(180deg)',
       },
+      responsiveBase: {
+        transform: 'rotateX(180deg)',
+      },
       tableRoot: {
         transform: 'rotateX(180deg)',
+        borderTop: '3px solid #e7e5e5',
       },
     },
     MUIDataTableSelectCell: {
       fixedHeader: {
         position: 'relative',
-
       },
       headerCell: {
-        borderBottom: '2px solid #42779A',
+        borderBottom: '3px solid #42779A',
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
 
@@ -322,7 +325,6 @@ export default {
       fixedHeader: {
         position: 'relative',
         borderTop: tableHeaderBorder,
-        borderBottom: tableHeaderBorder,
         color: tableHeaderFontColor,
         backgroundColor: tableHeader,
         textDecoration: 'underline',
@@ -356,6 +358,7 @@ export default {
     },
     MUIDataTableBodyRow: {
       root: {
+        backgroundColor: 'transparent !important',
         '&:nth-child(even)': {
           color: '#004C73',
         },
@@ -365,10 +368,16 @@ export default {
         },
       },
     },
+    MUIDataTableFooter: {
+      root: {
+        borderBottom: '3px solid #e7e5e5',
+        borderTop: '5px solid #e7e5e5',
+      },
+    },
     MuiTableRow: {
       head: {
         height: 40,
-        borderBottom: '2px solid #42779A',
+        borderBottom: '3px solid #42779A',
       },
       root: {
         height: 40,
@@ -403,7 +412,7 @@ export default {
       titleText: {
 
         color: tableHeaderFontColor,
-        fontSize: '25.2pt',
+        // fontSize: '25.2pt',
         fontFamily: tableFontFamily,
         letterSpacing: '0.025em',
         fontStyle: 'normal',
@@ -477,6 +486,20 @@ export default {
       stackedParent: {
         '&:first-child': {
           paddingLeft: '30px',
+        },
+      },
+    },
+    MuiExpansionPanel: {
+      root: {
+        '&$expanded': {
+          margin: 'unset',
+        },
+      },
+    },
+    MuiCheckbox: {
+      colorSecondary: {
+        '&:first-child': {
+          color: '#000000',
         },
       },
     },

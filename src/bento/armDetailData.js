@@ -1,4 +1,11 @@
 import gql from 'graphql-tag';
+import { FileOnRowsSelect } from '../utils/fileTable';
+
+// --------------- Tooltip configuration --------------
+export const tooltipContent = {
+  src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
+  alt: 'tooltipIcon',
+};
 
 // -------------- Case ID area configurations --------------
 const header = {
@@ -41,11 +48,16 @@ const subsections = [
   },
 ];
 
-// --------------- File table configuration --------------
+// Ideal size for externalLinkIcon is 16x16 px
+export const externalLinkIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+  alt: 'External link icon',
+};
 
+// --------------- File table configuration --------------
 const table = {
   // Set 'display' to false to hide the table entirely
-  display: false,
+  display: true,
   // Table title
   title: 'ASSOCIATED FILES',
   // Field name for files data, need to be updated only when using a different GraphQL query
@@ -54,7 +66,29 @@ const table = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // A maximum of 10 columns are allowed
+  // Set 'selectableRows' to true to show the row selection
+  selectableRows: true,
+  tooltipMessage: 'Click button to add selected files.',
+  helpMessage: 'Here help message',
+  // Text to appear on Add to cart button
+  buttonText: 'Add Selected Files',
+  saveButtonDefaultStyle: {
+    color: '#fff',
+    backgroundColor: '#09A175',
+    opacity: '1',
+    border: '0px',
+    cursor: 'pointer',
+  },
+  ActiveSaveButtonDefaultStyle: {
+    disabled: 'true',
+    opacity: '0.3',
+    cursor: 'auto',
+  },
+  DeactiveSaveButtonDefaultStyle: {
+    cursor: 'pointer',
+    opacity: 'unset',
+    border: 'unset',
+  },
   columns: [
     {
       dataField: 'file_name',
@@ -63,10 +97,6 @@ const table = {
     {
       dataField: 'file_type',
       header: 'File Type',
-    },
-    {
-      dataField: 'association',
-      header: 'Association',
     },
     {
       dataField: 'file_description',
@@ -83,6 +113,9 @@ const table = {
       formatBytes: true,
     },
   ],
+  // Util Functions
+  // Custom function on selct checkbox is selected.
+  customOnRowsSelect: FileOnRowsSelect,
 };
 
 // --------------- GraphQL query configuration --------------

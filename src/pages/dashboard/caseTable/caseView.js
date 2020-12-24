@@ -6,25 +6,14 @@ import {
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { CustomDataTable } from 'bento-components';
+import { CustomDataTable, manipultateLinks } from 'bento-components';
 import Snackbar from '@material-ui/core/Snackbar';
-// import { Link } from 'react-router-dom';
 import { dashboardTable, externalLinkIcon } from '../../../bento/dashboardData';
-import manipultateLinks from '../../../utils/helpers';
 import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import { cartSelectionMessages } from '../../../bento/cartWorkflowData';
 import CustomFooter from './customFooter';
 import { toggleCheckBox } from '../dashboardState';
-import { receiveCases } from '../../selectedCases/selectedCasesState';
-
-// const tableStyle = (ratio = 1) => ({
-//   : ((((document.documentElement.clientWidth - 280) * 0.6) / 10) * ratio),
-//   overflow: 'hidden',
-//   overflowWrap:' break-wor',;
-//   maxWidth: ((((document.documentElement.clientWidth - 280) * 0.6) / 10) * ratio),
-//   minWidth: '100px',
-// }
-// );
+import { addToCart } from '../../fileCentricCart/store/cart';
 
 const Cases = ({ classes, data }) => {
   const [snackbarState, setsnackbarState] = React.useState({
@@ -45,7 +34,7 @@ const Cases = ({ classes, data }) => {
       ? state.dashboard.datatable.filters : []));
 
   // Get the existing caseIds from MyCases cart state
-  const caseIds = useSelector((state) => state.cart.cases);
+  const caseIds = useSelector((state) => state.cart.subjectIds);
 
   // The bubble below will shows in the dashboard and work as
   // When user select and filters
@@ -129,7 +118,7 @@ const Cases = ({ classes, data }) => {
     if (uniqueCases > 0) {
       openSnack(uniqueCases);
     }
-    dispatch(receiveCases(selectedCaseIds));
+    addToCart({ subjectIds: selectedCaseIds });
     selectedCaseIds = [];
   }
 

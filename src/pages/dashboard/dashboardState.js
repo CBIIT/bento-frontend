@@ -1,7 +1,3 @@
-import client from '../../utils/graphqlClient';
-import { GET_DASHBOARD_DATA_QUERY, widgetsData, GET_DASHBOARD_TABLE_DATA_QUERY } from '../../bento/dashboardData';
-import { globalStatsData as statsCount } from '../../bento/globalStatsData';
-
 import {
   getStatDataFromDashboardData,
   getSunburstDataFromDashboardData,
@@ -11,7 +7,12 @@ import {
   getCheckBoxData,
   customCheckBox,
   transformInitialDataForSunburst,
-} from '../../utils/dashboardUtilFunctions';
+} from 'bento-components';
+import client from '../../utils/graphqlClient';
+import {
+  GET_DASHBOARD_DATA_QUERY, widgetsData, GET_DASHBOARD_TABLE_DATA_QUERY, facetSearchData,
+} from '../../bento/dashboardData';
+import { globalStatsData as statsCount } from '../../bento/globalStatsData';
 
 export const initialState = {
   dashboard: {
@@ -282,7 +283,7 @@ export default function dashboardReducer(state = initialState, action) {
     }
     case RECEIVE_DASHBOARD: {
       // get action data
-      const checkboxData = customCheckBox(action.payload.data);
+      const checkboxData = customCheckBox(action.payload.data, facetSearchData);
       return action.payload.data
         ? {
           ...state.dashboard,

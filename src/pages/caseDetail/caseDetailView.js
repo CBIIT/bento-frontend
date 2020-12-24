@@ -3,64 +3,39 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
+import _ from 'lodash';
 import { useDispatch } from 'react-redux';
+import { getOptions, getColumns } from 'bento-components';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
+import GridWithFooter from '../../components/GridWithFooter/GridView';
 import icon from '../../assets/icons/Cases.Icon.svg';
-import formatBytes from '../../utils/formatBytes';
 import Subsection from '../../components/PropertySubsection/caseDetailSubsection';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import {
   caseHeader,
   leftPanel,
   rightPanel,
-  table,
+  table1,
+  table2,
+  externalLinkIcon,
+  tooltipContent,
 } from '../../bento/caseDetailData';
+import Snackbar from '../../components/Snackbar';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 
-const options = (classes) => ({
-  selectableRows: 'none',
-  responsive: 'stacked',
-  search: false,
-  filter: false,
-  searchable: false,
-  print: false,
-  download: false,
-  viewColumns: false,
-  pagination: true,
-  sortOrder: {
-    name: table.defaultSortField,
-    direction: table.defaultSortDirection,
-  },
-  customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-    <TableFooter>
-      <div>
-        {count >= 11
-          ? (
-            <TableRow>
-              <TablePagination
-                className={classes.root}
-                count={count}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-          // eslint-disable-next-line no-shadow
-                onChangePage={(_, page) => changePage(page)}
-              />
-            </TableRow>
-          )
-          : ''}
-      </div>
-    </TableFooter>
-  ),
-});
-
 // Main case detail component
-const CaseDetail = ({ data, classes }) => {
+const CaseDetail = ({ data, filesOfSamples, classes }) => {
+  const [snackbarState, setsnackbarState] = React.useState({
+    open: false,
+    value: 0,
+  });
+  function openSnack(value1) {
+    setsnackbarState({ open: true, value: value1 });
+  }
+  function closeSnack() {
+    setsnackbarState({ open: false });
+  }
   const dispatch = useDispatch();
 
   // make sure dashboard data has been loaded first for stats bar to work
@@ -74,7 +49,7 @@ const CaseDetail = ({ data, classes }) => {
     numberOfSubjects: 1,
     numberOfSamples: data.num_samples,
     numberOfLabProcedures: data.num_lab_procedures,
-    numberOfFiles: data[table.filesField].length,
+    numberOfFiles: data.files.length,
   };
 
   const breadCrumbJson = [{
@@ -83,24 +58,35 @@ const CaseDetail = ({ data, classes }) => {
     isALink: true,
   }];
 
-  const columns = table.columns.slice(0, 10).map((column, index) => (
-    {
-      name: column.dataField,
-      label: column.header,
-      options: {
-        customBodyRender: (value) => (
-          <div className={classes[`tableCell${index + 1}`]}>
-            {' '}
-            {column.formatBytes ? formatBytes(value) : value}
-            {' '}
-          </div>
-        ),
-      },
+  // those are questioning codes for ICDC only, need to remove from here.
+  const filesOfSamplesObj = filesOfSamples.reduce(
+    (obj, item) => ({ ...obj, [item.sample_id]: item.files }), {},
+  );
+
+  // NOTE: Needs improvement.
+  const datFieldsFromRoot = [];
+  table1.columns.forEach((e) => (e.dataFromRoot ? datFieldsFromRoot.push(e.dataField) : null));
+
+  const samplesData = data.samples.map((s) => {
+    const files = filesOfSamplesObj[s.sample_id];
+    const sample = _.cloneDeep(s);
+    sample.files = files;
+    if (datFieldsFromRoot.length > 0) {
+      datFieldsFromRoot.forEach((e) => {
+        sample[e] = data[e];
+      });
     }
-  ));
+    return sample;
+  });
 
   return (
     <>
+      <Snackbar
+        snackbarState={snackbarState}
+        closeSnack={closeSnack}
+        autoHideDuration={3000}
+        classes={classes}
+      />
       <StatsView data={stat} />
       <div className={classes.container}>
         <div className={classes.innerContainer}>
@@ -138,7 +124,7 @@ const CaseDetail = ({ data, classes }) => {
 
           <Grid container spacing={1} className={classes.detailContainer}>
             {/* Left panel */}
-            <Grid item sm={6} xs={12} className={classes.detailPanel}>
+            <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.leftPanel]}>
               <div className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {leftPanel.slice(0, 3).map((section) => (
@@ -153,8 +139,8 @@ const CaseDetail = ({ data, classes }) => {
             </Grid>
             {/* Left panel end */}
             {/* Right panel */}
-            <Grid item sm={6} xs={12} className={classes.detailPanel}>
-              <div className={classes.innerPanel}>
+            <Grid item sm={6} xs={12} className={[classes.detailPanel, classes.rightPanel]}>
+              <div style={{ paddingLeft: '7px' }} className={classes.innerPanel}>
                 <Grid container spacing={2}>
                   {rightPanel.slice(0, 3).map((section) => (
                     <Subsection
@@ -170,32 +156,73 @@ const CaseDetail = ({ data, classes }) => {
           </Grid>
         </div>
       </div>
-      {
-        table.display
-          ? (
-            <div id="table_case_detail" className={classes.tableContainer}>
-              <div className={classes.tableDiv}>
-                <div className={classes.tableTitle}>
-                  <span className={classes.tableHeader}>{table.title}</span>
-                </div>
-                <Grid item xs={12}>
-                  <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                      <CustomDataTable
-                        data={data[table.filesField]}
-                        columns={columns}
-                        options={options(classes)}
-                      />
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography />
-                    </Grid>
+      {table1.display
+        ? (
+          <div id="table_case_detail_samples" className={classes.tableContainer}>
+            <div className={classes.tableDiv}>
+              <Grid item xs={12}>
+                <Grid container spacing={4}>
+                  <Grid item xs={12}>
+                    <GridWithFooter
+                      data={samplesData}
+                      title={(
+                        <div className={classes.tableTitle}>
+                          <span className={classes.tableHeader}>{table1.tableTitle}</span>
+                        </div>
+                      )}
+                      columns={getColumns(table1, classes, data, externalLinkIcon)}
+                      options={getOptions(table1, classes)}
+                      customOnRowsSelect={table1.customOnRowsSelect}
+                      openSnack={openSnack}
+                      closeSnack={closeSnack}
+                      disableRowSelection={table1.disableRowSelection}
+                      buttonText={table1.buttonText}
+                      saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
+                      ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
+                      DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
+                      tooltipMessage={table1.tooltipMessage}
+                      tooltipContent={tooltipContent}
+                    />
                   </Grid>
                 </Grid>
-              </div>
+              </Grid>
             </div>
-          ) : ''
-      }
+          </div>
+        ) : ''}
+      {table2.display
+        ? (
+          <div id="table_case_detail_samples" className={classes.tableContainer}>
+            <div className={classes.tableDiv}>
+              <Grid item xs={12}>
+                <Grid container spacing={4}>
+                  <Grid item xs={12}>
+                    <GridWithFooter
+                      data={data[table2.subjectDetailField]}
+                      title={(
+                        <div className={classes.tableTitle}>
+                          <span className={classes.tableHeader}>{table2.tableTitle}</span>
+                        </div>
+                      )}
+                      columns={getColumns(table2, classes, data)}
+                      options={getOptions(table2, classes)}
+                      customOnRowsSelect={table2.customOnRowsSelect}
+                      openSnack={openSnack}
+                      closeSnack={closeSnack}
+                      disableRowSelection={table2.disableRowSelection}
+                      buttonText={table2.buttonText}
+                      saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
+                      ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
+                      DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
+                      tooltipMessage={table2.tooltipMessage}
+                      tooltipContent={tooltipContent}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </div>
+          </div>
+        ) : ''}
+      <div className={classes.blankSpace} />
     </>
   );
 };
@@ -214,7 +241,7 @@ const styles = (theme) => ({
   },
   root: {
     fontFamily: theme.custom.fontFamily,
-    fontSize: '9px',
+    fontSize: '12px',
     letterSpacing: '0.025em',
     color: '#000',
     background: '#f3f3f3',
@@ -254,10 +281,17 @@ const styles = (theme) => ({
     marginTop: '-6px',
     filter: 'drop-shadow( 2px 2px 2px rgba(0, 0, 0, 0.2))',
   },
+  link: {
+    color: '#DC762F',
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
   detailContainer: {
     maxWidth: theme.custom.maxContentWidth,
     margin: 'auto',
-    padding: '26px 10px',
+    padding: '26px 10px 26px 0px',
     fontFamily: theme.custom.fontFamily,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -269,26 +303,32 @@ const styles = (theme) => ({
     paddingBottom: '0 !important',
     borderRight: '1px solid #81A6BA',
   },
+  leftPanel: {
+    paddingLeft: '25px !important',
+  },
+  rightPanel: {
+    paddingLeft: '16px !important',
+  },
   innerPanel: {
     height: '100%',
     minHeight: '209px',
     maxHeight: '380px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    paddingLeft: '16px',
+    paddingLeft: '0px',
     scrollbarColor: '#697270',
+  },
+  innerPanelRight: {
+    paddingLeft: '30px',
   },
   tableContainer: {
     background: '#f3f3f3',
   },
-  tableHeader: {
-    paddingLeft: '32px',
-  },
   tableDiv: {
     maxWidth: '1340px',
     margin: 'auto',
-    paddingTop: '50px',
-    paddingLeft: '30px',
+    paddingTop: '30px',
+    paddingLeft: '0px',
   },
   tableTitle: {
     textTransform: 'uppercase',
@@ -296,10 +336,22 @@ const styles = (theme) => ({
     fontSize: '17px',
     letterSpacing: '0.025em',
     color: '#3695A9',
-    paddingBottom: '19px',
   },
   breadCrumb: {
     paddingTop: '3px',
+  },
+  snackBarMessageIcon: {
+    verticalAlign: 'middle',
+  },
+  externalLinkIcon: {
+    width: '14.5px',
+    verticalAlign: 'sub',
+    marginLeft: '4px',
+    paddingBottom: '2px',
+  },
+  blankSpace: {
+    height: '73px',
+    background: '#f3f3f3',
   },
 });
 

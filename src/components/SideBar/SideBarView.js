@@ -1,22 +1,22 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
-  withStyles, Divider, Drawer, List, Button,
+  withStyles, Drawer, List, Button,
 } from '@material-ui/core';
-import cn from '../../utils/classNameConcat';
 import FacetFilter from './SideBarComponents/FacetFilters';
 import { facetSearchData } from '../../bento/dashboardData';
-import { toggleCheckBox } from '../../pages/dashboard/dashboardState';
-import { unselectFilters } from '../../utils/dashboardUtilFunctions';
+import { clearAllFilters } from '../../pages/dashboardTab/store/dashboardReducer';
 
 const drawerWidth = 240;
 
 const SideBarContent = ({ classes }) => {
-  const dispatch = useDispatch();
   const activeFilters = useSelector((state) => (
-    state.dashboard.datatable
-      && state.dashboard.datatable.filters
-      ? state.dashboard.datatable.filters : []));
+    state.dashboardTab
+      && state.dashboardTab.allActiveFilters
+      ? state.dashboardTab.allActiveFilters : {}));
+  const activeFiltersCount = Object.entries(activeFilters).reduce(
+    (acc, [key, val]) => acc + (val.length), 0, // eslint-disable-line no-unused-vars
+  );
   const countFilters = facetSearchData
     ? facetSearchData.reduce((n, facet) => n + (facet.show === true), 0) : 0;
   return (
@@ -36,24 +36,21 @@ const SideBarContent = ({ classes }) => {
     >
       { countFilters > 0 && (
       <div>
-        <div className={classes.drawerAppBar}>
-          <div className={cn(classes.floatLeft, classes.filterTitle)}> Filter Cases</div>
+        <div>
           <div className={classes.floatRight}>
             <Button
               id="button_sidebar_clear_all_filters"
               variant="outlined"
-              disabled={activeFilters.length === 0}
-              onCl
+              disabled={activeFiltersCount === 0}
               className={classes.customButton}
               classes={{ root: classes.clearAllButtonRoot }}
-              onClick={() => dispatch(toggleCheckBox(unselectFilters(activeFilters)))}
+              onClick={() => clearAllFilters()}
               disableRipple
             >
               CLEAR ALL
             </Button>
           </div>
         </div>
-        <Divider variant="middle" classes={{ root: classes.dividerRoot }} />
         <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>
           <FacetFilter />
         </List>
@@ -66,9 +63,6 @@ const SideBarContent = ({ classes }) => {
 const styles = (theme) => ({
   drawerPaperRoot: {
     backgroundColor: 'transparent',
-  },
-  drawerAppBar: {
-    height: '54px',
   },
   drawer: {
     width: drawerWidth,
@@ -84,9 +78,7 @@ const styles = (theme) => ({
     border: 'none',
   },
   floatRight: {
-    float: 'right',
-    marginTop: '13px',
-    marginRight: '10px',
+    margin: '14px 0px 14px 9px',
   },
   floatLeft: {
     float: 'left',
@@ -123,6 +115,9 @@ const styles = (theme) => ({
   listRoot: {
     paddingTop: 0,
     paddingBottom: 1,
+    height: '900px',
+    overflowX: 'hidden',
+    overflowY: 'auto',
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',

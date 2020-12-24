@@ -1,108 +1,30 @@
-/* eslint-disable no-param-reassign */
 import React from 'react';
 import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
-
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { CustomDataTable, getOptions, getColumns } from 'bento-components';
 import {
   table, programListingIcon, externalLinkIcon,
 } from '../../bento/programData';
-import manipultateLinks from '../../utils/helpers';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { singleCheckBox, fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
-
-const updatedData = manipultateLinks(table.columns);
+import {
+  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
+} from '../dashboardTab/store/dashboardReducer';
 
 const Programs = ({ classes, data }) => {
-  const initDashboardStatus = () => (dispatch) => Promise.resolve(
-    dispatch(fetchDataForDashboardDataTable()),
-  );
-
-  const dispatch = useDispatch();
-  const redirectTo = (trial) => {
-    dispatch(initDashboardStatus()).then(() => {
-      dispatch(singleCheckBox([{
-        groupName: 'Program',
-        name: trial,
-        datafield: 'program',
-        isChecked: true,
-      }]));
-    });
+  const redirectTo = (program) => {
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    singleCheckBox([{
+      datafield: 'programs',
+      groupName: 'Program',
+      isChecked: true,
+      name: program.rowData[0],
+      section: 'Filter By Cases',
+    }]);
   };
-
-  const columns = updatedData.slice(0, 10).map((column) => ({
-    name: column.dataField,
-    label: column.header,
-    options: {
-      display: column.display ? column.display : true,
-      filter: false,
-      customBodyRender: (value, tableMeta) => (
-        <div>
-          {
-          column.internalLink ? <Link className={classes.link} to={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`}>{value}</Link>
-            : column.externalLink ? (
-              <span className={classes.linkSpan}>
-                <a href={`${column.actualLink}${tableMeta.rowData[column.actualLinkId]}`} target="_blank" rel="noopener noreferrer" className={classes.link}>{value}</a>
-                <img
-                  src={externalLinkIcon.src}
-                  alt={externalLinkIcon.alt}
-                  className={classes.externalLinkIcon}
-                />
-              </span>
-            )
-              : column.dataField === 'num_subjects' ? <Link className={classes.link} to={(location) => ({ ...location, pathname: '/cases' })} onClick={() => redirectTo('TAILORx')}>{value}</Link>
-                : `${value}`
-}
-        </div>
-      ),
-    },
-  }));
-
-  const options = () => ({
-    selectableRows: 'none',
-    responsive: 'stacked',
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    viewColumns: false,
-    pagination: true,
-    rowsPerPageOptions: [10, 25, 50, 100],
-    sortOrder: {
-      name: table.defaultSortField,
-      direction: table.defaultSortDirection,
-    },
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => (
-      <TableFooter>
-        <div>
-          {count >= 11
-            ? (
-              <TableRow>
-                <TablePagination
-                  className={classes.root}
-                  count={count}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  onChangeRowsPerPage={(event) => changeRowsPerPage(event.target.value)}
-              // eslint-disable-next-line no-shadow
-                  onChangePage={(_, page) => changePage(page)}
-                />
-              </TableRow>
-            )
-            : ''}
-        </div>
-      </TableFooter>
-    ),
-  });
 
   return (
     <>
@@ -134,8 +56,8 @@ const Programs = ({ classes, data }) => {
                 <Grid item xs={12}>
                   <CustomDataTable
                     data={data[table.dataField]}
-                    columns={columns}
-                    options={options(classes)}
+                    columns={getColumns(table, classes, data, externalLinkIcon, '/cases', redirectTo)}
+                    options={getOptions(table, classes)}
                   />
                 </Grid>
               </Grid>
@@ -221,21 +143,8 @@ const styles = (theme) => ({
   tableDiv: {
     margin: 'auto',
   },
-  tableCell1: {
-    paddingLeft: '25px',
-    width: '230px',
-  },
-  tableCell2: {
-    width: '230px',
-  },
-  tableCell3: {
-    width: '530px',
-  },
-  tableCell4: {
-    width: '140px',
-  },
-  tableCell5: {
-    width: '140px',
+  tableCell6: {
+    width: '120px',
   },
   externalLinkIcon: {
     width: '14.5px',

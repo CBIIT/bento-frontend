@@ -8,12 +8,13 @@ import yaml from 'js-yaml';
 import axios from 'axios';
 import YAMLData from '../../content/prod/aboutPagesContent.yaml';
 import stockImg from '../../assets/about/About_CTDC_Model.png';
-import AboutBody from '../about/aboutBodyView';
+import AboutBody from '../about/aboutView';
 import CenterIcon from '../../assets/about/Model-Buttons-Center.svg';
 import ZoomInIcon from '../../assets/about/Model-Buttons-ZoomIn.svg';
 import ZoomOutIcon from '../../assets/about/Model-Buttons-ZoomOut.svg';
+import env from '../../utils/env';
 
-const ABOUT_CONTENT_URL = process.env.REACT_APP_ABOUT_CONTENT_URL;
+const ABOUT_CONTENT_URL = env.REACT_APP_ABOUT_CONTENT_URL;
 
 const limitToBounds = false;
 const panningEnabled = true;
