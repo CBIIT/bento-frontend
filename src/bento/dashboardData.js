@@ -55,17 +55,14 @@ export const facetSectionVariables = {
   'Filter By Cases': {
     color: '#10A075',
     height: '5px',
-    labelAfterCount: 'cases',
   },
   'Filter By Samples': {
     color: '#10BEFF',
     height: '5px',
-    labelAfterCount: 'samples',
   },
   'Filter By Files': {
     color: '#E636E4',
     height: '5px',
-    labelAfterCount: 'files',
   },
 };
 
