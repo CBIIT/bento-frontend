@@ -201,12 +201,6 @@ export const tabContainers = [
         display: true,
       },
       {
-        dataField: 'tumor_size',
-        header: 'Tumor Size (cm)',
-        sort: 'asc',
-        display: true,
-      },
-      {
         dataField: 'tissue_composition',
         header: 'Tissue Composition',
         sort: 'asc',
