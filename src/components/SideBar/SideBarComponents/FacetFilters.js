@@ -18,7 +18,7 @@ import {
   as ArrowDropDownIcon,
 } from '@material-ui/icons';
 import { toggleCheckBox, setSideBarToLoading, setDashboardTableLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
-import { facetSectionStyling, facetSearchData } from '../../../bento/dashboardData';
+import { facetSectionVariables, facetSearchData } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
@@ -141,11 +141,11 @@ const FacetPanel = ({ classes }) => {
           <Divider
             variant="middle"
             style={{
-              backgroundColor: facetSectionStyling[currentSection.sectionName]
-                ? facetSectionStyling[currentSection.sectionName].color ? facetSectionStyling[currentSection.sectionName].color : '' : '#000000',
+              backgroundColor: facetSectionVariables[currentSection.sectionName]
+                ? facetSectionVariables[currentSection.sectionName].color ? facetSectionVariables[currentSection.sectionName].color : '' : '#000000',
               margin: '0px',
-              height: facetSectionStyling[currentSection.sectionName]
-                ? facetSectionStyling[currentSection.sectionName].height ? facetSectionStyling[currentSection.sectionName].height : '' : '5px',
+              height: facetSectionVariables[currentSection.sectionName]
+                ? facetSectionVariables[currentSection.sectionName].height ? facetSectionVariables[currentSection.sectionName].height : '' : '5px',
             }}
           />
           <ExpansionPanel
@@ -219,7 +219,7 @@ const FacetPanel = ({ classes }) => {
                   />
                   <div className={classes.panelDetailText}>
                     {`${checkboxItem.name}`}
-                    <span style={{ color: facetSectionStyling[sideBarItem.section].color ? facetSectionStyling[sideBarItem.section].color : '#137fbe' }}>
+                    <span style={{ color: facetSectionVariables[sideBarItem.section].color ? facetSectionVariables[sideBarItem.section].color : '#137fbe' }}>
                       &nbsp;
                       {`(${checkboxItem.subjects})`}
                     </span>
