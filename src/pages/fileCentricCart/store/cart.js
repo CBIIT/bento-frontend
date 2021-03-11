@@ -1,5 +1,6 @@
 import { useState, useLayoutEffect, useEffect } from 'react';
 import store from '../../../store';
+import { maximumNumberOfFilesAllowedInTheCart } from '../../../bento/fileCentricCartWorkflowData';
 
 // defines the name of the Redux store slice where the list will live
 const storeKey = 'cart';
@@ -48,8 +49,6 @@ export const initCart = () => {
 };
 
 export const readyCart = () => store.dispatch({ type: 'readyCart' });
-
-export const maximumNumberOfFilesAllowedInTheCart = 1000;
 
 export const cartWillFull = (numberOfFilesSelected) => numberOfFilesSelected
 + getState().fileIds.length
