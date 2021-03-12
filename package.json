@@ -54,7 +54,7 @@
     "react": "^16.8.2",
     "react-apollo": "^3.1.5",
     "react-app-polyfill": "^0.2.1",
-    "react-dev-utils": "^7.0.3",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.8.2",
     "react-loading-skeleton": "^2.1.1",
     "react-redux": "^7.2.1",
