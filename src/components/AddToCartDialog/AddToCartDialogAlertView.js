@@ -3,12 +3,11 @@ import {
   Dialog, DialogContent, DialogContentText,
 } from '@material-ui/core';
 import DialogThemeProvider from './dialogThemeConfig';
+import { alertMessage } from '../../bento/fileCentricCartWorkflowData';
 
 function AddToCartDialogAlertView(props) {
   const { open, classes, onClose } = props;
   const closeAlertModelTimer = 4000;
-
-  const alertMessage = 'The cart is limited to 1,000 files. Please narrow the search criteria or remove some files from the cart to add more.';
 
   const AlertDialog = (
     <DialogThemeProvider>
