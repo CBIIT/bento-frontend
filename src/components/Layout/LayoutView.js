@@ -18,7 +18,7 @@ import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import fileCentricCart from '../../pages/fileCentricCart/cartController';
-import JBrowse from '../JBrowse/JBrowse';
+import JBrowse from '../JBrowse/JBrowseView';
 
 React.useLayoutEffect = React.useEffect;
 const ScrollToTop = () => {
