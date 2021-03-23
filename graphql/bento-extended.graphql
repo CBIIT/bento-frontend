@@ -2033,7 +2033,7 @@ type QueryType {
             start_date: p.start_date,
             end_date: p.end_date,
             pubmed_id: p.pubmed_id,
-            num_studies: COUNT(DISTINCT,
+            num_studies: COUNT(DISTINCT s),
             num_subjects: COUNT(DISTINCT ss)
         }
     """)
