@@ -13,6 +13,7 @@ const CustomBreadcrumb = ({ classes, data }) => (
               to={current.to}
               onClick={current.onClick}
               key={current.to}
+              id={`${index + 1}_breadcrumb`}
             >
               {current.name}
             </Link>,

@@ -159,10 +159,14 @@ const FacetPanel = ({ classes }) => {
             <CustomExpansionPanelSummary
               expandIcon={<ArrowDropDownIcon classes={{ root: classes.dropDownIconSection }} />}
               aria-controls={currentSection.sectionName}
-              id={currentSection.sectionName}
             >
               {/* <ListItemText primary={sideBarItem.groupName} /> */}
-              <div className={classes.sectionSummaryText}>{currentSection.sectionName}</div>
+              <div
+                className={classes.sectionSummaryText}
+                id={currentSection.sectionName}
+              >
+                {currentSection.sectionName}
+              </div>
 
             </CustomExpansionPanelSummary>
 

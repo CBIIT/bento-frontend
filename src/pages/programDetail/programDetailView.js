@@ -83,7 +83,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
           </div>
           <div className={classes.headerTitle}>
-            <div className={classes.headerMainTitle}>
+            <div className={classes.headerMainTitle} id="program_detail_title">
               <span>
                 {' '}
                 {pageTitle.label}
@@ -95,7 +95,7 @@ const ProgramView = ({ classes, data, theme }) => {
               </span>
             </div>
             <div className={cn(classes.headerMSubTitle, classes.headerSubTitleCate)}>
-              <span>
+              <span id="program_detail_subtile">
                 {' '}
                 {programData[pageSubTitle.dataField]}
               </span>
@@ -115,7 +115,7 @@ const ProgramView = ({ classes, data, theme }) => {
                   {' '}
                   <span className={classes.headerButtonLinkText}>{aggregateCount.labelText}</span>
                   <span className={classes.headerButtonColumn}>{': '}</span>
-                  <span className={classes.headerButtonLinkNumber}>
+                  <span className={classes.headerButtonLinkNumber} id="program_detail_header_file_count">
 
                     {programData[aggregateCount.dataField]}
 
@@ -131,7 +131,7 @@ const ProgramView = ({ classes, data, theme }) => {
           <Grid container spacing={5}>
             <Grid item lg={7} sm={6} xs={12} container>
               <Grid container spacing={4} direction="row" className={classes.detailContainerLeft}>
-                {updatedAttributesData.slice(0, 6).map((attribute) => (
+                {updatedAttributesData.slice(0, 6).map((attribute, index) => (
                   <Grid item xs={12}>
                     <div>
                       {
@@ -211,11 +211,12 @@ const ProgramView = ({ classes, data, theme }) => {
                                 <div>
                                   <span
                                     className={classes.detailContainerHeader}
+                                    id={`program_detail_left_section_title_${index + 1}`}
                                   >
                                     {attribute.label}
                                   </span>
                                   <div>
-                                    <span className={classes.content}>
+                                    <span className={classes.content} id={`program_detail_left_section_description_${index + 1}`}>
                                       {' '}
                                       {programData[attribute.dataField]}
                                       {' '}
@@ -285,7 +286,7 @@ const ProgramView = ({ classes, data, theme }) => {
                             alt={rightPanel.files[0].fileIconAlt}
                           />
                         </div>
-                        <div className={classes.fileCount}>
+                        <div className={classes.fileCount} id="program_detail_file_count">
                           {programData[rightPanel.files[0].dataField]}
                         </div>
                       </div>

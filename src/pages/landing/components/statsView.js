@@ -20,13 +20,13 @@ const LandingStatsView = ({ classes, stats, statsData }) => (
       >
 
         {
-        stats.map((stat) => (
+        stats.map((stat, index) => (
           <div className={classes.statsGroup}>
             <div className={classes.statsText}>
-              <div className={classes.statTitle}>
+              <div className={classes.statTitle} id={`title_${index + 1}`}>
                 {stat.statTitle}
               </div>
-              <div className={classes.statCount}>
+              <div className={classes.statCount} id={`count_${index + 1}`}>
                 {statsData[stat.statAPI]}
               </div>
             </div>

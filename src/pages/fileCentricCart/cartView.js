@@ -95,12 +95,13 @@ const cartView = ({
             <div className={classes.removeHeadCell}>
               <div
                 className={classes.removeHeadCellText}
+                id="cart_remove_button_text"
               >
                 Remove
               </div>
               <div className={classes.removeHeadCellIcon}>
                 <IconButton aria-label="help" className={classes.removeHeadCellIconButton}>
-                  <ArrowDropDownIcon onClick={() => removeSubjects()} onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} />
+                  <ArrowDropDownIcon onClick={() => removeSubjects()} onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} id="cart_remove_button_icon" />
                 </IconButton>
                 { removeAllMessageStatus ? (
                   <div className={classes.removeAllMessage}>
@@ -175,7 +176,7 @@ const cartView = ({
 
             </div>
             <div className={classes.headerTitle}>
-              <div className={classes.headerMainTitle}>
+              <div className={classes.headerMainTitle} id="cart_title">
                 {myFilesPageData.mainTitle}
                 <span className={classes.headerMainTitleTwo}>
                   {' '}
@@ -191,6 +192,7 @@ const cartView = ({
               type="button"
               className={classes.downloadButton}
               onClick={() => prepareDownload()}
+              id={`button_${myFilesPageData.downButtonText}`}
             >
               {myFilesPageData.downButtonText}
               {' '}
@@ -233,7 +235,7 @@ const cartView = ({
             </TableThemeProvider>
             <div className={classes.manifestTextarea}>
               <textarea
-                id="multiline-user-coments"
+                id="cart_user_coments"
                 className={classes.textField}
                 placeholder={myFilesPageData.textareaPlaceholder}
                 onChange={(e) => setUserComments(e.target.value)}
