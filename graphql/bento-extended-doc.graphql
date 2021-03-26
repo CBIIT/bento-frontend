@@ -902,6 +902,22 @@ type FileOverview {
     program_id: String
 }
 
+type SubjectOverview2 {
+    subject_id: String
+    program: String
+    program_id: String
+    study_acronym: String
+    diagnosis: String
+    recurrence_score: String
+    tumor_size: String
+    tumor_grade: String
+    er_status: String
+    pr_status: String
+    age_at_index: Int
+    survival_time: Int
+    survival_time_unit: String
+}
+
 type SearchResult {
     numberOfPrograms: Int
     numberOfStudies: Int
@@ -910,7 +926,9 @@ type SearchResult {
     numberOfLabProcedures: Int
     numberOfFiles: Int
     subjectIds: [String]
-    firstPage: [SubjectOverview]
+    sampleIds: [String]
+    fileIds: [String]
+    firstPage: [SubjectOverview2]
 }
 
 schema {
