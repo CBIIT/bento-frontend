@@ -204,13 +204,17 @@ const TabView = ({
   return (
     <div>
       <Grid item xs={12} className={classes.saveButtonDiv}>
-        <SelectAllModal />
-        <AddToCartAlertDialog cartWillFull={cartIsFull} ref={AddToCartAlertDialogRef} />
+        <SelectAllModal tableIDForButton={tableID} />
+        <AddToCartAlertDialog
+          cartWillFull={cartIsFull}
+          ref={AddToCartAlertDialogRef}
+        />
         <button
           type="button"
           ref={saveButton2}
           onClick={exportFiles}
           className={classes.button}
+          id={`${tableID}_${buttonText}`}
         >
           { buttonText }
         </button>

@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SimpleDialogDemo() {
+export default function SimpleDialogDemo({ tableIDForButton }) {
   const classes = useStyles();
   const childRef = useRef();
 
@@ -53,7 +53,7 @@ export default function SimpleDialogDemo() {
 
   return (
     <>
-      <button type="button" onClick={handleClickOpen} className={classes.button}>
+      <button type="button" onClick={handleClickOpen} className={classes.button} id={`${tableIDForButton}_add_all_files`}>
         Add All Files
       </button>
       <Dialog
