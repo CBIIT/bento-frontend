@@ -931,6 +931,11 @@ type SearchResult {
     firstPage: [SubjectOverview2]
 }
 
+type GroupList {
+    group: String
+    subjects: [String]
+}
+
 schema {
     query: QueryType
 }
@@ -1318,5 +1323,38 @@ type QueryType {
     fileOverview(subject_ids: [String], file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] 
 
     fileOverviewDesc(subject_ids: [String], file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] 
+
+
+    subjectList: [GroupList] 
+
+    subjectListByProgram: [GroupList] 
+
+    subjectListByStudy: [GroupList] 
+
+    subjectListByDiagnoses: [GroupList] 
+
+    subjectListByRecurrenceScore: [GroupList] 
+
+    subjectListByTumorSize: [GroupList] 
+
+    subjectListByTumorGrade: [GroupList] 
+
+    subjectListByErStatus: [GroupList] 
+
+    subjectListByPrStatus: [GroupList] 
+
+    subjectListByChemotherapyRegimen: [GroupList] 
+
+    subjectListByEndocrineTherapy: [GroupList] 
+
+    subjectListByMenopauseStatus: [GroupList] 
+
+    subjectListByTissueType: [GroupList] 
+
+    subjectListByTissueComposition: [GroupList] 
+
+    subjectListByFileAssociation: [GroupList] 
+
+    subjectListByFileType: [GroupList] 
 
 }
