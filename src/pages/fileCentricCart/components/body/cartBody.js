@@ -6,12 +6,12 @@ import {
   getColumns, getOptions, getDefaultCustomFooter,
 } from 'bento-components';
 import _ from 'lodash';
-import CustomDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
-import Styles from './cartHeader.style';
+import CustomDataTable from '../../../../components/serverPaginatedTable/serverPaginatedTable';
+import Styles from './cartBody.style';
 import {
   table, GET_MY_CART_DATA_QUERY, GET_MY_CART_DATA_QUERY_DESC,
-} from '../../../bento/fileCentricCartWorkflowData';
-import TableThemeProvider from '../cartTableThemeConfig';
+} from '../../../../bento/fileCentricCartWorkflowData';
+import TableThemeProvider from '../../cartTableThemeConfig';
 
 const CartHeader = ({
   classes,
