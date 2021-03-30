@@ -1,15 +1,14 @@
 import React from 'react';
 import {
-  Grid, withStyles, Dialog, DialogActions, DialogContent, DialogContentText, IconButton,
+  Grid, withStyles, IconButton,
 } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 
 import { DeleteOutline as DeleteOutlineIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
-import CartHeader from './components/cartHeader';
-import CartBody from './components/cartBody';
-import CartFooter from './components/cartFooter';
+import CartHeader from './components/header/cartHeader';
+import CartBody from './components/body/cartBody';
+import CartFooter from './components/footer/cartFooter';
+import DialogBox from './components/dialogBox/dialogBox';
 import Styles from './cartView.style';
-import DialogThemeProvider from './components/dialogThemeConfig';
 import client from '../../utils/graphqlClient';
 import {
   myFilesPageData, table, manifestData, GET_MY_CART_DATA_QUERY,
@@ -45,18 +44,18 @@ const cartView = ({
     return status === 'close' ? setRemoveAllMessageStatus(false) : setRemoveAllMessageStatus(true);
   }
 
-  function closeModal() {
-    setModalStatus(false);
-  }
-
-  function removeSubjects() {
-    setModalStatus(true);
-  }
+  // ================= Dialogbox Functions =================
+  const openDialogBox = () => setModalStatus(true);
+  const closeDialogBox = () => setModalStatus(false);
   function deleteSubjectsAndCloseModal() {
-    setModalStatus(false);
+    closeDialogBox();
     deleteFromCart({ fileIds: fileIDs });
   }
 
+  const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved
+    ? fileIDs.length : '';
+
+  // =========== Downlaod Manifest Functions ===========
   async function prepareDownload() {
     const data1 = await fetchData();
     return downloadJson(
@@ -97,7 +96,7 @@ const cartView = ({
               </div>
               <div className={classes.removeHeadCellIcon}>
                 <IconButton aria-label="help" className={classes.removeHeadCellIconButton}>
-                  <ArrowDropDownIcon onClick={() => removeSubjects()} onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} id="cart_remove_button_icon" />
+                  <ArrowDropDownIcon onClick={() => openDialogBox()} onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} />
                 </IconButton>
                 { removeAllMessageStatus ? (
                   <div className={classes.removeAllMessage}>
@@ -118,47 +117,22 @@ const cartView = ({
     },
   }];
 
-  const messageData = (
+  const tooltipMessageData = (
     <span>
       {myFilesPageData.tooltipMessage}
       {' '}
     </span>
   );
 
-  const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved ? fileIDs.length : '';
-
   return (
     <Grid>
-      <DialogThemeProvider>
-        <Dialog
-          open={modalStatus}
-          onClose={() => closeModal()}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          className={classes.popUpWindow}
-        >
-          <DialogContent className={classes.popUpWindowContent}>
-            <DialogContentText id="alert-dialog-description">
-              { myFilesPageData.popUpWindow.messagePart1 }
-              <b>
-                { myFilesPageData.popUpWindow.messagePart2 }
-                { numberOfFilesBeDeleted }
-                { myFilesPageData.popUpWindow.messagePart3 }
-              </b>
-              { myFilesPageData.popUpWindow.messagePart4 }
-              {' '}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button variant="contained" disableElevation onClick={() => deleteSubjectsAndCloseModal()} className={classes.okButton}>
-              {myFilesPageData.popUpWindow.okButtonText}
-            </Button>
-            <Button variant="contained" disableElevation onClick={() => closeModal()} className={classes.cancelButton}>
-              {myFilesPageData.popUpWindow.cancelButtonText}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </DialogThemeProvider>
+      <DialogBox
+        isOpen={modalStatus}
+        acceptAction={deleteSubjectsAndCloseModal}
+        closeModal={closeDialogBox}
+        messageData={myFilesPageData.popUpWindow}
+        numberOfFilesBeDeleted={numberOfFilesBeDeleted}
+      />
       <div className={classes.myFilesWrapper}>
         <Grid item xs={12}>
           <CartHeader
@@ -191,13 +165,12 @@ const cartView = ({
             { TopMessageStatus ? (
               <div className={classes.messageTop}>
                 {' '}
-                <Message data={messageData} />
+                <Message data={tooltipMessageData} />
                 {' '}
               </div>
             ) : ''}
           </div>
           <div id="table_selected_files" className={classes.tableWrapper}>
-            {}
             <CartBody
               data={data}
               deleteColumn={deleteColumn}
