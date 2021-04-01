@@ -1254,9 +1254,9 @@ type QueryType {
         file_type: [String] = []
     ): [GroupCount] 
 
-    subjectOverViewPaged(first: Int = 100, offset: Int = 0, subject_ids: [String] = [], order_by: String = ""): [SubjectOverview] 
+    subjectOverViewPaged(first: Int = 100, offset: Int = 0, subject_ids: [String], order_by: String = ""): [SubjectOverview] 
 
-    subjectOverViewPagedDesc(first: Int = 100, offset: Int = 0, subject_ids: [String] = [], order_by: String = ""): [SubjectOverview] 
+    subjectOverViewPagedDesc(first: Int = 100, offset: Int = 0, subject_ids: [String], order_by: String = ""): [SubjectOverview] 
 
     subjectOverView: [SubjectOverview] 
 
