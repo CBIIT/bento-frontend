@@ -43,7 +43,11 @@ const tabController = (classes) => {
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
 
   const filteredSubjectIds = useSelector((state) => (state.dashboardTab
-      && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : []));
+      && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : null));
+  const filteredSampleIds = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.filteredSampleIds ? state.dashboardTab.filteredSampleIds : null));
+  const filteredFileIds = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.filteredFileIds ? state.dashboardTab.filteredFileIds : null));
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
@@ -99,7 +103,10 @@ const tabController = (classes) => {
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
-    fetchDataForDashboardTab(tabIndex[value].title);
+    fetchDataForDashboardTab(tabIndex[value].title,
+      filteredSubjectIds,
+      filteredSampleIds,
+      filteredFileIds);
   };
 
   const [snackbarState, setsnackbarState] = React.useState({
@@ -260,6 +267,8 @@ const tabController = (classes) => {
         defaultSortDirection={container.defaultSortDirection || 'asc'}
         dataKey={container.dataKey}
         filteredSubjectIds={filteredSubjectIds}
+        filteredSampleIds={filteredSampleIds}
+        filteredFileIds={filteredFileIds}
       />
     </TabContainer>
   ));

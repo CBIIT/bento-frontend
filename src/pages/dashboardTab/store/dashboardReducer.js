@@ -24,7 +24,9 @@ import {
   GET_FILES_OVERVIEW_QUERY,
   GET_SAMPLES_OVERVIEW_QUERY,
   GET_CASES_OVERVIEW_QUERY,
-  GET_ALL_FILEIDS_FOR_SELECT_ALL,
+  GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
+  GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
+  GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   GET_FILES_OVERVIEW_DESC_QUERY,
   GET_SAMPLES_OVERVIEW_DESC_QUERY,
   GET_CASES_OVERVIEW_DESC_QUERY,
@@ -217,16 +219,26 @@ const getQueryAndDefaultSort = (payload = tabIndex[0].title) => {
  * Updates the current active dashboard tab.
  *
  * @param {object} data
+ * @param {Array} subjectIDsAfterFilter
+ * @param {Array} sampleIDsAfterFilter
+ * @param {Array} fileIDsAfterFilter
  * @return {json}
  */
 
-export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) {
+export function fetchDataForDashboardTab(
+  payload,
+  subjectIDsAfterFilter = null,
+  sampleIDsAfterFilter = null,
+  fileIDsAfterFilter = null,
+) {
   const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
-  const VARIABLES = subjectIDsAfterFilter || getState().filteredSubjectIds;
+
   return client
     .query({
       query: QUERY,
-      variables: { subject_ids: VARIABLES, order_by: sortfield || '' },
+      variables: {
+        subject_ids: subjectIDsAfterFilter, sample_ids: sampleIDsAfterFilter, file_uuids: fileIDsAfterFilter, order_by: sortfield || '',
+      },
     })
     .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, sortDirection, ..._.cloneDeep(result) } }))
     .catch((error) => store.dispatch(
@@ -241,14 +253,29 @@ export function fetchDataForDashboardTab(payload, subjectIDsAfterFilter = null) 
  * @return {json}
  */
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
-  const VARIABLES = getState().filteredSubjectIds;
+  const caseIds = getState().filteredSubjectIds;
+  const sampleIds = getState().filteredSampleIds;
+  const fileIds = getState().filteredFileIds;
+  const SELECT_ALL_QUERY = getState().currentActiveTab === tabIndex[2].title
+    ? GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL
+    : getState().currentActiveTab === tabIndex[1].title
+      ? GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL
+      : GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL;
 
   const fetchResult = await client
     .query({
-      query: GET_ALL_FILEIDS_FOR_SELECT_ALL,
-      variables: { subject_ids: VARIABLES, first: fileCount },
+      query: SELECT_ALL_QUERY,
+      variables: {
+        subject_ids: caseIds, sample_ids: sampleIds, file_uuids: fileIds, first: fileCount,
+      },
     })
-    .then((result) => result.data.subjectOverViewPaged);
+    .then((result) => {
+      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'caseOverviewPaged';
+      const test = RESULT_DATA === 'fileOverview' ? result.data[RESULT_DATA].map((item) => ({
+        files: [item.file_uuid],
+      })) : result.data[RESULT_DATA] || [];
+      return test;
+    });
   return fetchResult;
 }
 
@@ -450,12 +477,16 @@ const reducers = {
       item.data, facetSearchData,
     );
     const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
-    fetchDataForDashboardTab(state.currentActiveTab, item.data.searchSubjects.subjectIds);
+    fetchDataForDashboardTab(state.currentActiveTab,
+      item.data.searchSubjects.subjectIds, item.data.searchSubjects.sampleIds,
+      item.data.searchSubjects.fileIds);
     return {
       ...state,
       setSideBarLoading: false,
       allActiveFilters: item.allFilters,
       filteredSubjectIds: item.data.searchSubjects.subjectIds,
+      filteredSampleIds: item.data.searchSubjects.sampleIds,
+      filteredFileIds: item.data.searchSubjects.fileIds,
       checkbox: {
         data: checkboxData1,
       },
@@ -514,7 +545,7 @@ const reducers = {
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
     const checkboxData = customCheckBox(item.data, facetSearchData);
-    fetchDataForDashboardTab(tabIndex[0].title, []);
+    fetchDataForDashboardTab(tabIndex[0].title, null, null, null);
     return item.data
       ? {
         ...state.dashboard,
@@ -525,7 +556,9 @@ const reducers = {
         error: '',
         stats: getStatInit(item.data, statsCount),
         allActiveFilters: allFilters(),
-        filteredSubjectIds: [],
+        filteredSubjectIds: null,
+        filteredSampleIds: null,
+        filteredFileIds: null,
         checkboxForAll: {
           data: checkboxData,
         },
@@ -541,6 +574,7 @@ const reducers = {
   },
   CLEAR_ALL: (state, item) => {
     const checkboxData = customCheckBox(item.data, facetSearchData);
+    fetchDataForDashboardTab(state.currentActiveTab, null, null, null);
     return item.data
       ? {
         ...state.dashboard,
@@ -550,7 +584,9 @@ const reducers = {
         error: '',
         stats: getStatInit(item.data, statsCount),
         allActiveFilters: allFilters(),
-        filteredSubjectIds: [],
+        filteredSubjectIds: null,
+        filteredSampleIds: null,
+        filteredFileIds: null,
         subjectOverView: {
           data: item.data.subjectOverViewPaged,
         },
