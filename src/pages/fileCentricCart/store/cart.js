@@ -65,6 +65,8 @@ export const getCart = () => {
   return state;
 };
 
+export const getFilesIdsInCart = () => getState().fileIds;
+
 // reducers
 const reducers = {
   addFiles: (state, item) => {

@@ -823,9 +823,9 @@ query sampleOverview($sample_ids: [String], $offset: Int = 0, $first: Int = 10, 
   `;
 
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
-query fileOverview($file_uuids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name"){
-  fileOverview(file_uuids: $file_uuids, offset: $offset,first: $first, order_by: $order_by) {
-    file_uuid
+query fileOverview($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by: String = "file_name") {
+  fileOverview(file_ids: $file_ids, offset: $offset, first: $first, order_by: $order_by) {
+    file_id
   }
 }
   `;

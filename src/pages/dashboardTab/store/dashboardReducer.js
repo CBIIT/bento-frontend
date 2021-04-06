@@ -47,7 +47,7 @@ const initialState = {
     stats: {},
     allActiveFilters: {},
     currentActiveTab: tabIndex[0].title,
-    filteredSubjectIds: [],
+    filteredSubjectIds: null,
     checkboxForAll: {
       data: [],
     },
@@ -237,7 +237,7 @@ export function fetchDataForDashboardTab(
     .query({
       query: QUERY,
       variables: {
-        subject_ids: subjectIDsAfterFilter, sample_ids: sampleIDsAfterFilter, file_uuids: fileIDsAfterFilter, order_by: sortfield || '',
+        subject_ids: subjectIDsAfterFilter, sample_ids: sampleIDsAfterFilter, file_ids: fileIDsAfterFilter, order_by: sortfield || '',
       },
     })
     .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, sortDirection, ..._.cloneDeep(result) } }))
@@ -246,14 +246,36 @@ export function fetchDataForDashboardTab(
     ));
 }
 
+function transformCasesFileIdsToFiles(data) {
+  // use reduce to combine all the files' id into single array
+  const transformData = data.reduce((accumulator, currentValue) => {
+    const { files } = currentValue;
+    // check if file
+    if (files && files.length > 0) {
+      return accumulator.concat(files);
+    }
+    return accumulator;
+  }, []);
+  return transformData.map((item) => ({
+    files: [item.file_id],
+  }));
+}
+
+function transformfileIdsToFiles(data) {
+  // use reduce to combine all the files' id into single array
+  return data.map((item) => ({
+    files: [item.file_id],
+  }));
+}
+
 /**
  * Gets all file ids for active subjectIds.
- *
+ * TODO this  functtion can use filtered file IDs except for initial load
  * @param obj fileCoubt
  * @return {json}
  */
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
-  const caseIds = getState().filteredSubjectIds;
+  const subjectIds = getState().filteredSubjectIds;
   const sampleIds = getState().filteredSampleIds;
   const fileIds = getState().filteredFileIds;
   const SELECT_ALL_QUERY = getState().currentActiveTab === tabIndex[2].title
@@ -266,17 +288,34 @@ export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
     .query({
       query: SELECT_ALL_QUERY,
       variables: {
-        subject_ids: caseIds, sample_ids: sampleIds, file_uuids: fileIds, first: fileCount,
+        subject_ids: subjectIds,
+        sample_ids: sampleIds,
+        file_ids: fileIds,
+        first: fileCount,
       },
     })
     .then((result) => {
-      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'caseOverviewPaged';
-      const test = RESULT_DATA === 'fileOverview' ? result.data[RESULT_DATA].map((item) => ({
-        files: [item.file_uuid],
-      })) : result.data[RESULT_DATA] || [];
-      return test;
+      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'subjectOverViewPaged';
+      const fileIdsFromQuery = RESULT_DATA === 'fileOverview' ? transformfileIdsToFiles(result.data[RESULT_DATA]) : RESULT_DATA === 'subjectOverViewPaged' ? transformCasesFileIdsToFiles(result.data[RESULT_DATA]) : result.data[RESULT_DATA] || [];
+      return fileIdsFromQuery;
     });
-  return fetchResult;
+
+  // Restaruting the result Bringing {files} to files
+  const filesArray = fetchResult.reduce((accumulator, currentValue) => {
+    const { files } = currentValue;
+    // check if file
+    if (files && files.length > 0) {
+      return accumulator.concat(files.map((f) => f));
+    }
+    return accumulator;
+  }, []);
+
+  // Removing fileIds that are not in our current list of filtered fileIds
+
+  const filteredFilesArray = fileIds != null
+    ? filesArray.filter((x) => fileIds.includes(x))
+    : filesArray;
+  return filteredFilesArray;
 }
 
 export const getFilesCount = () => getState().stats.numberOfFiles;
@@ -452,6 +491,15 @@ export function updateFilteredAPIDataIntoCheckBoxData(data, facetSearchDataFromC
       section: mapping.section,
     }))
   );
+}
+
+export function getCountForAddAllFilesModal() {
+  const currentState = getState();
+  const numberCount = currentState.currentActiveTab === tabIndex[0].title
+    ? currentState.stats.numberOfCases
+    : currentState.currentActiveTab === tabIndex[1].title
+      ? currentState.stats.numberOfSamples : currentState.stats.numberOfFiles;
+  return { activeTab: currentState.currentActiveTab || tabIndex[2].title, count: numberCount };
 }
 
 export const getDashboard = () => getState();

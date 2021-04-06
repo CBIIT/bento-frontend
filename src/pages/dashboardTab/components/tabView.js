@@ -206,7 +206,7 @@ const TabView = ({
   return (
     <div>
       <Grid item xs={12} className={classes.saveButtonDiv}>
-        <SelectAllModal tableIDForButton={tableID} />
+        <SelectAllModal tableIDForButton={tableID} openSnack={openSnack} />
         <AddToCartAlertDialog
           cartWillFull={cartIsFull}
           ref={AddToCartAlertDialogRef}
@@ -256,7 +256,7 @@ const TabView = ({
             queryCustomVaribles={{
               subject_ids: filteredSubjectIds,
               sample_ids: filteredSampleIds,
-              file_uuids: filteredFileIds,
+              file_ids: filteredFileIds,
             }}
             defaultSortCoulmn={defaultSortCoulmn}
             defaultSortDirection={defaultSortDirection}
