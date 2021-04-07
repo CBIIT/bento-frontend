@@ -17,7 +17,14 @@ import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
   as ArrowDropDownIcon,
 } from '@material-ui/icons';
-import { toggleCheckBox, setSideBarToLoading, setDashboardTableLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
+import {
+  toggleCheckBox,
+  setSideBarToLoading,
+  setDashboardTableLoading,
+  // eslint-disable-next-line no-unused-vars
+  sortGroupCheckboxByAlphabet,
+  sortGroupCheckboxByCount,
+} from '../../../pages/dashboardTab/store/dashboardReducer';
 import { facetSectionVariables, facetSearchData } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
@@ -199,6 +206,22 @@ const FacetPanel = ({ classes }) => {
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
+                          <div>
+                            <span onClick={() => {
+                              sortGroupCheckboxByAlphabet(sideBarItem.groupName);
+                            }}
+                            >
+                              {' '}
+                              Sort by Alphabet
+                            </span>
+                            <span onClick={() => {
+                              sortGroupCheckboxByCount(sideBarItem.groupName);
+                            }}
+                            >
+                              {' '}
+                              Sort by Count
+                            </span>
+                          </div>
                           {
             sideBarItem.checkboxItems.map((checkboxItem) => {
               if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
