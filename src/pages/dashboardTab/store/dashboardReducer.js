@@ -392,6 +392,9 @@ function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
           ..._.cloneDeep(result),
         },
       }))
+      .then(() => store.dispatch({
+        type: 'SORT_ALL_GROUP_CHECKBOX',
+      }))
       .catch((error) => store.dispatch(
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
       )))
@@ -515,7 +518,7 @@ export function setDashboardTableLoading() {
 
 export function sortGroupCheckboxByAlphabet(groupName) {
   store.dispatch({
-    type: 'SORT_CHECKBOX',
+    type: 'SORT_SINGLE_GROUP_CHECKBOX',
     payload: {
       groupName,
       sortBy: 'alphabet',
@@ -531,7 +534,7 @@ export function sortGroupCheckboxByAlphabet(groupName) {
 
 export function sortGroupCheckboxByCount(groupName) {
   store.dispatch({
-    type: 'SORT_CHECKBOX',
+    type: 'SORT_SINGLE_GROUP_CHECKBOX',
     payload: {
       groupName,
       sortBy: 'count',
@@ -721,8 +724,10 @@ const reducers = {
 
       } : { ...state };
   },
-  SORT_CHECKBOX: (state, item) => {
+  SORT_SINGLE_GROUP_CHECKBOX: (state, item) => {
     const groupData = state.checkbox.data.filter((d) => item.groupName === d.groupName)[0];
+    let { sortByList } = state;
+    sortByList = sortByList || {};
     const checkboxItems = item.sortBy === 'count'
       ? sortByCheckboxItemsByCount(groupData.checkboxItems)
       : sortByCheckboxItemsByAlphabet(groupData.checkboxItems);
@@ -732,10 +737,26 @@ const reducers = {
         newData.checkboxItems = checkboxItems;
         return newData;
       }
+      sortByList[groupData.groupName] = item.sortBy;
       return d;
     });
 
-    return { ...state, checkbox: { data, sortBy: item.sortBy } };
+    return { ...state, checkbox: { data }, sortByList };
+  },
+  SORT_ALL_GROUP_CHECKBOX: (state) => {
+    const { sortByList = {} } = state;
+    const { data } = state.checkbox;
+
+    data.map((d) => {
+      const dataItem = d;
+      const checkboxItems = sortByList[dataItem.groupName] === 'count'
+        ? sortByCheckboxItemsByCount(dataItem.checkboxItems)
+        : sortByCheckboxItemsByAlphabet(dataItem.checkboxItems);
+      dataItem.checkboxItems = checkboxItems;
+      return dataItem;
+    });
+
+    return { ...state, checkbox: { data } };
   },
 };
 
