@@ -20,7 +20,6 @@ import GraphqlClient from '../GraphqlClient/GraphqlView';
 import fileCentricCart from '../../pages/fileCentricCart/cartController';
 import JBrowse from '../JBrowse/JBrowseView';
 
-// React.useLayoutEffect = React.useEffect;
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
   return null;
