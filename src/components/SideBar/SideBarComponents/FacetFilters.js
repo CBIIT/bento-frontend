@@ -73,6 +73,11 @@ const FacetPanel = ({ classes }) => {
       && state.dashboardTab.allActiveFilters
       ? state.dashboardTab.allActiveFilters : {}));
 
+  const sortByForGroups = useSelector((state) => (
+    state.dashboardTab
+      && state.dashboardTab.sortByList
+      ? state.dashboardTab.sortByList : {}));
+
   Object.entries(activeFilters).map((filter) => {
     if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
@@ -141,6 +146,11 @@ const FacetPanel = ({ classes }) => {
   };
   const sideBarSections = arrangeBySections(sideBarDisplay);
 
+  function getSortButtonColor(sideBarItem, sortType) {
+    return (sortByForGroups[sideBarItem.groupName] === sortType
+      ? '#B2C6D6' : '#4A4A4A');
+  }
+
   return (
     <>
       {sideBarSections.map((currentSection) => (
@@ -206,20 +216,26 @@ const FacetPanel = ({ classes }) => {
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
-                          <div>
-                            <span onClick={() => {
-                              sortGroupCheckboxByAlphabet(sideBarItem.groupName);
-                            }}
+                          <div className={classes.sortGroup}>
+                            <span
+                              className={classes.sortGroupItem}
+                              style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
+                              onClick={() => {
+                                sortGroupCheckboxByAlphabet(sideBarItem.groupName);
+                              }}
                             >
                               {' '}
-                              Sort by Alphabet
+                              Sort alphabetically
                             </span>
-                            <span onClick={() => {
-                              sortGroupCheckboxByCount(sideBarItem.groupName);
-                            }}
+                            <span
+                              className={classes.sortGroupItem}
+                              style={{ color: getSortButtonColor(sideBarItem, 'count') }}
+                              onClick={() => {
+                                sortGroupCheckboxByCount(sideBarItem.groupName);
+                              }}
                             >
                               {' '}
-                              Sort by Count
+                              Sort by count
                             </span>
                           </div>
                           {
@@ -340,6 +356,15 @@ const styles = () => ({
   },
   listItemGutters: {
     padding: '8px 0px 8px 15px',
+  },
+  sortGroup: {
+    textAlign: 'center',
+  },
+  sortGroupItem: {
+    cursor: 'pointer',
+    fontFamily: 'Nunito',
+    fontSize: '12px',
+    marginRight: '10px',
   },
 });
 
