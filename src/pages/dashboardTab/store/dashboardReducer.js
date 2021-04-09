@@ -434,7 +434,7 @@ function sortByCheckboxItemsByAlphabet(checkboxData) {
  */
 
 function sortByCheckboxItemsByCount(checkboxData) {
-  checkboxData.sort((a, b) => a.subjects - b.subjects);
+  checkboxData.sort((a, b) => b.subjects - a.subjects);
   return sortByCheckboxByIsChecked(checkboxData);
 }
 
@@ -725,20 +725,23 @@ const reducers = {
       } : { ...state };
   },
   SORT_SINGLE_GROUP_CHECKBOX: (state, item) => {
-    const groupData = state.checkbox.data.filter((d) => item.groupName === d.groupName)[0];
+    const groups = state.checkbox.data;
+    const groupData = groups.filter((group) => item.groupName === group.groupName)[0];
     let { sortByList } = state;
     sortByList = sortByList || {};
-    const checkboxItems = item.sortBy === 'count'
+    const sortedCheckboxItems = item.sortBy === 'count'
       ? sortByCheckboxItemsByCount(groupData.checkboxItems)
       : sortByCheckboxItemsByAlphabet(groupData.checkboxItems);
-    const data = state.checkbox.data.map((d) => {
-      if (d.groupName === groupData.groupName) {
-        const newData = d;
-        newData.checkboxItems = checkboxItems;
-        return newData;
+
+    sortByList[groupData.groupName] = item.sortBy;
+    const data = state.checkbox.data.map((group) => {
+      if (group.groupName === groupData.groupName) {
+        const updatedGroupData = group;
+        updatedGroupData.checkboxItems = sortedCheckboxItems;
+        return updatedGroupData;
       }
-      sortByList[groupData.groupName] = item.sortBy;
-      return d;
+
+      return group;
     });
 
     return { ...state, checkbox: { data }, sortByList };
@@ -747,13 +750,13 @@ const reducers = {
     const { sortByList = {} } = state;
     const { data } = state.checkbox;
 
-    data.map((d) => {
-      const dataItem = d;
-      const checkboxItems = sortByList[dataItem.groupName] === 'count'
-        ? sortByCheckboxItemsByCount(dataItem.checkboxItems)
-        : sortByCheckboxItemsByAlphabet(dataItem.checkboxItems);
-      dataItem.checkboxItems = checkboxItems;
-      return dataItem;
+    data.map((group) => {
+      const checkboxItems = sortByList[group.groupName] === 'count'
+        ? sortByCheckboxItemsByCount(group.checkboxItems)
+        : sortByCheckboxItemsByAlphabet(group.checkboxItems);
+      const updatedGroupData = group;
+      updatedGroupData.checkboxItems = checkboxItems;
+      return updatedGroupData;
     });
 
     return { ...state, checkbox: { data } };
