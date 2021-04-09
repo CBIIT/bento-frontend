@@ -725,8 +725,7 @@ const reducers = {
       } : { ...state };
   },
   SORT_SINGLE_GROUP_CHECKBOX: (state, item) => {
-    const groups = state.checkbox.data;
-    const groupData = groups.filter((group) => item.groupName === group.groupName)[0];
+    const groupData = state.checkbox.data.filter((group) => item.groupName === group.groupName)[0];
     let { sortByList } = state;
     sortByList = sortByList || {};
     const sortedCheckboxItems = item.sortBy === 'count'
