@@ -17,7 +17,14 @@ import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
   as ArrowDropDownIcon,
 } from '@material-ui/icons';
-import { toggleCheckBox, setSideBarToLoading, setDashboardTableLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
+import {
+  toggleCheckBox,
+  setSideBarToLoading,
+  setDashboardTableLoading,
+  // eslint-disable-next-line no-unused-vars
+  sortGroupCheckboxByAlphabet,
+  sortGroupCheckboxByCount,
+} from '../../../pages/dashboardTab/store/dashboardReducer';
 import { facetSectionVariables, facetSearchData } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
@@ -65,6 +72,11 @@ const FacetPanel = ({ classes }) => {
     state.dashboardTab
       && state.dashboardTab.allActiveFilters
       ? state.dashboardTab.allActiveFilters : {}));
+
+  const sortByForGroups = useSelector((state) => (
+    state.dashboardTab
+      && state.dashboardTab.sortByList
+      ? state.dashboardTab.sortByList : {}));
 
   Object.entries(activeFilters).map((filter) => {
     if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
@@ -134,6 +146,11 @@ const FacetPanel = ({ classes }) => {
   };
   const sideBarSections = arrangeBySections(sideBarDisplay);
 
+  function getSortButtonColor(sideBarItem, sortType) {
+    return (sortByForGroups[sideBarItem.groupName] === sortType
+      ? '#B2C6D6' : '#4A4A4A');
+  }
+
   return (
     <>
       {sideBarSections.map((currentSection) => (
@@ -199,6 +216,28 @@ const FacetPanel = ({ classes }) => {
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
+                          <div className={classes.sortGroup}>
+                            <span
+                              className={classes.sortGroupItem}
+                              style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
+                              onClick={() => {
+                                sortGroupCheckboxByAlphabet(sideBarItem.groupName);
+                              }}
+                            >
+                              {' '}
+                              Sort alphabetically
+                            </span>
+                            <span
+                              className={classes.sortGroupItem}
+                              style={{ color: getSortButtonColor(sideBarItem, 'count') }}
+                              onClick={() => {
+                                sortGroupCheckboxByCount(sideBarItem.groupName);
+                              }}
+                            >
+                              {' '}
+                              Sort by count
+                            </span>
+                          </div>
                           {
             sideBarItem.checkboxItems.map((checkboxItem) => {
               if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
@@ -317,6 +356,15 @@ const styles = () => ({
   },
   listItemGutters: {
     padding: '8px 0px 8px 15px',
+  },
+  sortGroup: {
+    textAlign: 'center',
+  },
+  sortGroupItem: {
+    cursor: 'pointer',
+    fontFamily: 'Nunito',
+    fontSize: '12px',
+    marginRight: '10px',
   },
 });
 
