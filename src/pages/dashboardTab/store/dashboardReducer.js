@@ -1,3 +1,4 @@
+/* eslint-disable */
 import _ from 'lodash';
 import {
   customCheckBox,
@@ -161,6 +162,7 @@ function allFilters() {
   ), {});
   return emptyFilters;
 }
+
 /**
  * Returns filter variable for graphql query using the all filters.
  *
@@ -182,6 +184,34 @@ function createFilterVariables(data) {
   }, {});
 
   return filter;
+}
+
+/**
+ * Returns active filter list while removing the param group.
+ *
+ * @param {object} data
+ * @return {json}
+ */
+function clearGroup(data) {
+  let currentAllActiveFilters = getState().allActiveFilters;
+  currentAllActiveFilters[data] = [];
+  return currentAllActiveFilters;
+}
+
+/**
+ * Resets the group selections
+ *
+ * @param {object} payload
+ * @return distpatcher
+ */
+ export function resetGroupSelections(payload) {
+  return () => {
+    const currentAllFilterVariables = clearGroup(payload);
+    // For performance issue we are using initial dasboardquery instead of fitered for empty filters
+    if (_.isEqual(currentAllFilterVariables, allFilters())) {
+      clearAllFilters();
+    } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+  };
 }
 
 /**
