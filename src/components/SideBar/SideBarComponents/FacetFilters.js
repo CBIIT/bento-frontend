@@ -15,7 +15,7 @@ import {
 import _ from 'lodash';
 import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
-  as ArrowDropDownIcon,
+  as ArrowDropDownIcon, Replay as ReplayIcon,
 } from '@material-ui/icons';
 import {
   toggleCheckBox,
@@ -24,6 +24,7 @@ import {
   // eslint-disable-next-line no-unused-vars
   sortGroupCheckboxByAlphabet,
   sortGroupCheckboxByCount,
+  resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import { facetSectionVariables, facetSearchData } from '../../../bento/dashboardData';
 
@@ -131,6 +132,13 @@ const FacetPanel = ({ classes }) => {
     }]));
   };
 
+  const handleGroupReset = (value) => () => {
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    // dispatch toggleCheckBox action
+    dispatch(resetGroupSelections(value));
+  };
+
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
     .slice(0, 15);
 
@@ -236,6 +244,15 @@ const FacetPanel = ({ classes }) => {
                             >
                               {' '}
                               Sort by count
+                            </span>
+                            <span
+                              className={classes.sortGroupItem}
+                              style={{ color: getSortButtonColor(sideBarItem, 'count') }}
+                            >
+                              <ReplayIcon
+                                onClick={handleGroupReset(sideBarItem.datafield)}
+                                style={{ fontSize: 18 }}
+                              />
                             </span>
                           </div>
                           {
