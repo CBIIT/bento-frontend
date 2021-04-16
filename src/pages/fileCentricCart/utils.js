@@ -48,7 +48,7 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
 export function downloadJson(tableData, comments, fileName, manifestData) {
   const jsonse = JSON.stringify(tableData);
   const csv = convertToCSV(jsonse, comments, manifestData.keysToInclude, manifestData.header);
-  const exportData = new Blob([csv], { type: 'text/csv' });
+  const exportData = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
   const JsonURL = window.URL.createObjectURL(exportData);
   let tempLink = '';
   tempLink = document.createElement('a');
