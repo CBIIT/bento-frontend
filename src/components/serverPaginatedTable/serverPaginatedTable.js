@@ -142,7 +142,6 @@ class ServerPaginatedTableView extends React.Component {
     const {
       data, count, isLoading, rowsPerPage, sortOrder, className,
     } = this.state;
-    console.log(this.props.tableDownloadCSV.defaultFullTableDownload);
     const options1 = {
       filterType: 'dropdown',
       responsive: 'stacked',
