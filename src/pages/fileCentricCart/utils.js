@@ -31,7 +31,10 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
     let line = '';
     keysToInclude.map((keyName) => {
       if (line !== '') line += ',';
-      line += entry[keyName] !== null ? entry[keyName] : ' ';
+      let columnResult = entry[keyName];
+      if (typeof columnResult === 'string') columnResult.replace(/"/g, '""');
+      if (typeof columnResult === 'string' && columnResult.search(/("|,|\n)/g) >= 0) columnResult = `"${columnResult}"`;
+      line += columnResult !== null ? columnResult : ' ';
       return line;
     });
     if (index === 0) {
