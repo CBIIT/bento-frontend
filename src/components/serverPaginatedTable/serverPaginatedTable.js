@@ -141,6 +141,7 @@ class ServerPaginatedTableView extends React.Component {
     const {
       data, count, isLoading, rowsPerPage, sortOrder, className,
     } = this.state;
+    const updatedColumns = [];
     const options1 = {
       filterType: 'dropdown',
       responsive: 'stacked',
@@ -194,6 +195,22 @@ class ServerPaginatedTableView extends React.Component {
           default:
             break;
         }
+      },
+      onViewColumnsChange: (changedColumn, action) => {
+        const index = updatedColumns.findIndex((x) => x.label === changedColumn);
+        if (index === -1) {
+          updatedColumns.push({
+            label: changedColumn,
+            status: action,
+          });
+        } else if (changedColumn[index].status !== action) {
+          updatedColumns.splice(index, 1);
+          updatedColumns.push({
+            label: changedColumn,
+            status: action,
+          });
+        }
+        return '';
       },
     };
 
