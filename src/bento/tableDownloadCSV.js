@@ -94,7 +94,7 @@ export const customFilesTabDownloadCSV = {
 };
 
 export const MY_CART = gql`
-query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="") {
+query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 1000, $order_by:String ="") {
     filesInList(file_ids: $file_ids, offset: $offset,first: $first, order_by: $order_by) {
         study_code
         subject_id
@@ -110,10 +110,10 @@ query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $orde
 }`;
 
 export const customMyFilesTabDownloadCSV = {
-  keysToInclude: ['file_name', 'association', 'file_description', 'file_format', 'file_size', 'subject_id'],
-  header: ['File Name', 'Association', 'Description', 'File Format', 'Size', 'Case Id'],
+  keysToInclude: ['file_name', 'file_type', 'association', 'file_description', 'file_format', 'file_size', 'subject_id', 'study_code'],
+  header: ['File Name', 'File Type', 'Association', 'Description', 'File Format', 'Size', 'Case Id', 'Study Code'],
   query: MY_CART,
   apiVariable: 'filesInList',
-  fileName: 'tableDownload',
+  fileName: 'BENTO File Manifest',
   defaultFullTableDownload: false,
 };
