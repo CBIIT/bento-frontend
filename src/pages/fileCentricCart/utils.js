@@ -31,12 +31,17 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
     let line = '';
     keysToInclude.map((keyName) => {
       if (line !== '') line += ',';
-      line += entry[keyName] !== null ? entry[keyName] : ' ';
+      let columnResult = entry[keyName];
+      if (typeof columnResult === 'string') columnResult.replace(/"/g, '""');
+      if (typeof columnResult === 'string' && columnResult.search(/("|,|\n)/g) >= 0) columnResult = `"${columnResult}"`;
+      line += columnResult !== null ? columnResult : ' ';
       return line;
     });
     if (index === 0) {
       str = header.join(',');
-      str += `\r\n${line},${comments}\r\n`;
+      let commentResult = comments.replace(/"/g, '""');
+      if (commentResult.search(/("|,|\n)/g) >= 0) commentResult = `"${commentResult}"`;
+      str += `\r\n${line},${commentResult}\r\n`;
     } else {
       str += `${line}\r\n`;
     }
@@ -48,7 +53,7 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
 export function downloadJson(tableData, comments, fileName, manifestData) {
   const jsonse = JSON.stringify(tableData);
   const csv = convertToCSV(jsonse, comments, manifestData.keysToInclude, manifestData.header);
-  const exportData = new Blob([csv], { type: 'text/csv' });
+  const exportData = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
   const JsonURL = window.URL.createObjectURL(exportData);
   let tempLink = '';
   tempLink = document.createElement('a');
