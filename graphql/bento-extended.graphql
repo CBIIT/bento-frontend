@@ -902,6 +902,22 @@ type FileOverview {
     program_id: String
 }
 
+type SubjectOverview2 {
+    subject_id: String
+    program: String
+    program_id: String
+    study_acronym: String
+    diagnosis: String
+    recurrence_score: String
+    tumor_size: String
+    tumor_grade: String
+    er_status: String
+    pr_status: String
+    age_at_index: Int
+    survival_time: Int
+    survival_time_unit: String
+}
+
 type SearchResult {
     numberOfPrograms: Int
     numberOfStudies: Int
@@ -910,7 +926,9 @@ type SearchResult {
     numberOfLabProcedures: Int
     numberOfFiles: Int
     subjectIds: [String]
-    firstPage: [SubjectOverview]
+    sampleIds: [String]
+    fileIds: [String]
+    firstPage: [SubjectOverview2]
 }
 
 schema {
@@ -1930,53 +1948,39 @@ type QueryType {
 
         // Preparing return values
         OPTIONAL MATCH (f)-[:file_of_laboratory_procedure]->(lp)
-        WITH ss, collect(DISTINCT samp.sample_id) AS samples, collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures, collect(DISTINCT f {.*}) AS files
+        WITH DISTINCT ss AS ss, samp, lp, f, COLLECT(DISTINCT lp.laboratory_procedure_id) as lab_procedures
         OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
         OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
         OPTIONAL MATCH (d)<-[:tp_of_diagnosis]-(tp)
         OPTIONAL MATCH (ss)<-[:demographic_of_study_subject]-(demo)
-        WITH    p.program_acronym AS program,
-                p.program_id AS program_id,
-                s.study_acronym AS study_acronym,
-                s.study_short_description AS study_short_description,
-                s.study_acronym + ': ' + s.study_short_description AS study_info,
-                ss.study_subject_id AS subject_id,
-                ss.disease_subtype AS diagnosis,
-                sf.grouped_recurrence_score AS recurrence_score,
-                d.tumor_size_group AS tumor_size,
-                d.tumor_grade AS tumor_grade,
-                d.er_status AS er_status,
-                d.pr_status AS pr_status,
-                tp.chemotherapy_regimen AS chemotherapy,
-                tp.endocrine_therapy_type AS endocrine_therapy,
-                demo.menopause_status AS menopause_status,
-                demo.age_at_index AS age_at_index,
-                demo.survival_time AS survival_time,
-                demo.survival_time_unit AS survival_time_unit,
-                samples,
-                files,
-                lab_procedures
-        UNWIND samples AS sample_id
-        UNWIND lab_procedures AS lab_procedure_id
-        UNWIND files AS file
-        RETURN {
-            subjectIds: COLLECT(DISTINCT subject_id),
-            numberOfPrograms: COUNT(DISTINCT program),
-            numberOfStudies: COUNT(DISTINCT study_acronym),
-            numberOfSubjects: COUNT(DISTINCT subject_id),
-            numberOfLabProcedures: COUNT(DISTINCT lab_procedure_id),
-            numberOfSamples: COUNT(DISTINCT sample_id),
-            numberOfFiles: COUNT(DISTINCT file),
-            firstPage: COLLECT( DISTINCT({ subject_id: subject_id, program: program, program_id: program_id, study_acronym: study_acronym,
-                          study_short_description: study_short_description, study_info: study_info, diagnosis: diagnosis,
-                          recurrence_score: recurrence_score, tumor_size: tumor_size, tumor_grade: tumor_grade,
-                          er_status: er_status, pr_status: pr_status, chemotherapy: chemotherapy,
-                          endocrine_therapy: endocrine_therapy, menopause_status: menopause_status,
-                          age_at_index: age_at_index, survival_time: survival_time, survival_time_unit: survival_time_unit,
-                          files: files, samples: samples, lab_procedures: lab_procedures}))[0..$first]
+        RETURN  {
+            subjectIds: COLLECT(DISTINCT ss.study_subject_id),
+            sampleIds: COLLECT(DISTINCT samp.sample_id),
+            fileIds: COLLECT(DISTINCT f.file_id),
+            numberOfPrograms: COUNT(DISTINCT p.program_acronym),
+            numberOfStudies: COUNT(DISTINCT s.study_acronym),
+            numberOfSubjects: COUNT(DISTINCT ss.study_subject_id),
+            numberOfLabProcedures: COUNT(DISTINCT lp.laboratory_procedure_id),
+            numberOfSamples: COUNT(DISTINCT samp.sample_id),
+            numberOfFiles: COUNT(DISTINCT f),
+            firstPage: COLLECT( DISTINCT({
+                          subject_id: ss.study_subject_id,
+                          program: p.program_acronym,
+                          program_id: p.program_id,
+                          study_acronym: s.study_acronym,
+                          diagnosis: ss.disease_subtype,
+                          recurrence_score: sf.grouped_recurrence_score,
+                          tumor_size: d.tumor_size_group,
+                          tumor_grade: d.tumor_grade,
+                          er_status: d.er_status,
+                          pr_status: d.pr_status,
+                          age_at_index: demo.age_at_index,
+                          survival_time: demo.survival_time,
+                          survival_time_unit: demo.survival_time_unit
+                      }))[0..$first]
         }
-    """, passThrough: true)
+    """, passThrough:true)
 
 
     subjectsInList(subject_ids: [String]=[]): [SubjectInfo] @cypher(statement: """
