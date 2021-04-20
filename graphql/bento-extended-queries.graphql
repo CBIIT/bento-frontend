@@ -1018,9 +1018,9 @@ type QueryType {
         RETURN {group: f.file_type, subjects: count(f)}
     """)
 
-    subjectOverViewPaged(subject_ids: [String] = [], order_by: String = ""): [SubjectOverview] @cypher(statement: """
+    subjectOverViewPaged(subject_ids: [String], order_by: String = ""): [SubjectOverview] @cypher(statement: """
         MATCH (ss:study_subject)
-          WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
         OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
             toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
@@ -1077,9 +1077,9 @@ type QueryType {
             ELSE subject_id_num END
     """, passThrough: true)
 
-    subjectOverViewPagedDesc(subject_ids: [String] = [], order_by: String = ""): [SubjectOverview] @cypher(statement: """
+    subjectOverViewPagedDesc(subject_ids: [String], order_by: String = ""): [SubjectOverview] @cypher(statement: """
         MATCH (ss:study_subject)
-          WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
         OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
             toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,

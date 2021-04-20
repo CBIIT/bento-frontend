@@ -1234,9 +1234,9 @@ type QueryType {
         association: [String] = []
     ): [GroupCount] 
 
-    subjectOverViewPaged(subject_ids: [String] = [], order_by: String = ""): [SubjectOverview] 
+    subjectOverViewPaged(subject_ids: [String], order_by: String = ""): [SubjectOverview] 
 
-    subjectOverViewPagedDesc(subject_ids: [String] = [], order_by: String = ""): [SubjectOverview] 
+    subjectOverViewPagedDesc(subject_ids: [String], order_by: String = ""): [SubjectOverview] 
 
     subjectOverView: [SubjectOverview] 
 
