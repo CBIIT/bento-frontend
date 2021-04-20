@@ -1061,7 +1061,7 @@ type QueryType {
         RETURN  { program: p.program_acronym,
                   caseSize: caseSize,
                   children: collect(s) }
-    """)
+    """, passThrough: true)
 
     "Facet search counts"
     filterSubjectCountByProgram(
@@ -1701,7 +1701,7 @@ type QueryType {
             toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
             collect(DISTINCT sp.sample_id) AS samples,
             collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures,
-            collect(DISTINCT f) AS files,
+            collect(DISTINCT f {.*}) AS files,
             ss
         OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
@@ -1750,7 +1750,7 @@ type QueryType {
             WHEN 'age_at_index' THEN demo.age_at_index
             WHEN 'survival_time' THEN demo.survival_time
             ELSE subject_id_num END
-    """)
+    """, passThrough: true)
 
     subjectOverViewPagedDesc(subject_ids: [String] = [], order_by: String = ""): [SubjectOverview] @cypher(statement: """
         MATCH (ss:study_subject)
@@ -1760,7 +1760,7 @@ type QueryType {
             toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
             collect(DISTINCT sp.sample_id) AS samples,
             collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures,
-            collect(DISTINCT f) AS files,
+            collect(DISTINCT f {.*}) AS files,
             ss
         OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
@@ -1809,12 +1809,12 @@ type QueryType {
             WHEN 'age_at_index' THEN demo.age_at_index
             WHEN 'survival_time' THEN demo.survival_time
             ELSE subject_id_num END DESC
-    """)
+    """, passThrough: true)
 
     subjectOverView: [SubjectOverview] @cypher(statement: """
         MATCH (ss:study_subject)
         OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
-        WITH ss, collect(DISTINCT sp.sample_id) AS samples, collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures, collect(DISTINCT f) AS files
+        WITH ss, collect(DISTINCT sp.sample_id) AS samples, collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures, collect(DISTINCT f {.*}) AS files
         OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
         OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
@@ -1843,7 +1843,7 @@ type QueryType {
             files: files,
             lab_procedures: lab_procedures
         }
-    """)
+    """, passThrough: true)
 
     searchSubjects2 (
           programs: [String] = [],
@@ -1930,7 +1930,7 @@ type QueryType {
 
         // Preparing return values
         OPTIONAL MATCH (f)-[:file_of_laboratory_procedure]->(lp)
-        WITH ss, collect(DISTINCT samp.sample_id) AS samples, collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures, collect(DISTINCT f) AS files
+        WITH ss, collect(DISTINCT samp.sample_id) AS samples, collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures, collect(DISTINCT f {.*}) AS files
         OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
         OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
@@ -1976,7 +1976,7 @@ type QueryType {
                           age_at_index: age_at_index, survival_time: survival_time, survival_time_unit: survival_time_unit,
                           files: files, samples: samples, lab_procedures: lab_procedures}))[0..$first]
         }
-    """)
+    """, passThrough: true)
 
 
     subjectsInList(subject_ids: [String]=[]): [SubjectInfo] @cypher(statement: """
@@ -2073,7 +2073,7 @@ type QueryType {
             studies: collect(DISTINCT study),
             diagnoses: diagnoses
         }
-    """)
+    """, passThrough: true)
 
     subjectDetail(subject_id: String): SubjectDetail @cypher(statement:  """
         MATCH (ss:study_subject {study_subject_id: $subject_id})
@@ -2124,11 +2124,11 @@ type QueryType {
             days_to_recurrence: fu.days_to_recurrence,
             test_name: lp.test_name,
             files: files,
-            samples: COLLECT(DISTINCT samp),
+            samples: COLLECT(DISTINCT samp {.*}),
             num_samples: COUNT(DISTINCT samp),
             num_lab_procedures: COUNT(DISTINCT lp)
         }
-    """)
+    """, passThrough: true)
 
     armDetail(study_acronym: String): ArmDetail @cypher(statement:  """
         MATCH (s:study {study_acronym: $study_acronym})<-[:study_subject_of_study]-(ss)
@@ -2153,7 +2153,7 @@ type QueryType {
             diagnoses: diagnoses,
             files: files
         }
-    """)
+    """, passThrough: true)
 
     samplesForSubjectId(subject_id: String!): [sample] @cypher(statement: "MATCH (ss:study_subject {study_subject_id: $subject_id})<-[*]-(s:sample) RETURN s")
 
