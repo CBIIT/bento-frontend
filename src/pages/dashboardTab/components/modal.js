@@ -1,10 +1,14 @@
 import React, { useRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  withStyles,
+} from '@material-ui/core';
+import {
+  fetchAllFileIDsForSelectAll, getCountForAddAllFilesModal, getFilesCount,
+} from '../store/dashboardReducer';
 import Dialog from '../../../components/AddToCartDialog';
-import { addToCart, cartWillFull } from '../../fileCentricCart/store/cart';
-import { fetchAllFileIDsForSelectAll, getFilesCount } from '../store/dashboardReducer';
+import { addToCart, cartWillFull, getFilesIdsInCart } from '../../fileCentricCart/store/cart';
 
-const useStyles = makeStyles({
+const styles = () => ({
   button: {
     borderRadius: '10px',
     width: '120px',
@@ -20,8 +24,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SimpleDialogDemo() {
-  const classes = useStyles();
+const SelectAllModalDialog = ({
+  classes, openSnack,
+}) => {
   const childRef = useRef();
 
   const handleClickOpen = () => {
@@ -35,19 +40,21 @@ export default function SimpleDialogDemo() {
   async function exportFiles() {
     // Find the newly added files by comparing
     const getAllFilesData = await fetchAllFileIDsForSelectAll(getFilesCount());
-    const selectedIDs = getAllFilesData.reduce((accumulator, currentValue) => {
-      const { files } = currentValue;
-      // check if file
-      if (files && files.length > 0) {
-        return accumulator.concat(files.map((f) => f.file_id));
-      }
-      return accumulator;
-    }, []);
-    addToCart({ fileIds: selectedIDs });
+    const currentFileIdsInCart = getFilesIdsInCart();
+
+    const newFileIDSLength = (currentFileIdsInCart !== null || currentFileIdsInCart !== [])
+      ? getAllFilesData.filter(
+        (e) => !currentFileIdsInCart.find((a) => e === a),
+      ).length : getAllFilesData.length;
+    openSnack(newFileIDSLength || 0);
+    addToCart({ fileIds: getAllFilesData });
+    // tell the reducer to clear the selection on the table.
     handleClose();
   }
 
+  const numberOfRowsSelected = getCountForAddAllFilesModal();
   const numberOfFilesSelected = getFilesCount();
+
   const OnYesClick = () => { exportFiles(); };
   const onNoClick = () => { handleClose(); };
 
@@ -60,9 +67,11 @@ export default function SimpleDialogDemo() {
         ref={childRef}
         onYesClick={OnYesClick}
         onNoClick={onNoClick}
-        numberOfFilesSelected={numberOfFilesSelected}
+        numberOfRowsSelected={numberOfRowsSelected}
         cartWillFull={cartWillFull(numberOfFilesSelected)}
       />
     </>
   );
-}
+};
+
+export default withStyles(styles, { withTheme: true })(SelectAllModalDialog);

@@ -238,6 +238,11 @@ type SearchResult {
     firstPage: [SubjectOverview2]
 }
 
+type GroupList {
+    group: String
+    subjects: [String]
+}
+
 schema {
     query: QueryType
 }
@@ -390,6 +395,7 @@ type QueryType {
 
     "Facet search counts"
     filterSubjectCountByProgram(
+        programs: [String] = [],
         studies: [String] = [],
         diagnoses: [String] = [],
         rc_scores: [String] = [],
@@ -432,6 +438,7 @@ type QueryType {
 
     filterSubjectCountByStudy(
         programs: [String] = [],
+        studies: [String] = [],
         diagnoses: [String] = [],
         rc_scores: [String] = [],
         tumor_sizes: [String] = [],
@@ -475,6 +482,7 @@ type QueryType {
     filterSubjectCountByDiagnoses(
         programs: [String] = [],
         studies: [String] = [],
+        diagnoses: [String] = [],
         rc_scores: [String] = [],
         tumor_sizes: [String] = [],
         chemo_regimen: [String] = [],
@@ -518,6 +526,7 @@ type QueryType {
         programs: [String] = [],
         studies: [String] = [],
         diagnoses: [String] = [],
+        rc_scores: [String] = [],
         tumor_sizes: [String] = [],
         chemo_regimen: [String] = [],
         tumor_grades: [String] = [],
@@ -561,6 +570,7 @@ type QueryType {
         studies: [String] = [],
         diagnoses: [String] = [],
         rc_scores: [String] = [],
+        tumor_sizes: [String] = [],
         chemo_regimen: [String] = [],
         tumor_grades: [String] = [],
         er_status: [String] = [],
@@ -605,6 +615,7 @@ type QueryType {
         rc_scores: [String] = [],
         tumor_sizes: [String] = [],
         chemo_regimen: [String] = [],
+        tumor_grades: [String] = [],
         er_status: [String] = [],
         pr_status: [String] = [],
         endo_therapies: [String] = [],
@@ -648,6 +659,7 @@ type QueryType {
         tumor_sizes: [String] = [],
         chemo_regimen: [String] = [],
         tumor_grades: [String] = [],
+        er_status: [String] = [],
         pr_status: [String] = [],
         endo_therapies: [String] = [],
         meno_status: [String] = [],
@@ -691,6 +703,7 @@ type QueryType {
         chemo_regimen: [String] = [],
         tumor_grades: [String] = [],
         er_status: [String] = [],
+        pr_status: [String] = [],
         endo_therapies: [String] = [],
         meno_status: [String] = [],
         tissue_type: [String] = [],
@@ -730,6 +743,7 @@ type QueryType {
         diagnoses: [String] = [],
         rc_scores: [String] = [],
         tumor_sizes: [String] = [],
+        chemo_regimen: [String] = [],
         tumor_grades: [String] = [],
         er_status: [String] = [],
         pr_status: [String] = [],
@@ -776,6 +790,7 @@ type QueryType {
         tumor_grades: [String] = [],
         er_status: [String] = [],
         pr_status: [String] = [],
+        endo_therapies: [String] = [],
         meno_status: [String] = [],
         tissue_type: [String] = [],
         composition: [String] = [],
@@ -819,6 +834,7 @@ type QueryType {
         er_status: [String] = [],
         pr_status: [String] = [],
         endo_therapies: [String] = [],
+        meno_status: [String] = [],
         tissue_type: [String] = [],
         composition: [String] = [],
         association: [String] = [],
@@ -862,6 +878,7 @@ type QueryType {
         pr_status: [String] = [],
         endo_therapies: [String] = [],
         meno_status: [String] = [],
+        tissue_type: [String] = [],
         composition: [String] = [],
         association: [String] = [],
         file_type: [String] = []
@@ -905,6 +922,7 @@ type QueryType {
         endo_therapies: [String] = [],
         meno_status: [String] = [],
         tissue_type: [String] = [],
+        composition: [String] = [],
         association: [String] = [],
         file_type: [String] = []
     ): [GroupCount] @cypher(statement: """
@@ -948,6 +966,7 @@ type QueryType {
         meno_status: [String] = [],
         tissue_type: [String] = [],
         composition: [String] = [],
+        association: [String] = [],
         file_type: [String] = []
     ): [GroupCount] @cypher(statement: """
         // Filtering subjects
@@ -990,7 +1009,8 @@ type QueryType {
         meno_status: [String] = [],
         tissue_type: [String] = [],
         composition: [String] = [],
-        association: [String] = []
+        association: [String] = [],
+        file_type: [String] = []
     ): [GroupCount] @cypher(statement: """
         // Filtering subjects
         MATCH (ss)<-[:sf_of_study_subject]-(sf)
@@ -1018,9 +1038,9 @@ type QueryType {
         RETURN {group: f.file_type, subjects: count(f)}
     """, passThrough: true)
 
-    subjectOverViewPaged(subject_ids: [String], order_by: String = ""): [SubjectOverview] @cypher(statement: """
+    subjectOverViewPaged(subject_ids: [String] = [""], order_by: String = ""): [SubjectOverview] @cypher(statement: """
         MATCH (ss:study_subject)
-          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR ss.study_subject_id IN $subject_ids)
         OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
             toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
@@ -1077,9 +1097,9 @@ type QueryType {
             ELSE subject_id_num END
     """, passThrough: true)
 
-    subjectOverViewPagedDesc(subject_ids: [String], order_by: String = ""): [SubjectOverview] @cypher(statement: """
+    subjectOverViewPagedDesc(subject_ids: [String] = [""], order_by: String = ""): [SubjectOverview] @cypher(statement: """
         MATCH (ss:study_subject)
-          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR ss.study_subject_id IN $subject_ids)
         OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
             toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
@@ -1505,7 +1525,7 @@ type QueryType {
             ELSE file_id_num END
     """, passThrough: true)
 
-    filesInListDesc(file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileDetail] @cypher(statement: """
+    filesInListDesc(file_ids: [String], order_by: String = ""): [FileDetail] @cypher(statement: """
         MATCH (f:file)
         WHERE f.file_id in $file_ids
         OPTIONAL MATCH (f)-->(parent)
@@ -1542,9 +1562,9 @@ type QueryType {
             ELSE file_id_num END DESC
     """, passThrough: true)
 
-    sampleOverview(subject_ids: [String], sample_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [SampleOverview] @cypher(statement: """
+    sampleOverview(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = ""): [SampleOverview] @cypher(statement: """
         MATCH (samp:sample)
-          WHERE ($sample_ids IS NULL OR samp.sample_id IN $sample_ids)
+          WHERE ($sample_ids IS NULL OR $sample_ids = [""] OR samp.sample_id IN $sample_ids)
         OPTIONAL MATCH (samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (samp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
@@ -1552,7 +1572,7 @@ type QueryType {
             toInteger(split(ss.study_subject_id,'-')[2]) AS subject_id_num,
             collect(distinct f.file_id) AS files,
             samp, ss, s, p
-          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR ss.study_subject_id IN $subject_ids)
         RETURN {
             sample_id: samp.sample_id,
             subject_id: ss.study_subject_id,
@@ -1581,9 +1601,9 @@ type QueryType {
             ELSE subject_id_num END
     """, passThrough: true)
 
-    sampleOverviewDesc(subject_ids: [String], sample_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [SampleOverview] @cypher(statement: """
+    sampleOverviewDesc(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = ""): [SampleOverview] @cypher(statement: """
         MATCH (samp:sample)
-          WHERE ($sample_ids IS NULL OR samp.sample_id IN $sample_ids)
+          WHERE ($sample_ids IS NULL OR $sample_ids = [""] OR samp.sample_id IN $sample_ids)
         OPTIONAL MATCH (samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (samp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
@@ -1591,7 +1611,7 @@ type QueryType {
             toInteger(split(ss.study_subject_id,'-')[2]) AS subject_id_num,
             collect(distinct f.file_id) AS files,
             samp, ss, s, p
-          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR ss.study_subject_id IN $subject_ids)
         RETURN {
             sample_id: samp.sample_id,
             subject_id: ss.study_subject_id,
@@ -1621,9 +1641,9 @@ type QueryType {
     """, passThrough: true)
 
 
-    fileOverview(subject_ids: [String], file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] @cypher(statement: """
+    fileOverview(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] @cypher(statement: """
         MATCH (f:file)
-          WHERE ($file_ids IS NULL OR f.file_id IN $file_ids)
+          WHERE ($file_ids IS NULL OR $file_ids = [""] OR f.file_id IN $file_ids)
         MATCH (f)-->(parent)
           WHERE NOT (parent:laboratory_procedure)
         OPTIONAL MATCH (f)-[:file_of_sample]->(samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
@@ -1632,7 +1652,7 @@ type QueryType {
             ss.study_subject_id AS subject_id, toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
             f, ss, p, CASE p WHEN null THEN p1.program_acronym ELSE p.program_acronym END AS program, parent,
             CASE s WHEN null THEN s1.study_acronym ELSE s.study_acronym END AS arm, head(labels(parent)) AS association, samp, s1, p1
-          WHERE ($subject_ids IS NULL OR subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR subject_id IN $subject_ids)
         RETURN {
             file_id: f.file_id,
             file_name: f.file_name,
@@ -1662,9 +1682,9 @@ type QueryType {
             ELSE f.file_name END
     """, passThrough: true)
 
-    fileOverviewDesc(subject_ids: [String], file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] @cypher(statement: """
+    fileOverviewDesc(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] @cypher(statement: """
         MATCH (f:file)
-          WHERE ($file_ids IS NULL OR f.file_id IN $file_ids)
+          WHERE ($file_ids IS NULL OR $file_ids = [""] OR f.file_id IN $file_ids)
         MATCH (f)-->(parent)
           WHERE NOT (parent:laboratory_procedure)
         OPTIONAL MATCH (f)-[:file_of_sample]->(samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
@@ -1673,7 +1693,7 @@ type QueryType {
             ss.study_subject_id AS subject_id, toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
             f, ss, p, CASE p WHEN null THEN p1.program_acronym ELSE p.program_acronym END AS program, parent,
             CASE s WHEN null THEN s1.study_acronym ELSE s.study_acronym END AS arm, head(labels(parent)) AS association, samp, s1, p1
-          WHERE ($subject_ids IS NULL OR subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR subject_id IN $subject_ids)
         RETURN {
             file_id: f.file_id,
             file_name: f.file_name,
@@ -1728,5 +1748,132 @@ type QueryType {
             WHEN 'file_id' THEN f.file_id
             ELSE f.file_name END DESC
     """, passThrough: true)
+
+
+    subjectList: [GroupList] @cypher(statement: """
+        MATCH (ss:study_subject)
+        RETURN
+            "all" as group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByProgram: [GroupList] @cypher(statement: """
+        MATCH (p:program)
+        OPTIONAL MATCH (p)<--(s:study)<--(ss:study_subject)
+        RETURN
+            "program:"+p.program_acronym AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByStudy: [GroupList] @cypher(statement: """
+        MATCH (s:study)
+        OPTIONAL MATCH (s)<-[:study_subject_of_study]-(ss:study_subject)
+        RETURN
+            "study:"+s.study_acronym + ': ' + s.study_short_description AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByDiagnoses: [GroupList] @cypher(statement: """
+        MATCH (ss:study_subject)
+        RETURN
+            "diagnosis:"+ss.disease_subtype AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByRecurrenceScore: [GroupList] @cypher(statement: """
+        MATCH (g:stratification_factor)
+        OPTIONAL MATCH (g)-->(ss:study_subject)
+        RETURN
+            "recurrence score:"+g.grouped_recurrence_score AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByTumorSize: [GroupList] @cypher(statement: """
+        MATCH (g:diagnosis)
+        OPTIONAL MATCH (g)-->(ss:study_subject)
+        RETURN
+            "tumor size:"+g.tumor_size_group AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByTumorGrade: [GroupList] @cypher(statement: """
+        MATCH (g:diagnosis)
+        OPTIONAL MATCH (g)-->(ss:study_subject)
+        RETURN
+            "tumor grade:"+g.tumor_grade AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByErStatus: [GroupList] @cypher(statement: """
+        MATCH (g:diagnosis)
+        OPTIONAL MATCH (g)-->(ss:study_subject)
+        RETURN
+            "er status:"+g.er_status AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByPrStatus: [GroupList] @cypher(statement: """
+        MATCH (g:diagnosis)
+        OPTIONAL MATCH (g)-->(ss:study_subject)
+        RETURN
+            "pr status:"+g.pr_status AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByChemotherapyRegimen: [GroupList] @cypher(statement: """
+        MATCH (g:therapeutic_procedure)
+        OPTIONAL MATCH (g)-->()-->(ss:study_subject)
+        RETURN
+            "chemotherapy regimen:"+g.chemotherapy_regimen AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByEndocrineTherapy: [GroupList] @cypher(statement: """
+        MATCH (g:therapeutic_procedure)
+        OPTIONAL MATCH (g)-->()-->(ss:study_subject)
+        RETURN
+            "endocrine therapy:"+g.endocrine_therapy_type AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByMenopauseStatus: [GroupList] @cypher(statement: """
+        MATCH (g:demographic_data)
+        OPTIONAL MATCH (g)-->(ss:study_subject)
+        RETURN
+            "menopause status:"+g.menopause_status AS group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByTissueType: [GroupList] @cypher(statement: """
+        MATCH (g:sample)
+        OPTIONAL MATCH (g)-->(ss:study_subject)
+        RETURN
+            "tissue type:"+g.tissue_type as group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByTissueComposition: [GroupList] @cypher(statement: """
+        MATCH (g:sample)
+        OPTIONAL MATCH (g)-->(ss:study_subject)
+        RETURN
+            "sample:"+g.composition as group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByFileAssociation: [GroupList] @cypher(statement: """
+        MATCH (g:file)
+        OPTIONAL MATCH (g)-->(parent)-->(ss:study_subject)
+        RETURN
+            "file association:"+head(labels(parent)) as group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
+
+    subjectListByFileType: [GroupList] @cypher(statement: """
+        MATCH (g:file)
+        OPTIONAL MATCH (g)-->(parent)-->(ss:study_subject)
+        RETURN
+            "file type:"+g.file_type as group,
+            collect(DISTINCT ss.study_subject_id) as subjects
+    """)
 
 }

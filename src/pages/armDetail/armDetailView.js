@@ -83,7 +83,7 @@ const ArmDetail = ({ data, classes }) => {
 
             </div>
             <div className={classes.headerTitle}>
-              <div className={classes.headerMainTitle}>
+              <div className={classes.headerMainTitle} id="arm_detail_title">
                 {`${header.label} :`}
                 { data[header.dataField]
                   ? (
@@ -108,7 +108,7 @@ const ArmDetail = ({ data, classes }) => {
                   to={(location) => ({ ...location, pathname: '/cases' })}
                   onClick={() => redirectTo()}
                 >
-                  <span className={classes.headerButtonLinkNumber}>
+                  <span className={classes.headerButtonLinkNumber} id="arm_detail_header_file_count">
                     {data.num_subjects}
                   </span>
                 </Link>
@@ -162,12 +162,12 @@ const ArmDetail = ({ data, classes }) => {
             </Grid>
             {/* Right panel end */}
           </Grid>
-          <div id="table_case_detail" className={classes.tableContainer}>
+          <div id="arm_detail_table" className={classes.tableContainer}>
             <div className={classes.tableDiv}>
               { table.display
                 ? (
                   <>
-                    <div className={classes.tableTitle}>
+                    <div className={classes.tableTitle} id="arm_detail_table_title">
                       <span className={classes.tableHeader}>{table.title}</span>
                     </div>
                     <Grid item xs={12}>

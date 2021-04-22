@@ -18,7 +18,9 @@ import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import fileCentricCart from '../../pages/fileCentricCart/cartController';
+import JBrowse from '../JBrowse/JBrowseView';
 
+// React.useLayoutEffect = React.useEffect;
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
   return null;
@@ -49,6 +51,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/program/:id" component={ProgramDetail} />
             <Route path="/case/:id" component={CaseDetail} />
             <Route path="/arm/:id" component={ArmDetail} />
+            <Route path="/JBrowse" component={JBrowse} />
             {aboutPageRoutes.map(
               (aboutPageRoute) => <Route path={aboutPageRoute} component={About} />,
             )}

@@ -48,9 +48,10 @@ const LandingView = ({ classes, statsData }) => (
                   src={landingPageData.tile1.img}
                   className={classes.aboutImage}
                   alt={landingPageData.tile1.alt}
+                  id="tile1_image"
                 />
               </div>
-              <div className={classes.DCWords}>
+              <div className={classes.DCWords} id="tile1_title">
                 {landingPageData.tile1.titleText.match(/\b(\w+)\b/g).map((word) => (
                   <>
                     {word}
@@ -58,14 +59,14 @@ const LandingView = ({ classes, statsData }) => (
                   </>
                 ))}
               </div>
-              <div className={classes.aboutContent}>
+              <div className={classes.aboutContent} id="tile1_description">
                 {landingPageData.tile1.descriptionText}
               </div>
               <div className={classes.aboutButtonSection}>
                 <div className={classes.aboutButtonLeft}>
                   <img src={iconAbout} className={classes.iconAbout} alt="CTDC about icon" />
                 </div>
-                <div className={classes.aboutButtonRight}>
+                <div className={classes.aboutButtonRight} id="tile1_button">
                   <Link
                     to={landingPageData.tile1.callToActionLink}
                     className={classes.aboutButton}
@@ -84,13 +85,14 @@ const LandingView = ({ classes, statsData }) => (
                     className={classes.image}
                     src={landingPageData.tile2.img}
                     alt={landingPageData.tile2.alt}
+                    id="tile2_image"
                   />
                 </div>
                 <div className={classes.content}>
-                  <div className={classes.contentHeader}>
+                  <div className={classes.contentHeader} id="tile2_title">
                     {landingPageData.tile2.titleText}
                   </div>
-                  <div className={classes.contentContainer}>
+                  <div className={classes.contentContainer} id="tile2_description">
                     {landingPageData.tile2.descriptionText}
                   </div>
 
@@ -100,7 +102,7 @@ const LandingView = ({ classes, statsData }) => (
                     <img className={classes.icon} src={icon} alt="CTDC about " />
                     {' '}
                   </div>
-                  <div className={classes.blueButtonRight}>
+                  <div className={classes.blueButtonRight} id="tile2_button">
                     <Link
                       to={landingPageData.tile2.callToActionLink}
                       className={classes.blueButton}
@@ -116,13 +118,14 @@ const LandingView = ({ classes, statsData }) => (
                     className={classes.image}
                     src={landingPageData.tile3.img}
                     alt={landingPageData.tile3.src}
+                    id="tile3_image"
                   />
                 </div>
                 <div className={classes.content}>
-                  <div className={classes.contentHeader}>
+                  <div className={classes.contentHeader} id="tile3_title">
                     {landingPageData.tile3.titleText}
                   </div>
-                  <div className={classes.contentContainer}>
+                  <div className={classes.contentContainer} id="tile3_description">
                     {landingPageData.tile3.descriptionText}
                   </div>
 
@@ -132,7 +135,7 @@ const LandingView = ({ classes, statsData }) => (
                     <img className={classes.icon} src={icon} alt="CTDC about " />
                     {' '}
                   </div>
-                  <div className={classes.blueButtonRight}>
+                  <div className={classes.blueButtonRight} id="tile3_button">
                     <Link
                       to={landingPageData.tile3.callToActionLink}
                       className={classes.blueButton}
@@ -145,11 +148,11 @@ const LandingView = ({ classes, statsData }) => (
 
             </div>
             <div className={classes.contentRightBottom}>
-              <div className={classes.cases}>
-                <div className={classes.mountainMeadowContentHeader}>
+              <div className={classes.cases} id="tile4_image">
+                <div className={classes.mountainMeadowContentHeader} id="tile4_title">
                   {landingPageData.tile4.titleText}
                 </div>
-                <div className={classes.mountainMeadowContent}>
+                <div className={classes.mountainMeadowContent} id="tile4_description">
                   {landingPageData.tile4.descriptionText}
                 </div>
                 <div className={classes.mountainMeadowButtonSection}>
@@ -157,7 +160,7 @@ const LandingView = ({ classes, statsData }) => (
                     <img className={classes.mountainMeadowIcon} src={icon} alt="CTDC about " />
                     {' '}
                   </div>
-                  <div className={classes.blueButtonRight}>
+                  <div className={classes.blueButtonRight} id="tile4_button">
                     <Link
                       to={landingPageData.tile4.callToActionLink}
                       className={classes.mountainMeadowButton}
