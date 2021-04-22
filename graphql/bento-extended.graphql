@@ -2396,32 +2396,30 @@ type QueryType {
             ELSE f.file_name END DESC
     """, passThrough: true)
 
-    fileIdsFromFileName(file_name: [String], offset: Int = 0, first: Int = 10000000, order_by: String ="file_name"): [FileOverview] @cypher(statement: """
+    fileIdsFromFileName(file_name: [String], order_by: String ="file_name"): [FileOverview] @cypher(statement: """
         MATCH (f:file)
         WHERE ($file_name IS NULL OR f.file_name IN $file_name)
-        RETURN
-            f.file_name as file_name,
-            f.file_id as file_id
+        RETURN {
+            file_name: f.file_name,
+            file_id: f.file_id
+        }
         ORDER BY CASE $order_by
-            WHEN 'file_name' THEN file_name
-            WHEN 'file_id' THEN file_id
-            ELSE file_name END
-        SKIP $offset
-        LIMIT $first
+            WHEN 'file_name' THEN f.file_name
+            WHEN 'file_id' THEN f.file_id
+            ELSE f.file_name END
     """, passThrough: true)
 
-    fileIdsFromFileNameDesc(file_name: [String], offset: Int = 0, first: Int = 10000000, order_by: String ="file_name"): [FileOverview] @cypher(statement: """
+    fileIdsFromFileNameDesc(file_name: [String], order_by: String ="file_name"): [FileOverview] @cypher(statement: """
         MATCH (f:file)
         WHERE ($file_name IS NULL OR f.file_name IN $file_name)
-        RETURN
-            f.file_name as file_name,
-            f.file_id as file_id
+        RETURN {
+            file_name: f.file_name,
+            file_id: f.file_id
+        }
         ORDER BY CASE $order_by
-            WHEN 'file_name' THEN file_name
-            WHEN 'file_id' THEN file_id
-            ELSE file_name END DESC
-        SKIP $offset
-        LIMIT $first
+            WHEN 'file_name' THEN f.file_name
+            WHEN 'file_id' THEN f.file_id
+            ELSE f.file_name END DESC
     """, passThrough: true)
 
 }
