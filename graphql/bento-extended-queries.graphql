@@ -1723,6 +1723,32 @@ type QueryType {
             ELSE f.file_name END DESC
     """, passThrough: true)
 
+    fileIdsFromFileName(file_name: [String], order_by: String ="file_name"): [FileOverview] @cypher(statement: """
+        MATCH (f:file)
+        WHERE ($file_name IS NULL OR f.file_name IN $file_name)
+        RETURN {
+            file_name: f.file_name,
+            file_id: f.file_id
+        }
+        ORDER BY CASE $order_by
+            WHEN 'file_name' THEN f.file_name
+            WHEN 'file_id' THEN f.file_id
+            ELSE f.file_name END
+    """, passThrough: true)
+
+    fileIdsFromFileNameDesc(file_name: [String], order_by: String ="file_name"): [FileOverview] @cypher(statement: """
+        MATCH (f:file)
+        WHERE ($file_name IS NULL OR f.file_name IN $file_name)
+        RETURN {
+            file_name: f.file_name,
+            file_id: f.file_id
+        }
+        ORDER BY CASE $order_by
+            WHEN 'file_name' THEN f.file_name
+            WHEN 'file_id' THEN f.file_id
+            ELSE f.file_name END DESC
+    """, passThrough: true)
+
 
     subjectList: [GroupList] @cypher(statement: """
         MATCH (ss:study_subject)

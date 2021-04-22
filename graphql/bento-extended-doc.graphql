@@ -1357,4 +1357,8 @@ type QueryType {
 
     subjectListByFileType: [GroupList] 
 
+    fileIdsFromFileName(file_name: [String], order_by: String ="file_name"): [FileOverview] 
+
+    fileIdsFromFileNameDesc(file_name: [String], order_by: String ="file_name"): [FileOverview] 
+
 }
