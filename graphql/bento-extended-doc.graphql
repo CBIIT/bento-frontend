@@ -1324,6 +1324,10 @@ type QueryType {
 
     fileOverviewDesc(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] 
 
+    fileIdsFromFileName(file_name: [String], order_by: String ="file_name"): [FileOverview] 
+
+    fileIdsFromFileNameDesc(file_name: [String], order_by: String ="file_name"): [FileOverview] 
+
 
     subjectList: [GroupList] 
 
@@ -1356,9 +1360,5 @@ type QueryType {
     subjectListByFileAssociation: [GroupList] 
 
     subjectListByFileType: [GroupList] 
-
-    fileIdsFromFileName(file_name: [String], order_by: String ="file_name"): [FileOverview] 
-
-    fileIdsFromFileNameDesc(file_name: [String], order_by: String ="file_name"): [FileOverview] 
 
 }
