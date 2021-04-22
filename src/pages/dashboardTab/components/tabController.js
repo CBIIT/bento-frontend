@@ -269,6 +269,7 @@ const tabController = (classes) => {
         filteredSubjectIds={filteredSubjectIds}
         filteredSampleIds={filteredSampleIds}
         filteredFileIds={filteredFileIds}
+        tableDownloadCSV={container.tableDownloadCSV || false}
       />
     </TabContainer>
   ));

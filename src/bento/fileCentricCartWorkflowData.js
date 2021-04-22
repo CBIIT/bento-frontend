@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
 
 export const navBarCartData = {
   cartLabel: 'Cart',
@@ -47,6 +48,7 @@ export const table = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  tableDownloadCSV: customMyFilesTabDownloadCSV,
 
   columns: [
     {
