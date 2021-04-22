@@ -889,7 +889,6 @@ type SampleOverview {
 
 type FileOverview {
     file_id: String
-    file_uuid: String
     file_name: String
     association: String
     file_description: String
@@ -2425,10 +2424,10 @@ type QueryType {
         WHERE ($file_name IS NULL OR f.file_name IN $file_name)
         RETURN
             f.file_name as file_name,
-            f.uuid as file_uuid
+            f.file_id as file_id
         ORDER BY CASE $order_by
             WHEN 'file_name' THEN file_name
-            WHEN 'file_uuid' THEN file_uuid
+            WHEN 'file_id' THEN file_id
             ELSE file_name END
         SKIP $offset
         LIMIT $first
@@ -2439,10 +2438,10 @@ type QueryType {
         WHERE ($file_name IS NULL OR f.file_name IN $file_name)
         RETURN
             f.file_name as file_name,
-            f.uuid as file_uuid
+            f.file_id as file_id
         ORDER BY CASE $order_by
             WHEN 'file_name' THEN file_name
-            WHEN 'file_uuid' THEN file_uuid
+            WHEN 'file_id' THEN file_id
             ELSE file_name END DESC
         SKIP $offset
         LIMIT $first

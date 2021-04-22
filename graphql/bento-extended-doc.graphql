@@ -889,7 +889,6 @@ type SampleOverview {
 
 type FileOverview {
     file_id: String
-    file_uuid: String
     file_name: String
     association: String
     file_description: String
