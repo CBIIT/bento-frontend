@@ -1048,6 +1048,21 @@ const reducers = {
       dataFileSelected: item,
     }
   ),
+  CLEAR_TABLE_SELECTION: (state) => ({
+    ...state,
+    dataCaseSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
+    },
+    dataSampleSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
+    },
+    dataFileSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
+    },
+  }),
 };
 
 // INJECT-REDUCERS INTO REDUX STORE
