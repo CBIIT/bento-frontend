@@ -838,3 +838,22 @@ query fileOverview($file_ids: [String], $offset: Int = 0, $first: Int = 100000, 
   }
 }
   `;
+
+export const GET_FILE_IDS_FROM_FILE_NAME = gql`
+  query (
+      $file_name: [String],
+      $offset: Int,
+      $first: Int,
+      $order_by: String
+  )
+  {
+      fileIdsFromFileNameDesc(
+          file_name:$file_name, 
+          offset:$offset,
+          first:$first,
+          order_by:$order_by
+      )
+      {
+          file_id
+      }
+  }`;

@@ -362,8 +362,16 @@ export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
   return filteredFilesArray;
 }
 
+/**
+ * Returns file IDs of given filenames.
+ * @param array file_name
+ * @param int offset
+ * @param int first
+ * @param SORT_SINGLE_GROUP_CHECKBOX order_by
+ * @return {json}
+ */
 
-async function getFileIDsByFileName(file_name = [], offset = 0.0, first = 100000, order_by = 'file_name') {
+async function getFileIDsByFileName(file_name = [], offset = 0, first = 100000, order_by = 'file_name') {
   const data = await client
     .query({
       query: GET_FILE_IDS_FROM_FILE_NAME,
@@ -376,42 +384,62 @@ async function getFileIDsByFileName(file_name = [], offset = 0.0, first = 100000
     })
     .then((result) => {
       if (result && result.data && result.data.fileIdsFromFileNameDesc.length > 0) {
-        return result.data.fileIdsFromFileNameDesc.map((d) => d.file_uuid);
+        return result.data.fileIdsFromFileNameDesc.map((d) => d.file_id);
       }
       return [];
     });
   return data;
 }
 
+/**
+ * Returns file IDs of given sampleids or subjectids.
+ * @param int fileCount
+ * @param graphqlquery SELECT_ALL_QUERY
+ * @param array caseIds
+ * @param array sampleIds
+ * @param string apiReturnField
+ * @return {json}
+ */
+
 async function getFileIDs(
   fileCount = 100000,
   SELECT_ALL_QUERY,
   caseIds = [],
   sampleIds = [],
-  cate,
+  apiReturnField,
 ) {
   const fetchResult = await client
     .query({
       query: SELECT_ALL_QUERY,
       variables: {
-        case_ids: caseIds,
+        subject_ids: caseIds,
         sample_ids: sampleIds,
-        file_uuids: [],
+        file_ids: [],
         first: fileCount,
       },
     })
-    .then((result) => result.data[cate] || []);
+    .then((result) => result.data[apiReturnField] || []);
 
   return fetchResult.reduce((accumulator, currentValue) => {
     const { files } = currentValue;
     // check if file
     if (files && files.length > 0) {
-      return accumulator.concat(files.map((f) => f));
+      return accumulator.concat(files.map((f) => {
+        if(typeof f.file_id !== 'undefined'){
+          return f.file_id
+        }
+        return f
+      }));
     }
     return accumulator;
   }, []);
 }
 
+/*
+* Removing fileIds that are not in our current list of filtered fileIds
+* @param array fileIds
+* @return array
+*/
 function filterOutFileIds(fileIds) {
   // Removing fileIds that are not in our current list of filtered fileIds
   const { filteredFileIds } = getState();
@@ -425,6 +453,7 @@ function filterOutFileIds(fileIds) {
   }
   return fileIds;
 }
+
 /*
  * Gets all file ids for active subjectIds.
  * TODO this  functtion can use filtered file IDs except for initial load
@@ -441,7 +470,7 @@ export async function fetchAllFileIDs(fileCount = 100000, selectedIds = [], offs
       filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL, [], selectedIds, 'sampleOverview');
       break;
     default:
-      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], 'caseOverviewPaged');
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], 'subjectOverViewPaged');
   }
   return filterOutFileIds(filesIds);
 }
@@ -734,7 +763,10 @@ export async function tableHasSelections() {
   ).length > 0;
 }
 
-
+/**
+ *  Check sidebar has filter selections.
+ * return boolean
+ */
 function hasFilter() {
   const currentAllActiveFilters = getState().allActiveFilters;
   return Object.entries(currentAllActiveFilters).filter((item) => item[1].length > 0).length > 0;
@@ -757,6 +789,21 @@ export async function getFileNamesByFileIds(fileIds) {
   return data;
 }
 
+
+/**
+ *  Returns the functuion depend on current active tab
+ * @return {func}
+ */
+
+ export function getTableRowSelectionEvent() {
+  const currentState = getState();
+  const tableRowSelectionEvent = currentState.currentActiveTab === tabIndex[2].title
+    ? setDataFileSelected
+    : currentState.currentActiveTab === tabIndex[1].title
+      ? setDataSampleSelected : setDataCaseSelected;
+  return tableRowSelectionEvent;
+}
+
 function setDataCaseSelected(result) {
   store.dispatch({ type: 'SET_CASES_SELECTION', payload: result });
 }
@@ -769,14 +816,6 @@ function setDataSampleSelected(result) {
   store.dispatch({ type: 'SET_SAMPLE_SELECTION', payload: result });
 }
 
-export function getTableRowSelectionEvent() {
-  const currentState = getState();
-  const tableRowSelectionEvent = currentState.currentActiveTab === tabIndex[2].title
-    ? setDataFileSelected
-    : currentState.currentActiveTab === tabIndex[1].title
-      ? setDataSampleSelected : setDataCaseSelected;
-  return tableRowSelectionEvent;
-}
 
 export function clearTableSelections() {
   store.dispatch({ type: 'CLEAR_TABLE_SELECTION' });
