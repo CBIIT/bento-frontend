@@ -246,7 +246,7 @@ export const tabContainers = [
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
     buttonText: 'Add Selected Files',
-    dataKey: 'file_id',
+    dataKey: 'file_name',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#DC2FDA',
@@ -826,6 +826,15 @@ export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
 query fileOverview($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by: String = "file_name") {
   fileOverview(file_ids: $file_ids, offset: $offset, first: $first, order_by: $order_by) {
     file_id
+  }
+}
+  `;
+
+// --------------- GraphQL query - Retrieve files tab details --------------
+export const GET_FILES_NAME_QUERY = gql`
+query fileOverview($file_ids: [String], $offset: Int = 0, $first: Int = 100000, $order_by:String ="file_name"){
+  fileOverview(file_ids: $file_ids, offset: $offset,first: $first, order_by: $order_by) {
+    file_name
   }
 }
   `;

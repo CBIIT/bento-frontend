@@ -117,6 +117,10 @@ class ServerPaginatedTableView extends React.Component {
     });
   };
 
+  onTableInit = (data) => {
+    this.rowsSelectedTrigger(data);
+  };
+
   async fetchData(offset, rowsRequired, sortOrder = {}) {
     let sortDirection = 'asc';
     let sortColumn = 'arm';
@@ -177,6 +181,8 @@ class ServerPaginatedTableView extends React.Component {
           </TableRow>
         </TableFooter>
       ),
+
+      onTableInit: () => this.onTableInit(data),
       // rowsSelected: data.map((item, idx) => idx),
       onTableChange: (action, tableState) => {
         // console.log(action, tableState);
