@@ -50,6 +50,8 @@ const TabView = ({
   paginationAPIFieldDesc,
   dataKey,
   filteredSubjectIds,
+  filteredSampleIds,
+  filteredFileIds,
   defaultSortCoulmn,
   defaultSortDirection,
 }) => {
@@ -204,13 +206,17 @@ const TabView = ({
   return (
     <div>
       <Grid item xs={12} className={classes.saveButtonDiv}>
-        <SelectAllModal />
-        <AddToCartAlertDialog cartWillFull={cartIsFull} ref={AddToCartAlertDialogRef} />
+        <SelectAllModal tableIDForButton={tableID} openSnack={openSnack} />
+        <AddToCartAlertDialog
+          cartWillFull={cartIsFull}
+          ref={AddToCartAlertDialogRef}
+        />
         <button
           type="button"
           ref={saveButton2}
           onClick={exportFiles}
           className={classes.button}
+          id={`${tableID}_${buttonText}`}
         >
           { buttonText }
         </button>
@@ -247,7 +253,11 @@ const TabView = ({
             overviewDesc={getOverviewDescQuery(api)}
             paginationAPIField={paginationAPIField}
             paginationAPIFieldDesc={paginationAPIFieldDesc}
-            queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
+            queryCustomVaribles={{
+              subject_ids: filteredSubjectIds,
+              sample_ids: filteredSampleIds,
+              file_ids: filteredFileIds,
+            }}
             defaultSortCoulmn={defaultSortCoulmn}
             defaultSortDirection={defaultSortDirection}
           />

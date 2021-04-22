@@ -226,6 +226,7 @@ const GridView = ({
           style={btnStyle}
           ref={saveButton}
           onClick={exportFiles}
+          id={`button_${buttonText}`}
         >
           { buttonText }
         </button>
