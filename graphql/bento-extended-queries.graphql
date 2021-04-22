@@ -1520,7 +1520,7 @@ type QueryType {
             ELSE file_id_num END
     """, passThrough: true)
 
-    filesInListDesc(file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileDetail] @cypher(statement: """
+    filesInListDesc(file_ids: [String], order_by: String = ""): [FileDetail] @cypher(statement: """
         MATCH (f:file)
         WHERE f.file_id in $file_ids
         OPTIONAL MATCH (f)-->(parent)
@@ -1557,7 +1557,7 @@ type QueryType {
             ELSE file_id_num END DESC
     """, passThrough: true)
 
-    sampleOverview(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = "", first: Int = 100, offset: Int = 0): [SampleOverview] @cypher(statement: """
+    sampleOverview(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = ""): [SampleOverview] @cypher(statement: """
         MATCH (samp:sample)
           WHERE ($sample_ids IS NULL OR $sample_ids = [""] OR samp.sample_id IN $sample_ids)
         OPTIONAL MATCH (samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
@@ -1596,7 +1596,7 @@ type QueryType {
             ELSE subject_id_num END
     """, passThrough: true)
 
-    sampleOverviewDesc(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = "", first: Int = 100, offset: Int = 0): [SampleOverview] @cypher(statement: """
+    sampleOverviewDesc(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = ""): [SampleOverview] @cypher(statement: """
         MATCH (samp:sample)
           WHERE ($sample_ids IS NULL OR $sample_ids = [""] OR samp.sample_id IN $sample_ids)
         OPTIONAL MATCH (samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
@@ -1636,7 +1636,7 @@ type QueryType {
     """, passThrough: true)
 
 
-    fileOverview(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] @cypher(statement: """
+    fileOverview(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] @cypher(statement: """
         MATCH (f:file)
           WHERE ($file_ids IS NULL OR $file_ids = [""] OR f.file_id IN $file_ids)
         MATCH (f)-->(parent)
@@ -1677,7 +1677,7 @@ type QueryType {
             ELSE f.file_name END
     """, passThrough: true)
 
-    fileOverviewDesc(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] @cypher(statement: """
+    fileOverviewDesc(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] @cypher(statement: """
         MATCH (f:file)
           WHERE ($file_ids IS NULL OR $file_ids = [""] OR f.file_id IN $file_ids)
         MATCH (f)-->(parent)
