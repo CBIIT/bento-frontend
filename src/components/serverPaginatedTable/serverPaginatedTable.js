@@ -8,6 +8,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { CircularProgress, Backdrop, withStyles } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
 import client from '../../utils/graphqlClient';
+import CSVDownloadToolbar from './components/CSVDownloadCustomToolbar';
 
 class ServerPaginatedTableView extends React.Component {
   state = {
@@ -152,6 +153,14 @@ class ServerPaginatedTableView extends React.Component {
       count,
       rowsPerPage,
       rowsPerPageOptions: [],
+      customToolbar: this.props.tableDownloadCSV.defaultFullTableDownload ? () => (
+        this.props.tableDownloadCSV && (
+          <CSVDownloadToolbar
+            tableDownloadCSV={this.props.tableDownloadCSV}
+            queryCustomVaribles={this.props.queryCustomVaribles}
+          />
+        )
+      ) : '',
       sortOrder,
       onRowSelectionChange: (
         curr,

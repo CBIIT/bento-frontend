@@ -43,6 +43,7 @@ const CartHeader = ({
         queryCustomVaribles={{ file_ids: fileIDs }}
         defaultSortCoulmn={defaultSortCoulmn}
         defaultSortDirection={defaultSortDirection}
+        tableDownloadCSV={table.tableDownloadCSV}
       />
     </TableThemeProvider>
   );

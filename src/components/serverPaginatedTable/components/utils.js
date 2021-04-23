@@ -23,8 +23,9 @@ export function createFileName(fileName) {
   return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
 }
 
-export function convertToCSV(jsonse, comments, keysToInclude, header) {
+export function convertToCSV(jsonse, keysToInclude, header) {
   const objArray = jsonse;
+  // To Do empty object just print headers
   const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
   let str = '';
   array.map((entry, index) => {
@@ -39,9 +40,7 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
     });
     if (index === 0) {
       str = header.join(',');
-      let commentResult = comments.replace(/"/g, '""');
-      if (commentResult.search(/("|,|\n)/g) >= 0) commentResult = `"${commentResult}"`;
-      str += `\r\n${line},${commentResult}\r\n`;
+      str += `\r\n${line}\r\n`;
     } else {
       str += `${line}\r\n`;
     }
@@ -50,15 +49,15 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
   return str;
 }
 
-export function downloadJson(tableData, comments, fileName, manifestData) {
+export function downloadJson(tableData, tableDownloadCSV) {
   const jsonse = JSON.stringify(tableData);
-  const csv = convertToCSV(jsonse, comments, manifestData.keysToInclude, manifestData.header);
+  const csv = convertToCSV(jsonse, tableDownloadCSV.keysToInclude, tableDownloadCSV.header);
   const exportData = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
   const JsonURL = window.URL.createObjectURL(exportData);
   let tempLink = '';
   tempLink = document.createElement('a');
   tempLink.setAttribute('href', JsonURL);
-  tempLink.setAttribute('download', createFileName(fileName));
+  tempLink.setAttribute('download', createFileName(tableDownloadCSV.fileName || ''));
   document.body.appendChild(tempLink);
   tempLink.click();
   document.body.removeChild(tempLink);

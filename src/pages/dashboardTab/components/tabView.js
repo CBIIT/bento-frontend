@@ -62,6 +62,7 @@ const TabView = ({
   clearTableSelections,
   fetchAllFileIDs,
   getFilesCount,
+  tableDownloadCSV,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -286,6 +287,7 @@ const TabView = ({
             }}
             defaultSortCoulmn={defaultSortCoulmn}
             defaultSortDirection={defaultSortDirection}
+            tableDownloadCSV={tableDownloadCSV}
           />
         </Grid>
       </Grid>
