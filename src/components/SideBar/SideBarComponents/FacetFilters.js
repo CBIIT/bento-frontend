@@ -83,7 +83,13 @@ const FacetPanel = ({ classes }) => {
     if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
       document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}*`;
-      document.getElementById(`filterGroup_${filter[0]}`).style.color = 'green';
+      if (filterLabel[0].section === 'Filter By Cases') {
+        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#10A075';
+      } else if (filterLabel[0].section === 'Filter By Samples') {
+        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#10BEFF';
+      } else if (filterLabel[0].section === 'Filter By Files') {
+        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#E636E4';
+      }
     } else if (document.getElementById(`filterGroup_${filter[0]}`)) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
       document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
@@ -263,9 +269,10 @@ const FacetPanel = ({ classes }) => {
               return (
                 <ListItem
                   button
+                  selected={checkboxItem.isChecked}
                   onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}$$${sideBarItem.section}`)}
                   className={classes.nested}
-                  classes={{ gutters: classes.listItemGutters }}
+                  classes={{ root: currentSection.sectionName === 'Filter By Cases' ? classes.root1 : currentSection.sectionName === 'Filter By Samples' ? classes.root2 : currentSection.sectionName === 'Filter By Files' ? classes.root3 : null, selected: classes.selected, gutters: classes.listItemGutters }}
                 >
                   <Checkbox
                     id={`checkbox_${sideBarItem.groupName}_${checkboxItem.name}`}
@@ -383,6 +390,21 @@ const styles = () => ({
     fontSize: '12px',
     marginRight: '10px',
   },
+  root1: {
+    '&$selected': {
+      backgroundColor: '#D6F2EA',
+    },
+  },
+  root2: {
+    '&$selected': {
+      backgroundColor: '#CFEDF9',
+    },
+  },
+  root3: {
+    '&$selected': {
+      backgroundColor: '#F7D7F7',
+    },
+  },
+  selected: {},
 });
-
 export default withStyles(styles)(FacetPanel);
