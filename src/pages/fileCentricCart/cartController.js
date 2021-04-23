@@ -28,6 +28,7 @@ const cartController = () => {
       fileIDs={ids}
       defaultSortCoulmn={table.defaultSortField || ''}
       defaultSortDirection={defaultSortDirection}
+      tableDownloadCSV={table.tableDownloadCSV}
       data={
         defaultSortDirection === 'desc'
           ? data.filesInListDesc === null || data.filesInListDesc === '' ? [] : data.filesInListDesc

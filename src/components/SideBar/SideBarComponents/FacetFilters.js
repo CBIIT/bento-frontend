@@ -15,9 +15,17 @@ import {
 import _ from 'lodash';
 import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
-  as ArrowDropDownIcon,
+  as ArrowDropDownIcon, Replay as ReplayIcon,
 } from '@material-ui/icons';
-import { toggleCheckBox, setSideBarToLoading, setDashboardTableLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
+import {
+  toggleCheckBox,
+  setSideBarToLoading,
+  setDashboardTableLoading,
+  // eslint-disable-next-line no-unused-vars
+  sortGroupCheckboxByAlphabet,
+  sortGroupCheckboxByCount,
+  resetGroupSelections,
+} from '../../../pages/dashboardTab/store/dashboardReducer';
 import { facetSectionVariables, facetSearchData } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
@@ -66,11 +74,22 @@ const FacetPanel = ({ classes }) => {
       && state.dashboardTab.allActiveFilters
       ? state.dashboardTab.allActiveFilters : {}));
 
+  const sortByForGroups = useSelector((state) => (
+    state.dashboardTab
+      && state.dashboardTab.sortByList
+      ? state.dashboardTab.sortByList : {}));
+
   Object.entries(activeFilters).map((filter) => {
     if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
       document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}*`;
-      document.getElementById(`filterGroup_${filter[0]}`).style.color = 'green';
+      if (filterLabel[0].section === 'Filter By Cases') {
+        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#10A075';
+      } else if (filterLabel[0].section === 'Filter By Samples') {
+        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#10BEFF';
+      } else if (filterLabel[0].section === 'Filter By Files') {
+        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#E636E4';
+      }
     } else if (document.getElementById(`filterGroup_${filter[0]}`)) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
       document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
@@ -119,6 +138,13 @@ const FacetPanel = ({ classes }) => {
     }]));
   };
 
+  const handleGroupReset = (value) => () => {
+    setSideBarToLoading();
+    setDashboardTableLoading();
+    // dispatch toggleCheckBox action
+    dispatch(resetGroupSelections(value));
+  };
+
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
     .slice(0, 15);
 
@@ -133,6 +159,11 @@ const FacetPanel = ({ classes }) => {
     return Object.values(sideBar);
   };
   const sideBarSections = arrangeBySections(sideBarDisplay);
+
+  function getSortButtonColor(sideBarItem, sortType) {
+    return (sortByForGroups[sideBarItem.groupName] === sortType
+      ? '#B2C6D6' : '#4A4A4A');
+  }
 
   return (
     <>
@@ -199,6 +230,37 @@ const FacetPanel = ({ classes }) => {
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
+                          <div className={classes.sortGroup}>
+                            <span
+                              className={classes.sortGroupItem}
+                              style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
+                              onClick={() => {
+                                sortGroupCheckboxByAlphabet(sideBarItem.groupName);
+                              }}
+                            >
+                              {' '}
+                              Sort alphabetically
+                            </span>
+                            <span
+                              className={classes.sortGroupItem}
+                              style={{ color: getSortButtonColor(sideBarItem, 'count') }}
+                              onClick={() => {
+                                sortGroupCheckboxByCount(sideBarItem.groupName);
+                              }}
+                            >
+                              {' '}
+                              Sort by count
+                            </span>
+                            <span
+                              className={classes.sortGroupItem}
+                              style={{ color: getSortButtonColor(sideBarItem, 'count') }}
+                            >
+                              <ReplayIcon
+                                onClick={handleGroupReset(sideBarItem.datafield)}
+                                style={{ fontSize: 18 }}
+                              />
+                            </span>
+                          </div>
                           {
             sideBarItem.checkboxItems.map((checkboxItem) => {
               if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
@@ -207,9 +269,10 @@ const FacetPanel = ({ classes }) => {
               return (
                 <ListItem
                   button
+                  selected={checkboxItem.isChecked}
                   onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}$$${sideBarItem.section}`)}
                   className={classes.nested}
-                  classes={{ gutters: classes.listItemGutters }}
+                  classes={{ root: currentSection.sectionName === 'Filter By Cases' ? classes.root1 : currentSection.sectionName === 'Filter By Samples' ? classes.root2 : currentSection.sectionName === 'Filter By Files' ? classes.root3 : null, selected: classes.selected, gutters: classes.listItemGutters }}
                 >
                   <Checkbox
                     id={`checkbox_${sideBarItem.groupName}_${checkboxItem.name}`}
@@ -318,6 +381,30 @@ const styles = () => ({
   listItemGutters: {
     padding: '8px 0px 8px 15px',
   },
+  sortGroup: {
+    textAlign: 'center',
+  },
+  sortGroupItem: {
+    cursor: 'pointer',
+    fontFamily: 'Nunito',
+    fontSize: '12px',
+    marginRight: '10px',
+  },
+  root1: {
+    '&$selected': {
+      backgroundColor: '#D6F2EA',
+    },
+  },
+  root2: {
+    '&$selected': {
+      backgroundColor: '#CFEDF9',
+    },
+  },
+  root3: {
+    '&$selected': {
+      backgroundColor: '#F7D7F7',
+    },
+  },
+  selected: {},
 });
-
 export default withStyles(styles)(FacetPanel);
