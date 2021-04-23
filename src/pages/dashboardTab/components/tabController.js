@@ -288,6 +288,7 @@ const tabController = (classes) => {
         clearTableSelections={clearTableSelections}
         fetchAllFileIDs={fetchAllFileIDs}
         tableDownloadCSV={container.tableDownloadCSV || false}
+        getFilesCount={getFilesCount}
       />
     </TabContainer>
   ));
