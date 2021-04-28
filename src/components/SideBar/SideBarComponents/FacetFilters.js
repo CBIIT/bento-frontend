@@ -82,7 +82,7 @@ const FacetPanel = ({ classes }) => {
   Object.entries(activeFilters).map((filter) => {
     if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
-      document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}*`;
+      document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
       if (filterLabel[0].section === 'Filter By Cases') {
         document.getElementById(`filterGroup_${filter[0]}`).style.color = '#10A075';
       } else if (filterLabel[0].section === 'Filter By Samples') {
@@ -249,7 +249,6 @@ const FacetPanel = ({ classes }) => {
                 {currentSection.items.map((sideBarItem) => (
                   <>
                     <ExpansionPanel
-                      // expanded={expanded === sideBarItem.groupName}
                       expanded={groupsExpanded.includes(sideBarItem.groupName)}
                       onChange={handleGroupsChange(sideBarItem.groupName)}
                       classes={{
