@@ -65,9 +65,9 @@ const FacetPanel = ({ classes }) => {
   // redux use actions
   const dispatch = useDispatch();
 
-  const [expanded, setExpanded] = React.useState(false);
+  const [groupsExpanded, setGroupsExpanded] = React.useState([]);
 
-  const [groupExpanded, setGroupExpanded] = React.useState(['case']);
+  const [sectionExpanded, setSectionExpanded] = React.useState(['case']);
 
   const activeFilters = useSelector((state) => (
     state.dashboardTab
@@ -99,19 +99,13 @@ const FacetPanel = ({ classes }) => {
   });
 
   React.useEffect(() => {
-    if (!expanded || !(expanded === `${sideBarContent.defaultPanel}false` || expanded !== false)) {
-      setExpanded(sideBarContent.defaultPanel);
+    if (!groupsExpanded || !(groupsExpanded === `${sideBarContent.defaultPanel}false` || groupsExpanded !== false)) {
+      setGroupsExpanded(sideBarContent.defaultPanel);
     }
   });
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : `${panel}false`);
-
-    // set height of filters.
-  };
-
-  const handleGroupChange = (panel) => (event, isExpanded) => {
-    const groups = _.cloneDeep(groupExpanded);
+  const handleGroupsChange = (panel) => (event, isExpanded) => {
+    const groups = _.cloneDeep(groupsExpanded);
     if (isExpanded) {
       groups.push(panel);
     } else {
@@ -121,7 +115,23 @@ const FacetPanel = ({ classes }) => {
       }
     }
 
-    setGroupExpanded(groups);
+    setGroupsExpanded(groups);
+
+    // set height of filters.
+  };
+
+  const handleSectionChange = (panel) => (event, isExpanded) => {
+    const sections = _.cloneDeep(sectionExpanded);
+    if (isExpanded) {
+      sections.push(panel);
+    } else {
+      const index = sections.indexOf(panel);
+      if (index > -1) {
+        sections.splice(index, 1);
+      }
+    }
+
+    setSectionExpanded(sections);
   };
 
   const handleToggle = (value) => () => {
@@ -165,6 +175,39 @@ const FacetPanel = ({ classes }) => {
       ? '#B2C6D6' : '#4A4A4A');
   }
 
+  const getCheckBoxView = (checkboxItem, sideBarItem, currentSection) => {
+    if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
+      return '';
+    }
+    return (
+      <ListItem
+        button
+        selected={checkboxItem.isChecked}
+        onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}$$${sideBarItem.section}`)}
+        className={classes.nested}
+        classes={{ root: currentSection.sectionName === 'Filter By Cases' ? classes.root1 : currentSection.sectionName === 'Filter By Samples' ? classes.root2 : currentSection.sectionName === 'Filter By Files' ? classes.root3 : null, selected: classes.selected, gutters: classes.listItemGutters }}
+      >
+        <Checkbox
+          id={`checkbox_${sideBarItem.groupName}_${checkboxItem.name}`}
+          icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+          checkedIcon={<CheckBoxIcon style={{ fontSize: 18 }} />}
+          checked={checkboxItem.isChecked}
+          tabIndex={-1}
+          disableRipple
+          color="secondary"
+          classes={{ root: classes.checkboxRoot }}
+        />
+        <div className={classes.panelDetailText}>
+          {`${checkboxItem.name}`}
+          <span style={{ color: facetSectionVariables[sideBarItem.section].color ? facetSectionVariables[sideBarItem.section].color : '#137fbe' }}>
+            &nbsp;
+            {`(${checkboxItem.subjects})`}
+          </span>
+        </div>
+      </ListItem>
+    );
+  };
+
   return (
     <>
       {sideBarSections.map((currentSection) => (
@@ -180,8 +223,8 @@ const FacetPanel = ({ classes }) => {
             }}
           />
           <ExpansionPanel
-            expanded={groupExpanded.includes(currentSection.sectionName)}
-            onChange={handleGroupChange(currentSection.sectionName)}
+            expanded={sectionExpanded.includes(currentSection.sectionName)}
+            onChange={handleSectionChange(currentSection.sectionName)}
                 // className={classes.expansion}
             classes={{
               root: classes.expansionPanelRoot,
@@ -206,8 +249,9 @@ const FacetPanel = ({ classes }) => {
                 {currentSection.items.map((sideBarItem) => (
                   <>
                     <ExpansionPanel
-                      expanded={expanded === sideBarItem.groupName}
-                      onChange={handleChange(sideBarItem.groupName)}
+                      // expanded={expanded === sideBarItem.groupName}
+                      expanded={groupsExpanded.includes(sideBarItem.groupName)}
+                      onChange={handleGroupsChange(sideBarItem.groupName)}
                       classes={{
                         root: classes.expansionPanelsideBarItem,
                       }}
@@ -262,42 +306,19 @@ const FacetPanel = ({ classes }) => {
                             </span>
                           </div>
                           {
-            sideBarItem.checkboxItems.map((checkboxItem) => {
-              if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
-                return '';
-              }
-              return (
-                <ListItem
-                  button
-                  selected={checkboxItem.isChecked}
-                  onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}$$${sideBarItem.section}`)}
-                  className={classes.nested}
-                  classes={{ root: currentSection.sectionName === 'Filter By Cases' ? classes.root1 : currentSection.sectionName === 'Filter By Samples' ? classes.root2 : currentSection.sectionName === 'Filter By Files' ? classes.root3 : null, selected: classes.selected, gutters: classes.listItemGutters }}
-                >
-                  <Checkbox
-                    id={`checkbox_${sideBarItem.groupName}_${checkboxItem.name}`}
-                    icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
-                    checkedIcon={<CheckBoxIcon style={{ fontSize: 18 }} />}
-                    checked={checkboxItem.isChecked}
-                    tabIndex={-1}
-                    disableRipple
-                    color="secondary"
-                    classes={{ root: classes.checkboxRoot }}
-                  />
-                  <div className={classes.panelDetailText}>
-                    {`${checkboxItem.name}`}
-                    <span style={{ color: facetSectionVariables[sideBarItem.section].color ? facetSectionVariables[sideBarItem.section].color : '#137fbe' }}>
-                      &nbsp;
-                      {`(${checkboxItem.subjects})`}
-                    </span>
-                  </div>
-                </ListItem>
-              );
-            })
+                            sideBarItem.checkboxItems.map(
+                              (item) => getCheckBoxView(item, sideBarItem, currentSection),
+                            )
           }
                         </List>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
+                    <div className={classes.selectedCheckboxDisplay}>
+                      { !groupsExpanded.includes(sideBarItem.groupName)
+                      && sideBarItem.checkboxItems
+                        .filter((item) => (item.isChecked))
+                        .map((item) => getCheckBoxView(item, sideBarItem, currentSection))}
+                    </div>
                   </>
                 ))}
               </List>
@@ -406,5 +427,9 @@ const styles = () => ({
     },
   },
   selected: {},
+  selectedCheckboxDisplay: {
+    maxHeight: '200px',
+    overflow: 'auto',
+  },
 });
 export default withStyles(styles)(FacetPanel);
