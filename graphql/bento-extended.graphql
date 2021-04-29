@@ -2442,4 +2442,144 @@ type QueryType {
             ELSE f.file_name END DESC
     """, passThrough: true)
 
+    subjectList: [GroupList] @cypher(statement: """
+    MATCH (ss:study_subject)
+    RETURN
+    {group: 'all', subjects: collect(DISTINCT ss.study_subject_id)}
+    """)
+
+    subjectListByProgram: [GroupList] @cypher(statement: """
+    MATCH (p:program)
+    OPTIONAL MATCH (p)<--(s:study)<--(ss:study_subject)
+    RETURN
+    {group: 'program:'+p.program_acronym, subjects: collect(DISTINCT ss.study_subject_id)}
+    """)
+
+    subjectListByStudy: [GroupList] @cypher(statement: """
+    MATCH (s:study)
+    OPTIONAL MATCH (s)<-[:study_subject_of_study]-(ss:study_subject)
+    RETURN
+    {group: 'study:'+s.study_acronym + ': ' + s.study_short_description, subjects: collect(DISTINCT ss.study_subject_id)}
+    """)
+
+    subjectListByDiagnoses: [GroupList] @cypher(statement: """
+    MATCH (ss:study_subject)
+    RETURN
+    {group: 'diagnosis:'+ss.disease_subtype, subjects: collect(DISTINCT ss.study_subject_id)}
+    """)
+
+    subjectListByRecurrenceScore: [GroupList] @cypher(statement: """
+    MATCH (g:stratification_factor)
+    OPTIONAL MATCH (g)-->(ss:study_subject)
+    RETURN
+    {group: 'recurrence score:'+g.grouped_recurrence_score, subjects: collect(DISTINCT ss.study_subject_id)}
+    """)
+
+    subjectListByTumorSize: [GroupList] @cypher(statement: """
+    MATCH (g:diagnosis)
+    OPTIONAL MATCH (g)-->(ss:study_subject)
+    RETURN
+    {group: 'tumor size:'+g.tumor_size_group, subjects: collect(DISTINCT ss.study_subject_id)}
+    """)
+
+    subjectListByTumorGrade: [GroupList] @cypher(statement: """
+    MATCH (g:diagnosis)
+    OPTIONAL MATCH (g)-->(ss:study_subject)
+    RETURN
+    {
+        group: 'tumor grade:'+g.tumor_grade,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByErStatus: [GroupList] @cypher(statement: """
+    MATCH (g:diagnosis)
+    OPTIONAL MATCH (g)-->(ss:study_subject)
+    RETURN
+    {
+        group: 'er status:'+g.er_status,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByPrStatus: [GroupList] @cypher(statement: """
+    MATCH (g:diagnosis)
+    OPTIONAL MATCH (g)-->(ss:study_subject)
+    RETURN
+    {
+        group: 'pr status:'+g.pr_status,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByChemotherapyRegimen: [GroupList] @cypher(statement: """
+    MATCH (g:therapeutic_procedure)
+    OPTIONAL MATCH (g)-->()-->(ss:study_subject)
+    RETURN
+    {
+        group: 'chemotherapy regimen:'+g.chemotherapy_regimen,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByEndocrineTherapy: [GroupList] @cypher(statement: """
+    MATCH (g:therapeutic_procedure)
+    OPTIONAL MATCH (g)-->()-->(ss:study_subject)
+    RETURN
+    {
+        group: 'endocrine therapy:'+g.endocrine_therapy_type,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByMenopauseStatus: [GroupList] @cypher(statement: """
+    MATCH (g:demographic_data)
+    OPTIONAL MATCH (g)-->(ss:study_subject)
+    RETURN
+    {
+        group: 'menopause status:'+g.menopause_status,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByTissueType: [GroupList] @cypher(statement: """
+    MATCH (g:sample)
+    OPTIONAL MATCH (g)-->(ss:study_subject)
+    RETURN
+    {
+        group: 'tissue type:'+g.tissue_type,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByTissueComposition: [GroupList] @cypher(statement: """
+    MATCH (g:sample)
+    OPTIONAL MATCH (g)-->(ss:study_subject)
+    RETURN
+    {
+        group: 'sample:'+g.composition,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByFileAssociation: [GroupList] @cypher(statement: """
+    MATCH (g:file)
+    OPTIONAL MATCH (g)-->(parent)-->(ss:study_subject)
+    RETURN
+    {
+        group: 'file association:'+head(labels(parent)),
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
+    subjectListByFileType: [GroupList] @cypher(statement: """
+    MATCH (g:file)
+    OPTIONAL MATCH (g)-->(parent)-->(ss:study_subject)
+    RETURN
+    {
+        group: 'file type:'+g.file_type,
+        subjects: collect(DISTINCT ss.study_subject_id)
+    }
+    """)
+
 }
