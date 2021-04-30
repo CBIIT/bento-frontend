@@ -52,7 +52,9 @@ class ServerPaginatedTableView extends React.Component {
     this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage, sortOrder).then((res) => {
       this.rowsSelectedTrigger(res);
       // update columns display true/false depending on onViewColumnsChange
-      this.setUpdatedColumnsDisplay(this.state.updatedColumns);
+      if (this.props.options.viewColumns && this.state.updatedColumns.length) {
+        this.setUpdatedColumnsDisplay(this.state.updatedColumns);
+      }
       this.setState({
         isLoading: false,
         sortOrder,
@@ -117,7 +119,9 @@ class ServerPaginatedTableView extends React.Component {
     ).then((res) => {
       this.rowsSelectedTrigger(res);
       // update columns display true/false depending on onViewColumnsChange
-      this.setUpdatedColumnsDisplay(this.state.updatedColumns);
+      if (this.props.options.viewColumns && this.state.updatedColumns.length) {
+        this.setUpdatedColumnsDisplay(this.state.updatedColumns);
+      }
       this.setState({
         isLoading: false,
         sortOrder,
