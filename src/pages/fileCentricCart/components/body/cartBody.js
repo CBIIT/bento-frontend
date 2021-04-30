@@ -11,7 +11,7 @@ import Styles from './cartBody.style';
 import {
   table, GET_MY_CART_DATA_QUERY, GET_MY_CART_DATA_QUERY_DESC,
 } from '../../../../bento/fileCentricCartWorkflowData';
-import TableThemeProvider from '../../cartTableThemeConfig';
+import TableThemeProvider from './cartTableThemeConfig';
 
 const CartHeader = ({
   classes,
@@ -43,6 +43,7 @@ const CartHeader = ({
         queryCustomVaribles={{ file_ids: fileIDs }}
         defaultSortCoulmn={defaultSortCoulmn}
         defaultSortDirection={defaultSortDirection}
+        tableDownloadCSV={table.tableDownloadCSV}
       />
     </TableThemeProvider>
   );

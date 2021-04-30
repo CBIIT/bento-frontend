@@ -3,7 +3,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import {
-  fetchAllFileIDsForSelectAll, getCountForAddAllFilesModal, getFilesCount,
+  fetchAllFileIDsForSelectAll, getCountForAddAllFilesModal, getFilesCount, clearTableSelections,
 } from '../store/dashboardReducer';
 import Dialog from '../../../components/AddToCartDialog';
 import { addToCart, cartWillFull, getFilesIdsInCart } from '../../fileCentricCart/store/cart';
@@ -48,6 +48,8 @@ const SelectAllModalDialog = ({
       ).length : getAllFilesData.length;
     openSnack(newFileIDSLength || 0);
     addToCart({ fileIds: getAllFilesData });
+    // tell the reducer to clear the selection on the table.
+    clearTableSelections();
     // tell the reducer to clear the selection on the table.
     handleClose();
   }

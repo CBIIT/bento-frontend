@@ -1,3 +1,4 @@
+/* eslint-disable */
 import _ from 'lodash';
 import {
   customCheckBox,
@@ -30,6 +31,8 @@ import {
   GET_FILES_OVERVIEW_DESC_QUERY,
   GET_SAMPLES_OVERVIEW_DESC_QUERY,
   GET_CASES_OVERVIEW_DESC_QUERY,
+  GET_FILES_NAME_QUERY,
+  GET_FILE_IDS_FROM_FILE_NAME,
   tabIndex,
 } from '../../../bento/dashboardTabData';
 
@@ -62,6 +65,18 @@ const initialState = {
       dataCase: 'undefined',
       dataSample: 'undefined',
       dataFile: 'undefined',
+    },
+    dataCaseSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
+    },
+    dataSampleSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
+    },
+    dataFileSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
     },
     widgets: {},
   },
@@ -161,6 +176,7 @@ function allFilters() {
   ), {});
   return emptyFilters;
 }
+
 /**
  * Returns filter variable for graphql query using the all filters.
  *
@@ -182,6 +198,34 @@ function createFilterVariables(data) {
   }, {});
 
   return filter;
+}
+
+/**
+ * Returns active filter list while removing the param group.
+ *
+ * @param {object} data
+ * @return {json}
+ */
+function clearGroup(data) {
+  let currentAllActiveFilters = getState().allActiveFilters;
+  currentAllActiveFilters[data] = [];
+  return currentAllActiveFilters;
+}
+
+/**
+ * Resets the group selections
+ *
+ * @param {object} payload
+ * @return distpatcher
+ */
+ export function resetGroupSelections(payload) {
+  return () => {
+    const currentAllFilterVariables = clearGroup(payload);
+    // For performance issue we are using initial dasboardquery instead of fitered for empty filters
+    if (_.isEqual(currentAllFilterVariables, allFilters())) {
+      clearAllFilters();
+    } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+  };
 }
 
 /**
@@ -318,6 +362,119 @@ export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
   return filteredFilesArray;
 }
 
+/**
+ * Returns file IDs of given filenames.
+ * @param array file_name
+ * @param int offset
+ * @param int first
+ * @param SORT_SINGLE_GROUP_CHECKBOX order_by
+ * @return {json}
+ */
+
+async function getFileIDsByFileName(file_name = [], offset = 0, first = 100000, order_by = 'file_name') {
+  const data = await client
+    .query({
+      query: GET_FILE_IDS_FROM_FILE_NAME,
+      variables: {
+        file_name,
+        offset,
+        first,
+        order_by,
+      },
+    })
+    .then((result) => {
+      if (result && result.data && result.data.fileIdsFromFileNameDesc.length > 0) {
+        return result.data.fileIdsFromFileNameDesc.map((d) => d.file_id);
+      }
+      return [];
+    });
+  return data;
+}
+
+/**
+ * Returns file IDs of given sampleids or subjectids.
+ * @param int fileCount
+ * @param graphqlquery SELECT_ALL_QUERY
+ * @param array caseIds
+ * @param array sampleIds
+ * @param string apiReturnField
+ * @return {json}
+ */
+
+async function getFileIDs(
+  fileCount = 100000,
+  SELECT_ALL_QUERY,
+  caseIds = [],
+  sampleIds = [],
+  apiReturnField,
+) {
+  const fetchResult = await client
+    .query({
+      query: SELECT_ALL_QUERY,
+      variables: {
+        subject_ids: caseIds,
+        sample_ids: sampleIds,
+        file_ids: [],
+        first: fileCount,
+      },
+    })
+    .then((result) => result.data[apiReturnField] || []);
+
+  return fetchResult.reduce((accumulator, currentValue) => {
+    const { files } = currentValue;
+    // check if file
+    if (files && files.length > 0) {
+      return accumulator.concat(files.map((f) => {
+        if(typeof f.file_id !== 'undefined'){
+          return f.file_id
+        }
+        return f
+      }));
+    }
+    return accumulator;
+  }, []);
+}
+
+/*
+* Removing fileIds that are not in our current list of filtered fileIds
+* @param array fileIds
+* @return array
+*/
+function filterOutFileIds(fileIds) {
+  // Removing fileIds that are not in our current list of filtered fileIds
+  const { filteredFileIds } = getState();
+
+  if (fileIds
+      && fileIds.length > 0
+       && filteredFileIds
+        && filteredFileIds != null
+        && filteredFileIds.length > 0) {
+    return fileIds.filter((x) => filteredFileIds.includes(x));
+  }
+  return fileIds;
+}
+
+/*
+ * Gets all file ids for active subjectIds.
+ * TODO this  functtion can use filtered file IDs except for initial load
+ * @param obj fileCoubt
+ * @return {json}
+ */
+export async function fetchAllFileIDs(fileCount = 100000, selectedIds = [], offset = 0.0, first = 100000, order_by = 'file_name') {
+  let filesIds = [];
+  switch (getState().currentActiveTab) {
+    case tabIndex[2].title:
+      filesIds = await getFileIDsByFileName(selectedIds, offset, first, order_by);
+      break;
+    case tabIndex[1].title:
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL, [], selectedIds, 'sampleOverview');
+      break;
+    default:
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], 'subjectOverViewPaged');
+  }
+  return filterOutFileIds(filesIds);
+}
+
 export const getFilesCount = () => getState().stats.numberOfFiles;
 
 /**
@@ -392,12 +549,50 @@ function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
           ..._.cloneDeep(result),
         },
       }))
+      .then(() => store.dispatch({
+        type: 'SORT_ALL_GROUP_CHECKBOX',
+      }))
       .catch((error) => store.dispatch(
         { type: 'DASHBOARDTAB_QUERY_ERR', error },
       )))
     .catch((error) => store.dispatch(
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
+}
+
+/**
+ * Sort checkboxes by Checked
+ *
+ * @param {object} checkboxData
+ * @return {json}
+ */
+
+function sortByCheckboxByIsChecked(checkboxData) {
+  checkboxData.sort((a, b) => b.isChecked - a.isChecked);
+  return checkboxData;
+}
+
+/**
+ * Sort checkboxes by Alphabet
+ *
+ * @param {object} checkboxData
+ * @return {json}
+ */
+
+function sortByCheckboxItemsByAlphabet(checkboxData) {
+  checkboxData.sort(((a, b) => (a.name > b.name || -(a.name < b.name))));
+  return sortByCheckboxByIsChecked(checkboxData);
+}
+/**
+ * Sort checkboxes by Count
+ *
+ * @param {object} checkboxData
+ * @return {json}
+ */
+
+function sortByCheckboxItemsByCount(checkboxData) {
+  checkboxData.sort((a, b) => b.subjects - a.subjects);
+  return sortByCheckboxByIsChecked(checkboxData);
 }
 
 /**
@@ -473,6 +668,38 @@ export function setDashboardTableLoading() {
 }
 
 /**
+ * Reducer for setting dashboardtable loading loading
+ *
+ * @return distpatcher
+ */
+
+export function sortGroupCheckboxByAlphabet(groupName) {
+  store.dispatch({
+    type: 'SORT_SINGLE_GROUP_CHECKBOX',
+    payload: {
+      groupName,
+      sortBy: 'alphabet',
+    },
+  });
+}
+
+/**
+ * Reducer for setting dashboardtable loading loading
+ *
+ * @return distpatcher
+ */
+
+export function sortGroupCheckboxByCount(groupName) {
+  store.dispatch({
+    type: 'SORT_SINGLE_GROUP_CHECKBOX',
+    payload: {
+      groupName,
+      sortBy: 'count',
+    },
+  });
+}
+
+/**
  *  updateFilteredAPIDataIntoCheckBoxData works for first time init Checkbox,
 that function transforms the data which returns from API into a another format
 so it contains more information and easy for front-end to show it correctly.
@@ -500,6 +727,98 @@ export function getCountForAddAllFilesModal() {
     : currentState.currentActiveTab === tabIndex[1].title
       ? currentState.stats.numberOfSamples : currentState.stats.numberOfFiles;
   return { activeTab: currentState.currentActiveTab || tabIndex[2].title, count: numberCount };
+}
+
+
+/**
+ *  Check table has selections.
+ * @return {json}
+ */
+export async function tableHasSelections() {
+  let selectedRowInfo = [];
+  let filteredIds = [];
+  const filteredNames = await getFileNamesByFileIds(getState().filteredFileIds);
+  switch (getState().currentActiveTab) {
+    case tabIndex[2].title:
+      filteredIds = filteredNames;
+      selectedRowInfo = getState().dataFileSelected.selectedRowInfo;
+
+      break;
+    case tabIndex[1].title:
+      filteredIds = getState().filteredSampleIds;
+      selectedRowInfo = getState().dataSampleSelected.selectedRowInfo;
+      break;
+    default:
+      filteredIds = getState().filteredSubjectIds;
+      selectedRowInfo = getState().dataCaseSelected.selectedRowInfo;
+  }
+
+  // without the filters, the filteredIds is null
+  if (!hasFilter()) {
+    return selectedRowInfo.length > 0;
+  }
+
+  return selectedRowInfo.filter(
+    (value) => (filteredIds && filteredIds !== null ? filteredIds.includes(value) : false),
+  ).length > 0;
+}
+
+/**
+ *  Check sidebar has filter selections.
+ * return boolean
+ */
+function hasFilter() {
+  const currentAllActiveFilters = getState().allActiveFilters;
+  return Object.entries(currentAllActiveFilters).filter((item) => item[1].length > 0).length > 0;
+}
+
+/**
+ *  Get file name by fileids
+ * @return {json}
+ */
+
+export async function getFileNamesByFileIds(fileIds) {
+  const data = await client
+    .query({
+      query: GET_FILES_NAME_QUERY,
+      variables: {
+        file_ids: fileIds,
+      },
+    })
+    .then((result) => result.data.fileOverview.map((item) => item.file_name));
+  return data;
+}
+
+
+/**
+ *  Returns the functuion depend on current active tab
+ * @return {func}
+ */
+
+ export function getTableRowSelectionEvent() {
+  const currentState = getState();
+  const tableRowSelectionEvent = currentState.currentActiveTab === tabIndex[2].title
+    ? setDataFileSelected
+    : currentState.currentActiveTab === tabIndex[1].title
+      ? setDataSampleSelected : setDataCaseSelected;
+  return tableRowSelectionEvent;
+}
+
+function setDataCaseSelected(result) {
+  store.dispatch({ type: 'SET_CASES_SELECTION', payload: result });
+}
+
+function setDataFileSelected(result) {
+  store.dispatch({ type: 'SET_FILE_SELECTION', payload: result });
+}
+
+function setDataSampleSelected(result) {
+  store.dispatch({ type: 'SET_SAMPLE_SELECTION', payload: result });
+}
+
+
+export function clearTableSelections() {
+  store.dispatch({ type: 'CLEAR_TABLE_SELECTION' });
 }
 
 export const getDashboard = () => getState();
@@ -617,6 +936,18 @@ const reducers = {
           filters: [],
         },
         widgets: getWidgetsInitData(item.data, widgetsData),
+        dataCaseSelected: {
+          selectedRowInfo: [],
+          selectedRowIndex: [],
+        },
+        dataSampleSelected: {
+          selectedRowInfo: [],
+          selectedRowIndex: [],
+        },
+        dataFileSelected: {
+          selectedRowInfo: [],
+          selectedRowIndex: [],
+        },
 
       } : { ...state };
   },
@@ -650,10 +981,88 @@ const reducers = {
           dataFile: item.data.fileOverview,
           filters: [],
         },
+        dataCaseSelected: {
+          ...state.dataCaseSelected,
+        },
+        dataSampleSelected: {
+          ...state.dataSampleSelected,
+        },
+        dataFileSelected: {
+          ...state.dataFileSelected,
+        },
         widgets: getWidgetsInitData(item.data, widgetsData),
 
       } : { ...state };
   },
+  SORT_SINGLE_GROUP_CHECKBOX: (state, item) => {
+    const groupData = state.checkbox.data.filter((group) => item.groupName === group.groupName)[0];
+    let { sortByList } = state;
+    sortByList = sortByList || {};
+    const sortedCheckboxItems = item.sortBy === 'count'
+      ? sortByCheckboxItemsByCount(groupData.checkboxItems)
+      : sortByCheckboxItemsByAlphabet(groupData.checkboxItems);
+
+    sortByList[groupData.groupName] = item.sortBy;
+    const data = state.checkbox.data.map((group) => {
+      if (group.groupName === groupData.groupName) {
+        const updatedGroupData = group;
+        updatedGroupData.checkboxItems = sortedCheckboxItems;
+        return updatedGroupData;
+      }
+
+      return group;
+    });
+
+    return { ...state, checkbox: { data }, sortByList };
+  },
+  SORT_ALL_GROUP_CHECKBOX: (state) => {
+    const { sortByList = {} } = state;
+    const { data } = state.checkbox;
+
+    data.map((group) => {
+      const checkboxItems = sortByList[group.groupName] === 'count'
+        ? sortByCheckboxItemsByCount(group.checkboxItems)
+        : sortByCheckboxItemsByAlphabet(group.checkboxItems);
+      const updatedGroupData = group;
+      updatedGroupData.checkboxItems = checkboxItems;
+      return updatedGroupData;
+    });
+
+    return { ...state, checkbox: { data } };
+  },
+  SET_CASES_SELECTION: (state, item) => (
+    {
+      ...state,
+      dataCaseSelected: item,
+    }
+  ),
+  SET_SAMPLE_SELECTION: (state, item) => (
+    {
+      ...state,
+      dataSampleSelected: item,
+    }
+  ),
+  SET_FILE_SELECTION: (state, item) => (
+    {
+      ...state,
+      dataFileSelected: item,
+    }
+  ),
+  CLEAR_TABLE_SELECTION: (state) => ({
+    ...state,
+    dataCaseSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
+    },
+    dataSampleSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
+    },
+    dataFileSelected: {
+      selectedRowInfo: [],
+      selectedRowIndex: [],
+    },
+  }),
 };
 
 // INJECT-REDUCERS INTO REDUX STORE

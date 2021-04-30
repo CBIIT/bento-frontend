@@ -15,7 +15,14 @@ import Message from '../../../components/Message';
 import {
   tabs, tooltipContent, tabContainers, tabIndex, externalLinkIcon,
 } from '../../../bento/dashboardTabData';
-import { fetchDataForDashboardTab } from '../store/dashboardReducer';
+import {
+  fetchDataForDashboardTab,
+  getTableRowSelectionEvent,
+  tableHasSelections,
+  clearTableSelections,
+  fetchAllFileIDs,
+  getFilesCount,
+} from '../store/dashboardReducer';
 
 function TabContainer({ children, dir }) {
   return (
@@ -33,6 +40,11 @@ const tabController = (classes) => {
   const tabVlaue = tabIndex.map((el) => el.title).indexOf(currentActiveTabTitle) || 0;
   // tab settings
   const [currentTab, setCurrentTab] = React.useState(tabVlaue);
+
+  const tableRowSelectionData = [
+    useSelector((state) => (state.dashboardTab.dataCaseSelected)),
+    useSelector((state) => (state.dashboardTab.dataSampleSelected)),
+    useSelector((state) => (state.dashboardTab.dataFileSelected))];
 
   // data from store
   const dashboard = useSelector((state) => (state.dashboardTab
@@ -269,6 +281,14 @@ const tabController = (classes) => {
         filteredSubjectIds={filteredSubjectIds}
         filteredSampleIds={filteredSampleIds}
         filteredFileIds={filteredFileIds}
+        tableHasSelections={tableHasSelections}
+        setRowSelection={getTableRowSelectionEvent()}
+        selectedRowInfo={tableRowSelectionData[container.tabIndex].selectedRowInfo}
+        selectedRowIndex={tableRowSelectionData[container.tabIndex].selectedRowIndex}
+        clearTableSelections={clearTableSelections}
+        fetchAllFileIDs={fetchAllFileIDs}
+        tableDownloadCSV={container.tableDownloadCSV || false}
+        getFilesCount={getFilesCount}
       />
     </TabContainer>
   ));
