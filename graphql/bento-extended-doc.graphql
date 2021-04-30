@@ -1328,11 +1328,6 @@ type QueryType {
 
     fileIdsFromFileNameDesc(file_name: [String], order_by: String ="file_name"): [FileOverview] 
 
-    fileIdsFromFileName(file_name: [String], offset: Int = 0, first: Int = 10000000, order_by: String ="file_name"): [FileOverview] 
-
-    fileIdsFromFileNameDesc(file_name: [String], offset: Int = 0, first: Int = 10000000, order_by: String ="file_name"): [FileOverview] 
-
-
     subjectList: [GroupList] 
 
     subjectListByProgram: [GroupList] 
