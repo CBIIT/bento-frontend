@@ -1,0 +1,28 @@
+type FilterResult{
+    numberOfSubjects: Int
+    subjectIds: [String]
+}
+
+schema {
+    query: QueryType
+}
+
+type QueryType {
+    redisFilter(
+        chemotherapy_regimen: [String] = [],
+        diagnosis: [String] = [],
+        endocrine_therapy: [String] = [],
+        er_status: [String] = [],
+        file_association: [String] = [],
+        file_type: [String] = [],
+        menopause_status: [String] = [],
+        pr_status: [String] = [],
+        program: [String] = [],
+        recurrence_score: [String] = [],
+        sample: [String] = [],
+        study: [String] = [],
+        tissue_type: [String] = [],
+        tumor_grade: [String] = [],
+        tumor_size: [String] = []
+    ): FilterResult
+}
