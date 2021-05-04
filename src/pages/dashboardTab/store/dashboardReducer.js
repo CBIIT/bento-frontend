@@ -737,6 +737,12 @@ export function getCountForAddAllFilesModal() {
 export async function tableHasSelections() {
   let selectedRowInfo = [];
   let filteredIds = [];
+
+  // without the filters, the filteredIds is null
+  if (!hasFilter()) {
+    return selectedRowInfo.length > 0;
+  }
+  
   const filteredNames = await getFileNamesByFileIds(getState().filteredFileIds);
   switch (getState().currentActiveTab) {
     case tabIndex[2].title:
@@ -751,11 +757,6 @@ export async function tableHasSelections() {
     default:
       filteredIds = getState().filteredSubjectIds;
       selectedRowInfo = getState().dataCaseSelected.selectedRowInfo;
-  }
-
-  // without the filters, the filteredIds is null
-  if (!hasFilter()) {
-    return selectedRowInfo.length > 0;
   }
 
   return selectedRowInfo.filter(

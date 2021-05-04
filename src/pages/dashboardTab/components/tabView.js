@@ -55,7 +55,7 @@ const TabView = ({
   filteredFileIds,
   defaultSortCoulmn,
   defaultSortDirection,
-  tableHasSelections,
+  // tableHasSelections,
   setRowSelection,
   selectedRowInfo = [],
   selectedRowIndex = [],
@@ -98,8 +98,7 @@ const TabView = ({
     }
   };
 
-  async function updateButtonStatus() {
-    const status = await tableHasSelections();
+  async function updateButtonStatus(status) {
     if (!status) {
       updateActiveSaveButtonStyle(true, saveButton);
       updateActiveSaveButtonStyle(true, saveButton2);
@@ -112,7 +111,7 @@ const TabView = ({
   useEffect(() => {
     initSaveButtonDefaultStyle(saveButton);
     initSaveButtonDefaultStyle(saveButton2);
-    updateButtonStatus();
+    updateButtonStatus(selectedRowInfo.length > 0);
   });
 
   async function exportFiles() {
