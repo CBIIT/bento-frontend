@@ -248,7 +248,7 @@ schema {
 }
 
 type QueryType {
-    schemaVersion: String @cypher(statement: "RETURN '1.0.4'")
+    schemaVersion: String @cypher(statement: "RETURN '1.1.0'")
 
     "Simple counts"
     numberOfPrograms: Int @cypher(statement: "MATCH (n:program) return count(n)")
@@ -264,119 +264,119 @@ type QueryType {
         OPTIONAL MATCH (g)<--(:study)<--(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.program_acronym AS group,
-               count(ss) as subjects
-    """)
+        RETURN { group: g.program_acronym,
+                 subjects: count(ss) }
+    """, passThrough: true)
     subjectCountByStudy(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:study)
         OPTIONAL MATCH (g)<--(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.study_acronym + ': ' + g.study_short_description AS group,
-               count(ss) as subjects
-    """)
+        RETURN { group: g.study_acronym + ': ' + g.study_short_description,
+                 subjects: count(ss)}
+    """, passThrough: true)
 
     subjectCountByDiagnoses(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:diagnosis)
         OPTIONAL MATCH (g)-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN ss.disease_subtype AS group, count(ss) as subjects
-    """)
+        RETURN { group: ss.disease_subtype, subjects: count(ss) }
+    """, passThrough: true)
 
     subjectCountByRecurrenceScore(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:stratification_factor)
         OPTIONAL MATCH (g)-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.grouped_recurrence_score AS group, count(ss) as subjects
-    """)
+        RETURN {group: g.grouped_recurrence_score , subjects: count(ss) }
+    """, passThrough: true)
 
     subjectCountByTumorSize(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:diagnosis)
         OPTIONAL MATCH (g)-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.tumor_size_group AS group, count(ss) as subjects
-    """)
+        RETURN {group: g.tumor_size_group, subjects: count(ss)}
+    """, passThrough: true)
 
     subjectCountByTumorGrade(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:diagnosis)
         OPTIONAL MATCH (g)-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.tumor_grade AS group, count(ss) as subjects
-    """)
+        RETURN {group: g.tumor_grade, subjects: count(ss)}
+    """, passThrough: true)
 
     subjectCountByErStatus(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:diagnosis)
         OPTIONAL MATCH (g)-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.er_status AS group, count(ss) as subjects
-    """)
+        RETURN {group: g.er_status, subjects: count(ss)}
+    """, passThrough: true)
 
     subjectCountByPrStatus(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:diagnosis)
         OPTIONAL MATCH (g)-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.pr_status AS group, count(ss) as subjects
-    """)
+        RETURN {group: g.pr_status, subjects: count(ss)}
+    """, passThrough: true)
 
     subjectCountByChemotherapyRegimen(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:therapeutic_procedure)
         OPTIONAL MATCH (g)-->()-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.chemotherapy_regimen AS group, count(ss) as subjects
-    """)
+        RETURN {group: g.chemotherapy_regimen, subjects: count(ss)}
+    """, passThrough: true)
 
     subjectCountByEndocrineTherapy(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:therapeutic_procedure)
         OPTIONAL MATCH (g)-->()-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.endocrine_therapy_type AS group, count(ss) as subjects
-    """)
+        RETURN {group: g.endocrine_therapy_type, subjects: count(ss)}
+    """, passThrough: true)
 
     subjectCountByMenopauseStatus(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:demographic_data)
         OPTIONAL MATCH (g)-->(ss:study_subject)
         WITH DISTINCT ss, g
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN g.menopause_status AS group, count(ss) as subjects
-    """)
+        RETURN {group: g.menopause_status, subjects: count(ss)}
+    """, passThrough: true)
 
     subjectCountByTissueType(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (samp:sample)
         OPTIONAL MATCH (samp)-[:sample_of_study_subject]->(ss)
         WITH DISTINCT samp, ss
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN samp.tissue_type AS group, COUNT(samp) as subjects
-    """)
+        RETURN {group: samp.tissue_type, subjects: count(samp)}
+    """, passThrough: true)
 
     subjectCountByTissueComposition(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (samp:sample)
         OPTIONAL MATCH (samp)-[:sample_of_study_subject]->(ss)
         WITH DISTINCT samp, ss
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN samp.composition AS group, COUNT(samp) as subjects
-    """)
+        RETURN {group: samp.composition, subjects: count(samp)}
+    """, passThrough: true)
 
     subjectCountByFileAssociation(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (f:file)-[*..3]->(ss:study_subject)
         MATCH (f)-->(parent)
             WHERE NOT (parent:laboratory_procedure)
                   AND (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN head(labels(parent)) AS group, COUNT(f) as subjects
-    """)
+        RETURN {group: head(labels(parent)), subjects: count(f)}
+    """, passThrough: true)
 
     subjectCountByFileType(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (f:file)-[*..3]->(ss:study_subject)
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        RETURN f.file_type AS group, COUNT(DISTINCT f) as subjects
-    """)
+        RETURN {group: f.file_type, subjects: count(DISTINCT f)}
+    """, passThrough: true)
 
     armsByPrograms(subject_ids: [String] = []): [ProgramArms] @cypher(statement: """
         MATCH (p:program)
@@ -388,9 +388,9 @@ type QueryType {
         WITH
             p, caseSize,
             {arm: s.study_acronym, caseSize: COUNT(DISTINCT ss), size: COUNT(DISTINCT ss)} AS s
-        RETURN  p.program_acronym AS program,
-                caseSize,
-                collect(s) AS children
+        RETURN  { program: p.program_acronym,
+                  caseSize: caseSize,
+                  children: collect(s) }
     """, passThrough: true)
 
     "Facet search counts"
@@ -433,9 +433,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, p
-        RETURN p.program_acronym AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: p.program_acronym , subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByStudy(
         programs: [String] = [],
@@ -477,9 +476,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, s
-        RETURN s.study_acronym + ': ' + s.study_short_description AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: s.study_acronym + ': ' + s.study_short_description, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByDiagnoses(
         programs: [String] = [],
@@ -521,9 +519,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss
-        RETURN ss.disease_subtype AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: ss.disease_subtype, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByRecurrenceScore(
         programs: [String] = [],
@@ -565,9 +562,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, sf
-        RETURN sf.grouped_recurrence_score AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: sf.grouped_recurrence_score, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByTumorSize(
         programs: [String] = [],
@@ -609,9 +605,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, d
-        RETURN d.tumor_size_group AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: d.tumor_size_group, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByTumorGrade(
         programs: [String] = [],
@@ -653,9 +648,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, d
-        RETURN d.tumor_grade AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: d.tumor_grade, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByErStatus(
         programs: [String] = [],
@@ -697,9 +691,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, d
-        RETURN d.er_status AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: d.er_status, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByPrStatus(
         programs: [String] = [],
@@ -741,9 +734,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, d
-        RETURN d.pr_status AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: d.pr_status, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByChemotherapyRegimen(
         programs: [String] = [],
@@ -785,9 +777,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, tp
-        RETURN tp.chemotherapy_regimen AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: tp.chemotherapy_regimen, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByEndocrineTherapy(
         programs: [String] = [],
@@ -829,9 +820,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, tp
-        RETURN tp.endocrine_therapy_type AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: tp.endocrine_therapy_type, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByMenopauseStatus(
         programs: [String] = [],
@@ -873,9 +863,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT ss, demo
-        RETURN demo.menopause_status AS group,
-               count(ss) as subjects
-    """)
+        RETURN {group: demo.menopause_status, subjects: count(ss)}
+    """, passThrough: true)
 
     filterSubjectCountByTissueType(
         programs: [String] = [],
@@ -917,9 +906,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT samp
-        RETURN samp.tissue_type AS group,
-               count(samp) as subjects
-    """)
+        RETURN {group: samp.tissue_type, subjects: count(samp)}
+    """, passThrough: true)
 
     filterSubjectCountByTissueComposition(
         programs: [String] = [],
@@ -961,9 +949,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT samp
-        RETURN samp.composition AS group,
-               count(samp) as subjects
-    """)
+        RETURN {group: samp.composition, subjects: count(samp)}
+    """, passThrough: true)
 
     filterSubjectCountByFileAssociation(
         programs: [String] = [],
@@ -1005,9 +992,8 @@ type QueryType {
           WHERE (size($file_type) = 0 OR f.file_type IN $file_type)
             //AND (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT f, parent
-        RETURN head(labels(parent)) AS group,
-               count(f) as subjects
-    """)
+        RETURN {group: head(labels(parent)), subjects: count(f)}
+    """, passThrough: true)
 
     filterSubjectCountByFileType(
         programs: [String] = [],
@@ -1049,160 +1035,159 @@ type QueryType {
           WHERE //(size($file_type) = 0 OR f.file_type IN $file_type)
             (size($association) = 0 OR head(labels(parent)) IN $association)
         WITH DISTINCT f
-        RETURN f.file_type AS group,
-               count(f) as subjects
-    """)
-
-    subjectOverViewPaged(first: Int = 100, offset: Int = 0, subject_ids: [String], order_by: String = ""): [SubjectOverview] @cypher(statement: """
-        MATCH (ss:study_subject)
-          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
-        OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
-        WITH
-            toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
-            collect(DISTINCT sp.sample_id) AS samples,
-            collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures,
-            collect(DISTINCT f) AS files,
-            ss
-        OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
-        OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
-        OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
-        OPTIONAL MATCH (d)<-[:tp_of_diagnosis]-(tp)
-        OPTIONAL MATCH (ss)<-[:demographic_of_study_subject]-(demo)
-        RETURN
-            p.program_acronym AS program,
-            p.program_id AS program_id,
-            s.study_acronym AS study_acronym,
-            s.study_short_description AS study_short_description,
-            s.study_acronym + ': ' + s.study_short_description AS study_info,
-            ss.study_subject_id AS subject_id,
-            ss.disease_subtype AS diagnosis,
-            sf.grouped_recurrence_score AS recurrence_score,
-            d.tumor_size_group AS tumor_size,
-            d.tumor_grade AS tumor_grade,
-            d.er_status AS er_status,
-            d.pr_status AS pr_status,
-            tp.chemotherapy_regimen AS chemotherapy,
-            tp.endocrine_therapy_type AS endocrine_therapy,
-            demo.menopause_status AS menopause_status,
-            demo.age_at_index AS age_at_index,
-            demo.survival_time AS survival_time,
-            demo.survival_time_unit AS survival_time_unit,
-            samples,
-            files,
-            lab_procedures
-        ORDER BY CASE $order_by
-            WHEN 'subject_id' THEN subject_id_num
-            WHEN 'program' THEN program
-            WHEN 'program_id' THEN program_id
-            WHEN 'study_acronym' THEN study_acronym
-            WHEN 'study_short_description' THEN study_short_description
-            WHEN 'study_info' THEN study_info
-            WHEN 'diagnosis' THEN diagnosis
-            WHEN 'recurrence_score' THEN recurrence_score
-            WHEN 'tumor_size' THEN tumor_size
-            WHEN 'tumor_grade' THEN tumor_grade
-            WHEN 'er_status' THEN er_status
-            WHEN 'pr_status' THEN pr_status
-            WHEN 'chemotherapy' THEN chemotherapy
-            WHEN 'endocrine_therapy' THEN endocrine_therapy
-            WHEN 'menopause_status' THEN menopause_status
-            WHEN 'age_at_index' THEN age_at_index
-            WHEN 'survival_time' THEN survival_time
-            ELSE subject_id_num END
-        SKIP $offset
-        LIMIT $first
+        RETURN {group: f.file_type, subjects: count(f)}
     """, passThrough: true)
 
-    subjectOverViewPagedDesc(first: Int = 100, offset: Int = 0, subject_ids: [String], order_by: String = ""): [SubjectOverview] @cypher(statement: """
+    subjectOverViewPaged(subject_ids: [String] = [""], order_by: String = ""): [SubjectOverview] @cypher(statement: """
         MATCH (ss:study_subject)
-          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR ss.study_subject_id IN $subject_ids)
         OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
             toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
             collect(DISTINCT sp.sample_id) AS samples,
             collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures,
-            collect(DISTINCT f) AS files,
+            collect(DISTINCT f {.*}) AS files,
             ss
         OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
         OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
         OPTIONAL MATCH (d)<-[:tp_of_diagnosis]-(tp)
         OPTIONAL MATCH (ss)<-[:demographic_of_study_subject]-(demo)
-        RETURN
-            p.program_acronym AS program,
-            p.program_id AS program_id,
-            s.study_acronym AS study_acronym,
-            s.study_short_description AS study_short_description,
-            s.study_acronym + ': ' + s.study_short_description AS study_info,
-            ss.study_subject_id AS subject_id,
-            ss.disease_subtype AS diagnosis,
-            sf.grouped_recurrence_score AS recurrence_score,
-            d.tumor_size_group AS tumor_size,
-            d.tumor_grade AS tumor_grade,
-            d.er_status AS er_status,
-            d.pr_status AS pr_status,
-            tp.chemotherapy_regimen AS chemotherapy,
-            tp.endocrine_therapy_type AS endocrine_therapy,
-            demo.menopause_status AS menopause_status,
-            demo.age_at_index AS age_at_index,
-            demo.survival_time AS survival_time,
-            demo.survival_time_unit AS survival_time_unit,
-            samples,
-            files,
-            lab_procedures
+        RETURN {
+            program: p.program_acronym,
+            program_id: p.program_id,
+            study_acronym: s.study_acronym,
+            study_short_description: s.study_short_description,
+            study_info: s.study_acronym + ': ' + s.study_short_description,
+            subject_id: ss.study_subject_id,
+            diagnosis: ss.disease_subtype,
+            recurrence_score: sf.grouped_recurrence_score,
+            tumor_size: d.tumor_size_group,
+            tumor_grade: d.tumor_grade,
+            er_status: d.er_status,
+            pr_status: d.pr_status,
+            chemotherapy: tp.chemotherapy_regimen,
+            endocrine_therapy: tp.endocrine_therapy_type,
+            menopause_status: demo.menopause_status,
+            age_at_index: demo.age_at_index,
+            survival_time: demo.survival_time,
+            survival_time_unit: demo.survival_time_unit,
+            samples: samples,
+            files: files,
+            lab_procedures: lab_procedures
+        }
         ORDER BY CASE $order_by
             WHEN 'subject_id' THEN subject_id_num
-            WHEN 'program' THEN program
-            WHEN 'program_id' THEN program_id
-            WHEN 'study_acronym' THEN study_acronym
-            WHEN 'study_short_description' THEN study_short_description
-            WHEN 'study_info' THEN study_info
-            WHEN 'diagnosis' THEN diagnosis
-            WHEN 'recurrence_score' THEN recurrence_score
-            WHEN 'tumor_size' THEN tumor_size
-            WHEN 'tumor_grade' THEN tumor_grade
-            WHEN 'er_status' THEN er_status
-            WHEN 'pr_status' THEN pr_status
-            WHEN 'chemotherapy' THEN chemotherapy
-            WHEN 'endocrine_therapy' THEN endocrine_therapy
-            WHEN 'menopause_status' THEN menopause_status
-            WHEN 'age_at_index' THEN age_at_index
-            WHEN 'survival_time' THEN survival_time
+            WHEN 'program' THEN p.program_acronym
+            WHEN 'program_id' THEN p.program_id
+            WHEN 'study_acronym' THEN s.study_acronym
+            WHEN 'study_short_description' THEN s.study_short_description
+            WHEN 'study_info' THEN s.study_acronym + ': ' + s.study_short_description
+            WHEN 'diagnosis' THEN ss.disease_subtype
+            WHEN 'recurrence_score' THEN sf.grouped_recurrence_score
+            WHEN 'tumor_size' THEN d.tumor_size_group
+            WHEN 'tumor_grade' THEN d.tumor_grade
+            WHEN 'er_status' THEN d.er_status
+            WHEN 'pr_status' THEN d.pr_status
+            WHEN 'chemotherapy' THEN tp.chemotherapy_regimen
+            WHEN 'endocrine_therapy' THEN tp.endocrine_therapy_type
+            WHEN 'menopause_status' THEN demo.menopause_status
+            WHEN 'age_at_index' THEN demo.age_at_index
+            WHEN 'survival_time' THEN demo.survival_time
+            ELSE subject_id_num END
+    """, passThrough: true)
+
+    subjectOverViewPagedDesc(subject_ids: [String] = [""], order_by: String = ""): [SubjectOverview] @cypher(statement: """
+        MATCH (ss:study_subject)
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR ss.study_subject_id IN $subject_ids)
+        OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
+        WITH
+            toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
+            collect(DISTINCT sp.sample_id) AS samples,
+            collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures,
+            collect(DISTINCT f {.*}) AS files,
+            ss
+        OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
+        OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
+        OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
+        OPTIONAL MATCH (d)<-[:tp_of_diagnosis]-(tp)
+        OPTIONAL MATCH (ss)<-[:demographic_of_study_subject]-(demo)
+        RETURN {
+            program: p.program_acronym,
+            program_id: p.program_id,
+            study_acronym: s.study_acronym,
+            study_short_description: s.study_short_description,
+            study_info: s.study_acronym + ': ' + s.study_short_description,
+            subject_id: ss.study_subject_id,
+            diagnosis: ss.disease_subtype,
+            recurrence_score: sf.grouped_recurrence_score,
+            tumor_size: d.tumor_size_group,
+            tumor_grade: d.tumor_grade,
+            er_status: d.er_status,
+            pr_status: d.pr_status,
+            chemotherapy: tp.chemotherapy_regimen,
+            endocrine_therapy: tp.endocrine_therapy_type,
+            menopause_status: demo.menopause_status,
+            age_at_index: demo.age_at_index,
+            survival_time: demo.survival_time,
+            survival_time_unit: demo.survival_time_unit,
+            samples: samples,
+            files: files,
+            lab_procedures: lab_procedures
+        }
+        ORDER BY CASE $order_by
+            WHEN 'subject_id' THEN subject_id_num
+            WHEN 'program' THEN p.program_acronym
+            WHEN 'program_id' THEN p.program_id
+            WHEN 'study_acronym' THEN s.study_acronym
+            WHEN 'study_short_description' THEN s.study_short_description
+            WHEN 'study_info' THEN s.study_acronym + ': ' + s.study_short_description
+            WHEN 'diagnosis' THEN ss.disease_subtype
+            WHEN 'recurrence_score' THEN sf.grouped_recurrence_score
+            WHEN 'tumor_size' THEN d.tumor_size_group
+            WHEN 'tumor_grade' THEN d.tumor_grade
+            WHEN 'er_status' THEN d.er_status
+            WHEN 'pr_status' THEN d.pr_status
+            WHEN 'chemotherapy' THEN tp.chemotherapy_regimen
+            WHEN 'endocrine_therapy' THEN tp.endocrine_therapy_type
+            WHEN 'menopause_status' THEN demo.menopause_status
+            WHEN 'age_at_index' THEN demo.age_at_index
+            WHEN 'survival_time' THEN demo.survival_time
             ELSE subject_id_num END DESC
-        SKIP $offset
-        LIMIT $first
     """, passThrough: true)
 
     subjectOverView: [SubjectOverview] @cypher(statement: """
         MATCH (ss:study_subject)
         OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
-        WITH ss, collect(DISTINCT sp.sample_id) AS samples, collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures, collect(DISTINCT f) AS files
+        WITH ss, collect(DISTINCT sp.sample_id) AS samples, collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures, collect(DISTINCT f {.*}) AS files
         OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
         OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
         OPTIONAL MATCH (d)<-[:tp_of_diagnosis]-(tp)
         OPTIONAL MATCH (ss)<-[:demographic_of_study_subject]-(demo)
-        RETURN  p.program_acronym AS program,
-                p.program_id AS program_id,
-                s.study_acronym AS study_acronym,
-                s.study_short_description AS study_short_description,
-                s.study_acronym + ': ' + s.study_short_description AS study_info,
-                ss.study_subject_id AS subject_id,
-                ss.disease_subtype AS diagnosis,
-                sf.grouped_recurrence_score AS recurrence_score,
-                d.tumor_size_group AS tumor_size,
-                d.tumor_grade AS tumor_grade,
-                d.er_status AS er_status,
-                d.pr_status AS pr_status,
-                tp.chemotherapy_regimen AS chemotherapy,
-                tp.endocrine_therapy_type AS endocrine_therapy,
-                demo.menopause_status AS menopause_status,
-                demo.age_at_index AS age_at_index,
-                demo.survival_time AS survival_time,
-                demo.survival_time_unit AS survival_time_unit,
-                samples,
-                files,
-                lab_procedures
+        RETURN {
+            program: p.program_acronym,
+            program_id: p.program_id,
+            study_acronym: s.study_acronym,
+            study_short_description: s.study_short_description,
+            study_info: s.study_acronym + ': ' + s.study_short_description,
+            subject_id: ss.study_subject_id,
+            diagnosis: ss.disease_subtype,
+            recurrence_score: sf.grouped_recurrence_score,
+            tumor_size: d.tumor_size_group,
+            tumor_grade: d.tumor_grade,
+            er_status: d.er_status,
+            pr_status: d.pr_status,
+            chemotherapy: tp.chemotherapy_regimen,
+            endocrine_therapy: tp.endocrine_therapy_type,
+            menopause_status: demo.menopause_status,
+            age_at_index: demo.age_at_index,
+            survival_time: demo.survival_time,
+            survival_time_unit: demo.survival_time_unit,
+            samples: samples,
+            files: files,
+            lab_procedures: lab_procedures
+        }
     """, passThrough: true)
 
     searchSubjects2 (
@@ -1296,30 +1281,32 @@ type QueryType {
         OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
         OPTIONAL MATCH (d)<-[:tp_of_diagnosis]-(tp)
         OPTIONAL MATCH (ss)<-[:demographic_of_study_subject]-(demo)
-        RETURN  COLLECT(DISTINCT ss.study_subject_id) AS subjectIds,
-                COLLECT(DISTINCT samp.sample_id) AS sampleIds,
-                COLLECT(DISTINCT f.file_id) AS fileIds,
-                COUNT(DISTINCT p.program_acronym) AS numberOfPrograms,
-                COUNT(DISTINCT s.study_acronym) AS numberOfStudies,
-                COUNT(DISTINCT ss.study_subject_id) AS numberOfSubjects,
-                COUNT(DISTINCT lp.laboratory_procedure_id) AS numberOfLabProcedures,
-                COUNT(DISTINCT samp.sample_id) AS numberOfSamples,
-                COUNT(DISTINCT f) AS numberOfFiles,
-                COLLECT( DISTINCT({
-                  subject_id: ss.study_subject_id,
-                  program: p.program_acronym,
-                  program_id: p.program_id,
-                  study_acronym: s.study_acronym,
-                  diagnosis: ss.disease_subtype,
-                  recurrence_score: sf.grouped_recurrence_score,
-                  tumor_size: d.tumor_size_group,
-                  tumor_grade: d.tumor_grade,
-                  er_status: d.er_status,
-                  pr_status: d.pr_status,
-                  age_at_index: demo.age_at_index,
-                  survival_time: demo.survival_time,
-                  survival_time_unit: demo.survival_time_unit
-              }))[0..$first] AS firstPage
+        RETURN  {
+            subjectIds: COLLECT(DISTINCT ss.study_subject_id),
+            sampleIds: COLLECT(DISTINCT samp.sample_id),
+            fileIds: COLLECT(DISTINCT f.file_id),
+            numberOfPrograms: COUNT(DISTINCT p.program_acronym),
+            numberOfStudies: COUNT(DISTINCT s.study_acronym),
+            numberOfSubjects: COUNT(DISTINCT ss.study_subject_id),
+            numberOfLabProcedures: COUNT(DISTINCT lp.laboratory_procedure_id),
+            numberOfSamples: COUNT(DISTINCT samp.sample_id),
+            numberOfFiles: COUNT(DISTINCT f),
+            firstPage: COLLECT( DISTINCT({
+                          subject_id: ss.study_subject_id,
+                          program: p.program_acronym,
+                          program_id: p.program_id,
+                          study_acronym: s.study_acronym,
+                          diagnosis: ss.disease_subtype,
+                          recurrence_score: sf.grouped_recurrence_score,
+                          tumor_size: d.tumor_size_group,
+                          tumor_grade: d.tumor_grade,
+                          er_status: d.er_status,
+                          pr_status: d.pr_status,
+                          age_at_index: demo.age_at_index,
+                          survival_time: demo.survival_time,
+                          survival_time_unit: demo.survival_time_unit
+                      }))[0..$first]
+        }
     """, passThrough:true)
 
 
@@ -1331,19 +1318,21 @@ type QueryType {
         OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
         OPTIONAL MATCH (d)<-[:tp_of_diagnosis]-(tp)
         OPTIONAL MATCH (ss)<-[:demographic_of_study_subject]-(demo)
-        RETURN  p.program_acronym AS program,
-                p.program_id AS program_id,
-                s.study_acronym AS study_acronym,
-                ss.study_subject_id AS subject_id,
-                ss.disease_subtype AS diagnosis,
-                sf.grouped_recurrence_score AS recurrence_score,
-                d.tumor_size_group AS tumor_size,
-                d.er_status AS er_status,
-                d.pr_status AS pr_status,
-                demo.age_at_index AS age_at_index,
-                demo.survival_time AS survival_time,
-                demo.survival_time_unit AS survival_time_unit
-    """)
+        RETURN  {
+            program: p.program_acronym,
+            program_id: p.program_id,
+            study_acronym: s.study_acronym,
+            subject_id: ss.study_subject_id,
+            diagnosis: ss.disease_subtype,
+            recurrence_score: sf.grouped_recurrence_score,
+            tumor_size: d.tumor_size_group,
+            er_status: d.er_status,
+            pr_status: d.pr_status,
+            age_at_index: demo.age_at_index,
+            survival_time: demo.survival_time,
+            survival_time_unit: demo.survival_time_unit
+        }
+    """, passThrough: true)
 
     filesOfSubjects(subject_ids: [String]=[]): [FileInfo] @cypher(statement:"""
         MATCH (ss:study_subject)
@@ -1351,30 +1340,34 @@ type QueryType {
         OPTIONAL MATCH (ss)<-[*..3]-(f:file)
         OPTIONAL MATCH (parent)<--(f)
           WHERE NOT (parent:laboratory_procedure)
-        RETURN ss.study_subject_id AS subject_id,
-               f.file_name AS file_name,
-               f.file_type AS file_type,
-               head(labels(parent)) AS association,
-               f.file_description AS file_description,
-               f.file_format AS file_format,
-               f.file_size AS file_size,
-               f.file_id AS file_id,
-               f.md5sum AS md5sum
-    """)
+        RETURN {
+            subject_id: ss.study_subject_id,
+            file_name: f.file_name,
+            file_type: f.file_type,
+            association: head(labels(parent)),
+            file_description: f.file_description,
+            file_format: f.file_format,
+            file_size: f.file_size,
+            file_id: f.file_id,
+            md5sum: f.md5sum
+        }
+    """, passThrough: true)
 
     programInfo: [ProgramInfo] @cypher(statement: """
         MATCH (p:program)
         OPTIONAL MATCH (p)<--(s:study)
         OPTIONAL MATCH (s)<--(ss:study_subject)
-        RETURN p.program_acronym AS program_acronym,
-               p.program_id AS program_id,
-               p.program_name AS program_name,
-               p.start_date AS start_date,
-               p.end_date AS end_date,
-               p.pubmed_id AS pubmed_id,
-               COUNT(DISTINCT s) AS num_studies,
-               COUNT(DISTINCT ss) AS num_subjects
-    """)
+        RETURN {
+            program_acronym: p.program_acronym,
+            program_id: p.program_id,
+            program_name: p.program_name,
+            start_date: p.start_date,
+            end_date: p.end_date,
+            pubmed_id: p.pubmed_id,
+            num_studies: COUNT(DISTINCT s),
+            num_subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
     programDetail(program_id: String):  ProgramDetail @cypher(statement: """
         MATCH (p:program {program_id: $program_id})
         OPTIONAL MATCH (p)<-[:study_of_program]-()<-[:study_subject_of_study]-(ss)
@@ -1396,20 +1389,22 @@ type QueryType {
         MATCH (p)<-[:study_of_program]-()<-[:study_subject_of_study]-(ss)
         WITH p, ss.disease_subtype as group, count(*) as subjects, study, num_files, num_subjects, disease_subtypes, num_samples, ins, lp
         WITH p, COLLECT ({group: group, subjects:  subjects}) AS diagnoses, study, num_files, num_subjects, disease_subtypes, num_samples, ins, lp
-        RETURN  p.program_acronym AS program_acronym,
-            p.program_id AS program_id,
-            p.program_name AS program_name,
-            p.program_full_description AS program_full_description,
-            ins.institution_name AS institution_name,
-            p.program_external_url AS program_external_url,
-            num_subjects,
-            num_files,
-            COUNT (DISTINCT lp) as num_lab_procedures,
-            num_samples,
-            disease_subtypes,
-            collect(DISTINCT study) AS studies,
-            diagnoses
-    """, passThrough:true)
+        RETURN {
+            program_acronym: p.program_acronym,
+            program_id: p.program_id,
+            program_name: p.program_name,
+            program_full_description: p.program_full_description,
+            institution_name: ins.institution_name,
+            program_external_url: p.program_external_url,
+            num_subjects: num_subjects,
+            num_files: num_files,
+            num_lab_procedures: COUNT (DISTINCT lp),
+            num_samples: num_samples,
+            disease_subtypes: disease_subtypes,
+            studies: collect(DISTINCT study),
+            diagnoses: diagnoses
+        }
+    """, passThrough: true)
 
     subjectDetail(subject_id: String): SubjectDetail @cypher(statement:  """
         MATCH (ss:study_subject {study_subject_id: $subject_id})
@@ -1426,42 +1421,44 @@ type QueryType {
         OPTIONAL MATCH (ss)<--(fu:follow_up)
         OPTIONAL MATCH (ss)<--(samp:sample)
         OPTIONAL MATCH (ss)<--()-->(lp:laboratory_procedure)
-        RETURN ss.study_subject_id AS subject_id,
-               p.program_acronym AS program_acronym,
-               p.program_id AS program_id,
-               s.study_acronym AS study_acronym,
-               s.study_name AS study_name,
-               demo.gender AS gender,
-               demo.race AS race,
-               demo.ethnicity AS ethnicity,
-               demo.age_at_index AS age_at_index,
-               demo.menopause_status AS menopause_status,
-               demo.vital_status AS vital_status,
-               demo.cause_of_death AS cause_of_death,
-               ss.disease_type AS disease_type,
-               ss.disease_subtype AS disease_subtype,
-               diag.tumor_grade AS tumor_grade,
-               diag.tumor_largest_dimension_diameter AS tumor_largest_dimension_diameter,
-               diag.er_status AS er_status,
-               diag.pr_status AS pr_status,
-               diag.nuclear_grade AS nuclear_grade,
-               diag.recurrence_score AS recurrence_score,
-               pr.primary_surgical_procedure AS primary_surgical_procedure,
-               pr.chemotherapy_regimen_group AS chemotherapy_regimen_group,
-               pr.chemotherapy_regimen AS chemotherapy_regimen,
-               pr.endocrine_therapy_type AS endocrine_therapy_type,
-               fu.dfs_event_indicator AS dfs_event_indicator,
-               fu.recurrence_free_indicator AS recurrence_free_indicator,
-               fu.distant_recurrence_indicator AS distant_recurrence_indicator,
-               fu.dfs_event_type AS dfs_event_type,
-               fu.first_recurrence_type AS first_recurrence_type,
-               fu.days_to_progression AS days_to_progression,
-               fu.days_to_recurrence AS days_to_recurrence,
-               lp.test_name AS test_name,
-               files,
-               COLLECT(DISTINCT samp) AS samples,
-               COUNT(DISTINCT samp) AS num_samples,
-               COUNT(DISTINCT lp) AS num_lab_procedures
+        RETURN {
+            subject_id: ss.study_subject_id,
+            program_acronym: p.program_acronym,
+            program_id: p.program_id,
+            study_acronym: s.study_acronym,
+            study_name: s.study_name,
+            gender: demo.gender,
+            race: demo.race,
+            ethnicity: demo.ethnicity,
+            age_at_index: demo.age_at_index,
+            menopause_status: demo.menopause_status,
+            vital_status: demo.vital_status,
+            cause_of_death: demo.cause_of_death,
+            disease_type: ss.disease_type,
+            disease_subtype: ss.disease_subtype,
+            tumor_grade: diag.tumor_grade,
+            tumor_largest_dimension_diameter: diag.tumor_largest_dimension_diameter,
+            er_status: diag.er_status,
+            pr_status: diag.pr_status,
+            nuclear_grade: diag.nuclear_grade,
+            recurrence_score: diag.recurrence_score,
+            primary_surgical_procedure: pr.primary_surgical_procedure,
+            chemotherapy_regimen_group: pr.chemotherapy_regimen_group,
+            chemotherapy_regimen: pr.chemotherapy_regimen,
+            endocrine_therapy_type: pr.endocrine_therapy_type,
+            dfs_event_indicator: fu.dfs_event_indicator,
+            recurrence_free_indicator: fu.recurrence_free_indicator,
+            distant_recurrence_indicator: fu.distant_recurrence_indicator,
+            dfs_event_type: fu.dfs_event_type,
+            first_recurrence_type: fu.first_recurrence_type,
+            days_to_progression: fu.days_to_progression,
+            days_to_recurrence: fu.days_to_recurrence,
+            test_name: lp.test_name,
+            files: files,
+            samples: COLLECT(DISTINCT samp {.*}),
+            num_samples: COUNT(DISTINCT samp),
+            num_lab_procedures: COUNT(DISTINCT lp)
+        }
     """, passThrough: true)
 
     armDetail(study_acronym: String): ArmDetail @cypher(statement:  """
@@ -1474,22 +1471,24 @@ type QueryType {
         WITH s, diagnoses, files, COUNT(DISTINCT f) + size(files) AS num_files, COUNT(DISTINCT lp) AS num_lab_procedures
         OPTIONAL MATCH (s)<-[:study_subject_of_study]-(ss)
         OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)
-        RETURN s.study_acronym AS study_acronym,
-               s.study_name AS study_name,
-               s.study_type AS study_type,
-               s.study_full_description AS study_full_description,
-               s.study_acronym + ': ' + s.study_short_description AS study_info,
-               COUNT(DISTINCT ss) AS num_subjects,
-               COUNT(DISTINCT sp) AS num_samples,
-               num_lab_procedures,
-               num_files,
-               diagnoses,
-               files
+        RETURN {
+            study_acronym: s.study_acronym,
+            study_name: s.study_name,
+            study_type: s.study_type,
+            study_full_description: s.study_full_description,
+            study_info: s.study_acronym + ': ' + s.study_short_description,
+            num_subjects: COUNT(DISTINCT ss),
+            num_samples: COUNT(DISTINCT sp),
+            num_lab_procedures: num_lab_procedures,
+            num_files: num_files,
+            diagnoses: diagnoses,
+            files: files
+        }
     """, passThrough: true)
 
     samplesForSubjectId(subject_id: String!): [sample] @cypher(statement: "MATCH (ss:study_subject {study_subject_id: $subject_id})<-[*]-(s:sample) RETURN s")
 
-    filesInList(file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileDetail] @cypher(statement: """
+    filesInList(file_ids: [String], order_by: String = ""): [FileDetail] @cypher(statement: """
         MATCH (f:file)
         WHERE f.file_id in $file_ids
         OPTIONAL MATCH (f)-->(parent)
@@ -1498,35 +1497,35 @@ type QueryType {
         WITH
             toInteger(split(f.file_id,'-')[2]) AS file_id_num,
             toInteger(split(ss.study_subject_id,'-')[2]) AS subject_id_num,
-            f, parent, ss, s
-        RETURN
-            f.file_name AS file_name,
-            f.file_id AS file_id,
-            f.file_type AS file_type,
             head(labels(parent)) AS association,
-            f.file_description AS file_description,
-            f.file_format AS file_format,
-            f.file_size AS file_size,
-            f.md5sum AS md5sum,
-            ss.study_subject_id AS subject_id,
-            s.study_acronym AS study_code
+            f, parent, ss, s
+        RETURN {
+            file_name: f.file_name,
+            file_id: f.file_id,
+            file_type: f.file_type,
+            association: association,
+            file_description: f.file_description,
+            file_format: f.file_format,
+            file_size: f.file_size,
+            md5sum: f.md5sum,
+            subject_id: ss.study_subject_id,
+            study_code: s.study_acronym
+        }
         ORDER BY CASE $order_by
-            WHEN 'file_id' THEN file_id_num
-            WHEN 'file_name' THEN file_name
-            WHEN 'file_type' THEN file_type
+            WHEN 'file_id' THEN f.file_id
+            WHEN 'file_name' THEN f.file_name
+            WHEN 'file_type' THEN f.file_type
             WHEN 'association' THEN association
-            WHEN 'file_description' THEN file_description
-            WHEN 'file_format' THEN file_format
-            WHEN 'file_size' THEN file_size
-            WHEN 'md5sum' THEN md5sum
+            WHEN 'file_description' THEN f.file_description
+            WHEN 'file_format' THEN f.file_format
+            WHEN 'file_size' THEN f.file_size
+            WHEN 'md5sum' THEN f.md5sum
             WHEN 'subject_id' THEN subject_id_num
-            WHEN 'study_code' THEN study_code
+            WHEN 'study_code' THEN s.study_acronym
             ELSE file_id_num END
-        SKIP $offset
-        LIMIT $first
-    """)
+    """, passThrough: true)
 
-    filesInListDesc(file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileDetail] @cypher(statement: """
+    filesInListDesc(file_ids: [String], order_by: String = ""): [FileDetail] @cypher(statement: """
         MATCH (f:file)
         WHERE f.file_id in $file_ids
         OPTIONAL MATCH (f)-->(parent)
@@ -1535,37 +1534,37 @@ type QueryType {
         WITH
             toInteger(split(f.file_id,'-')[2]) AS file_id_num,
             toInteger(split(ss.study_subject_id,'-')[2]) AS subject_id_num,
+            head(labels(parent)) AS association,
             f, parent, ss, s
-        RETURN
-            f.file_name AS file_name,
-            f.file_id AS file_id,
-            f.file_type AS file_type,
-            head(labels(parent)) AS association,
-            f.file_description AS file_description,
-            f.file_format AS file_format,
-            f.file_size AS file_size,
-            f.md5sum AS md5sum,
-            ss.study_subject_id AS subject_id,
-            s.study_acronym AS study_code
+        RETURN {
+            file_name: f.file_name,
+            file_id: f.file_id,
+            file_type: f.file_type,
+            association: association,
+            file_description: f.file_description,
+            file_format: f.file_format,
+            file_size: f.file_size,
+            md5sum: f.md5sum,
+            subject_id: ss.study_subject_id,
+            study_code: s.study_acronym
+        }
         ORDER BY CASE $order_by
-            WHEN 'file_id' THEN file_id_num
-            WHEN 'file_name' THEN file_name
-            WHEN 'file_type' THEN file_type
+            WHEN 'file_id' THEN f.file_id
+            WHEN 'file_name' THEN f.file_name
+            WHEN 'file_type' THEN f.file_type
             WHEN 'association' THEN association
-            WHEN 'file_description' THEN file_description
-            WHEN 'file_format' THEN file_format
-            WHEN 'file_size' THEN file_size
-            WHEN 'md5sum' THEN md5sum
+            WHEN 'file_description' THEN f.file_description
+            WHEN 'file_format' THEN f.file_format
+            WHEN 'file_size' THEN f.file_size
+            WHEN 'md5sum' THEN f.md5sum
             WHEN 'subject_id' THEN subject_id_num
-            WHEN 'study_code' THEN study_code
+            WHEN 'study_code' THEN s.study_acronym
             ELSE file_id_num END DESC
-        SKIP $offset
-        LIMIT $first
-    """)
+    """, passThrough: true)
 
-    sampleOverview(subject_ids: [String], sample_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [SampleOverview] @cypher(statement: """
+    sampleOverview(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = ""): [SampleOverview] @cypher(statement: """
         MATCH (samp:sample)
-          WHERE ($sample_ids IS NULL OR samp.sample_id IN $sample_ids)
+          WHERE ($sample_ids IS NULL OR $sample_ids = [""] OR samp.sample_id IN $sample_ids)
         OPTIONAL MATCH (samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (samp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
@@ -1573,39 +1572,38 @@ type QueryType {
             toInteger(split(ss.study_subject_id,'-')[2]) AS subject_id_num,
             collect(distinct f.file_id) AS files,
             samp, ss, s, p
-          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
-        RETURN
-            samp.sample_id AS sample_id,
-            ss.study_subject_id AS subject_id,
-            p.program_acronym AS program,
-            s.study_acronym AS arm,
-            ss.disease_subtype AS diagnosis,
-            samp.tissue_type AS tissue_type,
-            samp.composition AS tissue_composition,
-            samp.sample_anatomic_site AS sample_anatomic_site,
-            samp.method_of_sample_procurement AS sample_procurement_method,
-            lp.test_name AS platform,
-            files,
-            p.program_id as program_id
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR ss.study_subject_id IN $subject_ids)
+        RETURN {
+            sample_id: samp.sample_id,
+            subject_id: ss.study_subject_id,
+            program: p.program_acronym,
+            arm: s.study_acronym,
+            diagnosis: ss.disease_subtype,
+            tissue_type: samp.tissue_type,
+            tissue_composition: samp.composition,
+            sample_anatomic_site: samp.sample_anatomic_site,
+            sample_procurement_method: samp.method_of_sample_procurement,
+            platform: lp.test_name,
+            files: files,
+            program_id: p.program_id
+        }
         ORDER BY CASE $order_by
             WHEN 'subject_id' THEN subject_id_num
-            WHEN 'sample_id' THEN sample_id
-            WHEN 'program' THEN program
-            WHEN 'arm' THEN arm
-            WHEN 'diagnosis' THEN diagnosis
-            WHEN 'tissue_type' THEN tissue_type
-            WHEN 'tissue_composition' THEN tissue_composition
-            WHEN 'sample_anatomic_site' THEN sample_anatomic_site
-            WHEN 'sample_procurement_method' THEN sample_procurement_method
-            WHEN 'platform' THEN platform
+            WHEN 'sample_id' THEN samp.sample_id
+            WHEN 'program' THEN p.program_acronym
+            WHEN 'arm' THEN s.study_acronym
+            WHEN 'diagnosis' THEN ss.disease_subtype
+            WHEN 'tissue_type' THEN samp.tissue_type
+            WHEN 'tissue_composition' THEN samp.composition
+            WHEN 'sample_anatomic_site' THEN samp.sample_anatomic_site
+            WHEN 'sample_procurement_method' THEN samp.method_of_sample_procurement
+            WHEN 'platform' THEN lp.test_name
             ELSE subject_id_num END
-        SKIP $offset
-        LIMIT $first
-    """)
+    """, passThrough: true)
 
-    sampleOverviewDesc(subject_ids: [String], sample_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [SampleOverview] @cypher(statement: """
+    sampleOverviewDesc(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = ""): [SampleOverview] @cypher(statement: """
         MATCH (samp:sample)
-          WHERE ($sample_ids IS NULL OR samp.sample_id IN $sample_ids)
+          WHERE ($sample_ids IS NULL OR $sample_ids = [""] OR samp.sample_id IN $sample_ids)
         OPTIONAL MATCH (samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (samp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
         WITH
@@ -1613,147 +1611,143 @@ type QueryType {
             toInteger(split(ss.study_subject_id,'-')[2]) AS subject_id_num,
             collect(distinct f.file_id) AS files,
             samp, ss, s, p
-          WHERE ($subject_ids IS NULL OR ss.study_subject_id IN $subject_ids)
-        RETURN
-            samp.sample_id AS sample_id,
-            ss.study_subject_id AS subject_id,
-            p.program_acronym AS program,
-            s.study_acronym AS arm,
-            ss.disease_subtype AS diagnosis,
-            samp.tissue_type AS tissue_type,
-            samp.composition AS tissue_composition,
-            samp.sample_anatomic_site AS sample_anatomic_site,
-            samp.method_of_sample_procurement AS sample_procurement_method,
-            lp.test_name AS platform,
-            files,
-            p.program_id as program_id
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR ss.study_subject_id IN $subject_ids)
+        RETURN {
+            sample_id: samp.sample_id,
+            subject_id: ss.study_subject_id,
+            program: p.program_acronym,
+            arm: s.study_acronym,
+            diagnosis: ss.disease_subtype,
+            tissue_type: samp.tissue_type,
+            tissue_composition: samp.composition,
+            sample_anatomic_site: samp.sample_anatomic_site,
+            sample_procurement_method: samp.method_of_sample_procurement,
+            platform: lp.test_name,
+            files: files,
+            program_id: p.program_id
+        }
         ORDER BY CASE $order_by
             WHEN 'subject_id' THEN subject_id_num
-            WHEN 'sample_id' THEN sample_id
-            WHEN 'program' THEN program
-            WHEN 'arm' THEN arm
-            WHEN 'diagnosis' THEN diagnosis
-            WHEN 'tissue_type' THEN tissue_type
-            WHEN 'tissue_composition' THEN tissue_composition
-            WHEN 'sample_anatomic_site' THEN sample_anatomic_site
-            WHEN 'sample_procurement_method' THEN sample_procurement_method
-            WHEN 'platform' THEN platform
+            WHEN 'sample_id' THEN samp.sample_id
+            WHEN 'program' THEN p.program_acronym
+            WHEN 'arm' THEN s.study_acronym
+            WHEN 'diagnosis' THEN ss.disease_subtype
+            WHEN 'tissue_type' THEN samp.tissue_type
+            WHEN 'tissue_composition' THEN samp.composition
+            WHEN 'sample_anatomic_site' THEN samp.sample_anatomic_site
+            WHEN 'sample_procurement_method' THEN samp.method_of_sample_procurement
+            WHEN 'platform' THEN lp.test_name
             ELSE subject_id_num END DESC
-        SKIP $offset
-        LIMIT $first
-    """)
+    """, passThrough: true)
 
 
-    fileOverview(subject_ids: [String], file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] @cypher(statement: """
+    fileOverview(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] @cypher(statement: """
         MATCH (f:file)
-          WHERE ($file_ids IS NULL OR f.file_id IN $file_ids)
+          WHERE ($file_ids IS NULL OR $file_ids = [""] OR f.file_id IN $file_ids)
         MATCH (f)-->(parent)
           WHERE NOT (parent:laboratory_procedure)
         OPTIONAL MATCH (f)-[:file_of_sample]->(samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (f)-[:file_of_study]->(s1)-[:study_of_program]-(p1)
         WITH
             ss.study_subject_id AS subject_id, toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
-            f, ss, p, parent, s, samp, s1, p1
-          WHERE ($subject_ids IS NULL OR subject_id IN $subject_ids)
-        RETURN
-            f.file_id AS file_id,
-            f.file_name AS file_name,
-            head(labels(parent)) AS association,
-            f.file_description AS file_description,
-            f.file_format AS file_format,
-            f.file_size AS file_size,
-            CASE p WHEN null THEN p1.program_acronym ELSE p.program_acronym END AS program,
-            CASE s WHEN null THEN s1.study_acronym ELSE s.study_acronym END AS arm,
-            ss.study_subject_id AS subject_id,
-            samp.sample_id AS sample_id,
-            ss.disease_subtype AS diagnosis,
-            p.program_id as program_id
+            f, ss, p, CASE p WHEN null THEN p1.program_acronym ELSE p.program_acronym END AS program, parent,
+            CASE s WHEN null THEN s1.study_acronym ELSE s.study_acronym END AS arm, head(labels(parent)) AS association, samp, s1, p1
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR subject_id IN $subject_ids)
+        RETURN {
+            file_id: f.file_id,
+            file_name: f.file_name,
+            association: association,
+            file_description: f.file_description,
+            file_format: f.file_format,
+            file_size: f.file_size,
+            program: program,
+            arm: arm,
+            subject_id: ss.study_subject_id,
+            sample_id: samp.sample_id,
+            diagnosis: ss.disease_subtype,
+            program_id: p.program_id
+        }
         ORDER BY CASE $order_by
             WHEN 'subject_id' THEN subject_id_num
-            WHEN 'file_id' THEN file_id
-            WHEN 'file_name' THEN file_name
+            WHEN 'file_id' THEN f.file_id
+            WHEN 'file_name' THEN f.file_name
             WHEN 'association' THEN association
-            WHEN 'file_description' THEN file_description
-            WHEN 'file_format' THEN file_format
-            WHEN 'file_size' THEN file_size
+            WHEN 'file_description' THEN f.file_description
+            WHEN 'file_format' THEN f.file_format
+            WHEN 'file_size' THEN f.file_size
             WHEN 'program' THEN program
             WHEN 'arm' THEN arm
-            WHEN 'sample_id' THEN sample_id
-            WHEN 'diagnosis' THEN diagnosis
-            ELSE file_name END
-        SKIP $offset
-        LIMIT $first
-    """)
+            WHEN 'sample_id' THEN samp.sample_id
+            WHEN 'diagnosis' THEN ss.disease_subtype
+            ELSE f.file_name END
+    """, passThrough: true)
 
-    fileOverviewDesc(subject_ids: [String], file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] @cypher(statement: """
+    fileOverviewDesc(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] @cypher(statement: """
         MATCH (f:file)
-          WHERE ($file_ids IS NULL OR f.file_id IN $file_ids)
+          WHERE ($file_ids IS NULL OR $file_ids = [""] OR f.file_id IN $file_ids)
         MATCH (f)-->(parent)
           WHERE NOT (parent:laboratory_procedure)
         OPTIONAL MATCH (f)-[:file_of_sample]->(samp)-[:sample_of_study_subject]->(ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
         OPTIONAL MATCH (f)-[:file_of_study]->(s1)-[:study_of_program]-(p1)
         WITH
             ss.study_subject_id AS subject_id, toInteger(split(ss.study_subject_id,'-')[2]) as subject_id_num,
-            f, ss, p, parent, s, samp, s1, p1
-          WHERE ($subject_ids IS NULL OR subject_id IN $subject_ids)
-        RETURN
-            f.file_id AS file_id,
-            f.file_name AS file_name,
-            head(labels(parent)) AS association,
-            f.file_description AS file_description,
-            f.file_format AS file_format,
-            f.file_size AS file_size,
-            CASE p WHEN null THEN p1.program_acronym ELSE p.program_acronym END AS program,
-            CASE s WHEN null THEN s1.study_acronym ELSE s.study_acronym END AS arm,
-            ss.study_subject_id AS subject_id,
-            samp.sample_id AS sample_id,
-            ss.disease_subtype AS diagnosis,
-            p.program_id as program_id
+            f, ss, p, CASE p WHEN null THEN p1.program_acronym ELSE p.program_acronym END AS program, parent,
+            CASE s WHEN null THEN s1.study_acronym ELSE s.study_acronym END AS arm, head(labels(parent)) AS association, samp, s1, p1
+          WHERE ($subject_ids IS NULL OR $subject_ids = [""] OR subject_id IN $subject_ids)
+        RETURN {
+            file_id: f.file_id,
+            file_name: f.file_name,
+            association: association,
+            file_description: f.file_description,
+            file_format: f.file_format,
+            file_size: f.file_size,
+            program: program,
+            arm: arm,
+            subject_id: ss.study_subject_id,
+            sample_id: samp.sample_id,
+            diagnosis: ss.disease_subtype,
+            program_id: p.program_id
+        }
         ORDER BY CASE $order_by
             WHEN 'subject_id' THEN subject_id_num
-            WHEN 'file_id' THEN file_id
-            WHEN 'file_name' THEN file_name
+            WHEN 'file_id' THEN f.file_id
+            WHEN 'file_name' THEN f.file_name
             WHEN 'association' THEN association
-            WHEN 'file_description' THEN file_description
-            WHEN 'file_format' THEN file_format
-            WHEN 'file_size' THEN file_size
+            WHEN 'file_description' THEN f.file_description
+            WHEN 'file_format' THEN f.file_format
+            WHEN 'file_size' THEN f.file_size
             WHEN 'program' THEN program
             WHEN 'arm' THEN arm
-            WHEN 'sample_id' THEN sample_id
-            WHEN 'diagnosis' THEN diagnosis
-            ELSE file_name END DESC
-        SKIP $offset
-        LIMIT $first
-    """)
-
-    fileIdsFromFileName(file_name: [String], offset: Int = 0, first: Int = 10000000, order_by: String ="file_name"): [FileOverview] @cypher(statement: """
-        MATCH (f:file)
-        WHERE ($file_name IS NULL OR f.file_name IN $file_name)
-        RETURN
-            f.file_name as file_name,
-            f.file_id as file_id
-        ORDER BY CASE $order_by
-            WHEN 'file_name' THEN file_name
-            WHEN 'file_id' THEN file_id
-            ELSE file_name END
-        SKIP $offset
-        LIMIT $first
+            WHEN 'sample_id' THEN samp.sample_id
+            WHEN 'diagnosis' THEN ss.disease_subtype
+            ELSE f.file_name END DESC
     """, passThrough: true)
 
-    fileIdsFromFileNameDesc(file_name: [String], offset: Int = 0, first: Int = 10000000, order_by: String ="file_name"): [FileOverview] @cypher(statement: """
+    fileIdsFromFileName(file_name: [String], order_by: String ="file_name"): [FileOverview] @cypher(statement: """
         MATCH (f:file)
         WHERE ($file_name IS NULL OR f.file_name IN $file_name)
-        RETURN
-            f.file_name as file_name,
-            f.file_id as file_id
+        RETURN {
+            file_name: f.file_name,
+            file_id: f.file_id
+        }
         ORDER BY CASE $order_by
-            WHEN 'file_name' THEN file_name
-            WHEN 'file_id' THEN file_id
-            ELSE file_name END DESC
-        SKIP $offset
-        LIMIT $first
+            WHEN 'file_name' THEN f.file_name
+            WHEN 'file_id' THEN f.file_id
+            ELSE f.file_name END
     """, passThrough: true)
 
+    fileIdsFromFileNameDesc(file_name: [String], order_by: String ="file_name"): [FileOverview] @cypher(statement: """
+        MATCH (f:file)
+        WHERE ($file_name IS NULL OR f.file_name IN $file_name)
+        RETURN {
+            file_name: f.file_name,
+            file_id: f.file_id
+        }
+        ORDER BY CASE $order_by
+            WHEN 'file_name' THEN f.file_name
+            WHEN 'file_id' THEN f.file_id
+            ELSE f.file_name END DESC
+    """, passThrough: true)
 
     subjectList: [GroupList] @cypher(statement: """
         MATCH (ss:study_subject)

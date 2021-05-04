@@ -1254,9 +1254,9 @@ type QueryType {
         file_type: [String] = []
     ): [GroupCount] 
 
-    subjectOverViewPaged(first: Int = 100, offset: Int = 0, subject_ids: [String], order_by: String = ""): [SubjectOverview] 
+    subjectOverViewPaged(subject_ids: [String] = [""], order_by: String = ""): [SubjectOverview] 
 
-    subjectOverViewPagedDesc(first: Int = 100, offset: Int = 0, subject_ids: [String], order_by: String = ""): [SubjectOverview] 
+    subjectOverViewPagedDesc(subject_ids: [String] = [""], order_by: String = ""): [SubjectOverview] 
 
     subjectOverView: [SubjectOverview] 
 
@@ -1311,23 +1311,22 @@ type QueryType {
 
     samplesForSubjectId(subject_id: String!): [sample] 
 
-    filesInList(file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileDetail] 
+    filesInList(file_ids: [String], order_by: String = ""): [FileDetail] 
 
-    filesInListDesc(file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileDetail] 
+    filesInListDesc(file_ids: [String], order_by: String = ""): [FileDetail] 
 
-    sampleOverview(subject_ids: [String], sample_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [SampleOverview] 
+    sampleOverview(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = ""): [SampleOverview] 
 
-    sampleOverviewDesc(subject_ids: [String], sample_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [SampleOverview] 
+    sampleOverviewDesc(subject_ids: [String] = [""], sample_ids: [String] = [""], order_by: String = ""): [SampleOverview] 
 
 
-    fileOverview(subject_ids: [String], file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] 
+    fileOverview(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] 
 
-    fileOverviewDesc(subject_ids: [String], file_ids: [String], order_by: String = "", first: Int = 100, offset: Int = 0): [FileOverview] 
+    fileOverviewDesc(subject_ids: [String] = [""], file_ids: [String] = [""], order_by: String = ""): [FileOverview] 
 
-    fileIdsFromFileName(file_name: [String], offset: Int = 0, first: Int = 10000000, order_by: String ="file_name"): [FileOverview] 
+    fileIdsFromFileName(file_name: [String], order_by: String ="file_name"): [FileOverview] 
 
-    fileIdsFromFileNameDesc(file_name: [String], offset: Int = 0, first: Int = 10000000, order_by: String ="file_name"): [FileOverview] 
-
+    fileIdsFromFileNameDesc(file_name: [String], order_by: String ="file_name"): [FileOverview] 
 
     subjectList: [GroupList] 
 
