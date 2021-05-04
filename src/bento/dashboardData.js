@@ -55,14 +55,17 @@ export const facetSectionVariables = {
   'Filter By Cases': {
     color: '#10A075',
     height: '5px',
+    isExpanded: false,
   },
   'Filter By Samples': {
     color: '#10BEFF',
     height: '5px',
+    isExpanded: false,
   },
   'Filter By Files': {
     color: '#E636E4',
     height: '5px',
+    isExpanded: false,
   },
 };
 
@@ -198,6 +201,15 @@ export const dashboardTable = {
     },
   ],
 };
+
+// --------------- Sorting related labels configuration --------------
+export const sortLabels = {
+  sortAlphabetically: 'Sort Alphabetically',
+  sortByCount: 'Sort by Counts',
+  showMore: '...expand to see all selections',
+};
+
+export const showCheckboxCount = 5;
 
 // --------------- Dashboard Query configuration --------------
 export const GET_DASHBOARD_DATA_QUERY = gql`{

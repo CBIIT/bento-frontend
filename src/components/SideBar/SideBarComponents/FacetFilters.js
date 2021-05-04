@@ -26,7 +26,9 @@ import {
   sortGroupCheckboxByCount,
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
-import { facetSectionVariables, facetSearchData } from '../../../bento/dashboardData';
+import {
+  facetSectionVariables, facetSearchData, sortLabels, showCheckboxCount,
+} from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
@@ -67,7 +69,15 @@ const FacetPanel = ({ classes }) => {
 
   const [groupsExpanded, setGroupsExpanded] = React.useState([]);
 
-  const [sectionExpanded, setSectionExpanded] = React.useState(['case']);
+  const [sectionExpanded, setSectionExpanded] = React.useState(
+    Object.keys(facetSectionVariables).reduce((acc, filterKey) => {
+      const { isExpanded } = facetSectionVariables[filterKey];
+      if (isExpanded) {
+        acc.push(filterKey);
+      }
+      return acc;
+    }, []),
+  );
 
   const activeFilters = useSelector((state) => (
     state.dashboardTab
@@ -208,6 +218,28 @@ const FacetPanel = ({ classes }) => {
     );
   };
 
+  const showSelectedChecbox = (sideBarItem, currentSection) => {
+    const selectedItems = sideBarItem.checkboxItems.filter((item) => (item.isChecked));
+    const selectedCheckbox = selectedItems.slice(0, showCheckboxCount)
+      .map((item) => getCheckBoxView(item, sideBarItem, currentSection));
+
+    return (
+      <div>
+        {selectedCheckbox}
+        {selectedItems.length > showCheckboxCount && (
+          <div className={classes.clearfix}>
+            <div
+              className={classes.showMore}
+              onClick={(e) => (handleGroupsChange(sideBarItem.groupName)(e, true))}
+            >
+              {sortLabels.showMore}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
       {sideBarSections.map((currentSection) => (
@@ -281,8 +313,7 @@ const FacetPanel = ({ classes }) => {
                                 sortGroupCheckboxByAlphabet(sideBarItem.groupName);
                               }}
                             >
-                              {' '}
-                              Sort alphabetically
+                              {sortLabels.sortAlphabetically}
                             </span>
                             <span
                               className={classes.sortGroupItem}
@@ -291,12 +322,11 @@ const FacetPanel = ({ classes }) => {
                                 sortGroupCheckboxByCount(sideBarItem.groupName);
                               }}
                             >
-                              {' '}
-                              Sort by count
+                              {sortLabels.sortByCount}
                             </span>
                             <span
                               className={classes.sortGroupItem}
-                              style={{ color: getSortButtonColor(sideBarItem, 'count') }}
+                              style={{ color: '#4A4A4A' }}
                             >
                               <ReplayIcon
                                 onClick={handleGroupReset(sideBarItem.datafield)}
@@ -314,9 +344,7 @@ const FacetPanel = ({ classes }) => {
                     </ExpansionPanel>
                     <div className={classes.selectedCheckboxDisplay}>
                       { !groupsExpanded.includes(sideBarItem.groupName)
-                      && sideBarItem.checkboxItems
-                        .filter((item) => (item.isChecked))
-                        .map((item) => getCheckBoxView(item, sideBarItem, currentSection))}
+                      && showSelectedChecbox(sideBarItem, currentSection)}
                     </div>
                   </>
                 ))}
@@ -429,6 +457,12 @@ const styles = () => ({
   selectedCheckboxDisplay: {
     maxHeight: '200px',
     overflow: 'auto',
+  },
+  showMore: {
+    float: 'right',
+    paddingRight: '5px',
+    cursor: 'pointer',
+    fontSize: '10px',
   },
 });
 export default withStyles(styles)(FacetPanel);
