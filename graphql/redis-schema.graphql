@@ -9,20 +9,22 @@ schema {
 
 type QueryType {
     redisFilter(
-        chemotherapy_regimen: [String] = [],
-        diagnosis: [String] = [],
-        endocrine_therapy: [String] = [],
+        programs: [String] = [],
+        studies: [String] = [],
+        diagnoses: [String] = [],
+        rc_scores: [String] = [],
+        tumor_sizes: [String] = [],
+        chemo_regimen: [String] = [],
+        tumor_grades: [String] = [],
         er_status: [String] = [],
-        file_association: [String] = [],
-        file_type: [String] = [],
-        menopause_status: [String] = [],
         pr_status: [String] = [],
-        program: [String] = [],
-        recurrence_score: [String] = [],
-        sample: [String] = [],
-        study: [String] = [],
+        endo_therapies: [String] = [],
+        meno_status: [String] = [],
         tissue_type: [String] = [],
-        tumor_grade: [String] = [],
-        tumor_size: [String] = []
+        composition: [String] = [],
+        association: [String] = [],
+        file_type: [String] = []
     ): FilterResult
 }
+
+

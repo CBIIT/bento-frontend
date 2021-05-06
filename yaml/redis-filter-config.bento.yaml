@@ -17,3 +17,20 @@ queries:
   - subjectListByTissueComposition
   - subjectListByFileAssociation
   - subjectListByFileType
+# Maps the parameters for the redis filter query to the "groups" fileds returned by the above queries
+parameter_mappings:
+  studies: study
+  chemo_regimen: chemotherapy_regimen
+  er_status: er_status
+  diagnoses: diagnosis
+  rc_scores: recurrence_score
+  association: file_association
+  programs: program
+  tumor_sizes: tumor_size
+  composition: sample
+  endo_therapies: endocrine_therapy
+  file_type: file_type
+  pr_status: pr_status
+  tissue_type: tissue_type
+  tumor_grades: tumor_grade
+  meno_status: menopause_status
