@@ -17,7 +17,7 @@ queries:
   - subjectListByTissueComposition
   - subjectListByFileAssociation
   - subjectListByFileType
-# Maps the parameters for the redis filter query to the "groups" fileds returned by the above queries
+# Maps the parameters for the redis filter query to a filter group returned by the above queries
 parameter_mappings:
   studies: study
   chemo_regimen: chemotherapy_regimen
