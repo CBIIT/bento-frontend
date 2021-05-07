@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 export const navBarCartData = {
   cartLabel: 'MY CASES',
   cartLink: '/myCases',
-  cartIcon: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Icon-Cart-Navbar.svg',
+  cartIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Navbar.svg',
   cartIconAlt: 'cart_logo',
 };
 
@@ -15,9 +15,9 @@ export const myCasesPageData = {
   myCasesSubTitle: 'Cases',
   buttonText: 'GO TO FILES',
   buttonLink: '/mycasesfiles',
-  headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Icon-Cart-Workflow.svg',
+  headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Workflow.svg',
   headerIconAlt: 'Bento MyCases header logo',
-  wizardIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Cart-Wizard-Step2.svg',
+  wizardIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Cart-Wizard-Step2.svg',
   wizardIconAlt: 'Bento MyCases Wizard',
 };
 
@@ -25,9 +25,9 @@ export const myFilesPageData = {
   mainTitle: 'My Files :',
   subTitle: 'Files',
   buttonText: 'DOWNLOAD MANIFEST',
-  headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Icon-Cart-Workflow.svg',
+  headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Workflow.svg',
   headerIconAlt: 'Bento MyFiles header logo',
-  wizardIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Cart-Wizard-Step3.svg',
+  wizardIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Cart-Wizard-Step3.svg',
   wizardIconAlt: 'Bento MyFiles Wizard',
   manifestFileName: 'BENTO File Manifest',
 };
