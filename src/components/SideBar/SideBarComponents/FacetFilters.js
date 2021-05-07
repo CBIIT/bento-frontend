@@ -11,11 +11,13 @@ import {
   Divider,
   Backdrop,
   CircularProgress,
+  Icon,
 } from '@material-ui/core';
 import _ from 'lodash';
 import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon, ArrowDropDown
-  as ArrowDropDownIcon, Replay as ReplayIcon,
+  as ArrowDropDownIcon,
+  // Replay as ReplayIcon,
 } from '@material-ui/icons';
 import {
   toggleCheckBox,
@@ -27,7 +29,7 @@ import {
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
-  facetSectionVariables, facetSearchData, sortLabels, showCheckboxCount,
+  facetSectionVariables, facetSearchData, sortLabels, showCheckboxCount, resetIcon,
 } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
@@ -308,6 +310,21 @@ const FacetPanel = ({ classes }) => {
                           <div className={classes.sortGroup}>
                             <span
                               className={classes.sortGroupItem}
+                              style={{ paddingLeft: '5px' }}
+                            >
+                              <Icon
+                                onClick={handleGroupReset(sideBarItem.datafield)}
+                              >
+                                <img
+                                  src={resetIcon.src}
+                                  height={resetIcon.size}
+                                  width={resetIcon.size}
+                                  alt={resetIcon.alt}
+                                />
+                              </Icon>
+                            </span>
+                            <span
+                              className={classes.sortGroupItem}
                               style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
                               onClick={() => {
                                 sortGroupCheckboxByAlphabet(sideBarItem.groupName);
@@ -323,15 +340,6 @@ const FacetPanel = ({ classes }) => {
                               }}
                             >
                               {sortLabels.sortByCount}
-                            </span>
-                            <span
-                              className={classes.sortGroupItem}
-                              style={{ color: '#4A4A4A' }}
-                            >
-                              <ReplayIcon
-                                onClick={handleGroupReset(sideBarItem.datafield)}
-                                style={{ fontSize: 18 }}
-                              />
                             </span>
                           </div>
                           {
