@@ -54,6 +54,8 @@ export const facetSearchData = [
 export const facetSectionVariables = {
   'Filter By Cases': {
     color: '#10A075',
+    checkBoxColorsOne: '#D6F2EA',
+    checkBoxColorsTwo: '#CFEDF9',
     height: '5px',
   },
   'Filter By Samples': {

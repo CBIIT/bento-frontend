@@ -26,6 +26,7 @@ import {
   sortGroupCheckboxByCount,
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
+import CheckBoxView from './CheckBoxView';
 import { facetSectionVariables, facetSearchData } from '../../../bento/dashboardData';
 
 const CustomExpansionPanelSummary = withStyles({
@@ -175,17 +176,39 @@ const FacetPanel = ({ classes }) => {
       ? '#B2C6D6' : '#4A4A4A');
   }
 
-  const getCheckBoxView = (checkboxItem, sideBarItem, currentSection) => {
+  function getCheckBoxColor(index, currentSection) {
+    return index % 2 ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne
+      : facetSectionVariables[currentSection.sectionName].checkBoxColorsTwo;
+  }
+  // eslint-disable-next-line no-unused-vars
+  const getCheckBoxView = (checkboxItem, sideBarItem, currentSection, index) => {
     if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
       return '';
     }
+
+    // const useStyles = makeStyles({
+    //   checkBoxSelected: {
+    //     '&$selected': {
+    //       backgroundColor: index % 2 ? facetSectionVariables[currentSection.sectionName].color
+    //         : facetSectionVariables[currentSection.sectionName].color,
+    //     },
+    //   },
+    // });
+
+    // // eslint-disable-next-line no-unused-vars
+    // const stylingClasses = useStyles();
+
     return (
       <ListItem
         button
         selected={checkboxItem.isChecked}
         onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}$$${sideBarItem.section}`)}
         className={classes.nested}
-        classes={{ root: currentSection.sectionName === 'Filter By Cases' ? classes.root1 : currentSection.sectionName === 'Filter By Samples' ? classes.root2 : currentSection.sectionName === 'Filter By Files' ? classes.root3 : null, selected: classes.selected, gutters: classes.listItemGutters }}
+        classes={{
+          // root: stylingClasses.checkBoxSelected,
+          selected: classes.selected,
+          gutters: classes.listItemGutters,
+        }}
       >
         <Checkbox
           id={`checkbox_${sideBarItem.groupName}_${checkboxItem.name}`}
@@ -306,7 +329,18 @@ const FacetPanel = ({ classes }) => {
                           </div>
                           {
                             sideBarItem.checkboxItems.map(
-                              (item) => getCheckBoxView(item, sideBarItem, currentSection),
+                              (item, index) => (
+                                <CheckBoxView
+                                  checkboxItem={item}
+                                  sideBarItem={sideBarItem}
+                                  currentSection={currentSection}
+                                  handleToggle={handleToggle}
+                                  facetSectionVariables={facetSectionVariables}
+                                  backgroundColor={getCheckBoxColor(index, currentSection)}
+                                  classes={classes}
+                                />
+                              ),
+
                             )
           }
                         </List>
