@@ -21,6 +21,7 @@ import CustomDataTable from '../../../components/serverPaginatedTable/serverPagi
 import { addToCart, getCart, cartWillFull } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
 import AddToCartAlertDialog from '../../../components/AddToCartDialog';
+import DocumentDownload from '../../../components/DocumentDownload/DocumentDownloadView';
 
 const getOverviewQuery = (api) => (api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_QUERY : api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY);
 
@@ -276,7 +277,7 @@ const TabView = ({
         <Grid item xs={12} id={tableID}>
           <CustomDataTable
             data={data}
-            columns={getColumns(customColumn, classes, data, externalLinkIcon)}
+            columns={getColumns(customColumn, classes, data, externalLinkIcon, '', () => {}, DocumentDownload)}
             options={finalOptions}
             count={count}
             overview={getOverviewQuery(api)}
