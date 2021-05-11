@@ -11,6 +11,7 @@ import {
   Divider,
   Backdrop,
   CircularProgress,
+  ListItemText,
 } from '@material-ui/core';
 import _ from 'lodash';
 import {
@@ -26,9 +27,10 @@ import {
   sortGroupCheckboxByCount,
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
-import CheckBoxView from './CheckBoxView';
 import { facetSectionVariables, facetSearchData } from '../../../bento/dashboardData';
 
+let backgroundColorCode = '';
+const alignment = 'flex-start';
 const CustomExpansionPanelSummary = withStyles({
   root: {
     marginBottom: -1,
@@ -84,13 +86,7 @@ const FacetPanel = ({ classes }) => {
     if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
       document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
-      if (filterLabel[0].section === 'Filter By Cases') {
-        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#10A075';
-      } else if (filterLabel[0].section === 'Filter By Samples') {
-        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#10BEFF';
-      } else if (filterLabel[0].section === 'Filter By Files') {
-        document.getElementById(`filterGroup_${filter[0]}`).style.color = '#E636E4';
-      }
+      document.getElementById(`filterGroup_${filter[0]}`).style.color = facetSectionVariables[filterLabel[0].section].color;
     } else if (document.getElementById(`filterGroup_${filter[0]}`)) {
       const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
       document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
@@ -175,59 +171,61 @@ const FacetPanel = ({ classes }) => {
     return (sortByForGroups[sideBarItem.groupName] === sortType
       ? '#B2C6D6' : '#4A4A4A');
   }
-
   function getCheckBoxColor(index, currentSection) {
-    return index % 2 ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne
-      : facetSectionVariables[currentSection.sectionName].checkBoxColorsTwo;
+    return index % 2 ? facetSectionVariables[currentSection.sectionName].checkBoxColorsTwo
+      : facetSectionVariables[currentSection.sectionName].checkBoxColorsOne;
   }
-  // eslint-disable-next-line no-unused-vars
   const getCheckBoxView = (checkboxItem, sideBarItem, currentSection, index) => {
-    if (checkboxItem.subjects === 0 && !checkboxItem.isChecked) {
-      return '';
-    }
-
-    // const useStyles = makeStyles({
-    //   checkBoxSelected: {
-    //     '&$selected': {
-    //       backgroundColor: index % 2 ? facetSectionVariables[currentSection.sectionName].color
-    //         : facetSectionVariables[currentSection.sectionName].color,
-    //     },
-    //   },
-    // });
-
-    // // eslint-disable-next-line no-unused-vars
-    // const stylingClasses = useStyles();
-
+    backgroundColorCode = getCheckBoxColor(index, currentSection);
     return (
-      <ListItem
-        button
-        selected={checkboxItem.isChecked}
-        onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}$$${sideBarItem.section}`)}
-        className={classes.nested}
-        classes={{
-          // root: stylingClasses.checkBoxSelected,
-          selected: classes.selected,
-          gutters: classes.listItemGutters,
-        }}
-      >
-        <Checkbox
-          id={`checkbox_${sideBarItem.groupName}_${checkboxItem.name}`}
-          icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
-          checkedIcon={<CheckBoxIcon style={{ fontSize: 18 }} />}
-          checked={checkboxItem.isChecked}
-          tabIndex={-1}
-          disableRipple
-          color="secondary"
-          classes={{ root: classes.checkboxRoot }}
+      <>
+        <ListItem
+          width={1}
+          button
+          alignItems={alignment}
+          selected={checkboxItem.isChecked}
+          onClick={handleToggle(`${checkboxItem.name}$$${sideBarItem.groupName}$$${sideBarItem.datafield}$$${checkboxItem.isChecked}$$${sideBarItem.section}`)}
+          className={classes.nested}
+          style={{
+            backgroundColor: checkboxItem.isChecked ? backgroundColorCode : null,
+          }}
+          classes={{ selected: classes.selected, gutters: classes.listItemGutters }}
+        >
+          <Checkbox
+            id={`checkbox_${sideBarItem.groupName}_${checkboxItem.name}`}
+            icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+            checkedIcon={<CheckBoxIcon style={{ fontSize: 18 }} />}
+            checked={checkboxItem.isChecked}
+            tabIndex={-1}
+            disableRipple
+            color="secondary"
+            classes={{ root: classes.checkboxRoot }}
+          />
+          <div className={classes.panelDetailText}>
+            <span>
+              {`${checkboxItem.name}`}
+            </span>
+          </div>
+          <ListItemText />
+          <div className={classes.panelSubjectText}>
+            <span
+              style={{ color: facetSectionVariables[sideBarItem.section].color ? facetSectionVariables[sideBarItem.section].color : '#137fbe' }}
+              edge="end"
+            >
+              &nbsp;
+              {`(${checkboxItem.subjects})`}
+            </span>
+          </div>
+        </ListItem>
+        <Divider
+          variant="middle"
+          style={{
+            backgroundColor: '#FFFFFF',
+            margin: '0px',
+            height: '2px',
+          }}
         />
-        <div className={classes.panelDetailText}>
-          {`${checkboxItem.name}`}
-          <span style={{ color: facetSectionVariables[sideBarItem.section].color ? facetSectionVariables[sideBarItem.section].color : '#137fbe' }}>
-            &nbsp;
-            {`(${checkboxItem.subjects})`}
-          </span>
-        </div>
-      </ListItem>
+      </>
     );
   };
 
@@ -282,14 +280,15 @@ const FacetPanel = ({ classes }) => {
                         expandIcon={(
                           <ArrowDropDownIcon
                             classes={{ root: classes.dropDownIconSubSection }}
+                            style={{ fontSize: 36 }}
                           />
 )}
                         aria-controls={sideBarItem.groupName}
                         id={sideBarItem.groupName}
+                        className={classes.customExpansionPanelSummaryRoot}
                       >
                         {/* <ListItemText primary={sideBarItem.groupName} /> */}
                         <div id={`filterGroup_${sideBarItem.datafield}`} style={{ color: 'black' }} className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
-
                       </CustomExpansionPanelSummary>
 
                       <ExpansionPanelDetails
@@ -297,6 +296,15 @@ const FacetPanel = ({ classes }) => {
                       >
                         <List component="div" disablePadding dense>
                           <div className={classes.sortGroup}>
+                            <span
+                              className={classes.sortGroupIcon}
+                              style={{ color: '#4A4A4A' }}
+                            >
+                              <ReplayIcon
+                                onClick={handleGroupReset(sideBarItem.datafield)}
+                                style={{ fontSize: 18 }}
+                              />
+                            </span>
                             <span
                               className={classes.sortGroupItem}
                               style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
@@ -317,30 +325,15 @@ const FacetPanel = ({ classes }) => {
                               {' '}
                               Sort by count
                             </span>
-                            <span
-                              className={classes.sortGroupItem}
-                              style={{ color: getSortButtonColor(sideBarItem, 'count') }}
-                            >
-                              <ReplayIcon
-                                onClick={handleGroupReset(sideBarItem.datafield)}
-                                style={{ fontSize: 18 }}
-                              />
-                            </span>
                           </div>
                           {
                             sideBarItem.checkboxItems.map(
-                              (item, index) => (
-                                <CheckBoxView
-                                  checkboxItem={item}
-                                  sideBarItem={sideBarItem}
-                                  currentSection={currentSection}
-                                  handleToggle={handleToggle}
-                                  facetSectionVariables={facetSectionVariables}
-                                  backgroundColor={getCheckBoxColor(index, currentSection)}
-                                  classes={classes}
-                                />
+                              (item, index) => getCheckBoxView(
+                                item,
+                                sideBarItem,
+                                currentSection,
+                                index,
                               ),
-
                             )
           }
                         </List>
@@ -350,7 +343,12 @@ const FacetPanel = ({ classes }) => {
                       { !groupsExpanded.includes(sideBarItem.groupName)
                       && sideBarItem.checkboxItems
                         .filter((item) => (item.isChecked))
-                        .map((item) => getCheckBoxView(item, sideBarItem, currentSection))}
+                        .map((item, index) => getCheckBoxView(
+                          item,
+                          sideBarItem,
+                          currentSection,
+                          index,
+                        ))}
                     </div>
                   </>
                 ))}
@@ -403,7 +401,8 @@ const styles = () => ({
     fill: '#000000',
   },
   dropDownIconSubSection: {
-    fill: '#3695A9',
+    marginLeft: '0px',
+    fill: '#000000',
   },
   sectionSummaryText: {
     marginLeft: '-6px',
@@ -414,13 +413,18 @@ const styles = () => ({
     letterSpacing: 0,
   },
   subSectionSummaryText: {
-    marginLeft: '16px',
+    marginLeft: '5px',
     color: '#000000',
     fontFamily: 'Lato',
     fontSize: '14px',
     textTransform: 'uppercase',
     lineHeight: 0,
     letterSpacing: 0,
+    flexShrink: 0,
+  },
+  customExpansionPanelSummaryRoot: {
+    flexDirection: 'row-reverse',
+    paddingLeft: 0,
   },
   panelDetailText: {
     color: '#000000',
@@ -428,35 +432,54 @@ const styles = () => ({
     fontSize: '14px',
     marginRight: '12px',
   },
+  panelSubjectText: {
+    color: '#000000',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    marginRight: '12px',
+  },
   checkboxRoot: {
     color: '#344B5A',
+    marginLeft: '5px',
     height: 12,
   },
   listItemGutters: {
-    padding: '8px 0px 8px 15px',
+    padding: '8px 0px 0px 0px',
   },
   sortGroup: {
-    textAlign: 'center',
+    textAlign: 'left',
   },
   sortGroupItem: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '12px',
-    marginRight: '10px',
+    marginRight: '8px',
+  },
+  sortGroupIcon: {
+    cursor: 'pointer',
+    fontFamily: 'Nunito',
+    fontSize: '12px',
+    marginRight: '4px',
+    marginLeft: '12px',
   },
   root1: {
     '&$selected': {
-      backgroundColor: '#D6F2EA',
+      backgroundColor: '#E8F7DC',
+    },
+  },
+  root1_1: {
+    '&$selected': {
+      backgroundColor: '#F5FDEE',
     },
   },
   root2: {
     '&$selected': {
-      backgroundColor: '#CFEDF9',
+      backgroundColor: '#C9EBF7',
     },
   },
   root3: {
     '&$selected': {
-      backgroundColor: '#F7D7F7',
+      backgroundColor: 'FBE3FB',
     },
   },
   selected: {},
