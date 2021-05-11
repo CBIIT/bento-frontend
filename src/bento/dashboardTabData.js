@@ -275,6 +275,22 @@ export const tabContainers = [
         display: true,
       },
       {
+        dataField: '',
+        header: 'File Download',
+        sort: 'asc',
+        display: true,
+        downloadDocument: true,
+        documentDownloadProps: {
+          maxFileSize: 100,
+          toolTipTextFileDownload: 'Download a copy of this file',
+          toolTipTextFilePreview: 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
+          fileSizeColumn: 'file_size',
+          fileLocationColumn: 'file_location',
+          iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
+          iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
+        },
+      },
+      {
         dataField: 'file_id',
         header: 'File ID',
         sort: 'asc',
