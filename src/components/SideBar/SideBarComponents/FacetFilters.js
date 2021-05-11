@@ -462,26 +462,6 @@ const styles = () => ({
     marginRight: '4px',
     marginLeft: '12px',
   },
-  root1: {
-    '&$selected': {
-      backgroundColor: '#E8F7DC',
-    },
-  },
-  root1_1: {
-    '&$selected': {
-      backgroundColor: '#F5FDEE',
-    },
-  },
-  root2: {
-    '&$selected': {
-      backgroundColor: '#C9EBF7',
-    },
-  },
-  root3: {
-    '&$selected': {
-      backgroundColor: 'FBE3FB',
-    },
-  },
   selected: {},
   selectedCheckboxDisplay: {
     maxHeight: '200px',
