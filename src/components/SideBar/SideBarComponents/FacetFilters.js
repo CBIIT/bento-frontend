@@ -26,7 +26,7 @@ import {
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
-  facetSectionVariables, facetSearchData, sortLabels, showCheckboxCount, resetIcon,
+  facetSectionVariables, sortLabels, showCheckboxCount, resetIcon,
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
 
@@ -79,35 +79,29 @@ const FacetPanel = ({ classes }) => {
     }, []),
   );
 
-  const activeFilters = useSelector((state) => (
-    state.dashboardTab
-      && state.dashboardTab.allActiveFilters
-      ? state.dashboardTab.allActiveFilters : {}));
-
   const sortByForGroups = useSelector((state) => (
     state.dashboardTab
       && state.dashboardTab.sortByList
       ? state.dashboardTab.sortByList : {}));
 
-  Object.entries(activeFilters).map((filter) => {
-    if ((filter[1].length >= 1) && (document.getElementById(`filterGroup_${filter[0]}`))) {
-      const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
-      document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
-      document.getElementById(`filterGroup_${filter[0]}`).style.color = facetSectionVariables[filterLabel[0].section].color;
-    } else if (document.getElementById(`filterGroup_${filter[0]}`)) {
-      const filterLabel = facetSearchData.filter((word) => word.datafield === filter[0]);
-      document.getElementById(`filterGroup_${filter[0]}`).innerHTML = `${filterLabel[0].label}`;
-      document.getElementById(`filterGroup_${filter[0]}`).style.color = 'black';
-    }
-    return '';
-  });
-
+  let groupNameColor = '';
+  function getGroupNameColor(sideBarItem, currentSection) {
+    groupNameColor = 'black';
+    sideBarItem.checkboxItems.map(
+      (item) => {
+        if (item.isChecked) {
+          groupNameColor = facetSectionVariables[currentSection.sectionName].color;
+        }
+        return '';
+      },
+    );
+    return groupNameColor;
+  }
   React.useEffect(() => {
     if (!groupsExpanded || !(groupsExpanded === `${sideBarContent.defaultPanel}false` || groupsExpanded !== false)) {
       setGroupsExpanded(sideBarContent.defaultPanel);
     }
   });
-
   const handleGroupsChange = (panel) => (event, isExpanded) => {
     const groups = _.cloneDeep(groupsExpanded);
     if (isExpanded) {
@@ -275,7 +269,13 @@ const FacetPanel = ({ classes }) => {
                         className={classes.customExpansionPanelSummaryRoot}
                       >
                         {/* <ListItemText primary={sideBarItem.groupName} /> */}
-                        <div id={`filterGroup_${sideBarItem.datafield}`} style={{ color: 'black' }} className={classes.subSectionSummaryText}>{sideBarItem.groupName}</div>
+                        <div
+                          id={sideBarItem.groupName}
+                          style={{ color: getGroupNameColor(sideBarItem, currentSection) }}
+                          className={classes.subSectionSummaryText}
+                        >
+                          {sideBarItem.groupName}
+                        </div>
 
                       </CustomExpansionPanelSummary>
 
@@ -283,7 +283,9 @@ const FacetPanel = ({ classes }) => {
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
-                          <div className={classes.sortGroup}>
+                          <div
+                            className={classes.sortGroup}
+                          >
                             <span
                               className={classes.sortGroupIcon}
                             >
@@ -449,7 +451,7 @@ const styles = () => ({
     fontFamily: 'Nunito',
     fontSize: '12px',
     marginRight: '4px',
-    marginLeft: '17px',
+    marginLeft: '16px',
   },
   selected: {},
   selectedCheckboxDisplay: {
