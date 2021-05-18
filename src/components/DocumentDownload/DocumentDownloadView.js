@@ -5,7 +5,7 @@ import CustomIcon from '../CustomIcon/CustomIconView';
 
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
-const fetchFileToDownload = (fileURL = 'BENTO-FILE-366') => {
+const fetchFileToDownload = (fileURL = '') => {
   fetch(`${FILE_SERVICE_API}${fileURL}`, {
     method: 'GET',
     headers: {
