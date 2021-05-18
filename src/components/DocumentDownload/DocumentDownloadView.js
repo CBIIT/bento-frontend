@@ -1,9 +1,36 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
-// import { CustomIcon } from 'bento-components';
-
+import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
+
+const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
+
+const fetchFileToDownload = (fileURL = 'BENTO-FILE-366') => {
+  fetch(`${FILE_SERVICE_API}${fileURL}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/pdf',
+    },
+  })
+    .then((response) => response.blob())
+    .then((blob) => {
+      // Create blob link to download
+      const url = window.URL.createObjectURL(
+        new Blob([blob]),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute(
+        'download',
+        `${fileURL}.pdf`,
+      );
+
+      // Append to html link element page
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    });
+};
 
 const DocumentDownload = ({
   fileSize = 0,
@@ -12,14 +39,15 @@ const DocumentDownload = ({
   toolTipTextFilePreview = 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
   iconFileDownload = '',
   iconFilePreview = '',
-  fileLocation = 'http://www.africau.edu/images/default/sample.pdf',
+  fileLocation = '',
 }) => (
   <>
     { fileSize < maxFileSize ? (
       <Tooltip title={toolTipTextFileDownload}>
-        <Link to={fileLocation} target="_blank" download>
+        <div onClick={() => fetchFileToDownload(fileLocation)}>
+
           <CustomIcon imgSrc={iconFileDownload} />
-        </Link>
+        </div>
       </Tooltip>
     ) : (
       <Tooltip title={toolTipTextFilePreview}>
