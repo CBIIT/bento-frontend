@@ -359,6 +359,9 @@ const styles = () => ({
     boxShadow: 'none',
     margin: 'auto',
     position: 'initial',
+    '&:before': {
+      position: 'initial',
+    },
   },
   expansionPanelsideBarItem: {
     boxShadow: 'none',
