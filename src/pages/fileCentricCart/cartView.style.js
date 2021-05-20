@@ -65,6 +65,7 @@ export default () => ({
     border: 'none',
     verticalAlign: 'top',
     marginTop: '6px',
+    cursor: 'pointer',
   },
   popUpWindowText: {
     fontFamily: 'Lato',
