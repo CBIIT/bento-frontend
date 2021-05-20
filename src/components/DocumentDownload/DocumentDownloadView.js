@@ -13,10 +13,10 @@ const fetchFileToDownload = (fileURL = '') => {
     },
   })
     .then((response) => response.text())
-    .then((file) => {
+    .then((filePath) => {
       // Create blob link to download
       const link = document.createElement('a');
-      link.href = file;
+      link.href = filePath;
       link.setAttribute(
         'download',
         'fileURL',
