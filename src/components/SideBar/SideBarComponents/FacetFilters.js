@@ -233,7 +233,6 @@ const FacetPanel = ({ classes }) => {
             }}
           >
             <CustomExpansionPanelSummary
-              expandIcon={<ArrowDropDownIcon classes={{ root: classes.dropDownIconSection }} />}
               aria-controls={currentSection.sectionName}
             >
               {/* <ListItemText primary={sideBarItem.groupName} /> */}
@@ -358,20 +357,16 @@ const FacetPanel = ({ classes }) => {
 const styles = () => ({
   expansionPanelRoot: {
     boxShadow: 'none',
-    background: '#D2D2D2',
     margin: 'auto',
     position: 'initial',
-    '&:before': {
-      position: 'initial',
-    },
   },
   expansionPanelsideBarItem: {
     boxShadow: 'none',
-    borderTop: '1px solid #000000',
+    borderTop: '1px solid #B0CFE1',
     borderLeft: '1px solid #D2D2D2',
     borderRight: '1px solid #D2D2D2',
     '&:last-child': {
-      borderBottom: '1px solid #D2D2D2',
+      borderBottom: '1px solid #B0CFE1',
     },
     margin: 'auto',
     position: 'initial',
@@ -399,6 +394,7 @@ const styles = () => ({
     marginLeft: '-6px',
     color: '#000000',
     fontFamily: 'Lato',
+    fontWeight: '100',
     fontSize: '20px',
     lineHeight: '26px',
     letterSpacing: 0,

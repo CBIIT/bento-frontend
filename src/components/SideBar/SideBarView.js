@@ -4,7 +4,7 @@ import {
   withStyles, Drawer, List, Button,
 } from '@material-ui/core';
 import FacetFilter from './SideBarComponents/FacetFilters';
-import { facetSearchData } from '../../bento/dashboardData';
+import { facetSearchData, resetIcon } from '../../bento/dashboardData';
 import { clearAllFilters } from '../../pages/dashboardTab/store/dashboardReducer';
 
 const drawerWidth = 240;
@@ -47,7 +47,12 @@ const SideBarContent = ({ classes }) => {
               onClick={() => clearAllFilters()}
               disableRipple
             >
-              CLEAR ALL
+              <img
+                src={resetIcon.src}
+                height={resetIcon.size}
+                width={resetIcon.size}
+                alt={resetIcon.alt}
+              />
             </Button>
           </div>
         </div>
@@ -99,13 +104,13 @@ const styles = (theme) => ({
     margin: 'auto',
   },
   customButton: {
-    borderRadius: '100px',
+    borderRadius: '20px',
     marginTop: '4px',
     minHeight: '20px',
     fontSize: 9,
     textTransform: 'none',
     color: '#3d4241',
-    marginLeft: '16px',
+    marginLeft: '0px',
     fontFamily: theme.custom.fontFamily,
     '&:hover': {
       backgroundColor: '#566672',
