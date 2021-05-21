@@ -90,7 +90,7 @@ const styles = (theme) => ({
     '*::-webkit-scrollbar-thumb': {
       backgroundColor: '#97b0c0',
       outline: '1px solid slategrey',
-      borderRadius: '10px',
+      borderRadius: '0px',
     },
   },
 });
