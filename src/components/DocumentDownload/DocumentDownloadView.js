@@ -12,17 +12,14 @@ const fetchFileToDownload = (fileURL = '') => {
       'Content-Type': 'application/pdf',
     },
   })
-    .then((response) => response.blob())
-    .then((blob) => {
+    .then((response) => response.text())
+    .then((filePath) => {
       // Create blob link to download
-      const url = window.URL.createObjectURL(
-        new Blob([blob]),
-      );
       const link = document.createElement('a');
-      link.href = url;
+      link.href = filePath;
       link.setAttribute(
         'download',
-        `${fileURL}.pdf`,
+        'fileURL',
       );
 
       // Append to html link element page
