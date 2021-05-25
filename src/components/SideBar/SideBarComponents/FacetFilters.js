@@ -190,7 +190,6 @@ const FacetPanel = ({ classes }) => {
           facetSectionVariables={facetSectionVariables}
           defaultFacetSectionVariables={defaultFacetSectionVariables}
           backgroundColor={getCheckBoxColor(index, currentSection)}
-          classes={classes}
         />
       ));
 
@@ -324,6 +323,7 @@ const FacetPanel = ({ classes }) => {
                             sideBarItem.checkboxItems.map(
                               (item, index) => (
                                 <CheckBoxView
+                                  key={index}
                                   checkboxItem={item}
                                   sideBarItem={sideBarItem}
                                   currentSection={currentSection}
@@ -331,7 +331,6 @@ const FacetPanel = ({ classes }) => {
                                   facetSectionVariables={facetSectionVariables}
                                   defaultFacetSectionVariables={defaultFacetSectionVariables}
                                   backgroundColor={getCheckBoxColor(index, currentSection)}
-                                  classes={classes}
                                 />
                               ),
                             )
@@ -418,23 +417,6 @@ const styles = () => ({
   customExpansionPanelSummaryRoot: {
     flexDirection: 'row-reverse',
     paddingLeft: 0,
-  },
-  panelDetailText: {
-    color: '#000000',
-    fontFamily: 'Nunito',
-    fontSize: '14px',
-    marginRight: '12px',
-  },
-  panelSubjectText: {
-    color: '#000000',
-    fontFamily: 'Nunito',
-    fontSize: '14px',
-    marginRight: '12px',
-  },
-  checkboxRoot: {
-    color: '#344B5A',
-    marginLeft: '5px',
-    height: 12,
   },
   listItemGutters: {
     padding: '8px 0px 0px 0px',

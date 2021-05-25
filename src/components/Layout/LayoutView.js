@@ -52,7 +52,13 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/arm/:id" component={ArmDetail} />
             <Route path="/JBrowse" component={JBrowse} />
             {aboutPageRoutes.map(
-              (aboutPageRoute) => <Route path={aboutPageRoute} component={About} />,
+              (aboutPageRoute, index) => (
+                <Route
+                  key={index}
+                  path={aboutPageRoute}
+                  component={About}
+                />
+              ),
             )}
             <Route path="/data-dictionary" component={DataDictonary} />
             <Route path="/graphql" component={GraphqlClient} />

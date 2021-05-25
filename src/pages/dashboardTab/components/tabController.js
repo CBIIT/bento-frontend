@@ -234,8 +234,9 @@ const tabController = (classes) => {
   };
 
   // Tab Header Generator
-  const TABs = tabs.map((tab) => (
+  const TABs = tabs.map((tab, index) => (
     <Tab
+      key={index}
       id={tab.id}
       label={
         getTabLalbel(tab.title, dashboardStats[tab.count] ? dashboardStats[tab.count] : 0)

@@ -10,7 +10,28 @@ import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
 
-const styles = {};
+const styles = {
+  listItemGutters: {
+    padding: '8px 0px 0px 0px',
+  },
+  checkboxRoot: {
+    color: '#344B5A',
+    marginLeft: '5px',
+    height: 12,
+  },
+  panelDetailText: {
+    color: '#000000',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    marginRight: '12px',
+  },
+  panelSubjectText: {
+    color: '#000000',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    marginRight: '12px',
+  },
+};
 const alignment = 'flex-start';
 
 function CheckBoxView(props) {
