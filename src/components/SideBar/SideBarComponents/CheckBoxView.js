@@ -15,7 +15,8 @@ const alignment = 'flex-start';
 
 function CheckBoxView(props) {
   const {
-    classes, checkboxItem, handleToggle, sideBarItem, facetSectionVariables, backgroundColor,
+    classes, checkboxItem, handleToggle, sideBarItem, facetSectionVariables,
+    defaultFacetSectionVariables, backgroundColor,
   } = props;
 
   return (
@@ -50,7 +51,7 @@ function CheckBoxView(props) {
         <ListItemText />
         <div className={classes.panelSubjectText}>
           <span
-            style={{ color: facetSectionVariables[sideBarItem.section].color ? facetSectionVariables[sideBarItem.section].color : '#137fbe' }}
+            style={{ color: facetSectionVariables[sideBarItem.section] ? facetSectionVariables[sideBarItem.section].color ? facetSectionVariables[sideBarItem.section].color : '' : defaultFacetSectionVariables.color }}
             edge="end"
           >
             &nbsp;
