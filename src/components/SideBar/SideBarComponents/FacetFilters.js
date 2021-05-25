@@ -26,7 +26,7 @@ import {
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
-  facetSectionVariables, sortLabels, showCheckboxCount, resetIcon,
+  facetSectionVariables, defaultFacetSectionVariables, sortLabels, showCheckboxCount, resetIcon,
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
 
@@ -90,7 +90,7 @@ const FacetPanel = ({ classes }) => {
     sideBarItem.checkboxItems.map(
       (item) => {
         if (item.isChecked) {
-          groupNameColor = facetSectionVariables[currentSection.sectionName].color;
+          groupNameColor = facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].color ? facetSectionVariables[currentSection.sectionName].color : '' : defaultFacetSectionVariables.color;
         }
         return '';
       },
@@ -174,8 +174,8 @@ const FacetPanel = ({ classes }) => {
   }
 
   function getCheckBoxColor(index, currentSection) {
-    return index % 2 ? facetSectionVariables[currentSection.sectionName].checkBoxColorsTwo
-      : facetSectionVariables[currentSection.sectionName].checkBoxColorsOne;
+    return index % 2 ? facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].checkBoxColorsTwo ? facetSectionVariables[currentSection.sectionName].checkBoxColorsTwo : '' : defaultFacetSectionVariables.checkBoxColorsTwo
+      : facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne : '' : defaultFacetSectionVariables.checkBoxColorsOne;
   }
 
   const showSelectedChecbox = (sideBarItem, currentSection) => {
@@ -188,6 +188,7 @@ const FacetPanel = ({ classes }) => {
           currentSection={currentSection}
           handleToggle={handleToggle}
           facetSectionVariables={facetSectionVariables}
+          defaultFacetSectionVariables={defaultFacetSectionVariables}
           backgroundColor={getCheckBoxColor(index, currentSection)}
           classes={classes}
         />
@@ -218,10 +219,10 @@ const FacetPanel = ({ classes }) => {
             variant="middle"
             style={{
               backgroundColor: facetSectionVariables[currentSection.sectionName]
-                ? facetSectionVariables[currentSection.sectionName].color ? facetSectionVariables[currentSection.sectionName].color : '' : '#000000',
+                ? facetSectionVariables[currentSection.sectionName].color ? facetSectionVariables[currentSection.sectionName].color : '' : defaultFacetSectionVariables.color,
               margin: '0px',
               height: facetSectionVariables[currentSection.sectionName]
-                ? facetSectionVariables[currentSection.sectionName].height ? facetSectionVariables[currentSection.sectionName].height : '' : '5px',
+                ? facetSectionVariables[currentSection.sectionName].height ? facetSectionVariables[currentSection.sectionName].height : '' : defaultFacetSectionVariables.height,
             }}
           />
           <ExpansionPanel
@@ -328,6 +329,7 @@ const FacetPanel = ({ classes }) => {
                                   currentSection={currentSection}
                                   handleToggle={handleToggle}
                                   facetSectionVariables={facetSectionVariables}
+                                  defaultFacetSectionVariables={defaultFacetSectionVariables}
                                   backgroundColor={getCheckBoxColor(index, currentSection)}
                                   classes={classes}
                                 />
