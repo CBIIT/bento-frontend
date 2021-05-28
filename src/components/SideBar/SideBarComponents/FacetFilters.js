@@ -21,8 +21,7 @@ import {
   setSideBarToLoading,
   setDashboardTableLoading,
   // eslint-disable-next-line no-unused-vars
-  sortGroupCheckboxByAlphabet,
-  sortGroupCheckboxByCount,
+  sortSection,
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
@@ -146,11 +145,11 @@ const FacetPanel = ({ classes }) => {
     }]));
   };
 
-  const handleGroupReset = (value) => () => {
+  const handleGroupReset = (dataField, groupName) => () => {
     setSideBarToLoading();
     setDashboardTableLoading();
     // dispatch toggleCheckBox action
-    dispatch(resetGroupSelections(value));
+    dispatch(resetGroupSelections({ dataField, groupName }));
   };
 
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
@@ -290,7 +289,9 @@ const FacetPanel = ({ classes }) => {
                               className={classes.sortGroupIcon}
                             >
                               <Icon
-                                onClick={handleGroupReset(sideBarItem.datafield)}
+                                onClick={handleGroupReset(
+                                  sideBarItem.datafield, sideBarItem.groupName,
+                                )}
                               >
                                 <img
                                   src={resetIcon.src}
@@ -304,7 +305,7 @@ const FacetPanel = ({ classes }) => {
                               className={classes.sortGroupItem}
                               style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
                               onClick={() => {
-                                sortGroupCheckboxByAlphabet(sideBarItem.groupName);
+                                sortSection(sideBarItem.groupName, 'alphabet');
                               }}
                             >
                               {sortLabels.sortAlphabetically}
@@ -313,7 +314,7 @@ const FacetPanel = ({ classes }) => {
                               className={classes.sortGroupItem}
                               style={{ color: getSortButtonColor(sideBarItem, 'count') }}
                               onClick={() => {
-                                sortGroupCheckboxByCount(sideBarItem.groupName);
+                                sortSection(sideBarItem.groupName, 'count');
                               }}
                             >
                               {sortLabels.sortByCount}

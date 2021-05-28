@@ -158,6 +158,7 @@ function fetchDashboardTabForClearAll() {
       query: DASHBOARD_QUERY,
     })
     .then((result) => store.dispatch({ type: 'CLEAR_ALL', payload: _.cloneDeep(result) }))
+    .then((result)=> store.dispatch({ type: 'SORT_ALL_GROUP_CHECKBOX' }))
     .catch((error) => store.dispatch(
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
@@ -220,7 +221,10 @@ function clearGroup(data) {
  */
  export function resetGroupSelections(payload) {
   return () => {
-    const currentAllFilterVariables = clearGroup(payload);
+    const { dataField, groupName } = payload;
+    const currentAllFilterVariables = clearGroup(dataField);
+    clearSectionSort(groupName);
+
     // For performance issue we are using initial dasboardquery instead of fitered for empty filters
     if (_.isEqual(currentAllFilterVariables, allFilters())) {
       clearAllFilters();
@@ -668,34 +672,33 @@ export function setDashboardTableLoading() {
 }
 
 /**
- * Reducer for setting dashboardtable loading loading
+ * Reducer for sorting checkboxes.
  *
  * @return distpatcher
  */
 
-export function sortGroupCheckboxByAlphabet(groupName) {
+export function sortSection(groupName, sortBy) {
   store.dispatch({
     type: 'SORT_SINGLE_GROUP_CHECKBOX',
     payload: {
       groupName,
-      sortBy: 'alphabet',
+      sortBy,
     },
   });
 }
 
-/**
- * Reducer for setting dashboardtable loading loading
- *
- * @return distpatcher
- */
-
-export function sortGroupCheckboxByCount(groupName) {
+export function clearSectionSort(groupName) {
   store.dispatch({
-    type: 'SORT_SINGLE_GROUP_CHECKBOX',
+    type: 'CLEAR_SECTION_SORT',
     payload: {
       groupName,
-      sortBy: 'count',
-    },
+    }
+  });
+}
+
+export function sortAll(){
+  store.dispatch({
+    type: 'SORT_ALL_GROUP_CHECKBOX',
   });
 }
 
@@ -991,6 +994,9 @@ const reducers = {
         dataFileSelected: {
           ...state.dataFileSelected,
         },
+        sortByList: {
+          ...state.sortByList,
+        },
         widgets: getWidgetsInitData(item.data, widgetsData),
 
       } : { ...state };
@@ -1030,6 +1036,14 @@ const reducers = {
     });
 
     return { ...state, checkbox: { data } };
+  },
+  CLEAR_SECTION_SORT: (state, item) => {
+    let { sortByList = {} } = state;
+    const { groupName } = item;
+    console.log(groupName);
+    sortByList[groupName] ? delete sortByList[groupName] : null ;
+
+    return { ...state, sortByList };
   },
   SET_CASES_SELECTION: (state, item) => (
     {
