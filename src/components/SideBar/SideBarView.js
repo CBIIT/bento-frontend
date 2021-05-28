@@ -84,7 +84,7 @@ const styles = (theme) => ({
     border: 'none',
   },
   floatRight: {
-    margin: '14px 0px 14px 9px',
+    margin: '14px 0px 14px 4px',
   },
   floatLeft: {
     float: 'left',
@@ -120,8 +120,8 @@ const styles = (theme) => ({
     },
   },
   resetText: {
-    marginTop: '14px',
-    marginLeft: '10px',
+    marginTop: '0px',
+    marginLeft: '8px',
     color: '#638FB5',
     fontSize: 14,
   },
