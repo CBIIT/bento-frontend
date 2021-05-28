@@ -190,6 +190,7 @@ const FacetPanel = ({ classes }) => {
           facetSectionVariables={facetSectionVariables}
           defaultFacetSectionVariables={defaultFacetSectionVariables}
           backgroundColor={getCheckBoxColor(index, currentSection)}
+          checkColor={getGroupNameColor(sideBarItem, currentSection)}
         />
       ));
 
@@ -233,7 +234,6 @@ const FacetPanel = ({ classes }) => {
             }}
           >
             <CustomExpansionPanelSummary
-              expandIcon={<ArrowDropDownIcon classes={{ root: classes.dropDownIconSection }} />}
               aria-controls={currentSection.sectionName}
             >
               {/* <ListItemText primary={sideBarItem.groupName} /> */}
@@ -251,6 +251,7 @@ const FacetPanel = ({ classes }) => {
                 {currentSection.items.map((sideBarItem) => (
                   <>
                     <ExpansionPanel
+                      square
                       expanded={groupsExpanded.includes(sideBarItem.groupName)}
                       onChange={handleGroupsChange(sideBarItem.groupName)}
                       classes={{
@@ -291,6 +292,7 @@ const FacetPanel = ({ classes }) => {
                             >
                               <Icon
                                 onClick={handleGroupReset(sideBarItem.datafield)}
+                                style={{ fontSize: 10 }}
                               >
                                 <img
                                   src={resetIcon.src}
@@ -310,7 +312,7 @@ const FacetPanel = ({ classes }) => {
                               {sortLabels.sortAlphabetically}
                             </span>
                             <span
-                              className={classes.sortGroupItem}
+                              className={classes.sortGroupItemCounts}
                               style={{ color: getSortButtonColor(sideBarItem, 'count') }}
                               onClick={() => {
                                 sortGroupCheckboxByCount(sideBarItem.groupName);
@@ -331,6 +333,7 @@ const FacetPanel = ({ classes }) => {
                                   facetSectionVariables={facetSectionVariables}
                                   defaultFacetSectionVariables={defaultFacetSectionVariables}
                                   backgroundColor={getCheckBoxColor(index, currentSection)}
+                                  checkColor={getGroupNameColor(sideBarItem, currentSection)}
                                 />
                               ),
                             )
@@ -359,7 +362,6 @@ const FacetPanel = ({ classes }) => {
 const styles = () => ({
   expansionPanelRoot: {
     boxShadow: 'none',
-    background: '#D2D2D2',
     margin: 'auto',
     position: 'initial',
     '&:before': {
@@ -368,11 +370,11 @@ const styles = () => ({
   },
   expansionPanelsideBarItem: {
     boxShadow: 'none',
-    borderTop: '1px solid #000000',
-    borderLeft: '1px solid #D2D2D2',
-    borderRight: '1px solid #D2D2D2',
+    borderTop: '1px solid #B1B1B1',
+    borderLeft: '1px solid #B1B1B1',
+    borderRight: '1px solid #B1B1B1',
     '&:last-child': {
-      borderBottom: '1px solid #D2D2D2',
+      borderBottom: '1px solid #B1B1B1',
     },
     margin: 'auto',
     position: 'initial',
@@ -389,9 +391,6 @@ const styles = () => ({
     paddingBottom: '8px',
     display: 'unset',
   },
-  dropDownIconSection: {
-    fill: '#000000',
-  },
   dropDownIconSubSection: {
     marginLeft: '0px',
     fill: '#000000',
@@ -400,6 +399,7 @@ const styles = () => ({
     marginLeft: '-6px',
     color: '#000000',
     fontFamily: 'Lato',
+    fontWeight: 'thin',
     fontSize: '20px',
     lineHeight: '26px',
     letterSpacing: 0,
@@ -408,6 +408,7 @@ const styles = () => ({
     marginLeft: '5px',
     color: '#000000',
     fontFamily: 'Lato',
+    fontWeight: 'bold',
     fontSize: '14px',
     textTransform: 'uppercase',
     lineHeight: 0,
@@ -418,23 +419,26 @@ const styles = () => ({
     flexDirection: 'row-reverse',
     paddingLeft: 0,
   },
-  listItemGutters: {
-    padding: '8px 0px 0px 0px',
-  },
   sortGroup: {
+    borderTop: '1px solid #B1B1B1',
     textAlign: 'left',
   },
   sortGroupItem: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
-    fontSize: '12px',
-    marginRight: '8px',
+    fontSize: '10px',
+    marginRight: '30px',
+  },
+  sortGroupItemCounts: {
+    cursor: 'pointer',
+    fontFamily: 'Nunito',
+    fontSize: '10px',
   },
   sortGroupIcon: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
-    fontSize: '12px',
-    marginRight: '4px',
+    fontSize: '10px',
+    marginRight: '12px',
     marginLeft: '16px',
   },
   selected: {},

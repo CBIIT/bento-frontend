@@ -4,7 +4,7 @@ import {
   withStyles, Drawer, List, Button,
 } from '@material-ui/core';
 import FacetFilter from './SideBarComponents/FacetFilters';
-import { facetSearchData } from '../../bento/dashboardData';
+import { facetSearchData, resetIcon } from '../../bento/dashboardData';
 import { clearAllFilters } from '../../pages/dashboardTab/store/dashboardReducer';
 
 const drawerWidth = 240;
@@ -47,8 +47,14 @@ const SideBarContent = ({ classes }) => {
               onClick={() => clearAllFilters()}
               disableRipple
             >
-              CLEAR ALL
+              <img
+                src={resetIcon.src}
+                height={resetIcon.size}
+                width={resetIcon.size}
+                alt={resetIcon.alt}
+              />
             </Button>
+            <span className={classes.resetText}>Clear all filtered selections</span>
           </div>
         </div>
         <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>
@@ -99,25 +105,32 @@ const styles = (theme) => ({
     margin: 'auto',
   },
   customButton: {
-    borderRadius: '100px',
-    marginTop: '4px',
-    minHeight: '20px',
+    borderRadius: '12px',
+    marginTop: '0px',
+    minHeight: '30px',
+    minWidth: '40px',
     fontSize: 9,
     textTransform: 'none',
     color: '#3d4241',
-    marginLeft: '16px',
+    marginLeft: '0px',
     fontFamily: theme.custom.fontFamily,
     '&:hover': {
       backgroundColor: '#566672',
       color: 'white',
     },
   },
+  resetText: {
+    marginTop: '14px',
+    marginLeft: '10px',
+    color: '#638FB5',
+    fontSize: 14,
+  },
   listRoot: {
     paddingTop: 0,
     paddingBottom: 1,
     height: '900px',
     overflowX: 'hidden',
-    overflowY: 'auto',
+    overflowY: 'overlay',
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',

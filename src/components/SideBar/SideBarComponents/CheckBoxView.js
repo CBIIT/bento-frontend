@@ -12,10 +12,9 @@ import {
 
 const styles = {
   listItemGutters: {
-    padding: '8px 0px 0px 0px',
+    padding: '10px 0px 10px 0px',
   },
   checkboxRoot: {
-    color: '#344B5A',
     marginLeft: '5px',
     height: 12,
   },
@@ -29,7 +28,7 @@ const styles = {
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '14px',
-    marginRight: '12px',
+    marginRight: '20px',
   },
 };
 const alignment = 'flex-start';
@@ -37,7 +36,7 @@ const alignment = 'flex-start';
 function CheckBoxView(props) {
   const {
     classes, checkboxItem, handleToggle, sideBarItem, facetSectionVariables,
-    defaultFacetSectionVariables, backgroundColor,
+    defaultFacetSectionVariables, backgroundColor, checkColor,
   } = props;
 
   return (
@@ -57,7 +56,15 @@ function CheckBoxView(props) {
         <Checkbox
           id={`checkbox_${sideBarItem.groupName}_${checkboxItem.name}`}
           icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
-          checkedIcon={<CheckBoxIcon style={{ fontSize: 18 }} />}
+          checkedIcon={(
+            <CheckBoxIcon
+              style={{
+                fontSize: 16,
+                backgroundColor: checkColor,
+                color: '#FFFFFF',
+              }}
+            />
+          )}
           checked={checkboxItem.isChecked}
           tabIndex={-1}
           disableRipple
@@ -83,9 +90,9 @@ function CheckBoxView(props) {
       <Divider
         variant="middle"
         style={{
-          backgroundColor: '#FFFFFF',
+          backgroundColor: checkboxItem.isChecked ? '#FFFFFF' : '#B1B1B1',
           margin: '0px',
-          height: '2px',
+          height: checkboxItem.isChecked ? '2px' : '1px',
         }}
       />
     </>
