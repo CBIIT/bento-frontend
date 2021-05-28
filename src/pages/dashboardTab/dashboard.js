@@ -223,7 +223,7 @@ const styles = (theme) => ({
   sideBar: {
     width: '250px',
     backgroundColor: '#FFFFFF',
-    boxShadow: 'inset 0 0 87px 7px #E2E7EC',
+    borderRight: '1px solid #B1B1B1',
     zIndex: '99',
   },
   statsBar: {

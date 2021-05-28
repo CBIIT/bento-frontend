@@ -227,8 +227,8 @@ export const dashboardTable = {
 
 // --------------- Sorting related labels configuration --------------
 export const sortLabels = {
-  sortAlphabetically: 'Sort Alphabetically',
-  sortByCount: 'Sort by Counts',
+  sortAlphabetically: 'Sort alphabetically',
+  sortByCount: 'Sort by counts',
   showMore: '...expand to see all selections',
 };
 
