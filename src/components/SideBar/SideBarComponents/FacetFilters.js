@@ -362,6 +362,9 @@ const FacetPanel = ({ classes }) => {
 const styles = () => ({
   expansionPanelRoot: {
     boxShadow: 'none',
+    borderLeft: '1px solid #B1B1B1',
+    borderRight: '1px solid #B1B1B1',
+    borderBottom: '1px solid #B1B1B1',
     margin: 'auto',
     position: 'initial',
     '&:before': {
@@ -371,8 +374,6 @@ const styles = () => ({
   expansionPanelsideBarItem: {
     boxShadow: 'none',
     borderTop: '1px solid #B1B1B1',
-    borderLeft: '1px solid #B1B1B1',
-    borderRight: '1px solid #B1B1B1',
     '&:last-child': {
       borderBottom: '1px solid #B1B1B1',
     },
@@ -408,7 +409,7 @@ const styles = () => ({
     marginLeft: '5px',
     color: '#000000',
     fontFamily: 'Lato',
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: '14px',
     textTransform: 'uppercase',
     lineHeight: 0,
@@ -427,7 +428,7 @@ const styles = () => ({
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
-    marginRight: '30px',
+    marginRight: '32px',
   },
   sortGroupItemCounts: {
     cursor: 'pointer',

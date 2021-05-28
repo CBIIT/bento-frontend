@@ -91,7 +91,7 @@ function CheckBoxView(props) {
         variant="middle"
         style={{
           backgroundColor: checkboxItem.isChecked ? '#FFFFFF' : '#B1B1B1',
-          margin: '0px',
+          margin: checkboxItem.isChecked ? '0px' : '-1px',
           height: checkboxItem.isChecked ? '2px' : '1px',
         }}
       />
