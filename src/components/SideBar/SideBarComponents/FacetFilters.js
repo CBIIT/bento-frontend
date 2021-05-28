@@ -21,8 +21,7 @@ import {
   setSideBarToLoading,
   setDashboardTableLoading,
   // eslint-disable-next-line no-unused-vars
-  sortGroupCheckboxByAlphabet,
-  sortGroupCheckboxByCount,
+  sortSection,
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
@@ -308,7 +307,7 @@ const FacetPanel = ({ classes }) => {
                               className={classes.sortGroupItem}
                               style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
                               onClick={() => {
-                                sortGroupCheckboxByAlphabet(sideBarItem.groupName);
+                                sortSection(sideBarItem.groupName, 'alphabet');
                               }}
                             >
                               {sortLabels.sortAlphabetically}
@@ -317,7 +316,7 @@ const FacetPanel = ({ classes }) => {
                               className={classes.sortGroupItemCounts}
                               style={{ color: getSortButtonColor(sideBarItem, 'count') }}
                               onClick={() => {
-                                sortGroupCheckboxByCount(sideBarItem.groupName);
+                                sortSection(sideBarItem.groupName, 'count');
                               }}
                             >
                               {sortLabels.sortByCount}

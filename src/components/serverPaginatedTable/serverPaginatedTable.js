@@ -87,13 +87,16 @@ class ServerPaginatedTableView extends React.Component {
 
       // eslint-disable-next-line max-len
       const srcData = fullData.slice(page * this.state.rowsPerPage, (page + 1) * this.state.rowsPerPage);
-      const data = srcData;
-
-      setTimeout(() => {
-        resolve({
-          data, total, page,
-        });
-      }, 500);
+      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage) {
+        this.changePage(0, {});
+      } else {
+        const data = srcData;
+        setTimeout(() => {
+          resolve({
+            data, total, page,
+          });
+        }, 500);
+      }
     })
 
     // update columns display true/false depending on onViewColumnsChange
