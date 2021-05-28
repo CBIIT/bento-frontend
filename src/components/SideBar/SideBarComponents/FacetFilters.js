@@ -21,7 +21,6 @@ import {
   setSideBarToLoading,
   setDashboardTableLoading,
   // eslint-disable-next-line no-unused-vars
-  sortGroupCheckboxByAlphabet,
   sortSection,
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
