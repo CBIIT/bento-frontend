@@ -75,6 +75,15 @@ export const facetSectionVariables = {
   },
 };
 
+// --------------- Default Dashboard Sidebar Sections styling --------------
+export const defaultFacetSectionVariables = {
+  color: '#000000',
+  checkBoxColorsOne: '#E8F7DC',
+  checkBoxColorsTwo: '#F5FDEE',
+  height: '5px',
+  isExpanded: false,
+};
+
 // --------------- Dashboard Widgets configuration --------------
 // A maximum of 6 widgets are allowed
 export const widgetsData = [
@@ -218,8 +227,8 @@ export const dashboardTable = {
 
 // --------------- Sorting related labels configuration --------------
 export const sortLabels = {
-  sortAlphabetically: 'Sort Alphabetically',
-  sortByCount: 'Sort by Counts',
+  sortAlphabetically: 'Sort alphabetically',
+  sortByCount: 'Sort by counts',
   showMore: '...expand to see all selections',
 };
 
