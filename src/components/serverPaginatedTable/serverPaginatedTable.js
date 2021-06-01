@@ -87,7 +87,7 @@ class ServerPaginatedTableView extends React.Component {
 
       // eslint-disable-next-line max-len
       const srcData = fullData.slice(page * this.state.rowsPerPage, (page + 1) * this.state.rowsPerPage);
-      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage) {
+      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage) {
         this.changePage(0, {});
       } else {
         const data = srcData;
