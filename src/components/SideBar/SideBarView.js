@@ -105,10 +105,12 @@ const styles = (theme) => ({
     margin: 'auto',
   },
   customButton: {
-    borderRadius: '12px',
-    marginTop: '0px',
+    borderRadius: '5px',
+    maxWidth: '30px',
+    maxHeight: '30px',
+    minWidth: '30px',
     minHeight: '30px',
-    minWidth: '40px',
+    marginTop: '0px',
     fontSize: 9,
     textTransform: 'none',
     color: '#3d4241',
@@ -128,9 +130,10 @@ const styles = (theme) => ({
   listRoot: {
     paddingTop: 0,
     paddingBottom: 1,
-    height: '1300px',
+    maxHeight: '1300px',
     overflowX: 'hidden',
     overflowY: 'overlay',
+    borderBottom: '1px solid #B1B1B1',
   },
   dividerRoot: {
     backgroundColor: '#B0CFE1',
