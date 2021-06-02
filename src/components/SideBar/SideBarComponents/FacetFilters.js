@@ -29,6 +29,7 @@ import {
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
 
+const size = '10px';
 const CustomExpansionPanelSummary = withStyles({
   root: {
     marginBottom: -1,
@@ -95,6 +96,12 @@ const FacetPanel = ({ classes }) => {
       },
     );
     return groupNameColor;
+  }
+  function getLineColor(index, length) {
+    if (index === length - 1) {
+      return '#FFFFFF';
+    }
+    return '#B1B1B1';
   }
   React.useEffect(() => {
     if (!groupsExpanded || !(groupsExpanded === `${sideBarContent.defaultPanel}false` || groupsExpanded !== false)) {
@@ -261,7 +268,7 @@ const FacetPanel = ({ classes }) => {
                         expandIcon={(
                           <ArrowDropDownIcon
                             classes={{ root: classes.dropDownIconSubSection }}
-                            style={{ fontSize: 36 }}
+                            style={{ fontSize: 26 }}
                           />
 )}
                         aria-controls={sideBarItem.groupName}
@@ -293,12 +300,12 @@ const FacetPanel = ({ classes }) => {
                                 onClick={handleGroupReset(
                                   sideBarItem.datafield, sideBarItem.groupName,
                                 )}
-                                style={{ fontSize: 10 }}
+                                style={{ fontSize: 15 }}
                               >
                                 <img
                                   src={resetIcon.src}
-                                  height={resetIcon.size}
-                                  width={resetIcon.size}
+                                  height={size}
+                                  width={size}
                                   alt={resetIcon.alt}
                                 />
                               </Icon>
@@ -335,6 +342,7 @@ const FacetPanel = ({ classes }) => {
                                   defaultFacetSectionVariables={defaultFacetSectionVariables}
                                   backgroundColor={getCheckBoxColor(index, currentSection)}
                                   checkColor={getGroupNameColor(sideBarItem, currentSection)}
+                                  lineColor={getLineColor(index, sideBarItem.checkboxItems.length)}
                                 />
                               ),
                             )
@@ -363,9 +371,7 @@ const FacetPanel = ({ classes }) => {
 const styles = () => ({
   expansionPanelRoot: {
     boxShadow: 'none',
-    borderLeft: '1px solid #B1B1B1',
     borderRight: '1px solid #B1B1B1',
-    borderBottom: '1px solid #B1B1B1',
     margin: 'auto',
     position: 'initial',
     '&:before': {
@@ -400,16 +406,16 @@ const styles = () => ({
   sectionSummaryText: {
     marginLeft: '-6px',
     color: '#000000',
-    fontFamily: 'Lato',
-    fontWeight: 'thin',
+    fontFamily: 'Open Sans',
+    fontWeight: '300',
     fontSize: '20px',
     lineHeight: '26px',
     letterSpacing: 0,
   },
   subSectionSummaryText: {
-    marginLeft: '5px',
+    marginLeft: '10px',
     color: '#000000',
-    fontFamily: 'Lato',
+    fontFamily: 'Open Sans',
     fontWeight: '600',
     fontSize: '14px',
     textTransform: 'uppercase',
@@ -419,7 +425,7 @@ const styles = () => ({
   },
   customExpansionPanelSummaryRoot: {
     flexDirection: 'row-reverse',
-    paddingLeft: 0,
+    paddingLeft: 4,
   },
   sortGroup: {
     borderTop: '1px solid #B1B1B1',
@@ -438,8 +444,6 @@ const styles = () => ({
   },
   sortGroupIcon: {
     cursor: 'pointer',
-    fontFamily: 'Nunito',
-    fontSize: '10px',
     marginRight: '12px',
     marginLeft: '16px',
   },
