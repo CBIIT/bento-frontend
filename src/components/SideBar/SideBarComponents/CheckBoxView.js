@@ -19,7 +19,9 @@ const styles = {
     height: 12,
   },
   panelDetailText: {
+    marginTop: '2px',
     color: '#000000',
+    lineHeight: '120%',
     fontFamily: 'Nunito',
     fontSize: '14px',
   },
@@ -27,7 +29,7 @@ const styles = {
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '12px',
-    marginRight: '24px',
+    marginRight: '12px',
   },
 };
 const alignment = 'flex-start';
@@ -89,7 +91,9 @@ function CheckBoxView(props) {
         variant="middle"
         style={{
           backgroundColor: checkboxItem.isChecked ? '#FFFFFF' : lineColor,
-          margin: checkboxItem.isChecked ? '0px' : '0px',
+          margin: '1px',
+          marginLeft: '0px',
+          marginRight: '0px',
           height: checkboxItem.isChecked ? '2px' : '1px',
         }}
       />

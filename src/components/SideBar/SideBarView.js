@@ -84,7 +84,7 @@ const styles = (theme) => ({
     border: 'none',
   },
   floatRight: {
-    margin: '7px 0px 7px 4px',
+    margin: '7px 0px 7px 6px',
   },
   floatLeft: {
     float: 'left',
@@ -131,6 +131,7 @@ const styles = (theme) => ({
     paddingTop: 0,
     paddingBottom: 1,
     maxHeight: '1300px',
+    maxWidth: '99%',
     overflowX: 'hidden',
     overflowY: 'overlay',
     borderBottom: '1px solid #B1B1B1',
