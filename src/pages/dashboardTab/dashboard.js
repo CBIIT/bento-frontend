@@ -222,9 +222,11 @@ const styles = (theme) => ({
   },
   sideBar: {
     width: '250px',
+    overflowX: 'hidden',
     backgroundColor: 'transparent',
-    borderRight: '1px solid #B1B1B1',
-    borderLeft: '1px solid #B1B1B1',
+    borderRight: 'thin solid #B1B1B1',
+    borderLeft: 'thin solid #B1B1B1',
+    overflow: 'auto',
     zIndex: '99',
   },
   statsBar: {

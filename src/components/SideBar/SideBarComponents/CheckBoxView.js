@@ -19,7 +19,7 @@ const styles = {
     height: 12,
   },
   panelDetailText: {
-    marginTop: '2px',
+    marginTop: '1.5px',
     color: '#000000',
     lineHeight: '120%',
     fontFamily: 'Nunito',
@@ -88,12 +88,8 @@ function CheckBoxView(props) {
         </div>
       </ListItem>
       <Divider
-        variant="middle"
         style={{
           backgroundColor: checkboxItem.isChecked ? '#FFFFFF' : lineColor,
-          margin: '1px',
-          marginLeft: '0px',
-          marginRight: '0px',
           height: checkboxItem.isChecked ? '2px' : '1px',
         }}
       />

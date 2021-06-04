@@ -379,7 +379,7 @@ const styles = () => ({
   },
   expansionPanelsideBarItem: {
     boxShadow: 'none',
-    borderTop: '1px solid #B1B1B1',
+    borderTop: 'thin solid #B1B1B1',
     '&:last-child': {
       borderBottom: '1px solid #B1B1B1',
     },
