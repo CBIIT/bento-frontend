@@ -24,7 +24,7 @@ const NumberOfThing = ({
             className={classes.fileIcon}
           />
           <div className={classes.fileCountText}>
-            <span className={classes.fileNumber}>{numberOfThing}</span>
+            <span className={classes.fileNumber} id="file_count">{numberOfThing}</span>
           </div>
         </div>
       </Grid>

@@ -8,6 +8,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import { CircularProgress, Backdrop, withStyles } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
 import client from '../../utils/graphqlClient';
+import CSVDownloadToolbar from './components/CSVDownloadCustomToolbar';
 
 class ServerPaginatedTableView extends React.Component {
   state = {
@@ -16,6 +17,8 @@ class ServerPaginatedTableView extends React.Component {
     sortOrder: {},
     data: 'undefined',
     isLoading: false,
+    // Helps in tracking onViewColumnsChange
+    updatedColumns: [],
   };
 
   componentDidMount() {
@@ -49,6 +52,10 @@ class ServerPaginatedTableView extends React.Component {
     this.setState({ isLoading: true });
     this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage, sortOrder).then((res) => {
       this.rowsSelectedTrigger(res);
+      // update columns display true/false depending on onViewColumnsChange
+      if (this.props.options.viewColumns && this.state.updatedColumns.length) {
+        this.setUpdatedColumnsDisplay(this.state.updatedColumns);
+      }
       this.setState({
         isLoading: false,
         sortOrder,
@@ -80,14 +87,30 @@ class ServerPaginatedTableView extends React.Component {
 
       // eslint-disable-next-line max-len
       const srcData = fullData.slice(page * this.state.rowsPerPage, (page + 1) * this.state.rowsPerPage);
-      const data = srcData;
-
-      setTimeout(() => {
-        resolve({
-          data, total, page,
-        });
-      }, 500);
+      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage) {
+        this.changePage(0, {});
+      } else {
+        const data = srcData;
+        setTimeout(() => {
+          resolve({
+            data, total, page,
+          });
+        }, 500);
+      }
     })
+
+    // update columns display true/false depending on onViewColumnsChange
+    setUpdatedColumnsDisplay = (stateUpdatedColumns) => {
+      stateUpdatedColumns.map((updatedColumns) => {
+        const index = this.props.columns.map((e) => e.name).indexOf(updatedColumns);
+        if (this.props.columns[index].options.display === true) {
+          this.props.columns[index].options.display = false;
+        } else {
+          this.props.columns[index].options.display = true;
+        }
+        return '';
+      });
+    }
 
   changePage = (page, sortOrder) => {
     this.setState({
@@ -99,6 +122,10 @@ class ServerPaginatedTableView extends React.Component {
       this.state.sortOrder,
     ).then((res) => {
       this.rowsSelectedTrigger(res);
+      // update columns display true/false depending on onViewColumnsChange
+      if (this.props.options.viewColumns && this.state.updatedColumns.length) {
+        this.setUpdatedColumnsDisplay(this.state.updatedColumns);
+      }
       this.setState({
         isLoading: false,
         sortOrder,
@@ -115,6 +142,10 @@ class ServerPaginatedTableView extends React.Component {
       isLoading: false,
       data: this.getSrcData(),
     });
+  };
+
+  onTableInit = (data) => {
+    this.rowsSelectedTrigger(data);
   };
 
   async fetchData(offset, rowsRequired, sortOrder = {}) {
@@ -148,6 +179,14 @@ class ServerPaginatedTableView extends React.Component {
       count,
       rowsPerPage,
       rowsPerPageOptions: [],
+      customToolbar: this.props.tableDownloadCSV.defaultFullTableDownload ? () => (
+        this.props.tableDownloadCSV && (
+          <CSVDownloadToolbar
+            tableDownloadCSV={this.props.tableDownloadCSV}
+            queryCustomVaribles={this.props.queryCustomVaribles}
+          />
+        )
+      ) : '',
       sortOrder,
       onRowSelectionChange: (
         curr,
@@ -177,6 +216,8 @@ class ServerPaginatedTableView extends React.Component {
           </TableRow>
         </TableFooter>
       ),
+
+      onTableInit: () => this.onTableInit(data),
       // rowsSelected: data.map((item, idx) => idx),
       onTableChange: (action, tableState) => {
         // console.log(action, tableState);
@@ -195,8 +236,15 @@ class ServerPaginatedTableView extends React.Component {
             break;
         }
       },
+      onViewColumnsChange: (changedColumn) => {
+        // Keep a track of user selectios and unselections
+        if (this.state.updatedColumns.indexOf(changedColumn) === -1) {
+          this.state.updatedColumns.push(changedColumn);
+        } else {
+          this.state.updatedColumns.pop(changedColumn);
+        }
+      },
     };
-
     return (
       <div>
         <Backdrop

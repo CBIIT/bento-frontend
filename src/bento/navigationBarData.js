@@ -9,6 +9,33 @@ export const navBarstyling = {
     fontSize: '18px',
     margin: '0px 0px 0px 0px',
   },
+  dropdownMenu: {
+    paper: {
+      background: '#309EC4',
+      width: '200px',
+      padding: '5px 18px 18px 18px',
+      marginLeft: '15px',
+      position: 'absolute',
+      marginTop: '-1px',
+      borderRadius: '0',
+    },
+    link: {
+      overflowWrap: 'normal',
+      textDecoration: 'none',
+      color: 'black',
+      fontSize: '14px',
+      fontWeight: '600',
+      lineSpacing: '1px',
+      lineHeight: '18px',
+      fontFamily: 'Raleway, sans-serif',
+      display: 'block',
+      marginTop: '10px',
+      '&:hover': {
+        cursor: 'pointer',
+        color: 'white',
+      },
+    },
+  },
 };
 
 export const navBarData = [
@@ -52,6 +79,6 @@ export const navBarData = [
 export const navBarCartData = {
   cartLabel: 'MY Files',
   cartLink: '/fileCentricCart',
-  cartIcon: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Icon-Cart-Navbar.svg',
+  cartIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Navbar.svg',
   cartIconAlt: 'cart_logo',
 };

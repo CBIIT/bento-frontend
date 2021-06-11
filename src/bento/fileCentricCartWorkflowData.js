@@ -1,17 +1,22 @@
 import gql from 'graphql-tag';
+import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
 
 export const navBarCartData = {
   cartLabel: 'Cart',
   cartLink: '/fileCentricCart',
-  cartIcon: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Icon-Cart-Navbar.svg',
+  cartIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Navbar.svg',
   cartIconAlt: 'cart_logo',
 };
+
+// --------------- Files limit configuration --------------
+export const alertMessage = 'The cart is limited to 1000 files. Please narrow the search criteria or remove some files from the cart to add more.';
+export const maximumNumberOfFilesAllowedInTheCart = 1000;
 
 export const myFilesPageData = {
   mainTitle: 'Cart >',
   subTitle: 'Selected Files',
   downButtonText: 'DOWNLOAD MANIFEST',
-  headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/icons/Icon-Cart-Workflow.svg',
+  headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Workflow.svg',
   headerIconAlt: 'Bento MyFiles header logo',
   manifestFileName: 'BENTO File Manifest',
   tooltipIcon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
@@ -43,6 +48,7 @@ export const table = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  tableDownloadCSV: customMyFilesTabDownloadCSV,
 
   columns: [
     {

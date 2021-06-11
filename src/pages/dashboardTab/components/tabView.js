@@ -7,6 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
 import { getColumns } from 'bento-components';
+import _ from 'lodash';
 import SelectAllModal from './modal';
 import {
   GET_FILES_OVERVIEW_QUERY,
@@ -20,6 +21,7 @@ import CustomDataTable from '../../../components/serverPaginatedTable/serverPagi
 import { addToCart, getCart, cartWillFull } from '../../fileCentricCart/store/cart';
 import Message from '../../../components/Message';
 import AddToCartAlertDialog from '../../../components/AddToCartDialog';
+import DocumentDownload from '../../../components/DocumentDownload/DocumentDownloadView';
 
 const getOverviewQuery = (api) => (api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_QUERY : api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY);
 
@@ -30,7 +32,7 @@ const TabView = ({
   classes,
   data,
   customColumn,
-  customOnRowsSelect,
+  primaryKeyIndex = 0,
   openSnack,
   disableRowSelection,
   buttonText,
@@ -50,8 +52,18 @@ const TabView = ({
   paginationAPIFieldDesc,
   dataKey,
   filteredSubjectIds,
+  filteredSampleIds,
+  filteredFileIds,
   defaultSortCoulmn,
   defaultSortDirection,
+  // tableHasSelections,
+  setRowSelection,
+  selectedRowInfo = [],
+  selectedRowIndex = [],
+  clearTableSelections,
+  fetchAllFileIDs,
+  getFilesCount,
+  tableDownloadCSV,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -59,14 +71,7 @@ const TabView = ({
   const saveButton = useRef(null);
   const saveButton2 = useRef(null);
   const AddToCartAlertDialogRef = useRef();
-  // Store current page selected info
-  const [rowSelection, setRowSelection] = React.useState({
-    selectedRowInfo: [],
-    selectedRowIndex: [],
-  });
 
-  // Store current page selected info
-  const [selectedIDs, setSelectedIDs] = React.useState([]);
   const [cartIsFull, setCartIsFull] = React.useState(false);
   const buildButtonStyle = (button, styleObject) => {
     const styleKV = Object.entries(styleObject);
@@ -94,22 +99,29 @@ const TabView = ({
     }
   };
 
-  useEffect(() => {
-    initSaveButtonDefaultStyle(saveButton);
-    initSaveButtonDefaultStyle(saveButton2);
-
-    if (rowSelection.selectedRowIndex.length === 0) {
+  async function updateButtonStatus(status) {
+    if (!status) {
       updateActiveSaveButtonStyle(true, saveButton);
       updateActiveSaveButtonStyle(true, saveButton2);
     } else {
       updateActiveSaveButtonStyle(false, saveButton);
       updateActiveSaveButtonStyle(false, saveButton2);
     }
+  }
+
+  useEffect(() => {
+    initSaveButtonDefaultStyle(saveButton);
+    initSaveButtonDefaultStyle(saveButton2);
+    updateButtonStatus(selectedRowInfo.length > 0);
   });
 
-  function exportFiles() {
+  async function exportFiles() {
+    const selectedIDs = await fetchAllFileIDs(getFilesCount(), selectedRowInfo);
     // Find the newly added files by comparing
-    const newFileIDS = fileIDs !== null ? selectedIDs.filter(
+    const selectFileIds = filteredFileIds != null
+      ? selectedIDs.filter((x) => filteredFileIds.includes(x))
+      : selectedIDs;
+    const newFileIDS = fileIDs !== null ? selectFileIds.filter(
       (e) => !fileIDs.find((a) => e === a),
     ).length : selectedIDs.length;
     if (cartWillFull(newFileIDS)) {
@@ -117,9 +129,14 @@ const TabView = ({
       setCartIsFull(true);
       AddToCartAlertDialogRef.current.open();
     } else if (newFileIDS > 0) {
-      addToCart({ fileIds: selectedIDs });
+      addToCart({ fileIds: selectFileIds });
       openSnack(newFileIDS);
-      setSelectedIDs([]);
+      // tell the reducer to clear the selection on the table.
+      clearTableSelections();
+    } else if (newFileIDS === 0) {
+      openSnack(newFileIDS);
+      // tell the reducer to clear the selection on the table.
+      clearTableSelections();
     }
   }
 
@@ -133,8 +150,8 @@ const TabView = ({
     if (rowsSelected) {
       // Remove the rowInfo from selectedRowInfo if this row currently be
       // displayed and not be selected.
-      if (rowSelection.selectedRowInfo.length > 0) {
-        newSelectedRowInfo = rowSelection.selectedRowInfo.filter((key) => {
+      if (selectedRowInfo.length > 0) {
+        newSelectedRowInfo = selectedRowInfo.filter((key) => {
           if (displayedDataKeies.includes(key)) {
             return false;
           }
@@ -142,7 +159,7 @@ const TabView = ({
         });
       }
     } else {
-      newSelectedRowInfo = rowSelection.selectedRowInfo;
+      newSelectedRowInfo = selectedRowInfo;
     }
     newSelectedRowInfo = newSelectedRowInfo.concat(selectedRowsKey);
 
@@ -157,10 +174,32 @@ const TabView = ({
       }, [],
     );
 
-    setRowSelection({
-      selectedRowInfo: newSelectedRowInfo,
-      selectedRowIndex: newSelectedRowIndex,
-    });
+    // reduce the state chagne, when newSelectedRowIndex and newSelectedRowInfo is same as previous.
+    if (_.differenceWith(
+      newSelectedRowIndex,
+      selectedRowIndex,
+      _.isEqual,
+    ).length !== 0
+      || _.differenceWith(
+        newSelectedRowInfo,
+        selectedRowInfo,
+        _.isEqual,
+      ).length !== 0
+      || _.differenceWith(
+        selectedRowInfo,
+        newSelectedRowInfo,
+        _.isEqual,
+      ).length !== 0
+      || _.differenceWith(
+        selectedRowIndex,
+        newSelectedRowIndex,
+        _.isEqual,
+      ).length !== 0) {
+      setRowSelection({
+        selectedRowInfo: newSelectedRowInfo,
+        selectedRowIndex: newSelectedRowIndex,
+      });
+    }
   }
 
   // Calculate the properate marginTop value for the tooltip on the top
@@ -172,21 +211,11 @@ const TabView = ({
   /*
     Presist user selection
   */
-  function onRowsSelect(curr, allRowsSelected, rowsSelected, displayData, selectedData) {
-    rowSelectionEvent(displayData.map((d) => d.data[0]), rowsSelected);
-
-    setSelectedIDs([...new Set(
-      customOnRowsSelect(selectedData, allRowsSelected),
-    )]);
-    if (allRowsSelected.length === 0) {
-      updateActiveSaveButtonStyle(true, saveButton);
-      updateActiveSaveButtonStyle(true, saveButton2);
-    } else {
-      updateActiveSaveButtonStyle(false, saveButton);
-      updateActiveSaveButtonStyle(false, saveButton2);
-    }
+  function onRowsSelect(curr, allRowsSelected, rowsSelected, displayData) {
+    rowSelectionEvent(displayData.map((d) => d.data[primaryKeyIndex]), rowsSelected);
   }
 
+  // overwrite default options
   // overwrite default options
   const defaultOptions = () => ({
     dataKey,
@@ -194,23 +223,31 @@ const TabView = ({
       displayData,
       rowsSelected,
     ),
-    rowsSelected: rowSelection.selectedRowIndex,
+    rowsSelected: selectedRowIndex,
     onRowSelectionChange: onRowsSelect,
     isRowSelectable: (dataIndex) => (disableRowSelection
       ? disableRowSelection(data[dataIndex], fileIDs) : true),
   });
-  const finalOptions = { ...options, ...defaultOptions() };
+  const finalOptions = {
+    ...options,
+    ...defaultOptions(),
+    serverTableRowCount: selectedRowInfo.length,
+  };
 
   return (
     <div>
       <Grid item xs={12} className={classes.saveButtonDiv}>
-        <SelectAllModal />
-        <AddToCartAlertDialog cartWillFull={cartIsFull} ref={AddToCartAlertDialogRef} />
+        <SelectAllModal tableIDForButton={tableID} openSnack={openSnack} />
+        <AddToCartAlertDialog
+          cartWillFull={cartIsFull}
+          ref={AddToCartAlertDialogRef}
+        />
         <button
           type="button"
           ref={saveButton2}
           onClick={exportFiles}
           className={classes.button}
+          id={`${tableID}_${buttonText}`}
         >
           { buttonText }
         </button>
@@ -240,16 +277,21 @@ const TabView = ({
         <Grid item xs={12} id={tableID}>
           <CustomDataTable
             data={data}
-            columns={getColumns(customColumn, classes, data, externalLinkIcon)}
+            columns={getColumns(customColumn, classes, data, externalLinkIcon, '', () => {}, DocumentDownload)}
             options={finalOptions}
             count={count}
             overview={getOverviewQuery(api)}
             overviewDesc={getOverviewDescQuery(api)}
             paginationAPIField={paginationAPIField}
             paginationAPIFieldDesc={paginationAPIFieldDesc}
-            queryCustomVaribles={{ subject_ids: filteredSubjectIds }}
+            queryCustomVaribles={{
+              subject_ids: filteredSubjectIds,
+              sample_ids: filteredSampleIds,
+              file_ids: filteredFileIds,
+            }}
             defaultSortCoulmn={defaultSortCoulmn}
             defaultSortDirection={defaultSortDirection}
+            tableDownloadCSV={tableDownloadCSV}
           />
         </Grid>
       </Grid>

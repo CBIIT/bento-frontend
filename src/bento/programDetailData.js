@@ -27,12 +27,12 @@ const aggregateCount = {
 // Ideal size for programDetailIcon is 107x107 px
 // Ideal size for externalLinkIcon is 16x16 px
 const programDetailIcon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/programIcon.svg',
+  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programIcon.svg',
   alt: 'Bento program logo',
 };
 
 const externalLinkIcon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/externalLinkIcon.svg',
   alt: 'External link icon',
 };
 
@@ -82,7 +82,7 @@ const rightPanel = {
     {
       dataField: 'num_files',
       label: 'Number of files',
-      fileIconSrc: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/programNumberofFilesIcon.svg',
+      fileIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programNumberofFilesIcon.svg',
       fileIconAlt: 'Number of files icon',
       display: true,
     },

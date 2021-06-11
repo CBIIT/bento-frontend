@@ -3,18 +3,18 @@ import React from 'react';
 import { Anchor, prepareLinks } from 'bento-components';
 
 const PropertyItem = ({
-  label, value, link, labelLink, classes,
+  label, value, link, labelLink, classes, index,
 }) => {
   const defaultValue = '';
   return (
     <Grid item>
       <Grid container>
         <Grid item xs={12}>
-          <span className={classes.title}>
+          <span className={classes.title} id={`case_detail_left_section_title_${index + 1}`}>
             {labelLink ? <Anchor text={label} link={labelLink} classes={classes} /> : label}
           </span>
         </Grid>
-        <Grid item xs={12} className={classes.content}>
+        <Grid item xs={12} className={classes.content} d={`case_detail_left_section_description_${index + 1}`}>
           {value || value === 0 ? (
             link ? <Anchor text={value} link={link} classes={classes} /> : value
           ) : defaultValue}
@@ -37,6 +37,7 @@ const PropertySubsection = ({ section: config, data, classes }) => {
             link={prop.link}
             labelLink={prop.labelLink}
             classes={classes}
+            index
           />
         ))}
       </Grid>

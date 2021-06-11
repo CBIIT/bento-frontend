@@ -15,7 +15,14 @@ import Message from '../../../components/Message';
 import {
   tabs, tooltipContent, tabContainers, tabIndex, externalLinkIcon,
 } from '../../../bento/dashboardTabData';
-import { fetchDataForDashboardTab } from '../store/dashboardReducer';
+import {
+  fetchDataForDashboardTab,
+  getTableRowSelectionEvent,
+  tableHasSelections,
+  clearTableSelections,
+  fetchAllFileIDs,
+  getFilesCount,
+} from '../store/dashboardReducer';
 
 function TabContainer({ children, dir }) {
   return (
@@ -34,6 +41,11 @@ const tabController = (classes) => {
   // tab settings
   const [currentTab, setCurrentTab] = React.useState(tabVlaue);
 
+  const tableRowSelectionData = [
+    useSelector((state) => (state.dashboardTab.dataCaseSelected)),
+    useSelector((state) => (state.dashboardTab.dataSampleSelected)),
+    useSelector((state) => (state.dashboardTab.dataFileSelected))];
+
   // data from store
   const dashboard = useSelector((state) => (state.dashboardTab
 && state.dashboardTab.datatable
@@ -43,7 +55,11 @@ const tabController = (classes) => {
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
 
   const filteredSubjectIds = useSelector((state) => (state.dashboardTab
-      && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : []));
+      && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : null));
+  const filteredSampleIds = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.filteredSampleIds ? state.dashboardTab.filteredSampleIds : null));
+  const filteredFileIds = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.filteredFileIds ? state.dashboardTab.filteredFileIds : null));
 
   const [TopMessageStatus, setTopMessageStatus] = React.useState({
     text: tooltipContent[currentTab],
@@ -99,7 +115,10 @@ const tabController = (classes) => {
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
-    fetchDataForDashboardTab(tabIndex[value].title);
+    fetchDataForDashboardTab(tabIndex[value].title,
+      filteredSubjectIds,
+      filteredSampleIds,
+      filteredFileIds);
   };
 
   const [snackbarState, setsnackbarState] = React.useState({
@@ -215,8 +234,9 @@ const tabController = (classes) => {
   };
 
   // Tab Header Generator
-  const TABs = tabs.map((tab) => (
+  const TABs = tabs.map((tab, index) => (
     <Tab
+      key={index}
       id={tab.id}
       label={
         getTabLalbel(tab.title, dashboardStats[tab.count] ? dashboardStats[tab.count] : 0)
@@ -260,6 +280,16 @@ const tabController = (classes) => {
         defaultSortDirection={container.defaultSortDirection || 'asc'}
         dataKey={container.dataKey}
         filteredSubjectIds={filteredSubjectIds}
+        filteredSampleIds={filteredSampleIds}
+        filteredFileIds={filteredFileIds}
+        tableHasSelections={tableHasSelections}
+        setRowSelection={getTableRowSelectionEvent()}
+        selectedRowInfo={tableRowSelectionData[container.tabIndex].selectedRowInfo}
+        selectedRowIndex={tableRowSelectionData[container.tabIndex].selectedRowIndex}
+        clearTableSelections={clearTableSelections}
+        fetchAllFileIDs={fetchAllFileIDs}
+        tableDownloadCSV={container.tableDownloadCSV || false}
+        getFilesCount={getFilesCount}
       />
     </TabContainer>
   ));

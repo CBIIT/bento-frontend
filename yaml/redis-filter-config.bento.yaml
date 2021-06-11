@@ -1,0 +1,36 @@
+# This list contains the names of the queries that will be run to initialize the filter sets in redis
+# Each of these queries must have a GroupList return type
+queries:
+  - subjectList
+  - subjectListByProgram
+  - subjectListByStudy
+  - subjectListByDiagnoses
+  - subjectListByRecurrenceScore
+  - subjectListByTumorSize
+  - subjectListByTumorGrade
+  - subjectListByErStatus
+  - subjectListByPrStatus
+  - subjectListByChemotherapyRegimen
+  - subjectListByEndocrineTherapy
+  - subjectListByMenopauseStatus
+  - subjectListByTissueType
+  - subjectListByTissueComposition
+  - subjectListByFileAssociation
+  - subjectListByFileType
+# Maps the parameters for the redis filter query to a filter group returned by the above queries
+parameter_mappings:
+  studies: study
+  chemo_regimen: chemotherapy_regimen
+  er_status: er_status
+  diagnoses: diagnosis
+  rc_scores: recurrence_score
+  association: file_association
+  programs: program
+  tumor_sizes: tumor_size
+  composition: sample
+  endo_therapies: endocrine_therapy
+  file_type: file_type
+  pr_status: pr_status
+  tissue_type: tissue_type
+  tumor_grades: tumor_grade
+  meno_status: menopause_status

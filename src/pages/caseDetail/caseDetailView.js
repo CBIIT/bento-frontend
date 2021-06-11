@@ -158,7 +158,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
       </div>
       {table1.display
         ? (
-          <div id="table_case_detail_samples" className={classes.tableContainer}>
+          <div id="case_detail_table_associated_samples" className={classes.tableContainer}>
             <div className={classes.tableDiv}>
               <Grid item xs={12}>
                 <Grid container spacing={4}>
@@ -191,7 +191,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
         ) : ''}
       {table2.display
         ? (
-          <div id="table_case_detail_samples" className={classes.tableContainer}>
+          <div id="case_detail_table_associated_files" className={classes.tableContainer}>
             <div className={classes.tableDiv}>
               <Grid item xs={12}>
                 <Grid container spacing={4}>
