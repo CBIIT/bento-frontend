@@ -25,11 +25,17 @@ import {
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
-  facetSectionVariables, defaultFacetSectionVariables, sortLabels, showCheckboxCount, resetIcon,
+  facetSectionVariables,
+  defaultFacetSectionVariables,
+  sortLabels, showCheckboxCount,
+  resetIconFilter,
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
 
 const size = '10px';
+if (resetIconFilter.src === '') {
+  resetIconFilter.src = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg';
+}
 const CustomExpansionPanelSummary = withStyles({
   root: {
     marginBottom: -1,
@@ -303,10 +309,10 @@ const FacetPanel = ({ classes }) => {
                                 style={{ fontSize: 15 }}
                               >
                                 <img
-                                  src={resetIcon.src}
+                                  src={resetIconFilter.src}
                                   height={size}
                                   width={size}
-                                  alt={resetIcon.alt}
+                                  alt={resetIconFilter.alt}
                                 />
                               </Icon>
                             </span>

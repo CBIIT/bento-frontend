@@ -152,6 +152,11 @@ export const resetIcon = {
   alt: 'Reset icon',
   size: '12 px',
 };
+export const resetIconFilter = {
+  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg',
+  alt: 'Reset icon',
+  size: '12 px',
+};
 
 // --------------- Dashboard Table configuration --------------
 export const dashboardTable = {

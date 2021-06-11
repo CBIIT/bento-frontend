@@ -8,6 +8,9 @@ import { facetSearchData, resetIcon } from '../../bento/dashboardData';
 import { clearAllFilters } from '../../pages/dashboardTab/store/dashboardReducer';
 
 const drawerWidth = 240;
+if (resetIcon.src === '') {
+  resetIcon.src = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg';
+}
 
 const SideBarContent = ({ classes }) => {
   const activeFilters = useSelector((state) => (
