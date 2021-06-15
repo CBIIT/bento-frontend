@@ -93,6 +93,7 @@ export const widgetsData = [
     dataName: 'armsByPrograms',
     datatable_level1_field: 'program',
     datatable_level2_field: 'study_acronym',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -100,6 +101,7 @@ export const widgetsData = [
     label: 'Diagnosis',
     dataName: 'subjectCountByDiagnoses',
     datatable_field: 'diagnosis',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -107,6 +109,7 @@ export const widgetsData = [
     label: 'Recurrence Score',
     dataName: 'subjectCountByRecurrenceScore',
     datatable_field: 'recurrence_score',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -114,6 +117,7 @@ export const widgetsData = [
     label: 'Tumor Size',
     dataName: 'subjectCountByTumorSize',
     datatable_field: 'tumor_size',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -121,6 +125,7 @@ export const widgetsData = [
     label: 'Chemotherapy',
     dataName: 'subjectCountByChemotherapyRegimen',
     datatable_field: 'chemotherapy',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -128,6 +133,7 @@ export const widgetsData = [
     label: 'Endocrine Therapy',
     dataName: 'subjectCountByEndocrineTherapy',
     datatable_field: 'endocrine_therapy',
+    titleText: 'Cases',
     show: true,
   },
 ];
