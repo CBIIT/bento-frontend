@@ -27,7 +27,6 @@ const CartHeader = ({
 
   const columns = getColumns(table, classes).concat(deleteColumn);
   const options = getOptions(table, classes, getDefaultCustomFooter, onRowSelectionChange);
-
   return (
     <TableThemeProvider>
       <CustomDataTable

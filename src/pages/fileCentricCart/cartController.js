@@ -8,11 +8,15 @@ import CartView from './cartView';
 const cartController = () => {
   const cart = getCart();
   const ids = cart.fileIds ? cart.fileIds : [];
-  const defaultSortDirection = table.defaultSortDirection || 'asc';
+  if (ids.length === 0) {
+    window.sortColumnValue = table.defaultSortField;
+    window.sortDirectionValue = table.defaultSortDirection;
+  }
+  const defaultSortDirection = window.sortDirectionValue || table.defaultSortDirection || 'asc';
   const CART_QUERY = defaultSortDirection === 'desc' ? GET_MY_CART_DATA_QUERY_DESC : GET_MY_CART_DATA_QUERY;
 
   const { loading, error, data } = useQuery(CART_QUERY, {
-    variables: { file_ids: ids, order_by: table.defaultSortField || '' },
+    variables: { file_ids: ids, order_by: window.sortColumnValue || table.defaultSortField || '' },
   });
 
   if (loading) return <CartView isLoading data="undefined" />;
