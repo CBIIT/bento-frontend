@@ -7,6 +7,8 @@ const storeKey = 'cart';
 
 const initialState = {
   fileIds: [],
+  sortColumn: '',
+  sortDirection: '',
   error: '',
   isError: false,
 };
@@ -39,6 +41,10 @@ const subscribe = (f) => {
 export const addToCart = (item) => store.dispatch({ type: 'addFiles', payload: item });
 
 export const deleteFromCart = (item) => store.dispatch({ type: 'deleteFiles', payload: item });
+
+export const updateSortColumn = (item) => store.dispatch({ type: 'sortColumn', payload: item });
+
+export const updateSortDirection = (item) => store.dispatch({ type: 'sortDirection', payload: item });
 
 export const initCart = () => {
 // load dashboard data.
@@ -95,6 +101,20 @@ const reducers = {
     return {
       ...state,
       fileIds: fileIdsAfterDeletion,
+    };
+  },
+  sortColumn: (state, item) => {
+    const newSortColumn = item.sortColumn;
+    return {
+      ...state,
+      sortColumn: newSortColumn,
+    };
+  },
+  sortDirection: (state, item) => {
+    const newSortDirection = item.sortDirection;
+    return {
+      ...state,
+      sortDirection: newSortDirection,
     };
   },
   initCart: (state) => ({

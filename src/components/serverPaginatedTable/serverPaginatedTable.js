@@ -9,10 +9,8 @@ import { CircularProgress, Backdrop, withStyles } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
 import client from '../../utils/graphqlClient';
 import CSVDownloadToolbar from './components/CSVDownloadCustomToolbar';
-import { table } from '../../bento/fileCentricCartWorkflowData';
+import { updateSortColumn, updateSortDirection } from '../../pages/fileCentricCart/store/cart';
 
-window.sortColumnValue = table.defaultSortField;
-window.sortDirectionValue = table.defaultSortDirection;
 class ServerPaginatedTableView extends React.Component {
   state = {
     count: 1,
@@ -163,7 +161,8 @@ class ServerPaginatedTableView extends React.Component {
     sortDirection = Object.keys(sortOrder).length === 0 ? this.props.defaultSortDirection || 'asc' : sortOrder.direction;
     sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
     window.sortColumnValue = sortColumn;
-    window.sortDirectionValue = sortDirection;
+    updateSortColumn({ sortColumn });
+    updateSortDirection({ sortDirection });
     const fetchResult = await client
       .query({
         query: sortDirection !== 'asc' ? this.props.overviewDesc : this.props.overview,
