@@ -107,8 +107,9 @@ class ServerPaginatedTableView extends React.Component {
     // update columns display true/false depending on onViewColumnsChange
     setUpdatedColumnsDisplay = (stateUpdatedColumns) => {
       stateUpdatedColumns.map((updatedColumns) => {
-        const index = this.props.columns.map((e) => e.name).indexOf(updatedColumns);
-        if (this.props.columns[index].options.display === true) {
+        const index = this.props.columns.map((e) => e.name)
+          .indexOf(updatedColumns.label);
+        if (updatedColumns.status === 'remove') {
           this.props.columns[index].options.display = false;
         } else {
           this.props.columns[index].options.display = true;
@@ -241,13 +242,21 @@ class ServerPaginatedTableView extends React.Component {
             break;
         }
       },
-      onViewColumnsChange: (changedColumn) => {
-        // Keep a track of user selectios and unselections
-        if (this.state.updatedColumns.indexOf(changedColumn) === -1) {
-          this.state.updatedColumns.push(changedColumn);
-        } else {
-          this.state.updatedColumns.pop(changedColumn);
+      onViewColumnsChange: (changedColumn, action) => {
+        const index = this.state.updatedColumns.findIndex((x) => x.label === changedColumn);
+        if (index === -1) {
+          this.state.updatedColumns.push({
+            label: changedColumn,
+            status: action,
+          });
+        } else if (changedColumn[index].status !== action) {
+          this.state.updatedColumns.splice(index, 1);
+          this.state.updatedColumns.push({
+            label: changedColumn,
+            status: action,
+          });
         }
+        return '';
       },
     };
     return (
