@@ -42,9 +42,7 @@ export const addToCart = (item) => store.dispatch({ type: 'addFiles', payload: i
 
 export const deleteFromCart = (item) => store.dispatch({ type: 'deleteFiles', payload: item });
 
-export const updateSortColumn = (item) => store.dispatch({ type: 'sortColumn', payload: item });
-
-export const updateSortDirection = (item) => store.dispatch({ type: 'sortDirection', payload: item });
+export const updateSortOrder = (item) => store.dispatch({ type: 'sortOrder', payload: item });
 
 export const initCart = () => {
 // load dashboard data.
@@ -103,17 +101,12 @@ const reducers = {
       fileIds: fileIdsAfterDeletion,
     };
   },
-  sortColumn: (state, item) => {
+  sortOrder: (state, item) => {
     const newSortColumn = item.sortColumn;
-    return {
-      ...state,
-      sortColumn: newSortColumn,
-    };
-  },
-  sortDirection: (state, item) => {
     const newSortDirection = item.sortDirection;
     return {
       ...state,
+      sortColumn: newSortColumn,
       sortDirection: newSortDirection,
     };
   },

@@ -20,6 +20,7 @@ const CartHeader = ({
   fileIDs,
   defaultSortCoulmn,
   defaultSortDirection,
+  updateSortOrder,
 }) => {
   function onRowSelectionChange(curr, allRowsSelected) {
     return (curr, allRowsSelected);
@@ -43,6 +44,7 @@ const CartHeader = ({
         defaultSortCoulmn={defaultSortCoulmn}
         defaultSortDirection={defaultSortDirection}
         tableDownloadCSV={table.tableDownloadCSV}
+        updateSortOrder={updateSortOrder}
       />
     </TableThemeProvider>
   );

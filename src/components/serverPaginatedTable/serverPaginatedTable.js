@@ -9,7 +9,6 @@ import { CircularProgress, Backdrop, withStyles } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
 import client from '../../utils/graphqlClient';
 import CSVDownloadToolbar from './components/CSVDownloadCustomToolbar';
-import { updateSortColumn, updateSortDirection } from '../../pages/fileCentricCart/store/cart';
 
 class ServerPaginatedTableView extends React.Component {
   state = {
@@ -51,6 +50,11 @@ class ServerPaginatedTableView extends React.Component {
 
   sort = (page, sortOrder) => {
     this.setState({ isLoading: true });
+    if (this.props.updateSortOrder) {
+      const sortDirection = sortOrder.direction;
+      const sortColumn = sortOrder.name;
+      this.props.updateSortOrder({ sortColumn, sortDirection });
+    }
     this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage, sortOrder).then((res) => {
       this.rowsSelectedTrigger(res);
       // update columns display true/false depending on onViewColumnsChange
@@ -160,9 +164,6 @@ class ServerPaginatedTableView extends React.Component {
 
     sortDirection = Object.keys(sortOrder).length === 0 ? this.props.defaultSortDirection || 'asc' : sortOrder.direction;
     sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
-    window.sortColumnValue = sortColumn;
-    updateSortColumn({ sortColumn });
-    updateSortDirection({ sortDirection });
     const fetchResult = await client
       .query({
         query: sortDirection !== 'asc' ? this.props.overviewDesc : this.props.overview,
