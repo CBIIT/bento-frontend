@@ -96,9 +96,20 @@ const reducers = {
   deleteFiles: (state, item) => {
     const fileIdsAfterDeletion = filterOutIDs(item.fileIds, state.fileIds);
     localStorage.setItem('CartFileIds', JSON.stringify(fileIdsAfterDeletion));
+    const newSortColumn = '';
+    const newSortDirection = '';
+    // if not all ids have been removed, then only the removed file ids values
+    if (fileIdsAfterDeletion.length > 0) {
+      return {
+        ...state,
+        fileIds: fileIdsAfterDeletion,
+      };
+    }
     return {
       ...state,
       fileIds: fileIdsAfterDeletion,
+      sortColumn: newSortColumn,
+      sortDirection: newSortDirection,
     };
   },
   sortOrder: (state, item) => {

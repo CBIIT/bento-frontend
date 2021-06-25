@@ -51,7 +51,6 @@ const cartView = ({
     closeDialogBox();
     deleteFromCart({ fileIds: fileIDs });
   }
-
   const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved
     ? fileIDs.length : '';
 
