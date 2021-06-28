@@ -8,7 +8,7 @@ import CartView from './cartView';
 const cartController = () => {
   const cart = getCart();
   const ids = cart.fileIds ? cart.fileIds : [];
-  const defaultSortDirection = cart.sortColumn === '' ? table.defaultSortDirection || 'asc' : cart.sortColumn;
+  const defaultSortDirection = cart.sortDirection === '' ? table.defaultSortDirection || 'asc' : cart.sortDirection;
   const CART_QUERY = defaultSortDirection === 'desc' ? GET_MY_CART_DATA_QUERY_DESC : GET_MY_CART_DATA_QUERY;
 
   const { loading, error, data } = useQuery(CART_QUERY, {

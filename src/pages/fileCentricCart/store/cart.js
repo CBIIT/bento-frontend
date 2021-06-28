@@ -112,15 +112,11 @@ const reducers = {
       sortDirection: newSortDirection,
     };
   },
-  sortOrder: (state, item) => {
-    const newSortColumn = item.sortColumn;
-    const newSortDirection = item.sortDirection;
-    return {
-      ...state,
-      sortColumn: newSortColumn,
-      sortDirection: newSortDirection,
-    };
-  },
+  sortOrder: (state, item) => ({
+    ...state,
+    sortColumn: item.sortColumn,
+    sortDirection: item.sortDirection,
+  }),
   initCart: (state) => ({
     ...state,
     fileIds: JSON.parse(localStorage.getItem('CartFileIds')) || [],
