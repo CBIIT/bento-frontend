@@ -18,7 +18,7 @@ import { downloadJson } from './utils';
 import Message from '../../components/Message';
 
 const cartView = ({
-  classes, data, fileIDs = [], defaultSortCoulmn, defaultSortDirection,
+  classes, data, fileIDs = [], defaultSortCoulmn, defaultSortDirection, updateSortOrder,
 }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
   const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
@@ -51,7 +51,6 @@ const cartView = ({
     closeDialogBox();
     deleteFromCart({ fileIds: fileIDs });
   }
-
   const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved
     ? fileIDs.length : '';
 
@@ -172,6 +171,7 @@ const cartView = ({
           </div>
           <div id="table_selected_files" className={classes.tableWrapper}>
             <CartBody
+              updateSortOrder={updateSortOrder}
               data={data}
               deleteColumn={deleteColumn}
               fileIDs={fileIDs}
