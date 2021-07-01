@@ -7,6 +7,8 @@ const storeKey = 'cart';
 
 const initialState = {
   fileIds: [],
+  sortColumn: '',
+  sortDirection: '',
   error: '',
   isError: false,
 };
@@ -39,6 +41,8 @@ const subscribe = (f) => {
 export const addToCart = (item) => store.dispatch({ type: 'addFiles', payload: item });
 
 export const deleteFromCart = (item) => store.dispatch({ type: 'deleteFiles', payload: item });
+
+export const updateSortOrder = (item) => store.dispatch({ type: 'sortOrder', payload: item });
 
 export const initCart = () => {
 // load dashboard data.
@@ -92,11 +96,27 @@ const reducers = {
   deleteFiles: (state, item) => {
     const fileIdsAfterDeletion = filterOutIDs(item.fileIds, state.fileIds);
     localStorage.setItem('CartFileIds', JSON.stringify(fileIdsAfterDeletion));
+    const newSortColumn = '';
+    const newSortDirection = '';
+    // if not all ids have been removed, then only the removed file ids values
+    if (fileIdsAfterDeletion.length > 0) {
+      return {
+        ...state,
+        fileIds: fileIdsAfterDeletion,
+      };
+    }
     return {
       ...state,
       fileIds: fileIdsAfterDeletion,
+      sortColumn: newSortColumn,
+      sortDirection: newSortDirection,
     };
   },
+  sortOrder: (state, item) => ({
+    ...state,
+    sortColumn: item.sortColumn,
+    sortDirection: item.sortDirection,
+  }),
   initCart: (state) => ({
     ...state,
     fileIds: JSON.parse(localStorage.getItem('CartFileIds')) || [],
