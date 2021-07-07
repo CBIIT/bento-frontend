@@ -1,5 +1,7 @@
 import React from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
+// import Tooltip from '@material-ui/core/Tooltip';
+import { ToolTip } from 'bento-components';
+
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 
@@ -40,18 +42,18 @@ const DocumentDownload = ({
 }) => (
   <>
     { fileSize < maxFileSize ? (
-      <Tooltip title={toolTipTextFileDownload}>
+      <ToolTip title={toolTipTextFileDownload}>
         <div onClick={() => fetchFileToDownload(fileLocation)}>
 
           <CustomIcon imgSrc={iconFileDownload} />
         </div>
-      </Tooltip>
+      </ToolTip>
     ) : (
-      <Tooltip title={toolTipTextFilePreview}>
+      <ToolTip title={toolTipTextFilePreview}>
         <span>
           <CustomIcon imgSrc={iconFilePreview} />
         </span>
-      </Tooltip>
+      </ToolTip>
     )}
   </>
 );
