@@ -1,5 +1,9 @@
 import React from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
+import {
+  withStyles,
+} from '@material-ui/core';
+import { ToolTip } from 'bento-components';
+
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 
@@ -30,6 +34,7 @@ const fetchFileToDownload = (fileURL = '') => {
 };
 
 const DocumentDownload = ({
+  classes,
   fileSize = 0,
   maxFileSize = 2000,
   toolTipTextFileDownload = 'Download a copy of this file',
@@ -40,19 +45,31 @@ const DocumentDownload = ({
 }) => (
   <>
     { fileSize < maxFileSize ? (
-      <Tooltip title={toolTipTextFileDownload}>
+      <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} arrow placement="bottom">
         <div onClick={() => fetchFileToDownload(fileLocation)}>
 
           <CustomIcon imgSrc={iconFileDownload} />
         </div>
-      </Tooltip>
+      </ToolTip>
     ) : (
-      <Tooltip title={toolTipTextFilePreview}>
+      <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFilePreview} arrow placement="bottom">
         <span>
           <CustomIcon imgSrc={iconFilePreview} />
         </span>
-      </Tooltip>
+      </ToolTip>
     )}
   </>
 );
-export default DocumentDownload;
+
+const styles = () => ({
+  customTooltip: {
+    border: '#03A383 1px solid',
+  },
+  customArrow: {
+    '&::before': {
+      border: '#03A383 1px solid',
+    },
+  },
+});
+
+export default withStyles(styles)(DocumentDownload);
