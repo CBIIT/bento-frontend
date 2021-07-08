@@ -53,11 +53,7 @@ class ServerPaginatedTableView extends React.Component {
     if (this.props.updateSortOrder) {
       const sortDirection = sortOrder.direction;
       const sortColumn = sortOrder.name;
-      this.changePage(1, sortOrder);
       this.props.updateSortOrder({ sortColumn, sortDirection });
-      this.setState({
-        rowsPerPage: 10,
-      });
     }
     this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage, sortOrder).then((res) => {
       this.rowsSelectedTrigger(res);
