@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
-import { getColumns } from 'bento-components';
+import { getColumns, ToolTip } from 'bento-components';
 import _ from 'lodash';
 import SelectAllModal from './modal';
 import {
@@ -19,7 +19,6 @@ import {
 } from '../../../bento/dashboardTabData';
 import CustomDataTable from '../../../components/serverPaginatedTable/serverPaginatedTable';
 import { addToCart, getCart, cartWillFull } from '../../fileCentricCart/store/cart';
-import Message from '../../../components/Message';
 import AddToCartAlertDialog from '../../../components/AddToCartDialog';
 import DocumentDownload from '../../../components/DocumentDownload/DocumentDownloadView';
 
@@ -40,12 +39,8 @@ const TabView = ({
   saveButtonDefaultStyle,
   DeactiveSaveButtonDefaultStyle,
   ActiveSaveButtonDefaultStyle,
-  toggleMessageStatus,
-  BottomMessageStatus,
-  tabIndex,
   externalLinkIcon,
   options,
-  TopMessageStatus,
   count,
   api,
   paginationAPIField,
@@ -64,6 +59,9 @@ const TabView = ({
   fetchAllFileIDs,
   getFilesCount,
   tableDownloadCSV,
+  tooltipMessage,
+  tooltipIcon,
+  tooltipAlt,
 }) => {
   // Get the existing files ids from  cart state
   const cart = getCart();
@@ -202,12 +200,6 @@ const TabView = ({
     }
   }
 
-  // Calculate the properate marginTop value for the tooltip on the top
-  function tooltipStyle(text) {
-    const marginTopValue = text.length > 40 ? '-148px' : '-118px';
-    return { marginTop: marginTopValue };
-  }
-
   /*
     Presist user selection
   */
@@ -251,26 +243,25 @@ const TabView = ({
         >
           { buttonText }
         </button>
-        <IconButton aria-label="help" className={classes.helpIconButton} onMouseOver={() => toggleMessageStatus('top', 'open')} onMouseEnter={() => toggleMessageStatus('top', 'open')} onMouseLeave={() => toggleMessageStatus('top', 'close')}>
-          {TopMessageStatus.src ? (
-            <img
-              onMouseEnter={() => toggleMessageStatus('top', 'open')}
-              onMouseOver={() => toggleMessageStatus('top', 'open')}
-              onFocus={() => toggleMessageStatus('top', 'open')}
-              src={TopMessageStatus.src}
-              alt={TopMessageStatus.alt}
-              className={classes.helpIcon}
-            />
-          ) : (
-            <HelpIcon
-              className={classes.helpIcon}
-              fontSize="small"
-              onMouseOver={() => toggleMessageStatus('top', 'open')}
-              onMouseEnter={() => toggleMessageStatus('top', 'open')}
-              onFocus={() => toggleMessageStatus('top', 'open')}
-            />
-          )}
-        </IconButton>
+        <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={tooltipMessage} arrow placement="bottom">
+          <IconButton
+            aria-label="help"
+            className={classes.helpIconButton}
+          >
+            {tooltipIcon ? (
+              <img
+                src={tooltipIcon}
+                alt={tooltipAlt}
+                className={classes.helpIcon}
+              />
+            ) : (
+              <HelpIcon
+                className={classes.helpIcon}
+                fontSize="small"
+              />
+            )}
+          </IconButton>
+        </ToolTip>
 
       </Grid>
       <Grid container>
@@ -305,35 +296,26 @@ const TabView = ({
           { buttonText }
         </button>
 
-        <IconButton aria-label="help" className={classes.helpIconButton} onMouseOver={() => toggleMessageStatus('bottom', 'open')} onMouseEnter={() => toggleMessageStatus('bottom', 'open')} onMouseLeave={() => toggleMessageStatus('bottom', 'close')}>
-          {BottomMessageStatus.src ? (
-            <img
-              onMouseEnter={() => toggleMessageStatus('bottom', 'open')}
-              onMouseOver={() => toggleMessageStatus('bottom', 'open')}
-              onFocus={() => toggleMessageStatus('bottom', 'open')}
-              src={BottomMessageStatus.src}
-              alt={BottomMessageStatus.alt}
-              className={classes.helpIcon}
-            />
-          ) : (
-            <HelpIcon
-              onMouseEnter={() => toggleMessageStatus('bottom', 'open')}
-              onMouseOver={() => toggleMessageStatus('bottom', 'open')}
-              onFocus={() => toggleMessageStatus('bottom', 'open')}
-              className={classes.helpIcon}
-              fontSize="small"
-            />
-          )}
-        </IconButton>
+        <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={tooltipMessage} arrow placement="bottom">
+          <IconButton
+            aria-label="help"
+            className={classes.helpIconButton}
+          >
+            {tooltipIcon ? (
+              <img
+                src={tooltipIcon}
+                alt={tooltipAlt}
+                className={classes.helpIcon}
+              />
+            ) : (
+              <HelpIcon
+                className={classes.helpIcon}
+                fontSize="small"
+              />
+            )}
+          </IconButton>
+        </ToolTip>
         <div style={{ position: 'relative' }}>
-          { BottomMessageStatus.isActive
-            && tabIndex === BottomMessageStatus.currentTab.toString() ? (
-              <div className={classes.messageBottom} style={tooltipStyle(BottomMessageStatus.text)}>
-                {' '}
-                <Message data={BottomMessageStatus.text} />
-                {' '}
-              </div>
-            ) : ''}
           <Link
             rel="noreferrer"
             to={(location) => ({ ...location, pathname: '/fileCentricCart' })}
@@ -451,6 +433,14 @@ const styles = () => ({
   helpIconButton: {
     verticalAlign: 'top',
     marginLeft: '-5px',
+  },
+  customTooltip: {
+    border: '#03A383 1px solid',
+  },
+  customArrow: {
+    '&::before': {
+      border: '#03A383 1px solid',
+    },
   },
 });
 

@@ -13,10 +13,10 @@ export const facetSearchData = [
     label: 'Diagnosis', field: 'group', api: 'subjectCountByDiagnoses', apiForFiltering: 'filterSubjectCountByDiagnoses', datafield: 'diagnoses', section: 'Filter By Cases', show: true,
   },
   {
-    label: 'Recurrence Score', field: 'group', api: 'subjectCountByRecurrenceScore', apiForFiltering: 'filterSubjectCountByRecurrenceScore', datafield: 'rc_scores', section: 'Filter By Cases', show: true,
+    label: 'Recurrence Score', field: 'group', api: 'subjectCountByRecurrenceScore', apiForFiltering: 'filterSubjectCountByRecurrenceScore', datafield: 'rc_scores', section: 'Filter By Cases', show: true, customNumberSort: true,
   },
   {
-    label: 'Tumor Size', field: 'group', api: 'subjectCountByTumorSize', apiForFiltering: 'filterSubjectCountByTumorSize', datafield: 'tumor_sizes', section: 'Filter By Cases', show: true,
+    label: 'Tumor Size', field: 'group', api: 'subjectCountByTumorSize', apiForFiltering: 'filterSubjectCountByTumorSize', datafield: 'tumor_sizes', section: 'Filter By Cases', show: true, customNumberSort: true,
   },
   {
     label: 'Chemotherapy', field: 'group', api: 'subjectCountByChemotherapyRegimen', apiForFiltering: 'filterSubjectCountByChemotherapyRegimen', datafield: 'chemo_regimen', section: 'Filter By Cases', show: true,
@@ -93,6 +93,7 @@ export const widgetsData = [
     dataName: 'armsByPrograms',
     datatable_level1_field: 'program',
     datatable_level2_field: 'study_acronym',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -100,6 +101,7 @@ export const widgetsData = [
     label: 'Diagnosis',
     dataName: 'subjectCountByDiagnoses',
     datatable_field: 'diagnosis',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -107,6 +109,7 @@ export const widgetsData = [
     label: 'Recurrence Score',
     dataName: 'subjectCountByRecurrenceScore',
     datatable_field: 'recurrence_score',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -114,6 +117,7 @@ export const widgetsData = [
     label: 'Tumor Size',
     dataName: 'subjectCountByTumorSize',
     datatable_field: 'tumor_size',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -121,6 +125,7 @@ export const widgetsData = [
     label: 'Chemotherapy',
     dataName: 'subjectCountByChemotherapyRegimen',
     datatable_field: 'chemotherapy',
+    titleText: 'Cases',
     show: true,
   },
   {
@@ -128,6 +133,7 @@ export const widgetsData = [
     label: 'Endocrine Therapy',
     dataName: 'subjectCountByEndocrineTherapy',
     datatable_field: 'endocrine_therapy',
+    titleText: 'Cases',
     show: true,
   },
 ];
@@ -142,6 +148,11 @@ export const externalLinkIcon = {
 // --------------- Facet resetIcon link configuration --------------
 // Ideal size for resetIcon is 16x16 px
 export const resetIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg',
+  alt: 'Reset icon',
+  size: '12 px',
+};
+export const resetIconFilter = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg',
   alt: 'Reset icon',
   size: '12 px',

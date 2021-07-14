@@ -2,8 +2,9 @@ import React from 'react';
 import {
   Grid, withStyles, IconButton,
 } from '@material-ui/core';
+import { ToolTip } from 'bento-components';
 
-import { DeleteOutline as DeleteOutlineIcon, ArrowDropDown as ArrowDropDownIcon } from '@material-ui/icons';
+import { DeleteOutline as DeleteOutlineIcon, ArrowDropDown as ArrowDropDownIcon, Help as HelpIcon } from '@material-ui/icons';
 import CartHeader from './components/header/cartHeader';
 import CartBody from './components/body/cartBody';
 import CartFooter from './components/footer/cartFooter';
@@ -15,13 +16,11 @@ import {
 } from '../../bento/fileCentricCartWorkflowData';
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
-import Message from '../../components/Message';
 
 const cartView = ({
-  classes, data, fileIDs = [], defaultSortCoulmn, defaultSortDirection,
+  classes, data, fileIDs = [], defaultSortCoulmn, defaultSortDirection, updateSortOrder,
 }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
-  const [TopMessageStatus, setTopMessageStatus] = React.useState(false);
   const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
   const [userComments, setUserComments] = React.useState('');
   async function fetchData() {
@@ -36,10 +35,6 @@ const cartView = ({
     return fetchResult;
   }
 
-  function toggleMessageStatus(status) {
-    return status === 'close' ? setTopMessageStatus(false) : setTopMessageStatus(true);
-  }
-
   function toggleRemoveAllMessageStatus(status) {
     return status === 'close' ? setRemoveAllMessageStatus(false) : setRemoveAllMessageStatus(true);
   }
@@ -51,7 +46,6 @@ const cartView = ({
     closeDialogBox();
     deleteFromCart({ fileIds: fileIDs });
   }
-
   const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved
     ? fileIDs.length : '';
 
@@ -152,26 +146,30 @@ const cartView = ({
               {myFilesPageData.downButtonText}
               {' '}
             </button>
-            <IconButton aria-label="help" onFocus={() => toggleMessageStatus('top', 'open')} onMouseEnter={() => toggleMessageStatus('open')} onMouseOver={() => toggleMessageStatus('open')} onMouseLeave={() => toggleMessageStatus('close')}>
-              <img
-                onMouseEnter={() => toggleMessageStatus('open')}
-                onMouseOver={() => toggleMessageStatus('open')}
-                onFocus={() => toggleMessageStatus('top', 'open')}
-                src={myFilesPageData.tooltipIcon}
-                alt={myFilesPageData.tooltipAlt}
-                className={classes.helpIcon}
-              />
-            </IconButton>
-            { TopMessageStatus ? (
-              <div className={classes.messageTop}>
-                {' '}
-                <Message data={tooltipMessageData} />
-                {' '}
-              </div>
-            ) : ''}
+            <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={tooltipMessageData} arrow placement="bottom">
+              <IconButton
+                aria-label="help"
+                className={classes.helpIconButton}
+              >
+                {myFilesPageData.tooltipIcon ? (
+                  <img
+                    src={myFilesPageData.tooltipIcon}
+                    alt={myFilesPageData.tooltipAlt}
+                    className={classes.helpIcon}
+                  />
+                ) : (
+                  <HelpIcon
+                    className={classes.helpIcon}
+                    fontSize="small"
+                  />
+                )}
+              </IconButton>
+            </ToolTip>
+
           </div>
           <div id="table_selected_files" className={classes.tableWrapper}>
             <CartBody
+              updateSortOrder={updateSortOrder}
               data={data}
               deleteColumn={deleteColumn}
               fileIDs={fileIDs}

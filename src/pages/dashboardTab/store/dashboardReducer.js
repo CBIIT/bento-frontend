@@ -1,7 +1,7 @@
-/* eslint-disable */
 import _ from 'lodash';
 import {
   customCheckBox,
+  customSort,
   getFilters,
   filterData,
   getCheckBoxData,
@@ -158,7 +158,7 @@ function fetchDashboardTabForClearAll() {
       query: DASHBOARD_QUERY,
     })
     .then((result) => store.dispatch({ type: 'CLEAR_ALL', payload: _.cloneDeep(result) }))
-    .then((result)=> store.dispatch({ type: 'SORT_ALL_GROUP_CHECKBOX' }))
+    .then(() => store.dispatch({ type: 'SORT_ALL_GROUP_CHECKBOX' }))
     .catch((error) => store.dispatch(
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
@@ -208,9 +208,64 @@ function createFilterVariables(data) {
  * @return {json}
  */
 function clearGroup(data) {
-  let currentAllActiveFilters = getState().allActiveFilters;
+  const currentAllActiveFilters = getState().allActiveFilters;
   currentAllActiveFilters[data] = [];
   return currentAllActiveFilters;
+}
+
+export function clearSectionSort(groupName) {
+  store.dispatch({
+    type: 'CLEAR_SECTION_SORT',
+    payload: {
+      groupName,
+    },
+  });
+}
+
+/**
+ * Reducer for clear all
+ *
+ * @return distpatcher
+ */
+
+export function clearAllFilters() {
+  store.dispatch(fetchDashboardTabForClearAll());
+}
+
+/**
+ * Helper function to query and get filtered values for dashboard
+ * @param {object} payload ingeneral its a single filter variable used to set the checkbox
+ * @param {obj} currentAllFilterVariables gets the current active filters
+ * @return distpatcher
+ */
+function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
+  return client
+    .query({ // request to get the filtered subjects
+      query: FILTER_QUERY,
+      variables: { ...currentAllFilterVariables, first: 100 },
+    })
+    .then((result) => client.query({ // request to get the filtered group counts
+      query: FILTER_GROUP_QUERY,
+      variables: { subject_ids: result.data.searchSubjects.subjectIds },
+    })
+      .then((result2) => store.dispatch({
+        type: 'TOGGGLE_CHECKBOX_WITH_API',
+        payload: {
+          filter: payload,
+          allFilters: currentAllFilterVariables,
+          groups: _.cloneDeep(result2),
+          ..._.cloneDeep(result),
+        },
+      }))
+      .then(() => store.dispatch({
+        type: 'SORT_ALL_GROUP_CHECKBOX',
+      }))
+      .catch((error) => store.dispatch(
+        { type: 'DASHBOARDTAB_QUERY_ERR', error },
+      )))
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
 }
 
 /**
@@ -219,7 +274,7 @@ function clearGroup(data) {
  * @param {object} payload
  * @return distpatcher
  */
- export function resetGroupSelections(payload) {
+export function resetGroupSelections(payload) {
   return () => {
     const { dataField, groupName } = payload;
     const currentAllFilterVariables = clearGroup(dataField);
@@ -429,10 +484,10 @@ async function getFileIDs(
     // check if file
     if (files && files.length > 0) {
       return accumulator.concat(files.map((f) => {
-        if(typeof f.file_id !== 'undefined'){
-          return f.file_id
+        if (typeof f.file_id !== 'undefined') {
+          return f.file_id;
         }
-        return f
+        return f;
       }));
     }
     return accumulator;
@@ -529,42 +584,6 @@ function createSingleFilterVariables(payload) {
 }
 
 /**
- * Helper function to query and get filtered values for dashboard
- * @param {object} payload ingeneral its a single filter variable used to set the checkbox
- * @param {obj} currentAllFilterVariables gets the current active filters
- * @return distpatcher
- */
-function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
-  return client
-    .query({ // request to get the filtered subjects
-      query: FILTER_QUERY,
-      variables: { ...currentAllFilterVariables, first: 100 },
-    })
-    .then((result) => client.query({ // request to get the filtered group counts
-      query: FILTER_GROUP_QUERY,
-      variables: { subject_ids: result.data.searchSubjects.subjectIds },
-    })
-      .then((result2) => store.dispatch({
-        type: 'TOGGGLE_CHECKBOX_WITH_API',
-        payload: {
-          filter: payload,
-          allFilters: currentAllFilterVariables,
-          groups: _.cloneDeep(result2),
-          ..._.cloneDeep(result),
-        },
-      }))
-      .then(() => store.dispatch({
-        type: 'SORT_ALL_GROUP_CHECKBOX',
-      }))
-      .catch((error) => store.dispatch(
-        { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      )))
-    .catch((error) => store.dispatch(
-      { type: 'DASHBOARDTAB_QUERY_ERR', error },
-    ));
-}
-
-/**
  * Sort checkboxes by Checked
  *
  * @param {object} checkboxData
@@ -584,9 +603,10 @@ function sortByCheckboxByIsChecked(checkboxData) {
  */
 
 function sortByCheckboxItemsByAlphabet(checkboxData) {
-  checkboxData.sort(((a, b) => (a.name > b.name || -(a.name < b.name))));
-  return sortByCheckboxByIsChecked(checkboxData);
+  const sortCheckbox = customSort(checkboxData);
+  return sortByCheckboxByIsChecked(sortCheckbox);
 }
+
 /**
  * Sort checkboxes by Count
  *
@@ -597,16 +617,6 @@ function sortByCheckboxItemsByAlphabet(checkboxData) {
 function sortByCheckboxItemsByCount(checkboxData) {
   checkboxData.sort((a, b) => b.subjects - a.subjects);
   return sortByCheckboxByIsChecked(checkboxData);
-}
-
-/**
- * Reducer for clear all
- *
- * @return distpatcher
- */
-
-export function clearAllFilters() {
-  store.dispatch(fetchDashboardTabForClearAll());
 }
 
 /**
@@ -687,16 +697,7 @@ export function sortSection(groupName, sortBy) {
   });
 }
 
-export function clearSectionSort(groupName) {
-  store.dispatch({
-    type: 'CLEAR_SECTION_SORT',
-    payload: {
-      groupName,
-    }
-  });
-}
-
-export function sortAll(){
+export function sortAll() {
   store.dispatch({
     type: 'SORT_ALL_GROUP_CHECKBOX',
   });
@@ -732,41 +733,6 @@ export function getCountForAddAllFilesModal() {
   return { activeTab: currentState.currentActiveTab || tabIndex[2].title, count: numberCount };
 }
 
-
-/**
- *  Check table has selections.
- * @return {json}
- */
-export async function tableHasSelections() {
-  let selectedRowInfo = [];
-  let filteredIds = [];
-
-  // without the filters, the filteredIds is null
-  if (!hasFilter()) {
-    return selectedRowInfo.length > 0;
-  }
-  
-  const filteredNames = await getFileNamesByFileIds(getState().filteredFileIds);
-  switch (getState().currentActiveTab) {
-    case tabIndex[2].title:
-      filteredIds = filteredNames;
-      selectedRowInfo = getState().dataFileSelected.selectedRowInfo;
-
-      break;
-    case tabIndex[1].title:
-      filteredIds = getState().filteredSampleIds;
-      selectedRowInfo = getState().dataSampleSelected.selectedRowInfo;
-      break;
-    default:
-      filteredIds = getState().filteredSubjectIds;
-      selectedRowInfo = getState().dataCaseSelected.selectedRowInfo;
-  }
-
-  return selectedRowInfo.filter(
-    (value) => (filteredIds && filteredIds !== null ? filteredIds.includes(value) : false),
-  ).length > 0;
-}
-
 /**
  *  Check sidebar has filter selections.
  * return boolean
@@ -793,19 +759,38 @@ export async function getFileNamesByFileIds(fileIds) {
   return data;
 }
 
-
 /**
- *  Returns the functuion depend on current active tab
- * @return {func}
+ *  Check table has selections.
+ * @return {json}
  */
+export async function tableHasSelections() {
+  let selectedRowInfo = [];
+  let filteredIds = [];
 
- export function getTableRowSelectionEvent() {
-  const currentState = getState();
-  const tableRowSelectionEvent = currentState.currentActiveTab === tabIndex[2].title
-    ? setDataFileSelected
-    : currentState.currentActiveTab === tabIndex[1].title
-      ? setDataSampleSelected : setDataCaseSelected;
-  return tableRowSelectionEvent;
+  // without the filters, the filteredIds is null
+  if (!hasFilter()) {
+    return selectedRowInfo.length > 0;
+  }
+
+  const filteredNames = await getFileNamesByFileIds(getState().filteredFileIds);
+  switch (getState().currentActiveTab) {
+    case tabIndex[2].title:
+      filteredIds = filteredNames;
+      selectedRowInfo = getState().dataFileSelected.selectedRowInfo;
+
+      break;
+    case tabIndex[1].title:
+      filteredIds = getState().filteredSampleIds;
+      selectedRowInfo = getState().dataSampleSelected.selectedRowInfo;
+      break;
+    default:
+      filteredIds = getState().filteredSubjectIds;
+      selectedRowInfo = getState().dataCaseSelected.selectedRowInfo;
+  }
+
+  return selectedRowInfo.filter(
+    (value) => (filteredIds && filteredIds !== null ? filteredIds.includes(value) : false),
+  ).length > 0;
 }
 
 function setDataCaseSelected(result) {
@@ -819,7 +804,19 @@ function setDataFileSelected(result) {
 function setDataSampleSelected(result) {
   store.dispatch({ type: 'SET_SAMPLE_SELECTION', payload: result });
 }
+/**
+ *  Returns the functuion depend on current active tab
+ * @return {func}
+ */
 
+export function getTableRowSelectionEvent() {
+  const currentState = getState();
+  const tableRowSelectionEvent = currentState.currentActiveTab === tabIndex[2].title
+    ? setDataFileSelected
+    : currentState.currentActiveTab === tabIndex[1].title
+      ? setDataSampleSelected : setDataCaseSelected;
+  return tableRowSelectionEvent;
+}
 
 export function clearTableSelections() {
   store.dispatch({ type: 'CLEAR_TABLE_SELECTION' });
@@ -1038,10 +1035,10 @@ const reducers = {
     return { ...state, checkbox: { data } };
   },
   CLEAR_SECTION_SORT: (state, item) => {
-    let { sortByList = {} } = state;
+    const { sortByList = {} } = state;
     const { groupName } = item;
-    console.log(groupName);
-    sortByList[groupName] ? delete sortByList[groupName] : null ;
+    // eslint-disable-next-line
+    sortByList[groupName] ? delete sortByList[groupName] : null;
 
     return { ...state, sortByList };
   },

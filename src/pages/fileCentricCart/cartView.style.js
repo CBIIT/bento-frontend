@@ -1,4 +1,12 @@
 export default () => ({
+  customTooltip: {
+    border: '#03A383 1px solid',
+  },
+  customArrow: {
+    '&::before': {
+      border: '#03A383 1px solid',
+    },
+  },
   tableWrapper: {
     margin: 'auto 3% auto 3%',
     maxWidth: '100%',

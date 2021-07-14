@@ -7,6 +7,8 @@ const storeKey = 'cart';
 
 const initialState = {
   fileIds: [],
+  sortColumn: '',
+  sortDirection: '',
   error: '',
   isError: false,
 };
@@ -39,6 +41,11 @@ const subscribe = (f) => {
 export const addToCart = (item) => store.dispatch({ type: 'addFiles', payload: item });
 
 export const deleteFromCart = (item) => store.dispatch({ type: 'deleteFiles', payload: item });
+
+export const updateSortOrder = (newSortOrder) => {
+  localStorage.setItem('sortColumn', newSortOrder.sortColumn);
+  localStorage.setItem('sortDirection', newSortOrder.sortDirection);
+};
 
 export const initCart = () => {
 // load dashboard data.
@@ -83,23 +90,43 @@ const reducers = {
 
     // store ids in the localstorage.
     localStorage.setItem('CartFileIds', JSON.stringify(uniqueFileIds) || []);
-
     return {
       ...state,
       fileIds: uniqueFileIds,
+      sortColumn: localStorage.getItem('sortColumn'),
+      sortDirection: localStorage.getItem('sortDirection'),
     };
   },
   deleteFiles: (state, item) => {
     const fileIdsAfterDeletion = filterOutIDs(item.fileIds, state.fileIds);
     localStorage.setItem('CartFileIds', JSON.stringify(fileIdsAfterDeletion));
+    let sortColumnValue = localStorage.getItem('sortColumn');
+    let sortDirectionValue = localStorage.getItem('sortDirection');
+    // if all ids get removed, reset the sortorder value back to default
+    if (fileIdsAfterDeletion.length === 0) {
+      sortColumnValue = '';
+      sortDirectionValue = '';
+      localStorage.setItem('sortColumn', sortColumnValue);
+      localStorage.setItem('sortDirection', sortDirectionValue);
+      return {
+        ...state,
+        fileIds: fileIdsAfterDeletion,
+        sortColumn: sortColumnValue,
+        sortDirection: sortDirectionValue,
+      };
+    }
     return {
       ...state,
       fileIds: fileIdsAfterDeletion,
+      sortColumn: sortColumnValue,
+      sortDirection: sortDirectionValue,
     };
   },
   initCart: (state) => ({
     ...state,
     fileIds: JSON.parse(localStorage.getItem('CartFileIds')) || [],
+    sortColumn: localStorage.getItem('sortColumn'),
+    sortDirection: localStorage.getItem('sortDirection'),
   }),
   readyCart: (state) => state,
 };

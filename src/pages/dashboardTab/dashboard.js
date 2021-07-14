@@ -76,6 +76,7 @@ const Dashboard = ({
                             >
                               <ProgramSunburst
                                 data={data[widget.dataName]}
+                                titleText={widget.titleText || 'Cases'}
                                 width={250}
                                 height={173}
                                 innerRadius={40}
@@ -104,6 +105,7 @@ const Dashboard = ({
                             >
                               <CustomActiveDonut
                                 data={data[widget.dataName]}
+                                titleText={widget.titleText || 'Cases'}
                                 width={400}
                                 height={225}
                                 innerRadius={50}
@@ -222,8 +224,11 @@ const styles = (theme) => ({
   },
   sideBar: {
     width: '250px',
-    backgroundColor: '#FFFFFF',
-    borderRight: '1px solid #B1B1B1',
+    overflowX: 'hidden',
+    backgroundColor: 'transparent',
+    borderRight: 'thin solid #B1B1B1',
+    borderLeft: 'thin solid #B1B1B1',
+    overflow: 'auto',
     zIndex: '99',
   },
   statsBar: {
