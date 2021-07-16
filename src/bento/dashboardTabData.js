@@ -138,6 +138,8 @@ export const tabContainers = [
     paginationAPIField: 'sampleOverview',
     paginationAPIFieldDesc: 'sampleOverviewDesc',
     dataKey: 'sample_id',
+    defaultSortField: 'sample_id',
+    defaultSortDirection: 'asc',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',

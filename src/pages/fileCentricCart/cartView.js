@@ -18,7 +18,13 @@ import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
 
 const cartView = ({
-  classes, data, fileIDs = [], defaultSortCoulmn, defaultSortDirection, updateSortOrder,
+  classes,
+  data, fileIDs = [],
+  defaultSortCoulmn,
+  defaultSortDirection,
+  updateSortOrder,
+  paginationAPIField,
+  paginationAPIFieldDesc,
 }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
   const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
@@ -175,6 +181,8 @@ const cartView = ({
               fileIDs={fileIDs}
               defaultSortCoulmn={defaultSortCoulmn}
               defaultSortDirection={defaultSortDirection}
+              paginationAPIField={paginationAPIField}
+              paginationAPIFieldDesc={paginationAPIFieldDesc}
             />
             <CartFooter
               placeholder={myFilesPageData.textareaPlaceholder}

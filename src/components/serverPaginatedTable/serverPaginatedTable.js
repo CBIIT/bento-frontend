@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/state-in-constructor */
 import React from 'react';
@@ -20,6 +21,11 @@ class ServerPaginatedTableView extends React.Component {
     // Init an array updatedColumns - helps in tracking onViewColumnsChange
     updatedColumns: [],
   };
+
+  componentWillMount() {
+    this.setState({ sortOrder: { name: this.props.defaultSortCoulmn, direction: this.props.defaultSortDirection } });
+  }
+
 
   componentDidMount() {
     this.getData('', 0);

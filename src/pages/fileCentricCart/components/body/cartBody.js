@@ -21,6 +21,8 @@ const CartHeader = ({
   defaultSortCoulmn,
   defaultSortDirection,
   updateSortOrder,
+  paginationAPIField,
+  paginationAPIFieldDesc,
 }) => {
   function onRowSelectionChange(curr, allRowsSelected) {
     return (curr, allRowsSelected);
@@ -38,8 +40,8 @@ const CartHeader = ({
         count={fileIDs.length || 0}
         overview={GET_MY_CART_DATA_QUERY}
         overviewDesc={GET_MY_CART_DATA_QUERY_DESC}
-        paginationAPIField="filesInList"
-        paginationAPIFieldDesc="filesInListDesc"
+        paginationAPIField={paginationAPIField}
+        paginationAPIFieldDesc={paginationAPIFieldDesc}
         queryCustomVaribles={{ file_ids: fileIDs }}
         defaultSortCoulmn={defaultSortCoulmn}
         defaultSortDirection={defaultSortDirection}
