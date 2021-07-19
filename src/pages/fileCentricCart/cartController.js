@@ -17,7 +17,12 @@ const cartController = () => {
 
   if (loading) {
     return (
-      <CartView isLoading data="undefined" />
+      <CartView
+        isLoading
+        data="undefined"
+        defaultSortCoulmn={table.defaultSortField || ''}
+        defaultSortDirection={defaultSortDirection || table.defaultSortDirection}
+      />
     );
   }
 
