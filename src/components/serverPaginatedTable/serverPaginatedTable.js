@@ -23,6 +23,12 @@ class ServerPaginatedTableView extends React.Component {
 
   componentDidMount() {
     this.getData('', 0);
+    this.setState({
+      sortOrder: {
+        name: this.props.defaultSortCoulmn,
+        direction: this.props.defaultSortDirection,
+      },
+    });
   }
 
   componentDidUpdate(prevProps) {

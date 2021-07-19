@@ -33,7 +33,9 @@ const cartController = () => {
       fileIDs={ids}
       updateSortOrder={updateSortOrder}
       defaultSortCoulmn={table.defaultSortField || ''}
-      defaultSortDirection={defaultSortDirection}
+      defaultSortDirection={defaultSortDirection || table.defaultSortDirection}
+      paginationAPIField={table.paginationAPIField}
+      paginationAPIFieldDesc={table.paginationAPIFieldDesc}
       tableDownloadCSV={table.tableDownloadCSV}
       data={
         defaultSortDirection === 'desc'
