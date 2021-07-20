@@ -1,5 +1,5 @@
 import React from 'react';
-import { CircularProgress } from '@material-ui/core';
+// import { CircularProgress } from '@material-ui/core';
 import { useQuery } from '@apollo/client';
 import { getCart, updateSortOrder } from './store/cart';
 import { Typography } from '../../components/Wrappers/Wrappers';
@@ -11,7 +11,6 @@ const cartController = () => {
   const ids = cart.fileIds ? cart.fileIds : [];
   const defaultSortDirection = cart.sortDirection === '' ? table.defaultSortDirection || 'asc' : cart.sortDirection;
   const CART_QUERY = defaultSortDirection === 'desc' ? GET_MY_CART_DATA_QUERY_DESC : GET_MY_CART_DATA_QUERY;
-  const defaultSortColumnValue = cart.sortColumn === '' ? table.defaultSortField || '' : cart.sortColumn;
 
   const { loading, error, data } = useQuery(CART_QUERY, {
     variables: { file_ids: ids, order_by: cart.sortColumn === '' ? table.defaultSortField || '' : cart.sortColumn },
@@ -19,7 +18,13 @@ const cartController = () => {
 
   if (loading) {
     return (
-      <CircularProgress />
+      // <CircularProgress />
+      <CartView
+        isLoading
+        data="undefined"
+        defaultSortCoulmn={cart.sortColumn === '' ? table.defaultSortField || '' : cart.sortColumn}
+        defaultSortDirection={defaultSortDirection || table.defaultSortDirection}
+      />
     );
   }
 
@@ -34,7 +39,7 @@ const cartController = () => {
       isLoading={false}
       fileIDs={ids}
       updateSortOrder={updateSortOrder}
-      defaultSortCoulmn={defaultSortColumnValue}
+      defaultSortCoulmn={cart.sortColumn === '' ? table.defaultSortField || '' : cart.sortColumn}
       defaultSortDirection={defaultSortDirection || table.defaultSortDirection}
       paginationAPIField={table.paginationAPIField}
       paginationAPIFieldDesc={table.paginationAPIFieldDesc}
