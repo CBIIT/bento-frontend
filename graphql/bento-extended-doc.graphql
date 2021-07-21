@@ -936,6 +936,13 @@ type GroupList {
     subjects: [String]
 }
 
+type IdsLists {
+    subjectIds: [String]
+    sampleIds: [String]
+    fileIds: [String]
+    fileNames: [String]
+}
+
 schema {
     query: QueryType
 }
@@ -951,8 +958,12 @@ type QueryType {
     numberOfLabProcedures: Int  
     numberOfFiles: Int 
 
+    "Get lists of all subject ids, sample ids, and file ids"
+    idsLists: [IdsLists] 
+
     "Group counts"
     subjectCountByProgram(subject_ids: [String] = []): [GroupCount] 
+
     subjectCountByStudy(subject_ids: [String] = []): [GroupCount] 
 
     subjectCountByDiagnoses(subject_ids: [String] = []): [GroupCount] 
@@ -980,6 +991,37 @@ type QueryType {
     subjectCountByFileAssociation(subject_ids: [String] = []): [GroupCount] 
 
     subjectCountByFileType(subject_ids: [String] = []): [GroupCount] 
+
+    "Group counts from lists"
+    subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByStudyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByDiagnosesFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByRecurrenceScoreFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByTumorSizeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByTumorGradeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByErStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByPrStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByChemotherapyRegimenFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByEndocrineTherapyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByMenopauseStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByTissueTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByTissueCompositionFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByFileAssociationFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    subjectCountByFileTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
 
     armsByPrograms(subject_ids: [String] = []): [ProgramArms] 
 
