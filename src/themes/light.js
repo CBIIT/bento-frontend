@@ -363,9 +363,15 @@ export default {
         '&:nth-child(even)': {
           color: '#004C73',
         },
+        '&:nth-child(even) td': {
+          background: '#f5f5f5',
+        },
         '&:nth-child(odd)': {
           color: '#004C73 !important',
           background: '#f4f5f5 !important',
+        },
+        '&:nth-child(odd) td': {
+          background: '#fff',
         },
       },
     },
