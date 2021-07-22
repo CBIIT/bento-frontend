@@ -943,6 +943,15 @@ type IdsLists {
     fileNames: [String]
 }
 
+type NodeCounts {
+    numberOfPrograms: Int
+    numberOfStudies: Int
+    numberOfSubjects: Int
+    numberOfSamples: Int
+    numberOfLabProcedures: Int
+    numberOfFiles: Int
+}
+
 schema {
     query: QueryType
 }
@@ -992,7 +1001,8 @@ type QueryType {
 
     subjectCountByFileType(subject_ids: [String] = []): [GroupCount] 
 
-    "Group counts from lists"
+    "Group counts from lists of subject ids, file ids, and sample ids"
+
     subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
 
     subjectCountByStudyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
@@ -1022,6 +1032,8 @@ type QueryType {
     subjectCountByFileAssociationFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
 
     subjectCountByFileTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+
+    nodeCountsFromLists (subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): NodeCounts 
 
     armsByPrograms(subject_ids: [String] = []): [ProgramArms] 
 
