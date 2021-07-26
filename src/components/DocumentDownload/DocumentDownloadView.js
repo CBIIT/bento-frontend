@@ -3,7 +3,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { ToolTip } from 'bento-components';
-
+import { Link } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 
@@ -36,27 +36,40 @@ const fetchFileToDownload = (fileURL = '') => {
 const DocumentDownload = ({
   classes,
   fileSize = 0,
-  maxFileSize = 2000,
+  fileFormat = '',
+  maxFileSize = 200000,
   toolTipTextFileDownload = 'Download a copy of this file',
   toolTipTextFilePreview = 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
+  toolTipTextFileViewer = 'Jbrowse file viewer',
   iconFileDownload = '',
   iconFilePreview = '',
+  iconFileViewer = '',
   fileLocation = '',
 }) => (
   <>
     { fileSize < maxFileSize ? (
-      <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} arrow placement="bottom">
-        <div onClick={() => fetchFileToDownload(fileLocation)}>
+      fileFormat === 'bam' || fileFormat === 'bai' ? (
+        <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileViewer} arrow placement="bottom">
+          <Link
+            to={`/JBrowse/${fileLocation}`}
+          >
+            <CustomIcon imgSrc={iconFileViewer} />
+          </Link>
+        </ToolTip>
+      )
+        : (
+          <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} arrow placement="bottom">
+            <div onClick={() => fetchFileToDownload(fileLocation)}>
 
-          <CustomIcon imgSrc={iconFileDownload} />
-        </div>
-      </ToolTip>
-    ) : (
-      <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFilePreview} arrow placement="bottom">
-        <span>
-          <CustomIcon imgSrc={iconFilePreview} />
-        </span>
-      </ToolTip>
+              <CustomIcon imgSrc={iconFileDownload} />
+            </div>
+          </ToolTip>
+        )) : (
+          <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFilePreview} arrow placement="bottom">
+            <span>
+              <CustomIcon imgSrc={iconFilePreview} />
+            </span>
+          </ToolTip>
     )}
   </>
 );

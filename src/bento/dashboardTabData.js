@@ -315,7 +315,7 @@ export const tabContainers = [
         downloadDocument: true, // To indicate that column is document donwload
         documentDownloadProps: {
           // Max file size needs to bin Bytes to seperate two support file preview and download
-          maxFileSize: 315,
+          maxFileSize: 3150000000,
           // Tool top text for file download
           toolTipTextFileDownload: 'Download a copy of this file',
           // Tool top text for file preview
@@ -324,10 +324,14 @@ export const tabContainers = [
           fileSizeColumn: 'file_size',
           // datafield where file file id exists in the table which is used to get file location
           fileLocationColumn: 'file_id',
+          // datafield where file format exists in the table
+          fileFormatColumn: 'file_format',
           // file download icon
           iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
-          // file preview ico
+          // file preview icon
           iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
+          // file viewer icon JBrowse
+          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
         },
       },
       {
