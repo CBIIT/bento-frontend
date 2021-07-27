@@ -12,6 +12,7 @@ import {
   getColumns,
   CustomActiveDonut,
 } from 'bento-components';
+import globalData from '../../bento/globalData';
 import {
   pageTitle, table, externalLinkIcon,
   programDetailIcon, breadCrumb, aggregateCount,
@@ -312,7 +313,7 @@ const ProgramView = ({ classes, data, theme }) => {
                   <Typography>
                     <CustomDataTable
                       data={data.programDetail[table.dataField]}
-                      columns={getColumns(table, classes, data, externalLinkIcon, '/cases', redirectToArm)}
+                      columns={getColumns(table, classes, data, externalLinkIcon, '/cases', redirectToArm, '', globalData.replaceEmptyValueWith)}
                       options={getOptions(table, classes)}
                     />
                   </Typography>

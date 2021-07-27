@@ -243,12 +243,28 @@ type GroupList {
     subjects: [String]
 }
 
+type IdsLists {
+    subjectIds: [String]
+    sampleIds: [String]
+    fileIds: [String]
+    fileNames: [String]
+}
+
+type NodeCounts {
+    numberOfPrograms: Int
+    numberOfStudies: Int
+    numberOfSubjects: Int
+    numberOfSamples: Int
+    numberOfLabProcedures: Int
+    numberOfFiles: Int
+}
+
 schema {
     query: QueryType
 }
 
 type QueryType {
-    schemaVersion: String @cypher(statement: "RETURN '1.1.0'")
+    schemaVersion: String @cypher(statement: "RETURN '1.3.0'")
 
     "Simple counts"
     numberOfPrograms: Int @cypher(statement: "MATCH (n:program) return count(n)")
@@ -257,6 +273,22 @@ type QueryType {
     numberOfSamples: Int @cypher(statement: "MATCH (n:sample) return count(n)")
     numberOfLabProcedures: Int  @cypher(statement: "MATCH (n:laboratory_procedure) return count(n)")
     numberOfFiles: Int @cypher(statement: "MATCH (n:file) return count(n)")
+
+    "Get lists of all subject ids, sample ids, and file ids"
+    idsLists: [IdsLists] @cypher(statement: """
+        MATCH (samp:sample)
+        WITH COLLECT(DISTINCT  samp.sample_id) as samples
+        MATCH (ss:study_subject)
+        WITH COLLECT(DISTINCT ss.study_subject_id) as study_subjects, samples
+        MATCH (f:file)
+        WITH COLLECT(DISTINCT f.file_id) as fileIds, COLLECT(DISTINCT f.file_name) as fileNames, samples, study_subjects
+        RETURN {
+            sampleIds: samples,
+            fileIds: fileIds,
+            fileNames: fileNames,
+            subjectIds: study_subjects 
+        }
+    """, passThrough: true)
 
     "Group counts"
     subjectCountByProgram(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
@@ -267,6 +299,7 @@ type QueryType {
         RETURN { group: g.program_acronym,
                  subjects: count(ss) }
     """, passThrough: true)
+
     subjectCountByStudy(subject_ids: [String] = []): [GroupCount] @cypher(statement: """
         MATCH (g:study)
         OPTIONAL MATCH (g)<--(ss:study_subject)
@@ -377,6 +410,225 @@ type QueryType {
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
         RETURN {group: f.file_type, subjects: count(DISTINCT f)}
     """, passThrough: true)
+
+    "Group counts from lists of subject ids, file ids, and sample ids"
+
+    subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (p:program)<--(:study)<--(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN { 
+            group: p.program_acronym,
+            subjects: COUNT(DISTINCT ss) 
+        }
+    """, passThrough: true)
+
+    subjectCountByStudyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (s:study)<--(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN { 
+            group: s.study_acronym + ': ' + s.study_short_description,
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByDiagnosesFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (d:diagnosis)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN { 
+            group: ss.disease_subtype, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByRecurrenceScoreFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (sf:stratification_factor)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(f)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {   
+            group: sf.grouped_recurrence_score, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByTumorSizeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (d:diagnosis)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: d.tumor_size_group, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByTumorGradeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (d:diagnosis)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: d.tumor_grade, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByErStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (d:diagnosis)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: d.er_status, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByPrStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (d:diagnosis)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: d.pr_status, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByChemotherapyRegimenFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (tp:therapeutic_procedure)-->(:diagnosis)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: tp.chemotherapy_regimen, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByEndocrineTherapyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (tp:therapeutic_procedure)-->(:diagnosis)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: tp.endocrine_therapy_type, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByMenopauseStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (demo:demographic_data)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: demo.menopause_status, 
+            subjects: COUNT(DISTINCT ss)
+        }
+    """, passThrough: true)
+
+    subjectCountByTissueTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (samp:sample)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (samp)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: samp.tissue_type, 
+            subjects: COUNT(DISTINCT samp)
+        }
+    """, passThrough: true)
+
+    subjectCountByTissueCompositionFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (samp:sample)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (samp)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN {
+            group: samp.composition, 
+            subjects: COUNT(DISTINCT samp)
+        }
+    """, passThrough: true)
+
+    subjectCountByFileAssociationFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (f:file)-->(parent)
+            WHERE NOT (parent:laboratory_procedure)
+            AND (size($file_ids) = 0 OR f.file_id IN $file_ids)
+        MATCH (f)-->(samp:sample)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (samp)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        RETURN {
+            group: head(labels(parent)), 
+            subjects: COUNT(DISTINCT f)
+        }
+    """, passThrough: true)
+
+    subjectCountByFileTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
+        MATCH (f:file)-->(parent)
+            WHERE NOT (parent:laboratory_procedure)
+            AND (size($file_ids) = 0 OR f.file_id IN $file_ids)
+        MATCH (f)-->(samp:sample)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (samp)-->(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        RETURN {
+            group: f.file_type, 
+            subjects: COUNT(DISTINCT f)
+        }
+    """, passThrough: true)
+
+    nodeCountsFromLists (subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): NodeCounts @cypher(statement: """
+        // Filtering subjects
+        MATCH(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp)-->(ss:study_subject)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids) 
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids)
+        OPTIONAL MATCH (p:program)<--(s:study)<--(ss)
+        OPTIONAL MATCH (f)-->(lp:laboratory_procedure)
+        RETURN  {
+            numberOfPrograms: COUNT(DISTINCT p.program_acronym),
+            numberOfStudies: COUNT(DISTINCT s.study_acronym),
+            numberOfSubjects: COUNT(DISTINCT ss.study_subject_id),
+            numberOfLabProcedures: COUNT(DISTINCT lp.laboratory_procedure_id),
+            numberOfSamples: COUNT(DISTINCT samp.sample_id),
+            numberOfFiles: COUNT(DISTINCT f)
+        }
+    """, passThrough:true)
 
     armsByPrograms(subject_ids: [String] = []): [ProgramArms] @cypher(statement: """
         MATCH (p:program)
