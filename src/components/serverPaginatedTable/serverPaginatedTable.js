@@ -143,11 +143,14 @@ class ServerPaginatedTableView extends React.Component {
             localPage = parseInt(localStorage.getItem('page'), 10);
             if (srcData.length === 0 && localPage > 0 && this.props.updateSortOrder) {
               localStorage.setItem('page', String(localPage - 1));
-              const offset = (localPage - 1) * this.state.rowsPerPage;
-              const sortOrderXhr = { name: localStorage.getItem('sortColumn'), direction: localStorage.getItem('sortDirection') };
-              this.fetchData(offset, this.state.rowsPerPage, sortOrderXhr).then((res) => {
+              const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
+              const offset = (localPage - 1) * localRowsPerPage;
+              const sortOrderXhr = {
+                name: localStorage.getItem('sortColumn'),
+                direction: localStorage.getItem('sortDirection'),
+              };
+              this.fetchData(offset, localRowsPerPage, sortOrderXhr).then((res) => {
                 data = res;
-                // console.log(srcData);
               });
             }
           }
@@ -214,18 +217,24 @@ class ServerPaginatedTableView extends React.Component {
   async fetchData(offset, rowsRequired, sortOrder = {}) {
     let sortDirection = 'asc';
     let sortColumn = 'arm';
-
+    let offsetReal = offset;
+    let page = offset / rowsRequired;
+    // if the offset value is bigger that the count, then change offset value
+    if (offset > this.props.count) {
+      page = Math.floor(this.props.count / rowsRequired);
+      offsetReal = page * rowsRequired;
+    }
     sortDirection = Object.keys(sortOrder).length === 0 ? this.props.defaultSortDirection || 'asc' : sortOrder.direction;
     sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
     if (this.props.updateSortOrder) {
-      localStorage.setItem('page', String(offset / rowsRequired));
+      localStorage.setItem('page', String(page));
       localStorage.setItem('rowsPerPage', String(rowsRequired));
     }
     const fetchResult = await client
       .query({
         query: sortDirection !== 'asc' ? this.props.overviewDesc : this.props.overview,
         variables: {
-          offset,
+          offset: offsetReal,
           first: this.props.count < rowsRequired ? this.props.count : rowsRequired,
           order_by: sortColumn,
           ...this.props.queryCustomVaribles,
