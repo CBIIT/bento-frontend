@@ -29,6 +29,14 @@ class ServerPaginatedTableView extends React.Component {
         direction: this.props.defaultSortDirection,
       },
     });
+    if (this.props.updateSortOrder) {
+      if (localStorage.getItem('rowsPerPage') !== null) {
+        const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
+        this.setState({
+          rowsPerPage: localRowsPerPage,
+        });
+      }
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -41,6 +49,16 @@ class ServerPaginatedTableView extends React.Component {
   getData = (url, page) => {
     this.xhrRequest(url, page).then((res) => {
       this.setState({ data: res.data, count: this.props.count });
+      if (this.props.updateSortOrder) {
+        if (localStorage.getItem('rowsPerPage') !== null) {
+          const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
+          if (localRowsPerPage !== this.state.rowsPerPage) {
+            this.setState({
+              rowsPerPage: localRowsPerPage,
+            });
+          }
+        }
+      }
     });
   }
 
@@ -56,12 +74,19 @@ class ServerPaginatedTableView extends React.Component {
 
   sort = (page, sortOrder) => {
     this.setState({ isLoading: true });
+    let rowsPerPageSort = this.state.rowsPerPage;
     if (this.props.updateSortOrder) {
       const sortDirection = sortOrder.direction;
       const sortColumn = sortOrder.name;
+      if (localStorage.getItem('rowsPerPage') !== null) {
+        const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
+        if (localRowsPerPage !== rowsPerPageSort) {
+          rowsPerPageSort = localRowsPerPage;
+        }
+      }
       this.props.updateSortOrder({ sortColumn, sortDirection });
     }
-    this.fetchData(page * this.state.rowsPerPage, this.state.rowsPerPage, sortOrder).then((res) => {
+    this.fetchData(page * rowsPerPageSort, rowsPerPageSort, sortOrder).then((res) => {
       this.rowsSelectedTrigger(res);
       // call setUpdatedColumnsDisplay to update columns display true/false after changePage
       if (this.props.options.viewColumns && this.state.updatedColumns.length) {
@@ -71,6 +96,7 @@ class ServerPaginatedTableView extends React.Component {
         isLoading: false,
         sortOrder,
         data: res,
+        rowsPerPage: rowsPerPageSort,
       });
     });
   }
@@ -79,9 +105,9 @@ class ServerPaginatedTableView extends React.Component {
     xhrRequest = (url, page, sortOrder = {}) => new Promise((resolve) => {
       // mock page data
       let fullData = this.getSrcData() !== {} ? this.getSrcData() : [{}];
+      // console.log(fullData);
       // mock record count from server - normally this would be a number attached to the return data
       const total = 60;
-
       const sortField = sortOrder.name;
       const sortDir = sortOrder.direction;
 
@@ -97,16 +123,35 @@ class ServerPaginatedTableView extends React.Component {
       }
 
       // eslint-disable-next-line max-len
-      const srcData = fullData.slice(page * this.state.rowsPerPage, (page + 1) * this.state.rowsPerPage);
-      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage) {
+      let localPage = page;
+      /* const srcData = fullData.slice(
+        page * this.state.rowsPerPage,
+        (page + 1) * this.state.rowsPerPage,
+      ); */
+      const srcData = fullData;
+      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage && localStorage.getItem('rowsPerPage') === null) {
         this.changePage(0, {});
       } else {
-        if (this.props.count < this.state.rowsPerPage) {
+        if (this.props.count < 10) {
           this.setState({
             rowsPerPage: 10,
           });
         }
-        const data = srcData;
+        let data = srcData;
+        if (this.props.updateSortOrder) {
+          if (localStorage.getItem('rowsPerPage') !== null) {
+            localPage = parseInt(localStorage.getItem('page'), 10);
+            if (srcData.length === 0 && localPage > 0 && this.props.updateSortOrder) {
+              localStorage.setItem('page', String(localPage - 1));
+              const offset = (localPage - 1) * this.state.rowsPerPage;
+              const sortOrderXhr = { name: localStorage.getItem('sortColumn'), direction: localStorage.getItem('sortDirection') };
+              this.fetchData(offset, this.state.rowsPerPage, sortOrderXhr).then((res) => {
+                data = res;
+                // console.log(srcData);
+              });
+            }
+          }
+        }
         setTimeout(() => {
           resolve({
             data, total, page,
@@ -172,6 +217,10 @@ class ServerPaginatedTableView extends React.Component {
 
     sortDirection = Object.keys(sortOrder).length === 0 ? this.props.defaultSortDirection || 'asc' : sortOrder.direction;
     sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
+    if (this.props.updateSortOrder) {
+      localStorage.setItem('page', String(offset / rowsRequired));
+      localStorage.setItem('rowsPerPage', String(rowsRequired));
+    }
     const fetchResult = await client
       .query({
         query: sortDirection !== 'asc' ? this.props.overviewDesc : this.props.overview,
@@ -188,8 +237,18 @@ class ServerPaginatedTableView extends React.Component {
 
   render() {
     const {
-      data, count, isLoading, rowsPerPage, sortOrder, className,
+      data, count, isLoading, sortOrder, className,
     } = this.state;
+    const stateRowsPerPage = this.state.rowsPerPage;
+    let rowsPerPage = stateRowsPerPage;
+    let localPage = 0;
+    if (this.props.updateSortOrder) {
+      if (localStorage.getItem('rowsPerPage') !== null) {
+        const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
+        rowsPerPage = localRowsPerPage;
+        localPage = parseInt(localStorage.getItem('page'), 10);
+      }
+    }
     const options1 = {
       filterType: 'dropdown',
       responsive: 'stacked',
@@ -273,6 +332,9 @@ class ServerPaginatedTableView extends React.Component {
         return '';
       },
     };
+    if (this.props.updateSortOrder) {
+      options1.page = localPage;
+    }
     return (
       <div>
         <Backdrop

@@ -108,6 +108,8 @@ const reducers = {
       sortDirectionValue = '';
       localStorage.setItem('sortColumn', sortColumnValue);
       localStorage.setItem('sortDirection', sortDirectionValue);
+      localStorage.setItem('page', '0');
+      localStorage.setItem('rowsPerPage', '10');
       return {
         ...state,
         fileIds: fileIdsAfterDeletion,
