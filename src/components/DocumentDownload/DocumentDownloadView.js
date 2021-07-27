@@ -47,29 +47,27 @@ const DocumentDownload = ({
   fileLocation = '',
 }) => (
   <>
-    { fileSize < maxFileSize ? (
-      fileFormat === 'bam' || fileFormat === 'bai' ? (
-        <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileViewer} arrow placement="bottom">
-          <Link
-            to={`/JBrowse/${fileLocation}`}
-          >
-            <CustomIcon imgSrc={iconFileViewer} />
-          </Link>
-        </ToolTip>
-      )
-        : (
-          <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} arrow placement="bottom">
-            <div onClick={() => fetchFileToDownload(fileLocation)}>
+    { fileFormat === 'bam' || fileFormat === 'bai' ? (
+      <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileViewer} arrow placement="bottom">
+        <Link
+          to={`/JBrowse/${fileLocation}`}
+        >
+          <CustomIcon imgSrc={iconFileViewer} />
+        </Link>
+      </ToolTip>
+    ) : fileSize < maxFileSize ? (
+      <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} arrow placement="bottom">
+        <div onClick={() => fetchFileToDownload(fileLocation)}>
 
-              <CustomIcon imgSrc={iconFileDownload} />
-            </div>
-          </ToolTip>
-        )) : (
-          <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFilePreview} arrow placement="bottom">
-            <span>
-              <CustomIcon imgSrc={iconFilePreview} />
-            </span>
-          </ToolTip>
+          <CustomIcon imgSrc={iconFileDownload} />
+        </div>
+      </ToolTip>
+    ) : (
+      <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFilePreview} arrow placement="bottom">
+        <span>
+          <CustomIcon imgSrc={iconFilePreview} />
+        </span>
+      </ToolTip>
     )}
   </>
 );
