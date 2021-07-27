@@ -45,12 +45,13 @@ const DocumentDownload = ({
   iconFilePreview = '',
   iconFileViewer = '',
   fileLocation = '',
+  caseId = '',
 }) => (
   <>
     { fileFormat === 'bam' || fileFormat === 'bai' ? (
       <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileViewer} arrow placement="bottom">
         <Link
-          to={`/JBrowse/${fileLocation}`}
+          to={`/fileViewer/${caseId}`}
         >
           <CustomIcon imgSrc={iconFileViewer} />
         </Link>

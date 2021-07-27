@@ -52,7 +52,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/case/:id" component={CaseDetail} />
             <Route path="/arm/:id" component={ArmDetail} />
             <Route path="/JBrowse" component={JBrowse} />
-            <Route path="/JBrowse/:id" component={JBrowseDetail} />
+            <Route path="/fileViewer/:id" component={JBrowseDetail} />
             {aboutPageRoutes.map(
               (aboutPageRoute, index) => (
                 <Route

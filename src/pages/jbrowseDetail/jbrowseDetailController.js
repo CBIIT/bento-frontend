@@ -5,7 +5,7 @@ import JBrowseDetailView from './jbrowseDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import {
   GET_CASE_DETAIL_DATA_QUERY, dataRoot, caseIDField, filesOfSamples,
-} from '../../bento/caseDetailData';
+} from '../../bento/jbrowseDetailData';
 
 const CaseDetailContainer = ({ match }) => {
   const { loading, error, data } = useQuery(GET_CASE_DETAIL_DATA_QUERY, {
