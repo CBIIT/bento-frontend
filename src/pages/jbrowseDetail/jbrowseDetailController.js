@@ -4,7 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import JBrowseDetailView from './jbrowseDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import {
-  GET_JBROWSE_DETAIL_DATA_QUERY, dataRoot, caseIDField, filesOfSamples,
+  GET_JBROWSE_DETAIL_DATA_QUERY, caseIDField,
 } from '../../bento/jbrowseDetailData';
 
 const JbrowseDetailContainer = ({ match }) => {
@@ -13,7 +13,7 @@ const JbrowseDetailContainer = ({ match }) => {
   });
 
   if (loading) return <CircularProgress />;
-  if (error || !data || data[dataRoot][caseIDField] !== match.params.id) {
+  if (error || !data) {
     return (
       <Typography variant="h5" color="error" size="sm">
         {error ? `An error has occurred in loading stats component: ${error}` : 'Recieved wrong data'}
@@ -21,7 +21,7 @@ const JbrowseDetailContainer = ({ match }) => {
     );
   }
 
-  return <JBrowseDetailView data={data[dataRoot]} filesOfSamples={data[filesOfSamples]} />;
+  return <JBrowseDetailView data={data} />;
 };
 
 export default JbrowseDetailContainer;
