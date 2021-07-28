@@ -4,11 +4,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import JBrowseDetailView from './jbrowseDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import {
-  GET_CASE_DETAIL_DATA_QUERY, dataRoot, caseIDField, filesOfSamples,
+  GET_JBROWSE_DETAIL_DATA_QUERY, dataRoot, caseIDField, filesOfSamples,
 } from '../../bento/jbrowseDetailData';
 
-const CaseDetailContainer = ({ match }) => {
-  const { loading, error, data } = useQuery(GET_CASE_DETAIL_DATA_QUERY, {
+const JbrowseDetailContainer = ({ match }) => {
+  const { loading, error, data } = useQuery(GET_JBROWSE_DETAIL_DATA_QUERY, {
     variables: { [caseIDField]: match.params.id },
   });
 
@@ -24,4 +24,4 @@ const CaseDetailContainer = ({ match }) => {
   return <JBrowseDetailView data={data[dataRoot]} filesOfSamples={data[filesOfSamples]} />;
 };
 
-export default CaseDetailContainer;
+export default JbrowseDetailContainer;
