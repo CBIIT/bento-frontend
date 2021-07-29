@@ -324,10 +324,16 @@ export const tabContainers = [
           fileSizeColumn: 'file_size',
           // datafield where file file id exists in the table which is used to get file location
           fileLocationColumn: 'file_id',
+          // datafield where file format exists in the table
+          fileFormatColumn: 'file_format',
+          // datafield where file case id exists in the table which is used to get file information
+          caseIdColumn: 'subject_id',
           // file download icon
           iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
-          // file preview ico
+          // file preview icon
           iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
+          // file viewer icon JBrowse
+          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
         },
       },
       {
