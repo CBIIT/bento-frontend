@@ -34,7 +34,6 @@ const JbrowseDetailContainer = ({ match }) => {
         },
       })
         .then((response) => {
-          console.log(response.url);
           acc.push({
             file_location: response.url,
             file_type: file.file_type,
@@ -43,8 +42,6 @@ const JbrowseDetailContainer = ({ match }) => {
     }
     return acc;
   }, []);
-
-  console.log(bamFiles);
 
   return <JBrowseDetailView bamFiles={bamFiles} />;
 };
