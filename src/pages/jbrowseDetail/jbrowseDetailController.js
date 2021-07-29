@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -6,6 +7,9 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import {
   GET_JBROWSE_DETAIL_DATA_QUERY, caseIDField,
 } from '../../bento/jbrowseDetailData';
+import env from '../../utils/env';
+
+const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
 const JbrowseDetailContainer = ({ match }) => {
   const { loading, error, data } = useQuery(GET_JBROWSE_DETAIL_DATA_QUERY, {
@@ -21,7 +25,28 @@ const JbrowseDetailContainer = ({ match }) => {
     );
   }
 
-  return <JBrowseDetailView data={data} />;
+  const bamFiles = data.subjectDetail.files.reduce((acc, file) => {
+    if (file.file_type === 'bam' || file.file_type === 'bai') {
+      fetch(`${FILE_SERVICE_API}${file.file_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/pdf',
+        },
+      })
+        .then((response) => {
+          console.log(response.url);
+          acc.push({
+            file_location: response.url,
+            file_type: file.file_type,
+          });
+        });
+    }
+    return acc;
+  }, []);
+
+  console.log(bamFiles);
+
+  return <JBrowseDetailView bamFiles={bamFiles} />;
 };
 
 export default JbrowseDetailContainer;

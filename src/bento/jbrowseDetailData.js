@@ -10,7 +10,8 @@ const GET_JBROWSE_DETAIL_DATA_QUERY = gql`
     subjectDetail(subject_id: $subject_id) {
       subject_id
       files {
-        file_name
+        file_type
+        file_id
       }
     }
   }
