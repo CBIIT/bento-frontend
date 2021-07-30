@@ -13,6 +13,7 @@ import CSVDownloadToolbar from './components/CSVDownloadCustomToolbar';
 class ServerPaginatedTableView extends React.Component {
   state = {
     count: 1,
+    page: 0,
     rowsPerPage: 10,
     sortOrder: {},
     data: 'undefined',
@@ -30,10 +31,12 @@ class ServerPaginatedTableView extends React.Component {
       },
     });
     if (this.props.updateSortOrder) {
-      if (localStorage.getItem('rowsPerPage') !== null) {
-        const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
+      if (this.props.localRowsPerPage !== null) {
+        const localRowsPerPage = parseInt(this.props.localRowsPerPage, 10);
+        const localPage = parseInt(this.props.localPage, 10);
         this.setState({
           rowsPerPage: localRowsPerPage,
+          page: localPage,
         });
       }
     }
@@ -50,11 +53,17 @@ class ServerPaginatedTableView extends React.Component {
     this.xhrRequest(url, page).then((res) => {
       this.setState({ data: res.data, count: this.props.count });
       if (this.props.updateSortOrder) {
-        if (localStorage.getItem('rowsPerPage') !== null) {
-          const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
+        if (this.props.localRowsPerPage !== null) {
+          const localRowsPerPage = parseInt(this.props.localRowsPerPage, 10);
+          const localPage = parseInt(this.props.localPage, 10);
           if (localRowsPerPage !== this.state.rowsPerPage) {
             this.setState({
               rowsPerPage: localRowsPerPage,
+            });
+          }
+          if (localPage !== this.state.page) {
+            this.setState({
+              page: localPage,
             });
           }
         }
@@ -74,16 +83,10 @@ class ServerPaginatedTableView extends React.Component {
 
   sort = (page, sortOrder) => {
     this.setState({ isLoading: true });
-    let rowsPerPageSort = this.state.rowsPerPage;
+    const rowsPerPageSort = this.state.rowsPerPage;
     if (this.props.updateSortOrder) {
       const sortDirection = sortOrder.direction;
       const sortColumn = sortOrder.name;
-      if (localStorage.getItem('rowsPerPage') !== null) {
-        const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
-        if (localRowsPerPage !== rowsPerPageSort) {
-          rowsPerPageSort = localRowsPerPage;
-        }
-      }
       this.props.updateSortOrder({ sortColumn, sortDirection });
     }
     this.fetchData(page * rowsPerPageSort, rowsPerPageSort, sortOrder).then((res) => {
@@ -123,13 +126,13 @@ class ServerPaginatedTableView extends React.Component {
       }
 
       // eslint-disable-next-line max-len
-      let localPage = page;
+      const localPage = page;
       /* const srcData = fullData.slice(
         page * this.state.rowsPerPage,
         (page + 1) * this.state.rowsPerPage,
       ); */
       const srcData = fullData;
-      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage && localStorage.getItem('rowsPerPage') === null) {
+      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage && this.props.localRowsPerPage === null) {
         this.changePage(0, {});
       } else {
         if (this.props.count < 10) {
@@ -137,27 +140,11 @@ class ServerPaginatedTableView extends React.Component {
             rowsPerPage: 10,
           });
         }
-        let data = srcData;
-        if (this.props.updateSortOrder) {
-          if (localStorage.getItem('rowsPerPage') !== null) {
-            localPage = parseInt(localStorage.getItem('page'), 10);
-            if (srcData.length === 0 && localPage > 0 && this.props.updateSortOrder) {
-              localStorage.setItem('page', String(localPage - 1));
-              const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
-              const offset = (localPage - 1) * localRowsPerPage;
-              const sortOrderXhr = {
-                name: localStorage.getItem('sortColumn'),
-                direction: localStorage.getItem('sortDirection'),
-              };
-              this.fetchData(offset, localRowsPerPage, sortOrderXhr).then((res) => {
-                data = res;
-              });
-            }
-          }
-        }
+        const data = srcData;
+        localStorage.setItem('dataLength', String(srcData.length));
         setTimeout(() => {
           resolve({
-            data, total, page,
+            data, total, localPage,
           });
         }, 500);
       }
@@ -196,6 +183,7 @@ class ServerPaginatedTableView extends React.Component {
         isLoading: false,
         sortOrder,
         data: res,
+        page,
       });
     });
   };
@@ -220,15 +208,26 @@ class ServerPaginatedTableView extends React.Component {
     let offsetReal = offset;
     let page = offset / rowsRequired;
     // if the offset value is bigger that the count, then change offset value
-    if (offset > this.props.count) {
-      page = Math.floor(this.props.count / rowsRequired);
+    if (offset >= this.props.count) {
+      if (this.props.count % rowsRequired !== 0) {
+        page = Math.floor(this.props.count / rowsRequired);
+      } else {
+        page = Math.floor(this.props.count / rowsRequired) - 1;
+      }
       offsetReal = page * rowsRequired;
+      localStorage.setItem('page', String(page));
+      this.setState({
+        page,
+      });
     }
     sortDirection = Object.keys(sortOrder).length === 0 ? this.props.defaultSortDirection || 'asc' : sortOrder.direction;
     sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
     if (this.props.updateSortOrder) {
       localStorage.setItem('page', String(page));
       localStorage.setItem('rowsPerPage', String(rowsRequired));
+      this.setState({
+        page,
+      });
     }
     const fetchResult = await client
       .query({
@@ -249,15 +248,8 @@ class ServerPaginatedTableView extends React.Component {
       data, count, isLoading, sortOrder, className,
     } = this.state;
     const stateRowsPerPage = this.state.rowsPerPage;
-    let rowsPerPage = stateRowsPerPage;
-    let localPage = 0;
-    if (this.props.updateSortOrder) {
-      if (localStorage.getItem('rowsPerPage') !== null) {
-        const localRowsPerPage = parseInt(localStorage.getItem('rowsPerPage'), 10);
-        rowsPerPage = localRowsPerPage;
-        localPage = parseInt(localStorage.getItem('page'), 10);
-      }
-    }
+    const rowsPerPage = stateRowsPerPage;
+    const localPage = this.state.page;
     const options1 = {
       filterType: 'dropdown',
       responsive: 'stacked',
