@@ -1001,6 +1001,8 @@ type QueryType {
 
     subjectCountByFileType(subject_ids: [String] = []): [GroupCount] 
 
+    armsByPrograms(subject_ids: [String] = []): [ProgramArms] 
+
     "Group counts from lists of subject ids, file ids, and sample ids"
 
     subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
@@ -1035,7 +1037,9 @@ type QueryType {
 
     nodeCountsFromLists (subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): NodeCounts 
 
-    armsByPrograms(subject_ids: [String] = []): [ProgramArms] 
+    armsByProgramsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [ProgramArms] 
+
+    subjectsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [String] 
 
     "Facet search counts"
     filterSubjectCountByProgram(
