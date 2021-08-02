@@ -141,6 +141,9 @@ class ServerPaginatedTableView extends React.Component {
           });
         }
         const data = srcData;
+        if (this.props.updateSortOrder) {
+          localStorage.setItem('dataLength', String(srcData.length));
+        }
         setTimeout(() => {
           resolve({
             data, total, localPage,
@@ -208,11 +211,8 @@ class ServerPaginatedTableView extends React.Component {
     let page = offset / rowsRequired;
     // if the offset value is bigger that the count, then change offset value
     if (offset >= this.props.count) {
-      if (this.props.count % rowsRequired !== 0) {
-        page = Math.floor(this.props.count / rowsRequired);
-      } else {
-        page = Math.floor(this.props.count / rowsRequired) - 1;
-      }
+      page = this.props.count % rowsRequired !== 0 ? Math.floor(this.props.count / rowsRequired)
+        : Math.floor(this.props.count / rowsRequired) - 1;
       offsetReal = page * rowsRequired;
       localStorage.setItem('page', String(page));
       this.setState({
