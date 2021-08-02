@@ -141,7 +141,6 @@ class ServerPaginatedTableView extends React.Component {
           });
         }
         const data = srcData;
-        localStorage.setItem('dataLength', String(srcData.length));
         setTimeout(() => {
           resolve({
             data, total, localPage,
@@ -240,16 +239,16 @@ class ServerPaginatedTableView extends React.Component {
         },
       })
       .then((result) => (sortDirection !== 'asc' ? result.data[this.props.paginationAPIFieldDesc] : result.data[this.props.paginationAPIField]));
+    if (this.props.updateSortOrder) {
+      localStorage.setItem('dataLength', String(fetchResult.length));
+    }
     return fetchResult;
   }
 
   render() {
     const {
-      data, count, isLoading, sortOrder, className,
+      data, count, isLoading, sortOrder, className, rowsPerPage, page,
     } = this.state;
-    const stateRowsPerPage = this.state.rowsPerPage;
-    const rowsPerPage = stateRowsPerPage;
-    const localPage = this.state.page;
     const options1 = {
       filterType: 'dropdown',
       responsive: 'stacked',
@@ -334,7 +333,7 @@ class ServerPaginatedTableView extends React.Component {
       },
     };
     if (this.props.updateSortOrder) {
-      options1.page = localPage;
+      options1.page = page;
     }
     return (
       <div>
