@@ -264,7 +264,7 @@ schema {
 }
 
 type QueryType {
-    schemaVersion: String @cypher(statement: "RETURN '1.3.0'")
+    schemaVersion: String @cypher(statement: "RETURN '1.4.0'")
 
     "Simple counts"
     numberOfPrograms: Int @cypher(statement: "MATCH (n:program) return count(n)")
@@ -411,6 +411,21 @@ type QueryType {
         RETURN {group: f.file_type, subjects: count(DISTINCT f)}
     """, passThrough: true)
 
+    armsByPrograms(subject_ids: [String] = []): [ProgramArms] @cypher(statement: """
+        MATCH (p:program)
+        OPTIONAL MATCH (p)<-[:study_of_program]-()<-[:study_subject_of_study]-(ss)
+          WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        WITH p, COUNT(DISTINCT ss) AS caseSize
+        OPTIONAL MATCH (p)<-[:study_of_program]-(s)<-[:study_subject_of_study]-(ss)
+          WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        WITH
+            p, caseSize,
+            {arm: s.study_acronym, caseSize: COUNT(DISTINCT ss), size: COUNT(DISTINCT ss)} AS s
+        RETURN  { program: p.program_acronym,
+                  caseSize: caseSize,
+                  children: collect(s) }
+    """, passThrough: true)
+
     "Group counts from lists of subject ids, file ids, and sample ids"
 
     subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] @cypher(statement: """
@@ -457,7 +472,7 @@ type QueryType {
             WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
         MATCH (samp:sample)-->(ss)
             WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
-        MATCH (f:file)-->(f)
+        MATCH (f:file)-->(samp)
             WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
         RETURN {   
             group: sf.grouped_recurrence_score, 
@@ -630,19 +645,36 @@ type QueryType {
         }
     """, passThrough:true)
 
-    armsByPrograms(subject_ids: [String] = []): [ProgramArms] @cypher(statement: """
-        MATCH (p:program)
-        OPTIONAL MATCH (p)<-[:study_of_program]-()<-[:study_subject_of_study]-(ss)
-          WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        WITH p, COUNT(DISTINCT ss) AS caseSize
-        OPTIONAL MATCH (p)<-[:study_of_program]-(s)<-[:study_subject_of_study]-(ss)
-          WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        WITH
-            p, caseSize,
-            {arm: s.study_acronym, caseSize: COUNT(DISTINCT ss), size: COUNT(DISTINCT ss)} AS s
-        RETURN  { program: p.program_acronym,
-                  caseSize: caseSize,
-                  children: collect(s) }
+    armsByProgramsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [ProgramArms] @cypher(statement: """
+        MATCH (p:program)<--(s:study)<--(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        WITH p, COUNT(DISTINCT ss) as caseSize
+        MATCH (p)<--(s:study)<--(ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        WITH p, caseSize, {arm: s.study_acronym, caseSize: COUNT(DISTINCT ss), size: COUNT(DISTINCT ss)} AS studies
+        RETURN {
+            program: p.program_acronym,
+            caseSize: caseSize,
+            children: COLLECT(studies) 
+        }
+    """, passThrough: true)
+
+    subjectsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [String] @cypher(statement: """
+        MATCH (ss:study_subject)
+            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
+        MATCH (samp:sample)-->(ss)
+            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
+        MATCH (f:file)-->(samp)
+            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
+        RETURN DISTINCT ss.study_subject_id
     """, passThrough: true)
 
     "Facet search counts"
