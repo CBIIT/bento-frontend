@@ -9,18 +9,17 @@ import CartView from './cartView';
 const cartController = () => {
   const cart = getCart();
   const ids = cart.fileIds ? cart.fileIds : [];
-  const defaultSortDirection = cart.sortDirection === '' || !cart.sortDirection || cart.sortDirection === null ? table.defaultSortDirection || 'asc' : cart.sortDirection;
+  const defaultSortDirection = cart.sortDirection === '' || !cart.sortDirection ? table.defaultSortDirection || 'asc' : cart.sortDirection;
   const CART_QUERY = defaultSortDirection === 'desc' ? GET_MY_CART_DATA_QUERY_DESC : GET_MY_CART_DATA_QUERY;
-  const defaultSortColumnValue = cart.sortColumn === '' || !cart.sortColumn || cart.sortColumn === null ? table.defaultSortField || '' : cart.sortColumn;
-  if (!localStorage.getItem('sortColumn')) {
+  const defaultSortColumnValue = cart.sortColumn === '' || !cart.sortColumn ? table.defaultSortField || '' : cart.sortColumn;
+  // if the user open the webpage for the first time.
+  if (!localStorage.getItem('sortColumn') || !localStorage.getItem('page') || !localStorage.getItem('rowsPerPage')) {
     localStorage.setItem('sortColumn', defaultSortColumnValue);
-  }
-  if (localStorage.getItem('page') === null) {
     localStorage.setItem('page', '0');
     localStorage.setItem('rowsPerPage', '10');
   }
-  const localPage = Number.isNaN(localStorage.getItem('page')) ? '0' : localStorage.getItem('page');
-  const localRowsPerPage = Number.isNaN(localStorage.getItem('rowsPerPage')) ? '10' : localStorage.getItem('rowsPerPage');
+  const localPage = localStorage.getItem('page');
+  const localRowsPerPage = localStorage.getItem('rowsPerPage');
   const page = parseInt(localPage, 10);
   const rowsPerPage = parseInt(localRowsPerPage, 10);
   const offset = page * rowsPerPage;
@@ -39,8 +38,8 @@ const cartController = () => {
       <CartView
         isLoading
         data="undefined"
-        defaultSortCoulmn={cart.sortColumn === '' ? table.defaultSortField || '' : cart.sortColumn}
-        defaultSortDirection={defaultSortDirection || table.defaultSortDirection}
+        defaultSortCoulmn={defaultSortColumnValue}
+        defaultSortDirection={defaultSortDirection}
       />
     );
   }
@@ -57,7 +56,7 @@ const cartController = () => {
       fileIDs={ids}
       updateSortOrder={updateSortOrder}
       defaultSortCoulmn={defaultSortColumnValue}
-      defaultSortDirection={defaultSortDirection || table.defaultSortDirection}
+      defaultSortDirection={defaultSortDirection}
       paginationAPIField={table.paginationAPIField}
       paginationAPIFieldDesc={table.paginationAPIFieldDesc}
       tableDownloadCSV={table.tableDownloadCSV}
