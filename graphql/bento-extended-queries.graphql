@@ -264,7 +264,7 @@ schema {
 }
 
 type QueryType {
-    schemaVersion: String @cypher(statement: "RETURN '1.4.1'")
+    schemaVersion: String @cypher(statement: "RETURN '1.4.2'")
 
     "Simple counts"
     numberOfPrograms: Int @cypher(statement: "MATCH (n:program) return count(n)")
@@ -625,49 +625,32 @@ type QueryType {
 
     nodeCountsFromLists (subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): NodeCounts @cypher(statement: """
         // Filtering subjects
+       CALL {
+                MATCH (ss:study_subject)
+                    WHERE ss.study_subject_id IN $subject_ids
+                RETURN DISTINCT ss
+            UNION
+                MATCH (samp:sample)
+                    WHERE samp.sample_id IN $sample_ids
+                OPTIONAL MATCH (samp)-->(ss:study_subject)
+                RETURN DISTINCT ss
+            UNION
+                MATCH (f:file)
+                    WHERE f.file_id IN $file_ids
+                OPTIONAL MATCH (f)-->(samp:sample)-->(ss:study_subject)
+                RETURN DISTINCT ss
+        } 
+        WITH COLLECT(DISTINCT ss.study_subject_id) AS subject_id_list
         MATCH(ss:study_subject)
-            WHERE ss.study_subject_id IN $subject_ids
+            WHERE ss.study_subject_id IN subject_id_list
         OPTIONAL MATCH (p:program)<--(s:study)<--(ss)<--(samp:sample)<--(f:file)-->(lp:laboratory_procedure)
-        WITH 
-            COLLECT(DISTINCT p) AS programs_list,
-            COLLECT(DISTINCT s) AS studies_list,
-            COLLECT(DISTINCT ss) AS study_subjects_list,
-            COLLECT(DISTINCT lp) AS laboratory_procedures_list,
-            COLLECT(DISTINCT samp) AS samples_list,
-            COLLECT(DISTINCT f) AS files_list
-        MATCH(samp:sample)
-            WHERE samp.sample_id IN $sample_ids
-        OPTIONAL MATCH (p:program)<--(s:study)<--(ss:study_subject)<--(samp)<--(f:file)-->(lp:laboratory_procedure)
-        WITH 
-            COLLECT(DISTINCT p) + programs_list AS programs_list,
-            COLLECT(DISTINCT s) + studies_list AS studies_list,
-            COLLECT(DISTINCT ss) + study_subjects_list AS study_subjects_list,
-            COLLECT(DISTINCT lp) + laboratory_procedures_list AS laboratory_procedures_list,
-            COLLECT(DISTINCT samp) + samples_list AS samples_list,
-            COLLECT(DISTINCT f) + files_list AS files_list
-        MATCH(f:file)
-            WHERE f.file_id IN $file_ids
-        OPTIONAL MATCH (p:program)<--(s:study)<--(ss:study_subject)<--(samp:sample)<--(f)-->(lp:laboratory_procedure)
-        WITH 
-            COLLECT(DISTINCT p) + programs_list AS programs_list,
-            COLLECT(DISTINCT s) + studies_list AS studies_list,
-            COLLECT(DISTINCT ss) + study_subjects_list AS study_subjects_list,
-            COLLECT(DISTINCT lp) + laboratory_procedures_list AS laboratory_procedures_list,
-            COLLECT(DISTINCT samp) + samples_list AS samples_list,
-            COLLECT(DISTINCT f) + files_list AS files_list
-        UNWIND(programs_list) AS programs
-        UNWIND(studies_list) AS studies
-        UNWIND(study_subjects_list) AS study_subjects
-        UNWIND(laboratory_procedures_list) AS laboratory_procedures
-        UNWIND(samples_list) AS samples
-        UNWIND(files_list) AS files
         RETURN  {
-            numberOfPrograms: COUNT(DISTINCT programs),
-            numberOfStudies: COUNT(DISTINCT studies),
-            numberOfSubjects: COUNT(DISTINCT study_subjects),
-            numberOfLabProcedures: COUNT(DISTINCT laboratory_procedures),
-            numberOfSamples: COUNT(DISTINCT samples),
-            numberOfFiles: COUNT(DISTINCT files)
+            numberOfPrograms: COUNT(DISTINCT p),
+            numberOfStudies: COUNT(DISTINCT s),
+            numberOfSubjects: COUNT(DISTINCT ss),
+            numberOfLabProcedures: COUNT(DISTINCT lp),
+            numberOfSamples: COUNT(DISTINCT samp),
+            numberOfFiles: COUNT(DISTINCT f)
         }
     """, passThrough:true)
 
@@ -692,13 +675,22 @@ type QueryType {
     """, passThrough: true)
 
     subjectsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [String] @cypher(statement: """
-        MATCH (ss:study_subject)
-            WHERE (size($subject_ids) = 0 OR ss.study_subject_id IN $subject_ids)
-        MATCH (samp:sample)-->(ss)
-            WHERE (size($sample_ids) = 0 OR samp.sample_id IN $sample_ids)
-        MATCH (f:file)-->(samp)
-            WHERE (size($file_ids) = 0 OR f.file_id IN $file_ids) 
-        RETURN DISTINCT ss.study_subject_id
+        CALL {
+                MATCH (ss:study_subject)
+                    WHERE ss.study_subject_id IN $subject_ids
+                RETURN DISTINCT ss
+            UNION
+                MATCH (samp:sample)
+                    WHERE samp.sample_id IN $sample_ids
+                OPTIONAL MATCH (samp)-->(ss:study_subject)
+                RETURN DISTINCT ss
+            UNION
+                MATCH (f:file)
+                    WHERE f.file_id IN $file_ids
+                OPTIONAL MATCH (f)-->(samp:sample)-->(ss:study_subject)
+                RETURN DISTINCT ss
+        } 
+        RETURN COLLECT(DISTINCT ss.study_subject_id)
     """, passThrough: true)
 
     "Facet search counts"
