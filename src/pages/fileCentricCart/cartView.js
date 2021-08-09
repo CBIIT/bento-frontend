@@ -25,6 +25,8 @@ const cartView = ({
   updateSortOrder,
   paginationAPIField,
   paginationAPIFieldDesc,
+  localPage,
+  localRowsPerPage,
 }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
   const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
@@ -183,6 +185,8 @@ const cartView = ({
               defaultSortDirection={defaultSortDirection}
               paginationAPIField={paginationAPIField}
               paginationAPIFieldDesc={paginationAPIFieldDesc}
+              localPage={localPage}
+              localRowsPerPage={localRowsPerPage}
             />
             <CartFooter
               placeholder={myFilesPageData.textareaPlaceholder}

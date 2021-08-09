@@ -23,11 +23,12 @@ const CartHeader = ({
   updateSortOrder,
   paginationAPIField,
   paginationAPIFieldDesc,
+  localPage,
+  localRowsPerPage,
 }) => {
   function onRowSelectionChange(curr, allRowsSelected) {
     return (curr, allRowsSelected);
   }
-
   const columns = getColumns(table, classes).concat(deleteColumn);
   const options = getOptions(table, classes, getDefaultCustomFooter, onRowSelectionChange);
   return (
@@ -47,6 +48,8 @@ const CartHeader = ({
         defaultSortDirection={defaultSortDirection}
         tableDownloadCSV={table.tableDownloadCSV}
         updateSortOrder={updateSortOrder}
+        localPage={localPage}
+        localRowsPerPage={localRowsPerPage}
       />
     </TableThemeProvider>
   );
