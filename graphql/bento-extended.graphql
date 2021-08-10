@@ -957,7 +957,7 @@ schema {
 }
 
 type QueryType {
-    schemaVersion: String @cypher(statement: "RETURN '1.4.3'")
+    schemaVersion: String @cypher(statement: "RETURN '1.4.4'")
 
     "Simple counts"
     numberOfPrograms: Int @cypher(statement: "MATCH (n:program) return count(n)")
@@ -1353,7 +1353,7 @@ type QueryType {
         }
     """, passThrough: true)
 
-    findIdsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [IdsLists] @cypher(statement: """
+    findIdsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): IdsLists @cypher(statement: """
         OPTIONAL MATCH (ss:study_subject)<--(samp:sample)<--(f:file)
             WHERE (ss.study_subject_id IN $subject_ids)
             OR (samp.sample_id IN $sample_ids)
