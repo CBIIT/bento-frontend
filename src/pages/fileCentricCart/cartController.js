@@ -32,12 +32,14 @@ const cartController = () => {
       file_ids: ids,
     },
   });
-
+  let fileCartLoadingValue = false;
   if (loading) {
+    fileCartLoadingValue = true;
     return (
       <CartView
         isLoading
         data="undefined"
+        fileCartLoading={fileCartLoadingValue}
         defaultSortCoulmn={defaultSortColumnValue}
         defaultSortDirection={defaultSortDirection}
       />
@@ -55,6 +57,7 @@ const cartController = () => {
       isLoading={false}
       fileIDs={ids}
       updateSortOrder={updateSortOrder}
+      fileCartLoading={fileCartLoadingValue}
       defaultSortCoulmn={defaultSortColumnValue}
       defaultSortDirection={defaultSortDirection}
       paginationAPIField={table.paginationAPIField}
