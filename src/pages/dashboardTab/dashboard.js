@@ -7,6 +7,7 @@ import { useTheme } from '../../components/ThemeContext';
 import Widget from '../../components/Widgets/WidgetView';
 import Stats from '../../components/Stats/DashboardStatsController';
 import SideBar from '../../components/SideBar/SideBarView';
+import ActiveFiltersQuery from '../../components/ActiveFiltersQuery/ActiveFiltersQuery';
 import { widgetsData } from '../../bento/dashboardData';
 import Tab from './components/tabController';
 import colors from '../../utils/colors';
@@ -59,6 +60,7 @@ const Dashboard = ({
                     />
                   </div>
                 </div>
+                <ActiveFiltersQuery />
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget, index) => {
