@@ -27,7 +27,7 @@ const cartView = ({
   paginationAPIFieldDesc,
   localPage,
   localRowsPerPage,
-  fileCartLoading,
+  isLoading,
 }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
   const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
@@ -188,7 +188,7 @@ const cartView = ({
               paginationAPIFieldDesc={paginationAPIFieldDesc}
               localPage={localPage}
               localRowsPerPage={localRowsPerPage}
-              fileCartLoading={fileCartLoading}
+              isLoading={isLoading}
             />
             <CartFooter
               placeholder={myFilesPageData.textareaPlaceholder}

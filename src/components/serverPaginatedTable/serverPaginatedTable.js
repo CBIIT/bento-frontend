@@ -345,7 +345,7 @@ class ServerPaginatedTableView extends React.Component {
     return (
       <div>
         <Backdrop
-          open={(isLoading || this.props.fileCartLoading) && data !== 'undefined'}
+          open={(isLoading || this.props.isLoading) && data !== 'undefined'}
           className={this.props.classes.backdrop}
         >
           <CircularProgress />
