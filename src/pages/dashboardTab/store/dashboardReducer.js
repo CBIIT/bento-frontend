@@ -35,6 +35,11 @@ import {
   GET_FILE_IDS_FROM_FILE_NAME,
   tabIndex,
 } from '../../../bento/dashboardTabData';
+import {
+  GET_ALL_IDS,
+  widgetsSearchData,
+  GET_SEARCH_NODECOUNTS,
+} from '../../../bento/localSearchData';
 
 const storeKey = 'dashboardTab';
 
@@ -138,6 +143,32 @@ function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
   return donut;
 }
 
+/**
+ * Returns the widgets data.
+ * @param {object} data
+ * @param {json} widgetsInfoFromCustConfig
+ * @return {json}r
+ */
+
+function getSearchWidgetsData(data, widgetsInfoFromCustConfig) {
+  const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
+    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : removeEmptySubjectsFromDonutData(data[widget.dataName]);
+    const label = widget.dataName;
+    return { ...acc, [label]: Data };
+  }, {});
+  const replacements = widgetsSearchData.reduce(
+    (acc, widget) => ({ ...acc, ...{ [widget.dataName]: widget.mapWithDashboardWidget } }),
+    {},
+  );
+
+  const replacedItems = Object.keys(donut).map((key) => {
+    const newKey = replacements[key] || key;
+    return { [newKey]: donut[key] };
+  });
+  const newTab = replacedItems.reduce((a, b) => ({ ...a, ...b }));
+  return newTab;
+}
+
 function fetchDashboardTab() {
   return () => {
     store.dispatch({ type: 'REQUEST_DASHBOARDTAB' });
@@ -163,6 +194,22 @@ function fetchDashboardTabForClearAll() {
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
 }
+
+export async function getAllIds() {
+  const allids = await client
+    .query({
+      query: GET_ALL_IDS,
+      variables: {
+      },
+    })
+    .then((result) => result.data.idsLists)
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
+  return allids;
+}
+
+export const getSubjectIds = () => getState().filteredSubjectIds;
 
 /**
  * Generate a default varibles for filter query.
@@ -230,6 +277,31 @@ export function clearSectionSort(groupName) {
 
 export function clearAllFilters() {
   store.dispatch(fetchDashboardTabForClearAll());
+}
+
+/**
+ * Local search
+ *
+ * @return distpatcher
+ */
+
+export function localSearch(searchcriteria) {
+  if (searchcriteria.length === 0) {
+    clearAllFilters();
+  } else {
+    const res = searchcriteria.reduce((acc, curr) => {
+      if (!acc[curr.type]) acc[curr.type] = [];
+      acc[curr.type].push(curr.title);
+      return acc;
+    }, {});
+    client.query({
+      query: GET_SEARCH_NODECOUNTS,
+      variables: {
+        subject_ids: res.subjectIds, sample_ids: res.sampleIds, file_ids: res.fileIds,
+      },
+    })
+      .then((result) => store.dispatch({ type: 'LOCAL_SEARCH', payload: { result, res } }));
+  }
 }
 
 /**
@@ -860,6 +932,22 @@ const reducers = {
       },
       stats: getFilteredStat(item.data.searchSubjects, statsCount),
       widgets: getWidgetsInitData(item.groups.data, widgetsData),
+    };
+  },
+  LOCAL_SEARCH: (state, item) => {
+    fetchDataForDashboardTab(state.currentActiveTab,
+      item.result.data.findIdsFromLists.subjectIds,
+      item.result.data.findIdsFromLists.sampleIds,
+      item.result.data.findIdsFromLists.fileIds);
+    return {
+      ...state,
+      setSideBarLoading: false,
+      filteredSubjectIds: item.result.data.findIdsFromLists.subjectIds,
+      filteredSampleIds: item.result.data.findIdsFromLists.sampleIds,
+      filteredFileIds: item.result.data.findIdsFromLists.fileIds,
+      stats: getFilteredStat(item.result.data.nodeCountsFromLists, statsCount),
+      widgets: getSearchWidgetsData(item.result.data, widgetsSearchData),
+
     };
   },
   UPDATE_CURRRENT_TAB_DATA: (state, item) => (

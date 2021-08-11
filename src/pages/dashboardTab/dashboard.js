@@ -62,7 +62,7 @@ const Dashboard = ({
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget, index) => {
-                      if (widget.type === 'sunburst' && widget.show) {
+                      if (widget.type === 'sunburst' && widget.show && data[widget.dataName].length !== 0) {
                         return (
                           <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
                             <Widget
@@ -91,7 +91,7 @@ const Dashboard = ({
                           </Grid>
                         );
                       }
-                      if (widget.type === 'donut' && widget.show) {
+                      if (widget.type === 'donut' && widget.show && data[widget.dataName].length !== 0) {
                         return (
                           <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
                             <Widget

@@ -264,7 +264,6 @@ const tabController = (classes) => {
           onChange={handleTabChange}
           indicatorColor="primary"
           textColor="primary"
-          textColorPrimary
         >
           {TABs}
         </Tabs>
