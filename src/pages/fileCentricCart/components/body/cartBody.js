@@ -25,6 +25,7 @@ const CartHeader = ({
   paginationAPIFieldDesc,
   localPage,
   localRowsPerPage,
+  isLoading,
 }) => {
   function onRowSelectionChange(curr, allRowsSelected) {
     return (curr, allRowsSelected);
@@ -50,6 +51,7 @@ const CartHeader = ({
         updateSortOrder={updateSortOrder}
         localPage={localPage}
         localRowsPerPage={localRowsPerPage}
+        isLoading={isLoading}
       />
     </TableThemeProvider>
   );

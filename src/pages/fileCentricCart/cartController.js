@@ -32,7 +32,6 @@ const cartController = () => {
       file_ids: ids,
     },
   });
-
   if (loading) {
     return (
       <CartView

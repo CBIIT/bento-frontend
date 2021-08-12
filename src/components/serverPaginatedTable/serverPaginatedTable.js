@@ -43,8 +43,11 @@ class ServerPaginatedTableView extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.data !== prevProps.data) {
+    if (this.props.data !== prevProps.data && this.props.data !== 'undefined') {
       this.getData('', 0);
+    }
+    if (this.props.data !== prevProps.data && this.props.data === 'undefined' && prevProps.data !== 'undefined' && this.props.updateSortOrder) {
+      this.changeToPrevDataState(prevProps);
     }
   }
 
@@ -69,6 +72,10 @@ class ServerPaginatedTableView extends React.Component {
         }
       }
     });
+  }
+
+  changeToPrevDataState = (prevProps) => {
+    this.setState({ data: prevProps.data, count: prevProps.count });
   }
 
   getSrcData = () => this.props.data;
@@ -338,7 +345,7 @@ class ServerPaginatedTableView extends React.Component {
     return (
       <div>
         <Backdrop
-          open={isLoading}
+          open={(isLoading || this.props.isLoading) && data !== 'undefined'}
           className={this.props.classes.backdrop}
         >
           <CircularProgress />
