@@ -968,7 +968,7 @@ type QueryType {
     numberOfFiles: Int 
 
     "Get lists of all subject ids, sample ids, and file ids"
-    idsLists: [IdsLists] 
+    idsLists: IdsLists 
 
     "Group counts"
     subjectCountByProgram(subject_ids: [String] = []): [GroupCount] 
@@ -1005,41 +1005,41 @@ type QueryType {
 
     "Group counts from lists of subject ids, file ids, and sample ids"
 
-    subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByStudyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByStudyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByDiagnosesFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByDiagnosesFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByRecurrenceScoreFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByRecurrenceScoreFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByTumorSizeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByTumorSizeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByTumorGradeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByTumorGradeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByErStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByErStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByPrStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByPrStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByChemotherapyRegimenFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByChemotherapyRegimenFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByEndocrineTherapyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByEndocrineTherapyFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByMenopauseStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByMenopauseStatusFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByTissueTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByTissueTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByTissueCompositionFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByTissueCompositionFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByFileAssociationFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByFileAssociationFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    subjectCountByFileTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [GroupCount] 
+    subjectCountByFileTypeFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
 
-    nodeCountsFromLists (subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): NodeCounts 
+    nodeCountsFromLists (subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): NodeCounts 
 
-    armsByProgramsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): [ProgramArms] 
+    armsByProgramsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [ProgramArms] 
 
-    findIdsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = []): IdsLists 
+    findIdsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): IdsLists 
 
     "Facet search counts"
     filterSubjectCountByProgram(
