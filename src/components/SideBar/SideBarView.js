@@ -9,7 +9,9 @@ import FacetFilter from './SideBarComponents/FacetFilters';
 import AutoComplete from './SideBarComponents/searchComponet';
 import ClearFilters from './SideBarComponents/clearFilters';
 
-import { facetSearchData, resetIcon } from '../../bento/dashboardData';
+import {
+  facetSearchData, resetIcon, searchEnabled, filterTabTitleText, searchTabTitleText,
+} from '../../bento/dashboardData';
 import { clearAllFilters, getAllIds } from '../../pages/dashboardTab/store/dashboardReducer';
 
 const drawerWidth = 240;
@@ -33,37 +35,46 @@ const SideBarContent = ({ classes }) => {
   );
   const countFilters = facetSearchData
     ? facetSearchData.reduce((n, facet) => n + (facet.show === true), 0) : 0;
+
+  const Filter = () => (
+    <div>
+      { countFilters > 0 && (
+      <div>
+        <div>
+          <ClearFilters
+            disable={activeFiltersCount === 0}
+            onClick={() => clearAllFilters()}
+          />
+        </div>
+        <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>
+          <FacetFilter />
+        </List>
+      </div>
+      )}
+    </div>
+  );
+
   return (
     <div>
-      <TabContext value={value}>
-        <TabList onChange={handleChange} aria-label="sidebar tab" variant="fullWidth">
-          <Tab label="Filter" value="1" classes={{ root: classes.root }} />
-          <Tab label="Search" value="2" classes={{ root: classes.root }} />
-        </TabList>
-        <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
-          <div>
-            { countFilters > 0 && (
-            <div>
+      { searchEnabled
+        ? (
+          <TabContext value={value}>
+            <TabList onChange={handleChange} aria-label="sidebar tab" variant="fullWidth">
+              <Tab label={filterTabTitleText || 'Filter'} value="1" classes={{ root: classes.root }} />
+              <Tab label={searchTabTitleText || 'Search'} value="2" classes={{ root: classes.root }} />
+            </TabList>
+            <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
+              <Filter />
+            </TabPanel>
+            <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
               <div>
-                <ClearFilters
-                  disable={activeFiltersCount === 0}
-                  onClick={() => clearAllFilters()}
-                />
+                <AutoComplete data={getAllIds()} />
               </div>
-              <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>
-                <FacetFilter />
-              </List>
-            </div>
-            )}
-          </div>
-        </TabPanel>
-        <TabPanel value="2" classes={{ root: classes.tabPanelRoot }}>
-          <div>
-            <AutoComplete data={getAllIds()} />
-          </div>
 
-        </TabPanel>
-      </TabContext>
+            </TabPanel>
+          </TabContext>
+        )
+        : <Filter /> }
     </div>
   );
 };

@@ -297,7 +297,10 @@ export function localSearch(searchcriteria) {
     client.query({
       query: GET_SEARCH_NODECOUNTS,
       variables: {
-        subject_ids: res.subjectIds, sample_ids: res.sampleIds, file_ids: res.fileIds,
+        subject_ids: res.subjectIds,
+        sample_ids: res.sampleIds,
+        file_ids: res.fileIds,
+        file_names: res.fileNames,
       },
     })
       .then((result) => store.dispatch({ type: 'LOCAL_SEARCH', payload: { result, res } }));

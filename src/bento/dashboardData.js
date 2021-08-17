@@ -1,5 +1,10 @@
 import gql from 'graphql-tag';
 
+export const searchEnabled = true;
+
+export const filterTabTitleText = 'Filter';
+export const searchTabTitleText = 'Search';
+
 // --------------- Dashboard Sidebar Filters configuration --------------
 // A maximum of 12 facetSearchData are allowed
 export const facetSearchData = [

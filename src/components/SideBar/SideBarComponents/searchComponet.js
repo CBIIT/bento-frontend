@@ -20,7 +20,7 @@ export default function localSearchCOmponent() {
     (async () => {
       const response = await getAllIds();
       const keys = ['fileIds', 'fileNames', 'sampleIds', 'subjectIds'];
-      const mapOption = keys.map((key) => response[0][key].map((id) => ({ type: key, title: id })));
+      const mapOption = keys.map((key) => response[key].map((id) => ({ type: key, title: id })));
       const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
 
       if (active) {
