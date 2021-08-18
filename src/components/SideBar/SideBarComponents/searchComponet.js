@@ -1,5 +1,6 @@
+/* eslint-disable */
 import React from 'react';
-import { TextField, CircularProgress, Divider } from '@material-ui/core';
+import { TextField, CircularProgress, Divider, Button } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import ClearFilters from './clearFilters';
 import { getAllIds, localSearch } from '../../../pages/dashboardTab/store/dashboardReducer';
@@ -39,7 +40,7 @@ export default function localSearchCOmponent() {
     }
   }, [open]);
 
-  function onChange(newValue) {
+  function onChange(newValue=[]) {
     setValue(newValue);
     localSearch(newValue);
   }
@@ -47,14 +48,19 @@ export default function localSearchCOmponent() {
   function resetFilter() {
     setValue([]);
     localSearch([]);
+    return null;
   }
 
   return (
     <>
+  {/* This is a temp solution for clear all need to find betetr solution why clear filter on click not working */}
+    <a onClick={() => resetFilter()}>
       <ClearFilters
         disable={options.length === 0}
-        onClick={() => resetFilter()}
+        onClick={() => {}}
+        resetText="Clear all search selections"
       />
+    </a>
       <Divider
         variant="middle"
         style={{
