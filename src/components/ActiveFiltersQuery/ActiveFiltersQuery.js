@@ -11,6 +11,7 @@ const ActiveFiltersQuery = ({ classes }) => {
       && state.dashboardTab.checkbox
       ? state.dashboardTab.checkbox : {}));
 
+  console.log(allFiltersinfo);
   // activeFilters helps filtering only active Filters
   const activeFilters = [];
 
@@ -41,16 +42,18 @@ const ActiveFiltersQuery = ({ classes }) => {
 
   return (
     <div>
-      <div>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.clearQueryButton}
-          onClick={() => clearAllFilters()}
-        >
-          Clear Query
-        </Button>
-      </div>
+      {activeFilters.length > 0 ? (
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.clearQueryButton}
+            onClick={() => clearAllFilters()}
+          >
+            Clear Query
+          </Button>
+        </div>
+      ) : ''}
       <div>
         {activeFilters.map((filter, index) => (
           <span>
