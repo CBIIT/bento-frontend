@@ -84,6 +84,9 @@ export const defaultFacetSectionVariables = {
   isExpanded: false,
 };
 
+// --------------- Dashboard ActiveFiltersQuery configuration --------------
+export const displayActiveFiltersQuery = false;
+
 // --------------- Dashboard Widgets configuration --------------
 // A maximum of 6 widgets are allowed
 export const widgetsData = [
