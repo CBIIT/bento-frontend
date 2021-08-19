@@ -1,7 +1,10 @@
 import React from 'react';
+import { withStyles } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import Button from '@material-ui/core/Button';
+import { clearAllFilters } from '../../pages/dashboardTab/store/dashboardReducer';
 
-const ActiveFiltersQuery = () => {
+const ActiveFiltersQuery = ({ classes }) => {
   // get all filters information from state
   const allFiltersinfo = useSelector((state) => (
     state.dashboardTab
@@ -38,22 +41,43 @@ const ActiveFiltersQuery = () => {
 
   return (
     <div>
-      {activeFilters.map((filter, index) => (
-        <span>
+      {activeFilters.length > 0 ? (
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.clearQueryButton}
+            onClick={() => clearAllFilters()}
+          >
+            Clear Query
+          </Button>
+        </div>
+      ) : ''}
+      <div>
+        {activeFilters.map((filter, index) => (
           <span>
-            {' '}
-            {index !== 0 ? 'AND ' : ''}
-            {filter.filterName}
-            {' '}
+            <span>
+              {' '}
+              {index !== 0 ? 'AND ' : ''}
+              {filter.filterName}
+              {' '}
+            </span>
+            <span>
+              {' '}
+              {filter.checkbox.length === 1 ? `IS ${filter.checkbox[0]}` : `IN (${filter.checkbox.join()}) `}
+            </span>
           </span>
-          <span>
-            {' '}
-            {filter.checkbox.length === 1 ? `IS ${filter.checkbox[0]}` : `IN (${filter.checkbox.join()}) `}
-          </span>
-        </span>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
 
-export default ActiveFiltersQuery;
+const styles = () => ({
+  clearQueryButton: {
+    borderRadius: '8px',
+    margin: '6px',
+  },
+});
+
+export default withStyles(styles)(ActiveFiltersQuery);
