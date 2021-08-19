@@ -11,7 +11,6 @@ const ActiveFiltersQuery = ({ classes }) => {
       && state.dashboardTab.checkbox
       ? state.dashboardTab.checkbox : {}));
 
-  console.log(allFiltersinfo);
   // activeFilters helps filtering only active Filters
   const activeFilters = [];
 
