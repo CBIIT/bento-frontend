@@ -12,63 +12,45 @@ export const GET_ALL_IDS = gql`{
   `;
 
 export const GET_SEARCH_NODECOUNTS = gql`
-  query nodeCounts($subject_ids: [String]=[], $sample_ids: [String] = [], $file_ids: [String]=[]){
-    nodeCountsFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids) {
-      numberOfPrograms,
-      numberOfStudies,
-      numberOfSubjects,
-      numberOfLabProcedures,
-      numberOfSamples,
+  query nodeCounts($subject_ids: [String]=[], $sample_ids: [String] = [], $file_ids: [String]=[], $file_names: [String]=[]){
+    nodeCountsFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names) {
+      numberOfPrograms
+      numberOfStudies
+      numberOfSubjects
+      numberOfLabProcedures
+      numberOfSamples
       numberOfFiles
-}
+  }
 
-subjectCountByProgramFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids) {
+
+
+subjectCountByDiagnosesFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names){
   group
   subjects
 }
-subjectCountByStudyFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids) {
+subjectCountByRecurrenceScoreFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names){
   group
   subjects
 }
-subjectCountByDiagnosesFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
+subjectCountByTumorSizeFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names) {
   group
   subjects
 }
-subjectCountByRecurrenceScoreFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
+subjectCountByChemotherapyRegimenFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names) {
   group
   subjects
 }
-subjectCountByTumorSizeFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids) {
-  group
-  subjects
-}
-subjectCountByChemotherapyRegimenFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids) {
-  group
-  subjects
-}
-subjectCountByEndocrineTherapyFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
-  group
-  subjects
-}
-subjectCountByTumorGradeFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
-  group
-  subjects
-}
-subjectCountByErStatusFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
-  group
-  subjects
-}
-subjectCountByPrStatusFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
-  group
-  subjects
-}
-subjectCountByMenopauseStatusFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
+subjectCountByEndocrineTherapyFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names){
   group
   subjects
 }
 
+subjectCountByFileTypeFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names) {
+  group
+  subjects
+}
 
-armsByProgramsFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
+armsByProgramsFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names){
   program
   caseSize
   children{
@@ -76,12 +58,13 @@ armsByProgramsFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file
       caseSize
       size
   }
-}
+}  
 
-findIdsFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids){
+findIdsFromLists(subject_ids: $subject_ids, sample_ids: $sample_ids, file_ids: $file_ids, file_names: $file_names){
   subjectIds
   sampleIds
   fileIds
+  fileNames
 }
 }
   `;

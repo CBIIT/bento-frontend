@@ -7,7 +7,7 @@ if (resetIcon.src === '') {
 }
 
 const clearFilters = ({
-  classes, onClick, disable,
+  classes, onClick, disable, resetText,
 }) => (
   <div className={classes.floatRight}>
     <Button
@@ -26,7 +26,8 @@ const clearFilters = ({
         alt={resetIcon.alt}
       />
     </Button>
-    <span className={classes.resetText}>Clear all filtered selections</span>
+    <span className={classes.resetText}>{resetText}</span>
+
   </div>
 );
 

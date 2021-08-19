@@ -289,7 +289,7 @@ export function localSearch(searchcriteria) {
   if (searchcriteria.length === 0) {
     clearAllFilters();
   } else {
-    const res = searchcriteria.reduce((acc, curr) => {
+    const searchItems = searchcriteria.reduce((acc, curr) => {
       if (!acc[curr.type]) acc[curr.type] = [];
       acc[curr.type].push(curr.title);
       return acc;
@@ -297,10 +297,13 @@ export function localSearch(searchcriteria) {
     client.query({
       query: GET_SEARCH_NODECOUNTS,
       variables: {
-        subject_ids: res.subjectIds, sample_ids: res.sampleIds, file_ids: res.fileIds,
+        subject_ids: searchItems.subjectIds,
+        sample_ids: searchItems.sampleIds,
+        file_ids: searchItems.fileIds,
+        file_names: searchItems.fileNames,
       },
     })
-      .then((result) => store.dispatch({ type: 'LOCAL_SEARCH', payload: { result, res } }));
+      .then((result) => store.dispatch({ type: 'LOCAL_SEARCH', payload: { result } }));
   }
 }
 
