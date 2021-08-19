@@ -24,6 +24,10 @@ class ServerPaginatedTableView extends React.Component {
 
   componentDidMount() {
     this.getData('', 0);
+    localStorage.setItem('page', String(0));
+    localStorage.setItem('rowsPerPage', String(10));
+    localStorage.setItem('sortColumn', this.props.defaultSortCoulmn);
+    localStorage.setItem('sortDirection', this.props.defaultSortDirection);
     this.setState({
       sortOrder: {
         name: this.props.defaultSortCoulmn,
@@ -340,7 +344,13 @@ class ServerPaginatedTableView extends React.Component {
       },
     };
     if (this.props.updateSortOrder) {
-      options1.page = page;
+      const offset = page * rowsPerPage;
+      let newPage = page;
+      const localPage = parseInt(this.props.localPage, 10);
+      if (offset >= this.props.count) {
+        newPage = localPage;
+      }
+      options1.page = newPage;
     }
     return (
       <div>
