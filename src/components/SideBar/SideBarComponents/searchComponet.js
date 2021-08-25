@@ -1,15 +1,29 @@
-/* eslint-disable */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { TextField, CircularProgress, Divider, Button } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import {
+  TextField, CircularProgress, Divider, Backdrop, withStyles,
+} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import ClearFilters from './clearFilters';
-import { getAllIds, localSearch } from '../../../pages/dashboardTab/store/dashboardReducer';
+import { getAllIds, localSearch, setSideBarToLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
 
-export default function localSearchCOmponent() {
+function localSearchCOmponent({ classes }) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
   const [value, setValue] = React.useState([]);
+
+  // data from store for sidebar laoding
+  const isSidebarLoading = useSelector((state) => (
+    state.dashboardTab
+  && state.dashboardTab.setSideBarLoading
+      ? state.dashboardTab.setSideBarLoading : false));
+  const tabDataLoading = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.isDashboardTableLoading
+    ? state.dashboardTab.isDashboardTableLoading
+    : false));
+  // redux use actions
 
   React.useEffect(() => {
     let active = true;
@@ -40,7 +54,8 @@ export default function localSearchCOmponent() {
     }
   }, [open]);
 
-  function onChange(newValue=[]) {
+  function onChange(newValue = []) {
+    setSideBarToLoading();
     setValue(newValue);
     localSearch(newValue);
   }
@@ -53,14 +68,15 @@ export default function localSearchCOmponent() {
 
   return (
     <>
-  {/* This is a temp solution for clear all need to find betetr solution why clear filter on click not working */}
-    <a onClick={() => resetFilter()}>
-      <ClearFilters
-        disable={options.length === 0}
-        onClick={() => {}}
-        resetText="Clear all search selections"
-      />
-    </a>
+      {/* This is a temp solution for clear all need to find betetr solution
+       why clear filter on click not working */}
+      <a onClick={() => resetFilter()}>
+        <ClearFilters
+          disable={options.length === 0}
+          onClick={() => {}}
+          resetText="Clear all search selections"
+        />
+      </a>
       <Divider
         variant="middle"
         style={{
@@ -102,6 +118,20 @@ export default function localSearchCOmponent() {
           />
         )}
       />
+      <Backdrop className={classes.backdrop} open={isSidebarLoading || tabDataLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 }
+
+const styles = () => ({
+
+  backdrop: {
+    // position: 'absolute',
+    zIndex: 99999,
+    background: 'rgba(0, 0, 0, 0.1)',
+  },
+});
+
+export default withStyles(styles)(localSearchCOmponent);
