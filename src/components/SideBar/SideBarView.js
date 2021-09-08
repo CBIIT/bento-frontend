@@ -39,15 +39,25 @@ const SideBarContent = ({ classes }) => {
     <div>
       { searchEnabled ? (
         <TabContext value={value}>
-          <TabList onChange={handleChange} aria-label="sidebar tab" variant="fullWidth">
-            <Tab label={filterTabTitleText || 'Filter'} value="1" classes={{ root: classes.root }} />
-            <Tab label={searchTabTitleText || 'Search'} value="2" classes={{ root: classes.root }} />
+          <TabList
+            onChange={handleChange}
+            aria-label="sidebar tab"
+            variant="fullWidth"
+            TabIndicatorProps={{
+              style: {
+                display: 'none',
+                // backgroundColor: '#B8CCDF',
+              },
+            }}
+          >
+            <Tab label={filterTabTitleText || 'Filter'} value="1" classes={{ root: classes.root }} style={{ backgroundColor: value === '1' ? '#B8CCDF' : '#EAEAEA' }} />
+            <Tab label={searchTabTitleText || 'Search'} value="2" classes={{ root: classes.root }} style={{ backgroundColor: value === '2' ? '#B8CCDF' : '#EAEAEA' }} />
           </TabList>
           <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
             <div>
               { countFilters > 0 && (
               <div>
-                <div>
+                <div className={classes.clearFiltersBorder}>
                   <ClearFilters
                     disable={activeFiltersCount === 0}
                     onClick={() => clearAllFilters()}
@@ -173,8 +183,7 @@ const styles = (theme) => ({
     height: '45px',
     minHeight: '40px',
     marginTop: '10px',
-    marginRight: '10px',
-    background: '#EAEAEA',
+    marginRight: '3px',
     fontSize: '18px',
     fontFamily: 'Raleway',
     fontWeight: '400',
@@ -188,6 +197,9 @@ const styles = (theme) => ({
     '&$selected': {
       fontWeight: 'bolder',
     },
+  },
+  clearFiltersBorder: {
+    borderTop: '1px solid black',
   },
   labelContainer: {
   },
