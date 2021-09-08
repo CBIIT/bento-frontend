@@ -72,7 +72,7 @@ function localSearchCOmponent({ classes }) {
        why clear filter on click not working */}
       <a onClick={() => resetFilter()}>
         <ClearFilters
-          disable={options.length === 0}
+          disable={value.length === 0}
           onClick={() => {}}
           resetText="Clear all search selections"
         />
