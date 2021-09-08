@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import _ from 'lodash';
 import {
   customCheckBox,
