@@ -146,7 +146,6 @@ function localSearchCOmponent({ classes }) {
             height: '1px',
           }}
         />
-        {console.log(value)}
         <div>
           <List>
             {value.map((v, index) => (
