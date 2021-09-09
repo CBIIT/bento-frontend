@@ -10,17 +10,17 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearFilters from './clearFilters';
 import { getAllIds, localSearch, setSideBarToLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
-  facetSectionVariables,
-  defaultFacetSectionVariables,
+  search,
+  defaultSearch,
 } from '../../../bento/dashboardData';
 
 function getSearchResultColor(index, currentSection) {
-  return index % 2 ? facetSectionVariables[currentSection] ? facetSectionVariables[currentSection].checkBoxColorsTwo ? facetSectionVariables[currentSection].checkBoxColorsTwo : '' : defaultFacetSectionVariables.checkBoxColorsTwo
-    : facetSectionVariables[currentSection] ? facetSectionVariables[currentSection].checkBoxColorsOne ? facetSectionVariables[currentSection].checkBoxColorsOne : '' : defaultFacetSectionVariables.checkBoxColorsOne;
+  return index % 2 ? search[currentSection] ? search[currentSection].checkBoxColorsTwo ? search[currentSection].checkBoxColorsTwo : '' : defaultSearch.checkBoxColorsTwo
+    : search[currentSection] ? search[currentSection].checkBoxColorsOne ? search[currentSection].checkBoxColorsOne : '' : defaultSearch.checkBoxColorsOne;
 }
 function getSearchResultCrossColor(currentSection) {
   let crossColor = 'black';
-  crossColor = facetSectionVariables[currentSection] ? facetSectionVariables[currentSection].color ? facetSectionVariables[currentSection].color : '' : defaultFacetSectionVariables.color;
+  crossColor = search[currentSection] ? search[currentSection].color ? search[currentSection].color : '' : defaultSearch.color;
   return crossColor;
 }
 

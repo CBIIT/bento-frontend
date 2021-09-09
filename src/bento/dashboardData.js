@@ -78,6 +78,9 @@ export const facetSectionVariables = {
     height: '5px',
     isExpanded: false,
   },
+};
+
+export const search = {
   fileIds: {
     color: '#10A075',
     checkBoxColorsOne: '#E8F7DC',
@@ -103,6 +106,14 @@ export const facetSectionVariables = {
 
 // --------------- Default Dashboard Sidebar Sections styling --------------
 export const defaultFacetSectionVariables = {
+  color: '#000000',
+  checkBoxColorsOne: '#E8F7DC',
+  checkBoxColorsTwo: '#F5FDEE',
+  height: '5px',
+  isExpanded: false,
+};
+
+export const defaultSearch = {
   color: '#000000',
   checkBoxColorsOne: '#E8F7DC',
   checkBoxColorsTwo: '#F5FDEE',
