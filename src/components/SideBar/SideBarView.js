@@ -23,8 +23,10 @@ const SideBarContent = ({ classes }) => {
   const [value, setValue] = React.useState('1');
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-    clearAllFilters();
+    if (value !== newValue) {
+      setValue(newValue);
+      clearAllFilters();
+    }
   };
   const activeFilters = useSelector((state) => (
     state.dashboardTab
@@ -86,6 +88,7 @@ const SideBarContent = ({ classes }) => {
               <ClearFilters
                 disable={activeFiltersCount === 0}
                 onClick={() => clearAllFilters()}
+                resetText="Clear all filtered selections"
               />
             </div>
             <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>

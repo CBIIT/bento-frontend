@@ -16,8 +16,8 @@ const clearFilters = ({
       disabled={disable}
       className={classes.customButton}
       classes={{ root: classes.clearAllButtonRoot }}
-      onClick={() => onClick()}
       disableRipple
+      onClick={() => onClick()}
     >
       <img
         src={resetIcon.src}
@@ -26,7 +26,7 @@ const clearFilters = ({
         alt={resetIcon.alt}
       />
     </Button>
-    <span className={classes.resetText}>{resetText}</span>
+    <span className={disable ? classes.resetTextDisabled : classes.resetText}>{resetText}</span>
 
   </div>
 );
@@ -58,7 +58,13 @@ const styles = (theme) => ({
   resetText: {
     marginTop: '0px',
     marginLeft: '8px',
-    color: '#638FB5',
+    color: '#4b82b2',
+    fontSize: 14,
+  },
+  resetTextDisabled: {
+    marginTop: '0px',
+    marginLeft: '8px',
+    color: '#a9b2b9',
     fontSize: 14,
   },
 });
