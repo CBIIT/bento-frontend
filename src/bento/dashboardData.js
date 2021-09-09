@@ -78,6 +78,27 @@ export const facetSectionVariables = {
     height: '5px',
     isExpanded: false,
   },
+  fileIds: {
+    color: '#10A075',
+    checkBoxColorsOne: '#E8F7DC',
+    checkBoxColorsTwo: '#F5FDEE',
+    height: '5px',
+    isExpanded: false,
+  },
+  sampleIds: {
+    color: '#10BEFF',
+    checkBoxColorsOne: '#C9EBF7',
+    checkBoxColorsTwo: '#E8F8FE',
+    height: '5px',
+    isExpanded: false,
+  },
+  fileNames: {
+    color: '#E636E4',
+    checkBoxColorsOne: '#FBE3FB',
+    checkBoxColorsTwo: '#FFF2FF',
+    height: '5px',
+    isExpanded: false,
+  },
 };
 
 // --------------- Default Dashboard Sidebar Sections styling --------------
