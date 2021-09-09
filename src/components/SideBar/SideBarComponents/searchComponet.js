@@ -95,10 +95,9 @@ function localSearchCOmponent({ classes }) {
       <div className={classes.clearFiltersBorder}>
         <a onClick={() => resetFilter()}>
           <ClearFilters
-            disable={options.length === 0}
+            disable={value.length === 0}
             onClick={() => {}}
             resetText="Clear all search selections"
-
           />
         </a>
       </div>
