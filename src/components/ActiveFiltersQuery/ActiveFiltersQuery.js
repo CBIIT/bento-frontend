@@ -42,7 +42,7 @@ const ActiveFiltersQuery = ({ classes }) => {
   return (
     <div>
       {activeFilters.length > 0 ? (
-        <div>
+        <div className={classes.clearQuery}>
           <Button
             variant="contained"
             color="primary"
@@ -53,7 +53,7 @@ const ActiveFiltersQuery = ({ classes }) => {
           </Button>
         </div>
       ) : ''}
-      <div>
+      <div className={classes.clearQueryResult}>
         {activeFilters.map((filter, index) => (
           <span>
             <span>
@@ -73,11 +73,22 @@ const ActiveFiltersQuery = ({ classes }) => {
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   clearQueryButton: {
     borderRadius: '8px',
     margin: '6px',
   },
+  clearQuery: {
+    float: 'left',
+    paddingTop: '15px',
+  },
+  clearQueryResult: {
+    padding: '20px 20px 0px 15px',
+    height: '80px',
+    overflowY: 'auto',
+    marginRight: '250px',
+    color: theme.palette.clearQueryResultColor.color,
+  },
 });
 
-export default withStyles(styles)(ActiveFiltersQuery);
+export default withStyles(styles, { withTheme: true })(ActiveFiltersQuery);
