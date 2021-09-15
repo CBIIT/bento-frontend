@@ -75,7 +75,7 @@ const cartView = ({
   const fileIdIndex = table.columns.map((d) => d.dataField).findIndex((e) => e === 'file_id');
 
   if (localStorage.getItem('data')) {
-    if (localStorage.getItem('data') !== 'undefined' && localStorage.getItem('data').length > 0 && (localStorage.getItem('page') !== localPage || localStorage.getItem('rowsPerPage') !== localRowsPerPage)) {
+    if (localStorage.getItem('data') !== 'undefined' && localStorage.getItem('data').length > 0 && (localStorage.getItem('page') !== localPage || localStorage.getItem('rowsPerPage') !== localRowsPerPage || localStorage.getItem('sortColumn') !== defaultSortCoulmn || localStorage.getItem('sortDirection') !== defaultSortDirection)) {
       const dataLocal = JSON.parse(localStorage.getItem('data'));
       dataCartView = dataLocal;
       localPageCartView = localStorage.getItem('page');
