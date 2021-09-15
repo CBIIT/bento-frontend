@@ -112,6 +112,7 @@ const reducers = {
       localStorage.setItem('sortDirection', sortDirectionValue);
       localStorage.setItem('page', '0');
       localStorage.setItem('rowsPerPage', '10');
+      localStorage.setItem('data', '');
       return {
         ...state,
         fileIds: fileIdsAfterDeletion,
