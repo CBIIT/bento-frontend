@@ -108,11 +108,8 @@ const reducers = {
     if (fileIdsAfterDeletion.length === 0) {
       sortColumnValue = '';
       sortDirectionValue = '';
-      localStorage.setItem('sortColumn', sortColumnValue);
-      localStorage.setItem('sortDirection', sortDirectionValue);
-      localStorage.setItem('page', '0');
-      localStorage.setItem('rowsPerPage', '10');
-      localStorage.setItem('data', '');
+      // clear all local storage if we remove all record
+      localStorage.clear();
       return {
         ...state,
         fileIds: fileIdsAfterDeletion,
