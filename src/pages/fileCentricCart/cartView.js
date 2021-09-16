@@ -32,6 +32,9 @@ const cartView = ({
   const [modalStatus, setModalStatus] = React.useState(false);
   const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
   const [userComments, setUserComments] = React.useState('');
+  let dataCartView = data;
+  let localPageCartView = localPage;
+  let localRowsPerPageCartView = localRowsPerPage;
   async function fetchData() {
     const fetchResult = await client
       .query({
@@ -70,6 +73,15 @@ const cartView = ({
   }
 
   const fileIdIndex = table.columns.map((d) => d.dataField).findIndex((e) => e === 'file_id');
+
+  if (localStorage.getItem('data')) {
+    if (localStorage.getItem('data') !== 'undefined' && localStorage.getItem('data').length > 0 && (localStorage.getItem('page') !== localPage || localStorage.getItem('rowsPerPage') !== localRowsPerPage || localStorage.getItem('sortColumn') !== defaultSortCoulmn || localStorage.getItem('sortDirection') !== defaultSortDirection)) {
+      const dataLocal = JSON.parse(localStorage.getItem('data'));
+      dataCartView = dataLocal;
+      localPageCartView = localStorage.getItem('page');
+      localRowsPerPageCartView = localStorage.getItem('rowsPerPage');
+    }
+  }
 
   const deleteColumn = [{
     name: 'Remove',
@@ -179,15 +191,15 @@ const cartView = ({
           <div id="table_selected_files" className={classes.tableWrapper}>
             <CartBody
               updateSortOrder={updateSortOrder}
-              data={data}
+              data={dataCartView}
               deleteColumn={deleteColumn}
               fileIDs={fileIDs}
               defaultSortCoulmn={defaultSortCoulmn}
               defaultSortDirection={defaultSortDirection}
               paginationAPIField={paginationAPIField}
               paginationAPIFieldDesc={paginationAPIFieldDesc}
-              localPage={localPage}
-              localRowsPerPage={localRowsPerPage}
+              localPage={localPageCartView}
+              localRowsPerPage={localRowsPerPageCartView}
               isLoading={isLoading}
             />
             <CartFooter
