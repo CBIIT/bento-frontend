@@ -38,36 +38,36 @@ const ActiveFiltersQuery = ({ classes }) => {
 
     return '';
   });
-
   return (
-    <div>
-      {activeFilters.length > 0 ? (
+    <div className={classes.queryWrapper}>
+      <div>
         <div className={classes.clearQuery}>
           <Button
-            variant="contained"
             color="primary"
+            variant="contained"
             className={classes.clearQueryButton}
             onClick={() => clearAllFilters()}
+            disabled={activeFilters.length <= 0}
           >
             Clear Query
           </Button>
         </div>
-      ) : ''}
-      <div className={classes.clearQueryResult}>
-        {activeFilters.map((filter, index) => (
-          <span>
+        <div className={classes.clearQueryResult}>
+          {activeFilters.map((filter, index) => (
             <span>
-              {' '}
-              {index !== 0 ? 'AND ' : ''}
-              {filter.filterName}
-              {' '}
+              <span>
+                {' '}
+                {index !== 0 ? 'AND ' : ''}
+                {filter.filterName}
+                {' '}
+              </span>
+              <span>
+                {' '}
+                {filter.checkbox.length === 1 ? `IS ${filter.checkbox[0]}` : `IN (${filter.checkbox.join()}) `}
+              </span>
             </span>
-            <span>
-              {' '}
-              {filter.checkbox.length === 1 ? `IS ${filter.checkbox[0]}` : `IN (${filter.checkbox.join()}) `}
-            </span>
-          </span>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -77,6 +77,12 @@ const styles = (theme) => ({
   clearQueryButton: {
     borderRadius: '8px',
     margin: '6px',
+  },
+  queryWrapper: {
+    with: '100%',
+    height: '150px',
+    backgroundColor: '#ccc',
+    padding: '15px',
   },
   clearQuery: {
     float: 'left',

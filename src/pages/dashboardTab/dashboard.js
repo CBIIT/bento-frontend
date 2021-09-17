@@ -18,6 +18,7 @@ const Dashboard = ({
   classes, data, theme,
 }) => {
   const [collapse, setCollapse] = React.useState(true);
+  const [activeTabId, setActiveTabId] = React.useState(null);
   const themeChanger = useTheme();
   const handleChange = () => {
     setCollapse((prev) => !prev);
@@ -30,10 +31,11 @@ const Dashboard = ({
         <div>
           <div className={classes.content}>
             <div className={classes.sideBar}>
-              <SideBar />
+              <SideBar setActiveTabId={setActiveTabId} />
             </div>
             <div className={classes.rightContent}>
               <div className={classes.widgetsContainer}>
+                {displayActiveFiltersQuery && activeTabId === '1' ? <ActiveFiltersQuery /> : ''}
                 <div className={classes.widgetsCollapse}>
                   <div className={classes.floatLeft} />
                   <div className={classes.floatRight}>
@@ -60,7 +62,6 @@ const Dashboard = ({
                     />
                   </div>
                 </div>
-                {displayActiveFiltersQuery ? <ActiveFiltersQuery /> : ''}
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget, index) => {

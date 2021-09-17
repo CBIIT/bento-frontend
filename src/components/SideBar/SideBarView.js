@@ -19,7 +19,7 @@ if (resetIcon.src === '') {
   resetIcon.src = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg';
 }
 
-const SideBarContent = ({ classes }) => {
+const SideBarContent = ({ classes, setActiveTabId }) => {
   const [value, setValue] = React.useState('1');
 
   const handleChange = (event, newValue) => {
@@ -28,15 +28,23 @@ const SideBarContent = ({ classes }) => {
       clearAllFilters();
     }
   };
+
+  React.useEffect(() => {
+    setActiveTabId(value);
+  }, [value]);
+
   const activeFilters = useSelector((state) => (
     state.dashboardTab
       && state.dashboardTab.allActiveFilters
       ? state.dashboardTab.allActiveFilters : {}));
+
   const activeFiltersCount = Object.entries(activeFilters).reduce(
     (acc, [key, val]) => acc + (val.length), 0, // eslint-disable-line no-unused-vars
   );
+
   const countFilters = facetSearchData
     ? facetSearchData.reduce((n, facet) => n + (facet.show === true), 0) : 0;
+
   return (
     <div>
       { searchEnabled ? (
