@@ -46,7 +46,7 @@ const ActiveFiltersQuery = ({ classes }) => {
       query += (filter.checkbox.length === 1 ? ` IS <span class="${classes.line}">${filter.checkbox[0]}</span>` : ` IN (<span class="${classes.line}">${filter.checkbox.join(', ')}</span>)`);
     });
     query += '</p>';
-    [' AND ', ' IS ', ' IN ', ' FOR ', ' SELECT ', ' OR '].forEach((opr) => {
+    [' AND ', ' IS ', ' IN '].forEach((opr) => {
       query = query.replaceAll(opr, `<span class="${classes.operators}">${opr}</span>`);
     });
     return query;
