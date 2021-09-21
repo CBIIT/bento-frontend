@@ -20,6 +20,7 @@ import GraphqlClient from '../GraphqlClient/GraphqlView';
 import fileCentricCart from '../../pages/fileCentricCart/cartController';
 import JBrowse from '../JBrowse/JBrowseView';
 import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
+import GlobalSearch from '../../pages/search/searchView';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -52,6 +53,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/case/:id" component={CaseDetail} />
             <Route path="/arm/:id" component={ArmDetail} />
             <Route path="/JBrowse" component={JBrowse} />
+            <Route path="/search" component={GlobalSearch} />
             <Route path="/fileViewer/:id" component={JBrowseDetail} />
             {aboutPageRoutes.map(
               (aboutPageRoute, index) => (
