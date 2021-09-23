@@ -39,19 +39,6 @@ const ActiveFiltersQuery = ({ classes }) => {
     return '';
   });
 
-  const queryRenderer = () => {
-    let query = `<p class="${classes.query}">`;
-    activeFilters.forEach((filter, index) => {
-      query = `${query + (index !== 0 ? ' AND ' : '')}<span class="${classes.line}">${filter.filterName.toUpperCase()}</span>`;
-      query += (filter.checkbox.length === 1 ? ` IS <span class="${classes.line}">${filter.checkbox[0]}</span>` : ` IN (<span class="${classes.line}">${filter.checkbox.join(', ')}</span>)`);
-    });
-    query += '</p>';
-    [' AND ', ' IS ', ' IN '].forEach((opr) => {
-      query = query.replaceAll(opr, `<span class="${classes.operators}">${opr}</span>`);
-    });
-    return query;
-  };
-
   return (
     <div className={classes.queryWrapper}>
       <div>
@@ -67,7 +54,27 @@ const ActiveFiltersQuery = ({ classes }) => {
           </Button>
         </div>
         <div className={classes.clearQueryResult}>
-          <div dangerouslySetInnerHTML={{ __html: queryRenderer() }} />
+          {activeFilters.map((filter, index) => (
+            <span>
+              <span>
+                {' '}
+                {index !== 0 ? <span className={classes.operators}> AND </span> : ''}
+                <span className={classes.filterName}>
+                  {filter.filterName}
+                </span>
+                {' '}
+              </span>
+              <span>
+                {' '}
+                <span className={classes.operators}>
+                  {filter.checkbox.length === 1 ? 'IS ' : 'IN '}
+                </span>
+                <span className={classes.filterCheckboxes}>
+                  {filter.checkbox.length === 1 ? filter.checkbox[0] : `(${filter.checkbox.join()}) ` }
+                </span>
+              </span>
+            </span>
+          ))}
         </div>
       </div>
     </div>
@@ -103,6 +110,13 @@ const styles = (theme) => ({
     borderBottomColor: '#10A075',
     width: 'fit-content',
   },
+  filterCheckboxes: {
+    paddingBottom: '3px',
+    borderBottomStyle: 'solid',
+    borderBottomWidth: '2px',
+    borderBottomColor: '#10A075',
+    width: 'fit-content',
+  },
   operators: {
     color: '#64ACD5',
     marginLeft: '3px',
@@ -114,11 +128,18 @@ const styles = (theme) => ({
     textDecoration: 'none',
   },
   clearQueryResult: {
+    fontFamily: 'Nunito Sans Black',
+    fontSize: '18px',
+    letterSpacing: '1px',
+    margin: '-20px 100px 0px 164px',
+    lineHeight: 1.65,
     height: '120px',
     overflowY: 'auto',
-    marginTop: '-20px',
-    marginLeft: '164px',
+    paddingTop: '17px',
     color: theme.palette.clearQueryResultColor.color,
+  },
+  filterName: {
+    textTransform: 'uppercase',
   },
 });
 
