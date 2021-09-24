@@ -29,7 +29,6 @@ function localSearchCOmponent({ classes }) {
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
   const [value, setValue] = React.useState([]);
-  const [valueReverse, setValueReverse] = React.useState([]);
   // data from store for sidebar laoding
   const isSidebarLoading = useSelector((state) => (
     state.dashboardTab
@@ -73,12 +72,9 @@ function localSearchCOmponent({ classes }) {
   function onChange(newValue = []) {
     // make the value unique to avoid duplicate search result
     const newValueUnique = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
-    const newValueUniqueReverse = newValueUnique.slice().reverse();
-    // const newValueUniqueReverse = newValueUnique.reverse();
     setSideBarToLoading();
     setValue(newValueUnique);
-    setValueReverse(newValueUniqueReverse);
-    localSearch(newValueUniqueReverse);
+    localSearch(newValueUnique);
   }
   const onDelete = (title) => () => {
     const newValue = value.filter((v) => v.title !== title);
@@ -87,7 +83,6 @@ function localSearchCOmponent({ classes }) {
 
   function resetFilter() {
     setValue([]);
-    setValueReverse([]);
     localSearch([]);
     return null;
   }
@@ -151,7 +146,7 @@ function localSearchCOmponent({ classes }) {
         />
         <div>
           <List>
-            {valueReverse.map((v, index) => (
+            {value.slice().reverse().map((v, index) => (
               <>
                 <ListItem
                   style={{
