@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
   createViewState,
@@ -37,8 +38,8 @@ const tracks = [
     type: 'AlignmentsTrack',
     adapter: {
       type: 'BamAdapter',
-      bamLocation: { uri: ' https://d1c9wxtw4a60lg.cloudfront.net/PACT1-1K/wgEncodeUwRepliSeqBg02esG1bAlnRep1.bam?Expires=1627668541&Key-Pair-Id=K3M5ZT6KJNAGN7&Signature=EvqMJuDZQzdrOqpzHG04KzgW--O-pCy3~ca-2nwa9MZ1HzXQLo0UjMVl5bCyoMP6SMXqksN6ic~fmCR7HyxeUXD8nEg2NE25G96WfDmHq~ZgsDqLsssKFRjvygSNAEjbJia3W4iwyRkZWkqqxvMpTFu4ERCz7qvZ3FnPby1TOHjUZuPpqQGH4wRwdRQjXxwOC9-yPsTvFhk8SwOiIR8hJj40WwXXSr4DHLaaKCT3cFVQHklqN-AUNi1hbEO2J8NrDd62K2OsYGeyc-K3JgUi1193gKFnybMfl9hFhT3iP3W9t1FzSmYmfGD2E8PkQ~5WU3Cd~yMUYY-I80s7KnONTA__' },
-      index: { location: { uri: 'https://d1c9wxtw4a60lg.cloudfront.net/PACT1-1K/wgEncodeUwRepliSeqBg02esG1bAlnRep1.bam.bai?Expires=1627668291&Key-Pair-Id=K3M5ZT6KJNAGN7&Signature=lvy-ImCnYj2ujwhNBrb-BJImjhrd5w4hvazZGEbpN0J9JDX6P3oIHwq7A37uy2bl14ZpbSZl0rF0JDX54-hGKcii3EmtkjJWzgrgLj0AuXlfhdSMV2Y0hrIeAnrCMX03fVNmFzm0lJrDgRBwauHo9i1rb~QU0jrEKGYWg7jFyE0x~teF~-0oYMwLLM3~h6cLGMGWAM7zEXr8OHbOr8hwoBKdXoNiAbeheCmncVBrffmM7bJPoE6Lnh7YX-nb3EYBxB-RQ8LPZP2gTnplTndNDyx9Do31dnE-VBLUbRnSlziN9smcOulFVFNS6diX4j7oXGYSAtTLOtAbBnutfalzpQ__' } },
+      bamLocation: { uri: 'https://d1c9wxtw4a60lg.cloudfront.net/PACT1-1K/wgEncodeUwRepliSeqBg02esG1bAlnRep1.bam?Expires=1632576488&Key-Pair-Id=K3USBVWL2TSK7R&Signature=cjNFSJZUZssSIjepwsGVFg5FLSsEe9PPG2Grfeod-vHmWzAacUEQdMIyWXP8SOzierPAtD1p8JfM7-qhvbP-bkD-2b1YMT1VCJlLDGaxLnWB3Oyes~ZZCCszw0MkMpoA78paGQ127E6NcbSle1Vu6JzMp3Ukl~pJrzPgJKUAyYkRVyttOfKWHmk4zNYRqCNW0-Sdh0E6cJo4RBnGj36EVy-yB2UiVbeNfBYeRsutSRQBDYf7nQD4SEtLPo80eVP6q-LHqj0tlq40LZ1Q3SKRmk9s~8SoxeXqal5-s-Rjqse6aHT8eCbYbc9-QxltBsruXTLJKUmMm2qVhlRGo5wovA__' },
+      index: { location: { uri: 'https://d1c9wxtw4a60lg.cloudfront.net/PACT1-1K/wgEncodeUwRepliSeqBg02esG1bAlnRep1.bam.bai?Expires=1632576499&Key-Pair-Id=K3USBVWL2TSK7R&Signature=fbsqCGdxfa-ezAoEr9N6lelBBjZCWJNuJToCG5VU-C~-sHALO4gqP-SxmBtRhnkrKgzO1cNv3BS-E~~jcA9xkC8Mt0qJfCmuAHXYmydzAeY5fzjmowJRX-EUKicY9lpPNODVc0OwHj4JDUTkmxlNae8LrxvYOPd1a~skabRrfg~hEoLZPVAitHdJ9T1KeTUTC~AeKegtgAQ7hcmDdCqATx~C-R87FWkbPmnrCvmaqDAFA94KmLgn9CtRKpacr2geR8W29J2mjQW~~1zZhKPWYajYua2r1dMBBzi5ppUMJYmOkmpDtRww2dRLgKnEZR9Ia4Y8S4OOAm-M5Hkv2csHFg__' } },
     },
   },
   {
@@ -53,69 +54,39 @@ const tracks = [
     },
   },
 ];
-// const defaultSession = { FeatureTrack
-//   name: 'My session',
-//   view: {
-//     id: 'linearGenomeView',
-//     type: 'LinearGenomeView',
-//     tracks: [
-//       {
-//         type: 'AlignmentsTrack',
-//         configuration: 'my_alignments_track',
-//         displays: [
-//           {
-//             type: 'ReferenceSequenceTrack',
-//             configuration:
-//               'my_alignments_track-ReferenceSequenceTrack',
-//           },
-//         ],
-//       },
-//     ],
-//   },
-// };
-// const getTracks = (bamFiles) => {
-//   console.log(bamFiles);
-//   const bamFile = bamFiles.filter((file) => file.file_type === 'bam');
-//   console.log(bamFile);
-//   const baiFile = bamFiles.filter((file) => file.file_type === 'bai');
-//   const tester = [
-//     {
-//       trackId: 'my_alignments_track',
-//       name: 'My Alignments',
-//       assemblyNames: ['GRCh38'],
-//       type: 'AlignmentsTrack',
-//       adapter: {
-//         type: 'BamAdapter',
-//         bamLocation: { uri: bamFile.file_location },
-//         index: { location: { uri: baiFile.file_location } },
-//       },
-//     },
-//     {
-//       type: 'VariantTrack',
-//       trackId: 'my_track',
-//       name: 'My Variants',
-//       assemblyNames: ['GRCh38'],
-//       adapter: {
-//         type: 'VcfTabixAdapter',
-//         vcfGzLocation: { uri: 'https://bento-bam-vcf-files.s3.amazonaws.com/NA20811.10.sorted.vcf.gz' },
-//         index: { location: { uri: 'https://bento-bam-vcf-files.s3.amazonaws.com/NA20811.10.sorted.vcf.gz.tbi' } },
-//       },
-//     },
-//   ];
-//   return tester;
-// };
 
 const state = createViewState({
   assembly,
   tracks,
   location: '10:29,838,737..29,838,819',
-  // defaultSession,
 });
 
-const JBrowseDetail = () => (
-  <ThemeProvider theme={theme}>
-    <JBrowseLinearGenomeView viewState={state} />
-  </ThemeProvider>
-);
+const JBrowseDetail = ({ bamFiles }) => {
+  // eslint-disable-next-line
+  const [trackList, setTracks] = useState(tracks);
+
+  const getFileUris = async () => {
+    const resp1 = await axios.get(bamFiles[0].file_location);
+    const resp2 = await axios.get(bamFiles[0].file_location, {
+      headers: {
+        'Content-Type': 'applciation/json',
+      },
+    });
+    console.log(resp1, resp2, 'SOMETHING');
+  };
+
+  useEffect(() => {
+    // trackList[0].adapter.bamLocation.uri =
+    if (bamFiles.length > 0) {
+      getFileUris();
+    }
+  }, [bamFiles]);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <JBrowseLinearGenomeView viewState={state} />
+    </ThemeProvider>
+  );
+};
 
 export default withStyles(defaultFooterStyles, { withTheme: true })(JBrowseDetail);
