@@ -82,6 +82,13 @@ export const facetSectionVariables = {
 
 export const search = {
   fileIds: {
+    color: '#E636E4',
+    checkBoxColorsOne: '#FBE3FB',
+    checkBoxColorsTwo: '#FFF2FF',
+    height: '5px',
+    isExpanded: false,
+  },
+  subjectIds: {
     color: '#10A075',
     checkBoxColorsOne: '#E8F7DC',
     checkBoxColorsTwo: '#F5FDEE',
