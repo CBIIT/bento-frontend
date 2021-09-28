@@ -71,7 +71,6 @@ function localSearchCOmponent({ classes }) {
 
   function onChange(newValue = []) {
     // make the value unique to avoid duplicate search result
-    // const newValueUnique = [...new Set(newValue)];
     const newValueUnique = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
     setSideBarToLoading();
     setValue(newValueUnique);
@@ -147,7 +146,7 @@ function localSearchCOmponent({ classes }) {
         />
         <div>
           <List>
-            {value.map((v, index) => (
+            {value.slice().reverse().map((v, index) => (
               <>
                 <ListItem
                   style={{
@@ -225,7 +224,7 @@ const styles = () => ({
     height: 18,
   },
   listItemGutters: {
-    padding: '5px 0px 5px 0px',
+    padding: '2px 0px 2px 0px',
   },
   searchResultDetailText: {
     marginTop: '1.5px',
