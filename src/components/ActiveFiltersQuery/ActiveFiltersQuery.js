@@ -84,8 +84,15 @@ const ActiveFiltersQuery = ({ classes }) => {
 const styles = (theme) => ({
   clearQueryButton: {
     borderRadius: '15px',
+    border: '1px solid #B4B4B4',
     backgroundColor: '#fff',
     margin: '6px',
+    color: '#638FB5',
+    fontSize: '14px',
+    boxSizing: 'border-box',
+    fontFamily: 'Nunito',
+    textTransform: 'capitalize',
+    fontWeight: 400,
   },
   queryWrapper: {
     padding: '10px 15px 0px 15px',
@@ -95,20 +102,6 @@ const styles = (theme) => ({
   clearQuery: {
     float: 'left',
     paddingTop: '15px',
-  },
-  query: {
-    fontFamily: 'Nunito Sans Black',
-    fontSize: '18px',
-    letterSpacing: '1px',
-    marginRight: '100px',
-    lineHeight: 1.65,
-  },
-  line: {
-    paddingBottom: '3px',
-    borderBottomStyle: 'solid',
-    borderBottomWidth: '2px',
-    borderBottomColor: '#10A075',
-    width: 'fit-content',
   },
   filterCheckboxes: {
     paddingBottom: '3px',
@@ -124,18 +117,21 @@ const styles = (theme) => ({
     fontWeight: 'bold',
     marginRight: '3px',
     borderBottom: 'none',
-    fontFamily: 'Nunito Sans Black',
+    fontFamily: 'Nunito',
+    fontWigth: 800,
     textDecoration: 'none',
   },
   clearQueryResult: {
-    fontFamily: 'Nunito Sans Black',
+    fontFamily: 'Nunito',
+    fontWigth: 800,
     fontSize: '18px',
-    letterSpacing: '1px',
-    margin: '-20px 100px 0px 164px',
+    letterSpacing: '0.5px',
+    margin: '-12px 65px 0px 164px',
     lineHeight: 1.65,
     height: '120px',
     overflowY: 'auto',
     paddingTop: '17px',
+    paddingRight: '10px',
     color: theme.palette.clearQueryResultColor.color,
   },
   filterName: {
