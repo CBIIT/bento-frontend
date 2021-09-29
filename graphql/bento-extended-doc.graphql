@@ -1008,9 +1008,6 @@ type QueryType {
 
     findIdsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): IdsLists 
 
-    subjectOverView: [SubjectOverview] 
-
-
     subjectsInList(subject_ids: [String]=[]): [SubjectInfo] 
 
     filesOfSubjects(subject_ids: [String]=[]): [FileInfo] 

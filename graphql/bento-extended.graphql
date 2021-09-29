@@ -1254,41 +1254,6 @@ type QueryType {
         } 
     """, passThrough: true)
 
-    subjectOverView: [SubjectOverview] @cypher(statement: """
-        MATCH (ss:study_subject)
-        OPTIONAL MATCH (ss)<-[:sample_of_study_subject]-(sp)<-[:file_of_sample]-(f)-[:file_of_laboratory_procedure]->(lp)
-        WITH ss, collect(DISTINCT sp.sample_id) AS samples, collect(DISTINCT lp.laboratory_procedure_id) AS lab_procedures, collect(DISTINCT f {.*}) AS files
-        OPTIONAL MATCH (ss)-[:study_subject_of_study]->(s)-[:study_of_program]->(p)
-        OPTIONAL MATCH (ss)<-[:sf_of_study_subject]-(sf)
-        OPTIONAL MATCH (ss)<-[:diagnosis_of_study_subject]-(d)
-        OPTIONAL MATCH (d)<-[:tp_of_diagnosis]-(tp)
-        OPTIONAL MATCH (ss)<-[:demographic_of_study_subject]-(demo)
-        RETURN {
-            program: p.program_acronym,
-            program_id: p.program_id,
-            study_acronym: s.study_acronym,
-            study_short_description: s.study_short_description,
-            study_info: s.study_acronym + ': ' + s.study_short_description,
-            subject_id: ss.study_subject_id,
-            diagnosis: ss.disease_subtype,
-            recurrence_score: sf.grouped_recurrence_score,
-            tumor_size: d.tumor_size_group,
-            tumor_grade: d.tumor_grade,
-            er_status: d.er_status,
-            pr_status: d.pr_status,
-            chemotherapy: tp.chemotherapy_regimen,
-            endocrine_therapy: tp.endocrine_therapy_type,
-            menopause_status: demo.menopause_status,
-            age_at_index: demo.age_at_index,
-            survival_time: demo.survival_time,
-            survival_time_unit: demo.survival_time_unit,
-            samples: samples,
-            files: files,
-            lab_procedures: lab_procedures
-        }
-    """, passThrough: true)
-
-
     subjectsInList(subject_ids: [String]=[]): [SubjectInfo] @cypher(statement: """
         MATCH (ss:study_subject)
           WHERE ss.study_subject_id IN $subject_ids
