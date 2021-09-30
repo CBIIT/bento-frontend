@@ -11,6 +11,7 @@ import ActiveFiltersQuery from '../../components/ActiveFiltersQuery/ActiveFilter
 import { widgetsData, displayActiveFiltersQuery } from '../../bento/dashboardData';
 import Tab from './components/tabController';
 import colors from '../../utils/colors';
+import SearchAUtoFill from '../../components/Search/searchAutoFillComponent';
 
 const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
 
@@ -61,6 +62,7 @@ const Dashboard = ({
                   </div>
                 </div>
                 {displayActiveFiltersQuery ? <ActiveFiltersQuery /> : ''}
+                <SearchAUtoFill />
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget, index) => {
