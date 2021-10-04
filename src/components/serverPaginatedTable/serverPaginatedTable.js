@@ -4,6 +4,7 @@ import React from 'react';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
+// import { isEqual } from 'lodash';
 
 import { CircularProgress, Backdrop, withStyles } from '@material-ui/core';
 import { CustomDataTable } from 'bento-components';
@@ -20,16 +21,18 @@ class ServerPaginatedTableView extends React.Component {
     isLoading: false,
     // Init an array updatedColumns - helps in tracking onViewColumnsChange
     updatedColumns: [],
+    columns: [],
   };
 
   componentDidMount() {
     this.getData('', 0);
     localStorage.setItem('page', String(0));
     localStorage.setItem('rowsPerPage', String(10));
+    localStorage.setItem('data', JSON.stringify(this.props.data));
     localStorage.setItem('sortColumn', this.props.defaultSortCoulmn);
     localStorage.setItem('sortDirection', this.props.defaultSortDirection);
-    localStorage.setItem('data', JSON.stringify(this.props.data));
     this.setState({
+      columns: this.props.columns,
       sortOrder: {
         name: this.props.defaultSortCoulmn,
         direction: this.props.defaultSortDirection,
@@ -169,7 +172,7 @@ class ServerPaginatedTableView extends React.Component {
     // onViewColumnsChange
     setUpdatedColumnsDisplay = (stateUpdatedColumns) => {
       stateUpdatedColumns.map((updatedColumns) => {
-        const index = this.props.columns.map((e) => e.name)
+        const index = this.state.columns.map((e) => e.name)
           .indexOf(updatedColumns.label);
         if (updatedColumns.status === 'remove') {
           this.props.columns[index].options.display = false;
@@ -217,6 +220,16 @@ class ServerPaginatedTableView extends React.Component {
     this.rowsSelectedTrigger(data);
   };
 
+  changeColsView = (col, action) => {
+    const { columns } = this.state;
+    const index = columns.findIndex((colName) => colName.name === col);
+    if (action === 'add') {
+      columns[index].options.display = true;
+    } else {
+      columns[index].options.display = false;
+    }
+  }
+
   async fetchData(offset, rowsRequired, sortOrder = {}) {
     let sortDirection = 'asc';
     let sortColumn = 'arm';
@@ -261,8 +274,9 @@ class ServerPaginatedTableView extends React.Component {
 
   render() {
     const {
-      data, count, isLoading, sortOrder, className, rowsPerPage, page,
+      count, isLoading, sortOrder, rowsPerPage, page, data, ...rest
     } = this.state;
+
     const options1 = {
       filterType: 'dropdown',
       responsive: 'stacked',
@@ -328,6 +342,8 @@ class ServerPaginatedTableView extends React.Component {
         }
       },
       onViewColumnsChange: (changedColumn, action) => {
+        // console.log('UPDATE_COLS', changedColumn, action);
+        this.changeColsView(changedColumn, action);
         // Track user interaction with ViewColumns and build an array updatedColumns
         // updatedColumns shall Save label, status for every interaction
         const index = this.state.updatedColumns.findIndex((x) => x.label === changedColumn);
@@ -355,6 +371,7 @@ class ServerPaginatedTableView extends React.Component {
       }
       options1.page = newPage;
     }
+
     return (
       <div>
         <Backdrop
@@ -365,10 +382,9 @@ class ServerPaginatedTableView extends React.Component {
         </Backdrop>
         {data === 'undefined' ? <CircularProgress /> : (
           <CustomDataTable
+            {...rest}
             data={data}
-            columns={this.props.columns}
             options={({ ...this.props.options, ...options1 })}
-            className={className}
           />
         )}
       </div>

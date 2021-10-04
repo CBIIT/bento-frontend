@@ -16,23 +16,18 @@ import TableThemeProvider from './cartTableThemeConfig';
 const CartHeader = ({
   classes,
   data,
-  deleteColumn,
   fileIDs,
-  defaultSortCoulmn,
-  defaultSortDirection,
-  updateSortOrder,
-  paginationAPIField,
-  paginationAPIFieldDesc,
-  localPage,
-  localRowsPerPage,
-  isLoading,
+  deleteColumn,
+  ...rest
 }) => {
   function onRowSelectionChange(curr, allRowsSelected) {
     // eslint-disable-next-line no-sequences
     return (curr, allRowsSelected);
   }
+
   const columns = getColumns(table, classes).concat(deleteColumn);
   const options = getOptions(table, classes, getDefaultCustomFooter, onRowSelectionChange);
+
   return (
     <TableThemeProvider>
       <CustomDataTable
@@ -43,16 +38,9 @@ const CartHeader = ({
         count={fileIDs.length || 0}
         overview={GET_MY_CART_DATA_QUERY}
         overviewDesc={GET_MY_CART_DATA_QUERY_DESC}
-        paginationAPIField={paginationAPIField}
-        paginationAPIFieldDesc={paginationAPIFieldDesc}
         queryCustomVaribles={{ file_ids: fileIDs }}
-        defaultSortCoulmn={defaultSortCoulmn}
-        defaultSortDirection={defaultSortDirection}
         tableDownloadCSV={table.tableDownloadCSV}
-        updateSortOrder={updateSortOrder}
-        localPage={localPage}
-        localRowsPerPage={localRowsPerPage}
-        isLoading={isLoading}
+        {...rest}
       />
     </TableThemeProvider>
   );

@@ -32,9 +32,11 @@ const cartView = ({
   const [modalStatus, setModalStatus] = React.useState(false);
   const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
   const [userComments, setUserComments] = React.useState('');
+
   let dataCartView = data;
   let localPageCartView = localPage;
   let localRowsPerPageCartView = localRowsPerPage;
+
   async function fetchData() {
     const fetchResult = await client
       .query({
@@ -47,17 +49,20 @@ const cartView = ({
     return fetchResult;
   }
 
-  function toggleRemoveAllMessageStatus(status) {
-    return status === 'close' ? setRemoveAllMessageStatus(false) : setRemoveAllMessageStatus(true);
-  }
+  const toggleRemoveAllMessageStatus = (status) => {
+    setRemoveAllMessageStatus(status === 'open');
+  };
 
   // ================= Dialogbox Functions =================
   const openDialogBox = () => setModalStatus(true);
+
   const closeDialogBox = () => setModalStatus(false);
+
   function deleteSubjectsAndCloseModal() {
     closeDialogBox();
     deleteFromCart({ fileIds: fileIDs });
   }
+
   const numberOfFilesBeDeleted = myFilesPageData.popUpWindow.showNumberOfFileBeRemoved
     ? fileIDs.length : '';
 
@@ -111,9 +116,13 @@ const cartView = ({
               </div>
               <div className={classes.removeHeadCellIcon}>
                 <IconButton aria-label="help" className={classes.removeHeadCellIconButton}>
-                  <ArrowDropDownIcon onClick={() => openDialogBox()} onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} />
+                  <ArrowDropDownIcon
+                    onClick={() => openDialogBox()}
+                    onMouseEnter={() => toggleRemoveAllMessageStatus('open')}
+                    onMouseLeave={() => toggleRemoveAllMessageStatus('close')}
+                  />
                 </IconButton>
-                { removeAllMessageStatus ? (
+                { removeAllMessageStatus && (
                   <div className={classes.removeAllMessage}>
                     {' '}
                     Remove
@@ -123,7 +132,7 @@ const cartView = ({
                     items in cart.
                     {' '}
                   </div>
-                ) : ''}
+                )}
               </div>
             </div>
           </span>
@@ -167,7 +176,12 @@ const cartView = ({
               {myFilesPageData.downButtonText}
               {' '}
             </button>
-            <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={tooltipMessageData} arrow placement="bottom">
+            <ToolTip
+              arrow
+              placement="bottom"
+              title={tooltipMessageData}
+              classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }}
+            >
               <IconButton
                 aria-label="help"
                 className={classes.helpIconButton}
@@ -186,14 +200,13 @@ const cartView = ({
                 )}
               </IconButton>
             </ToolTip>
-
           </div>
           <div id="table_selected_files" className={classes.tableWrapper}>
             <CartBody
-              updateSortOrder={updateSortOrder}
+              fileIDs={fileIDs}
               data={dataCartView}
               deleteColumn={deleteColumn}
-              fileIDs={fileIDs}
+              updateSortOrder={updateSortOrder}
               defaultSortCoulmn={defaultSortCoulmn}
               defaultSortDirection={defaultSortDirection}
               paginationAPIField={paginationAPIField}

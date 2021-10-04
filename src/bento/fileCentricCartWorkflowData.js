@@ -50,6 +50,7 @@ export const table = {
   defaultSortDirection: 'asc',
   paginationAPIField: 'filesInList',
   paginationAPIFieldDesc: 'filesInListDesc',
+  viewColumns: true,
   tableDownloadCSV: customMyFilesTabDownloadCSV,
 
   columns: [
