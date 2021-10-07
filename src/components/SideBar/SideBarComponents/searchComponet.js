@@ -5,7 +5,7 @@ import {
   TextField, CircularProgress, Backdrop, withStyles, List, ListItem, Divider,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearFilters from './clearFilters';
 import { getAllIds, localSearch, setSideBarToLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
@@ -29,7 +29,6 @@ function localSearchCOmponent({ classes }) {
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
   const [value, setValue] = React.useState([]);
-  // data from store for sidebar laoding
   const isSidebarLoading = useSelector((state) => (
     state.dashboardTab
   && state.dashboardTab.setSideBarLoading
@@ -86,6 +85,9 @@ function localSearchCOmponent({ classes }) {
     localSearch([]);
     return null;
   }
+  const filterOptions = createFilterOptions({
+    trim: true,
+  });
 
   return (
     <>
@@ -107,6 +109,7 @@ function localSearchCOmponent({ classes }) {
             classes={classes}
             onChange={(event, newValue) => onChange(newValue)}
             multiple
+            filterOptions={filterOptions}
             value={value}
             open={open}
             onOpen={() => {
