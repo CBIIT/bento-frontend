@@ -85,10 +85,6 @@ function localSearchCOmponent({ classes }) {
     localSearch([]);
     return null;
   }
-  const filterOptions = createFilterOptions({
-    trim: true,
-  });
-
   return (
     <>
       {/* This is a temp solution for clear all need to find betetr solution
@@ -109,7 +105,7 @@ function localSearchCOmponent({ classes }) {
             classes={classes}
             onChange={(event, newValue) => onChange(newValue)}
             multiple
-            filterOptions={filterOptions}
+            filterOptions={createFilterOptions({ trim: true })}
             value={value}
             open={open}
             onOpen={() => {
