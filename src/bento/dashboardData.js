@@ -80,8 +80,47 @@ export const facetSectionVariables = {
   },
 };
 
+export const search = {
+  fileIds: {
+    color: '#E636E4',
+    checkBoxColorsOne: '#FBE3FB',
+    checkBoxColorsTwo: '#FFF2FF',
+    height: '5px',
+    isExpanded: false,
+  },
+  subjectIds: {
+    color: '#10A075',
+    checkBoxColorsOne: '#E8F7DC',
+    checkBoxColorsTwo: '#F5FDEE',
+    height: '5px',
+    isExpanded: false,
+  },
+  sampleIds: {
+    color: '#10BEFF',
+    checkBoxColorsOne: '#C9EBF7',
+    checkBoxColorsTwo: '#E8F8FE',
+    height: '5px',
+    isExpanded: false,
+  },
+  fileNames: {
+    color: '#E636E4',
+    checkBoxColorsOne: '#FBE3FB',
+    checkBoxColorsTwo: '#FFF2FF',
+    height: '5px',
+    isExpanded: false,
+  },
+};
+
 // --------------- Default Dashboard Sidebar Sections styling --------------
 export const defaultFacetSectionVariables = {
+  color: '#000000',
+  checkBoxColorsOne: '#E8F7DC',
+  checkBoxColorsTwo: '#F5FDEE',
+  height: '5px',
+  isExpanded: false,
+};
+
+export const defaultSearch = {
   color: '#000000',
   checkBoxColorsOne: '#E8F7DC',
   checkBoxColorsTwo: '#F5FDEE',

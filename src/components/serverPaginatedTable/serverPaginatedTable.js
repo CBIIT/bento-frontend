@@ -28,6 +28,7 @@ class ServerPaginatedTableView extends React.Component {
     localStorage.setItem('rowsPerPage', String(10));
     localStorage.setItem('sortColumn', this.props.defaultSortCoulmn);
     localStorage.setItem('sortDirection', this.props.defaultSortDirection);
+    localStorage.setItem('data', JSON.stringify(this.props.data));
     this.setState({
       sortOrder: {
         name: this.props.defaultSortCoulmn,
@@ -154,6 +155,7 @@ class ServerPaginatedTableView extends React.Component {
         const data = srcData;
         if (this.props.updateSortOrder) {
           localStorage.setItem('dataLength', String(srcData.length));
+          localStorage.setItem('data', JSON.stringify(srcData));
         }
         setTimeout(() => {
           resolve({
@@ -252,6 +254,7 @@ class ServerPaginatedTableView extends React.Component {
       .then((result) => (sortDirection !== 'asc' ? result.data[this.props.paginationAPIFieldDesc] : result.data[this.props.paginationAPIField]));
     if (this.props.updateSortOrder) {
       localStorage.setItem('dataLength', String(fetchResult.length));
+      localStorage.setItem('data', JSON.stringify(fetchResult));
     }
     return fetchResult;
   }

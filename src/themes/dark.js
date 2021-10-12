@@ -228,6 +228,9 @@ export default {
       default: '#E5F0FA',
       light: '#F3F5FF',
     },
+    clearQueryResultColor: {
+      color: '#A9A9A9',
+    },
   },
   customShadows: {
     widget:

@@ -28,6 +28,7 @@ const CartHeader = ({
   isLoading,
 }) => {
   function onRowSelectionChange(curr, allRowsSelected) {
+    // eslint-disable-next-line no-sequences
     return (curr, allRowsSelected);
   }
   const columns = getColumns(table, classes).concat(deleteColumn);

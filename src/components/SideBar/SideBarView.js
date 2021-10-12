@@ -19,35 +19,55 @@ if (resetIcon.src === '') {
   resetIcon.src = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg';
 }
 
-const SideBarContent = ({ classes }) => {
+const SideBarContent = ({ classes, setActiveTabId }) => {
   const [value, setValue] = React.useState('1');
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-    clearAllFilters();
+    if (value !== newValue) {
+      setValue(newValue);
+      clearAllFilters();
+    }
   };
+
+  React.useEffect(() => {
+    setActiveTabId(value);
+  }, [value]);
+
   const activeFilters = useSelector((state) => (
     state.dashboardTab
       && state.dashboardTab.allActiveFilters
       ? state.dashboardTab.allActiveFilters : {}));
+
   const activeFiltersCount = Object.entries(activeFilters).reduce(
     (acc, [key, val]) => acc + (val.length), 0, // eslint-disable-line no-unused-vars
   );
+
   const countFilters = facetSearchData
     ? facetSearchData.reduce((n, facet) => n + (facet.show === true), 0) : 0;
+
   return (
     <div>
       { searchEnabled ? (
         <TabContext value={value}>
-          <TabList onChange={handleChange} aria-label="sidebar tab" variant="fullWidth">
-            <Tab label={filterTabTitleText || 'Filter'} value="1" classes={{ root: classes.root }} />
-            <Tab label={searchTabTitleText || 'Search'} value="2" classes={{ root: classes.root }} />
+          <TabList
+            onChange={handleChange}
+            aria-label="sidebar tab"
+            variant="fullWidth"
+            TabIndicatorProps={{
+              style: {
+                display: 'none',
+                // backgroundColor: '#B8CCDF',
+              },
+            }}
+          >
+            <Tab label={filterTabTitleText || 'Filter'} value="1" classes={{ root: classes.root }} style={{ backgroundColor: value === '1' ? '#B8CCDF' : '#EAEAEA' }} />
+            <Tab label={searchTabTitleText || 'Search'} value="2" classes={{ root: classes.root }} style={{ backgroundColor: value === '2' ? '#B8CCDF' : '#EAEAEA' }} />
           </TabList>
           <TabPanel value="1" classes={{ root: classes.tabPanelRoot }}>
             <div>
               { countFilters > 0 && (
               <div>
-                <div>
+                <div className={classes.clearFiltersBorder}>
                   <ClearFilters
                     disable={activeFiltersCount === 0}
                     onClick={() => clearAllFilters()}
@@ -76,6 +96,7 @@ const SideBarContent = ({ classes }) => {
               <ClearFilters
                 disable={activeFiltersCount === 0}
                 onClick={() => clearAllFilters()}
+                resetText="Clear all filtered selections"
               />
             </div>
             <List component="nav" aria-label="filter cases" classes={{ root: classes.listRoot, divider: classes.dividerRoot }}>
@@ -173,11 +194,11 @@ const styles = (theme) => ({
     height: '45px',
     minHeight: '40px',
     marginTop: '10px',
-    marginRight: '10px',
-    background: '#EAEAEA',
-    fontSize: '18px',
-    fontFamily: 'Raleway',
+    marginRight: '3px',
+    fontSize: '17px',
+    fontFamily: 'Lato',
     fontWeight: '400',
+    color: '#000000',
     lineHeight: '18px',
     paddingLeft: '5px',
     letterSpacing: '0.25px',
@@ -188,6 +209,9 @@ const styles = (theme) => ({
     '&$selected': {
       fontWeight: 'bolder',
     },
+  },
+  clearFiltersBorder: {
+    borderTop: '1px solid black',
   },
   labelContainer: {
   },
