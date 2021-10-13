@@ -4,19 +4,30 @@ import {
 } from '@material-ui/core';
 import Styles from './cartFooter.style';
 
-const CartHeader = ({
+const CartHeader = React.forwardRef(({
   classes,
   placeholder,
-  onChange,
-}) => (
-  <div className={classes.manifestTextarea}>
-    <textarea
-      id="multiline-user-coments"
-      className={classes.textField}
-      placeholder={placeholder}
-      onChange={onChange}
-    />
-  </div>
-);
+}, ref) => {
+  const [commentText, setcommentText] = React.useState('');
+  const onChange = ({ target: { value } }) => setcommentText(value);
+
+  React.useImperativeHandle(ref, () => ({
+    getValue() {
+      return commentText;
+    },
+  }));
+
+  return (
+    <div className={classes.manifestTextarea}>
+      <textarea
+        onChange={onChange}
+        value={commentText}
+        placeholder={placeholder}
+        id="multiline-user-coments"
+        className={classes.textField}
+      />
+    </div>
+  );
+});
 
 export default withStyles(Styles, { withTheme: true })(CartHeader);
