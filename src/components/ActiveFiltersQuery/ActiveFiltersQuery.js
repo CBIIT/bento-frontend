@@ -69,9 +69,20 @@ const ActiveFiltersQuery = ({ classes }) => {
                 <span className={classes.operators}>
                   {filter.checkbox.length === 1 ? 'IS ' : 'IN '}
                 </span>
-                <span className={classes.filterCheckboxes}>
-                  {filter.checkbox.length === 1 ? filter.checkbox[0] : `(${filter.checkbox.join()}) ` }
-                </span>
+                {filter.checkbox.length === 1
+                  ? (
+                    <span className={classes.filterCheckboxes}>
+                      {filter.checkbox[0]}
+                    </span>
+                  ) : (
+                    <>
+                      (
+                      <span className={classes.filterCheckboxes}>
+                        { filter.checkbox.join() }
+                      </span>
+                      )
+                    </>
+                  )}
               </span>
             </span>
           ))}
@@ -105,10 +116,8 @@ const styles = (theme) => ({
   },
   filterCheckboxes: {
     paddingBottom: '3px',
-    borderBottomStyle: 'solid',
-    borderBottomWidth: '2px',
-    borderBottomColor: '#10A075',
     width: 'fit-content',
+    borderBottom: '0.10625em solid #10A075',
   },
   operators: {
     color: '#64ACD5',
@@ -126,7 +135,7 @@ const styles = (theme) => ({
     fontWigth: 800,
     fontSize: '18px',
     letterSpacing: '0.5px',
-    margin: '-12px 65px 0px 164px',
+    margin: '-12px 65px 0px 142px',
     lineHeight: 1.65,
     height: '120px',
     overflowY: 'auto',
