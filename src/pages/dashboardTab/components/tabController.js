@@ -53,19 +53,14 @@ const tabController = (classes) => {
   const dashboardStats = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
 
-  const filteredSubjectIds = useSelector((state) => (state.dashboardTab
-      && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : null));
-  const filteredSampleIds = useSelector((state) => (state.dashboardTab
-    && state.dashboardTab.filteredSampleIds ? state.dashboardTab.filteredSampleIds : null));
   const filteredFileIds = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.filteredFileIds ? state.dashboardTab.filteredFileIds : null));
+  const allFilters = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.allActiveFilters ? state.dashboardTab.allActiveFilters : {}));
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
-    fetchDataForDashboardTab(tabIndex[value].title,
-      filteredSubjectIds,
-      filteredSampleIds,
-      filteredFileIds);
+    fetchDataForDashboardTab(tabIndex[value].title);
   };
 
   const [snackbarState, setsnackbarState] = React.useState({
@@ -217,9 +212,8 @@ const tabController = (classes) => {
         defaultSortCoulmn={container.defaultSortField || ''}
         defaultSortDirection={container.defaultSortDirection || 'asc'}
         dataKey={container.dataKey}
-        filteredSubjectIds={filteredSubjectIds}
-        filteredSampleIds={filteredSampleIds}
         filteredFileIds={filteredFileIds}
+        allFilters={allFilters}
         tableHasSelections={tableHasSelections}
         setRowSelection={getTableRowSelectionEvent()}
         selectedRowInfo={tableRowSelectionData[container.tabIndex].selectedRowInfo}

@@ -696,30 +696,6 @@ type GroupCount {
     subjects: Int
 }
 
-type SubjectOverview {
-    subject_id: String
-    program: String
-    program_id: String
-    study_acronym: String
-    study_short_description: String
-    study_info: String
-    diagnosis: String
-    recurrence_score: String
-    tumor_size: String
-    tumor_grade: String
-    er_status: String
-    pr_status: String
-    chemotherapy: String
-    endocrine_therapy: String
-    menopause_status: String
-    age_at_index: Int
-    survival_time: Int
-    survival_time_unit: String
-    files: [file]
-    samples: [String]
-    lab_procedures: [String]
-}
-
 type SubjectInfo {
     subject_id: String
     program: String
@@ -872,21 +848,6 @@ type ArmDetail {
     files: [ArmFile]
 }
 
-type SampleOverview {
-    sample_id: String
-    subject_id: String
-    program: String
-    arm: String
-    diagnosis: String
-    tissue_type: String
-    tissue_composition: String
-    sample_anatomic_site: String
-    sample_procurement_method: String
-    platform: String
-    files: [String]
-    program_id: String
-}
-
 type FileOverview {
     file_id: String
     file_name: String
@@ -900,35 +861,6 @@ type FileOverview {
     sample_id: String
     diagnosis: String
     program_id: String
-}
-
-type SubjectOverview2 {
-    subject_id: String
-    program: String
-    program_id: String
-    study_acronym: String
-    diagnosis: String
-    recurrence_score: String
-    tumor_size: String
-    tumor_grade: String
-    er_status: String
-    pr_status: String
-    age_at_index: Int
-    survival_time: Int
-    survival_time_unit: String
-}
-
-type SearchResult {
-    numberOfPrograms: Int
-    numberOfStudies: Int
-    numberOfSubjects: Int
-    numberOfSamples: Int
-    numberOfLabProcedures: Int
-    numberOfFiles: Int
-    subjectIds: [String]
-    sampleIds: [String]
-    fileIds: [String]
-    firstPage: [SubjectOverview2]
 }
 
 type GroupList {
@@ -1007,9 +939,6 @@ type QueryType {
     armsByProgramsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [ProgramArms] 
 
     findIdsFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): IdsLists 
-
-    subjectOverView: [SubjectOverview] 
-
 
     subjectsInList(subject_ids: [String]=[]): [SubjectInfo] 
 
