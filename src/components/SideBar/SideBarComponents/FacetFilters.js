@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  Slider,
   List,
   ExpansionPanel,
   ExpansionPanelDetails,
@@ -11,6 +12,7 @@ import {
   CircularProgress,
   Icon,
 } from '@material-ui/core';
+// import createMuiTheme from '@material-ui/styles';
 import _ from 'lodash';
 import {
   ArrowDropDown as ArrowDropDownIcon,
@@ -73,6 +75,14 @@ const FacetPanel = ({ classes }) => {
   // redux use actions
   const dispatch = useDispatch();
 
+  const [value1, setValue1] = React.useState([20, 37]);
+  function valuetext(value) {
+    return `${value}`;
+  }
+  const handleChange1 = (e, value) => {
+    // const [min, max] = value;
+    setValue1(value);
+  };
   const [groupsExpanded, setGroupsExpanded] = React.useState([]);
 
   const [sectionExpanded, setSectionExpanded] = React.useState(
@@ -364,6 +374,21 @@ const FacetPanel = ({ classes }) => {
                 ))}
               </List>
             </ExpansionPanelDetails>
+            <div className={classes.sliderRoot}>
+              <Slider
+                value={value1}
+                onChange={handleChange1}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+                disableSwap
+                classes={{
+                  rail: classes.rail,
+                  thumb: classes.thumb,
+                  track: classes.track,
+                }}
+                // color="#10A075"
+              />
+            </div>
           </ExpansionPanel>
           <Backdrop className={classes.backdrop} open={isSidebarLoading || tabDataLoading}>
             <CircularProgress color="inherit" />
@@ -462,6 +487,23 @@ const styles = () => ({
     paddingRight: '5px',
     cursor: 'pointer',
     fontSize: '10px',
+  },
+  rail: {
+    background: '#A6A6A6',
+  },
+  thumb: {
+    background: '#10A075',
+  },
+  track: {
+    background: '#10A075',
+    '&~&': {
+      background: '#10A075',
+    },
+  },
+  sliderRoot: {
+    marginLeft: 'Auto',
+    marginRight: 'Auto',
+    width: '90%',
   },
 });
 export default withStyles(styles)(FacetPanel);
