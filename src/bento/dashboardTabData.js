@@ -1063,28 +1063,32 @@ query subjectOverview(
   `;
 
 export const GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL = gql`
-  query subjectOverview($subject_ids: [String], $first: Int = 10000000){
-    subjectOverview(subject_ids: $subject_ids, first: $first) {
-        files {
-              file_id
-        }
-    }
+query search (          
+  $subject_ids: [String],
+){
+  fileIDsFromList (          
+      subject_ids: $subject_ids,
+  ) 
 }
   `;
 
 export const GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL = gql`
-query sampleOverview($sample_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
-  sampleOverview(sample_ids: $sample_ids, offset: $offset,first: $first, order_by: $order_by) {
-    files
-}
+query search (          
+  $sample_ids: [String],
+){
+  fileIDsFromList (          
+    sample_ids: $sample_ids,
+  ) 
 }
   `;
 
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
-query fileOverview($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by: String = "file_name") {
-  fileOverview(file_ids: $file_ids, offset: $offset, first: $first, order_by: $order_by) {
-    file_id
-  }
+query search (          
+  $file_names: [String] 
+){
+  fileIDsFromList (          
+      file_names: $file_names
+  ) 
 }
   `;
 

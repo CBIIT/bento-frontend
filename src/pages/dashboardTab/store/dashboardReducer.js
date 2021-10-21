@@ -29,7 +29,7 @@ import {
   GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
   GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   GET_FILES_NAME_QUERY,
-  GET_FILE_IDS_FROM_FILE_NAME,
+  // GET_FILE_IDS_FROM_FILE_NAME,
   tabIndex,
 } from '../../../bento/dashboardTabData';
 import {
@@ -486,34 +486,35 @@ export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
   return filteredFilesArray;
 }
 
-/**
- * Returns file IDs of given filenames.
- * @param array file_name
- * @param int offset
- * @param int first
- * @param SORT_SINGLE_GROUP_CHECKBOX order_by
- * @return {json}
- */
+// /**
+//  * Returns file IDs of given filenames.
+//  * @param array file_name
+//  * @param int offset
+//  * @param int first
+//  * @param SORT_SINGLE_GROUP_CHECKBOX order_by
+//  * @return {json}
+//  */
 
-async function getFileIDsByFileName(file_name = [], offset = 0, first = 100000, order_by = 'file_name') {
-  const data = await client
-    .query({
-      query: GET_FILE_IDS_FROM_FILE_NAME,
-      variables: {
-        file_name,
-        offset,
-        first,
-        order_by,
-      },
-    })
-    .then((result) => {
-      if (result && result.data && result.data.fileIdsFromFileNameDesc.length > 0) {
-        return result.data.fileIdsFromFileNameDesc.map((d) => d.file_id);
-      }
-      return [];
-    });
-  return data;
-}
+// async function getFileIDsByFileName
+// (file_name = [], offset = 0, first = 100000, order_by = 'file_name') {
+//   const data = await client
+//     .query({
+//       query: GET_FILE_IDS_FROM_FILE_NAME,
+//       variables: {
+//         file_name,
+//         offset,
+//         first,
+//         order_by,
+//       },
+//     })
+//     .then((result) => {
+//       if (result && result.data && result.data.fileIdsFromFileNameDesc.length > 0) {
+//         return result.data.fileIdsFromFileNameDesc.map((d) => d.file_id);
+//       }
+//       return [];
+//     });
+//   return data;
+// }
 
 /**
  * Returns file IDs of given sampleids or subjectids.
@@ -530,6 +531,7 @@ async function getFileIDs(
   SELECT_ALL_QUERY,
   caseIds = [],
   sampleIds = [],
+  fileNames = [],
   apiReturnField,
 ) {
   const fetchResult = await client
@@ -538,25 +540,13 @@ async function getFileIDs(
       variables: {
         subject_ids: caseIds,
         sample_ids: sampleIds,
-        file_ids: [],
+        file_names: fileNames,
         first: fileCount,
       },
     })
     .then((result) => result.data[apiReturnField] || []);
 
-  return fetchResult.reduce((accumulator, currentValue) => {
-    const { files } = currentValue;
-    // check if file
-    if (files && files.length > 0) {
-      return accumulator.concat(files.map((f) => {
-        if (typeof f.file_id !== 'undefined') {
-          return f.file_id;
-        }
-        return f;
-      }));
-    }
-    return accumulator;
-  }, []);
+  return fetchResult;
 }
 
 /*
@@ -584,17 +574,17 @@ function filterOutFileIds(fileIds) {
  * @param obj fileCoubt
  * @return {json}
  */
-export async function fetchAllFileIDs(fileCount = 100000, selectedIds = [], offset = 0.0, first = 100000, order_by = 'file_name') {
+export async function fetchAllFileIDs(fileCount = 100000, selectedIds = []) {
   let filesIds = [];
   switch (getState().currentActiveTab) {
     case tabIndex[2].title:
-      filesIds = await getFileIDsByFileName(selectedIds, offset, first, order_by);
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL, [], [], selectedIds, 'fileIDsFromList');
       break;
     case tabIndex[1].title:
-      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL, [], selectedIds, 'sampleOverview');
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL, [], selectedIds, [], 'fileIDsFromList');
       break;
     default:
-      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], 'subjectOverViewPaged');
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], [], 'fileIDsFromList');
   }
   return filterOutFileIds(filesIds);
 }
