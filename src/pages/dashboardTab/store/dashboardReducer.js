@@ -29,6 +29,9 @@ import {
   GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
   GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   GET_FILES_NAME_QUERY,
+  GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
+  GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
+  GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
   // GET_FILE_IDS_FROM_FILE_NAME,
   tabIndex,
 } from '../../../bento/dashboardTabData';
@@ -443,27 +446,27 @@ function transformfileIdsToFiles(data) {
  * @return {json}
  */
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
-  const subjectIds = getState().filteredSubjectIds;
-  const sampleIds = getState().filteredSampleIds;
   const fileIds = getState().filteredFileIds;
+
+  const activeFilters = getState().allActiveFilters !== {}
+    ? getState().allActiveFilters : allFilters();
+
   const SELECT_ALL_QUERY = getState().currentActiveTab === tabIndex[2].title
-    ? GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL
+    ? GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART
     : getState().currentActiveTab === tabIndex[1].title
-      ? GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL
-      : GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL;
+      ? GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART
+      : GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART;
 
   const fetchResult = await client
     .query({
       query: SELECT_ALL_QUERY,
       variables: {
-        subject_ids: subjectIds,
-        sample_ids: sampleIds,
-        file_ids: fileIds,
+        ...activeFilters,
         first: fileCount,
       },
     })
     .then((result) => {
-      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'subjectOverViewPaged';
+      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'subjectOverview';
       const fileIdsFromQuery = RESULT_DATA === 'fileOverview' ? transformfileIdsToFiles(result.data[RESULT_DATA]) : RESULT_DATA === 'subjectOverViewPaged' ? transformCasesFileIdsToFiles(result.data[RESULT_DATA]) : result.data[RESULT_DATA] || [];
       return fileIdsFromQuery;
     });

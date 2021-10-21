@@ -1044,18 +1044,7 @@ query subjectOverview(
       age_at_index
       survival_time
       survival_time_unit
-      files {
-            file_id
-            file_id
-            file_description
-            file_format
-            file_location
-            file_name
-            file_size
-            file_status
-            file_type
-            md5sum
-      }
+      files
       lab_procedures
       samples
   }
@@ -1091,6 +1080,153 @@ query search (
   ) 
 }
   `;
+
+export const GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART = gql`
+query subjectsAddAllToCart(
+  $programs: [String] ,
+  $studies: [String] ,
+  $diagnoses: [String] ,
+  $rc_scores: [String] ,
+  $tumor_sizes: [String] ,
+  $chemo_regimen: [String] ,
+  $tumor_grades: [String] ,
+  $er_status: [String] ,
+  $pr_status: [String] ,
+  $endo_therapies: [String] ,
+  $meno_status: [String] ,
+  $tissue_type: [String],
+  $composition: [String],
+  $association: [String],
+  $file_type: [String],
+  $age_at_index: [Float],
+  $first: Int,
+  $offset: Int,
+  $order_by:  String
+  $sort_direction: String ){
+  subjectOverview(
+      programs: $programs,
+      studies: $studies,
+      diagnoses: $diagnoses,
+      rc_scores: $rc_scores,
+      tumor_sizes: $tumor_sizes,
+      chemo_regimen: $chemo_regimen,
+      tumor_grades: $tumor_grades,
+      er_status: $er_status,
+      pr_status: $pr_status,
+      endo_therapies: $endo_therapies,
+      meno_status: $meno_status,
+      tissue_type: $tissue_type,
+      composition: $composition,
+      association: $association,
+      file_type: $file_type,
+      age_at_index: $age_at_index,
+      first: $first,
+      offset: $offset,
+      order_by: $order_by,
+      sort_direction: $sort_direction
+      ) {
+      files
+  }
+}
+    `;
+
+export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
+    query samplesAddAllToCart(
+      $programs: [String] ,
+      $studies: [String] ,
+      $diagnoses: [String] ,
+      $rc_scores: [String] ,
+      $tumor_sizes: [String] ,
+      $chemo_regimen: [String] ,
+      $tumor_grades: [String] ,
+      $er_status: [String] ,
+      $pr_status: [String] ,
+      $endo_therapies: [String] ,
+      $meno_status: [String] ,
+      $tissue_type: [String],
+      $composition: [String],
+      $association: [String],
+      $file_type: [String],
+      $age_at_index: [Float],
+      $first: Int,
+      $offset: Int,
+      $order_by:  String
+      $sort_direction: String ){
+      sampleOverview(
+          programs: $programs,
+          studies: $studies,
+          diagnoses: $diagnoses,
+          rc_scores: $rc_scores,
+          tumor_sizes: $tumor_sizes,
+          chemo_regimen: $chemo_regimen,
+          tumor_grades: $tumor_grades,
+          er_status: $er_status,
+          pr_status: $pr_status,
+          endo_therapies: $endo_therapies,
+          meno_status: $meno_status,
+          tissue_type: $tissue_type,
+          composition: $composition,
+          association: $association,
+          file_type: $file_type,
+          age_at_index: $age_at_index,
+          first: $first,
+          offset: $offset,
+          order_by: $order_by,
+          sort_direction: $sort_direction
+          ) {
+          files
+      }
+    }
+        `;
+
+export const GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART = gql`
+query fileAddAllToCart(
+  $programs: [String] ,
+  $studies: [String] ,
+  $diagnoses: [String] ,
+  $rc_scores: [String] ,
+  $tumor_sizes: [String] ,
+  $chemo_regimen: [String] ,
+  $tumor_grades: [String] ,
+  $er_status: [String] ,
+  $pr_status: [String] ,
+  $endo_therapies: [String] ,
+  $meno_status: [String] ,
+  $tissue_type: [String],
+  $composition: [String],
+  $association: [String],
+  $file_type: [String],
+  $age_at_index: [Float],
+  $first: Int, 
+  $offset: Int, 
+  $order_by:  String
+  $sort_direction: String ){
+  fileOverview(
+      programs: $programs,
+      studies: $studies,
+      diagnoses: $diagnoses,
+      rc_scores: $rc_scores,
+      tumor_sizes: $tumor_sizes,
+      chemo_regimen: $chemo_regimen,
+      tumor_grades: $tumor_grades,
+      er_status: $er_status,
+      pr_status: $pr_status,
+      endo_therapies: $endo_therapies,
+      meno_status: $meno_status,
+      tissue_type: $tissue_type,
+      composition: $composition,
+      association: $association,       
+      file_type: $file_type,
+      age_at_index: $age_at_index,
+      first: $first, 
+      offset: $offset, 
+      order_by: $order_by,
+      sort_direction: $sort_direction
+  ){
+      file_id,
+  }
+}
+            `;
 
 // --------------- GraphQL query - Retrieve files tab details --------------
 export const GET_FILES_NAME_QUERY = gql`
