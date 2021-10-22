@@ -29,7 +29,10 @@ import {
   GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
   GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   GET_FILES_NAME_QUERY,
-  GET_FILE_IDS_FROM_FILE_NAME,
+  GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
+  GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
+  GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
+  // GET_FILE_IDS_FROM_FILE_NAME,
   tabIndex,
 } from '../../../bento/dashboardTabData';
 import {
@@ -443,27 +446,27 @@ function transformfileIdsToFiles(data) {
  * @return {json}
  */
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
-  const subjectIds = getState().filteredSubjectIds;
-  const sampleIds = getState().filteredSampleIds;
   const fileIds = getState().filteredFileIds;
+
+  const activeFilters = getState().allActiveFilters !== {}
+    ? getState().allActiveFilters : allFilters();
+
   const SELECT_ALL_QUERY = getState().currentActiveTab === tabIndex[2].title
-    ? GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL
+    ? GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART
     : getState().currentActiveTab === tabIndex[1].title
-      ? GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL
-      : GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL;
+      ? GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART
+      : GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART;
 
   const fetchResult = await client
     .query({
       query: SELECT_ALL_QUERY,
       variables: {
-        subject_ids: subjectIds,
-        sample_ids: sampleIds,
-        file_ids: fileIds,
+        ...activeFilters,
         first: fileCount,
       },
     })
     .then((result) => {
-      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'subjectOverViewPaged';
+      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'subjectOverview';
       const fileIdsFromQuery = RESULT_DATA === 'fileOverview' ? transformfileIdsToFiles(result.data[RESULT_DATA]) : RESULT_DATA === 'subjectOverViewPaged' ? transformCasesFileIdsToFiles(result.data[RESULT_DATA]) : result.data[RESULT_DATA] || [];
       return fileIdsFromQuery;
     });
@@ -486,34 +489,35 @@ export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
   return filteredFilesArray;
 }
 
-/**
- * Returns file IDs of given filenames.
- * @param array file_name
- * @param int offset
- * @param int first
- * @param SORT_SINGLE_GROUP_CHECKBOX order_by
- * @return {json}
- */
+// /**
+//  * Returns file IDs of given filenames.
+//  * @param array file_name
+//  * @param int offset
+//  * @param int first
+//  * @param SORT_SINGLE_GROUP_CHECKBOX order_by
+//  * @return {json}
+//  */
 
-async function getFileIDsByFileName(file_name = [], offset = 0, first = 100000, order_by = 'file_name') {
-  const data = await client
-    .query({
-      query: GET_FILE_IDS_FROM_FILE_NAME,
-      variables: {
-        file_name,
-        offset,
-        first,
-        order_by,
-      },
-    })
-    .then((result) => {
-      if (result && result.data && result.data.fileIdsFromFileNameDesc.length > 0) {
-        return result.data.fileIdsFromFileNameDesc.map((d) => d.file_id);
-      }
-      return [];
-    });
-  return data;
-}
+// async function getFileIDsByFileName
+// (file_name = [], offset = 0, first = 100000, order_by = 'file_name') {
+//   const data = await client
+//     .query({
+//       query: GET_FILE_IDS_FROM_FILE_NAME,
+//       variables: {
+//         file_name,
+//         offset,
+//         first,
+//         order_by,
+//       },
+//     })
+//     .then((result) => {
+//       if (result && result.data && result.data.fileIdsFromFileNameDesc.length > 0) {
+//         return result.data.fileIdsFromFileNameDesc.map((d) => d.file_id);
+//       }
+//       return [];
+//     });
+//   return data;
+// }
 
 /**
  * Returns file IDs of given sampleids or subjectids.
@@ -530,6 +534,7 @@ async function getFileIDs(
   SELECT_ALL_QUERY,
   caseIds = [],
   sampleIds = [],
+  fileNames = [],
   apiReturnField,
 ) {
   const fetchResult = await client
@@ -538,25 +543,13 @@ async function getFileIDs(
       variables: {
         subject_ids: caseIds,
         sample_ids: sampleIds,
-        file_ids: [],
+        file_names: fileNames,
         first: fileCount,
       },
     })
     .then((result) => result.data[apiReturnField] || []);
 
-  return fetchResult.reduce((accumulator, currentValue) => {
-    const { files } = currentValue;
-    // check if file
-    if (files && files.length > 0) {
-      return accumulator.concat(files.map((f) => {
-        if (typeof f.file_id !== 'undefined') {
-          return f.file_id;
-        }
-        return f;
-      }));
-    }
-    return accumulator;
-  }, []);
+  return fetchResult;
 }
 
 /*
@@ -584,17 +577,17 @@ function filterOutFileIds(fileIds) {
  * @param obj fileCoubt
  * @return {json}
  */
-export async function fetchAllFileIDs(fileCount = 100000, selectedIds = [], offset = 0.0, first = 100000, order_by = 'file_name') {
+export async function fetchAllFileIDs(fileCount = 100000, selectedIds = []) {
   let filesIds = [];
   switch (getState().currentActiveTab) {
     case tabIndex[2].title:
-      filesIds = await getFileIDsByFileName(selectedIds, offset, first, order_by);
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL, [], [], selectedIds, 'fileIDsFromList');
       break;
     case tabIndex[1].title:
-      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL, [], selectedIds, 'sampleOverview');
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL, [], selectedIds, [], 'fileIDsFromList');
       break;
     default:
-      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], 'subjectOverViewPaged');
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], [], 'fileIDsFromList');
   }
   return filterOutFileIds(filesIds);
 }

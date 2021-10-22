@@ -6,7 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import JBrowseDetailView from './jbrowseDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import {
-  GET_JBROWSE_DETAIL_DATA_QUERY, caseIDField,
+  GET_JBROWSE_DETAIL_DATA_QUERY, caseIDField, jBrowseOptions,
 } from '../../bento/jbrowseDetailData';
 import env from '../../utils/env';
 
@@ -59,7 +59,12 @@ const JbrowseDetailContainer = ({ match }) => {
       </Typography>
     );
   }
-  return <JBrowseDetailView bamFiles={bamFiles} />;
+  return (
+    <JBrowseDetailView
+      bamFiles={bamFiles}
+      options={jBrowseOptions}
+    />
+  );
 };
 
 export default JbrowseDetailContainer;
