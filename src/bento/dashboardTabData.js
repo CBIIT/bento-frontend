@@ -1100,9 +1100,7 @@ query subjectsAddAllToCart(
   $file_type: [String],
   $age_at_index: [Float],
   $first: Int,
-  $offset: Int,
-  $order_by:  String
-  $sort_direction: String ){
+  ){
   subjectOverview(
       programs: $programs,
       studies: $studies,
@@ -1198,9 +1196,7 @@ query fileAddAllToCart(
   $file_type: [String],
   $age_at_index: [Float],
   $first: Int, 
-  $offset: Int, 
-  $order_by:  String
-  $sort_direction: String ){
+ ){
   fileOverview(
       programs: $programs,
       studies: $studies,

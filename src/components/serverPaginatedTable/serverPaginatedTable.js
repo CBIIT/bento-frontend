@@ -227,10 +227,15 @@ class ServerPaginatedTableView extends React.Component {
   };
 
   async fetchData(offset, rowsRequired, sortOrder = {}) {
-    let sortColumn = 'arm';
+    // Preparing sort order for query variable
+    const sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
+    const sortDirection = Object.keys(sortOrder).length === 0 ? this.props.defaultSortDirection || 'asc' : sortOrder.direction;
+
     let offsetReal = offset;
     let page = offset / rowsRequired;
+
     // if the offset value is bigger that the count, then change offset value
+    // This function need to update bruce
     if (offset >= this.props.count) {
       page = this.props.count % rowsRequired !== 0 ? Math.floor(this.props.count / rowsRequired)
         : Math.floor(this.props.count / rowsRequired) - 1;
@@ -240,7 +245,8 @@ class ServerPaginatedTableView extends React.Component {
         page,
       });
     }
-    sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
+
+    // Setting local storage to keep same page after reload
     if (this.props.updateSortOrder) {
       localStorage.setItem('page', String(page));
       localStorage.setItem('rowsPerPage', String(rowsRequired));
@@ -255,6 +261,7 @@ class ServerPaginatedTableView extends React.Component {
           offset: offsetReal,
           first: this.props.count < rowsRequired ? this.props.count : rowsRequired,
           order_by: sortColumn,
+          sort_direction: sortDirection,
           ...this.props.queryCustomVaribles,
         },
       })
