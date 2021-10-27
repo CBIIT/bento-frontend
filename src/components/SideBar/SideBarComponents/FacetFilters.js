@@ -531,7 +531,7 @@ const styles = () => ({
     },
   },
   sliderRoot: {
-    marginLeft: 'Auto',
+    marginLeft: '20px',
     marginRight: 'Auto',
     width: '80%',
   },
