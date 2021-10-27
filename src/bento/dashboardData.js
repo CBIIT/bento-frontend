@@ -359,14 +359,14 @@ subjectCountByFileAssociation {
     group
     subjects
 }
-filterSubjectCountByAge{
-    lowerBound
-    upperBound
-    subjects
-}
 subjectCountByTissueComposition{
     group
     subjects
+}
+filterSubjectCountByAge{
+  lowerBound
+  upperBound
+  subjects
 }
 subjectCountByTissueType{
     group
