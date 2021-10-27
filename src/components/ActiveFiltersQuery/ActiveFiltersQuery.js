@@ -40,50 +40,54 @@ const ActiveFiltersQuery = ({ classes }) => {
   });
 
   return (
-    <div className={classes.queryWrapper}>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => clearAllFilters()}
-        className={classes.clearQueryButton}
-        disabled={activeFilters.length <= 0}
-      >
-        Clear Query
-      </Button>
-      <span className={classes.queryContainer}>
-        {activeFilters.map((filter, index) => (
-          <span>
-            <span>
-              {' '}
-              {index !== 0 ? <span className={classes.operators}> AND </span> : ''}
-              <span className={classes.filterName}>
-                {filter.filterName}
-              </span>
-              {' '}
-            </span>
-            <span>
-              {' '}
-              <span className={classes.operators}>
-                {filter.checkbox.length === 1 ? 'IS ' : 'IN '}
-              </span>
-              {filter.checkbox.length === 1
-                ? (
-                  <span className={classes.filterCheckboxes}>
-                    {filter.checkbox[0]}
+    <div>
+      {activeFilters.length > 0 ? (
+        <div className={classes.queryWrapper}>
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => clearAllFilters()}
+            className={classes.clearQueryButton}
+            disabled={activeFilters.length <= 0}
+          >
+            Clear Query
+          </Button>
+          <span className={classes.queryContainer}>
+            {activeFilters.map((filter, index) => (
+              <span>
+                <span>
+                  {' '}
+                  {index !== 0 ? <span className={classes.operators}> AND </span> : ''}
+                  <span className={classes.filterName}>
+                    {filter.filterName}
                   </span>
-                ) : (
-                  <>
-                    (
-                    <span className={classes.filterCheckboxes}>
-                      {filter.checkbox.join()}
-                    </span>
-                    )
-                  </>
-                )}
-            </span>
+                  {' '}
+                </span>
+                <span>
+                  {' '}
+                  <span className={classes.operators}>
+                    {filter.checkbox.length === 1 ? 'IS ' : 'IN '}
+                  </span>
+                  {filter.checkbox.length === 1
+                    ? (
+                      <span className={classes.filterCheckboxes}>
+                        {filter.checkbox[0]}
+                      </span>
+                    ) : (
+                      <>
+                        (
+                        <span className={classes.filterCheckboxes}>
+                          {filter.checkbox.join()}
+                        </span>
+                        )
+                      </>
+                    )}
+                </span>
+              </span>
+            ))}
           </span>
-        ))}
-      </span>
+        </div>
+      ) : ''}
     </div>
   );
 };
