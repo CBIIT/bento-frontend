@@ -13,33 +13,34 @@ const ActiveFiltersQuery = ({ classes }) => {
 
   // activeFilters helps filtering only active Filters
   const activeFilters = [];
-  // Loop all filters to find active ones only
+  // Loop all filters except age to find active ones only
+  const ageData = allFiltersinfo.data[allFiltersinfo.data.length - 1];
+  allFiltersinfo.data = allFiltersinfo.data.slice(0, allFiltersinfo.data.length - 1);
   allFiltersinfo.data.map((currentFilter) => {
     // currentFilterCheckboxItems contains checkbox items for currentFilter
-    if (currentFilter.groupName !== 'Age') {
-      const currentFilterCheckboxItems = currentFilter.checkboxItems;
+    const currentFilterCheckboxItems = currentFilter.checkboxItems;
 
-      // loop currentFilterCheckboxItems
-      currentFilterCheckboxItems.forEach((checkBox) => {
-        // check if this checkBox is selected
-        if (checkBox.isChecked === true) {
-          // findIndex if the filter is already tracked by activeFilters
-          const findIndex = activeFilters.findIndex(
-            (x) => x.filterName === currentFilter.groupName,
-          );
-          if ((activeFilters.findIndex((x) => x.filterName === currentFilter.groupName) !== -1)) {
-            activeFilters[findIndex].checkbox.push(checkBox.name);
-          } else {
-            activeFilters.push({
-              filterName: currentFilter.groupName,
-              checkbox: [checkBox.name],
-            });
-          }
+    // loop currentFilterCheckboxItems
+    currentFilterCheckboxItems.forEach((checkBox) => {
+      // check if this checkBox is selected
+      if (checkBox.isChecked === true) {
+        // findIndex if the filter is already tracked by activeFilters
+        const findIndex = activeFilters.findIndex(
+          (x) => x.filterName === currentFilter.groupName,
+        );
+        if ((activeFilters.findIndex((x) => x.filterName === currentFilter.groupName) !== -1)) {
+          activeFilters[findIndex].checkbox.push(checkBox.name);
+        } else {
+          activeFilters.push({
+            filterName: currentFilter.groupName,
+            checkbox: [checkBox.name],
+          });
         }
-      });
-    }
+      }
+    });
     return '';
   });
+  allFiltersinfo.data = allFiltersinfo.data.concat(ageData);
 
   return (
     <div className={classes.queryWrapper}>
