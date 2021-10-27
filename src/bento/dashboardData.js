@@ -53,6 +53,9 @@ export const facetSearchData = [
   {
     label: 'File Type', field: 'group', api: 'subjectCountByFileType', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'file_type', section: 'Filter By Files', show: true,
   },
+  {
+    label: 'Age', fieldUpper: 'upperBound', fieldLower: 'lowerBound', api: 'filterSubjectCountByAge', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'age_at_index', section: 'Filter By Cases', show: true,
+  },
 ];
 
 // --------------- Dashboard Sidebar Sections styling --------------
@@ -354,6 +357,11 @@ export const GET_DASHBOARD_DATA_QUERY = gql`{
 }
 subjectCountByFileAssociation {
     group
+    subjects
+}
+filterSubjectCountByAge{
+    lowerBound
+    upperBound
     subjects
 }
 subjectCountByTissueComposition{

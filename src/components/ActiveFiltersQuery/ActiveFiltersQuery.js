@@ -13,29 +13,31 @@ const ActiveFiltersQuery = ({ classes }) => {
 
   // activeFilters helps filtering only active Filters
   const activeFilters = [];
-
   // Loop all filters to find active ones only
   allFiltersinfo.data.map((currentFilter) => {
     // currentFilterCheckboxItems contains checkbox items for currentFilter
-    const currentFilterCheckboxItems = currentFilter.checkboxItems;
+    if (currentFilter.groupName !== 'Age') {
+      const currentFilterCheckboxItems = currentFilter.checkboxItems;
 
-    // loop currentFilterCheckboxItems
-    currentFilterCheckboxItems.forEach((checkBox) => {
-      // check if this checkBox is selected
-      if (checkBox.isChecked === true) {
-        // findIndex if the filter is already tracked by activeFilters
-        const findIndex = activeFilters.findIndex((x) => x.filterName === currentFilter.groupName);
-        if ((activeFilters.findIndex((x) => x.filterName === currentFilter.groupName) !== -1)) {
-          activeFilters[findIndex].checkbox.push(checkBox.name);
-        } else {
-          activeFilters.push({
-            filterName: currentFilter.groupName,
-            checkbox: [checkBox.name],
-          });
+      // loop currentFilterCheckboxItems
+      currentFilterCheckboxItems.forEach((checkBox) => {
+        // check if this checkBox is selected
+        if (checkBox.isChecked === true) {
+          // findIndex if the filter is already tracked by activeFilters
+          const findIndex = activeFilters.findIndex(
+            (x) => x.filterName === currentFilter.groupName,
+          );
+          if ((activeFilters.findIndex((x) => x.filterName === currentFilter.groupName) !== -1)) {
+            activeFilters[findIndex].checkbox.push(checkBox.name);
+          } else {
+            activeFilters.push({
+              filterName: currentFilter.groupName,
+              checkbox: [checkBox.name],
+            });
+          }
         }
-      }
-    });
-
+      });
+    }
     return '';
   });
 

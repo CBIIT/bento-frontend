@@ -446,7 +446,8 @@ export const DASHBOARD_QUERY = gql`
       $tissue_type: [String],
       $composition: [String],
       $association: [String],
-      $file_type: [String]
+      $file_type: [String],
+      $age_at_index: [Float]
   ){
       searchSubjects (          
           programs: $programs,
@@ -463,7 +464,8 @@ export const DASHBOARD_QUERY = gql`
           tissue_type: $tissue_type,
           composition: $composition,
           association: $association,       
-          file_type: $file_type
+          file_type: $file_type,
+          age_at_index: $age_at_index
       ) {
           numberOfPrograms
           numberOfStudies
@@ -603,7 +605,11 @@ export const DASHBOARD_QUERY = gql`
               group
               subjects
           }
-  
+          filterSubjectCountByAge{
+            lowerBound
+            upperBound
+            subjects
+        }
   
       }
   }
@@ -661,7 +667,8 @@ query search (
   $tissue_type: [String],
   $composition: [String],
   $association: [String],
-  $file_type: [String]
+  $file_type: [String],
+  $age_at_index: [Float]
 ){
   searchSubjects (          
       programs: $programs,
@@ -678,7 +685,8 @@ query search (
       tissue_type: $tissue_type,
       composition: $composition,
       association: $association,       
-      file_type: $file_type
+      file_type: $file_type,
+      age_at_index: $age_at_index
   ) {
       numberOfPrograms
       numberOfStudies
@@ -818,7 +826,11 @@ query search (
           group
           subjects
       }
-
+      filterSubjectCountByAge{
+        lowerBound
+        upperBound
+        subjects
+      }
 
   }
 }

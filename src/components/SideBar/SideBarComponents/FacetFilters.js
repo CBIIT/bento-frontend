@@ -20,6 +20,7 @@ import {
 } from '@material-ui/icons';
 import {
   toggleCheckBox,
+  toggleSlider,
   setSideBarToLoading,
   setDashboardTableLoading,
   // eslint-disable-next-line no-unused-vars
@@ -63,6 +64,24 @@ const FacetPanel = ({ classes }) => {
         data: [],
         defaultPanel: false,
       }));
+  const [valueSlider, setValueSlider] = React.useState(
+    [
+      sideBarContent.data[15].checkboxItems.lowerBound,
+      sideBarContent.data[15].checkboxItems.upperBound,
+    ],
+  );
+  function valuetext(value) {
+    return `${value}`;
+  }
+  const handleChangeSlider = (e, value) => {
+    // const [min, max] = value;
+    setValueSlider(value);
+  };
+  const handleChangeCommittedSlider = (e, value) => {
+    // const [min, max] = value;
+    // const dispatch = useDispatch();
+    toggleSlider(value);
+  };
   // data from store for sidebar laoding
   const isSidebarLoading = useSelector((state) => (
     state.dashboardTab
@@ -75,14 +94,6 @@ const FacetPanel = ({ classes }) => {
   // redux use actions
   const dispatch = useDispatch();
 
-  const [value1, setValue1] = React.useState([20, 37]);
-  function valuetext(value) {
-    return `${value}`;
-  }
-  const handleChange1 = (e, value) => {
-    // const [min, max] = value;
-    setValue1(value);
-  };
   const [groupsExpanded, setGroupsExpanded] = React.useState([]);
 
   const [sectionExpanded, setSectionExpanded] = React.useState(
@@ -94,7 +105,6 @@ const FacetPanel = ({ classes }) => {
       return acc;
     }, []),
   );
-
   const sortByForGroups = useSelector((state) => (
     state.dashboardTab
       && state.dashboardTab.sortByList
@@ -103,14 +113,16 @@ const FacetPanel = ({ classes }) => {
   let groupNameColor = '';
   function getGroupNameColor(sideBarItem, currentSection) {
     groupNameColor = 'black';
-    sideBarItem.checkboxItems.map(
-      (item) => {
-        if (item.isChecked) {
-          groupNameColor = facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].color ? facetSectionVariables[currentSection.sectionName].color : '' : defaultFacetSectionVariables.color;
-        }
-        return '';
-      },
-    );
+    if (sideBarItem.groupName !== 'Age') {
+      sideBarItem.checkboxItems.map(
+        (item) => {
+          if (item.isChecked) {
+            groupNameColor = facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].color ? facetSectionVariables[currentSection.sectionName].color : '' : defaultFacetSectionVariables.color;
+          }
+          return '';
+        },
+      );
+    }
     return groupNameColor;
   }
   function getLineColor(index, length) {
@@ -176,7 +188,7 @@ const FacetPanel = ({ classes }) => {
   };
 
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
-    .slice(0, 15);
+    .slice(0, 16);
 
   const arrangeBySections = (arr) => {
     const sideBar = {};
@@ -306,89 +318,101 @@ const FacetPanel = ({ classes }) => {
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
-                          <div
-                            className={classes.sortGroup}
-                          >
-                            <span
-                              className={classes.sortGroupIcon}
-                            >
-                              <Icon
-                                onClick={handleGroupReset(
-                                  sideBarItem.datafield, sideBarItem.groupName,
-                                )}
-                                style={{ fontSize: 15 }}
+                          { sideBarItem.groupName !== 'Age'
+                            && (
+                              <div
+                                className={classes.sortGroup}
                               >
-                                <img
-                                  src={resetIconFilter.src}
-                                  height={size}
-                                  width={size}
-                                  alt={resetIconFilter.alt}
-                                />
-                              </Icon>
-                            </span>
-                            <span
-                              className={classes.sortGroupItem}
-                              style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
-                              onClick={() => {
-                                sortSection(sideBarItem.groupName, 'alphabet');
-                              }}
-                            >
-                              {sortLabels.sortAlphabetically}
-                            </span>
-                            <span
-                              className={classes.sortGroupItemCounts}
-                              style={{ color: getSortButtonColor(sideBarItem, 'count') }}
-                              onClick={() => {
-                                sortSection(sideBarItem.groupName, 'count');
-                              }}
-                            >
-                              {sortLabels.sortByCount}
-                            </span>
-                          </div>
+                                <span
+                                  className={classes.sortGroupIcon}
+                                >
+                                  <Icon
+                                    onClick={handleGroupReset(
+                                      sideBarItem.datafield, sideBarItem.groupName,
+                                    )}
+                                    style={{ fontSize: 15 }}
+                                  >
+                                    <img
+                                      src={resetIconFilter.src}
+                                      height={size}
+                                      width={size}
+                                      alt={resetIconFilter.alt}
+                                    />
+                                  </Icon>
+                                </span>
+                                <span
+                                  className={classes.sortGroupItem}
+                                  style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
+                                  onClick={() => {
+                                    sortSection(sideBarItem.groupName, 'alphabet');
+                                  }}
+                                >
+                                  {sortLabels.sortAlphabetically}
+                                </span>
+                                <span
+                                  className={classes.sortGroupItemCounts}
+                                  style={{ color: getSortButtonColor(sideBarItem, 'count') }}
+                                  onClick={() => {
+                                    sortSection(sideBarItem.groupName, 'count');
+                                  }}
+                                >
+                                  {sortLabels.sortByCount}
+                                </span>
+                              </div>
+                            )}
                           {
-                            sideBarItem.checkboxItems.map(
-                              (item, index) => (
-                                <CheckBoxView
-                                  key={index}
-                                  checkboxItem={item}
-                                  sideBarItem={sideBarItem}
-                                  currentSection={currentSection}
-                                  handleToggle={handleToggle}
-                                  facetSectionVariables={facetSectionVariables}
-                                  defaultFacetSectionVariables={defaultFacetSectionVariables}
-                                  backgroundColor={getCheckBoxColor(index, currentSection)}
-                                  checkColor={getGroupNameColor(sideBarItem, currentSection)}
-                                  lineColor={getLineColor(index, sideBarItem.checkboxItems.length)}
-                                />
-                              ),
+                            sideBarItem.groupName !== 'Age' ? (
+                              sideBarItem.checkboxItems.map(
+                                (item, index) => (
+                                  <CheckBoxView
+                                    key={index}
+                                    checkboxItem={item}
+                                    sideBarItem={sideBarItem}
+                                    currentSection={currentSection}
+                                    handleToggle={handleToggle}
+                                    facetSectionVariables={facetSectionVariables}
+                                    defaultFacetSectionVariables={defaultFacetSectionVariables}
+                                    backgroundColor={getCheckBoxColor(index, currentSection)}
+                                    checkColor={getGroupNameColor(sideBarItem, currentSection)}
+                                    lineColor={getLineColor(
+                                      index,
+                                      sideBarItem.checkboxItems.length,
+                                    )}
+                                  />
+                                ),
+                              )) : (
+                                <div className={classes.sliderRoot}>
+                                  <Slider
+                                    value={valueSlider}
+                                    onChange={handleChangeSlider}
+                                    onChangeCommitted={handleChangeCommittedSlider}
+                                    valueLabelDisplay="auto"
+                                    getAriaValueText={valuetext}
+                                    disableSwap
+                                    min={sideBarItem.checkboxItems.lowerBound}
+                                    max={sideBarItem.checkboxItems.upperBound}
+                                    classes={{
+                                      rail: classes.rail,
+                                      thumb: classes.thumb,
+                                      track: classes.track,
+                                    }}
+                                    // color="#10A075"
+                                  />
+                                </div>
                             )
-          }
+                          }
                         </List>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <div className={classes.selectedCheckboxDisplay}>
                       { !groupsExpanded.includes(sideBarItem.groupName)
-                      && showSelectedChecbox(sideBarItem, currentSection)}
+                        && sideBarItem.groupName !== 'Age'
+                        && showSelectedChecbox(sideBarItem, currentSection)}
                     </div>
                   </>
                 ))}
               </List>
             </ExpansionPanelDetails>
-            <div className={classes.sliderRoot}>
-              <Slider
-                value={value1}
-                onChange={handleChange1}
-                valueLabelDisplay="auto"
-                getAriaValueText={valuetext}
-                disableSwap
-                classes={{
-                  rail: classes.rail,
-                  thumb: classes.thumb,
-                  track: classes.track,
-                }}
-                // color="#10A075"
-              />
-            </div>
           </ExpansionPanel>
           <Backdrop className={classes.backdrop} open={isSidebarLoading || tabDataLoading}>
             <CircularProgress color="inherit" />
@@ -489,12 +513,18 @@ const styles = () => ({
     fontSize: '10px',
   },
   rail: {
+    borderRadius: 4,
+    height: 6,
     background: '#A6A6A6',
   },
   thumb: {
+    height: 16,
+    width: 16,
     background: '#10A075',
   },
   track: {
+    borderRadius: 4,
+    height: 6,
     background: '#10A075',
     '&~&': {
       background: '#10A075',
@@ -503,7 +533,7 @@ const styles = () => ({
   sliderRoot: {
     marginLeft: 'Auto',
     marginRight: 'Auto',
-    width: '90%',
+    width: '80%',
   },
 });
 export default withStyles(styles)(FacetPanel);
