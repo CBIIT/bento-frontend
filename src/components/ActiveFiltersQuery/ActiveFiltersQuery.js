@@ -102,7 +102,7 @@ const styles = () => ({
   queryContainer: {
     marginLeft: '15px',
     position: 'relative',
-    lineHeight: '1.5',
+    lineHeight: '2.5',
     letterSpacing: '0.5px',
     fontFamily: 'Nunito',
     fontSize: '14px',
