@@ -1011,6 +1011,7 @@ query subjectOverview(
   $tissue_type: [String],
   $composition: [String],
   $association: [String],
+  $age_at_index: [Float],
   $file_type: [String]
   $first: Int, 
   $offset: Int, 
@@ -1030,7 +1031,8 @@ query subjectOverview(
       meno_status: $meno_status,
       tissue_type: $tissue_type,
       composition: $composition,
-      association: $association,       
+      association: $association,  
+      age_at_index: $age_at_index     
       file_type: $file_type,
       first: $first, 
       offset: $offset, 

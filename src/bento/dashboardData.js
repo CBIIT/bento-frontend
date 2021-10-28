@@ -54,7 +54,7 @@ export const facetSearchData = [
     label: 'File Type', field: 'group', api: 'subjectCountByFileType', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'file_type', section: 'Filter By Files', show: true,
   },
   {
-    label: 'Age', fieldUpper: 'upperBound', fieldLower: 'lowerBound', api: 'filterSubjectCountByAge', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'age_at_index', section: 'Filter By Cases', show: true,
+    label: 'Age', api: 'filterSubjectCountByAge', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'age_at_index', section: 'Filter By Cases', show: true, slider: true,
   },
 ];
 

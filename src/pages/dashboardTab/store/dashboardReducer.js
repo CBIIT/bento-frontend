@@ -410,7 +410,6 @@ export function fetchDataForDashboardTab(
   const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
   const activeFilters = filters === null
     ? (getState().allActiveFilters !== {} ? getState().allActiveFilters : allFilters()) : filters;
-
   return client
     .query({
       query: QUERY,

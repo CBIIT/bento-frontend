@@ -64,7 +64,7 @@ const FacetPanel = ({ classes }) => {
         data: [],
         defaultPanel: false,
       }));
-  const [valueSlider, setValueSlider] = React.useState(
+  const [ageValueSlider, setAgeValueSlider] = React.useState(
     [
       sideBarContent.data[15].checkboxItems.lowerBound,
       sideBarContent.data[15].checkboxItems.upperBound,
@@ -73,11 +73,11 @@ const FacetPanel = ({ classes }) => {
   function valuetext(value) {
     return `${value}`;
   }
-  const handleChangeSlider = (e, value) => {
+  const handleChangeAgeSlider = (e, value) => {
     // const [min, max] = value;
-    setValueSlider(value);
+    setAgeValueSlider(value);
   };
-  const handleChangeCommittedSlider = (e, value) => {
+  const handleChangeCommittedAgeSlider = (e, value) => {
     // const [min, max] = value;
     // const dispatch = useDispatch();
     toggleSlider(value);
@@ -383,9 +383,9 @@ const FacetPanel = ({ classes }) => {
                               )) : (
                                 <div className={classes.sliderRoot}>
                                   <Slider
-                                    value={valueSlider}
-                                    onChange={handleChangeSlider}
-                                    onChangeCommitted={handleChangeCommittedSlider}
+                                    value={ageValueSlider}
+                                    onChange={handleChangeAgeSlider}
+                                    onChangeCommitted={handleChangeCommittedAgeSlider}
                                     valueLabelDisplay="auto"
                                     getAriaValueText={valuetext}
                                     disableSwap
