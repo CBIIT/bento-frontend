@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import {
   // customCheckBox,
+  // _objectSpread,
   customSort,
   getFilters,
   filterData,
@@ -792,21 +793,66 @@ function customCheckBox1(data, facetSearchData1) {
   return (
     facetSearchData1.map((mapping) => ({
       groupName: mapping.label,
-      checkboxItems: mapping.label === 'Age' ? data[mapping.api] : transformAPIDataIntoCheckBoxData(data[mapping.api], mapping.field, caseCountField, mapping.customNumberSort),
+      checkboxItems: mapping.slider === true
+        ? data[mapping.api]
+        : transformAPIDataIntoCheckBoxData(
+          data[mapping.api],
+          mapping.field,
+          caseCountField,
+          mapping.customNumberSort,
+        ),
       datafield: mapping.datafield,
       show: mapping.show,
+      slider: mapping.slider,
       section: mapping.section,
     }))
   );
 }
 
+/* function setSelectedVlauesToTrue1(checkboxItems, filters) {
+  const result = checkboxItems.map((checkboxItem) => {
+    if (filters.includes(checkboxItem.name)) {
+      return _objectSpread(_objectSpread({}, checkboxItem), {}, {
+        isChecked: true,
+      });
+    }
+    return checkboxItem;
+  });
+  return result;
+}
+
+function setSelectedFilterValues1(checkboxData, Filters) {
+  const result = checkboxData.map((filterGroup) => {
+    if (Array.isArray(Filters[filterGroup.datafield])
+    && Filters[filterGroup.datafield].length !== 0) {
+      return {
+        groupName: filterGroup.groupName,
+        checkboxItems: setSelectedVlauesToTrue1(
+          filterGroup.checkboxItems,
+          Filters[filterGroup.datafield],
+        ),
+        datafield: filterGroup.datafield,
+        show: filterGroup.show,
+        slider: filterGroup.slider,
+        section: filterGroup.section,
+      };
+    }
+
+    return filterGroup;
+  });
+  return result;
+} */
+
 export function updateFilteredAPIDataIntoCheckBoxData(data, facetSearchDataFromConfig) {
   return (
     facetSearchDataFromConfig.map((mapping) => ({
       groupName: mapping.label,
-      checkboxItems: mapping.label === 'Age' ? data[mapping.api] : transformAPIDataIntoCheckBoxData(data[mapping.apiForFiltering], mapping.field),
+      checkboxItems: mapping.slider === true
+        ? data[mapping.api]
+        : transformAPIDataIntoCheckBoxData(data[mapping.apiForFiltering], mapping.field),
       datafield: mapping.datafield,
       show: mapping.show,
+      slider: mapping.slider,
       section: mapping.section,
     }))
   );
@@ -932,8 +978,8 @@ const reducers = {
     let updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
       item.data.searchSubjects, facetSearchData,
     );
-    const ageData = updatedCheckboxData1[updatedCheckboxData1.length - 1];
-    updatedCheckboxData1 = updatedCheckboxData1.slice(0, updatedCheckboxData1.length - 1);
+    const ageData = updatedCheckboxData1.filter((sideBar) => sideBar.slider === true);
+    updatedCheckboxData1 = updatedCheckboxData1.filter((sideBar) => sideBar.slider !== true);
     let checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
     updatedCheckboxData1 = updatedCheckboxData1.concat(ageData);
     checkboxData1 = checkboxData1.concat(ageData);
@@ -1124,8 +1170,8 @@ const reducers = {
   SORT_ALL_GROUP_CHECKBOX: (state) => {
     const { sortByList = {} } = state;
     let { data } = state.checkbox;
-    const ageData = data[data.length - 1];
-    data = data.slice(0, data.length - 1);
+    const ageData = data.filter((sideBar) => sideBar.slider === true);
+    data = data.filter((sideBar) => sideBar.slider !== true);
     data.map((group) => {
       const checkboxItems = sortByList[group.groupName] === 'count'
         ? sortByCheckboxItemsByCount(group.checkboxItems)

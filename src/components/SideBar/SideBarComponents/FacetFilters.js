@@ -113,7 +113,7 @@ const FacetPanel = ({ classes }) => {
   let groupNameColor = '';
   function getGroupNameColor(sideBarItem, currentSection) {
     groupNameColor = 'black';
-    if (sideBarItem.groupName !== 'Age') {
+    if (sideBarItem.slider !== true) {
       sideBarItem.checkboxItems.map(
         (item) => {
           if (item.isChecked) {
@@ -318,7 +318,7 @@ const FacetPanel = ({ classes }) => {
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
-                          { sideBarItem.groupName !== 'Age'
+                          { sideBarItem.slider !== true
                             && (
                               <div
                                 className={classes.sortGroup}
@@ -361,7 +361,7 @@ const FacetPanel = ({ classes }) => {
                               </div>
                             )}
                           {
-                            sideBarItem.groupName !== 'Age' ? (
+                            sideBarItem.slider !== true ? (
                               sideBarItem.checkboxItems.map(
                                 (item, index) => (
                                   <CheckBoxView
@@ -406,7 +406,7 @@ const FacetPanel = ({ classes }) => {
                     </ExpansionPanel>
                     <div className={classes.selectedCheckboxDisplay}>
                       { !groupsExpanded.includes(sideBarItem.groupName)
-                        && sideBarItem.groupName !== 'Age'
+                        && sideBarItem.slider !== true
                         && showSelectedChecbox(sideBarItem, currentSection)}
                     </div>
                   </>
