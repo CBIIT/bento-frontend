@@ -14,8 +14,8 @@ const ActiveFiltersQuery = ({ classes }) => {
   // activeFilters helps filtering only active Filters
   const activeFilters = [];
   // Loop all filters except age to find active ones only
-  const ageData = allFiltersinfo.data[allFiltersinfo.data.length - 1];
-  allFiltersinfo.data = allFiltersinfo.data.slice(0, allFiltersinfo.data.length - 1);
+  const ageData = allFiltersinfo.data.filter((sideBar) => sideBar.slider === true);
+  allFiltersinfo.data = allFiltersinfo.data.filter((sideBar) => sideBar.slider !== true);
   allFiltersinfo.data.map((currentFilter) => {
     // currentFilterCheckboxItems contains checkbox items for currentFilter
     const currentFilterCheckboxItems = currentFilter.checkboxItems;

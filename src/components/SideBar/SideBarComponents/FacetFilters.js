@@ -64,18 +64,14 @@ const FacetPanel = ({ classes }) => {
         data: [],
         defaultPanel: false,
       }));
-  const [ageValueSlider, setAgeValueSlider] = React.useState(
-    [
-      sideBarContent.data[15].checkboxItems.lowerBound,
-      sideBarContent.data[15].checkboxItems.upperBound,
-    ],
-  );
+  const [ageValueSlider, setAgeValueSlider] = React.useState([]);
   function valuetext(value) {
     return `${value}`;
   }
-  const handleChangeAgeSlider = (e, value) => {
+  const handleChangeAgeSlider = (index, value) => {
     // const [min, max] = value;
-    setAgeValueSlider(value);
+    ageValueSlider[index] = value;
+    setAgeValueSlider(ageValueSlider);
   };
   const handleChangeCommittedAgeSlider = (e, value) => {
     // const [min, max] = value;
@@ -282,7 +278,7 @@ const FacetPanel = ({ classes }) => {
 
             <ExpansionPanelDetails classes={{ root: classes.expansionPanelDetailsRoot }}>
               <List component="div" disablePadding dense>
-                {currentSection.items.map((sideBarItem) => (
+                {currentSection.items.map((sideBarItem, sideBarIndex) => (
                   <>
                     <ExpansionPanel
                       square
@@ -360,6 +356,7 @@ const FacetPanel = ({ classes }) => {
                                 </span>
                               </div>
                             )}
+                          {console.log(sideBarItem)}
                           {
                             sideBarItem.slider !== true ? (
                               sideBarItem.checkboxItems.map(
@@ -383,8 +380,14 @@ const FacetPanel = ({ classes }) => {
                               )) : (
                                 <div className={classes.sliderRoot}>
                                   <Slider
-                                    value={ageValueSlider}
-                                    onChange={handleChangeAgeSlider}
+                                    defaultValue={[
+                                      sideBarItem.checkboxItems.lowerBound,
+                                      sideBarItem.checkboxItems.upperBound,
+                                    ]}
+                                    onChange={(e) => handleChangeAgeSlider(
+                                      sideBarIndex,
+                                      e.target.value,
+                                    )}
                                     onChangeCommitted={handleChangeCommittedAgeSlider}
                                     valueLabelDisplay="auto"
                                     getAriaValueText={valuetext}
