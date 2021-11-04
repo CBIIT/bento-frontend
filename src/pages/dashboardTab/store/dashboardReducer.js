@@ -250,9 +250,9 @@ function createFilterVariables(data) {
   return filter;
 }
 
-function createFilterVariablesAge(value) {
+function createFilterVariablesRange(value, sideBarItem) {
   const currentAllActiveFilters = getState().allActiveFilters;
-  currentAllActiveFilters.age_at_index = value;
+  currentAllActiveFilters[sideBarItem.datafield] = value;
   return currentAllActiveFilters;
   // eslint-disable-next-line  no-unused-vars
 }
@@ -726,9 +726,9 @@ export function toggleCheckBox(payload) {
   };
 }
 
-export function toggleSlider(value) {
+export function toggleSlider(value, sideBarItem) {
   const payload = {};
-  const currentAllFilterVariables = createFilterVariablesAge(value);
+  const currentAllFilterVariables = createFilterVariablesRange(value, sideBarItem);
   // console.log(payload);
   // For performance issue we are using initial dasboardquery instead of fitered for empty filters
   if (_.isEqual(currentAllFilterVariables, allFilters())) {
@@ -946,11 +946,11 @@ const reducers = {
     let updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
       item.data.searchSubjects, facetSearchData,
     );
-    const ageData = updatedCheckboxData1.filter((sideBar) => sideBar.slider === true);
+    const rangeData = updatedCheckboxData1.filter((sideBar) => sideBar.slider === true);
     updatedCheckboxData1 = updatedCheckboxData1.filter((sideBar) => sideBar.slider !== true);
     let checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
-    updatedCheckboxData1 = updatedCheckboxData1.concat(ageData);
-    checkboxData1 = checkboxData1.concat(ageData);
+    updatedCheckboxData1 = updatedCheckboxData1.concat(rangeData);
+    checkboxData1 = checkboxData1.concat(rangeData);
     fetchDataForDashboardTab(state.currentActiveTab, item.allFilters);
     return {
       ...state,
@@ -1029,12 +1029,7 @@ const reducers = {
     };
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
-    // const newFacetSearchData = facetSearchData.slice(0, 15);
     const checkboxData = customCheckBox1(item.data.searchSubjects, facetSearchData);
-    // important
-    // console.log(checkboxData);
-    // console.log(item.data.searchSubjects.filterSubjectCountByAge);
-    // const checkboxDataAge = facetSearchData[16];
     fetchDataForDashboardTab(tabIndex[0].title, allFilters());
     return item.data
       ? {
@@ -1138,7 +1133,7 @@ const reducers = {
   SORT_ALL_GROUP_CHECKBOX: (state) => {
     const { sortByList = {} } = state;
     let { data } = state.checkbox;
-    const ageData = data.filter((sideBar) => sideBar.slider === true);
+    const rangeData = data.filter((sideBar) => sideBar.slider === true);
     data = data.filter((sideBar) => sideBar.slider !== true);
     data.map((group) => {
       const checkboxItems = sortByList[group.groupName] === 'count'
@@ -1148,7 +1143,7 @@ const reducers = {
       updatedGroupData.checkboxItems = checkboxItems;
       return updatedGroupData;
     });
-    data = data.concat(ageData);
+    data = data.concat(rangeData);
     return { ...state, checkbox: { data } };
   },
   CLEAR_SECTION_SORT: (state, item) => {

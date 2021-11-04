@@ -70,14 +70,11 @@ const FacetPanel = ({ classes }) => {
     return `${value}`;
   }
   const handleChangeSlider = (index, value) => {
-    // const [min, max] = value;
     sliderValue[index] = value;
     setSliderValue(sliderValue);
   };
-  const handleChangeCommittedSlider = (e, value) => {
-    // const [min, max] = value;
-    // const dispatch = useDispatch();
-    toggleSlider(value);
+  const handleChangeCommittedSlider = (sideBarItem, value) => {
+    toggleSlider(value, sideBarItem);
   };
   // data from store for sidebar laoding
   const isSidebarLoading = useSelector((state) => (
@@ -389,7 +386,12 @@ const FacetPanel = ({ classes }) => {
                                         sideBarIndex,
                                         value,
                                       )}
-                                      onChangeCommitted={handleChangeCommittedSlider}
+                                      onChangeCommitted={
+                                        (event, value) => handleChangeCommittedSlider(
+                                          sideBarItem,
+                                          value,
+                                        )
+                                      }
                                       valueLabelDisplay="auto"
                                       getAriaValueText={valuetext}
                                       disableSwap

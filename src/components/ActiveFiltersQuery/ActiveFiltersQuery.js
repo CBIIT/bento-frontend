@@ -13,8 +13,8 @@ const ActiveFiltersQuery = ({ classes }) => {
 
   // activeFilters helps filtering only active Filters
   const activeFilters = [];
-  // Loop all filters except age to find active ones only
-  const ageData = allFiltersinfo.data.filter((sideBar) => sideBar.slider === true);
+  // Loop all filters except range filter to find active ones only
+  const rangeData = allFiltersinfo.data.filter((sideBar) => sideBar.slider === true);
   allFiltersinfo.data = allFiltersinfo.data.filter((sideBar) => sideBar.slider !== true);
   allFiltersinfo.data.map((currentFilter) => {
     // currentFilterCheckboxItems contains checkbox items for currentFilter
@@ -40,7 +40,7 @@ const ActiveFiltersQuery = ({ classes }) => {
     });
     return '';
   });
-  allFiltersinfo.data = allFiltersinfo.data.concat(ageData);
+  allFiltersinfo.data = allFiltersinfo.data.concat(rangeData);
 
   return (
     <div className={classes.queryWrapper}>
