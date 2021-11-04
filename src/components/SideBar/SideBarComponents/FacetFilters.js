@@ -9,6 +9,7 @@ import {
   Divider,
   Backdrop,
   CircularProgress,
+  Button,
   Icon,
 } from '@material-ui/core';
 import _ from 'lodash';
@@ -22,6 +23,7 @@ import {
   setDashboardTableLoading,
   // eslint-disable-next-line no-unused-vars
   sortSection,
+  getAllIds,
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
@@ -31,6 +33,9 @@ import {
   resetIconFilter,
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
+import AutoComplete from './searchComponet';
+import FacetModal from './CasesModal';
+import styles from './styles/FacetFiltersStyles';
 
 const size = '10px';
 if (resetIconFilter.src === '') {
@@ -56,7 +61,7 @@ const FacetPanel = ({ classes }) => {
   // data from store
   const sideBarContent = useSelector((state) => (
     state.dashboardTab
-    && state.dashboardTab.checkbox
+      && state.dashboardTab.checkbox
       ? state.dashboardTab.checkbox : {
         data: [],
         defaultPanel: false,
@@ -64,7 +69,7 @@ const FacetPanel = ({ classes }) => {
   // data from store for sidebar laoding
   const isSidebarLoading = useSelector((state) => (
     state.dashboardTab
-  && state.dashboardTab.setSideBarLoading
+      && state.dashboardTab.setSideBarLoading
       ? state.dashboardTab.setSideBarLoading : false));
   const tabDataLoading = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.isDashboardTableLoading
@@ -84,6 +89,13 @@ const FacetPanel = ({ classes }) => {
       return acc;
     }, []),
   );
+
+  const searchRef = React.useRef();
+  const [showSearch, toggleSearch] = React.useState(false);
+
+  const clearFilters = () => {
+    searchRef.current.clear();
+  };
 
   const sortByForGroups = useSelector((state) => (
     state.dashboardTab
@@ -223,6 +235,22 @@ const FacetPanel = ({ classes }) => {
     );
   };
 
+  const toggleAutocomplete = (e) => {
+    e.stopPropagation();
+    if (showSearch) {
+      clearFilters();
+    }
+    toggleSearch(!showSearch);
+  };
+
+  const handleCaseFacetClick = (e) => e.stopPropagation();
+
+  const [showCasesModal, setShowCasesModal] = React.useState(false);
+
+  const closeCasesModal = () => {
+    setShowCasesModal(false);
+  };
+
   return (
     <>
       {sideBarSections.map((currentSection) => (
@@ -237,10 +265,15 @@ const FacetPanel = ({ classes }) => {
                 ? facetSectionVariables[currentSection.sectionName].height ? facetSectionVariables[currentSection.sectionName].height : '' : defaultFacetSectionVariables.height,
             }}
           />
+          <FacetModal
+            open={showCasesModal}
+            closeModal={closeCasesModal}
+            handleClose={closeCasesModal}
+          />
           <ExpansionPanel
             expanded={sectionExpanded.includes(currentSection.sectionName)}
             onChange={handleSectionChange(currentSection.sectionName)}
-                // className={classes.expansion}
+            // className={classes.expansion}
             classes={{
               root: classes.expansionPanelRoot,
             }}
@@ -249,12 +282,39 @@ const FacetPanel = ({ classes }) => {
               aria-controls={currentSection.sectionName}
             >
               {/* <ListItemText primary={sideBarItem.groupName} /> */}
-              <div
-                className={classes.sectionSummaryText}
-                id={currentSection.sectionName}
-              >
-                {currentSection.sectionName}
-              </div>
+              {
+                currentSection.sectionName === 'Cases' ? (
+                  <div
+                    id={currentSection.sectionName}
+                    className={classes.sectionSummaryTextCase}
+                  >
+                    <div className={classes.sectionSummaryTextContainer}>
+                      {currentSection.sectionName}
+                      <Button variant="contained" className={classes.findCaseButton} onClick={toggleAutocomplete}>Find</Button>
+                    </div>
+                    {
+                      showSearch && (
+                        <div className={classes.searchContainer} onClick={handleCaseFacetClick}>
+                          <AutoComplete ref={searchRef} data={getAllIds()} />
+                          <Button
+                            variant="contained"
+                            onClick={() => setShowCasesModal(true)}
+                          >
+                            Upload Case Set
+                          </Button>
+                        </div>
+                      )
+                    }
+                  </div>
+                ) : (
+                  <div
+                    className={classes.sectionSummaryText}
+                    id={currentSection.sectionName}
+                  >
+                    {currentSection.sectionName}
+                  </div>
+                )
+              }
 
             </CustomExpansionPanelSummary>
 
@@ -276,7 +336,7 @@ const FacetPanel = ({ classes }) => {
                             classes={{ root: classes.dropDownIconSubSection }}
                             style={{ fontSize: 26 }}
                           />
-)}
+                        )}
                         aria-controls={sideBarItem.groupName}
                         id={sideBarItem.groupName}
                         className={classes.customExpansionPanelSummaryRoot}
@@ -352,13 +412,13 @@ const FacetPanel = ({ classes }) => {
                                 />
                               ),
                             )
-          }
+                          }
                         </List>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <div className={classes.selectedCheckboxDisplay}>
-                      { !groupsExpanded.includes(sideBarItem.groupName)
-                      && showSelectedChecbox(sideBarItem, currentSection)}
+                      {!groupsExpanded.includes(sideBarItem.groupName)
+                        && showSelectedChecbox(sideBarItem, currentSection)}
                     </div>
                   </>
                 ))}
@@ -374,94 +434,4 @@ const FacetPanel = ({ classes }) => {
   );
 };
 
-const styles = () => ({
-  expansionPanelRoot: {
-    boxShadow: 'none',
-    margin: 'auto',
-    position: 'initial',
-    '&:before': {
-      position: 'initial',
-    },
-  },
-  expansionPanelsideBarItem: {
-    boxShadow: 'none',
-    borderTop: 'thin solid #B1B1B1',
-    '&:last-child': {
-      borderBottom: '1px solid #B1B1B1',
-    },
-    margin: 'auto',
-    position: 'initial',
-    '&:before': {
-      position: 'initial',
-    },
-  },
-  backdrop: {
-    // position: 'absolute',
-    zIndex: 99999,
-    background: 'rgba(0, 0, 0, 0.1)',
-  },
-  expansionPanelDetailsRoot: {
-    paddingBottom: '8px',
-    display: 'unset',
-  },
-  dropDownIconSubSection: {
-    marginLeft: '0px',
-    fill: '#000000',
-  },
-  sectionSummaryText: {
-    marginLeft: '-6px',
-    color: '#000000',
-    fontFamily: 'Open Sans',
-    fontWeight: '300',
-    fontSize: '20px',
-    lineHeight: '26px',
-    letterSpacing: 0,
-  },
-  subSectionSummaryText: {
-    marginLeft: '10px',
-    color: '#000000',
-    fontFamily: 'Open Sans',
-    fontWeight: '600',
-    fontSize: '14px',
-    textTransform: 'uppercase',
-    lineHeight: 0,
-    letterSpacing: 0,
-    flexShrink: 0,
-  },
-  customExpansionPanelSummaryRoot: {
-    flexDirection: 'row-reverse',
-    paddingLeft: 4,
-  },
-  sortGroup: {
-    borderTop: '1px solid #B1B1B1',
-    textAlign: 'left',
-  },
-  sortGroupItem: {
-    cursor: 'pointer',
-    fontFamily: 'Nunito',
-    fontSize: '10px',
-    marginRight: '42px',
-  },
-  sortGroupItemCounts: {
-    cursor: 'pointer',
-    fontFamily: 'Nunito',
-    fontSize: '10px',
-  },
-  sortGroupIcon: {
-    cursor: 'pointer',
-    marginRight: '12px',
-    marginLeft: '16px',
-  },
-  selected: {},
-  selectedCheckboxDisplay: {
-    maxHeight: '200px',
-    overflow: 'auto',
-  },
-  showMore: {
-    float: 'right',
-    paddingRight: '5px',
-    cursor: 'pointer',
-    fontSize: '10px',
-  },
-});
 export default withStyles(styles)(FacetPanel);
