@@ -11,6 +11,7 @@ import {
   Backdrop,
   CircularProgress,
   Icon,
+  ListItem,
 } from '@material-ui/core';
 // import createMuiTheme from '@material-ui/styles';
 import _ from 'lodash';
@@ -64,16 +65,16 @@ const FacetPanel = ({ classes }) => {
         data: [],
         defaultPanel: false,
       }));
-  const [ageValueSlider, setAgeValueSlider] = React.useState([]);
+  const [sliderValue, setSliderValue] = React.useState([]);
   function valuetext(value) {
     return `${value}`;
   }
-  const handleChangeAgeSlider = (index, value) => {
+  const handleChangeSlider = (index, value) => {
     // const [min, max] = value;
-    ageValueSlider[index] = value;
-    setAgeValueSlider(ageValueSlider);
+    sliderValue[index] = value;
+    setSliderValue(sliderValue);
   };
-  const handleChangeCommittedAgeSlider = (e, value) => {
+  const handleChangeCommittedSlider = (e, value) => {
     // const [min, max] = value;
     // const dispatch = useDispatch();
     toggleSlider(value);
@@ -182,9 +183,9 @@ const FacetPanel = ({ classes }) => {
     // dispatch toggleCheckBox action
     dispatch(resetGroupSelections({ dataField, groupName }));
   };
-
+  // slice 16
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
-    .slice(0, 16);
+    .slice(0, 17);
 
   const arrangeBySections = (arr) => {
     const sideBar = {};
@@ -356,7 +357,6 @@ const FacetPanel = ({ classes }) => {
                                 </span>
                               </div>
                             )}
-                          {console.log(sideBarItem)}
                           {
                             sideBarItem.slider !== true ? (
                               sideBarItem.checkboxItems.map(
@@ -378,29 +378,74 @@ const FacetPanel = ({ classes }) => {
                                   />
                                 ),
                               )) : (
-                                <div className={classes.sliderRoot}>
-                                  <Slider
-                                    defaultValue={[
-                                      sideBarItem.checkboxItems.lowerBound,
-                                      sideBarItem.checkboxItems.upperBound,
-                                    ]}
-                                    onChange={(e) => handleChangeAgeSlider(
-                                      sideBarIndex,
-                                      e.target.value,
-                                    )}
-                                    onChangeCommitted={handleChangeCommittedAgeSlider}
-                                    valueLabelDisplay="auto"
-                                    getAriaValueText={valuetext}
-                                    disableSwap
-                                    min={sideBarItem.checkboxItems.lowerBound}
-                                    max={sideBarItem.checkboxItems.upperBound}
-                                    classes={{
-                                      rail: classes.rail,
-                                      thumb: classes.thumb,
-                                      track: classes.track,
-                                    }}
-                                    // color="#10A075"
-                                  />
+                                <div>
+                                  <div className={classes.sliderRoot}>
+                                    <Slider
+                                      defaultValue={[
+                                        sideBarItem.checkboxItems.lowerBound,
+                                        sideBarItem.checkboxItems.upperBound,
+                                      ]}
+                                      onChange={(event, value) => handleChangeSlider(
+                                        sideBarIndex,
+                                        value,
+                                      )}
+                                      onChangeCommitted={handleChangeCommittedSlider}
+                                      valueLabelDisplay="auto"
+                                      getAriaValueText={valuetext}
+                                      disableSwap
+                                      min={sideBarItem.checkboxItems.lowerBound}
+                                      max={sideBarItem.checkboxItems.upperBound}
+                                      classes={{
+                                        rail: classes.rail,
+                                        thumb: classes.thumb,
+                                        track: classes.track,
+                                      }}
+                                      // color="#10A075"
+                                    />
+                                    <span className={classes.lowerBound}>
+                                      &#8804;
+                                      {sideBarItem.checkboxItems.lowerBound}
+                                    </span>
+                                    <span className={classes.upperBound}>
+                                      {sideBarItem.checkboxItems.upperBound}
+                                      &#8804;
+                                    </span>
+                                  </div>
+                                  <div>
+                                    {typeof sliderValue[sideBarIndex] !== 'undefined'
+                                      ? (sliderValue[sideBarIndex][0]
+                                      > sideBarItem.checkboxItems.lowerBound
+                                      || sliderValue[sideBarIndex][1]
+                                      < sideBarItem.checkboxItems.upperBound)
+                                      && (
+                                        <ListItem
+                                          width={1}
+                                          alignItems="flex-end"
+                                          className={classes.nested}
+                                          style={{
+                                            backgroundColor: getCheckBoxColor(0, currentSection),
+                                          }}
+                                          classes={{
+                                            selected: classes.selected,
+                                            gutters: classes.listItemGutters,
+                                          }}
+                                        >
+                                          <span className={classes.sliderText}>
+                                            {sliderValue[sideBarIndex][0]}
+                                          </span>
+                                          -
+                                          <span className={classes.sliderText}>
+                                            {sliderValue[sideBarIndex][1]}
+                                          </span>
+                                          &nbsp;
+                                          <span className={classes.sliderText}>
+                                            {sideBarItem.quantifier}
+                                          </span>
+                                        </ListItem>
+                                      ) : (
+                                        <span />
+                                      )}
+                                  </div>
                                 </div>
                             )
                           }
@@ -537,6 +582,33 @@ const styles = () => ({
     marginLeft: '20px',
     marginRight: 'Auto',
     width: '80%',
+  },
+  upperBound: {
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    color: '#000000',
+    float: 'right',
+    marginLeft: 'Auto',
+    marginRight: 'Auto',
+  },
+  lowerBound: {
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    color: '#000000',
+    float: 'left',
+    marginLeft: 'Auto',
+    marginRight: 'Auto',
+  },
+  listItemGutters: {
+    padding: '10px 0px 5px 0px',
+  },
+  sliderText: {
+    marginTop: '1.5px',
+    color: '#000000',
+    lineHeight: '120%',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    float: 'right',
   },
 });
 export default withStyles(styles)(FacetPanel);

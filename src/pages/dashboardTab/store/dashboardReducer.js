@@ -804,6 +804,7 @@ function customCheckBox1(data, facetSearchData1) {
       datafield: mapping.datafield,
       show: mapping.show,
       slider: mapping.slider,
+      quantifier: mapping.slider,
       section: mapping.section,
     }))
   );
@@ -853,6 +854,7 @@ export function updateFilteredAPIDataIntoCheckBoxData(data, facetSearchDataFromC
       datafield: mapping.datafield,
       show: mapping.show,
       slider: mapping.slider,
+      quantifier: mapping.quantifier,
       section: mapping.section,
     }))
   );
