@@ -9,8 +9,18 @@ const jBrowseOptions = {
   variants: true,
   alignments: true,
   referenceSequenceUris: {
-    fastaLocation: 'https://bento-bam-vcf-files.s3.amazonaws.com/ebi_grch37.fasta',
-    faiLocation: 'https://bento-bam-vcf-files.s3.amazonaws.com/ebi_grch37.fasta.fai',
+    fastaLocation: {
+      uri: 'https://jbrowse.org/genomes/hg19/fasta/hg19.fa.gz',
+      locationType: 'UriLocation',
+    },
+    faiLocation: {
+      uri: 'https://jbrowse.org/genomes/hg19/fasta/hg19.fa.gz.fai',
+      locationType: 'UriLocation',
+    },
+    gziLocation: {
+      uri: 'https://jbrowse.org/genomes/hg19/fasta/hg19.fa.gz.gzi',
+      locationType: 'UriLocation',
+    },
   },
   variantsUris: {
     vcfGzLocationUri: 'https://bento-bam-vcf-files.s3.amazonaws.com/NA20811.10.sorted.vcf.gz',

@@ -13,18 +13,25 @@ const defaultFooterStyles = {
 
 const theme = createJBrowseTheme();
 
-const createAssembly = ({ fastaLocation, faiLocation }) => ({
-  name: 'GRCh38',
+const createAssembly = ({ fastaLocation, faiLocation, gziLocation }) => ({
+  name: 'hg19',
+  aliases: ['GRCh37'],
   sequence: {
     type: 'ReferenceSequenceTrack',
-    trackId: 'GRCh38-ReferenceSequenceTrack',
+    trackId: 'Pd8Wh30ei9R',
     adapter: {
-      type: 'IndexedFastaAdapter',
-      fastaLocation: {
-        uri: fastaLocation,
-      },
-      faiLocation: {
-        uri: faiLocation,
+      type: 'BgzipFastaAdapter',
+      fastaLocation,
+      faiLocation,
+      gziLocation,
+    },
+  },
+  refNameAliases: {
+    adapter: {
+      type: 'RefNameAliasAdapter',
+      location: {
+        uri: 'https://s3.amazonaws.com/jbrowse.org/genomes/hg19/hg19_aliases.txt',
+        locationType: 'UriLocation',
       },
     },
   },
@@ -49,17 +56,17 @@ const getTracks = ({
   const alignmentOpts = {
     adapter: {},
     name: 'My Alignments',
-    assemblyNames: ['GRCh38'],
+    assemblyNames: ['hg19'],
     type: 'AlignmentsTrack',
     trackId: 'my_alignments_track',
   };
 
   const variantsOpts = {
     adapter: {},
-    type: 'VariantTrack',
-    trackId: 'my_track',
     name: 'My Variants',
-    assemblyNames: ['GRCh38'],
+    trackId: 'my_track',
+    type: 'VariantTrack',
+    assemblyNames: ['hg19'],
   };
 
   if (alignments) {

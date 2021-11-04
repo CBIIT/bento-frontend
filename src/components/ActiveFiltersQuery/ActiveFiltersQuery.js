@@ -43,111 +43,102 @@ const ActiveFiltersQuery = ({ classes }) => {
   allFiltersinfo.data = allFiltersinfo.data.concat(rangeData);
 
   return (
-    <div className={classes.queryWrapper}>
-      <div>
-        <div className={classes.clearQuery}>
+    <div>
+      {activeFilters.length > 0 ? (
+        <div className={classes.queryWrapper}>
           <Button
             color="primary"
             variant="outlined"
-            className={classes.clearQueryButton}
             onClick={() => clearAllFilters()}
+            className={classes.clearQueryButton}
             disabled={activeFilters.length <= 0}
           >
             Clear Query
           </Button>
-        </div>
-        <div className={classes.clearQueryResult}>
-          {activeFilters.map((filter, index) => (
-            <span>
+          <span className={classes.queryContainer}>
+            {activeFilters.map((filter, index) => (
               <span>
-                {' '}
-                {index !== 0 ? <span className={classes.operators}> AND </span> : ''}
-                <span className={classes.filterName}>
-                  {filter.filterName}
+                <span>
+                  {' '}
+                  {index !== 0 ? <span className={classes.operators}> AND </span> : ''}
+                  <span className={classes.filterName}>
+                    {filter.filterName}
+                  </span>
+                  {' '}
                 </span>
-                {' '}
-              </span>
-              <span>
-                {' '}
-                <span className={classes.operators}>
-                  {filter.checkbox.length === 1 ? 'IS ' : 'IN '}
-                </span>
-                {filter.checkbox.length === 1
-                  ? (
-                    <span className={classes.filterCheckboxes}>
-                      {filter.checkbox[0]}
-                    </span>
-                  ) : (
-                    <>
-                      (
+                <span>
+                  {' '}
+                  <span className={classes.operators}>
+                    {filter.checkbox.length === 1 ? 'IS ' : 'IN '}
+                  </span>
+                  {filter.checkbox.length === 1
+                    ? (
                       <span className={classes.filterCheckboxes}>
-                        { filter.checkbox.join() }
+                        {filter.checkbox[0]}
                       </span>
-                      )
-                    </>
-                  )}
+                    ) : (
+                      <>
+                        (
+                        <span className={classes.filterCheckboxes}>
+                          {filter.checkbox.join()}
+                        </span>
+                        )
+                      </>
+                    )}
+                </span>
               </span>
-            </span>
-          ))}
+            ))}
+          </span>
         </div>
-      </div>
+      ) : ''}
     </div>
   );
 };
 
-const styles = (theme) => ({
-  clearQueryButton: {
-    borderRadius: '15px',
-    border: '1px solid #B4B4B4',
-    backgroundColor: '#fff',
-    margin: '6px',
-    color: '#638FB5',
-    fontSize: '14px',
-    boxSizing: 'border-box',
-    fontFamily: 'Nunito',
-    textTransform: 'capitalize',
-    fontWeight: 400,
-  },
+const styles = () => ({
   queryWrapper: {
-    padding: '10px 15px 0px 15px',
-    backgroundColor: '#f1f1f1',
     height: '120px',
+    backgroundColor: '#f1f1f1',
+    padding: '8px 15px 0px 40px',
+    overflowY: 'auto',
   },
-  clearQuery: {
-    float: 'left',
-    paddingTop: '15px',
+  queryContainer: {
+    marginLeft: '15px',
+    position: 'relative',
+    lineHeight: '2.5',
+    letterSpacing: '0.5px',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    color: '#0e3151',
+  },
+  filterName: {
+    textTransform: 'uppercase',
   },
   filterCheckboxes: {
     paddingBottom: '3px',
     width: 'fit-content',
-    borderBottom: '0.10625em solid #10A075',
+    borderBottom: '2px solid #10A075',
   },
   operators: {
-    color: '#64ACD5',
+    fontWeight: 900,
+    color: '#44afe7',
     marginLeft: '3px',
-    fontSize: '16px',
-    fontWeight: 'bold',
     marginRight: '3px',
     borderBottom: 'none',
-    fontFamily: 'Nunito',
-    fontWigth: 800,
     textDecoration: 'none',
   },
-  clearQueryResult: {
+  clearQueryButton: {
+    margin: '1px',
+    fontWeight: 400,
+    fontSize: '14px',
+    color: '#638FB5',
+    marginLeft: '-15px',
+    borderRadius: '15px',
     fontFamily: 'Nunito',
-    fontWigth: 800,
-    fontSize: '18px',
-    letterSpacing: '0.5px',
-    margin: '-12px 65px 0px 142px',
-    lineHeight: 1.65,
-    height: '120px',
-    overflowY: 'auto',
-    paddingTop: '17px',
-    paddingRight: '10px',
-    color: theme.palette.clearQueryResultColor.color,
-  },
-  filterName: {
-    textTransform: 'uppercase',
+    boxSizing: 'border-box',
+    backgroundColor: '#fff',
+    textTransform: 'capitalize',
+    border: '1px solid #B4B4B4',
   },
 });
 

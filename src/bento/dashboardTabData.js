@@ -1114,9 +1114,10 @@ query subjectsAddAllToCart(
   $file_type: [String],
   $age_at_index: [Float],
   $first: Int,
-  $offset: Int,
-  $order_by:  String
-  $sort_direction: String ){
+  $offset: Int= 0, 
+  $order_by: String = "file_id",
+  $sort_direction: String = "asc" 
+  ){
   subjectOverview(
       programs: $programs,
       studies: $studies,
@@ -1163,9 +1164,9 @@ export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
       $file_type: [String],
       $age_at_index: [Float],
       $first: Int,
-      $offset: Int,
-      $order_by:  String
-      $sort_direction: String ){
+      $offset: Int= 0, 
+      $order_by: String = "file_id",
+      $sort_direction: String = "asc" ){
       sampleOverview(
           programs: $programs,
           studies: $studies,
@@ -1211,10 +1212,11 @@ query fileAddAllToCart(
   $association: [String],
   $file_type: [String],
   $age_at_index: [Float],
-  $first: Int, 
-  $offset: Int, 
-  $order_by:  String
-  $sort_direction: String ){
+  $first: Int,
+  $offset: Int= 0, 
+  $order_by: String = "file_id",
+  $sort_direction: String = "asc"
+ ){
   fileOverview(
       programs: $programs,
       studies: $studies,
