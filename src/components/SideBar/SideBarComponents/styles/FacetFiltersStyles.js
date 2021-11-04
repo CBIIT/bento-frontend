@@ -111,6 +111,56 @@ const styles = () => ({
   findCaseButton: {
     marginLeft: '55px',
   },
+  rail: {
+    borderRadius: 4,
+    height: 6,
+    background: '#A6A6A6',
+  },
+  thumb: {
+    height: 16,
+    width: 16,
+    background: '#10A075',
+  },
+  track: {
+    borderRadius: 4,
+    height: 6,
+    background: '#10A075',
+    '&~&': {
+      background: '#10A075',
+    },
+  },
+  sliderRoot: {
+    marginLeft: '20px',
+    marginRight: 'Auto',
+    width: '80%',
+  },
+  upperBound: {
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    color: '#000000',
+    float: 'right',
+    marginLeft: 'Auto',
+    marginRight: 'Auto',
+  },
+  lowerBound: {
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    color: '#000000',
+    float: 'left',
+    marginLeft: 'Auto',
+    marginRight: 'Auto',
+  },
+  listItemGutters: {
+    padding: '5px 0px 5px 0px',
+  },
+  sliderText: {
+    marginTop: '1.5px',
+    color: '#000000',
+    lineHeight: '120%',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    float: 'right',
+  },
 });
 
 export default styles;

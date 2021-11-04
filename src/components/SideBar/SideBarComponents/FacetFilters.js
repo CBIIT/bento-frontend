@@ -483,10 +483,10 @@ const FacetPanel = ({ classes }) => {
                                       && (
                                         <ListItem
                                           width={1}
-                                          alignItems="flex-end"
                                           className={classes.nested}
                                           style={{
                                             backgroundColor: getCheckBoxColor(0, currentSection),
+                                            justifyContent: 'end',
                                           }}
                                           classes={{
                                             selected: classes.selected,
@@ -516,9 +516,9 @@ const FacetPanel = ({ classes }) => {
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <div className={classes.selectedCheckboxDisplay}>
-                        { !groupsExpanded.includes(sideBarItem.groupName)
-                          && sideBarItem.slider !== true
-                          && showSelectedChecbox(sideBarItem, currentSection)}
+                      { !groupsExpanded.includes(sideBarItem.groupName)
+                        && sideBarItem.slider !== true
+                        && showSelectedChecbox(sideBarItem, currentSection)}
                     </div>
                   </>
                 ))}
