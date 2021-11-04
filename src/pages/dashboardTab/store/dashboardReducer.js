@@ -810,40 +810,6 @@ function customCheckBox1(data, facetSearchData1) {
   );
 }
 
-/* function setSelectedVlauesToTrue1(checkboxItems, filters) {
-  const result = checkboxItems.map((checkboxItem) => {
-    if (filters.includes(checkboxItem.name)) {
-      return _objectSpread(_objectSpread({}, checkboxItem), {}, {
-        isChecked: true,
-      });
-    }
-    return checkboxItem;
-  });
-  return result;
-}
-
-function setSelectedFilterValues1(checkboxData, Filters) {
-  const result = checkboxData.map((filterGroup) => {
-    if (Array.isArray(Filters[filterGroup.datafield])
-    && Filters[filterGroup.datafield].length !== 0) {
-      return {
-        groupName: filterGroup.groupName,
-        checkboxItems: setSelectedVlauesToTrue1(
-          filterGroup.checkboxItems,
-          Filters[filterGroup.datafield],
-        ),
-        datafield: filterGroup.datafield,
-        show: filterGroup.show,
-        slider: filterGroup.slider,
-        section: filterGroup.section,
-      };
-    }
-
-    return filterGroup;
-  });
-  return result;
-} */
-
 export function updateFilteredAPIDataIntoCheckBoxData(data, facetSearchDataFromConfig) {
   return (
     facetSearchDataFromConfig.map((mapping) => ({
