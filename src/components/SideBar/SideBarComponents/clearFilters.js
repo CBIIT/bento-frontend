@@ -27,7 +27,6 @@ const clearFilters = ({
       />
     </Button>
     <span className={disable ? classes.resetTextDisabled : classes.resetText}>{resetText}</span>
-
   </div>
 );
 
@@ -58,7 +57,7 @@ const styles = (theme) => ({
   resetText: {
     marginTop: '0px',
     marginLeft: '8px',
-    color: '#4b82b2',
+    color: '#a9b2b9',
     fontSize: 14,
   },
   resetTextDisabled: {

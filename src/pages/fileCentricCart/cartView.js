@@ -17,6 +17,56 @@ import {
 import { deleteFromCart } from './store/cart';
 import { downloadJson } from './utils';
 
+const CustomHeaderRemove = ({
+  openDialogBox,
+  classes: {
+    removeThCell,
+    removeHeadCell,
+    removeAllMessage,
+    removeHeadCellText,
+    removeHeadCellIcon,
+    removeHeadCellIconButton,
+  },
+}) => {
+  const [popUpStatus, setPopUpStatus] = React.useState(false);
+  const showPopUp = (status) => setPopUpStatus(status === 'open');
+
+  return (
+    <th className={removeThCell}>
+      <span role="button">
+        <div className={removeHeadCell}>
+          <div
+            id="cart_remove_button_text"
+            className={removeHeadCellText}
+          >
+            Remove
+          </div>
+          <div className={removeHeadCellIcon}>
+            <IconButton aria-label="help" className={removeHeadCellIconButton}>
+              <ArrowDropDownIcon
+                onClick={openDialogBox}
+                onMouseEnter={() => showPopUp('open')}
+                onMouseLeave={() => showPopUp('close')}
+              />
+            </IconButton>
+            { popUpStatus ? (
+              <div className={removeAllMessage}>
+                {' '}
+                Remove
+                {' '}
+                <b>All</b>
+                {' '}
+                items in cart.
+                {' '}
+              </div>
+            ) : ''}
+          </div>
+        </div>
+      </span>
+    </th>
+  );
+};
+
 const cartView = ({
   classes,
   data, fileIDs = [],
@@ -30,8 +80,11 @@ const cartView = ({
   isLoading,
 }) => {
   const [modalStatus, setModalStatus] = React.useState(false);
-  const [removeAllMessageStatus, setRemoveAllMessageStatus] = React.useState(false);
-  const [userComments, setUserComments] = React.useState('');
+  const commentRef = React.useRef();
+
+  let dataCartView = data;
+  let localPageCartView = localPage;
+  let localRowsPerPageCartView = localRowsPerPage;
   async function fetchData() {
     const fetchResult = await client
       .query({
@@ -44,13 +97,10 @@ const cartView = ({
     return fetchResult;
   }
 
-  function toggleRemoveAllMessageStatus(status) {
-    return status === 'close' ? setRemoveAllMessageStatus(false) : setRemoveAllMessageStatus(true);
-  }
-
   // ================= Dialogbox Functions =================
   const openDialogBox = () => setModalStatus(true);
   const closeDialogBox = () => setModalStatus(false);
+
   function deleteSubjectsAndCloseModal() {
     closeDialogBox();
     deleteFromCart({ fileIds: fileIDs });
@@ -60,6 +110,8 @@ const cartView = ({
 
   // =========== Downlaod Manifest Functions ===========
   async function prepareDownload() {
+    // get the user Comments value from the footer,
+    const userComments = commentRef.current.getValue();
     const data1 = await fetchData();
     return downloadJson(
       data1,
@@ -70,6 +122,15 @@ const cartView = ({
   }
 
   const fileIdIndex = table.columns.map((d) => d.dataField).findIndex((e) => e === 'file_id');
+
+  if (localStorage.getItem('data')) {
+    if (localStorage.getItem('data') !== 'undefined' && localStorage.getItem('data').length > 0 && (localStorage.getItem('page') !== localPage || localStorage.getItem('rowsPerPage') !== localRowsPerPage || localStorage.getItem('sortColumn') !== defaultSortCoulmn || localStorage.getItem('sortDirection') !== defaultSortDirection)) {
+      const dataLocal = JSON.parse(localStorage.getItem('data'));
+      dataCartView = dataLocal;
+      localPageCartView = localStorage.getItem('page');
+      localRowsPerPageCartView = localStorage.getItem('rowsPerPage');
+    }
+  }
 
   const deleteColumn = [{
     name: 'Remove',
@@ -88,34 +149,10 @@ const cartView = ({
         </div>
       ),
       customHeadRender: () => (
-        <th className={classes.removeThCell}>
-          <span role="button">
-            <div className={classes.removeHeadCell}>
-              <div
-                className={classes.removeHeadCellText}
-                id="cart_remove_button_text"
-              >
-                Remove
-              </div>
-              <div className={classes.removeHeadCellIcon}>
-                <IconButton aria-label="help" className={classes.removeHeadCellIconButton}>
-                  <ArrowDropDownIcon onClick={() => openDialogBox()} onMouseEnter={() => toggleRemoveAllMessageStatus('open')} onMouseLeave={() => toggleRemoveAllMessageStatus('close')} />
-                </IconButton>
-                { removeAllMessageStatus ? (
-                  <div className={classes.removeAllMessage}>
-                    {' '}
-                    Remove
-                    {' '}
-                    <b>All</b>
-                    {' '}
-                    items in cart.
-                    {' '}
-                  </div>
-                ) : ''}
-              </div>
-            </div>
-          </span>
-        </th>
+        <CustomHeaderRemove
+          classes={classes}
+          openDialogBox={openDialogBox}
+        />
       ),
     },
   }];
@@ -131,9 +168,9 @@ const cartView = ({
     <Grid>
       <DialogBox
         isOpen={modalStatus}
-        acceptAction={deleteSubjectsAndCloseModal}
         closeModal={closeDialogBox}
         messageData={myFilesPageData.popUpWindow}
+        acceptAction={deleteSubjectsAndCloseModal}
         numberOfFilesBeDeleted={numberOfFilesBeDeleted}
       />
       <div className={classes.myFilesWrapper}>
@@ -179,20 +216,20 @@ const cartView = ({
           <div id="table_selected_files" className={classes.tableWrapper}>
             <CartBody
               updateSortOrder={updateSortOrder}
-              data={data}
+              data={dataCartView}
               deleteColumn={deleteColumn}
               fileIDs={fileIDs}
               defaultSortCoulmn={defaultSortCoulmn}
               defaultSortDirection={defaultSortDirection}
               paginationAPIField={paginationAPIField}
               paginationAPIFieldDesc={paginationAPIFieldDesc}
-              localPage={localPage}
-              localRowsPerPage={localRowsPerPage}
+              localPage={localPageCartView}
+              localRowsPerPage={localRowsPerPageCartView}
               isLoading={isLoading}
             />
             <CartFooter
               placeholder={myFilesPageData.textareaPlaceholder}
-              onChange={(e) => setUserComments(e.target.value)}
+              ref={commentRef}
             />
           </div>
         </Grid>

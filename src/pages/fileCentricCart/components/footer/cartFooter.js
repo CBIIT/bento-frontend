@@ -5,18 +5,30 @@ import {
 import Styles from './cartFooter.style';
 
 const CartHeader = ({
-  classes,
+  classes: {
+    textField,
+  },
   placeholder,
-  onChange,
-}) => (
-  <div className={classes.manifestTextarea}>
-    <textarea
-      id="multiline-user-coments"
-      className={classes.textField}
-      placeholder={placeholder}
-      onChange={onChange}
-    />
-  </div>
-);
+}, ref) => {
+  const [commentText, setcommentText] = React.useState('');
+  const onChange = ({ target: { value } }) => setcommentText(value);
 
-export default withStyles(Styles, { withTheme: true })(CartHeader);
+  React.useImperativeHandle(ref, () => ({
+    getValue() {
+      return commentText;
+    },
+  }));
+
+  return (
+    <textarea
+      onChange={onChange}
+      value={commentText}
+      className={textField}
+      placeholder={placeholder}
+      id="multiline-user-coments"
+    />
+  );
+};
+
+const forwardCartHeader = React.forwardRef(CartHeader);
+export default withStyles(Styles, { withTheme: true })(forwardCartHeader);
