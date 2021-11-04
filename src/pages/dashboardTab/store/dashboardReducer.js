@@ -1,7 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
 import _ from 'lodash';
 import {
-  customCheckBox,
+  // customCheckBox,
+  // _objectSpread,
   customSort,
   getFilters,
   filterData,
@@ -249,6 +250,13 @@ function createFilterVariables(data) {
   return filter;
 }
 
+function createFilterVariablesRange(value, sideBarItem) {
+  const currentAllActiveFilters = getState().allActiveFilters;
+  currentAllActiveFilters[sideBarItem.datafield] = value;
+  return currentAllActiveFilters;
+  // eslint-disable-next-line  no-unused-vars
+}
+
 /**
  * Returns active filter list while removing the param group.
  *
@@ -403,7 +411,6 @@ export function fetchDataForDashboardTab(
   const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
   const activeFilters = filters === null
     ? (getState().allActiveFilters !== {} ? getState().allActiveFilters : allFilters()) : filters;
-
   return client
     .query({
       query: QUERY,
@@ -719,6 +726,16 @@ export function toggleCheckBox(payload) {
   };
 }
 
+export function toggleSlider(value, sideBarItem) {
+  const payload = {};
+  const currentAllFilterVariables = createFilterVariablesRange(value, sideBarItem);
+  // console.log(payload);
+  // For performance issue we are using initial dasboardquery instead of fitered for empty filters
+  if (_.isEqual(currentAllFilterVariables, allFilters())) {
+    clearAllFilters();
+  } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+}
+
 /**
  * Reducer for sidebar loading
  *
@@ -770,13 +787,40 @@ so it contains more information and easy for front-end to show it correctly.
  * * @param {object} currentCheckboxSelection
  * @return {json}
  */
+
+function customCheckBox1(data, facetSearchData1) {
+  const caseCountField = 'subjects';
+  return (
+    facetSearchData1.map((mapping) => ({
+      groupName: mapping.label,
+      checkboxItems: mapping.slider === true
+        ? data[mapping.api]
+        : transformAPIDataIntoCheckBoxData(
+          data[mapping.api],
+          mapping.field,
+          caseCountField,
+          mapping.customNumberSort,
+        ),
+      datafield: mapping.datafield,
+      show: mapping.show,
+      slider: mapping.slider,
+      quantifier: mapping.slider,
+      section: mapping.section,
+    }))
+  );
+}
+
 export function updateFilteredAPIDataIntoCheckBoxData(data, facetSearchDataFromConfig) {
   return (
     facetSearchDataFromConfig.map((mapping) => ({
       groupName: mapping.label,
-      checkboxItems: transformAPIDataIntoCheckBoxData(data[mapping.apiForFiltering], mapping.field),
+      checkboxItems: mapping.slider === true
+        ? data[mapping.api]
+        : transformAPIDataIntoCheckBoxData(data[mapping.apiForFiltering], mapping.field),
       datafield: mapping.datafield,
       show: mapping.show,
+      slider: mapping.slider,
+      quantifier: mapping.quantifier,
       section: mapping.section,
     }))
   );
@@ -899,10 +943,14 @@ const reducers = {
     isDashboardTableLoading: false,
   }),
   TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
-    const updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
+    let updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
       item.data.searchSubjects, facetSearchData,
     );
-    const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
+    const rangeData = updatedCheckboxData1.filter((sideBar) => sideBar.slider === true);
+    updatedCheckboxData1 = updatedCheckboxData1.filter((sideBar) => sideBar.slider !== true);
+    let checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
+    updatedCheckboxData1 = updatedCheckboxData1.concat(rangeData);
+    checkboxData1 = checkboxData1.concat(rangeData);
     fetchDataForDashboardTab(state.currentActiveTab, item.allFilters);
     return {
       ...state,
@@ -981,7 +1029,7 @@ const reducers = {
     };
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
-    const checkboxData = customCheckBox(item.data.searchSubjects, facetSearchData);
+    const checkboxData = customCheckBox1(item.data.searchSubjects, facetSearchData);
     fetchDataForDashboardTab(tabIndex[0].title, allFilters());
     return item.data
       ? {
@@ -1022,7 +1070,7 @@ const reducers = {
       } : { ...state };
   },
   CLEAR_ALL: (state, item) => {
-    const checkboxData = customCheckBox(item.data.searchSubjects, facetSearchData);
+    const checkboxData = customCheckBox1(item.data.searchSubjects, facetSearchData);
     fetchDataForDashboardTab(tabIndex[0].title, allFilters());
     return item.data
       ? {
@@ -1084,8 +1132,9 @@ const reducers = {
   },
   SORT_ALL_GROUP_CHECKBOX: (state) => {
     const { sortByList = {} } = state;
-    const { data } = state.checkbox;
-
+    let { data } = state.checkbox;
+    const rangeData = data.filter((sideBar) => sideBar.slider === true);
+    data = data.filter((sideBar) => sideBar.slider !== true);
     data.map((group) => {
       const checkboxItems = sortByList[group.groupName] === 'count'
         ? sortByCheckboxItemsByCount(group.checkboxItems)
@@ -1094,7 +1143,7 @@ const reducers = {
       updatedGroupData.checkboxItems = checkboxItems;
       return updatedGroupData;
     });
-
+    data = data.concat(rangeData);
     return { ...state, checkbox: { data } };
   },
   CLEAR_SECTION_SORT: (state, item) => {

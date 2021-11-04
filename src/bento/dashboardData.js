@@ -53,6 +53,9 @@ export const facetSearchData = [
   {
     label: 'File Type', field: 'group', api: 'subjectCountByFileType', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'file_type', section: 'Files', show: true,
   },
+  {
+    label: 'Age', api: 'filterSubjectCountByAge', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'age_at_index', section: 'Filter By Cases', show: true, slider: true, quantifier: 'Years',
+  },
 ];
 
 // --------------- Dashboard Sidebar Sections styling --------------
@@ -359,6 +362,11 @@ subjectCountByFileAssociation {
 subjectCountByTissueComposition{
     group
     subjects
+}
+filterSubjectCountByAge{
+  lowerBound
+  upperBound
+  subjects
 }
 subjectCountByTissueType{
     group
