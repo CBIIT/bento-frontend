@@ -42,6 +42,7 @@ import FacetModal from './CasesModal';
 import styles from './styles/FacetFiltersStyles';
 
 const size = '10px';
+const resetIconSliderSize = '12px';
 if (resetIconFilter.src === '') {
   resetIconFilter.src = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg';
 }
@@ -75,8 +76,9 @@ const FacetPanel = ({ classes }) => {
     return `${value}`;
   }
   const handleChangeSlider = (index, value) => {
-    sliderValue[index] = value;
-    setSliderValue(sliderValue);
+    const valueList = [...sliderValue];
+    valueList[index] = value;
+    setSliderValue(valueList);
   };
   const handleChangeCommittedSlider = (sideBarItem, value) => {
     toggleSlider(value, sideBarItem);
@@ -187,15 +189,23 @@ const FacetPanel = ({ classes }) => {
     }]));
   };
 
-  const handleGroupReset = (dataField, groupName) => () => {
+  const handleGroupReset = (sideBarItem, sideBarIndex) => () => {
+    const dataField = sideBarItem.datafield;
+    const { groupName } = sideBarItem;
     setSideBarToLoading();
     setDashboardTableLoading();
     // dispatch toggleCheckBox action
     dispatch(resetGroupSelections({ dataField, groupName }));
+    if (sideBarItem.slider === true) {
+      handleChangeSlider(sideBarIndex, [
+        sideBarItem.checkboxItems.lowerBound,
+        sideBarItem.checkboxItems.upperBound,
+      ]);
+    }
   };
   // slice 16
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
-    .slice(0, 17);
+    .slice(0, 16);
 
   const arrangeBySections = (arr) => {
     const sideBar = {};
@@ -219,22 +229,72 @@ const FacetPanel = ({ classes }) => {
       : facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne : '' : defaultFacetSectionVariables.checkBoxColorsOne;
   }
 
-  const showSelectedChecbox = (sideBarItem, currentSection) => {
-    const selectedItems = sideBarItem.checkboxItems.filter((item) => (item.isChecked));
-    const selectedCheckbox = selectedItems.slice(0, showCheckboxCount)
-      .map((item, index) => (
-        <CheckBoxView
-          checkboxItem={item}
-          sideBarItem={sideBarItem}
-          currentSection={currentSection}
-          handleToggle={handleToggle}
-          facetSectionVariables={facetSectionVariables}
-          defaultFacetSectionVariables={defaultFacetSectionVariables}
-          backgroundColor={getCheckBoxColor(index, currentSection)}
-          checkColor={getGroupNameColor(sideBarItem, currentSection)}
-        />
-      ));
-
+  const showSelectedChecbox = (sideBarItem, currentSection, sideBarIndex) => {
+    const selectedItems = sideBarItem.slider !== true
+      ? sideBarItem.checkboxItems.filter((item) => (item.isChecked)) : [];
+    let selectedCheckbox = '';
+    if (sideBarItem.slider !== true) {
+      selectedCheckbox = selectedItems.slice(0, showCheckboxCount)
+        .map((item, index) => (
+          <CheckBoxView
+            checkboxItem={item}
+            sideBarItem={sideBarItem}
+            currentSection={currentSection}
+            handleToggle={handleToggle}
+            facetSectionVariables={facetSectionVariables}
+            defaultFacetSectionVariables={defaultFacetSectionVariables}
+            backgroundColor={getCheckBoxColor(index, currentSection)}
+            checkColor={getGroupNameColor(sideBarItem, currentSection)}
+          />
+        ));
+    } else {
+      selectedCheckbox = typeof sliderValue[sideBarIndex] !== 'undefined'
+        ? (sliderValue[sideBarIndex][0]
+        > sideBarItem.checkboxItems.lowerBound
+        || sliderValue[sideBarIndex][1]
+        < sideBarItem.checkboxItems.upperBound)
+        && (
+          <div>
+            <ListItem
+              width={1}
+              button
+              className={classes.nested}
+              style={{
+                backgroundColor: getCheckBoxColor(0, currentSection),
+                justifyContent: 'end',
+              }}
+              classes={{
+                selected: classes.selected,
+                gutters: classes.listItemGutters,
+              }}
+            >
+              <div className={classes.sliderListItem}>
+                <span className={classes.sliderText}>
+                  {sideBarItem.quantifier}
+                </span>
+                <span className={classes.sliderText}>
+                  {sliderValue[sideBarIndex][1]}
+                  &nbsp;
+                </span>
+                <span className={classes.sliderText}>
+                  -
+                </span>
+                <span className={classes.sliderText}>
+                  {sliderValue[sideBarIndex][0]}
+                </span>
+              </div>
+            </ListItem>
+            <Divider
+              style={{
+                backgroundColor: '#FFFFFF',
+                height: '2px',
+              }}
+            />
+          </div>
+        ) : (
+          <span />
+        );
+    }
     return (
       <div>
         {selectedCheckbox}
@@ -365,6 +425,26 @@ const FacetPanel = ({ classes }) => {
                           className={classes.subSectionSummaryText}
                         >
                           {sideBarItem.groupName}
+                          {sideBarItem.slider === true
+                            && (
+                              <span
+                                className={classes.sortGroupSlider}
+                              >
+                                <Icon
+                                  onClick={handleGroupReset(
+                                    sideBarItem,
+                                    sideBarIndex,
+                                  )}
+                                >
+                                  <img
+                                    src={resetIconFilter.src}
+                                    height={resetIconSliderSize}
+                                    width={resetIconSliderSize}
+                                    alt={resetIconFilter.alt}
+                                  />
+                                </Icon>
+                              </span>
+                            )}
                         </div>
 
                       </CustomExpansionPanelSummary>
@@ -383,7 +463,8 @@ const FacetPanel = ({ classes }) => {
                                 >
                                   <Icon
                                     onClick={handleGroupReset(
-                                      sideBarItem.datafield, sideBarItem.groupName,
+                                      sideBarItem,
+                                      sideBarIndex,
                                     )}
                                     style={{ fontSize: 15 }}
                                   >
@@ -439,6 +520,11 @@ const FacetPanel = ({ classes }) => {
                                 <div>
                                   <div className={classes.sliderRoot}>
                                     <Slider
+                                      value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex]
+                                        : [
+                                          sideBarItem.checkboxItems.lowerBound,
+                                          sideBarItem.checkboxItems.upperBound,
+                                        ]}
                                       defaultValue={[
                                         sideBarItem.checkboxItems.lowerBound,
                                         sideBarItem.checkboxItems.upperBound,
@@ -481,30 +567,43 @@ const FacetPanel = ({ classes }) => {
                                       || sliderValue[sideBarIndex][1]
                                       < sideBarItem.checkboxItems.upperBound)
                                       && (
-                                        <ListItem
-                                          width={1}
-                                          className={classes.nested}
-                                          style={{
-                                            backgroundColor: getCheckBoxColor(0, currentSection),
-                                            justifyContent: 'end',
-                                          }}
-                                          classes={{
-                                            selected: classes.selected,
-                                            gutters: classes.listItemGutters,
-                                          }}
-                                        >
-                                          <span className={classes.sliderText}>
-                                            {sliderValue[sideBarIndex][0]}
-                                          </span>
-                                          -
-                                          <span className={classes.sliderText}>
-                                            {sliderValue[sideBarIndex][1]}
-                                          </span>
-                                          &nbsp;
-                                          <span className={classes.sliderText}>
-                                            {sideBarItem.quantifier}
-                                          </span>
-                                        </ListItem>
+                                        <div>
+                                          <ListItem
+                                            width={1}
+                                            button
+                                            className={classes.nested}
+                                            style={{
+                                              backgroundColor: getCheckBoxColor(0, currentSection),
+                                              justifyContent: 'end',
+                                            }}
+                                            classes={{
+                                              selected: classes.selected,
+                                              gutters: classes.listItemGutters,
+                                            }}
+                                          >
+                                            <div className={classes.sliderListItem}>
+                                              <span className={classes.sliderText}>
+                                                {sideBarItem.quantifier}
+                                              </span>
+                                              <span className={classes.sliderText}>
+                                                {sliderValue[sideBarIndex][1]}
+                                                &nbsp;
+                                              </span>
+                                              <span className={classes.sliderText}>
+                                                -
+                                              </span>
+                                              <span className={classes.sliderText}>
+                                                {sliderValue[sideBarIndex][0]}
+                                              </span>
+                                            </div>
+                                          </ListItem>
+                                          <Divider
+                                            style={{
+                                              backgroundColor: '#FFFFFF',
+                                              height: '2px',
+                                            }}
+                                          />
+                                        </div>
                                       ) : (
                                         <span />
                                       )}
@@ -517,8 +616,8 @@ const FacetPanel = ({ classes }) => {
                     </ExpansionPanel>
                     <div className={classes.selectedCheckboxDisplay}>
                       { !groupsExpanded.includes(sideBarItem.groupName)
-                        && sideBarItem.slider !== true
-                        && showSelectedChecbox(sideBarItem, currentSection)}
+                        // && sideBarItem.slider !== true
+                        && showSelectedChecbox(sideBarItem, currentSection, sideBarIndex)}
                     </div>
                   </>
                 ))}

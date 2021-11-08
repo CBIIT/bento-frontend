@@ -155,11 +155,18 @@ const styles = () => ({
   },
   sliderText: {
     marginTop: '1.5px',
-    color: '#000000',
+    color: '#10a075',
     lineHeight: '120%',
     fontFamily: 'Nunito',
     fontSize: '14px',
     float: 'right',
+  },
+  sliderListItem: {
+    marginRight: '12px',
+  },
+  sortGroupSlider: {
+    cursor: 'pointer',
+    marginLeft: '148px',
   },
 });
 
