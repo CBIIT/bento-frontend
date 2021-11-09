@@ -164,9 +164,6 @@ const styles = () => ({
   sliderListItem: {
     marginRight: '12px',
   },
-  sortGroupSlider: {
-    cursor: 'pointer',
-  },
 });
 
 export default styles;

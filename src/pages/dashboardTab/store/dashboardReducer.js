@@ -1,8 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import _ from 'lodash';
 import {
-  // customCheckBox,
-  // _objectSpread,
   customSort,
   getFilters,
   filterData,
@@ -788,7 +786,7 @@ so it contains more information and easy for front-end to show it correctly.
  * @return {json}
  */
 
-function customCheckBox1(data, facetSearchData1) {
+function customCheckBox(data, facetSearchData1) {
   const caseCountField = 'subjects';
   return (
     facetSearchData1.map((mapping) => ({
@@ -1029,7 +1027,7 @@ const reducers = {
     };
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
-    const checkboxData = customCheckBox1(item.data.searchSubjects, facetSearchData);
+    const checkboxData = customCheckBox(item.data.searchSubjects, facetSearchData);
     fetchDataForDashboardTab(tabIndex[0].title, allFilters());
     return item.data
       ? {
@@ -1070,7 +1068,7 @@ const reducers = {
       } : { ...state };
   },
   CLEAR_ALL: (state, item) => {
-    const checkboxData = customCheckBox1(item.data.searchSubjects, facetSearchData);
+    const checkboxData = customCheckBox(item.data.searchSubjects, facetSearchData);
     fetchDataForDashboardTab(tabIndex[0].title, allFilters());
     return item.data
       ? {
