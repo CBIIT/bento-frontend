@@ -166,7 +166,6 @@ const styles = () => ({
   },
   sortGroupSlider: {
     cursor: 'pointer',
-    marginLeft: '148px',
   },
 });
 

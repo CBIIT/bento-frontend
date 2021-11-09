@@ -42,7 +42,6 @@ import FacetModal from './CasesModal';
 import styles from './styles/FacetFiltersStyles';
 
 const size = '10px';
-const resetIconSliderSize = '12px';
 if (resetIconFilter.src === '') {
   resetIconFilter.src = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg';
 }
@@ -120,7 +119,7 @@ const FacetPanel = ({ classes }) => {
       ? state.dashboardTab.sortByList : {}));
 
   let groupNameColor = '';
-  function getGroupNameColor(sideBarItem, currentSection) {
+  function getGroupNameColor(sideBarItem, currentSection, sideBarIndex) {
     groupNameColor = 'black';
     if (sideBarItem.slider !== true) {
       sideBarItem.checkboxItems.map(
@@ -131,6 +130,12 @@ const FacetPanel = ({ classes }) => {
           return '';
         },
       );
+    }
+    if (typeof sliderValue[sideBarIndex] !== 'undefined') {
+      if (sliderValue[sideBarIndex][0] > sideBarItem.checkboxItems.lowerBound
+        || sliderValue[sideBarIndex][1] < sideBarItem.checkboxItems.upperBound) {
+        groupNameColor = facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].color ? facetSectionVariables[currentSection.sectionName].color : '' : defaultFacetSectionVariables.color;
+      }
     }
     return groupNameColor;
   }
@@ -244,7 +249,7 @@ const FacetPanel = ({ classes }) => {
             facetSectionVariables={facetSectionVariables}
             defaultFacetSectionVariables={defaultFacetSectionVariables}
             backgroundColor={getCheckBoxColor(index, currentSection)}
-            checkColor={getGroupNameColor(sideBarItem, currentSection)}
+            checkColor={getGroupNameColor(sideBarItem, currentSection, sideBarIndex)}
           />
         ));
     } else {
@@ -421,30 +426,16 @@ const FacetPanel = ({ classes }) => {
                         {/* <ListItemText primary={sideBarItem.groupName} /> */}
                         <div
                           id={sideBarItem.groupName}
-                          style={{ color: getGroupNameColor(sideBarItem, currentSection) }}
+                          style={{
+                            color: getGroupNameColor(
+                              sideBarItem,
+                              currentSection,
+                              sideBarIndex,
+                            ),
+                          }}
                           className={classes.subSectionSummaryText}
                         >
                           {sideBarItem.groupName}
-                          {sideBarItem.slider === true
-                            && (
-                              <span
-                                className={classes.sortGroupSlider}
-                              >
-                                <Icon
-                                  onClick={handleGroupReset(
-                                    sideBarItem,
-                                    sideBarIndex,
-                                  )}
-                                >
-                                  <img
-                                    src={resetIconFilter.src}
-                                    height={resetIconSliderSize}
-                                    width={resetIconSliderSize}
-                                    alt={resetIconFilter.alt}
-                                  />
-                                </Icon>
-                              </span>
-                            )}
                         </div>
 
                       </CustomExpansionPanelSummary>
@@ -496,6 +487,33 @@ const FacetPanel = ({ classes }) => {
                                 </span>
                               </div>
                             )}
+                          {sideBarItem.slider === true
+                            && (
+                              <div
+                                className={
+                                  classes.sortGroup
+                                }
+                              >
+                                <span
+                                  className={classes.sortGroupIcon}
+                                >
+                                  <Icon
+                                    onClick={handleGroupReset(
+                                      sideBarItem,
+                                      sideBarIndex,
+                                    )}
+                                    style={{ fontSize: 15 }}
+                                  >
+                                    <img
+                                      src={resetIconFilter.src}
+                                      height={size}
+                                      width={size}
+                                      alt={resetIconFilter.alt}
+                                    />
+                                  </Icon>
+                                </span>
+                              </div>
+                            )}
                           {
                             sideBarItem.slider !== true ? (
                               sideBarItem.checkboxItems.map(
@@ -509,7 +527,11 @@ const FacetPanel = ({ classes }) => {
                                     facetSectionVariables={facetSectionVariables}
                                     defaultFacetSectionVariables={defaultFacetSectionVariables}
                                     backgroundColor={getCheckBoxColor(index, currentSection)}
-                                    checkColor={getGroupNameColor(sideBarItem, currentSection)}
+                                    checkColor={getGroupNameColor(
+                                      sideBarItem,
+                                      currentSection,
+                                      sideBarIndex,
+                                    )}
                                     lineColor={getLineColor(
                                       index,
                                       sideBarItem.checkboxItems.length,
