@@ -58,11 +58,6 @@ function searchComponent() {
             variant="filled"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && e.target.value) {
-                //   setValue([{
-                //     type: "subject_ids",
-                //     title: e.target.value
-                // }]);
-                // setSendToSearchPage(true);
                 onChange([e.target.value]);
               }
             }}
