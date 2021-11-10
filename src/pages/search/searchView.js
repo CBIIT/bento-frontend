@@ -44,7 +44,6 @@ function searchComponent({ classes, searchparam = '' }) {
             freeSolo
             id="search"
             onChange={(event, newValue) => onChange(newValue)}
-            multiple
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
               getAutoCompleteRes(newInputValue);
