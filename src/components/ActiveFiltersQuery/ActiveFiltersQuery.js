@@ -13,8 +13,9 @@ const ActiveFiltersQuery = ({ classes }) => {
 
   // activeFilters helps filtering only active Filters
   const activeFilters = [];
-
-  // Loop all filters to find active ones only
+  // Loop all filters except range filter to find active ones only
+  const rangeData = allFiltersinfo.data.filter((sideBar) => sideBar.slider === true);
+  allFiltersinfo.data = allFiltersinfo.data.filter((sideBar) => sideBar.slider !== true);
   allFiltersinfo.data.map((currentFilter) => {
     // currentFilterCheckboxItems contains checkbox items for currentFilter
     const currentFilterCheckboxItems = currentFilter.checkboxItems;
@@ -24,7 +25,9 @@ const ActiveFiltersQuery = ({ classes }) => {
       // check if this checkBox is selected
       if (checkBox.isChecked === true) {
         // findIndex if the filter is already tracked by activeFilters
-        const findIndex = activeFilters.findIndex((x) => x.filterName === currentFilter.groupName);
+        const findIndex = activeFilters.findIndex(
+          (x) => x.filterName === currentFilter.groupName,
+        );
         if ((activeFilters.findIndex((x) => x.filterName === currentFilter.groupName) !== -1)) {
           activeFilters[findIndex].checkbox.push(checkBox.name);
         } else {
@@ -35,9 +38,9 @@ const ActiveFiltersQuery = ({ classes }) => {
         }
       }
     });
-
     return '';
   });
+  allFiltersinfo.data = allFiltersinfo.data.concat(rangeData);
 
   return (
     <div>
