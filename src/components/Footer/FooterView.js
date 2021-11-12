@@ -12,9 +12,12 @@ const ICDCFooter = () => {
     const getSystems = async () => {
       const response = await fetch(
         `${FILE_SERVICE_API}version`,
-      );
-      const data = await response.json();
-      setFooterUpdatedData({ ...FooterData, ...{ FileServiceVersion: data.version } });
+      ).then((resp) => (resp)).catch((error) => {
+        console.log(error);
+        return { version: '' };
+      });
+      const data = response.json();
+      setFooterUpdatedData({ ...FooterData, ...{ FileServiceVersion: data.version || '' } });
     };
     getSystems();
   }, [FooterData]);
