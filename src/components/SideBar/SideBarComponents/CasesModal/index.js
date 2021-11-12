@@ -66,6 +66,8 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
     closeModal();
   };
 
+  const handleChange = ({ target: { value } }) => setFileContent(value);
+
   const handleFileUpload = (content) => {
     setFileContent(content);
   };
@@ -96,6 +98,7 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
             maxRows={6}
             value={fileContent}
             name="caseDescription"
+            onChange={handleChange}
             placeholder="eg. TGCA blah blah blah...."
           />
           <div className={classes.uploadFile}>
