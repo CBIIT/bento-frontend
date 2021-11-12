@@ -130,6 +130,7 @@ const styles = () => ({
     },
   },
   sliderRoot: {
+    marginTop: '10px',
     marginLeft: '20px',
     marginRight: 'Auto',
     width: '80%',
@@ -141,6 +142,7 @@ const styles = () => ({
     float: 'right',
     marginLeft: 'Auto',
     marginRight: 'Auto',
+    marginBottom: '15px',
   },
   lowerBound: {
     fontFamily: 'Nunito',
@@ -149,6 +151,7 @@ const styles = () => ({
     float: 'left',
     marginLeft: 'Auto',
     marginRight: 'Auto',
+    marginBottom: '15px',
   },
   listItemGutters: {
     padding: '5px 0px 5px 0px',
