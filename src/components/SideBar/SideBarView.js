@@ -28,7 +28,9 @@ const SideBarContent = ({
 
   const clearFilters = () => {
     clearAllFilters();
-    searchRef.current.clear();
+    if (typeof searchRef.current !== 'undefined') {
+      searchRef.current.clear();
+    }
   };
 
   const countFilters = facetSearchData
