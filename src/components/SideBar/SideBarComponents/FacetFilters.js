@@ -574,12 +574,10 @@ const FacetPanel = ({ classes }) => {
                                       // color="#10A075"
                                     />
                                     <span className={classes.lowerBound}>
-                                      &#8804;
                                       {sideBarItem.checkboxItems.lowerBound}
                                     </span>
                                     <span className={classes.upperBound}>
                                       {sideBarItem.checkboxItems.upperBound}
-                                      &#8804;
                                     </span>
                                   </div>
                                   <div>
