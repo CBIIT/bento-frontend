@@ -6,8 +6,8 @@ const StatsView = ({ data }) => (
   <>
     <StatsBar
       data={data}
-      globalStatsData={globalStatsData}
       statsStyling={statsStyling}
+      globalStatsData={globalStatsData}
     />
   </>
 );

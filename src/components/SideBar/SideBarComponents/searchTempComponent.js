@@ -7,7 +7,14 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import CloseIcon from '@material-ui/icons/Close';
-import { getAllIds, localSearch, setSideBarToLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
+import {
+  getAllIds,
+  findCases,
+  localSearch,
+  setSideBarToLoading,
+  // fetchDashboardTab,
+  setCaseSelected,
+} from '../../../pages/dashboardTab/store/dashboard-temp-reducer';
 import {
   search,
   defaultSearch,
@@ -39,7 +46,6 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
     && state.dashboardTab.isDashboardTableLoading
     ? state.dashboardTab.isDashboardTableLoading
     : false));
-  // redux use actions
 
   React.useImperativeHandle(ref, () => ({
     clear() {
@@ -74,11 +80,22 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
   }, [open]);
 
   function onChange(newValue = []) {
-    // make the value unique to avoid duplicate search result
     const newValueUnique = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
     setSideBarToLoading();
     setValue(newValueUnique);
-    localSearch(newValueUnique);
+    if (type === 'subjectIds' && !!newValueUnique.length) {
+      setCaseSelected(true);
+      findCases(newValueUnique);
+      return;
+    }
+    setCaseSelected(false);
+    // else {
+    //   localSearch();
+    // }
+    // if (!newValueUnique.length) {
+    //   setCaseSelected(false);
+    //   fetchDashboardTab();
+    // }
   }
 
   const onDelete = (title) => () => {
@@ -111,7 +128,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="Search"
+                placeholder="Find"
                 variant="outlined"
                 size="small"
                 InputProps={{

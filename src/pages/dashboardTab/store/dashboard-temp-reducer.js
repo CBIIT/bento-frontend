@@ -13,37 +13,35 @@ import {
   getSunburstDataFromDashboardData,
   transformAPIDataIntoCheckBoxData,
 } from 'bento-components';
+import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
+import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
 
 import store from '../../../store';
-import * as actionsTypes from './types';
 import client from '../../../utils/graphqlClient';
-import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
-import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
-
 import {
   tabContainers,
-  FILTER_QUERY,
   DASHBOARD_QUERY,
-  GET_FILES_NAME_QUERY,
+  // FILTER_QUERY,
   GET_FILES_OVERVIEW_QUERY,
-  GET_CASES_OVERVIEW_QUERY,
   GET_SAMPLES_OVERVIEW_QUERY,
+  GET_CASES_OVERVIEW_QUERY,
   GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
-  GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
+  GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
+  GET_FILES_NAME_QUERY,
   GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
-  GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
   GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
+  GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
   // GET_FILE_IDS_FROM_FILE_NAME,
   tabIndex,
 } from '../../../bento/dashboardTabData';
 import {
   // GET_ALL_IDS,
-  GET_IDS_BY_TYPE,
   widgetsSearchData,
+  GET_IDS_BY_TYPE,
   CASES_FILE_QUERY,
   CASES_SAMPLE_QUERY,
-  GET_SEARCH_NODECOUNTS,
+  // GET_SEARCH_NODECOUNTS,
   SUBJECT_OVERVIEW_QUERY,
   GET_SEARCH_NODES_BY_FACET,
 } from '../../../bento/localSearchData';
@@ -52,36 +50,6 @@ const storeKey = 'dashboardTab';
 
 const initialState = {
   dashboardTab: {
-    /*
-      New Of Implementing the states
-    */
-    subjectQueryVars: {
-      filters: [],
-      currentTab: null,
-      searchCriteria: [],
-    },
-    caseQueryVars: {
-      filters: [],
-      currentTab: null,
-      searchCriteria: [],
-    },
-    fileQueryVars: {
-      filters: [],
-      currentTab: null,
-      searchCriteria: [],
-    },
-    sampleQueryVars: {
-      filters: [],
-      currentTab: null,
-      searchCriteria: [],
-    },
-    caseResults: {},
-    fileResults: {},
-    sampleResults: {},
-    subjectResults: {},
-    /*
-      New Of Implementing the states
-    */
     isDataTableUptoDate: false,
     isFetched: false,
     isLoading: false,
@@ -90,10 +58,16 @@ const initialState = {
     error: '',
     hasError: false,
     stats: {},
-    searchCriteria: null,
+    rawApiData: null,
     allActiveFilters: {},
+    searchItems: {
+      fileIds: [],
+      sampleIds: [],
+      subjectIds: [],
+    },
     currentActiveTab: tabIndex[0].title,
     filteredSubjectIds: null,
+    isCaseSelected: false,
     checkboxForAll: {
       data: [],
     },
@@ -106,8 +80,8 @@ const initialState = {
     },
     datatable: {
       dataCase: 'undefined',
-      dataSample: 'undefined',
       dataFile: 'undefined',
+      dataSample: 'undefined',
     },
     dataCaseSelected: {
       selectedRowInfo: [],
@@ -144,6 +118,9 @@ function getStatInit(input, statCountVariables) {
   ), {});
   return initStats;
 }
+
+export const setActiveTabInReducer = (tab) => store.dispatch({ type: 'SET_ACTIVE_TAB', payload: tab });
+
 /**
  * Returns the filtered stats from inputAPT data.
  * @param {object} data
@@ -176,7 +153,6 @@ function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
     const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});
-
   return donut;
 }
 
@@ -201,12 +177,21 @@ function allFilters() {
  * @return {json}r
  */
 
-function getSearchWidgetsData(data, widgetsInfoFromCustConfig) {
+const getSearchWidgetsData = (data, widgetsInfoFromCustConfig) => {
+  const tempData = {
+    armsByProgramsFromLists: data.armsByPrograms,
+    subjectCountByDiagnosesFromLists: data.subjectCountByDiagnoses,
+    subjectCountByTumorSizeFromLists: data.subjectCountByTumorSize,
+    subjectCountByRecurrenceScoreFromLists: data.subjectCountByRecurrenceScore,
+    subjectCountByEndocrineTherapyFromLists: data.subjectCountByEndocrineTherapy,
+    subjectCountByChemotherapyRegimenFromLists: data.subjectCountByChemotherapyRegimen,
+  };
   const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : removeEmptySubjectsFromDonutData(data[widget.dataName]);
+    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(tempData[widget.dataName]) : removeEmptySubjectsFromDonutData(tempData[widget.dataName]);
     const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});
+
   const replacements = widgetsSearchData.reduce(
     (acc, widget) => ({ ...acc, ...{ [widget.dataName]: widget.mapWithDashboardWidget } }),
     {},
@@ -218,9 +203,9 @@ function getSearchWidgetsData(data, widgetsInfoFromCustConfig) {
   });
   const newTab = replacedItems.reduce((a, b) => ({ ...a, ...b }));
   return newTab;
-}
+};
 
-function fetchDashboardTab() {
+export function fetchDashboardTab() {
   return () => {
     store.dispatch({ type: 'REQUEST_DASHBOARDTAB' });
     return client
@@ -228,10 +213,14 @@ function fetchDashboardTab() {
         query: DASHBOARD_QUERY,
         variables: allFilters(),
       })
-      .then((result) => store.dispatch({ type: 'RECEIVE_DASHBOARDTAB', payload: _.cloneDeep(result) }))
-      .catch((error) => store.dispatch(
-        { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      ));
+      .then((result) => store.dispatch({
+        type: 'RECEIVE_DASHBOARDTAB',
+        payload: _.cloneDeep(result),
+      }))
+      .catch((error) => store.dispatch({
+        error,
+        type: 'DASHBOARDTAB_QUERY_ERR',
+      }));
   };
 }
 
@@ -246,7 +235,7 @@ function fetchDashboardTabForClearAll() {
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
 }
-
+// eslint-disable-next-line
 export async function getAllIds(type) {
   const allids = await client
     .query({
@@ -316,7 +305,11 @@ export function clearSectionSort(groupName) {
 export function clearAllFilters() {
   store.dispatch(fetchDashboardTabForClearAll());
 }
-// eslint-disable-next-line
+
+/**
+ * Local Search API CALL
+ * @param {*} searchcriteria
+ */
 const getCaseData = async () => {
   const { allActiveFilters, searchItems } = store.getState().dashboardTab;
   const result = await client.query({
@@ -342,10 +335,9 @@ const getCaseData = async () => {
   };
   return result;
 };
-// eslint-disable-next-line
+
 const getSubjectDetails = async () => {
   const { allActiveFilters, searchItems } = store.getState().dashboardTab;
-
   const result = await client.query({
     query: SUBJECT_OVERVIEW_QUERY,
     variables: {
@@ -360,7 +352,7 @@ const getSubjectDetails = async () => {
   });
   return result;
 };
-// eslint-disable-next-line
+
 const getFilesDetails = async () => {
   const { allActiveFilters, searchItems } = store.getState().dashboardTab;
   const result = await client.query({
@@ -377,8 +369,8 @@ const getFilesDetails = async () => {
   });
   return result;
 };
-// eslint-disable-next-line
-const getSampleDetails = async () => {
+
+const getSmapleDetails = async () => {
   const { allActiveFilters, searchItems } = store.getState().dashboardTab;
   const result = await client.query({
     query: CASES_SAMPLE_QUERY,
@@ -400,6 +392,50 @@ const getSampleDetails = async () => {
  * @return distpatcher
  */
 
+const findCasesSearch = async () => {
+  const [result, result2, result3, result4] = await Promise.all([
+    getCaseData(),
+    getSubjectDetails(),
+    getFilesDetails(),
+    getSmapleDetails(),
+  ]);
+  console.log('DEBUG_caseData', result);
+  store.dispatch({
+    type: 'LOCAL_FIND',
+    payload: {
+      result,
+      subjectOverView: result2.data.subjectOverview,
+    },
+  });
+  store.dispatch({
+    type: 'UPDATE_CURRRENT_TAB_DATA_SUBJECT',
+    payload: {
+      Files: result3.data.fileOverview,
+      Cases: result2.data.subjectOverview,
+      Samples: result4.data.sampleOverview,
+    },
+  });
+};
+
+export const findCases = async (searchcriteria) => {
+  if (searchcriteria.length === 0) {
+    clearAllFilters();
+  } else {
+    const searchItems = searchcriteria.reduce((acc, curr) => {
+      if (!acc[curr.type]) acc[curr.type] = [];
+      acc[curr.type].push(curr.title);
+      return acc;
+    }, {});
+    console.log('DEBUG_searchItems_action', searchItems);
+    store.dispatch({ type: 'SET_SEARCH_CRITERIA', payload: searchItems });
+    // if (searchItems.length > 0) {
+    // } else {
+    //   store.dispatch({ type: 'SET_SEARCH_CRITERIA', payload: searchItems });
+    // }
+    await findCasesSearch();
+  }
+};
+
 export function localSearch(searchcriteria) {
   if (searchcriteria.length === 0) {
     clearAllFilters();
@@ -410,7 +446,8 @@ export function localSearch(searchcriteria) {
       return acc;
     }, {});
     client.query({
-      query: GET_SEARCH_NODECOUNTS,
+      query: GET_SEARCH_NODES_BY_FACET,
+      // query: GET_SEARCH_NODECOUNTS,
       variables: {
         subject_ids: searchItems.subjectIds,
         sample_ids: searchItems.sampleIds,
@@ -418,7 +455,33 @@ export function localSearch(searchcriteria) {
         file_names: searchItems.fileNames,
       },
     })
-      .then((result) => store.dispatch({ type: 'LOCAL_SEARCH', payload: { result } }));
+      .then((result) => {
+        let { data } = result;
+        data = {
+          ...data.searchSubjects,
+          nodeCountsFromLists: {
+            numberOfFiles: result.data.searchSubjects.numberOfFiles,
+            numberOfLabProcedures: result.data.searchSubjects.numberOfLabProcedures,
+            numberOfPrograms: result.data.searchSubjects.numberOfPrograms,
+            numberOfSamples: result.data.searchSubjects.numberOfSamples,
+            numberOfStudies: result.data.searchSubjects.numberOfStudies,
+            numberOfSubjects: result.data.searchSubjects.numberOfSubjects,
+          },
+        };
+
+        // data = {
+        //   ...data,
+        //   nodeCountsFromLists: {
+        //     numberOfFiles: result.numberOfFiles,
+        //     numberOfLabProcedures: result.numberOfLabProcedures,
+        //     numberOfPrograms: result.numberOfPrograms,
+        //     numberOfSamples: result.numberOfSamples,
+        //     numberOfStudies: result.numberOfStudies,
+        //     numberOfSubjects: result.numberOfSubjects,
+        //   },
+        // };
+        store.dispatch({ type: 'LOCAL_FIND', payload: { result: { ...result, data } } });
+      });
   }
 }
 
@@ -428,27 +491,45 @@ export function localSearch(searchcriteria) {
  * @param {obj} currentAllFilterVariables gets the current active filters
  * @return distpatcher
  */
-function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
+// eslint-disable-next-line
+async function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
+  console.log('DEBUG_toggleCheckBoxWithAPIAction', payload, currentAllFilterVariables);
+  await findCasesSearch();
+  store.dispatch({
+    type: 'TOGGGLE_CHECKBOX_WITH_API',
+    payload: {
+      filter: payload,
+      allFilters: currentAllFilterVariables,
+      // groups: _.cloneDeep(result),
+      // ..._.cloneDeep(result),
+    },
+  });
+  // store.dispatch({  });
+  // return;
+  /*
   return client
     .query({ // request to get the filtered subjects
       query: FILTER_QUERY,
       variables: { ...currentAllFilterVariables, first: 100 },
     })
-    .then((result) => store.dispatch({
-      type: 'TOGGGLE_CHECKBOX_WITH_API',
-      payload: {
-        filter: payload,
-        allFilters: currentAllFilterVariables,
-        groups: _.cloneDeep(result),
-        ..._.cloneDeep(result),
-      },
-    }))
+    .then((result) => {
+      store.dispatch({
+        type: 'TOGGGLE_CHECKBOX_WITH_API',
+        payload: {
+          filter: payload,
+          allFilters: currentAllFilterVariables,
+          groups: _.cloneDeep(result),
+          ..._.cloneDeep(result),
+        },
+      });
+    })
     .then(() => store.dispatch({
       type: 'SORT_ALL_GROUP_CHECKBOX',
     }))
     .catch((error) => store.dispatch(
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
+  */
 }
 
 /**
@@ -458,6 +539,7 @@ function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
  * @return distpatcher
  */
 export function resetGroupSelections(payload) {
+  console.log('DEBUG_toggleCheckBoxWithAPIAction');
   return () => {
     const { dataField, groupName } = payload;
     const currentAllFilterVariables = clearGroup(dataField);
@@ -511,37 +593,36 @@ const getQueryAndDefaultSort = (payload = tabIndex[0].title) => {
  * @return {json}
  */
 
-export function fetchDataForDashboardTab(
-  payload, filters = null,
+export async function fetchDataForDashboardTab(
+  payload,
+  filters = null,
 ) {
-  console.log('DEBUG_fetchDataForDashboardTab_payload', payload);
-  console.log('DEBUG_fetchDataForDashboardTab_filters', filters);
-  const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
-  const activeFilters = filters === null
-    ? (getState().allActiveFilters !== {} ? getState().allActiveFilters : allFilters()) : filters;
-  return client
-    .query({
+  try {
+    // console.log(store.getState());
+    const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
+    const activeFilters = filters === null
+      ? (getState().allActiveFilters !== {} ? getState().allActiveFilters : allFilters()) : filters;
+
+    const result = await client.query({
       query: QUERY,
       variables: {
-        ...activeFilters,
-        order_by: sortfield || '',
-        sort_direction: sortDirection || 'asc',
+        ...activeFilters, order_by: sortfield || '', sort_direction: sortDirection || 'asc',
       },
-    })
-    .then((result) => {
-      console.log('DEBUG_fetchDataForDashboRDTAB_RESULT', result);
-      store.dispatch({
-        type: 'UPDATE_CURRRENT_TAB_DATA',
-        payload: {
-          currentTab: payload,
-          sortDirection,
-          ..._.cloneDeep(result),
-        },
-      });
-    })
-    .catch((error) => store.dispatch(
-      { type: 'DASHBOARDTAB_QUERY_ERR', error },
-    ));
+    });
+    store.dispatch({
+      type: 'UPDATE_CURRRENT_TAB_DATA',
+      payload: {
+        currentTab: payload,
+        sortDirection,
+        ..._.cloneDeep(result),
+      },
+    });
+  } catch (err) {
+    store.dispatch({
+      err,
+      type: 'DASHBOARDTAB_QUERY_ERR',
+    });
+  }
 }
 
 function transformCasesFileIdsToFiles(data) {
@@ -838,7 +919,6 @@ export async function singleCheckBox(payload) {
  */
 export function toggleCheckBox(payload) {
   return () => {
-    // console.log('DEUBG_payload', payload);
     const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
     // For performance issue we are using initial dasboardquery instead of fitered for empty filters
     if (_.isEqual(currentAllFilterVariables, allFilters())) {
@@ -1008,17 +1088,28 @@ export function clearTableSelections() {
   store.dispatch({ type: 'CLEAR_TABLE_SELECTION' });
 }
 
-export const getDashboard = () => getState();
-
-export function setSearchCriteria(payload) {
-  store.dispatch({
-    type: 'SET_SEARCH_CRITERIA',
-    payload,
-  });
+export function setCaseSelected(payload) {
+  store.dispatch({ type: 'SET_CASE_SELECTION', payload });
+  if (!payload) {
+    store.dispatch(fetchDashboardTab());
+  }
 }
 
+export const getDashboard = () => getState();
+
+const getFilterKeys = (originalObj) => {
+  const filterObjKeys = Object.keys(originalObj).filter((key) => key.includes('filter')
+    || key.includes('subject')
+    || key.includes('arms')
+    || key.includes('nodeCount'));
+  const newObj = {};
+  filterObjKeys.forEach((key) => {
+    newObj[key] = originalObj[key];
+  });
+  return newObj;
+};
+
 // reducers
-// eslint-disable-next-line
 const reducers = {
   DASHBOARDTAB_QUERY_ERR: (state, item) => ({
     ...state,
@@ -1035,10 +1126,14 @@ const reducers = {
     isDashboardTableLoading: false,
   }),
   TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
+    // get all the filter objects from the raw data.
+    const filterCheckbox = getFilterKeys(state.rawApiData);
+    console.log('DEBUG_REAW_API', filterCheckbox);
     const updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
-      item.data.searchSubjects, facetSearchData,
+      filterCheckbox, facetSearchData,
     );
     const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
+    console.log('DEBUG_checkboxData1', checkboxData1);
     fetchDataForDashboardTab(state.currentActiveTab, item.allFilters);
     return {
       ...state,
@@ -1047,41 +1142,78 @@ const reducers = {
       checkbox: {
         data: checkboxData1,
       },
-      stats: getFilteredStat(item.data.searchSubjects, statsCount),
-      widgets: getWidgetsInitData(item.data.searchSubjects, widgetsData),
+      // stats: getFilteredStat(filterCheckbox, statsCount),
+      // widgets: getWidgetsInitData(filterCheckbox, widgetsData),
     };
   },
-  LOCAL_SEARCH: (state, item) => {
-    fetchDataForDashboardTab(state.currentActiveTab,
-      item.result.data.findIdsFromLists.subjectIds,
-      item.result.data.findIdsFromLists.sampleIds,
-      item.result.data.findIdsFromLists.fileIds);
-    return {
-      ...state,
-      setSideBarLoading: false,
-      filteredSubjectIds: item.result.data.findIdsFromLists.subjectIds,
-      filteredSampleIds: item.result.data.findIdsFromLists.sampleIds,
-      filteredFileIds: item.result.data.findIdsFromLists.fileIds,
-      stats: getFilteredStat(item.result.data.nodeCountsFromLists, statsCount),
-      widgets: getSearchWidgetsData(item.result.data, widgetsSearchData),
-    };
-  },
-  UPDATE_CURRRENT_TAB_DATA: (state, item) => (
-    {
-      ...state,
-      isDashboardTableLoading: false,
-      currentActiveTab: item.currentTab,
-      datatable: {
-        ...state.datatable,
-        dataCase: item.data.subjectOverview,
-        dataSample: item.data.sampleOverview,
-        dataFile: item.data.fileOverview,
-      },
+  LOCAL_FIND: (state, item) => {
+    try {
+      // fetchDataForDashboardTab(
+      //   state.currentActiveTab, // Cases
+      //   item.result.data.findIdsFromLists.subjectIds,
+      //   item.result.data.findIdsFromLists.sampleIds,
+      //   item.result.data.findIdsFromLists.fileIds,
+      // );
+      // const filterCheckbox = getFilterKeys(item.result.data);
+      // const updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
+      //   filterCheckbox, facetSearchData,
+      // );
+      const newState = {
+        ...state,
+        setSideBarLoading: false,
+        // filteredFileIds: item.result.data.findIdsFromLists.fileIds,
+        // filteredSampleIds: item.result.data.findIdsFromLists.sampleIds,
+        // filteredSubjectIds: item.result.data.findIdsFromLists.subjectIds,
+        subjectOverView: {
+          data: item.subjectOverView,
+        },
+        rawApiData: item.result.data,
+        widgets: getSearchWidgetsData(item.result.data, widgetsSearchData),
+        stats: getFilteredStat(item.result.data.nodeCountsFromLists, statsCount),
+      };
+      return newState;
+    } catch (err) {
+      return {
+        ...state,
+        isLoading: false,
+      };
     }
-  ),
-  SET_SEARCH_CRITERIA: (state, item) => ({
+  },
+  SET_SEARCH_CRITERIA: (state, items) => {
+    console.log('DEBUG_ITEMS', items);
+    console.log('DEBUG_INITIAL_STATE', state);
+    console.log('DEBUG_searchItems', state.searchItems);
+
+    const finalState = {
+      ...state,
+      searchItems: {
+        ...state.searchItems,
+        ...items,
+      },
+    };
+    console.log('DEBUG_FINAL_STATE', finalState);
+    return finalState;
+  },
+  UPDATE_CURRRENT_TAB_DATA_SUBJECT: (state, item) => ({
     ...state,
-    searchCriteria: item,
+    datatable: {
+      ...state.datatable,
+      dataCase: item.Cases,
+      dataFile: item.Files,
+      dataSample: item.Samples,
+    },
+    setSideBarLoading: false,
+  }),
+  UPDATE_CURRRENT_TAB_DATA: (state, item) => ({
+    ...state,
+    isDashboardTableLoading: false,
+    currentActiveTab: item.currentTab,
+    datatable: {
+      ...state.datatable,
+      dataFile: item.data.fileOverview,
+      dataCase: item.data.subjectOverview,
+      dataSample: item.data.sampleOverview,
+    },
   }),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   SET_SIDEBAR_LOADING: (state) => ({ ...state, setSideBarLoading: true }),
@@ -1130,12 +1262,12 @@ const reducers = {
         hasError: false,
         setSideBarLoading: false,
         error: '',
-        searchCriteria: null,
         stats: getStatInit(item.data.searchSubjects, statsCount),
         allActiveFilters: allFilters(),
         filteredSubjectIds: null,
         filteredSampleIds: null,
         filteredFileIds: null,
+        rawApiData: null,
         checkboxForAll: {
           data: checkboxData,
         },
@@ -1154,11 +1286,15 @@ const reducers = {
           selectedRowInfo: [],
           selectedRowIndex: [],
         },
+        searchItems: {
+          fileIds: [],
+          sampleIds: [],
+          subjectIds: [],
+        },
         dataFileSelected: {
           selectedRowInfo: [],
           selectedRowIndex: [],
         },
-
       } : { ...state };
   },
   CLEAR_ALL: (state, item) => {
@@ -1278,281 +1414,27 @@ const reducers = {
       selectedRowIndex: [],
     },
   }),
+  SET_ACTIVE_TAB: (state, item) => ({
+    ...state,
+    currentActiveTab: item,
+  }),
+  SET_CASE_SELECTION: (state, payload) => {
+    const tempState = state;
+    if (!payload) {
+      tempState.datatable = {
+        ...tempState.datatable,
+        dataCase: [],
+        dataFile: [],
+        dataSample: [],
+      };
+    }
+    return {
+      ...tempState,
+      isCaseSelected: payload,
+    };
+  },
 };
 
 // INJECT-REDUCERS INTO REDUX STORE
 store.injectReducer(storeKey, (state = initialState, { type, payload }) => (
   reducers[type] ? reducers[type](state, payload) : state));
-
-const dashboardReducer = (state = initialState, { type, payload }) => {
-  switch (type) {
-    case actionsTypes.DASHBOARDTAB_QUERY_ERR:
-      return {
-        ...state,
-        hasError: true,
-        error: payload,
-        isLoading: false,
-        isFetched: false,
-      };
-    case actionsTypes.READY_DASHBOARDTAB:
-      return {
-        ...state,
-        isLoading: false,
-        isFetched: true,
-        setSideBarLoading: false,
-        isDashboardTableLoading: false,
-      };
-    case actionsTypes.TOGGGLE_CHECKBOX_WITH_API: {
-      const updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
-        payload.data.searchSubjects, facetSearchData,
-      );
-      const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, payload.allFilters);
-      fetchDataForDashboardTab(state.currentActiveTab, payload.allFilters);
-      return {
-        ...state,
-        setSideBarLoading: false,
-        allActiveFilters: payload.allFilters,
-        checkbox: {
-          data: checkboxData1,
-        },
-        stats: getFilteredStat(payload.data.searchSubjects, statsCount),
-        widgets: getWidgetsInitData(payload.data.searchSubjects, widgetsData),
-      };
-    }
-    case actionsTypes.LOCAL_SEARCH: {
-      fetchDataForDashboardTab(state.currentActiveTab,
-        payload.result.data.findIdsFromLists.subjectIds,
-        payload.result.data.findIdsFromLists.sampleIds,
-        payload.result.data.findIdsFromLists.fileIds);
-      return {
-        ...state,
-        setSideBarLoading: false,
-        filteredSubjectIds: payload.result.data.findIdsFromLists.subjectIds,
-        filteredSampleIds: payload.result.data.findIdsFromLists.sampleIds,
-        filteredFileIds: payload.result.data.findIdsFromLists.fileIds,
-        stats: getFilteredStat(payload.result.data.nodeCountsFromLists, statsCount),
-        widgets: getSearchWidgetsData(payload.result.data, widgetsSearchData),
-      };
-    }
-    case actionsTypes.UPDATE_CURRRENT_TAB_DATA:
-      return {
-        ...state,
-        isDashboardTableLoading: false,
-        currentActiveTab: payload.currentTab,
-        datatable: {
-          ...state.datatable,
-          dataCase: payload.data.subjectOverview,
-          dataSample: payload.data.sampleOverview,
-          dataFile: payload.data.fileOverview,
-        },
-      };
-    case actionsTypes.SET_SEARCH_CRITERIA:
-      return {
-        ...state,
-        searchCriteria: payload,
-      };
-    case actionsTypes.REQUEST_DASHBOARDTAB:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case actionsTypes.SET_SIDEBAR_LOADING:
-      return {
-        ...state,
-        setSideBarLoading: true,
-      };
-    case actionsTypes.SET_SINGLE_FILTER:
-      return {
-        ...state,
-        allActiveFilters: payload,
-      };
-    case actionsTypes.CLEAR_ALL: {
-      const checkboxData = customCheckBox(payload.data.searchSubjects, facetSearchData);
-      fetchDataForDashboardTab(tabIndex[0].title, allFilters());
-      return payload.data
-        ? {
-          ...state.dashboard,
-          isFetched: true,
-          isLoading: false,
-          hasError: false,
-          setSideBarLoading: false,
-          error: '',
-          stats: getStatInit(payload.data.searchSubjects, statsCount),
-          allActiveFilters: allFilters(),
-          filteredSubjectIds: null,
-          filteredSampleIds: null,
-          filteredFileIds: null,
-          checkboxForAll: {
-            data: checkboxData,
-          },
-          checkbox: {
-            data: checkboxData,
-          },
-          datatable: {
-            filters: [],
-          },
-          widgets: getWidgetsInitData(payload.data.searchSubjects, widgetsData),
-          dataCaseSelected: {
-            ...state.dataCaseSelected,
-          },
-          dataSampleSelected: {
-            ...state.dataSampleSelected,
-          },
-          dataFileSelected: {
-            ...state.dataFileSelected,
-          },
-          sortByList: {
-            ...state.sortByList,
-          },
-        } : { ...state };
-    }
-    case actionsTypes.TOGGGLE_CHECKBOX: {
-      const dataTableFilters = getFilters(state.datatable.filters, payload);
-      const tableData = state.subjectOverView.data.filter((d) => (filterData(d, dataTableFilters)));
-      const updatedCheckboxData = dataTableFilters && dataTableFilters.length !== 0
-        ? getCheckBoxData(
-          state.subjectOverView.data,
-          state.checkboxForAll.data,
-          state.checkbox.data.filter((d) => payload[0].groupName === d.groupName)[0],
-          dataTableFilters,
-        )
-        : state.checkboxForAll.data;
-      return {
-        ...state,
-        isCalulatingDashboard: false,
-        stats: getStatDataFromDashboardData(tableData, statsCount),
-        checkbox: {
-          data: updatedCheckboxData,
-        },
-        datatable: {
-          ...state.datatable,
-          dataCase: tableData,
-          filters: dataTableFilters,
-        },
-        filters: dataTableFilters,
-        widgets: getWidgetsData(tableData, widgetsData),
-      };
-    }
-    case actionsTypes.RECEIVE_DASHBOARDTAB: {
-      const checkboxData = customCheckBox(payload.data.searchSubjects, facetSearchData);
-      fetchDataForDashboardTab(tabIndex[0].title, allFilters());
-      return payload.data
-        ? {
-          ...state.dashboard,
-          isFetched: true,
-          isLoading: false,
-          hasError: false,
-          setSideBarLoading: false,
-          error: '',
-          searchCriteria: null,
-          stats: getStatInit(payload.data.searchSubjects, statsCount),
-          allActiveFilters: allFilters(),
-          filteredSubjectIds: null,
-          filteredSampleIds: null,
-          filteredFileIds: null,
-          checkboxForAll: {
-            data: checkboxData,
-          },
-          checkbox: {
-            data: checkboxData,
-          },
-          datatable: {
-            filters: [],
-          },
-          widgets: getWidgetsInitData(payload.data.searchSubjects, widgetsData),
-          dataCaseSelected: {
-            selectedRowInfo: [],
-            selectedRowIndex: [],
-          },
-          dataSampleSelected: {
-            selectedRowInfo: [],
-            selectedRowIndex: [],
-          },
-          dataFileSelected: {
-            selectedRowInfo: [],
-            selectedRowIndex: [],
-          },
-        } : { ...state };
-    }
-    case actionsTypes.SET_CASES_SELECTION:
-      return {
-        ...state,
-        dataCaseSelected: payload,
-      };
-    case actionsTypes.SET_SAMPLE_SELECTION:
-      return {
-        ...state,
-        dataSampleSelected: payload,
-      };
-    case actionsTypes.SET_FILE_SELECTION:
-      return {
-        ...state,
-        dataFileSelected: payload,
-      };
-    case actionsTypes.CLEAR_TABLE_SELECTION:
-      return {
-        ...state,
-        dataCaseSelected: {
-          selectedRowInfo: [],
-          selectedRowIndex: [],
-        },
-        dataSampleSelected: {
-          selectedRowInfo: [],
-          selectedRowIndex: [],
-        },
-        dataFileSelected: {
-          selectedRowInfo: [],
-          selectedRowIndex: [],
-        },
-      };
-    case actionsTypes.CLEAR_SECTION_SORT: {
-      const { sortByList = {} } = state;
-      const { groupName } = payload;
-      if (sortByList[groupName]) delete sortByList[groupName];
-      return {
-        ...state,
-        sortByList,
-      };
-    }
-    case actionsTypes.SORT_ALL_GROUP_CHECKBOX: {
-      const { sortByList = {} } = state;
-      const { data } = state.checkbox;
-      data.map((group) => {
-        const checkboxItems = sortByList[group.groupName] === 'count'
-          ? sortByCheckboxItemsByCount(group.checkboxItems)
-          : sortByCheckboxItemsByAlphabet(group.checkboxItems);
-        const updatedGroupData = group;
-        updatedGroupData.checkboxItems = checkboxItems;
-        return updatedGroupData;
-      });
-      return { ...state, checkbox: { data } };
-    }
-    case actionsTypes.SORT_SINGLE_GROUP_CHECKBOX: {
-      const groupData = state.checkbox.data.filter(
-        (group) => payload.groupName === group.groupName,
-      )[0];
-
-      let { sortByList } = state;
-      sortByList = sortByList || {};
-      const sortedCheckboxItems = payload.sortBy === 'count'
-        ? sortByCheckboxItemsByCount(groupData.checkboxItems)
-        : sortByCheckboxItemsByAlphabet(groupData.checkboxItems);
-      sortByList[groupData.groupName] = payload.sortBy;
-      const data = state.checkbox.data.map((group) => {
-        if (group.groupName === groupData.groupName) {
-          const updatedGroupData = group;
-          updatedGroupData.checkboxItems = sortedCheckboxItems;
-          return updatedGroupData;
-        }
-        return group;
-      });
-      return { ...state, checkbox: { data }, sortByList };
-    }
-    default:
-      return {
-        ...state,
-      };
-  }
-};
-
-export default dashboardReducer;

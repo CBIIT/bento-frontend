@@ -1,0 +1,5 @@
+// STEP of Implementation
+ First step to append all the state changes in the Reducer 
+  (Which includes the current tab change, all the checkboxes toggle changes)
+ Then make the query request based on the states that are added into the store
+  (Then update the state in the redux with new values which will be reflected in every part of the dashboard).

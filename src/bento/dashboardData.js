@@ -80,6 +80,24 @@ export const facetSectionVariables = {
   },
 };
 
+// --------------- Dashboard Facet Local Find Configuration --------------
+
+export const facetSectionFindApi = {
+  Cases: {
+    api: 'subjectIds',
+  },
+  Samples: {
+    api: 'sampleIds',
+  },
+  Files: {
+    api: 'fileIds',
+  },
+};
+
+// { type: 'Cases', api: 'subjectIds' },
+//   { type: 'Samples', api: 'sampleIds' },
+//   { type: 'Files', api: 'fileIds' },
+
 export const search = {
   fileIds: {
     color: '#E636E4',

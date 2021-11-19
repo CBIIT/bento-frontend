@@ -9,7 +9,12 @@ const caseContainer = () => {
         && state.dashboard.datatable.data
     ? state.dashboard.datatable.data : {}));
 
-  return <CaseView data={tableData} />;
+  return (
+    <>
+      <pre>{JSON.stringify(tableData, null, 2)}</pre>
+      <CaseView data={tableData} />
+    </>
+  );
 };
 
 export default caseContainer;

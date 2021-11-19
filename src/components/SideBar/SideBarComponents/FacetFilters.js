@@ -27,10 +27,11 @@ import {
   resetGroupSelections,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
+  resetIconFilter,
+  facetSectionFindApi,
   facetSectionVariables,
   defaultFacetSectionVariables,
   sortLabels, showCheckboxCount,
-  resetIconFilter,
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
 import AutoComplete from './searchComponet';
@@ -190,6 +191,7 @@ const FacetPanel = ({ classes }) => {
     });
     return Object.values(sideBar);
   };
+
   const sideBarSections = arrangeBySections(sideBarDisplay);
 
   function getSortButtonColor(sideBarItem, sortType) {
@@ -209,11 +211,11 @@ const FacetPanel = ({ classes }) => {
         <CheckBoxView
           checkboxItem={item}
           sideBarItem={sideBarItem}
-          currentSection={currentSection}
           handleToggle={handleToggle}
+          currentSection={currentSection}
           facetSectionVariables={facetSectionVariables}
-          defaultFacetSectionVariables={defaultFacetSectionVariables}
           backgroundColor={getCheckBoxColor(index, currentSection)}
+          defaultFacetSectionVariables={defaultFacetSectionVariables}
           checkColor={getGroupNameColor(sideBarItem, currentSection)}
         />
       ));
@@ -295,7 +297,11 @@ const FacetPanel = ({ classes }) => {
                     {
                       showSearch && (
                         <div className={classes.searchContainer} onClick={handleCaseFacetClick}>
-                          <AutoComplete ref={searchRef} data={getAllIds()} />
+                          <AutoComplete
+                            ref={searchRef}
+                            type={facetSectionFindApi[currentSection.sectionName].api}
+                            data={getAllIds(facetSectionFindApi[currentSection.sectionName].api)}
+                          />
                           <Button
                             variant="contained"
                             onClick={() => setShowCasesModal(true)}
@@ -333,25 +339,23 @@ const FacetPanel = ({ classes }) => {
                       <CustomExpansionPanelSummary
                         expandIcon={(
                           <ArrowDropDownIcon
-                            classes={{ root: classes.dropDownIconSubSection }}
                             style={{ fontSize: 26 }}
+                            classes={{ root: classes.dropDownIconSubSection }}
                           />
                         )}
-                        aria-controls={sideBarItem.groupName}
                         id={sideBarItem.groupName}
+                        aria-controls={sideBarItem.groupName}
                         className={classes.customExpansionPanelSummaryRoot}
                       >
                         {/* <ListItemText primary={sideBarItem.groupName} /> */}
                         <div
                           id={sideBarItem.groupName}
-                          style={{ color: getGroupNameColor(sideBarItem, currentSection) }}
                           className={classes.subSectionSummaryText}
+                          style={{ color: getGroupNameColor(sideBarItem, currentSection) }}
                         >
                           {sideBarItem.groupName}
                         </div>
-
                       </CustomExpansionPanelSummary>
-
                       <ExpansionPanelDetails
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
@@ -402,12 +406,12 @@ const FacetPanel = ({ classes }) => {
                                   key={index}
                                   checkboxItem={item}
                                   sideBarItem={sideBarItem}
-                                  currentSection={currentSection}
                                   handleToggle={handleToggle}
+                                  currentSection={currentSection}
                                   facetSectionVariables={facetSectionVariables}
-                                  defaultFacetSectionVariables={defaultFacetSectionVariables}
                                   backgroundColor={getCheckBoxColor(index, currentSection)}
                                   checkColor={getGroupNameColor(sideBarItem, currentSection)}
+                                  defaultFacetSectionVariables={defaultFacetSectionVariables}
                                   lineColor={getLineColor(index, sideBarItem.checkboxItems.length)}
                                 />
                               ),
