@@ -83,7 +83,7 @@ export const FacetPanel = ({ classes }) => {
     }
     valueList[index][0] = event.target.value;
     if (event.target.value !== '') {
-      console.log(event.target.value);
+      // console.log(event.target.value);
       toggleSlider(valueList[index], sideBarItem);
       setSliderValue(valueList);
     }
