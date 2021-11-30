@@ -47,9 +47,9 @@ const tabController = (classes) => {
 
   // data from store
   const dashboard = useSelector((state) => (state.dashboardTab
-&& state.dashboardTab.datatable
+    && state.dashboardTab.datatable
     ? state.dashboardTab.datatable : {}));
-    // get stats data from store
+  // get stats data from store
   const dashboardStats = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
 
@@ -58,9 +58,13 @@ const tabController = (classes) => {
   const allFilters = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.allActiveFilters ? state.dashboardTab.allActiveFilters : {}));
 
+  const { isCaseSelected } = useSelector((state) => state.dashboardTab);
+
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
-    fetchDataForDashboardTab(tabIndex[value].title);
+    if (!isCaseSelected) {
+      fetchDataForDashboardTab(tabIndex[value].title);
+    }
   };
 
   const [snackbarState, setsnackbarState] = React.useState({
@@ -107,7 +111,7 @@ const tabController = (classes) => {
     @output [f.uuid]
   */
   function Type1OnRowsSelect(data, allRowsSelected) {
-  // use reduce to combine all the files' id into single array
+    // use reduce to combine all the files' id into single array
     return allRowsSelected.reduce((accumulator, currentValue) => {
       if (data[currentValue.dataIndex]) {
         const { files } = data[currentValue.dataIndex];
@@ -135,7 +139,7 @@ const tabController = (classes) => {
     @output [f.uuid]
   */
   function Type3OnRowsSelect(data, allRowsSelected) {
-  // use reduce to combine all the files' id into single array
+    // use reduce to combine all the files' id into single array
     return allRowsSelected.reduce((accumulator, currentValue) => {
       const { files } = data[currentValue.dataIndex];
       // check if file
@@ -249,22 +253,25 @@ const tabController = (classes) => {
               File(s) successfully added to your cart
             </span>
           </div>
-)}
+        )}
       />
-      <TabThemeProvider tableBorder={getBorderStyle()} tablecolor={getTableColor()}>
+      <TabThemeProvider
+        tablecolor={getTableColor()}
+        tableBorder={getBorderStyle()}
+      >
         <Tabs
           classes
           value={currentTab}
-          onChange={handleTabChange}
-          indicatorColor="primary"
           textColor="primary"
+          indicatorColor="primary"
+          onChange={handleTabChange}
         >
           {TABs}
         </Tabs>
         <SwipeableViews
           index={currentTab}
-          onChangeIndex={handleTabChange}
           animateTransitions={false}
+          onChangeIndex={handleTabChange}
           style={{ overflowX: 'hidden' }}
         >
           {TABContainers}

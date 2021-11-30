@@ -4,47 +4,54 @@ import {
   customSort,
   getFilters,
   filterData,
+  customCheckBox,
   getCheckBoxData,
-  getStatDataFromDashboardData,
-  getSunburstDataFromDashboardData,
-  getDonutDataFromDashboardData,
   setSelectedFilterValues,
+  getStatDataFromDashboardData,
+  getDonutDataFromDashboardData,
   transformInitialDataForSunburst,
+  getSunburstDataFromDashboardData,
   transformAPIDataIntoCheckBoxData,
 } from 'bento-components';
-import { SEARCH } from '../../../bento/search';
-import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
-import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
-
 import store from '../../../store';
+import { SEARCH } from '../../../bento/search';
 import client from '../../../utils/graphqlClient';
+import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
+import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
+
 import {
   tabContainers,
-  DASHBOARD_QUERY,
-  FILTER_QUERY,
-  GET_FILES_OVERVIEW_QUERY,
-  GET_SAMPLES_OVERVIEW_QUERY,
-  GET_CASES_OVERVIEW_QUERY,
-  GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
-  GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
-  GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   GET_FILES_NAME_QUERY,
+  GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
+  GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
+  GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
   GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
-  GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
   GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
-  // GET_FILE_IDS_FROM_FILE_NAME,
+  GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
   tabIndex,
+  DASHBOARD_QUERY_NEW,
+  GET_FILES_OVERVIEW_QUERY_NEW,
+  GET_CASES_OVERVIEW_QUERY_NEW,
+  GET_SAMPLES_OVERVIEW_QUERY_NEW,
 } from '../../../bento/dashboardTabData';
 import {
-  GET_ALL_IDS,
+  GET_IDS_BY_TYPE,
   widgetsSearchData,
-  GET_SEARCH_NODECOUNTS,
+  CASES_FILE_QUERY,
+  CASES_SAMPLE_QUERY,
+  SUBJECT_OVERVIEW_QUERY,
+  GET_SEARCH_NODES_BY_FACET,
 } from '../../../bento/localSearchData';
 
 const storeKey = 'dashboardTab';
 
 const initialState = {
   dashboardTab: {
+    autoCompleteSelection: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
     isDataTableUptoDate: false,
     isFetched: false,
     isLoading: false,
@@ -53,6 +60,7 @@ const initialState = {
     error: '',
     hasError: false,
     stats: {},
+    searchCriteria: null,
     allActiveFilters: {},
     currentActiveTab: tabIndex[0].title,
     filteredSubjectIds: null,
@@ -118,7 +126,6 @@ function getStatInit(input, statCountVariables) {
   ), {});
   return initStats;
 }
-
 /**
  * Returns the filtered stats from inputAPT data.
  * @param {object} data
@@ -143,7 +150,7 @@ const removeEmptySubjectsFromDonutData = (data) => data.filter((item) => item.su
  * Returns the widgets data.
  * @param {object} data
  * @param {json} widgetsInfoFromCustConfig
- * @return {json}r
+ * @return {json}
  */
 function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
   const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
@@ -178,10 +185,14 @@ function allFilters() {
 
 function getSearchWidgetsData(data, widgetsInfoFromCustConfig) {
   const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : removeEmptySubjectsFromDonutData(data[widget.dataName]);
+    const Data = widget.type === 'sunburst'
+      ? transformInitialDataForSunburst(data[widget.mapWithDashboardWidget])
+      : removeEmptySubjectsFromDonutData(data[widget.mapWithDashboardWidget]);
+
     const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});
+
   const replacements = widgetsSearchData.reduce(
     (acc, widget) => ({ ...acc, ...{ [widget.dataName]: widget.mapWithDashboardWidget } }),
     {},
@@ -200,8 +211,8 @@ function fetchDashboardTab() {
     store.dispatch({ type: 'REQUEST_DASHBOARDTAB' });
     return client
       .query({
-        query: DASHBOARD_QUERY,
-        variables: allFilters(),
+        query: DASHBOARD_QUERY_NEW,
+        variables: { ...allFilters(), ...getState().autoCompleteSelection },
       })
       .then((result) => store.dispatch({ type: 'RECEIVE_DASHBOARDTAB', payload: _.cloneDeep(result) }))
       .catch((error) => store.dispatch(
@@ -213,7 +224,11 @@ function fetchDashboardTab() {
 function fetchDashboardTabForClearAll() {
   return () => client
     .query({
-      query: DASHBOARD_QUERY,
+      query: DASHBOARD_QUERY_NEW,
+      variables: {
+        ...getState().allActiveFilters,
+        ...getState().autoCompleteSelection,
+      },
     })
     .then((result) => store.dispatch({ type: 'CLEAR_ALL', payload: _.cloneDeep(result) }))
     .then(() => store.dispatch({ type: 'SORT_ALL_GROUP_CHECKBOX' }))
@@ -222,10 +237,10 @@ function fetchDashboardTabForClearAll() {
     ));
 }
 
-export async function getAllIds() {
+export async function getAllIds(type) {
   const allids = await client
     .query({
-      query: GET_ALL_IDS,
+      query: GET_IDS_BY_TYPE(type),
       variables: {
       },
     })
@@ -251,21 +266,23 @@ function createFilterVariables(data) {
   const filter = Object.entries(currentAllActiveFilters).reduce((acc, [key, val]) => {
     if (data[0].datafield === key) {
       return data[0].isChecked
-        ? { ...acc, [key]: [...currentAllActiveFilters[key], ...[data[0].name]] }
-        : { ...acc, [key]: currentAllActiveFilters[key].filter((item) => item !== data[0].name) };
+        ? {
+          ...acc,
+          [key]: [...currentAllActiveFilters[key], ...[data[0].name]],
+        }
+        : {
+          ...acc,
+          [key]: currentAllActiveFilters[key].filter((item) => item !== data[0].name),
+        };
     }
     // return { ...acc , [key]: [...currentAllActiveFilters[key],...[data[0].name]] }
-    return { ...acc, [key]: currentAllActiveFilters[key] };
+    return {
+      ...acc,
+      [key]: currentAllActiveFilters[key],
+    };
   }, {});
 
   return filter;
-}
-
-function createFilterVariablesRange(value, sideBarItem) {
-  const currentAllActiveFilters = getState().allActiveFilters;
-  currentAllActiveFilters[sideBarItem.datafield] = value;
-  return currentAllActiveFilters;
-  // eslint-disable-next-line  no-unused-vars
 }
 
 /**
@@ -294,36 +311,116 @@ export function clearSectionSort(groupName) {
  *
  * @return distpatcher
  */
-
 export function clearAllFilters() {
+  store.dispatch({ type: 'RESET_ALL' });
   store.dispatch(fetchDashboardTabForClearAll());
 }
+
+const convertResultInPrevType = (result) => {
+  const payload = result;
+  payload.data = {
+    ...result.data.searchSubjects,
+    nodeCountsFromLists: {
+      numberOfFiles: result.data.searchSubjects.numberOfFiles,
+      numberOfLabProcedures: result.data.searchSubjects.numberOfLabProcedures,
+      numberOfPrograms: result.data.searchSubjects.numberOfPrograms,
+      numberOfSamples: result.data.searchSubjects.numberOfSamples,
+      numberOfStudies: result.data.searchSubjects.numberOfStudies,
+      numberOfSubjects: result.data.searchSubjects.numberOfSubjects,
+    },
+  };
+
+  return payload;
+};
+
+async function getCaseData(variables) {
+  const result = await client.query({
+    query: GET_SEARCH_NODES_BY_FACET,
+    variables,
+  });
+  const data = convertResultInPrevType(result);
+  return data;
+}
+
+const getSubjectDetails = async (variables) => {
+  const result = await client.query({
+    query: SUBJECT_OVERVIEW_QUERY,
+    variables: {
+      offset: 0,
+      first: 100,
+      sort_direction: 'desc',
+      order_by: 'age_at_index',
+      age_at_index: [10, null],
+      ...variables,
+    },
+  });
+  return result;
+};
+
+const getFilesDetails = async (variables) => {
+  const result = await client.query({
+    query: CASES_FILE_QUERY,
+    variables: {
+      first: 2,
+      offset: 0,
+      order_by: 'file_id',
+      sort_direction: 'desc',
+      age_at_index: [10, null],
+      ...variables,
+    },
+  });
+  return result;
+};
+
+const getSampleDetails = async (variables) => {
+  const result = await client.query({
+    query: CASES_SAMPLE_QUERY,
+    variables: {
+      first: 2,
+      offset: 0,
+      order_by: 'diagnosis',
+      sort_direction: 'asc',
+      ...variables,
+    },
+  });
+  return result;
+};
 
 /**
  * Local search
  *
- * @return distpatcher
+ * @return dispatcher
  */
 
-export function localSearch(searchcriteria) {
+export async function localSearch(searchcriteria) {
   if (searchcriteria.length === 0) {
     clearAllFilters();
   } else {
-    const searchItems = searchcriteria.reduce((acc, curr) => {
-      if (!acc[curr.type]) acc[curr.type] = [];
-      acc[curr.type].push(curr.title);
-      return acc;
-    }, {});
-    client.query({
-      query: GET_SEARCH_NODECOUNTS,
-      variables: {
-        subject_ids: searchItems.subjectIds,
-        sample_ids: searchItems.sampleIds,
-        file_ids: searchItems.fileIds,
-        file_names: searchItems.fileNames,
+    const variables = {
+      ...getState().allActiveFilters,
+      ...getState().autoCompleteSelection,
+    };
+
+    const [
+      caseResponse,
+      fileResponse,
+      sampleResponse,
+      subjectResponse,
+    ] = await Promise.all([
+      getCaseData(variables),
+      getFilesDetails(variables),
+      getSampleDetails(variables),
+      getSubjectDetails(variables),
+    ]);
+    store.dispatch({
+      type: 'LOCAL_SEARCH',
+      payload: {
+        fileResponse,
+        sampleResponse,
+        subjectResponse,
+        result: caseResponse,
       },
-    })
-      .then((result) => store.dispatch({ type: 'LOCAL_SEARCH', payload: { result } }));
+    });
   }
 }
 
@@ -336,8 +433,12 @@ export function localSearch(searchcriteria) {
 function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
   return client
     .query({ // request to get the filtered subjects
-      query: FILTER_QUERY,
-      variables: { ...currentAllFilterVariables, first: 100 },
+      query: DASHBOARD_QUERY_NEW,
+      variables: {
+        first: 100,
+        ...currentAllFilterVariables,
+        ...getState().autoCompleteSelection,
+      },
     })
     .then((result) => store.dispatch({
       type: 'TOGGGLE_CHECKBOX_WITH_API',
@@ -371,7 +472,12 @@ export function resetGroupSelections(payload) {
     // For performance issue we are using initial dasboardquery instead of fitered for empty filters
     if (_.isEqual(currentAllFilterVariables, allFilters())) {
       clearAllFilters();
-    } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+    } else {
+      toggleCheckBoxWithAPIAction(payload, {
+        ...currentAllFilterVariables,
+        ...getState().autoCompleteSelection,
+      });
+    }
   };
 }
 
@@ -383,14 +489,19 @@ export function resetGroupSelections(payload) {
  * @return {json} with three keys QUERY, sortfield, sortDirection
  */
 
+export function addAutoComplete({ value, type }) {
+  const items = value.map((val) => val.title);
+  store.dispatch({ type: 'ADD_AUTOCOMPLETE_DATA', payload: { value: items, type } });
+}
+
 const querySwitch = (payload, tabContainer) => {
   switch (payload) {
     case ('Samples'):
-      return { QUERY: GET_SAMPLES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_SAMPLES_OVERVIEW_QUERY_NEW, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
     case ('Files'):
-      return { QUERY: GET_FILES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_FILES_OVERVIEW_QUERY_NEW, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
     default:
-      return { QUERY: GET_CASES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_CASES_OVERVIEW_QUERY_NEW, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
   }
 };
 
@@ -421,15 +532,32 @@ export function fetchDataForDashboardTab(
 ) {
   const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
   const activeFilters = filters === null
-    ? (getState().allActiveFilters !== {} ? getState().allActiveFilters : allFilters()) : filters;
+    ? (getState().allActiveFilters !== {}
+      ? {
+        ...getState().allActiveFilters,
+        ...getState().autoCompleteSelection,
+      }
+      : allFilters()) : filters;
+
   return client
     .query({
       query: QUERY,
       variables: {
-        ...activeFilters, order_by: sortfield || '', sort_direction: sortDirection || 'asc',
+        ...activeFilters,
+        order_by: sortfield || '',
+        sort_direction: sortDirection || 'asc',
       },
     })
-    .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, sortDirection, ..._.cloneDeep(result) } }))
+    .then((result) => {
+      store.dispatch({
+        type: 'UPDATE_CURRRENT_TAB_DATA',
+        payload: {
+          currentTab: payload,
+          sortDirection,
+          ..._.cloneDeep(result),
+        },
+      });
+    })
     .catch((error) => store.dispatch(
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
@@ -465,7 +593,6 @@ function transformfileIdsToFiles(data) {
  */
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
   const fileIds = getState().filteredFileIds;
-
   const activeFilters = getState().allActiveFilters !== {}
     ? getState().allActiveFilters : allFilters();
 
@@ -580,10 +707,10 @@ function filterOutFileIds(fileIds) {
   const { filteredFileIds } = getState();
 
   if (fileIds
-      && fileIds.length > 0
-       && filteredFileIds
-        && filteredFileIds != null
-        && filteredFileIds.length > 0) {
+    && fileIds.length > 0
+    && filteredFileIds
+    && filteredFileIds != null
+    && filteredFileIds.length > 0) {
     return fileIds.filter((x) => filteredFileIds.includes(x));
   }
   return fileIds;
@@ -718,7 +845,10 @@ export async function setSingleFilter(payload) {
 export async function singleCheckBox(payload) {
   await setSingleFilter(payload);
   const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
-  toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+  toggleCheckBoxWithAPIAction(payload, {
+    ...currentAllFilterVariables,
+    ...getState().autoCompleteSelection,
+  });
 }
 
 /**
@@ -733,18 +863,13 @@ export function toggleCheckBox(payload) {
     // For performance issue we are using initial dasboardquery instead of fitered for empty filters
     if (_.isEqual(currentAllFilterVariables, allFilters())) {
       clearAllFilters();
-    } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+    } else {
+      toggleCheckBoxWithAPIAction(payload, {
+        ...currentAllFilterVariables,
+        ...getState().autoCompleteSelection,
+      });
+    }
   };
-}
-
-export function toggleSlider(value, sideBarItem) {
-  const payload = {};
-  const currentAllFilterVariables = createFilterVariablesRange(value, sideBarItem);
-  // console.log(payload);
-  // For performance issue we are using initial dasboardquery instead of fitered for empty filters
-  if (_.isEqual(currentAllFilterVariables, allFilters())) {
-    clearAllFilters();
-  } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
 }
 
 /**
@@ -798,40 +923,13 @@ so it contains more information and easy for front-end to show it correctly.
  * * @param {object} currentCheckboxSelection
  * @return {json}
  */
-
-function customCheckBox(data, facetSearchData1) {
-  const caseCountField = 'subjects';
-  return (
-    facetSearchData1.map((mapping) => ({
-      groupName: mapping.label,
-      checkboxItems: mapping.slider === true
-        ? data[mapping.api]
-        : transformAPIDataIntoCheckBoxData(
-          data[mapping.api],
-          mapping.field,
-          caseCountField,
-          mapping.customNumberSort,
-        ),
-      datafield: mapping.datafield,
-      show: mapping.show,
-      slider: mapping.slider,
-      quantifier: mapping.slider,
-      section: mapping.section,
-    }))
-  );
-}
-
 export function updateFilteredAPIDataIntoCheckBoxData(data, facetSearchDataFromConfig) {
   return (
     facetSearchDataFromConfig.map((mapping) => ({
       groupName: mapping.label,
-      checkboxItems: mapping.slider === true
-        ? data[mapping.api]
-        : transformAPIDataIntoCheckBoxData(data[mapping.apiForFiltering], mapping.field),
+      checkboxItems: transformAPIDataIntoCheckBoxData(data[mapping.apiForFiltering], mapping.field),
       datafield: mapping.datafield,
       show: mapping.show,
-      slider: mapping.slider,
-      quantifier: mapping.quantifier,
       section: mapping.section,
     }))
   );
@@ -937,6 +1035,13 @@ export function clearTableSelections() {
 
 export const getDashboard = () => getState();
 
+export function setSearchCriteria(payload) {
+  store.dispatch({
+    type: 'SET_SEARCH_CRITERIA',
+    payload,
+  });
+}
+
 // reducers
 const reducers = {
   DASHBOARDTAB_QUERY_ERR: (state, item) => ({
@@ -954,14 +1059,10 @@ const reducers = {
     isDashboardTableLoading: false,
   }),
   TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
-    let updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
+    const updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
       item.data.searchSubjects, facetSearchData,
     );
-    const rangeData = updatedCheckboxData1.filter((sideBar) => sideBar.slider === true);
-    updatedCheckboxData1 = updatedCheckboxData1.filter((sideBar) => sideBar.slider !== true);
-    let checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
-    updatedCheckboxData1 = updatedCheckboxData1.concat(rangeData);
-    checkboxData1 = checkboxData1.concat(rangeData);
+    const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
     fetchDataForDashboardTab(state.currentActiveTab, item.allFilters);
     return {
       ...state,
@@ -975,19 +1076,20 @@ const reducers = {
     };
   },
   LOCAL_SEARCH: (state, item) => {
-    fetchDataForDashboardTab(state.currentActiveTab,
-      item.result.data.findIdsFromLists.subjectIds,
-      item.result.data.findIdsFromLists.sampleIds,
-      item.result.data.findIdsFromLists.fileIds);
+    const checkboxData = customCheckBox(item.result.data, facetSearchData);
     return {
       ...state,
       setSideBarLoading: false,
-      filteredSubjectIds: item.result.data.findIdsFromLists.subjectIds,
-      filteredSampleIds: item.result.data.findIdsFromLists.sampleIds,
-      filteredFileIds: item.result.data.findIdsFromLists.fileIds,
+      datatable: {
+        dataCase: item.subjectResponse.data.subjectOverview,
+        dataSample: item.sampleResponse.data.sampleOverview,
+        dataFile: item.fileResponse.data.fileOverview,
+      },
+      checkbox: {
+        data: checkboxData,
+      },
       stats: getFilteredStat(item.result.data.nodeCountsFromLists, statsCount),
       widgets: getSearchWidgetsData(item.result.data, widgetsSearchData),
-
     };
   },
   UPDATE_CURRRENT_TAB_DATA: (state, item) => (
@@ -1003,6 +1105,10 @@ const reducers = {
       },
     }
   ),
+  SET_SEARCH_CRITERIA: (state, item) => ({
+    ...state,
+    searchCriteria: item,
+  }),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   SET_SIDEBAR_LOADING: (state) => ({ ...state, setSideBarLoading: true }),
   SET_SINGLE_FILTER: (state, item) => (
@@ -1050,6 +1156,7 @@ const reducers = {
         hasError: false,
         setSideBarLoading: false,
         error: '',
+        searchCriteria: null,
         stats: getStatInit(item.data.searchSubjects, statsCount),
         allActiveFilters: allFilters(),
         filteredSubjectIds: null,
@@ -1077,7 +1184,11 @@ const reducers = {
           selectedRowInfo: [],
           selectedRowIndex: [],
         },
-
+        autoCompleteSelection: {
+          subject_ids: [],
+          sample_ids: [],
+          file_ids: [],
+        },
       } : { ...state };
   },
   CLEAR_ALL: (state, item) => {
@@ -1098,6 +1209,11 @@ const reducers = {
         filteredFileIds: null,
         checkboxForAll: {
           data: checkboxData,
+        },
+        autoCompleteSelection: {
+          subject_ids: [],
+          sample_ids: [],
+          file_ids: [],
         },
         checkbox: {
           data: checkboxData,
@@ -1143,9 +1259,8 @@ const reducers = {
   },
   SORT_ALL_GROUP_CHECKBOX: (state) => {
     const { sortByList = {} } = state;
-    let { data } = state.checkbox;
-    const rangeData = data.filter((sideBar) => sideBar.slider === true);
-    data = data.filter((sideBar) => sideBar.slider !== true);
+    const { data } = state.checkbox;
+
     data.map((group) => {
       const checkboxItems = sortByList[group.groupName] === 'count'
         ? sortByCheckboxItemsByCount(group.checkboxItems)
@@ -1154,7 +1269,7 @@ const reducers = {
       updatedGroupData.checkboxItems = checkboxItems;
       return updatedGroupData;
     });
-    data = data.concat(rangeData);
+
     return { ...state, checkbox: { data } };
   },
   CLEAR_SECTION_SORT: (state, item) => {
@@ -1196,6 +1311,22 @@ const reducers = {
     dataFileSelected: {
       selectedRowInfo: [],
       selectedRowIndex: [],
+    },
+  }),
+  RESET_ALL: (state) => ({
+    ...state,
+    autoCompleteSelection: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
+    allActiveFilters: {},
+  }),
+  ADD_AUTOCOMPLETE_DATA: (state, { type, value }) => ({
+    ...state,
+    autoCompleteSelection: {
+      ...state.autoCompleteSelection,
+      [`${type}_ids`]: value,
     },
   }),
 };

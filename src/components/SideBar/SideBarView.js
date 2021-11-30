@@ -55,7 +55,7 @@ const SideBarContent = ({
                 divider: dividerRoot,
               }}
             >
-              <FacetFilter />
+              <FacetFilter ref={searchRef} />
             </List>
           </div>
         )}

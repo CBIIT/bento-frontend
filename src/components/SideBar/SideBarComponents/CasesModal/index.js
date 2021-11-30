@@ -67,10 +67,7 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
   };
 
   const handleChange = ({ target: { value } }) => setFileContent(value);
-
-  const handleFileUpload = (content) => {
-    setFileContent(content);
-  };
+  const handleFileUpload = (content) => setFileContent(content);
 
   return (
     <Modal

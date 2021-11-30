@@ -1,16 +1,19 @@
 import {
-  getStatDataFromDashboardData,
-  getSunburstDataFromDashboardData,
-  getDonutDataFromDashboardData,
   filterData,
   getFilters,
-  getCheckBoxData,
   customCheckBox,
+  getCheckBoxData,
+  getStatDataFromDashboardData,
+  getDonutDataFromDashboardData,
   transformInitialDataForSunburst,
+  getSunburstDataFromDashboardData,
 } from 'bento-components';
 import client from '../../utils/graphqlClient';
 import {
-  GET_DASHBOARD_DATA_QUERY, widgetsData, GET_DASHBOARD_TABLE_DATA_QUERY, facetSearchData,
+  widgetsData,
+  facetSearchData,
+  GET_DASHBOARD_DATA_QUERY,
+  GET_DASHBOARD_TABLE_DATA_QUERY,
 } from '../../bento/dashboardData';
 import { globalStatsData as statsCount } from '../../bento/globalStatsData';
 

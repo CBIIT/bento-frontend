@@ -13,7 +13,7 @@ function searchComponent() {
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
   const loading = open;
-
+  
   React.useEffect(() => {
     if (!open) {
       setOptions([]);

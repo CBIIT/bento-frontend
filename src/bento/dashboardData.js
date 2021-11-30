@@ -53,9 +53,6 @@ export const facetSearchData = [
   {
     label: 'File Type', field: 'group', api: 'subjectCountByFileType', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'file_type', section: 'Files', show: true,
   },
-  {
-    label: 'Age', api: 'filterSubjectCountByAge', apiForFiltering: 'filterSubjectCountByFileType', datafield: 'age_at_index', section: 'Cases', show: true, slider: true, quantifier: 'Years',
-  },
 ];
 
 // --------------- Dashboard Sidebar Sections styling --------------
@@ -80,6 +77,20 @@ export const facetSectionVariables = {
     checkBoxColorsTwo: '#FFF2FF',
     height: '5px',
     isExpanded: false,
+  },
+};
+
+// --------------- Dashboard Facet Local Find Configuration --------------
+
+export const facetSectionFindApi = {
+  Cases: {
+    api: 'subjectIds',
+  },
+  Samples: {
+    api: 'sampleIds',
+  },
+  Files: {
+    api: 'fileIds',
   },
 };
 
@@ -362,11 +373,6 @@ subjectCountByFileAssociation {
 subjectCountByTissueComposition{
     group
     subjects
-}
-filterSubjectCountByAge{
-  lowerBound
-  upperBound
-  subjects
 }
 subjectCountByTissueType{
     group

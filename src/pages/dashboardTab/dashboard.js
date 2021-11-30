@@ -11,13 +11,14 @@ import ActiveFiltersQuery from '../../components/ActiveFiltersQuery/ActiveFilter
 import { widgetsData, displayActiveFiltersQuery } from '../../bento/dashboardData';
 import Tab from './components/tabController';
 import colors from '../../utils/colors';
-import SearchAUtoFill from '../../components/Search/searchAutoFillComponent';
 import styles from './dashboardStyles';
 
 const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
 
 const Dashboard = ({
-  classes, data, theme,
+  data,
+  theme,
+  classes,
 }) => {
   const [collapse, setCollapse] = React.useState(true);
   const themeChanger = useTheme();
@@ -61,8 +62,6 @@ const Dashboard = ({
                     />
                   </div>
                 </div>
-                {displayActiveFiltersQuery ? <ActiveFiltersQuery /> : ''}
-                <SearchAUtoFill />
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget, index) => {
@@ -70,13 +69,13 @@ const Dashboard = ({
                         return (
                           <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
                             <Widget
-                              title={widget.label}
                               upperTitle
-                              bodyClass={classes.fullHeightBody}
-                              className={classes.card}
-                              color={theme.palette.lochmara.contrastText}
-                              widgetBorderDivider
                               customBackGround
+                              title={widget.label}
+                              widgetBorderDivider
+                              className={classes.card}
+                              bodyClass={classes.fullHeightBody}
+                              color={theme.palette.lochmara.contrastText}
                             >
                               <ProgramSunburst
                                 data={data[widget.dataName]}
