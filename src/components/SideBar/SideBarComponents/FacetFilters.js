@@ -82,10 +82,10 @@ export const FacetPanel = ({ classes }) => {
       setSliderValue(valueList);
     }
     valueList[index][0] = event.target.value;
-    if (event.target.value !== '') {
-      // console.log(event.target.value);
-      toggleSlider(valueList[index], sideBarItem);
+    if (valueList[index][0] !== '') {
+      valueList[index][0] = Number(valueList[index][0]);
       setSliderValue(valueList);
+      toggleSlider(valueList[index], sideBarItem);
     }
   };
   const handleBlurMin = (defaultValue, index, sideBarItem, min, max, event) => {
@@ -97,25 +97,24 @@ export const FacetPanel = ({ classes }) => {
     if (event.target.value < min) {
       valueList[index][0] = min;
     } else if (event.target.value > max) {
-      valueList[index][0] = max;
+      valueList[index][0] = min;
     } else if (event.target.value === '') {
       valueList[index][0] = min;
     }
-    toggleSlider(valueList[index], sideBarItem);
     setSliderValue(valueList);
+    toggleSlider(valueList[index], sideBarItem);
   };
   const handleInputChangeMax = (defaultValue, index, sideBarItem, event) => {
     const valueList = [...sliderValue];
     if (typeof valueList[index] === 'undefined') {
       valueList[index] = defaultValue;
-      toggleSlider(valueList[index], sideBarItem);
       setSliderValue(valueList);
     }
     valueList[index][1] = event.target.value;
     if (event.target.value !== '') {
-      console.log(event.target.value);
-      toggleSlider(valueList[index], sideBarItem);
+      valueList[index][1] = Number(valueList[index][1]);
       setSliderValue(valueList);
+      toggleSlider(valueList[index], sideBarItem);
     }
   };
   const handleBlurMax = (defaultValue, index, sideBarItem, min, max, event) => {
@@ -125,22 +124,26 @@ export const FacetPanel = ({ classes }) => {
       setSliderValue(valueList);
     }
     if (event.target.value < min) {
-      valueList[index][1] = min;
+      valueList[index][1] = max;
     } else if (event.target.value > max) {
       valueList[index][1] = max;
     } else if (event.target.value === '') {
-      valueList[index][0] = max;
+      valueList[index][1] = max;
     }
-    toggleSlider(valueList[index], sideBarItem);
     setSliderValue(valueList);
+    toggleSlider(valueList[index], sideBarItem);
   };
   const handleChangeSlider = (index, value) => {
     const valueList = [...sliderValue];
     valueList[index] = value;
-    setSliderValue(valueList);
+    if (!valueList[index].includes('')) {
+      setSliderValue(valueList);
+    }
   };
   const handleChangeCommittedSlider = (sideBarItem, value) => {
-    toggleSlider(value, sideBarItem);
+    if (!value.includes('')) {
+      toggleSlider(value, sideBarItem);
+    }
   };
   // data from store for sidebar laoding
   const isSidebarLoading = useSelector((state) => (
@@ -600,74 +603,84 @@ export const FacetPanel = ({ classes }) => {
                               )) : (
                                 <div>
                                   <div className={classes.sliderRoot}>
-                                    <Input
-                                      value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
-                                        : sideBarItem.checkboxItems.lowerBound}
-                                      size="small"
-                                      onChange={(event) => handleInputChangeMin(
-                                        [
+                                    <div className={classes.minValue}>
+                                      <span>
+                                        Min:
+                                        &nbsp;
+                                      </span>
+                                      <Input
+                                        value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
+                                          : sideBarItem.checkboxItems.lowerBound}
+                                        onChange={(event) => handleInputChangeMin(
+                                          [
+                                            sideBarItem.checkboxItems.lowerBound,
+                                            sideBarItem.checkboxItems.upperBound,
+                                          ],
+                                          sideBarIndex,
+                                          sideBarItem,
+                                          event,
+                                        )}
+                                        onBlur={(event) => handleBlurMin(
+                                          [
+                                            sideBarItem.checkboxItems.lowerBound,
+                                            sideBarItem.checkboxItems.upperBound,
+                                          ],
+                                          sideBarIndex,
+                                          sideBarItem,
                                           sideBarItem.checkboxItems.lowerBound,
+                                          typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
+                                            : sideBarItem.checkboxItems.upperBound,
+                                          event,
+                                        )}
+                                        style={{ width: '40px' }}
+                                        inputProps={{
+                                          step: 1,
+                                          min: sideBarItem.checkboxItems.lowerBound,
+                                          max: typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
+                                            : sideBarItem.checkboxItems.upperBound,
+                                          type: 'number',
+                                        }}
+                                      />
+                                    </div>
+                                    <div className={classes.maxValue}>
+                                      <span>
+                                        Max:
+                                        &nbsp;
+                                      </span>
+                                      <Input
+                                        value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
+                                          : sideBarItem.checkboxItems.upperBound}
+                                        onChange={(event) => handleInputChangeMax(
+                                          [
+                                            sideBarItem.checkboxItems.lowerBound,
+                                            sideBarItem.checkboxItems.upperBound,
+                                          ],
+                                          sideBarIndex,
+                                          sideBarItem,
+                                          event,
+                                        )}
+                                        onBlur={(event) => handleBlurMax(
+                                          [
+                                            sideBarItem.checkboxItems.lowerBound,
+                                            sideBarItem.checkboxItems.upperBound,
+                                          ],
+                                          sideBarIndex,
+                                          sideBarItem,
+                                          typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
+                                            : sideBarItem.checkboxItems.lowerBound,
                                           sideBarItem.checkboxItems.upperBound,
-                                        ],
-                                        sideBarIndex,
-                                        sideBarItem,
-                                        event,
-                                      )}
-                                      onBlur={(event) => handleBlurMin(
-                                        [
-                                          sideBarItem.checkboxItems.lowerBound,
-                                          sideBarItem.checkboxItems.upperBound,
-                                        ],
-                                        sideBarIndex,
-                                        sideBarItem,
-                                        sideBarItem.checkboxItems.lowerBound,
-                                        typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
-                                          : sideBarItem.checkboxItems.upperBound,
-                                        event,
-                                      )}
-                                      inputProps={{
-                                        step: 1,
-                                        min: sideBarItem.checkboxItems.lowerBound,
-                                        max: typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
-                                          : sideBarItem.checkboxItems.upperBound,
-                                        type: 'number',
-                                        'aria-labelledby': 'input-slider',
-                                      }}
-                                    />
-                                    <Input
-                                      value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
-                                        : sideBarItem.checkboxItems.upperBound}
-                                      size="small"
-                                      onChange={(event) => handleInputChangeMax(
-                                        [
-                                          sideBarItem.checkboxItems.lowerBound,
-                                          sideBarItem.checkboxItems.upperBound,
-                                        ],
-                                        sideBarIndex,
-                                        sideBarItem,
-                                        event,
-                                      )}
-                                      onBlur={(event) => handleBlurMax(
-                                        [
-                                          sideBarItem.checkboxItems.lowerBound,
-                                          sideBarItem.checkboxItems.upperBound,
-                                        ],
-                                        sideBarIndex,
-                                        sideBarItem,
-                                        typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
-                                          : sideBarItem.checkboxItems.lowerBound,
-                                        sideBarItem.checkboxItems.upperBound,
-                                        event,
-                                      )}
-                                      inputProps={{
-                                        step: 1,
-                                        min: typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
-                                          : sideBarItem.checkboxItems.lowerBound,
-                                        max: sideBarItem.checkboxItems.upperBound,
-                                        type: 'number',
-                                        'aria-labelledby': 'input-slider',
-                                      }}
-                                    />
+                                          event,
+                                        )}
+                                        style={{ width: '40px' }}
+                                        inputProps={{
+                                          step: 1,
+                                          min: typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
+                                            : sideBarItem.checkboxItems.lowerBound,
+                                          max: sideBarItem.checkboxItems.upperBound,
+                                          type: 'number',
+                                        }}
+                                      />
+                                    </div>
                                     <Slider
                                       value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex]
                                         : [

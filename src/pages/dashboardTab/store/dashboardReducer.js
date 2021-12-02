@@ -738,6 +738,7 @@ export function toggleCheckBox(payload) {
 }
 
 export function toggleSlider(value, sideBarItem) {
+  // console.log(value);
   const payload = {};
   const currentAllFilterVariables = createFilterVariablesRange(value, sideBarItem);
   // console.log(payload);
