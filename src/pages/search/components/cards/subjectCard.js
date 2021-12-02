@@ -9,6 +9,7 @@ const CaseCard = ({ data, classes }) => {
     {
       label: 'Program Code',
       dataField: 'program_code',
+      link: '/program/{program_id}',
 
     },
     {
