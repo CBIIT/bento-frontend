@@ -17,7 +17,6 @@ function InputViewMin(props) {
     }
     valueList[index][0] = event.target.value;
     if (valueList[index][0] !== '') {
-      console.log(valueList[index][0]);
       valueList[index][0] = Number(valueList[index][0]);
       setSliderValue(valueList);
       toggleSlider(valueList[index], sideBarItem);

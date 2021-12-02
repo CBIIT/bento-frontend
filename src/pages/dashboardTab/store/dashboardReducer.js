@@ -739,13 +739,15 @@ export function toggleCheckBox(payload) {
 
 export function toggleSlider(value, sideBarItem) {
   // console.log(value);
-  const payload = {};
-  const currentAllFilterVariables = createFilterVariablesRange(value, sideBarItem);
-  // console.log(payload);
-  // For performance issue we are using initial dasboardquery instead of fitered for empty filters
-  if (_.isEqual(currentAllFilterVariables, allFilters())) {
-    clearAllFilters();
-  } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+  if (!value.includes('')) {
+    const payload = {};
+    const currentAllFilterVariables = createFilterVariablesRange(value, sideBarItem);
+    // console.log(payload);
+    // For performance issue we are using initial dasboardquery instead of fitered for empty filters
+    if (_.isEqual(currentAllFilterVariables, allFilters())) {
+      clearAllFilters();
+    } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+  }
 }
 
 /**
