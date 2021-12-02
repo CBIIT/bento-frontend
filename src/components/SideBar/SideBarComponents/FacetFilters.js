@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Input,
   Slider,
   List,
   ExpansionPanel,
@@ -38,6 +37,8 @@ import {
   resetIconFilter,
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
+import InputViewMin from './InputViewMin';
+import InputViewMax from './InputViewMax';
 import AutoComplete from './searchComponet';
 import FacetModal from './CasesModal';
 import styles from './styles/FacetFiltersStyles';
@@ -75,64 +76,6 @@ export const FacetPanel = ({ classes }) => {
   function valuetext(value) {
     return `${value}`;
   }
-  const handleInputChangeMin = (defaultValue, index, sideBarItem, event) => {
-    const valueList = [...sliderValue];
-    if (typeof valueList[index] === 'undefined') {
-      valueList[index] = defaultValue;
-      setSliderValue(valueList);
-    }
-    valueList[index][0] = event.target.value;
-    if (valueList[index][0] !== '') {
-      valueList[index][0] = Number(valueList[index][0]);
-      setSliderValue(valueList);
-      toggleSlider(valueList[index], sideBarItem);
-    }
-  };
-  const handleBlurMin = (defaultValue, index, sideBarItem, min, max, event) => {
-    const valueList = [...sliderValue];
-    if (typeof valueList[index] === 'undefined') {
-      valueList[index] = defaultValue;
-      setSliderValue(valueList);
-    }
-    if (event.target.value < min) {
-      valueList[index][0] = min;
-    } else if (event.target.value > max) {
-      valueList[index][0] = min;
-    } else if (event.target.value === '') {
-      valueList[index][0] = min;
-    }
-    setSliderValue(valueList);
-    toggleSlider(valueList[index], sideBarItem);
-  };
-  const handleInputChangeMax = (defaultValue, index, sideBarItem, event) => {
-    const valueList = [...sliderValue];
-    if (typeof valueList[index] === 'undefined') {
-      valueList[index] = defaultValue;
-      setSliderValue(valueList);
-    }
-    valueList[index][1] = event.target.value;
-    if (event.target.value !== '') {
-      valueList[index][1] = Number(valueList[index][1]);
-      setSliderValue(valueList);
-      toggleSlider(valueList[index], sideBarItem);
-    }
-  };
-  const handleBlurMax = (defaultValue, index, sideBarItem, min, max, event) => {
-    const valueList = [...sliderValue];
-    if (typeof valueList[index] === 'undefined') {
-      valueList[index] = defaultValue;
-      setSliderValue(valueList);
-    }
-    if (event.target.value < min) {
-      valueList[index][1] = max;
-    } else if (event.target.value > max) {
-      valueList[index][1] = max;
-    } else if (event.target.value === '') {
-      valueList[index][1] = max;
-    }
-    setSliderValue(valueList);
-    toggleSlider(valueList[index], sideBarItem);
-  };
   const handleChangeSlider = (index, value) => {
     const valueList = [...sliderValue];
     valueList[index] = value;
@@ -608,38 +551,12 @@ export const FacetPanel = ({ classes }) => {
                                         Min:
                                         &nbsp;
                                       </span>
-                                      <Input
-                                        value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
-                                          : sideBarItem.checkboxItems.lowerBound}
-                                        onChange={(event) => handleInputChangeMin(
-                                          [
-                                            sideBarItem.checkboxItems.lowerBound,
-                                            sideBarItem.checkboxItems.upperBound,
-                                          ],
-                                          sideBarIndex,
-                                          sideBarItem,
-                                          event,
-                                        )}
-                                        onBlur={(event) => handleBlurMin(
-                                          [
-                                            sideBarItem.checkboxItems.lowerBound,
-                                            sideBarItem.checkboxItems.upperBound,
-                                          ],
-                                          sideBarIndex,
-                                          sideBarItem,
-                                          sideBarItem.checkboxItems.lowerBound,
-                                          typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
-                                            : sideBarItem.checkboxItems.upperBound,
-                                          event,
-                                        )}
-                                        style={{ width: '40px' }}
-                                        inputProps={{
-                                          step: 1,
-                                          min: sideBarItem.checkboxItems.lowerBound,
-                                          max: typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
-                                            : sideBarItem.checkboxItems.upperBound,
-                                          type: 'number',
-                                        }}
+                                      <InputViewMin
+                                        sideBarIndex={sideBarIndex}
+                                        sideBarItem={sideBarItem}
+                                        sliderValue={sliderValue}
+                                        setSliderValue={setSliderValue}
+                                        toggleSlider={toggleSlider}
                                       />
                                     </div>
                                     <div className={classes.maxValue}>
@@ -647,38 +564,12 @@ export const FacetPanel = ({ classes }) => {
                                         Max:
                                         &nbsp;
                                       </span>
-                                      <Input
-                                        value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
-                                          : sideBarItem.checkboxItems.upperBound}
-                                        onChange={(event) => handleInputChangeMax(
-                                          [
-                                            sideBarItem.checkboxItems.lowerBound,
-                                            sideBarItem.checkboxItems.upperBound,
-                                          ],
-                                          sideBarIndex,
-                                          sideBarItem,
-                                          event,
-                                        )}
-                                        onBlur={(event) => handleBlurMax(
-                                          [
-                                            sideBarItem.checkboxItems.lowerBound,
-                                            sideBarItem.checkboxItems.upperBound,
-                                          ],
-                                          sideBarIndex,
-                                          sideBarItem,
-                                          typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
-                                            : sideBarItem.checkboxItems.lowerBound,
-                                          sideBarItem.checkboxItems.upperBound,
-                                          event,
-                                        )}
-                                        style={{ width: '40px' }}
-                                        inputProps={{
-                                          step: 1,
-                                          min: typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
-                                            : sideBarItem.checkboxItems.lowerBound,
-                                          max: sideBarItem.checkboxItems.upperBound,
-                                          type: 'number',
-                                        }}
+                                      <InputViewMax
+                                        sideBarIndex={sideBarIndex}
+                                        sideBarItem={sideBarItem}
+                                        sliderValue={sliderValue}
+                                        setSliderValue={setSliderValue}
+                                        toggleSlider={toggleSlider}
                                       />
                                     </div>
                                     <Slider
