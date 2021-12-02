@@ -28,10 +28,12 @@ function searchComponent() {
   async function getAutoCompleteRes(newValue = []) {
     setInputValue(newValue);
     const searchResp = await getSearch(newValue);
-    // This needs to be replaced as obj.keys but __typename param coming extra from BE
-    const keys = ['program_ids', 'arm_ids', 'subject_ids', 'sample_ids', 'file_ids'];
-    const mapOption = keys.map((key) => searchResp[key].map((id) => (id)));
+    const keys = ['programs', 'studies', 'subjects', 'samples', 'files'];
+    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'];
+
+    const mapOption = keys.map((key, ind) => searchResp[key].map((id) => (id[datafields[ind]])));
     const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
+
     setOptions(option);
   }
 

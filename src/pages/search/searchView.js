@@ -1,16 +1,30 @@
 /* eslint-disable */
 import React from 'react';
 import {
-  TextField, CircularProgress, withStyles, List, ListItem, Divider, Chip
+  TextField, CircularProgress, withStyles, Box, ListItem, Divider, Chip, Tabs, Tab
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { getSearch } from '../dashboardTab/store/dashboardReducer';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel';
+
+import { getSearch, getSearchPageResults } from '../dashboardTab/store/dashboardReducer';
+import Pagination from './components/pagination';
+import Subsection from './components/searchCard';
+
 
 function searchComponent({ classes, searchparam = '' }) {
+  const [tab, setTab] = React.useState('2');
+
+  const handleChange = (event, newValue) => {
+    setTab(newValue);
+  };
+
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
+  const [searchResults, setSearchResults] = React.useState([]);
   const loading = open;
   const [value, setValue] = React.useState([]);
 
@@ -18,21 +32,24 @@ function searchComponent({ classes, searchparam = '' }) {
     if (!open) {
       setOptions([]);
     }
-    getAutoCompleteRes(searchparam);
+    getAutoCompleteRes(searchparam)
+    onChange(searchparam);
   }, [open]);
 
-  function onChange(newValue = []) {
-    setValue(newValue);
+  async function onChange(newValue = []) {
+    const searchResp = await getSearchPageResults(newValue);
+    setSearchResults(searchResp);
   }
 
   async function getAutoCompleteRes(newValue = []) {
     setInputValue(newValue);
     const searchResp = await getSearch(newValue);
-    const keys = ['program_ids', 'arm_ids', 'subject_ids', 'sample_ids', 'file_ids'];
-    const mapOption = keys.map((key) => searchResp[key].map((id) => ({ type: key, title: id })));
+    const keys = ['programs', 'studies', 'subjects', 'samples', 'files'];
+    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'];
+
+    const mapOption = keys.map((key, index) => searchResp[key].map((id) => (id[datafields[index]])));
     const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
-    setOptions(option);
-    console.log(option);
+    setOptions(newValue !== '' ? [...[newValue],...option]:option);
   }
 
   return (
@@ -50,81 +67,92 @@ function searchComponent({ classes, searchparam = '' }) {
             }}
             value={value}
             style={{ width: 600 }}
-            options={[]}
+            getOptionLabel={(option) => option}
+            options={options}
             loading={loading}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="search"
+                variant="outlined"
                 hiddenLabel
-                variant="standard"
                 InputProps={{
+                  classes: {
+                    root: classes.input,
+                    notchedOutline: classes.notchedOutline
+                  },
                   ...params.InputProps,
                   endAdornment: (
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}
                       {params.InputProps.endAdornment}
-                      <SearchIcon />
+                      <SearchIcon style={{ color: 'black' }} />
                     </>
                   ),
                 }}
               />
             )}
           />
-          <div className={classes.chipSection}>
-            <button type="button" className={classes.button}>
-              All
-            </button>
-            <button type="button" className={classes.button}>
-              Cases
-            </button>
-            <button type="button" className={classes.button}>
-              Samples
-            </button>
-            <button type="button" className={classes.button}>
-              files
-            </button>
-          </div>
         </div>
       </div>
       <div className={classes.bodyContainer}>
-        <div className={classes.width800}>
-          {options.map((v, index) => (
-            <>
-              <div
-                className={classes.searchItem}
-              >
-                  <span>
-                    {`${v.type}`}
-                  </span>
-                  <span>
-                    {`${v.title}`}
-                  </span>
-              </div>
-              <Divider
-                style={{
-                  backgroundColor: '#B6DCFC',
-                  height: '2px',
-                }}
-              />
-            </>
-          ))}
+        <div className={classes.width1100}>
+          <Box  sx={{ width: '100%', typography: 'body1' }}>
+            <TabContext value={tab} fullWidth={true}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <TabList onChange={handleChange} variant="scrollable" aria-label="tabs">
+                  <Tab label="All" value="1" />
+                  <Tab label={`Cases (${searchResults.subject_count || 0})`} value="2" />
+                  <Tab label={`Samples (${searchResults.sample_count || 0})`} value="3" />
+                  <Tab label={`Files (${searchResults.file_count || 0})`} value="4" />
+                  <Tab label={`Programs (${searchResults.program_count || 0})`} value="5" />
+                  <Tab label={`Studies (${searchResults.study_count || 0})`} value="6" />
+                  <Tab label={`Data (${searchResults.value_count || 0})`} value="7" />
+                  <Tab label={`About (${searchResults.about_count || 0})`} value="8" />
+                </TabList>
+              </Box>
+              <TabPanel value="1"><Subsection data={searchResults.subjects} /></TabPanel>
+              <TabPanel value="2"><Subsection data={searchResults.subjects} /></TabPanel>
+              <TabPanel value="3"><Subsection data={searchResults.samples} /></TabPanel>
+              <TabPanel value="4"><Subsection data={searchResults.files} /></TabPanel>
+              <TabPanel value="5"><Subsection data={searchResults.programs} /></TabPanel>
+              <TabPanel value="6"><Subsection data={searchResults.studies} /></TabPanel>
+              <TabPanel value="7"><Subsection data={searchResults.values} /></TabPanel>
+              <TabPanel value="8"><Subsection data={searchResults.about_page} /></TabPanel>
+
+            </TabContext>
+          </Box>
         </div>
+        <Pagination />
       </div>
     </>
   );
 }
 
 const styles = () => ({
+  searchText: {
+    color: '#1479D3',
+    fontFamily: 'Lato',
+    fontSize: '25px',
+  },
+  notchedOutline: {
+
+  },
+  input: {
+    borderRadius: '8px',
+    color: '#1479D3',
+    fontFamily: 'Lato',
+    fontSize: '25px',
+
+  },
   heroArea: {
     width: '100%',
-    height: '200px',
-    background: '#B6DCFC',
+    height: '167px',
+    background: '#D9E8F8',
     marginTop: '-47px',
   },
   autocomplete: {
     margin: '0 auto',
-    paddingTop: '50px',
+    paddingTop: '57px',
   },
   chipSection: {
     display: 'flex',
@@ -155,7 +183,7 @@ const styles = () => ({
     fontSize: '15px',
     lineHeight: '22px',
   },
-  width800: {
+  width1100: {
     maxWidth: '1100px',
     margin: '0px auto 0px auto',
   },
