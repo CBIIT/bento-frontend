@@ -37,6 +37,8 @@ import {
   resetIconFilter,
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
+import InputViewMin from './InputViewMin';
+import InputViewMax from './InputViewMax';
 import AutoComplete from './searchComponet';
 import FacetModal from './CasesModal';
 import styles from './styles/FacetFiltersStyles';
@@ -61,7 +63,7 @@ const CustomExpansionPanelSummary = withStyles({
   expanded: {},
 })(ExpansionPanelSummary);
 
-const FacetPanel = ({ classes }) => {
+export const FacetPanel = ({ classes }) => {
   // data from store
   const sideBarContent = useSelector((state) => (
     state.dashboardTab
@@ -77,10 +79,14 @@ const FacetPanel = ({ classes }) => {
   const handleChangeSlider = (index, value) => {
     const valueList = [...sliderValue];
     valueList[index] = value;
-    setSliderValue(valueList);
+    if (!valueList[index].includes('')) {
+      setSliderValue(valueList);
+    }
   };
   const handleChangeCommittedSlider = (sideBarItem, value) => {
-    toggleSlider(value, sideBarItem);
+    if (!value.includes('')) {
+      toggleSlider(value, sideBarItem);
+    }
   };
   // data from store for sidebar laoding
   const isSidebarLoading = useSelector((state) => (
@@ -316,7 +322,6 @@ const FacetPanel = ({ classes }) => {
       </div>
     );
   };
-
   const toggleAutocomplete = (e) => {
     e.stopPropagation();
     if (showSearch) {
@@ -541,6 +546,32 @@ const FacetPanel = ({ classes }) => {
                               )) : (
                                 <div>
                                   <div className={classes.sliderRoot}>
+                                    <div className={classes.minValue}>
+                                      <span>
+                                        Min:
+                                        &nbsp;
+                                      </span>
+                                      <InputViewMin
+                                        sideBarIndex={sideBarIndex}
+                                        sideBarItem={sideBarItem}
+                                        sliderValue={sliderValue}
+                                        setSliderValue={setSliderValue}
+                                        toggleSlider={toggleSlider}
+                                      />
+                                    </div>
+                                    <div className={classes.maxValue}>
+                                      <span>
+                                        Max:
+                                        &nbsp;
+                                      </span>
+                                      <InputViewMax
+                                        sideBarIndex={sideBarIndex}
+                                        sideBarItem={sideBarItem}
+                                        sliderValue={sliderValue}
+                                        setSliderValue={setSliderValue}
+                                        toggleSlider={toggleSlider}
+                                      />
+                                    </div>
                                     <Slider
                                       value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex]
                                         : [
@@ -571,7 +602,6 @@ const FacetPanel = ({ classes }) => {
                                         thumb: classes.thumb,
                                         track: classes.track,
                                       }}
-                                      // color="#10A075"
                                     />
                                     <span className={classes.lowerBound}>
                                       {sideBarItem.checkboxItems.lowerBound}
