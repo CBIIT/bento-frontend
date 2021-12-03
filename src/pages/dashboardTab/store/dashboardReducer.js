@@ -12,7 +12,7 @@ import {
   transformInitialDataForSunburst,
   transformAPIDataIntoCheckBoxData,
 } from 'bento-components';
-import { SEARCH } from '../../../bento/search';
+import { SEARCH_PAGE_RESULTS, SEARCH } from '../../../bento/search';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
 
@@ -98,6 +98,18 @@ export async function getSearch(inputVlaue) {
   const allids = await client
     .query({
       query: SEARCH,
+      variables: {
+        input: inputVlaue,
+      },
+    })
+    .then((result) => result.data.globalSearch);
+  return allids;
+}
+
+export async function getSearchPageResults(inputVlaue) {
+  const allids = await client
+    .query({
+      query: SEARCH_PAGE_RESULTS,
       variables: {
         input: inputVlaue,
       },
