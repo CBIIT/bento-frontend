@@ -37,10 +37,9 @@ import {
 import {
   GET_IDS_BY_TYPE,
   widgetsSearchData,
-  CASES_FILE_QUERY,
-  CASES_SAMPLE_QUERY,
   SUBJECT_OVERVIEW_QUERY,
   GET_SEARCH_NODES_BY_FACET,
+  ageAtIndex,
 } from '../../../bento/localSearchData';
 
 const storeKey = 'dashboardTab';
@@ -350,36 +349,7 @@ const getSubjectDetails = async (variables) => {
       first: 100,
       sort_direction: 'desc',
       order_by: 'age_at_index',
-      age_at_index: [10, null],
-      ...variables,
-    },
-  });
-  return result;
-};
-
-const getFilesDetails = async (variables) => {
-  const result = await client.query({
-    query: CASES_FILE_QUERY,
-    variables: {
-      first: 2,
-      offset: 0,
-      order_by: 'file_id',
-      sort_direction: 'desc',
-      age_at_index: [10, null],
-      ...variables,
-    },
-  });
-  return result;
-};
-
-const getSampleDetails = async (variables) => {
-  const result = await client.query({
-    query: CASES_SAMPLE_QUERY,
-    variables: {
-      first: 2,
-      offset: 0,
-      order_by: 'diagnosis',
-      sort_direction: 'asc',
+      age_at_index: [ageAtIndex, null],
       ...variables,
     },
   });
@@ -403,20 +373,14 @@ export async function localSearch(searchcriteria) {
 
     const [
       caseResponse,
-      fileResponse,
-      sampleResponse,
       subjectResponse,
     ] = await Promise.all([
       getCaseData(variables),
-      getFilesDetails(variables),
-      getSampleDetails(variables),
       getSubjectDetails(variables),
     ]);
     store.dispatch({
       type: 'LOCAL_SEARCH',
       payload: {
-        fileResponse,
-        sampleResponse,
         subjectResponse,
         result: caseResponse,
       },
@@ -1082,8 +1046,6 @@ const reducers = {
       setSideBarLoading: false,
       datatable: {
         dataCase: item.subjectResponse.data.subjectOverview,
-        dataSample: item.sampleResponse.data.sampleOverview,
-        dataFile: item.fileResponse.data.fileOverview,
       },
       checkbox: {
         data: checkboxData,

@@ -37,7 +37,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
 
   const isSidebarLoading = useSelector((state) => (
     state.dashboardTab
-  && state.dashboardTab.setSideBarLoading
+      && state.dashboardTab.setSideBarLoading
       ? state.dashboardTab.setSideBarLoading : false));
 
   const tabDataLoading = useSelector((state) => (state.dashboardTab
@@ -85,14 +85,12 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
   }
 
   React.useEffect(() => {
-    if (value.length > 0) {
-      addAutoComplete({
-        type: type.replace('Ids', ''),
-        value,
-      });
-      setSideBarToLoading();
-      localSearch(value);
-    }
+    addAutoComplete({
+      type: type.replace('Ids', ''),
+      value,
+    });
+    setSideBarToLoading();
+    localSearch(value);
   }, [value]);
 
   const onDelete = (title) => () => {

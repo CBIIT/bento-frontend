@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Tabs, Tab, withStyles,
@@ -52,6 +52,10 @@ const tabController = (classes) => {
   // get stats data from store
   const dashboardStats = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
+
+  useEffect(() => {
+    setCurrentTab(0);
+  }, [dashboardStats]);
 
   const filteredFileIds = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.filteredFileIds ? state.dashboardTab.filteredFileIds : null));

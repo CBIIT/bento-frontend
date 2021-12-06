@@ -510,3 +510,5 @@ export const widgetsSearchData = [
     show: true,
   },
 ];
+
+export const ageAtIndex = 10;
