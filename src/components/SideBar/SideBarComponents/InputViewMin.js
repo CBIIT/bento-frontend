@@ -16,11 +16,8 @@ function InputViewMin(props) {
       setSliderValue(valueList);
     }
     valueList[index][0] = event.target.value;
-    if (valueList[index][0] !== '') {
-      valueList[index][0] = Number(valueList[index][0]);
-      setSliderValue(valueList);
-      toggleSlider(valueList[index], sideBarItem);
-    }
+    setSliderValue(valueList);
+    toggleSlider(valueList[index], sideBarItem);
   };
   const handleBlurMin = (defaultValue, index, min, max, event) => {
     const valueList = [...sliderValue];
@@ -40,7 +37,7 @@ function InputViewMin(props) {
   };
   return (
     <Input
-      value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0]
+      value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][0].toString()
         : sideBarItem.checkboxItems.lowerBound}
       onChange={(event) => handleInputChangeMin(
         [

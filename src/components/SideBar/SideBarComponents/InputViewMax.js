@@ -16,11 +16,8 @@ function InputViewMax(props) {
       setSliderValue(valueList);
     }
     valueList[index][1] = event.target.value;
-    if (event.target.value !== '') {
-      valueList[index][1] = Number(valueList[index][1]);
-      setSliderValue(valueList);
-      toggleSlider(valueList[index], sideBarItem);
-    }
+    setSliderValue(valueList);
+    toggleSlider(valueList[index], sideBarItem);
   };
   const handleBlurMax = (defaultValue, index, min, max, event) => {
     const valueList = [...sliderValue];
@@ -40,7 +37,7 @@ function InputViewMax(props) {
   };
   return (
     <Input
-      value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1]
+      value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex][1].toString()
         : sideBarItem.checkboxItems.upperBound}
       onChange={(event) => handleInputChangeMax(
         [
