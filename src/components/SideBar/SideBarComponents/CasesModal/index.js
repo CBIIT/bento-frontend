@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import {
   Modal,
@@ -100,10 +101,11 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
 
   React.useEffect(() => {
     (async () => {
-      const response = await getAllIds();
-      if (response.subjectIds) {
-        setSubjectIds(response.subjectIds);
-      }
+      // getAllIds(type) need to pass tyoe value look at FacetFilter.js for example 
+      // const response = await getAllIds();
+      // if (response.subjectIds) {
+      //   setSubjectIds(response.subjectIds);
+      // }
     })();
   }, []);
   return (
