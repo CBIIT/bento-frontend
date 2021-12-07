@@ -8,7 +8,11 @@ import {
   TextareaAutosize,
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
+import {
+  getAllIds,
+} from '../../../../pages/dashboardTab/store/dashboardReducer';
 import FileUploader from '../../../FileUploader';
+import SummaryTable from './SummaryTable';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -61,14 +65,47 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
   const classes = useStyles();
 
   const [fileContent, setFileContent] = React.useState('');
+  const [subjectIds, setSubjectIds] = React.useState([]);
+  const [matchIds, setMatchIds] = React.useState([]);
+  const [unmatchedIds, setUnmatchedIds] = React.useState([]);
 
   const submitCase = () => {
     closeModal();
   };
 
-  const handleChange = ({ target: { value } }) => setFileContent(value);
-  const handleFileUpload = (content) => setFileContent(content);
+  const handleContent = (content) => {
+    const matchData = [];
+    const fileData = content && content.toString().split('\n');
+    const unmatchData = [...fileData];
+    subjectIds.map((subId) => fileData.filter((id) => {
+      if (subId.toLowerCase() === id.toLowerCase()) {
+        matchData.push(id);
+        const index = unmatchData.indexOf(subId);
+        if (index > -1) {
+          unmatchData.splice(index, 1);
+        }
+      }
+      return matchData;
+    }));
+    setMatchIds(matchData);
+    setUnmatchedIds(unmatchData);
+  };
 
+  const handleChange = ({ target: { value } }) => { setFileContent(value); handleContent(value); };
+
+  const handleFileUpload = (content) => {
+    setFileContent(content);
+    handleContent(content);
+  };
+
+  React.useEffect(() => {
+    (async () => {
+      const response = await getAllIds();
+      if (response.subjectIds) {
+        setSubjectIds(response.subjectIds);
+      }
+    })();
+  }, []);
   return (
     <Modal
       {...modalProps}
@@ -96,13 +133,14 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
             value={fileContent}
             name="caseDescription"
             onChange={handleChange}
-            placeholder="eg. TGCA blah blah blah...."
+            placeholder="eg. BENTO-CASE-06, BENTO-CASE-22"
           />
           <div className={classes.uploadFile}>
             <p>Or choose a file to upload</p>
             <FileUploader onFileUpload={handleFileUpload} />
           </div>
         </div>
+        {fileContent && <SummaryTable matchedContent={matchIds} unmatchedContent={unmatchedIds} />}
         <div className={classes.modalFooter}>
           <Button variant="contained" color="primary" onClick={closeModal} className={classes.button}>Cancel</Button>
           <Button variant="contained" color="blueGrey" className={classes.button}>Clear</Button>

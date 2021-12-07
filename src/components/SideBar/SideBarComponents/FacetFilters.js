@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  Slider,
   List,
   ExpansionPanel,
   ExpansionPanelDetails,
@@ -11,6 +12,7 @@ import {
   CircularProgress,
   Button,
   Icon,
+  ListItem,
 } from '@material-ui/core';
 import _ from 'lodash';
 import {
@@ -19,6 +21,7 @@ import {
 } from '@material-ui/icons';
 import {
   toggleCheckBox,
+  toggleSlider,
   setSideBarToLoading,
   setDashboardTableLoading,
   // eslint-disable-next-line no-unused-vars
@@ -34,6 +37,8 @@ import {
   sortLabels, showCheckboxCount,
 } from '../../../bento/dashboardData';
 import CheckBoxView from './CheckBoxView';
+import InputViewMin from './InputViewMin';
+import InputViewMax from './InputViewMax';
 import AutoComplete from './searchComponet';
 import FacetModal from './CasesModal';
 import styles from './styles/FacetFiltersStyles';
@@ -67,6 +72,22 @@ const FacetPanelComponent = ({ classes }, ref) => {
         data: [],
         defaultPanel: false,
       }));
+  const [sliderValue, setSliderValue] = React.useState([]);
+  function valuetext(value) {
+    return `${value}`;
+  }
+  const handleChangeSlider = (index, value) => {
+    const valueList = [...sliderValue];
+    valueList[index] = value;
+    if (!valueList[index].includes('')) {
+      setSliderValue(valueList);
+    }
+  };
+  const handleChangeCommittedSlider = (sideBarItem, value) => {
+    if (!value.includes('')) {
+      toggleSlider(value, sideBarItem);
+    }
+  };
   // data from store for sidebar laoding
   const isSidebarLoading = useSelector((state) => (
     state.dashboardTab
@@ -236,7 +257,6 @@ const FacetPanelComponent = ({ classes }, ref) => {
       </div>
     );
   };
-
   const toggleAutocomplete = (e) => {
     e.stopPropagation();
     if (showSearch) {
@@ -333,7 +353,7 @@ const FacetPanelComponent = ({ classes }, ref) => {
 
             <ExpansionPanelDetails classes={{ root: classes.expansionPanelDetailsRoot }}>
               <List component="div" disablePadding dense>
-                {currentSection.items.map((sideBarItem) => (
+                {currentSection.items.map((sideBarItem, sideBarIndex) => (
                   <>
                     <ExpansionPanel
                       square
@@ -423,6 +443,146 @@ const FacetPanelComponent = ({ classes }, ref) => {
                                 />
                               ),
                             )
+                            && sideBarItem.slider !== true ? (
+                                sideBarItem.checkboxItems.map(
+                                  (item, index) => (
+                                    <CheckBoxView
+                                      key={index}
+                                      checkboxItem={item}
+                                      sideBarItem={sideBarItem}
+                                      currentSection={currentSection}
+                                      handleToggle={handleToggle}
+                                      facetSectionVariables={facetSectionVariables}
+                                      defaultFacetSectionVariables={defaultFacetSectionVariables}
+                                      backgroundColor={getCheckBoxColor(index, currentSection)}
+                                      checkColor={getGroupNameColor(
+                                        sideBarItem,
+                                        currentSection,
+                                        sideBarIndex,
+                                      )}
+                                      lineColor={getLineColor(
+                                        index,
+                                        sideBarItem.checkboxItems.length,
+                                      )}
+                                    />
+                                  ),
+                                )) : (
+                                  <div>
+                                    <div className={classes.sliderRoot}>
+                                      <div className={classes.minValue}>
+                                        <span>
+                                          Min:
+                                          &nbsp;
+                                        </span>
+                                        <InputViewMin
+                                          sideBarIndex={sideBarIndex}
+                                          sideBarItem={sideBarItem}
+                                          sliderValue={sliderValue}
+                                          setSliderValue={setSliderValue}
+                                          toggleSlider={toggleSlider}
+                                        />
+                                      </div>
+                                      <div className={classes.maxValue}>
+                                        <span>
+                                          Max:
+                                          &nbsp;
+                                        </span>
+                                        <InputViewMax
+                                          sideBarIndex={sideBarIndex}
+                                          sideBarItem={sideBarItem}
+                                          sliderValue={sliderValue}
+                                          setSliderValue={setSliderValue}
+                                          toggleSlider={toggleSlider}
+                                        />
+                                      </div>
+                                      <Slider
+                                        value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex]
+                                          : [
+                                            sideBarItem.checkboxItems.lowerBound,
+                                            sideBarItem.checkboxItems.upperBound,
+                                          ]}
+                                        defaultValue={[
+                                          sideBarItem.checkboxItems.lowerBound,
+                                          sideBarItem.checkboxItems.upperBound,
+                                        ]}
+                                        onChange={(event, value) => handleChangeSlider(
+                                          sideBarIndex,
+                                          value,
+                                        )}
+                                        onChangeCommitted={
+                                      (event, value) => handleChangeCommittedSlider(
+                                        sideBarItem,
+                                        value,
+                                      )
+                                    }
+                                        valueLabelDisplay="auto"
+                                        getAriaValueText={valuetext}
+                                        disableSwap
+                                        min={sideBarItem.checkboxItems.lowerBound}
+                                        max={sideBarItem.checkboxItems.upperBound}
+                                        classes={{
+                                          rail: classes.rail,
+                                          thumb: classes.thumb,
+                                          track: classes.track,
+                                        }}
+                                      />
+                                      <span className={classes.lowerBound}>
+                                        {sideBarItem.checkboxItems.lowerBound}
+                                      </span>
+                                      <span className={classes.upperBound}>
+                                        {sideBarItem.checkboxItems.upperBound}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      {typeof sliderValue[sideBarIndex] !== 'undefined'
+                                        ? (sliderValue[sideBarIndex][0]
+                                      > sideBarItem.checkboxItems.lowerBound
+                                      || sliderValue[sideBarIndex][1]
+                                      < sideBarItem.checkboxItems.upperBound)
+                                    && (
+                                      <div>
+                                        <ListItem
+                                          width={1}
+                                          button
+                                          className={classes.nested}
+                                          style={{
+                                            backgroundColor: getCheckBoxColor(0, currentSection),
+                                            justifyContent: 'end',
+                                          }}
+                                          classes={{
+                                            selected: classes.selected,
+                                            gutters: classes.listItemGutters,
+                                          }}
+                                        >
+                                          <div className={classes.sliderListItem}>
+                                            <span className={classes.sliderText}>
+                                              {sideBarItem.quantifier}
+                                            </span>
+                                            <span className={classes.sliderText}>
+                                              {sliderValue[sideBarIndex][1]}
+                                              &nbsp;
+                                            </span>
+                                            <span className={classes.sliderText}>
+                                              -
+                                            </span>
+                                            <span className={classes.sliderText}>
+                                              {sliderValue[sideBarIndex][0]}
+                                            </span>
+                                          </div>
+                                        </ListItem>
+                                        <Divider
+                                          style={{
+                                            backgroundColor: '#FFFFFF',
+                                            height: '2px',
+                                          }}
+                                        />
+                                      </div>
+                                    ) : (
+                                      <span />
+                                        )}
+                                    </div>
+                                  </div>
+                              )
                           }
                         </List>
                       </ExpansionPanelDetails>

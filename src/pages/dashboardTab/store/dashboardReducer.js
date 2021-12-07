@@ -14,10 +14,10 @@ import {
   transformAPIDataIntoCheckBoxData,
 } from 'bento-components';
 import store from '../../../store';
-import { SEARCH } from '../../../bento/search';
 import client from '../../../utils/graphqlClient';
-import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
+import { SEARCH_PAGE_RESULTS, SEARCH } from '../../../bento/search';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
+import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
 
 import {
   tabContainers,
@@ -105,6 +105,18 @@ export async function getSearch(inputVlaue) {
   const allids = await client
     .query({
       query: SEARCH,
+      variables: {
+        input: inputVlaue,
+      },
+    })
+    .then((result) => result.data.globalSearch);
+  return allids;
+}
+
+export async function getSearchPageResults(inputVlaue) {
+  const allids = await client
+    .query({
+      query: SEARCH_PAGE_RESULTS,
       variables: {
         input: inputVlaue,
       },
@@ -282,6 +294,13 @@ function createFilterVariables(data) {
   }, {});
 
   return filter;
+}
+
+function createFilterVariablesRange(value, sideBarItem) {
+  const currentAllActiveFilters = getState().allActiveFilters;
+  currentAllActiveFilters[sideBarItem.datafield] = value;
+  return currentAllActiveFilters;
+  // eslint-disable-next-line  no-unused-vars
 }
 
 /**
@@ -834,6 +853,19 @@ export function toggleCheckBox(payload) {
       });
     }
   };
+}
+
+export function toggleSlider(value, sideBarItem) {
+  // console.log(value);
+  if (!value.includes('')) {
+    const payload = {};
+    const currentAllFilterVariables = createFilterVariablesRange(value, sideBarItem);
+    // console.log(payload);
+    // For performance issue we are using initial dasboardquery instead of fitered for empty filters
+    if (_.isEqual(currentAllFilterVariables, allFilters())) {
+      clearAllFilters();
+    } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+  }
 }
 
 /**
