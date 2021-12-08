@@ -37,7 +37,8 @@ const ProgamCard = ({ data, classes }) => {
           {' '}
 &nbsp;
           {' '}
-          {data.program_code}
+          <span className={classes.cardTitle}>{data.program_code}</span>
+
         </div>
 
         {propertiesWithLinks.slice(0, 10).map((prop, index) => (
@@ -61,6 +62,11 @@ const styles = () => ({
     padding: '18px',
     borderBottom: '2px solid #E7EEF5',
   },
+  cardTitle: {
+    color: '#0083C6',
+    fontFamily: 'Nunito Sans',
+    fontSize: '16px',
+  },
   content: {
     fontSize: '12px',
   },
@@ -68,7 +74,7 @@ const styles = () => ({
     textTransform: 'uppercase',
     paddingLeft: '8px',
     paddingRight: '8px',
-    backgroundColor: '#C09500',
+    backgroundColor: '#FFE25A',
     color: '#000000',
     fontFamily: 'Nunito Sans',
     fontSize: '14px',

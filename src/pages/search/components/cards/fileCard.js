@@ -37,7 +37,8 @@ const FileCard = ({ data, classes }) => {
             {' '}
 &nbsp;
             {' '}
-            {data.file_id}
+            <span className={classes.cardTitle}>{data.file_id}</span>
+
           </div>
           {propertiesWithLinks.slice(0, 10).map((prop, index) => (
             <PropertyItem
@@ -79,6 +80,11 @@ const styles = () => ({
     padding: '18px',
     borderBottom: '2px solid #E7EEF5',
   },
+  cardTitle: {
+    color: '#0083C6',
+    fontFamily: 'Nunito Sans',
+    fontSize: '16px',
+  },
   content: {
     fontSize: '12px',
   },
@@ -86,7 +92,7 @@ const styles = () => ({
     textTransform: 'uppercase',
     paddingLeft: '8px',
     paddingRight: '8px',
-    backgroundColor: '#AC32AB',
+    backgroundColor: '#F5C3F1',
     color: '#000000',
     fontFamily: 'Nunito Sans',
     fontSize: '14px',

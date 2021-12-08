@@ -10,6 +10,13 @@ const AboutCard = ({ data, classes }) => {
     <>
       <Grid item container className={classes.card}>
         <Grid item xs={9}>
+          <div>
+            <span className={classes.detailContainerHeader}>ABOUT BENTO</span>
+            {' '}
+&nbsp;
+            {' '}
+
+          </div>
           <div className={classes.text}>{results}</div>
         </Grid>
       </Grid>
@@ -27,6 +34,11 @@ const styles = () => ({
     padding: '18px',
     borderBottom: '2px solid #E7EEF5',
   },
+  cardTitle: {
+    color: '#0083C6',
+    fontFamily: 'Nunito Sans',
+    fontSize: '16px',
+  },
   content: {
     fontSize: '12px',
   },
@@ -34,7 +46,7 @@ const styles = () => ({
     textTransform: 'uppercase',
     paddingLeft: '8px',
     paddingRight: '8px',
-    backgroundColor: '#AC32AB',
+    backgroundColor: '#ECC28B',
     color: '#000000',
     fontFamily: 'Nunito Sans',
     fontSize: '14px',
