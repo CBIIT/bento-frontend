@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FacetModal = ({ closeModal, ...modalProps }) => {
+const FacetModal = ({ closeModal,type, ...modalProps }) => {
   const classes = useStyles();
 
   const [fileContent, setFileContent] = React.useState('');
@@ -101,11 +101,10 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
 
   React.useEffect(() => {
     (async () => {
-      // getAllIds(type) need to pass tyoe value look at FacetFilter.js for example 
-      // const response = await getAllIds();
-      // if (response.subjectIds) {
-      //   setSubjectIds(response.subjectIds);
-      // }
+      const response = await getAllIds(type);
+      if (response.subjectIds) {
+        setSubjectIds(response.subjectIds);
+      }
     })();
   }, []);
   return (
