@@ -26,6 +26,9 @@ query globalSearch($input: String){
         files {
             file_id
         }
+        values {
+            value
+        }
     }
 }
 `;
