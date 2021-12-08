@@ -43,7 +43,7 @@ const CaseCard = ({ data, classes }) => {
             {' '}
 &nbsp;
             {' '}
-            {data.subject_id}
+            <span className={classes.cardTitle}>{data.subject_id}</span>
           </div>
           {propertiesWithLinks.slice(0, 10).map((prop, index) => (
             <PropertyItem
@@ -85,6 +85,11 @@ const styles = () => ({
   card: {
     padding: '18px',
     borderBottom: '2px solid #E7EEF5',
+  },
+  cardTitle: {
+    color: '#0083C6',
+    fontFamily: 'Nunito Sans',
+    fontSize: '16px',
   },
   content: {
     fontSize: '12px',

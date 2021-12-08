@@ -31,7 +31,7 @@ const StudyCard = ({ data, classes }) => {
           {' '}
 &nbsp;
           {' '}
-          {data.study_id}
+          <span className={classes.cardTitle}>{data.study_id}</span>
         </div>
 
         {propertiesWithLinks.slice(0, 10).map((prop, index) => (
@@ -57,6 +57,11 @@ const styles = () => ({
   card: {
     padding: '18px',
     borderBottom: '2px solid #E7EEF5',
+  },
+  cardTitle: {
+    color: '#0083C6',
+    fontFamily: 'Nunito Sans',
+    fontSize: '16px',
   },
   detailContainerHeader: {
     textTransform: 'uppercase',

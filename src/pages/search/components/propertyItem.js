@@ -8,15 +8,17 @@ const PropertyItem = ({
   const defaultValue = '';
   return (
     <Grid item container>
-      <Grid item xs={6}>
+      <Grid item xs={9}>
         <span className={classes.title} id={`section_title_${index + 1}`}>
           {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : label}
         </span>
-      </Grid>
-      <Grid item xs={6} className={classes.content} id={`section_description_${index + 1}`}>
-        {value || value === 0 ? (
-          link ? <Anchor link={link} text={value} classes={classes} /> : value
-        ) : defaultValue}
+        :
+&nbsp;
+        <span className={classes.content} id={`section_description_${index + 1}`}>
+          {value || value === 0 ? (
+            link ? <Anchor link={link} text={value} classes={classes} /> : value
+          ) : defaultValue}
+        </span>
       </Grid>
     </Grid>
   );
@@ -24,42 +26,22 @@ const PropertyItem = ({
 
 const styles = (theme) => ({
   content: {
+    color: '#000',
+    fontFamily: theme.custom.fontFamilySans,
     fontSize: '12px',
-  },
-  detailContainerHeader: {
-    textTransform: 'uppercase',
-    fontFamily: 'Lato',
-    fontSize: '17px',
-    letterSpacing: '0.025em',
-    color: '#0296C9',
-  },
-  subsectionBody: {
-    borderBottom: '1px solid #8DCAFF',
-    paddingBottom: '15px',
-  },
-  subsection: {
-    '&:last-child $subsectionBody': {
-      borderBottom: 'none',
-    },
+    whiteSpace: 'nowrap',
   },
   title: {
-    color: '#9d9d9c',
+    color: '#000',
     fontFamily: theme.custom.fontFamilySans,
     fontSize: '12px',
     lineHeight: '12px',
     letterSpacing: '0.017em',
-    fontWeight: '600',
-    textTransform: 'uppercase',
+    fontWeight: 'bold',
     whiteSpace: 'nowrap',
   },
-  descriptionPart: {
-    paddingBottom: '26px',
-  },
-  description: {
-    fontWeight: 'bold',
-  },
   link: {
-    color: '#DD401C',
+    color: 'black',
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'underline',
