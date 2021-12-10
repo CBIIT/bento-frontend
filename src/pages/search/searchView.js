@@ -37,7 +37,7 @@ function searchComponent({ classes, searchparam = '' }) {
         src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/FunnelIcon.svg"
         alt="filter icon"
       />
-      <span classes={classes.allText}>All</span>
+      <span classes={classes.allText}>ALL</span>
     </div>
   );
 
@@ -68,6 +68,7 @@ function searchComponent({ classes, searchparam = '' }) {
         <div>
           <Autocomplete
             className={classes.autocomplete}
+            classes={{ root: classes.inputRoot }}
             freeSolo
             id="search"
             onChange={(event, newValue) => onChange(newValue)}
@@ -96,7 +97,7 @@ function searchComponent({ classes, searchparam = '' }) {
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}
                       {params.InputProps.endAdornment}
-                      <SearchIcon style={{ color: 'black' }} />
+                      <SearchIcon style={{ color: 'black', stroke: 'black', strokeWidth: '1.2px' }} />
                     </>
                   ),
                 }}
@@ -110,14 +111,14 @@ function searchComponent({ classes, searchparam = '' }) {
           <TabContext value={tab} fullWidth inkBarStyle={{ background: '#000' }}>
             <Box sx={{ borderBottom: '1px solid #828282' }}>
               <TabList onChange={handleChange} variant="scrollable" aria-label="tabs" classes={{ root: classes.tabContainter, indicator: classes.indicator }}>
-                <Tab label={AllLabel()} classes={{ wrapper: classes.allTab }} value="1" />
-                <Tab classes={{ wrapper: classes.subjectTab }} label={`Cases (${searchResults.subject_count || 0})`} value="2" />
-                <Tab classes={{ wrapper: classes.sampleTab }} label={`Samples (${searchResults.sample_count || 0})`} value="3" />
-                <Tab classes={{ wrapper: classes.fileTab }} label={`Files (${searchResults.file_count || 0})`} value="4" />
-                <Tab classes={{ wrapper: classes.programTab }} label={`Programs (${searchResults.program_count || 0})`} value="5" />
-                <Tab classes={{ wrapper: classes.programTab }} label={`Studies (${searchResults.study_count || 0})`} value="6" />
-                <Tab classes={{ wrapper: classes.dataTab }} label={`Data (${searchResults.value_count || 0})`} value="7" />
-                <Tab classes={{ wrapper: classes.aboutTab }} label={`About (${searchResults.about_count || 0})`} value="8" />
+                <Tab label={AllLabel()} classes={{ root: classes.buttonRoot, wrapper: classes.allTab }} value="1" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.subjectTab }} label={`Cases ${searchResults.subject_count || 0}`} value="2" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.sampleTab }} label={`Samples ${searchResults.sample_count || 0}`} value="3" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.fileTab }} label={`Files ${searchResults.file_count || 0}`} value="4" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Programs ${searchResults.program_count || 0}`} value="5" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Studies ${searchResults.study_count || 0}`} value="6" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.dataTab }} label={`Data ${searchResults.value_count || 0}`} value="7" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
             </Box>
             <TabPanel value="1"><Subsection data={searchResults.subjects} /></TabPanel>
@@ -163,6 +164,11 @@ const styles = () => ({
     color: '#1479D3',
     fontFamily: 'Lato',
     fontSize: '25px',
+  },
+  buttonRoot: {
+    minWidth: '128px',
+    padding: '6px, 28px',
+    textTransform: 'none',
   },
   notchedOutline: {
 
@@ -232,6 +238,20 @@ const styles = () => ({
     height: '15px',
     margin: '0px 18px 0px 6px',
   },
+  inputRoot: {
+    '& .MuiOutlinedInput-root': {
+      background: '#fff',
+      '& fieldset': {
+        border: '1px solid #616161',
+      },
+      '&:hover fieldset': {
+        border: '1px solid #616161',
+      },
+      '&.Mui-focused fieldset': {
+        border: '1px solid #616161',
+      },
+    },
+  },
 
   root: {
     '& .MuiAutocomplete-listbox': {
@@ -241,6 +261,8 @@ const styles = () => ({
       color: '#142D64',
       fontWeight: 500,
       border: '2px solid #0088FF',
+      padding: '0px',
+      background: '#fff',
       '& li': {
         // list item specific styling
         border: '1px solid #D2D2D2',
