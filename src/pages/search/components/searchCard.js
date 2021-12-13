@@ -8,14 +8,14 @@ import Components from './component';
 
 
 // Component to display a subsection
-const Subsection = ({ data, classes }) => {
+const Subsection = ({ data, classes, searchText }) => {
 //   const properties = prepareLinks(config.properties, data);
   return (
     <Grid className={classes.subsection}>
       <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
       {/* {data.content.body.map(block => Components(block))} */}
 
-      {data !== undefined ? data.length != 0 ? data.map((block, index) => <Components data={block} classes index={index} />): <div>No data</div>: <div>No data</div>}
+      {data !== undefined ? data.length != 0 ? data.map((block, index) => <Components searchText={searchText} data={block} classes index={index} />): <div>No data</div>: <div>No data</div>}
       </Grid>
     </Grid>
     // <div className="App">

@@ -1,23 +1,56 @@
 import { Grid, withStyles } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 import React from 'react';
+import { Anchor } from 'bento-components';
 
-const AboutCard = ({ data, classes }) => {
-  const split = data.text.replaceAll('</em>', '<em>');
-  // const term = split.match(/<em>(.*)<em>/).pop()
-  const results = split.replaceAll('<em>', '');
+const AboutCard = ({ searchText, data, classes }) => {
+  // function test() {
+  //   const split = data.text;
+  //   // const term = split.match(/$(.*)$/).pop();
+  //   const term = 'Bento';
+
+  //   const results = split.replaceAll('$', '');
+
+  //   // eslint-disable-next-line quotes
+  //   const test1 = results.replace(new RegExp(term, 'gi'), () =>
+  // `<div className={classes.colorRed}>hello</div>`);
+  //   return test1;
+  // }
+  const split = data.text;
+  // const term = split.match(/$(.*)$/).pop();
+
+  const results = split.replaceAll('$', '');
+
+  function getHighlightedText(text, highlight) {
+    // Split on highlight term and include term into parts, ignore case
+    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    return (
+      <span>
+        {' '}
+        { parts.map((part, i) => (
+          <span id={i} style={part.toLowerCase() === highlight.toLowerCase() ? { color: '#0467BD', fontWeight: 'bold' } : {}}>
+            { part }
+          </span>
+        ))}
+        {' '}
+
+      </span>
+    );
+  }
 
   return (
     <>
       <Grid item container className={classes.card}>
         <Grid item xs={9}>
           <div>
-            <span className={classes.detailContainerHeader}>ABOUT BENTO</span>
+            <span className={classes.detailContainerHeader}>ABOUT</span>
             {' '}
 &nbsp;
             {' '}
-
+            <span className={classes.cardTitle}>{data.title}</span>
           </div>
-          <div className={classes.text}>{results}</div>
+          <div className={classes.text}>{getHighlightedText(results, searchText)}</div>
+          <div><Anchor link={data.page} text={data.page} classes={classes} /></div>
         </Grid>
       </Grid>
 
@@ -53,6 +86,9 @@ const styles = () => ({
     fontWeight: '600',
     /* letter-spacing: 10px; */
     lineHeight: '20px',
+  },
+  colorRed: {
+    color: red,
   },
 });
 

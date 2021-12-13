@@ -111,6 +111,8 @@ query globalSearch($input: String, $first: Int, $offset: Int){
         about_page {
             type
             text
+            page
+            title
         }
 }
 }
