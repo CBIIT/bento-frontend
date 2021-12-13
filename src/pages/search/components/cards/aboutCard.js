@@ -1,25 +1,9 @@
-import { Grid, withStyles } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
 import React from 'react';
+import { Grid, withStyles } from '@material-ui/core';
 import { Anchor } from 'bento-components';
 
 const AboutCard = ({ searchText, data, classes }) => {
-  // function test() {
-  //   const split = data.text;
-  //   // const term = split.match(/$(.*)$/).pop();
-  //   const term = 'Bento';
-
-  //   const results = split.replaceAll('$', '');
-
-  //   // eslint-disable-next-line quotes
-  //   const test1 = results.replace(new RegExp(term, 'gi'), () =>
-  // `<div className={classes.colorRed}>hello</div>`);
-  //   return test1;
-  // }
-  const split = data.text;
-  // const term = split.match(/$(.*)$/).pop();
-
-  const results = split.replaceAll('$', '');
+  const results = data.text.replaceAll('$', '');
 
   function getHighlightedText(text, highlight) {
     // Split on highlight term and include term into parts, ignore case
@@ -50,7 +34,7 @@ const AboutCard = ({ searchText, data, classes }) => {
             <span className={classes.cardTitle}>{data.title}</span>
           </div>
           <div className={classes.text}>{getHighlightedText(results, searchText)}</div>
-          <div><Anchor link={data.page} text={data.page} classes={classes} /></div>
+          <div><Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes} /></div>
         </Grid>
       </Grid>
 
@@ -86,9 +70,6 @@ const styles = () => ({
     fontWeight: '600',
     /* letter-spacing: 10px; */
     lineHeight: '20px',
-  },
-  colorRed: {
-    color: red,
   },
 });
 
