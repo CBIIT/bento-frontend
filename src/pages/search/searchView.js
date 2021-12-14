@@ -5,7 +5,7 @@ import {
 import {
   Autocomplete, TabContext, TabList, TabPanel,
 } from '@material-ui/lab';
-import { Search as SearchIcon, FilterList as FilterIcon } from '@material-ui/icons';
+import { Search as SearchIcon } from '@material-ui/icons';
 import { getSearch, getSearchPageResults } from '../dashboardTab/store/dashboardReducer';
 import Pagination from './components/pagination';
 import Subsection from './components/searchCard';
@@ -32,16 +32,20 @@ function searchComponent({ classes, searchparam = '' }) {
   const CustomPopper = (props) => <Popper {...props} className={classes.root} placement="bottom" />;
   const AllLabel = () => (
     <div>
-      <FilterIcon classes={classes.cartIcon} fontSize="small" />
-      <span classes={classes.allText}>All</span>
+      <img
+        className={classes.filterIcon}
+        src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/FunnelIcon.svg"
+        alt="filter icon"
+      />
+      <span classes={classes.allText}>ALL</span>
     </div>
   );
 
   async function getAutoCompleteRes(newValue = []) {
     setInputValue(newValue);
     const searchResp = await getSearch(newValue);
-    const keys = ['programs', 'studies', 'subjects', 'samples', 'files', 'values'];
-    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id', 'value'];
+    const keys = ['programs', 'studies', 'subjects', 'samples', 'files', 'values', 'nodes', 'properties'];
+    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id', 'value', 'node_name', 'property_name'];
 
     const mapOption = keys.map(
       (key, index) => searchResp[key].map((id) => (id[datafields[index]])),
@@ -64,6 +68,7 @@ function searchComponent({ classes, searchparam = '' }) {
         <div>
           <Autocomplete
             className={classes.autocomplete}
+            classes={{ root: classes.inputRoot }}
             freeSolo
             id="search"
             onChange={(event, newValue) => onChange(newValue)}
@@ -92,7 +97,7 @@ function searchComponent({ classes, searchparam = '' }) {
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}
                       {params.InputProps.endAdornment}
-                      <SearchIcon style={{ color: 'black' }} />
+                      <SearchIcon style={{ color: 'black', stroke: 'black', strokeWidth: '1.2px' }} />
                     </>
                   ),
                 }}
@@ -106,13 +111,14 @@ function searchComponent({ classes, searchparam = '' }) {
           <TabContext value={tab} fullWidth inkBarStyle={{ background: '#000' }}>
             <Box sx={{ borderBottom: '1px solid #828282' }}>
               <TabList onChange={handleChange} variant="scrollable" aria-label="tabs" classes={{ root: classes.tabContainter, indicator: classes.indicator }}>
-                <Tab label={AllLabel()} classes={{ wrapper: classes.allTab }} value="1" />
-                <Tab classes={{ wrapper: classes.subjectTab }} label={`Cases (${searchResults.subject_count || 0})`} value="2" />
-                <Tab classes={{ wrapper: classes.sampleTab }} label={`Samples (${searchResults.sample_count || 0})`} value="3" />
-                <Tab classes={{ wrapper: classes.fileTab }} label={`Files (${searchResults.file_count || 0})`} value="4" />
-                <Tab classes={{ wrapper: classes.programTab }} label={`Programs (${searchResults.program_count || 0})`} value="5" />
-                <Tab classes={{ wrapper: classes.dataTab }} label={`Data (${searchResults.value_count || 0})`} value="6" />
-                <Tab classes={{ wrapper: classes.aboutTab }} label={`About (${searchResults.about_count || 0})`} value="7" />
+                <Tab label={AllLabel()} classes={{ root: classes.buttonRoot, wrapper: classes.allTab }} value="1" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.subjectTab }} label={`Cases ${searchResults.subject_count || 0}`} value="2" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.sampleTab }} label={`Samples ${searchResults.sample_count || 0}`} value="3" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.fileTab }} label={`Files ${searchResults.file_count || 0}`} value="4" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Programs ${searchResults.program_count || 0}`} value="5" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Studies ${searchResults.study_count || 0}`} value="6" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.dataTab }} label={`Data ${searchResults.value_count || 0}`} value="7" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
             </Box>
             <TabPanel value="1"><Subsection data={searchResults.subjects} /></TabPanel>
@@ -120,8 +126,9 @@ function searchComponent({ classes, searchparam = '' }) {
             <TabPanel value="3"><Subsection data={searchResults.samples} /></TabPanel>
             <TabPanel value="4"><Subsection data={searchResults.files} /></TabPanel>
             <TabPanel value="5"><Subsection data={searchResults.programs} /></TabPanel>
-            <TabPanel value="6"><Subsection data={searchResults.values} /></TabPanel>
-            <TabPanel value="7"><Subsection data={searchResults.about_page} /></TabPanel>
+            <TabPanel value="6"><Subsection data={searchResults.studies} /></TabPanel>
+            <TabPanel value="7"><Subsection data={searchResults.values} /></TabPanel>
+            <TabPanel value="8"><Subsection data={searchResults.about_page} /></TabPanel>
 
           </TabContext>
         </Box>
@@ -157,6 +164,11 @@ const styles = () => ({
     color: '#1479D3',
     fontFamily: 'Lato',
     fontSize: '25px',
+  },
+  buttonRoot: {
+    minWidth: '128px',
+    padding: '6px, 28px',
+    textTransform: 'none',
   },
   notchedOutline: {
 
@@ -223,8 +235,22 @@ const styles = () => ({
   },
 
   filterIcon: {
-    height: '22px',
-    margin: '0px 12px 0px 6px',
+    height: '15px',
+    margin: '0px 18px 0px 6px',
+  },
+  inputRoot: {
+    '& .MuiOutlinedInput-root': {
+      background: '#fff',
+      '& fieldset': {
+        border: '1px solid #616161',
+      },
+      '&:hover fieldset': {
+        border: '1px solid #616161',
+      },
+      '&.Mui-focused fieldset': {
+        border: '1px solid #616161',
+      },
+    },
   },
 
   root: {
@@ -235,6 +261,8 @@ const styles = () => ({
       color: '#142D64',
       fontWeight: 500,
       border: '2px solid #0088FF',
+      padding: '0px',
+      background: '#fff',
       '& li': {
         // list item specific styling
         border: '1px solid #D2D2D2',

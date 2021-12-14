@@ -29,6 +29,12 @@ query globalSearch($input: String){
         values {
             value
         }
+        nodes {
+            node_name
+        }
+        properties {
+            property_name
+        }
     }
 }
 `;
