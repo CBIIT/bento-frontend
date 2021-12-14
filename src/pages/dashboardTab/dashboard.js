@@ -11,7 +11,6 @@ import ActiveFiltersQuery from '../../components/ActiveFiltersQuery/ActiveFilter
 import { widgetsData, displayActiveFiltersQuery } from '../../bento/dashboardData';
 import Tab from './components/tabController';
 import colors from '../../utils/colors';
-import SearchAUtoFill from '../../components/Search/searchAutoFillComponent';
 import styles from './dashboardStyles';
 
 const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
@@ -41,7 +40,7 @@ const Dashboard = ({
                     <FormControlLabel
                       control={(
                         <Button className={classes.customButton} onClick={handleChange}>
-                          {collapse ? 'COLLAPSE VIEW' : 'OPEN VIEW' }
+                          {collapse ? 'COLLAPSE VIEW' : 'OPEN VIEW'}
                         </Button>
                       )}
                     />
@@ -61,8 +60,6 @@ const Dashboard = ({
                     />
                   </div>
                 </div>
-                {displayActiveFiltersQuery ? <ActiveFiltersQuery /> : ''}
-                <SearchAUtoFill />
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget, index) => {
@@ -130,8 +127,8 @@ const Dashboard = ({
                   </Grid>
                 </Collapse>
               </div>
-              { collapse && <div className={classes.dashboardDividerTop} />}
-              { collapse && <div className={classes.dashboardDivider} />}
+              {collapse && <div className={classes.dashboardDividerTop} />}
+              {collapse && <div className={classes.dashboardDivider} />}
               <Tab />
             </div>
           </div>

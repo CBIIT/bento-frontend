@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FacetModal = ({ closeModal, ...modalProps }) => {
+const FacetModal = ({ closeModal, type, ...modalProps }) => {
   const classes = useStyles();
 
   const [fileContent, setFileContent] = React.useState('');
@@ -100,7 +100,7 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
 
   React.useEffect(() => {
     (async () => {
-      const response = await getAllIds();
+      const response = await getAllIds(type);
       if (response.subjectIds) {
         setSubjectIds(response.subjectIds);
       }
