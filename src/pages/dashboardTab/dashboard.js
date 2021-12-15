@@ -40,7 +40,7 @@ const Dashboard = ({
                     <FormControlLabel
                       control={(
                         <Button className={classes.customButton} onClick={handleChange}>
-                          {collapse ? 'COLLAPSE VIEW' : 'OPEN VIEW' }
+                          {collapse ? 'COLLAPSE VIEW' : 'OPEN VIEW'}
                         </Button>
                       )}
                     />
@@ -128,8 +128,8 @@ const Dashboard = ({
                   </Grid>
                 </Collapse>
               </div>
-              { collapse && <div className={classes.dashboardDividerTop} />}
-              { collapse && <div className={classes.dashboardDivider} />}
+              {collapse && <div className={classes.dashboardDividerTop} />}
+              {collapse && <div className={classes.dashboardDivider} />}
               <Tab />
             </div>
           </div>

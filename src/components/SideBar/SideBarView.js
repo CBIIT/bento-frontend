@@ -39,7 +39,7 @@ const SideBarContent = ({
   return (
     <div>
       <div>
-        { countFilters > 0 && (
+        {countFilters > 0 && (
           <div>
             <div>
               <ClearFilters
@@ -55,7 +55,7 @@ const SideBarContent = ({
                 divider: dividerRoot,
               }}
             >
-              <FacetFilter />
+              <FacetFilter ref={searchRef} />
             </List>
           </div>
         )}

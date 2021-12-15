@@ -7,7 +7,12 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import CloseIcon from '@material-ui/icons/Close';
-import { getAllIds, localSearch, setSideBarToLoading } from '../../../pages/dashboardTab/store/dashboardReducer';
+import {
+  getAllIds,
+  localSearch,
+  addAutoComplete,
+  setSideBarToLoading,
+} from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
   search,
   defaultSearch,
@@ -24,7 +29,7 @@ function getSearchResultCrossColor(currentSection) {
   return crossColor;
 }
 
-const LocalSearchComponent = ({ classes }, ref) => {
+const LocalSearchComponent = ({ classes, type }, ref) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState([]);
   const [options, setOptions] = React.useState([]);
@@ -32,7 +37,7 @@ const LocalSearchComponent = ({ classes }, ref) => {
 
   const isSidebarLoading = useSelector((state) => (
     state.dashboardTab
-  && state.dashboardTab.setSideBarLoading
+      && state.dashboardTab.setSideBarLoading
       ? state.dashboardTab.setSideBarLoading : false));
 
   const tabDataLoading = useSelector((state) => (state.dashboardTab
@@ -55,12 +60,10 @@ const LocalSearchComponent = ({ classes }, ref) => {
       return undefined;
     }
     (async () => {
-      const response = await getAllIds();
-      const keys = ['fileIds', 'fileNames', 'sampleIds', 'subjectIds'];
-      const mapOption = keys.map((key) => response[key].map((id) => ({ type: key, title: id })));
-      const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
+      const response = await getAllIds(type);
+      const opts = response[type].map((id) => ({ type, title: id }));
       if (active) {
-        setOptions(option);
+        setOptions(opts);
       }
     })();
 
@@ -82,6 +85,15 @@ const LocalSearchComponent = ({ classes }, ref) => {
     setValue(newValueUnique);
     localSearch(newValueUnique);
   }
+
+  React.useEffect(() => {
+    addAutoComplete({
+      type: type.replace('Ids', ''),
+      value,
+    });
+    setSideBarToLoading();
+    localSearch(value);
+  }, [value]);
 
   const onDelete = (title) => () => {
     const newValue = value.filter((v) => v.title !== title);
@@ -113,7 +125,7 @@ const LocalSearchComponent = ({ classes }, ref) => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="Search"
+                placeholder="Find"
                 variant="outlined"
                 size="small"
                 InputProps={{
