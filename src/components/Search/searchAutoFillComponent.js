@@ -69,7 +69,7 @@ function searchComponent({ classes }) {
         onInputChange={(event, newInputValue) => {
           getAutoCompleteRes(newInputValue);
         }}
-        style={{ width: 350 }}
+        style={{ width: 260, height: 37 }}
         filterOptions={(optionSlice) => optionSlice}
         getOptionLabel={(option) => option}
         options={options}
@@ -87,6 +87,9 @@ function searchComponent({ classes }) {
               }
             }}
             InputProps={{
+              style: {
+                padding: '0px 8px',
+              },
               classes: {
                 root: classes.input,
                 notchedOutline: classes.notchedOutline,
@@ -96,7 +99,12 @@ function searchComponent({ classes }) {
                 <>
                   {loading ? <CircularProgress color="inherit" size={20} /> : null}
                   {params.InputProps.endAdornment}
-                  <SearchIcon style={{ color: '#4A8ECB' }} />
+                  <SearchIcon
+                    size={20}
+                    style={{
+                      color: '#4A8ECB', stroke: '#4A8ECB', strokeWidth: '1.1px', marginRight: '8px',
+                    }}
+                  />
                 </>
               ),
             }}
@@ -116,7 +124,7 @@ const styles = () => ({
   },
   autocomplete: {
     margin: '0 auto',
-    paddingTop: '24px',
+    paddingTop: '32px',
   },
   input: {
     borderRadius: '8px',
@@ -147,7 +155,7 @@ const styles = () => ({
     '& .MuiAutocomplete-listbox': {
       borderRadius: '8px',
       fontFamily: 'Lato',
-      fontSize: '18px',
+      fontSize: '12px',
       color: '#142D64',
       fontWeight: 500,
       border: '2px solid #4A8ECB',
