@@ -5,7 +5,7 @@ import {
 import {
   Autocomplete, TabContext, TabList, TabPanel,
 } from '@material-ui/lab';
-import { Search as SearchIcon } from '@material-ui/icons';
+// import { Clear as ClearIcon } from '@material-ui/icons';
 import { getSearch, getSearchPageResults } from '../dashboardTab/store/dashboardReducer';
 import Pagination from './components/pagination';
 import Subsection from './components/searchCard';
@@ -68,6 +68,13 @@ function searchComponent({ classes, searchparam = '' }) {
         <div>
           <Autocomplete
             className={classes.autocomplete}
+            closeIcon={(
+              <img
+                className={classes.clearIcon}
+                src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchDelete.svg"
+                alt="clear icon"
+              />
+)}
             classes={{ root: classes.inputRoot }}
             freeSolo
             id="search"
@@ -78,7 +85,7 @@ function searchComponent({ classes, searchparam = '' }) {
             }}
             PopperComponent={CustomPopper}
             value={value}
-            style={{ width: 600 }}
+            style={{ width: 750 }}
             getOptionLabel={(option) => option}
             options={options}
             loading={loading}
@@ -88,6 +95,9 @@ function searchComponent({ classes, searchparam = '' }) {
                 variant="outlined"
                 hiddenLabel
                 InputProps={{
+                  style: {
+                    paddingLeft: '20px',
+                  },
                   classes: {
                     root: classes.input,
                     notchedOutline: classes.notchedOutline,
@@ -97,7 +107,11 @@ function searchComponent({ classes, searchparam = '' }) {
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}
                       {params.InputProps.endAdornment}
-                      <SearchIcon style={{ color: 'black', stroke: 'black', strokeWidth: '1.2px' }} />
+                      <img
+                        className={classes.searchIcon}
+                        src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchSearch.svg"
+                        alt="search icon"
+                      />
                     </>
                   ),
                 }}
@@ -175,6 +189,7 @@ const styles = () => ({
   },
   input: {
     borderRadius: '8px',
+    borderColor: '#616161',
     color: '#747474',
     fontFamily: 'Lato',
     fontSize: '25px',
@@ -242,13 +257,13 @@ const styles = () => ({
     '& .MuiOutlinedInput-root': {
       background: '#fff',
       '& fieldset': {
-        border: '1px solid #616161',
+        border: '2px solid #747474',
       },
       '&:hover fieldset': {
-        border: '1px solid #616161',
+        border: '2px solid #747474',
       },
       '&.Mui-focused fieldset': {
-        border: '1px solid #616161',
+        border: '2px solid #747474',
       },
     },
   },
@@ -273,7 +288,14 @@ const styles = () => ({
       },
     },
   },
-
+  searchIcon: {
+    height: '22px',
+    margin: '0px 6px 0px 6px',
+  },
+  clearIcon: {
+    height: '18px',
+    margin: '-8px 4px 0px 19px',
+  },
 });
 
 export default withStyles(styles)(searchComponent);
