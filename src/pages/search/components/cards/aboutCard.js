@@ -2,7 +2,9 @@ import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import { Anchor } from 'bento-components';
 
-const AboutCard = ({ searchText, data, classes }) => {
+const AboutCard = ({
+  searchText, data, classes, index,
+}) => {
   const results = data.text.replaceAll('$', '');
 
   function getHighlightedText(text, highlight) {
@@ -25,7 +27,10 @@ const AboutCard = ({ searchText, data, classes }) => {
   return (
     <>
       <Grid item container className={classes.card}>
-        <Grid item xs={9}>
+        <Grid item xs={1} className={classes.indexContainer}>
+          {index + 1 }
+        </Grid>
+        <Grid item xs={11} className={classes.propertyContainer}>
           <div>
             <span className={classes.detailContainerHeader}>ABOUT</span>
             {' '}
@@ -47,27 +52,31 @@ const styles = () => ({
     height: '22px',
     margin: '0px 0px 0px 6px',
   },
-  card: {
+  indexContainer: {
+    padding: '18px',
+    fontFamily: 'Nunito',
+    color: '#747474',
+  },
+  propertyContainer: {
     padding: '18px',
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#0083C6',
-    fontFamily: 'Nunito Sans',
+    color: '#7747FF',
     fontSize: '16px',
+    fontFamily: 'Nunito',
   },
   content: {
     fontSize: '12px',
   },
   detailContainerHeader: {
     textTransform: 'uppercase',
-    paddingLeft: '8px',
-    paddingRight: '8px',
+    padding: '2px 8px',
     backgroundColor: '#ECC28B',
     color: '#000000',
-    fontFamily: 'Nunito Sans',
-    fontSize: '14px',
-    fontWeight: '600',
+    fontFamily: 'Nunito',
+    fontSize: '12px',
+    fontWeight: '500',
     /* letter-spacing: 10px; */
     lineHeight: '20px',
   },

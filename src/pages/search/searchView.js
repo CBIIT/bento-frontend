@@ -131,18 +131,18 @@ function searchComponent({ classes, searchparam = '' }) {
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.fileTab }} label={`Files ${searchResults.file_count || 0}`} value="4" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Programs ${searchResults.program_count || 0}`} value="5" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Studies ${searchResults.study_count || 0}`} value="6" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.dataTab }} label={`Data ${searchResults.value_count || 0}`} value="7" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.dataTab }} label={`Data Model ${searchResults.value_count || 0}`} value="7" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
             </Box>
-            <TabPanel value="1"><Subsection searchText={inputValue} data={searchResults.subjects} /></TabPanel>
-            <TabPanel value="2"><Subsection searchText={inputValue} data={searchResults.subjects} /></TabPanel>
-            <TabPanel value="3"><Subsection searchText={inputValue} data={searchResults.samples} /></TabPanel>
-            <TabPanel value="4"><Subsection searchText={inputValue} data={searchResults.files} /></TabPanel>
-            <TabPanel value="5"><Subsection searchText={inputValue} data={searchResults.programs} /></TabPanel>
-            <TabPanel value="6"><Subsection searchText={inputValue} data={searchResults.studies} /></TabPanel>
-            <TabPanel value="7"><Subsection searchText={inputValue} data={searchResults.values} /></TabPanel>
-            <TabPanel value="8"><Subsection searchText={inputValue} data={searchResults.about_page} /></TabPanel>
+            <TabPanel value="1"><Subsection searchText={inputValue} count={searchResults.subject_count || 0} data={searchResults.subjects} /></TabPanel>
+            <TabPanel value="2"><Subsection searchText={inputValue} count={searchResults.subject_count || 0} data={searchResults.subjects} /></TabPanel>
+            <TabPanel value="3"><Subsection searchText={inputValue} count={searchResults.sample_count || 0} data={searchResults.samples} /></TabPanel>
+            <TabPanel value="4"><Subsection searchText={inputValue} count={searchResults.file_count || 0} data={searchResults.files} /></TabPanel>
+            <TabPanel value="5"><Subsection searchText={inputValue} count={searchResults.program_count || 0} data={searchResults.programs} /></TabPanel>
+            <TabPanel value="6"><Subsection searchText={inputValue} count={searchResults.study_count || 0} data={searchResults.studies} /></TabPanel>
+            <TabPanel value="7"><Subsection searchText={inputValue} count={searchResults.value_count || 0} data={searchResults.values} /></TabPanel>
+            <TabPanel value="8"><Subsection searchText={inputValue} count={searchResults.about_count || 0} data={searchResults.about_page} /></TabPanel>
 
           </TabContext>
         </Box>
@@ -180,7 +180,7 @@ const styles = () => ({
     fontSize: '25px',
   },
   buttonRoot: {
-    minWidth: '128px',
+    minWidth: '100px',
     padding: '6px, 28px',
     textTransform: 'none',
   },

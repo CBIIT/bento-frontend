@@ -24,16 +24,18 @@ const PropertyItem = ({
   );
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   content: {
     color: '#000',
-    fontFamily: theme.custom.fontFamilySans,
+    // fontFamily: theme.custom.fontFamilySans,
+    fontFamily: 'Nunito',
     fontSize: '12px',
     whiteSpace: 'nowrap',
   },
   title: {
     color: '#000',
-    fontFamily: theme.custom.fontFamilySans,
+    // fontFamily: theme.custom.fontFamilySans,
+    fontFamily: 'Nunito',
     fontSize: '12px',
     lineHeight: '12px',
     letterSpacing: '0.017em',

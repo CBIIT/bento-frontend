@@ -3,7 +3,7 @@ import React from 'react';
 import { prepareLinks } from 'bento-components';
 import PropertyItem from '../propertyItem';
 
-const ProgamCard = ({ data, classes }) => {
+const ProgamCard = ({ data, classes, index }) => {
   const properties = [
 
     {
@@ -32,53 +32,61 @@ const ProgamCard = ({ data, classes }) => {
   return (
     <>
       <Grid item className={classes.card}>
-        <div>
-          <span className={classes.detailContainerHeader}>Program</span>
-          {' '}
+        <Grid item xs={1} className={classes.indexContainer}>
+          {index + 1 }
+        </Grid>
+        <Grid item xs={11} className={classes.propertyContainer}>
+          <div>
+            <span className={classes.detailContainerHeader}>Program</span>
+            {' '}
 &nbsp;
-          {' '}
-          <span className={classes.cardTitle}>{data.program_code}</span>
+            {' '}
+            <span className={classes.cardTitle}>{data.program_code}</span>
 
-        </div>
+          </div>
 
-        {propertiesWithLinks.slice(0, 10).map((prop, index) => (
-          <PropertyItem
-            key={index}
-            label={prop.label}
-            value={data[prop.dataField]}
-            link={prop.link}
+          {propertiesWithLinks.slice(0, 10).map((prop) => (
+            <PropertyItem
+              label={prop.label}
+              value={data[prop.dataField]}
+              link={prop.link}
             // labelLink={prop.labelLink}
             // classes={classes}
-            index
-          />
-        ))}
+              index
+            />
+          ))}
+        </Grid>
       </Grid>
     </>
   );
 };
 
 const styles = () => ({
-  card: {
+  indexContainer: {
+    padding: '18px',
+    fontFamily: 'Nunito',
+    color: '#747474',
+  },
+  propertyContainer: {
     padding: '18px',
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#0083C6',
-    fontFamily: 'Nunito Sans',
+    color: '#7747FF',
     fontSize: '16px',
+    fontFamily: 'Nunito',
   },
   content: {
     fontSize: '12px',
   },
   detailContainerHeader: {
     textTransform: 'uppercase',
-    paddingLeft: '8px',
-    paddingRight: '8px',
+    padding: '2px 8px',
     backgroundColor: '#FFE25A',
     color: '#000000',
-    fontFamily: 'Nunito Sans',
-    fontSize: '14px',
-    fontWeight: '600',
+    fontFamily: 'Nunito',
+    fontSize: '12px',
+    fontWeight: '500',
     /* letter-spacing: 10px; */
     lineHeight: '20px',
   },
