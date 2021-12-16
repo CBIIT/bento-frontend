@@ -1,23 +1,40 @@
-import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
+import { Grid, withStyles } from '@material-ui/core';
+import { Anchor } from 'bento-components';
 
-const AboutCard = ({ data, classes }) => {
-  const split = data.text.replaceAll('</em>', '<em>');
-  // const term = split.match(/<em>(.*)<em>/).pop()
-  const results = split.replaceAll('<em>', '');
+const AboutCard = ({ searchText, data, classes }) => {
+  const results = data.text.replaceAll('$', '');
+
+  function getHighlightedText(text, highlight) {
+    // Split on highlight term and include term into parts, ignore case
+    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    return (
+      <span>
+        {' '}
+        { parts.map((part, i) => (
+          <span id={i} style={part.toLowerCase() === highlight.toLowerCase() ? { color: '#0467BD', fontWeight: 'bold' } : {}}>
+            { part }
+          </span>
+        ))}
+        {' '}
+
+      </span>
+    );
+  }
 
   return (
     <>
       <Grid item container className={classes.card}>
         <Grid item xs={9}>
           <div>
-            <span className={classes.detailContainerHeader}>ABOUT BENTO</span>
+            <span className={classes.detailContainerHeader}>ABOUT</span>
             {' '}
 &nbsp;
             {' '}
-
+            <span className={classes.cardTitle}>{data.title}</span>
           </div>
-          <div className={classes.text}>{results}</div>
+          <div className={classes.text}>{getHighlightedText(results, searchText)}</div>
+          <div><Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes} /></div>
         </Grid>
       </Grid>
 

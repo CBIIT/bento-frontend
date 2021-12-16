@@ -19,10 +19,12 @@ const Components = {
   about: AboutCard,
 };
 
-export default ({ data, classes, index }) => {
+export default ({
+  searchText, data, classes, index,
+}) => {
   if (typeof Components[data.type] !== 'undefined') {
     return React.createElement(Components[data.type], {
-      data, classes, index,
+      data, classes, index, searchText,
     });
   }
   return React.createElement(

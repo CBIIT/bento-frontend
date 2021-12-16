@@ -121,14 +121,14 @@ function searchComponent({ classes, searchparam = '' }) {
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
             </Box>
-            <TabPanel value="1"><Subsection data={searchResults.subjects} /></TabPanel>
-            <TabPanel value="2"><Subsection data={searchResults.subjects} /></TabPanel>
-            <TabPanel value="3"><Subsection data={searchResults.samples} /></TabPanel>
-            <TabPanel value="4"><Subsection data={searchResults.files} /></TabPanel>
-            <TabPanel value="5"><Subsection data={searchResults.programs} /></TabPanel>
-            <TabPanel value="6"><Subsection data={searchResults.studies} /></TabPanel>
-            <TabPanel value="7"><Subsection data={searchResults.values} /></TabPanel>
-            <TabPanel value="8"><Subsection data={searchResults.about_page} /></TabPanel>
+            <TabPanel value="1"><Subsection searchText={inputValue} data={searchResults.subjects} /></TabPanel>
+            <TabPanel value="2"><Subsection searchText={inputValue} data={searchResults.subjects} /></TabPanel>
+            <TabPanel value="3"><Subsection searchText={inputValue} data={searchResults.samples} /></TabPanel>
+            <TabPanel value="4"><Subsection searchText={inputValue} data={searchResults.files} /></TabPanel>
+            <TabPanel value="5"><Subsection searchText={inputValue} data={searchResults.programs} /></TabPanel>
+            <TabPanel value="6"><Subsection searchText={inputValue} data={searchResults.studies} /></TabPanel>
+            <TabPanel value="7"><Subsection searchText={inputValue} data={searchResults.values} /></TabPanel>
+            <TabPanel value="8"><Subsection searchText={inputValue} data={searchResults.about_page} /></TabPanel>
 
           </TabContext>
         </Box>
