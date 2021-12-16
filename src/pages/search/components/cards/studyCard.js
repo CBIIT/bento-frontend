@@ -79,7 +79,7 @@ const styles = () => ({
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '12px',
-    fontWeight: '500',
+    fontWeight: '600',
     /* letter-spacing: 10px; */
     lineHeight: '20px',
   },
