@@ -68,32 +68,61 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
   const [subjectIds, setSubjectIds] = React.useState([]);
   const [matchIds, setMatchIds] = React.useState([]);
   const [unmatchedIds, setUnmatchedIds] = React.useState([]);
+  const [isClear, setIsClear] = React.useState(false);
 
   const submitCase = () => {
     closeModal();
   };
 
+  const clearData = () => {
+    setFileContent('');
+    setMatchIds([]);
+    setUnmatchedIds([]);
+    setIsClear(true);
+  };
+
+  const cancelModal = () => {
+    closeModal();
+    clearData();
+  };
+
   const handleContent = (content) => {
-    const matchData = [];
-    const fileData = content && content.toString().split('\n');
-    const unmatchData = [...fileData];
-    subjectIds.map((subId) => fileData.filter((id) => {
-      if (subId.toLowerCase() === id.toLowerCase()) {
-        matchData.push(id);
-        const index = unmatchData.indexOf(subId);
-        if (index > -1) {
+    if (content.trim()) {
+      const matchData = [];
+      const fileData = content && content.toString().split('\n');
+      const newArr = [];
+      fileData.map((file) => {
+        const fileItemArray = file.split(',');
+        // eslint-disable-next-line
+        newArr.push.apply(newArr, fileItemArray);
+        return newArr;
+      });
+      const unmatchData = [...newArr];
+      subjectIds.map((subId) => newArr.filter((id, index) => {
+        const trimId = id.trim();
+        const trimSubId = subId.trim();
+        if (trimId && trimSubId.toLowerCase() === trimId.toLowerCase()) {
+          matchData.push(trimId);
+          const isExist = unmatchData.findIndex((item) => (
+            item.trim().toLowerCase() === trimSubId.toLowerCase()
+          ));
+          if (isExist > -1) {
+            unmatchData.splice(isExist, 1);
+          }
+        } else if (!trimId) {
           unmatchData.splice(index, 1);
         }
-      }
-      return matchData;
-    }));
-    setMatchIds(matchData);
-    setUnmatchedIds(unmatchData);
+        return matchData;
+      }));
+      setMatchIds(matchData);
+      setUnmatchedIds(unmatchData);
+    }
   };
 
   const handleChange = ({ target: { value } }) => { setFileContent(value); handleContent(value); };
 
   const handleFileUpload = (content) => {
+    setIsClear(false);
     setFileContent(content);
     handleContent(content);
   };
@@ -137,13 +166,13 @@ const FacetModal = ({ closeModal, ...modalProps }) => {
           />
           <div className={classes.uploadFile}>
             <p>Or choose a file to upload</p>
-            <FileUploader onFileUpload={handleFileUpload} />
+            <FileUploader onFileUpload={handleFileUpload} isClear={isClear} />
           </div>
         </div>
         {fileContent && <SummaryTable matchedContent={matchIds} unmatchedContent={unmatchedIds} />}
         <div className={classes.modalFooter}>
-          <Button variant="contained" color="primary" onClick={closeModal} className={classes.button}>Cancel</Button>
-          <Button variant="contained" color="blueGrey" className={classes.button}>Clear</Button>
+          <Button variant="contained" color="primary" onClick={cancelModal} className={classes.button}>Cancel</Button>
+          <Button variant="contained" color="blueGrey" onClick={clearData} className={classes.button}>Clear</Button>
           <Button variant="contained" color="blueGrey" onClick={submitCase} className={classes.button}>Submit</Button>
         </div>
       </div>
