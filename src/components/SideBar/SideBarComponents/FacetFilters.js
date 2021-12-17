@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import ArrowUpwardOutlined from '@material-ui/icons/ArrowUpwardOutlined';
 import {
   Slider,
   List,
@@ -21,6 +22,7 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
   // Replay as ReplayIcon,
 } from '@material-ui/icons';
+import FacetLocalFindSearchIcon from '../../../assets/icons/FacetLocalFindSearchIcon.svg';
 import {
   toggleCheckBox,
   toggleSlider,
@@ -243,7 +245,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
   }
 
   const showSelectedChecbox = (sideBarItem, currentSection, sideBarIndex) => {
-    const selectedCheckboxItems = !sideBarItem.checkboxItems.lowerBound ? sideBarItem.checkboxItems.filter((item) => (item.isChecked)):[];
+    const selectedCheckboxItems = !sideBarItem.checkboxItems.lowerBound ? sideBarItem.checkboxItems.filter((item) => (item.isChecked)) : [];
     const selectedCheckbox = selectedCheckboxItems.slice(0, showCheckboxCount)
       .map((item, index) => (
         <CheckBoxView
@@ -403,7 +405,9 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                   >
                     <div className={classes.sectionSummaryTextContainer}>
                       {currentSection.sectionName}
-                      <Button variant="contained" className={classes.findCaseButton} onClick={toggleAutocomplete}>Find</Button>
+                      <div className={classes.findCaseButton} onClick={toggleAutocomplete}>
+                        <img src={FacetLocalFindSearchIcon} className={classes.findCaseIcon} alt="search" />
+                      </div>
                     </div>
                     {
                       showSearch && (
@@ -413,8 +417,10 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                           <Button
                             variant="contained"
                             onClick={() => setShowCasesModal(true)}
+                            className={classes.uploadButton}
                           >
                             Upload Case Set
+                            <ArrowUpwardOutlined className={classes.uploadIcon}/>
                           </Button>
                         </div>
                       )

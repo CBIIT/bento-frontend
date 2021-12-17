@@ -19,10 +19,6 @@ import {
 } from '../../../bento/dashboardData';
 import styles from './styles/searchComponentStyles';
 
-function getSearchResultColor(index, currentSection) {
-  return index % 2 ? search[currentSection] ? search[currentSection].checkBoxColorsTwo ? search[currentSection].checkBoxColorsTwo : '' : defaultSearch.checkBoxColorsTwo
-    : search[currentSection] ? search[currentSection].checkBoxColorsOne ? search[currentSection].checkBoxColorsOne : '' : defaultSearch.checkBoxColorsOne;
-}
 function getSearchResultCrossColor(currentSection) {
   let crossColor = 'black';
   crossColor = search[currentSection] ? search[currentSection].color ? search[currentSection].color : '' : defaultSearch.color;
@@ -103,9 +99,48 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
   return (
     <>
       <div>
+        <div>
+          <List>
+            {value.slice().reverse().map((v, index) => (
+              <>
+                <Divider
+                  style={{
+                    backgroundColor: '#B1B1B1',
+                    height: '2px',
+                  }}
+                />
+                <ListItem
+                  classes={{ gutters: classes.listItemGutters }}
+                  key={index}
+                >
+                  <div className={classes.searchResultDetailText}>
+                    <span>
+                      {`${v.title}`}
+                    </span>
+                  </div>
+                  <IconButton
+                    disableRipple
+                    style={{ backgroundColor: 'transparent' }}
+                    onClick={onDelete(v.title)}
+                  >
+                    <CloseIcon
+                      classes={{ root: classes.closeRoot }}
+                      style={{
+                        color: getSearchResultCrossColor(v.type),
+                      }}
+                    />
+                  </IconButton>
+
+                </ListItem>
+              </>
+            ))}
+          </List>
+        </div>
         <div className={classes.searchBoxRoot}>
           <Autocomplete
             id="localSearch"
+            freeSolo={false}
+            popupIcon=""
             classes={classes}
             onChange={(event, newValue) => onChange(newValue)}
             multiple
@@ -125,7 +160,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                placeholder="Find"
+                placeholder="e.g. BENTO-CASE-06, BENTO-CASE-22"
                 variant="outlined"
                 size="small"
                 InputProps={{
@@ -140,50 +175,6 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
               />
             )}
           />
-        </div>
-        <Divider
-          style={{
-            height: '1px',
-            backgroundColor: '#B0CFE1',
-          }}
-        />
-        <div>
-          <List>
-            {value.slice().reverse().map((v, index) => (
-              <>
-                <ListItem
-                  style={{
-                    backgroundColor: getSearchResultColor(index, v.type),
-                  }}
-                  classes={{ gutters: classes.listItemGutters }}
-                >
-                  <IconButton
-                    disableRipple
-                    style={{ backgroundColor: 'transparent' }}
-                    onClick={onDelete(v.title)}
-                  >
-                    <CloseIcon
-                      classes={{ root: classes.closeRoot }}
-                      style={{
-                        color: getSearchResultCrossColor(v.type),
-                      }}
-                    />
-                  </IconButton>
-                  <div className={classes.searchResultDetailText}>
-                    <span>
-                      {`${v.title}`}
-                    </span>
-                  </div>
-                </ListItem>
-                <Divider
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    height: '2px',
-                  }}
-                />
-              </>
-            ))}
-          </List>
         </div>
       </div>
       <Backdrop className={classes.backdrop} open={isSidebarLoading || tabDataLoading}>
