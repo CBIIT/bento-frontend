@@ -1,44 +1,41 @@
-/* eslint-disable */
-
 // Component to display a property
 import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
-import { Anchor, prepareLinks } from 'bento-components';
 import Components from './component';
 
-
 // Component to display a subsection
-const Subsection = ({ data, classes, searchText }) => {
-//   const properties = prepareLinks(config.properties, data);
-  return (
+const Subsection = ({
+  data, classes, searchText, count,
+}) => (
+  <>
+    {count !== 0 && (
+      <div className={classes.totalResults}>
+        {count}
+        {' '}
+        Results
+      </div>
+    ) }
     <Grid className={classes.subsection}>
       <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
-      {/* {data.content.body.map(block => Components(block))} */}
+        {/* {data.content.body.map(block => Components(block))} */}
 
-      {data !== undefined ? data.length != 0 ? data.map((block, index) => <Components searchText={searchText} data={block} classes index={index} />): <div>No data</div>: <div>No data</div>}
+        { data !== undefined ? data.length !== 0 ? data.map(
+          // eslint-disable-next-line max-len
+          (block, index) => <Components searchText={searchText} data={block} classes index={index} />,
+        )
+          : <div>No data</div> : <div>No data</div>}
       </Grid>
     </Grid>
-    // <div className="App">
-    //   <h1>Hello React</h1>
-    //   {data.map(block => Components(block))}
-    // </div>
-  );
-};
-
+  </>
+);
 const styles = (theme) => ({
   content: {
     fontSize: '12px',
   },
-  detailContainerHeader: {
-    textTransform: 'uppercase',
-    fontFamily: 'Lato',
-    fontSize: '17px',
-    letterSpacing: '0.025em',
-    color: '#0296C9',
-  },
   subsectionBody: {
     margin: '0 auto',
-    borderBottom: '1px solid #8DCAFF',
+    maxWidth: '1000px',
+    // borderBottom: '1px solid #8DCAFF',
     paddingBottom: '15px',
   },
   subsection: {
@@ -71,6 +68,15 @@ const styles = (theme) => ({
     '&:visited': {
       color: '#9F3D26',
     },
+  },
+  totalResults: {
+    // margin: '0 auto',
+    maxWidth: '1100px',
+    color: '#000',
+    fontSize: '20px',
+    fontWeight: '300',
+    margin: '16px auto',
+    paddingLeft: '32px',
   },
 
 });

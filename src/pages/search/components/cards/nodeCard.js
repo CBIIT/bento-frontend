@@ -3,7 +3,7 @@ import React from 'react';
 import { prepareLinks } from 'bento-components';
 import PropertyItem from '../propertyItem';
 
-const NodeCard = ({ data, classes }) => {
+const NodeCard = ({ data, classes, index }) => {
   const properties = [
 
     {
@@ -31,7 +31,10 @@ const NodeCard = ({ data, classes }) => {
   return (
     <>
       <Grid item container className={classes.card}>
-        <Grid item xs={9}>
+        <Grid item xs={1} className={classes.indexContainer}>
+          {index + 1 }
+        </Grid>
+        <Grid item xs={11} className={classes.propertyContainer}>
           <div>
             <span className={classes.detailContainerHeader}>Node</span>
             {' '}
@@ -40,15 +43,13 @@ const NodeCard = ({ data, classes }) => {
             <span className={classes.cardTitle}>{data.file_id}</span>
 
           </div>
-          {propertiesWithLinks.slice(0, 10).map((prop, index) => (
+          {propertiesWithLinks.slice(0, 10).map((prop) => (
             <PropertyItem
-              key={index}
               label={prop.label}
               value={data[prop.dataField]}
               link={prop.link}
               // labelLink={prop.labelLink}
               // classes={classes}
-              index
             />
           ))}
         </Grid>
@@ -63,26 +64,30 @@ const styles = () => ({
     height: '22px',
     margin: '0px 0px 0px 6px',
   },
-  card: {
+  indexContainer: {
+    padding: '18px',
+    fontFamily: 'Nunito',
+    color: '#747474',
+  },
+  propertyContainer: {
     padding: '18px',
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#0083C6',
-    fontFamily: 'Nunito Sans',
+    color: '#7747FF',
     fontSize: '16px',
+    fontFamily: 'Nunito',
   },
   content: {
     fontSize: '12px',
   },
   detailContainerHeader: {
     textTransform: 'uppercase',
-    paddingLeft: '8px',
-    paddingRight: '8px',
+    padding: '2px 8px',
     backgroundColor: '#ECC28B',
     color: '#000000',
-    fontFamily: 'Nunito Sans',
-    fontSize: '14px',
+    fontFamily: 'Nunito',
+    fontSize: '12px',
     fontWeight: '600',
     /* letter-spacing: 10px; */
     lineHeight: '20px',
