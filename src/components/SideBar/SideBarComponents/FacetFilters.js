@@ -22,7 +22,6 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
   // Replay as ReplayIcon,
 } from '@material-ui/icons';
-import FacetLocalFindSearchIcon from '../../../assets/icons/FacetLocalFindSearchIcon.svg';
 import {
   toggleCheckBox,
   toggleSlider,
@@ -406,7 +405,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                     <div className={classes.sectionSummaryTextContainer}>
                       {currentSection.sectionName}
                       <div className={classes.findCaseButton} onClick={toggleAutocomplete}>
-                        <img src={FacetLocalFindSearchIcon} className={classes.findCaseIcon} alt="search" />
+                        <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/FacetLocalFindSearchIcon.svg" className={classes.findCaseIcon} alt="search" />
                       </div>
                     </div>
                     {
