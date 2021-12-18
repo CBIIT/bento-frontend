@@ -7,19 +7,21 @@ const PropertyItem = ({
 }) => {
   const defaultValue = '';
   return (
-    <Grid item container>
-      <Grid item xs={9}>
-        <span className={classes.title} id={`section_title_${index + 1}`}>
-          {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : label}
-        </span>
-        :
-&nbsp;
-        <span className={classes.content} id={`section_description_${index + 1}`}>
-          {value || value === 0 ? (
-            link ? <Anchor link={link} text={value} classes={classes} /> : value
-          ) : defaultValue}
-        </span>
-      </Grid>
+    <Grid item container className={classes.propertyContainer}>
+      {value ? (
+        <Grid item xs={9}>
+          <span className={classes.title} id={`section_title_${index + 1}`}>
+            {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : label}
+          </span>
+          :
+          &nbsp;
+          <span className={classes.content} id={`section_description_${index + 1}`}>
+            {value || value === 0 ? (
+              link ? <Anchor link={link} text={value} classes={classes} /> : value
+            ) : defaultValue}
+          </span>
+        </Grid>
+      ) : '' }
     </Grid>
   );
 };
@@ -38,9 +40,12 @@ const styles = () => ({
     fontFamily: 'Nunito',
     fontSize: '12px',
     lineHeight: '12px',
-    letterSpacing: '0.017em',
+    letterSpacing: '0.05em',
     fontWeight: 'bold',
     whiteSpace: 'nowrap',
+  },
+  propertyContainer: {
+    lineHeight: '17px',
   },
   link: {
     color: 'black',

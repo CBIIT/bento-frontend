@@ -15,7 +15,7 @@ const ValueCard = ({ data, classes, index }) => {
       dataField: 'property_name',
     },
     {
-      label: 'value',
+      label: 'Value',
       dataField: 'filevalue_name',
     },
   ];
@@ -29,11 +29,10 @@ const ValueCard = ({ data, classes, index }) => {
         </Grid>
         <Grid item xs={11} className={classes.propertyContainer}>
           <div>
-            <span className={classes.detailContainerHeader}>Value</span>
+            <span className={classes.detailContainerHeader}>DATA MODEL</span>
             {' '}
 &nbsp;
             {' '}
-            {data.node_name}
           </div>
           {propertiesWithLinks.slice(0, 10).map((prop) => (
             <PropertyItem
@@ -58,12 +57,12 @@ const styles = () => ({
     margin: '0px 0px 0px 6px',
   },
   indexContainer: {
-    padding: '18px',
+    padding: '18px 0px 18px 18px',
     fontFamily: 'Nunito',
     color: '#747474',
   },
   propertyContainer: {
-    padding: '18px',
+    padding: '16px 16px 16px 0px',
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
