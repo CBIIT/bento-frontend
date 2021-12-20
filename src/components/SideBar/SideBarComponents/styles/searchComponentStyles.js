@@ -1,5 +1,8 @@
 const styles = () => ({
-
+  listPadding: {
+    paddingTop: '0px',
+    paddingBottom: '4px',
+  },
   backdrop: {
     zIndex: 99999,
     background: 'rgba(0, 0, 0, 0.1)',

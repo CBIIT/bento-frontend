@@ -61,6 +61,7 @@ const styles = () => ({
   },
   searchContainer: {
     zIndex: 3,
+    paddingTop: '8px',
   },
   subSectionSummaryText: {
     marginLeft: '10px',
@@ -125,6 +126,7 @@ const styles = () => ({
     boxSizing: 'border-box',
     height: 32,
     width: 200,
+    // fontSize: '12px',
     border: '1.25px solid #0D8461',
     backgroundColor: '#10A075',
     color: '#fff',
@@ -211,6 +213,29 @@ const styles = () => ({
   },
   sliderListItem: {
     marginRight: '12px',
+  },
+  // Test
+  listPadding: {
+    paddingBottom: '0px',
+  },
+  listItemGutter: {
+    padding: '2px 0px 2px 0px',
+  },
+  clearFiltersBorder: {
+    borderTop: '1px solid black',
+    borderBottom: '1px solid #B0CFE1',
+  },
+  closeRoot: {
+    marginLeft: '3px',
+    height: 18,
+  },
+  searchResultDetailText: {
+    marginTop: '1.5px',
+    marginLeft: 10,
+    color: '#0D8662',
+    lineHeight: '120%',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
   },
 });
 

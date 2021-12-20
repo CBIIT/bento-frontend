@@ -14,12 +14,14 @@ import {
   CircularProgress,
   Button,
   Icon,
+  IconButton,
   ListItem,
 } from '@material-ui/core';
+
 // import createMuiTheme from '@material-ui/styles';
 import _ from 'lodash';
 import {
-  ArrowDropDown as ArrowDropDownIcon,
+  ArrowDropDown as ArrowDropDownIcon, Close as CloseIcon
   // Replay as ReplayIcon,
 } from '@material-ui/icons';
 import {
@@ -31,6 +33,7 @@ import {
   sortSection,
   getAllIds,
   resetGroupSelections,
+  uploadBulkModalSearch,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
   facetSectionVariables,
@@ -126,7 +129,15 @@ export const FacetPanelComponent = ({ classes }, ref) => {
     state.dashboardTab
       && state.dashboardTab.sortByList
       ? state.dashboardTab.sortByList : {}));
-
+  
+  const bulkUpload = useSelector((state) => (
+    state.dashboardTab
+      && state.dashboardTab.bulkUpload
+      ? state.dashboardTab.bulkUpload : {
+        subject_ids: [],
+        sample_ids: [],
+        file_ids: [],
+      }))
   let groupNameColor = '';
   function getGroupNameColor(sideBarItem, currentSection, sideBarIndex) {
     groupNameColor = 'black';
@@ -241,6 +252,41 @@ export const FacetPanelComponent = ({ classes }, ref) => {
   function getCheckBoxColor(index, currentSection) {
     return index % 2 ? facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].checkBoxColorsTwo ? facetSectionVariables[currentSection.sectionName].checkBoxColorsTwo : '' : defaultFacetSectionVariables.checkBoxColorsTwo
       : facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne : '' : defaultFacetSectionVariables.checkBoxColorsOne;
+  }
+
+  function InputSetListItem(){
+   return  <List classes={{ padding: classes.listPadding }}>
+              <>
+                <Divider
+                  style={{
+                    backgroundColor: '#B1B1B1',
+                    height: '2px',
+                  }}
+                />
+                <ListItem
+                  classes={{ gutters: classes.listItemGutter }}
+                >
+                  <div className={classes.searchResultDetailText}>
+                    <span>
+                     Input Set
+                    </span>
+                  </div>
+                  <IconButton
+                    disableRipple
+                    style={{ backgroundColor: 'transparent' }}
+                    onClick={()=> {uploadBulkModalSearch([],'subject')}}
+                  >
+                    <CloseIcon
+                      classes={{ root: classes.closeRoot }}
+                      style={{
+                        color: '#000',
+                      }}
+                    />
+                  </IconButton>
+
+                </ListItem>
+              </>
+          </List>
   }
 
   const showSelectedChecbox = (sideBarItem, currentSection, sideBarIndex) => {
@@ -411,6 +457,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                     {
                       showSearch && (
                         <div className={classes.searchContainer} onClick={handleCaseFacetClick}>
+                          { bulkUpload.subject_ids.length !== 0 ? <InputSetListItem /> : '' }
                           <AutoComplete ref={searchRef} type={facetSectionFindApi[currentSection.sectionName].api}
                             data={getAllIds(facetSectionFindApi[currentSection.sectionName].api)} />
                           <Button
@@ -418,7 +465,8 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                             onClick={() => setShowCasesModal(true)}
                             className={classes.uploadButton}
                           >
-                            Upload Case Set
+                            {/* { bulkUpload.subject_ids.length !== 0 ? 'View/Modify Case Set' : 'Upload Case Set'  } */}
+                         Upload Case Set
                             <ArrowUpwardOutlined className={classes.uploadIcon}/>
                           </Button>
                         </div>

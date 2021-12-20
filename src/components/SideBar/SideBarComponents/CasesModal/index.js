@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import {
-  getAllIds,
+  getAllIds, uploadBulkModalSearch,
 } from '../../../../pages/dashboardTab/store/dashboardReducer';
 import FileUploader from '../../../FileUploader';
 import SummaryTable from './SummaryTable';
@@ -71,6 +71,7 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
   const [isClear, setIsClear] = React.useState(false);
 
   const submitCase = () => {
+    uploadBulkModalSearch(unmatchedIds, 'subject');
     closeModal();
   };
 
@@ -86,7 +87,17 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
     clearData();
   };
 
-  const handleContent = (content) => {
+  // async function setInitIds() {
+  //   const response = await getAllIds(type);
+  //   if (response.subjectIds) {
+  //     setSubjectIds(response.subjectIds);
+  //   }
+  // }
+
+  async function handleContent(content) {
+    // if (subjectIds.length === 0) {
+    //   await setInitIds();
+    // }
     if (content.trim()) {
       const matchData = [];
       const fileData = content && content.toString().split('\n');
@@ -117,7 +128,7 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
       setMatchIds(matchData);
       setUnmatchedIds(unmatchData);
     }
-  };
+  }
 
   const handleChange = ({ target: { value } }) => { setFileContent(value); handleContent(value); };
 
@@ -135,6 +146,7 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
       }
     })();
   }, []);
+
   return (
     <Modal
       {...modalProps}
