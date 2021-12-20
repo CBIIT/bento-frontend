@@ -524,7 +524,7 @@ export function fetchDataForDashboardTab(
   const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
   const newFilters = filters;
   // deal with empty string inside the age_at_index filter
-  if (filters.age_at_index.length === 2) {
+  if (filters && filters.age_at_index.length === 2) {
     if (filters.age_at_index.includes('')) {
       newFilters.age_at_index = [];
     }
