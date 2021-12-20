@@ -59,12 +59,12 @@ const styles = () => ({
     fontSize: '12px',
   },
   indexContainer: {
-    padding: '18px',
+    padding: '18px 0px 18px 18px',
     fontFamily: 'Nunito',
     color: '#747474',
   },
   propertyContainer: {
-    padding: '18px',
+    padding: '16px 16px 16px 0px',
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {

@@ -10,7 +10,7 @@ const Subsection = ({
   <>
     {count !== 0 && (
       <div className={classes.totalResults}>
-        {count}
+        <span className={classes.totalCount}>{count}</span>
         {' '}
         Results
       </div>
@@ -28,7 +28,7 @@ const Subsection = ({
     </Grid>
   </>
 );
-const styles = (theme) => ({
+const styles = () => ({
   content: {
     fontSize: '12px',
   },
@@ -42,16 +42,6 @@ const styles = (theme) => ({
     '&:last-child $subsectionBody': {
       borderBottom: 'none',
     },
-  },
-  title: {
-    color: '#9d9d9c',
-    fontFamily: theme.custom.fontFamilySans,
-    fontSize: '12px',
-    lineHeight: '12px',
-    letterSpacing: '0.017em',
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    whiteSpace: 'nowrap',
   },
   descriptionPart: {
     paddingBottom: '26px',
@@ -72,11 +62,15 @@ const styles = (theme) => ({
   totalResults: {
     // margin: '0 auto',
     maxWidth: '1100px',
+    fontFamily: 'Nunito',
     color: '#000',
     fontSize: '20px',
     fontWeight: '300',
     margin: '16px auto',
     paddingLeft: '32px',
+  },
+  totalCount: {
+    fontFamily: 'Inter',
   },
 
 });
