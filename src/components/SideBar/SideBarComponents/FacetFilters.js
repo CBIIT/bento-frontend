@@ -428,7 +428,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
             open={showCasesModal}
             closeModal={closeCasesModal}
             handleClose={closeCasesModal}
-            type={facetSectionFindApi[currentSection.sectionName].api}
+            type={'subjectIds'}
           />
           <ExpansionPanel
             expanded={sectionExpanded.includes(currentSection.sectionName)}
