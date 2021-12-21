@@ -100,7 +100,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
     <>
       <div>
         <div>
-          <List>
+          <List classes={{ padding: classes.listPadding }}>
             {value.slice().reverse().map((v, index) => (
               <>
                 <Divider

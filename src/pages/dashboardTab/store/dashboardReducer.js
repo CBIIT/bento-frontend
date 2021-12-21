@@ -51,6 +51,11 @@ const initialState = {
       sample_ids: [],
       file_ids: [],
     },
+    bulkUpload: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
     isDataTableUptoDate: false,
     isFetched: false,
     isLoading: false,
@@ -99,6 +104,14 @@ const getState = () => store.getState()[storeKey];
 
 function shouldFetchDataForDashboardTabDataTable(state) {
   return !(state.isFetched);
+}
+
+// Custom function for mergeWith
+// eslint-disable-next-line consistent-return
+function customizer(objValue, srcValue) {
+  if (_.isArray(objValue)) {
+    return objValue.concat(srcValue);
+  }
 }
 
 export async function getSearch(inputVlaue) {
@@ -222,7 +235,7 @@ function fetchDashboardTab() {
         query: DASHBOARD_QUERY_NEW,
         variables: {
           ...allFilters(),
-          ...getState().autoCompleteSelection,
+          ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
         },
       })
       .then((result) => store.dispatch({ type: 'RECEIVE_DASHBOARDTAB', payload: _.cloneDeep(result) }))
@@ -238,7 +251,7 @@ function fetchDashboardTabForClearAll() {
       query: DASHBOARD_QUERY_NEW,
       variables: {
         ...getState().allActiveFilters,
-        ...getState().autoCompleteSelection,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
       },
     })
     .then((result) => store.dispatch({ type: 'CLEAR_ALL', payload: _.cloneDeep(result) }))
@@ -326,6 +339,10 @@ export function clearAllFilters() {
   store.dispatch(fetchDashboardTabForClearAll());
 }
 
+export async function clearAllFiltersExceptBulkUpload() {
+  store.dispatch({ type: 'RESET_ALL_EXCEPT_BULK_UPLOAD' });
+}
+
 const convertResultInPrevType = (result) => {
   const payload = result;
   payload.data = {
@@ -367,6 +384,43 @@ const getSubjectDetails = async (variables) => {
   return result;
 };
 
+export function addBulkModalSearchData(value, type) {
+  // const items = value.map((val) => val.title);
+  store.dispatch({ type: 'ADD_BULKSEARCHDATA', payload: { value, type } });
+}
+
+/**
+ * Uplpad Modal Set
+ *
+ * @return distpatcher
+ */
+
+export async function uploadBulkModalSearch(searchcriteria, type) {
+  if (searchcriteria.length !== 0) {
+    await clearAllFiltersExceptBulkUpload();
+  }
+  addBulkModalSearchData(searchcriteria, type);
+  const variables = {
+    ...getState().allActiveFilters,
+    ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+  };
+
+  const [
+    caseResponse,
+    subjectResponse,
+  ] = await Promise.all([
+    getCaseData(variables),
+    getSubjectDetails(variables),
+  ]);
+  store.dispatch({
+    type: 'LOCAL_SEARCH',
+    payload: {
+      subjectResponse,
+      result: caseResponse,
+    },
+  });
+}
+
 /**
  * Local search
  *
@@ -379,7 +433,7 @@ export async function localSearch(searchcriteria) {
   } else {
     const variables = {
       ...getState().allActiveFilters,
-      ...getState().autoCompleteSelection,
+      ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
     };
 
     const [
@@ -428,7 +482,8 @@ function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
       variables: {
         first: 100,
         ...currentAllFilterVariables,
-        ...getState().autoCompleteSelection,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+
       },
     })
     .then((result) => store.dispatch({
@@ -466,7 +521,7 @@ export function resetGroupSelections(payload) {
     } else {
       toggleCheckBoxWithAPIAction(payload, {
         ...currentAllFilterVariables,
-        ...getState().autoCompleteSelection,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
       });
     }
   };
@@ -539,7 +594,7 @@ export function fetchDataForDashboardTab(
     ? (getState().allActiveFilters !== {}
       ? {
         ...getState().allActiveFilters,
-        ...getState().autoCompleteSelection,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
       }
       : allFilters()) : filters;
   return client
@@ -842,7 +897,7 @@ export async function singleCheckBox(payload) {
   const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
   toggleCheckBoxWithAPIAction(payload, {
     ...currentAllFilterVariables,
-    ...getState().autoCompleteSelection,
+    ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
   });
 }
 
@@ -861,7 +916,7 @@ export function toggleCheckBox(payload) {
     } else {
       toggleCheckBoxWithAPIAction(payload, {
         ...currentAllFilterVariables,
-        ...getState().autoCompleteSelection,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
       });
     }
   };
@@ -1226,6 +1281,11 @@ const reducers = {
           sample_ids: [],
           file_ids: [],
         },
+        bulkUpload: {
+          subject_ids: [],
+          sample_ids: [],
+          file_ids: [],
+        },
       } : { ...state };
   },
   CLEAR_ALL: (state, item) => {
@@ -1248,6 +1308,11 @@ const reducers = {
           data: checkboxData,
         },
         autoCompleteSelection: {
+          subject_ids: [],
+          sample_ids: [],
+          file_ids: [],
+        },
+        bulkUpload: {
           subject_ids: [],
           sample_ids: [],
           file_ids: [],
@@ -1358,12 +1423,32 @@ const reducers = {
       sample_ids: [],
       file_ids: [],
     },
+    bulkUpload: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
+    allActiveFilters: {},
+  }),
+  RESET_ALL_EXCEPT_BULK_UPLOAD: (state) => ({
+    ...state,
+    autoCompleteSelection: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
     allActiveFilters: {},
   }),
   ADD_AUTOCOMPLETE_DATA: (state, { type, value }) => ({
     ...state,
     autoCompleteSelection: {
       ...state.autoCompleteSelection,
+      [`${type}_ids`]: value,
+    },
+  }),
+  ADD_BULKSEARCHDATA: (state, { type, value }) => ({
+    ...state,
+    bulkUpload: {
       [`${type}_ids`]: value,
     },
   }),
