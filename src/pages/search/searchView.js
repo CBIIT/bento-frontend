@@ -143,10 +143,10 @@ function searchComponent({ classes, searchparam = '' }) {
             <TabPanel value="6"><Subsection searchText={inputValue} count={searchResults.study_count || 0} data={searchResults.studies} /></TabPanel>
             <TabPanel value="7"><Subsection searchText={inputValue} count={searchResults.value_count || 0} data={searchResults.values} /></TabPanel>
             <TabPanel value="8"><Subsection searchText={inputValue} count={searchResults.about_count || 0} data={searchResults.about_page} /></TabPanel>
+            <Pagination count={10} shape="rounded" />
 
           </TabContext>
         </Box>
-        <Pagination />
       </div>
     </>
   );
