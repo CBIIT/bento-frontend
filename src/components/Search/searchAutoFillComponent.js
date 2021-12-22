@@ -22,7 +22,7 @@ function searchComponent({ classes }) {
   }, [open]);
 
   function onChange(newValue = []) {
-    const path = `/search/${newValue[0]}`;
+    const path = `/search/${newValue}`;
     history.push(path);
   }
 
