@@ -48,9 +48,8 @@ const CaseCard = ({ data, classes, index }) => {
             {' '}
             <span className={classes.cardTitle}>{data.subject_id}</span>
           </div>
-          {propertiesWithLinks.slice(0, 10).map((prop) => (
+          {propertiesWithLinks.map((prop) => (
             <PropertyItem
-              key={index}
               label={prop.label}
               value={data[prop.dataField]}
               link={prop.link}
@@ -60,19 +59,6 @@ const CaseCard = ({ data, classes, index }) => {
             />
           ))}
         </Grid>
-        {/* <Grid item xs={3}>
-          <Button variant="outlined" sx={{ borderRadius: 100 }}>
-            <span className={classes.badge}>
-              <img
-                className={classes.cartIcon}
-                src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Navbar.svg"
-                alt="add to cart"
-              />
-
-            </span>
-            Add to cart
-          </Button>
-        </Grid> */}
       </Grid>
     </>
   );
