@@ -26,38 +26,137 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '10px',
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
     backgroundColor: theme.palette.background.paper,
   },
   modalTitle: {
     borderBottom: '1px solid rgba(#000,0.3)',
-    paddingBottom: '10px',
+    fontSize: 20,
+    color: '#4D6787',
+    padding: '15px 33px',
+    margin: '0px',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   modalContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingRight: 33,
+    paddingLeft: 33,
+    backgroundColor: '#CCD4DD',
   },
   inputLabel: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   uploadFile: {
-
+    width: '48%',
+    border: '1px solid white',
+    margin: '10px 4px',
+    padding: 10,
+    textAlign: 'center',
+  },
+  orTitle: {
+    position: 'fixed',
+    color: '#437BBE',
+    fontSize: 17,
+    border: '1px solid #fff',
+    borderRadius: '50%',
+    padding: 8,
+    width: 42,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: -41,
+    backgroundColor: '#CCD4DD',
+  },
+  textSection: {
+    width: '48%',
+    border: '1px solid white',
+    margin: '10px 4px',
+    padding: 10,
   },
   modalFooter: {
     borderTop: '1px solid rgba(#000,0.3)',
     display: 'flex',
-    justifyContent: 'end',
+    justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20,
   },
   button: {
     marginLeft: '10px',
     marginRight: '10px',
     borderRadius: '5px',
+    boxSizing: 'border-box',
+    height: 38,
+    width: 97,
+    border: '1px solid #626262',
+    fontSize: 11,
+    textAlign: 'center',
+    color: '#fff',
+  },
+  uploadButton: {
+    borderRadius: '5px',
+    boxSizing: 'border-box',
+    height: 38,
+    border: '1px solid #626262',
+    fontSize: 11,
+    textAlign: 'center',
+    color: '#fff',
+    backgroundColor: '#437BBE',
   },
   modalRoot: {
     background: 'rgba(0,0,0,0.2)',
+  },
+  textArea: {
+    height: '150px !important',
+    width: '100%',
+    overflowY: 'scroll !important',
+    border: '1.25px solid #437BBE',
+    borderRadius: 10,
+  },
+  listTitle: {
+    fontWeight: 300,
+    fontSize: 14,
+  },
+  tooltipIcon: {
+    fontSize: 12,
+    fontWeight: 600,
+  },
+  horizontal: {
+    height: 1,
+    width: 214,
+    border: '1px solid #FFFFFF',
+    backgroundColor: '#FFFFFF',
+    marginTop: 10,
+  },
+  fileUploader: {
+    justifyContent: 'center',
+    marginTop: 5,
+    display: 'block',
+  },
+  uploaderComponent: {
+    paddingRight: 70,
+  },
+  fileName: {
+    margin: 'unset',
+    color: '#0D4A94',
+    fontSize: 14,
+  },
+  fileNameContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  filesection: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  refresh: {
+    color: '#1F2F50',
+    height: 14,
+    cursor: 'pointer',
   },
 }));
 
@@ -160,32 +259,71 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
       <div className={classes.paper}>
         <h1 className={classes.modalTitle}>Upload Case Set</h1>
         <div className={classes.modalContainer}>
-          <div className={classes.inputLabel}>
-            <Typography>
-              <p>Type or copy-and-paste a list of identifiers</p>
-            </Typography>
-            <Tooltip title="Add the case indentifier." placement="left-start">
-              <HelpIcon />
-            </Tooltip>
+
+          <div className={classes.textSection}>
+            <div className={classes.inputLabel}>
+              <Typography>
+                <p className={classes.listTitle}>Add a list of Case IDs:</p>
+              </Typography>
+              <Tooltip title="Add the case indentifier." placement="left-start" className={classes.tooltipIcon}>
+                <HelpIcon />
+              </Tooltip>
+            </div>
+            <TextareaAutosize
+              value={fileContent}
+              name="caseDescription"
+              onChange={handleChange}
+              placeholder="eg. BENTO-CASE-06, BENTO-CASE-22"
+              className={classes.textArea}
+            />
           </div>
-          <TextareaAutosize
-            minRows={4}
-            maxRows={6}
-            value={fileContent}
-            name="caseDescription"
-            onChange={handleChange}
-            placeholder="eg. BENTO-CASE-06, BENTO-CASE-22"
-          />
           <div className={classes.uploadFile}>
-            <p>Or choose a file to upload</p>
-            <FileUploader onFileUpload={handleFileUpload} isClear={isClear} />
+            <div className={classes.orTitle}>or</div>
+            <div className={classes.inputLabel}>
+              <Typography>
+                <p className={classes.listTitle}>Choose a file to upload</p>
+              </Typography>
+              <Tooltip title="Add the case indentifier." placement="left-start" className={classes.tooltipIcon}>
+                <HelpIcon />
+              </Tooltip>
+            </div>
+            <FileUploader
+              clearData={clearData}
+              onFileUpload={handleFileUpload}
+              isClear={isClear}
+              classes={classes}
+            />
           </div>
         </div>
         {fileContent && <SummaryTable matchedContent={matchIds} unmatchedContent={unmatchedIds} />}
         <div className={classes.modalFooter}>
-          <Button variant="contained" color="primary" onClick={cancelModal} className={classes.button}>Cancel</Button>
-          <Button variant="contained" color="blueGrey" onClick={clearData} className={classes.button}>Clear</Button>
-          <Button variant="contained" color="blueGrey" onClick={submitCase} className={classes.button}>Submit</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={cancelModal}
+            style={{ backgroundColor: '#566672' }}
+            className={classes.button}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="blueGrey"
+            onClick={clearData}
+            style={{ backgroundColor: '#437BBE' }}
+            className={classes.button}
+          >
+            Clear
+          </Button>
+          <Button
+            variant="contained"
+            color="blueGrey"
+            onClick={submitCase}
+            style={{ backgroundColor: '#03A383' }}
+            className={classes.button}
+          >
+            Submit
+          </Button>
         </div>
       </div>
     </Modal>
