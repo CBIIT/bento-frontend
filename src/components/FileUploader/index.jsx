@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { withStyles, Button, Typography } from '@material-ui/core';
+import {
+  withStyles,
+  Button,
+  Typography,
+  Divider,
+} from '@material-ui/core';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import styles from './uploaderStyle';
 
-const Uploader = ({ classes, onFileUpload, isClear }) => {
+const Uploader = ({
+  classes,
+  onFileUpload,
+  isClear,
+  clearData,
+}) => {
   const [fileName, setFileName] = useState('');
 
   useEffect(() => {
@@ -39,7 +50,19 @@ const Uploader = ({ classes, onFileUpload, isClear }) => {
           Browse
         </Button>
       </div>
-      <Typography className={classes.fileName}>{fileName}</Typography>
+      <div className={classes.filesection}>
+        {
+          fileName
+            ? (
+              <div className={classes.fileNameContainer}>
+                <Typography className={classes.fileName}>{fileName}</Typography>
+                <RefreshIcon className={classes.refresh} onClick={clearData} />
+              </div>
+            )
+            : null
+        }
+        <Divider className={classes.horizontal} />
+      </div>
     </div>
   );
 };
