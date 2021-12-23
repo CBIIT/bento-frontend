@@ -1,34 +1,173 @@
-// Component to display a property
-import { Grid, withStyles } from '@material-ui/core';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+  withStyles, Button, Grid,
+} from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import Components from './component';
+import client from '../../../utils/graphqlClient';
 
-// Component to display a subsection
-const Subsection = ({
-  data, classes, searchText, count,
-}) => (
-  <>
-    {count !== 0 && (
+function SearchPagination({
+  datafield, classes, searchText, count, queryforAPI,
+}) {
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+  const [data, setdata] = useState([]);
+
+  async function getSearchPageResults(inputVlaue) {
+    const allids = await client
+      .query({
+        query: queryforAPI,
+        variables: {
+          input: inputVlaue,
+          first: pageSize,
+          offset: (page - 1) * pageSize,
+        },
+      })
+      .then((result) => result.data.globalSearch);
+    return allids;
+  }
+
+  async function onChange(newValue = []) {
+    const searchResp = await getSearchPageResults(newValue);
+    setdata(searchResp[datafield]);
+  }
+
+  useEffect(() => {
+    onChange(searchText);
+  }, [searchText, queryforAPI]);
+
+  const onNext = () => {
+    if (page < Math.ceil(count / pageSize)) {
+      setPage(page + 1);
+    }
+  };
+
+  const onPrevious = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleChangePage = (event, newPage) => {
+    onChange(searchText);
+    setPage(newPage);
+  };
+
+  return (
+    <>
+      {Math.ceil(count / pageSize) !== 0 && (
       <div className={classes.totalResults}>
         <span className={classes.totalCount}>{count}</span>
         {' '}
         Results
       </div>
-    ) }
-    <Grid className={classes.subsection}>
-      <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
-        {/* {data.content.body.map(block => Components(block))} */}
+      ) }
+      <Grid className={classes.subsection}>
+        <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
 
-        { data !== undefined ? data.length !== 0 ? data.map(
+          { data !== undefined ? data.length !== 0 ? data.map(
           // eslint-disable-next-line max-len
-          (block, index) => <Components searchText={searchText} data={block} classes index={index} />,
-        )
-          : <div>No data</div> : <div>No data</div>}
+            (block, index) => <Components searchText={searchText} data={block} classes index={(page - 1) * pageSize + index} />,
+          )
+            : <div>No data</div> : <div>No data</div>}
+        </Grid>
       </Grid>
-    </Grid>
-  </>
-);
-const styles = () => ({
+      {Math.ceil(count / pageSize) > 1 && (
+      <div className={classes.paginationContainer}>
+        <Button sx={{ borderRadius: 100 }} onClick={onPrevious} className={classes.prevButton}>
+          <span>
+            <img
+              className={classes.prevIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchPrevious.svg"
+              alt="previous button"
+            />
+
+          </span>
+          previous
+        </Button>
+
+        <Pagination
+          classes={{ ul: classes.paginationUl }}
+          className={classes.paginationRoot}
+          count={Math.ceil(count / pageSize)}
+          page={page}
+          siblingCount={2}
+          boundaryCount={1}
+          shape="rounded"
+          hideNextButton
+          hidePrevButton
+          onChange={handleChangePage}
+        />
+        <Button sx={{ borderRadius: 100 }} onClick={onNext} className={classes.nextButton}>
+          next
+          <span>
+            <img
+              className={classes.nextIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchNext.svg"
+              alt="previous button"
+            />
+
+          </span>
+        </Button>
+
+      </div>
+      )}
+    </>
+  );
+}
+
+const styles = {
+  prevButton: {
+    marginRight: '44px',
+    fontFamily: '"Open Sans", sans-serif',
+    fontWeight: 'bold',
+    fontSize: '12px',
+  },
+  prevIcon: {
+    height: '12px',
+    margin: '0px 12px 0px 6px',
+  },
+  nextButton: {
+    marginLeft: '44px',
+    fontFamily: '"Open Sans", sans-serif',
+    fontWeight: 'bold',
+
+    fontSize: '12px',
+  },
+  nextIcon: {
+    height: '12px',
+    margin: '0px 6px 0px 12px',
+  },
+  paginationContainer: {
+    display: 'flex',
+    maxWidth: '680px',
+    margin: '0 auto',
+    paddingBottom: '80px',
+    '& > *': {
+      marginTop: '8px',
+    },
+  },
+  ul: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    padding: 0,
+    margin: 0,
+    listStyle: 'none',
+  },
+  paginationUl: {
+    '& .MuiPaginationItem-root': {
+      color: '#565656',
+      fontFamily: '"Open Sans", sans-serif',
+      fontSize: '11px',
+      fontWeight: 'bold',
+    },
+  },
+  paginationRoot: {
+    '& .Mui-selected': {
+      backgroundColor: '#D9E8F8',
+    },
+  },
   content: {
     fontSize: '12px',
   },
@@ -72,7 +211,6 @@ const styles = () => ({
   totalCount: {
     fontFamily: 'Inter',
   },
+};
 
-});
-
-export default withStyles(styles, { withTheme: true })(Subsection);
+export default withStyles(styles)(SearchPagination);

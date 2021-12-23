@@ -43,7 +43,7 @@ const NodeCard = ({ data, classes, index }) => {
             <span className={classes.cardTitle}>{data.file_id}</span>
 
           </div>
-          {propertiesWithLinks.slice(0, 10).map((prop) => (
+          {propertiesWithLinks.map((prop) => (
             <PropertyItem
               label={prop.label}
               value={data[prop.dataField]}

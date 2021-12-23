@@ -6,8 +6,17 @@ import {
   Autocomplete, TabContext, TabList, TabPanel,
 } from '@material-ui/lab';
 // import { Clear as ClearIcon } from '@material-ui/icons';
+import {
+  SEARCH_PAGE_RESULT_PROGRAM,
+  SEARCH_PAGE_RESULT_STUDIES,
+  SEARCH_PAGE_RESULT_SUBJECTS,
+  SEARCH_PAGE_RESULT_SAMPLES,
+  SEARCH_PAGE_RESULT_FILES,
+  SEARCH_PAGE_RESULT_VALUES,
+  SEARCH_PAGE_RESULT_ABOUT,
+} from '../../bento/search';
 import { getSearch, getSearchPageResults } from '../dashboardTab/store/dashboardReducer';
-import Pagination from './components/pagination';
+// import Pagination from './components/pagination';
 import Subsection from './components/searchCard';
 
 function searchComponent({ classes, searchparam = '' }) {
@@ -135,15 +144,15 @@ function searchComponent({ classes, searchparam = '' }) {
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
             </Box>
-            <TabPanel value="1"><Subsection searchText={inputValue} count={searchResults.subject_count || 0} data={searchResults.subjects} /></TabPanel>
-            <TabPanel value="2"><Subsection searchText={inputValue} count={searchResults.subject_count || 0} data={searchResults.subjects} /></TabPanel>
-            <TabPanel value="3"><Subsection searchText={inputValue} count={searchResults.sample_count || 0} data={searchResults.samples} /></TabPanel>
-            <TabPanel value="4"><Subsection searchText={inputValue} count={searchResults.file_count || 0} data={searchResults.files} /></TabPanel>
-            <TabPanel value="5"><Subsection searchText={inputValue} count={searchResults.program_count || 0} data={searchResults.programs} /></TabPanel>
-            <TabPanel value="6"><Subsection searchText={inputValue} count={searchResults.study_count || 0} data={searchResults.studies} /></TabPanel>
-            <TabPanel value="7"><Subsection searchText={inputValue} count={searchResults.value_count || 0} data={searchResults.values} /></TabPanel>
-            <TabPanel value="8"><Subsection searchText={inputValue} count={searchResults.about_count || 0} data={searchResults.about_page} /></TabPanel>
-            <Pagination count={10} shape="rounded" />
+            <TabPanel value="1"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={searchResults.subject_count || 0} datafield="subjects" /></TabPanel>
+            <TabPanel value="2"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={searchResults.subject_count || 0} datafield="subjects" /></TabPanel>
+            <TabPanel value="3"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SAMPLES} count={searchResults.sample_count || 0} datafield="samples" /></TabPanel>
+            <TabPanel value="4"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_FILES} count={searchResults.file_count || 0} datafield="files" /></TabPanel>
+            <TabPanel value="5"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_PROGRAM} count={searchResults.program_count || 0} datafield="programs" /></TabPanel>
+            <TabPanel value="6"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_STUDIES} count={searchResults.study_count || 0} datafield="studies" /></TabPanel>
+            <TabPanel value="7"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_VALUES} count={searchResults.value_count || 0} datafield="values" /></TabPanel>
+            <TabPanel value="8"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_ABOUT} count={searchResults.about_count || 0} datafield="about_page" /></TabPanel>
+            {/* <Pagination count={10} shape="rounded" /> */}
 
           </TabContext>
         </Box>

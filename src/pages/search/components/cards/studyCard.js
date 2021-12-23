@@ -25,7 +25,7 @@ const StudyCard = ({ data, classes, index }) => {
 
   return (
     <>
-      <Grid item className={classes.card}>
+      <Grid item container className={classes.card}>
         <Grid item xs={1} className={classes.indexContainer}>
           {index + 1 }
         </Grid>
@@ -38,7 +38,7 @@ const StudyCard = ({ data, classes, index }) => {
             <span className={classes.cardTitle}>{data.study_id}</span>
           </div>
 
-          {propertiesWithLinks.slice(0, 10).map((prop) => (
+          {propertiesWithLinks.map((prop) => (
             <PropertyItem
               label={prop.label}
               value={data[prop.dataField]}

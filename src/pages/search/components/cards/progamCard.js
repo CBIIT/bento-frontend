@@ -31,7 +31,7 @@ const ProgamCard = ({ data, classes, index }) => {
 
   return (
     <>
-      <Grid item className={classes.card}>
+      <Grid item container className={classes.card}>
         <Grid item xs={1} className={classes.indexContainer}>
           {index + 1 }
         </Grid>
@@ -45,7 +45,7 @@ const ProgamCard = ({ data, classes, index }) => {
 
           </div>
 
-          {propertiesWithLinks.slice(0, 10).map((prop) => (
+          {propertiesWithLinks.map((prop) => (
             <PropertyItem
               label={prop.label}
               value={data[prop.dataField]}

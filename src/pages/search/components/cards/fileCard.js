@@ -43,9 +43,8 @@ const FileCard = ({ data, classes, index }) => {
             <span className={classes.cardTitle}>{data.file_id}</span>
 
           </div>
-          {propertiesWithLinks.slice(0, 10).map((prop) => (
+          {propertiesWithLinks.map((prop) => (
             <PropertyItem
-              key={index}
               label={prop.label}
               value={data[prop.dataField]}
               link={prop.link}

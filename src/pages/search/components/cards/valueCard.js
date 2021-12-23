@@ -13,6 +13,7 @@ const ValueCard = ({ data, classes, index }) => {
     {
       label: 'Property Name',
       dataField: 'property_name',
+      link: '/resources',
     },
     {
       label: 'Value',
@@ -34,7 +35,7 @@ const ValueCard = ({ data, classes, index }) => {
 &nbsp;
             {' '}
           </div>
-          {propertiesWithLinks.slice(0, 10).map((prop) => (
+          {propertiesWithLinks.map((prop) => (
             <PropertyItem
               label={prop.label}
               value={data[prop.dataField]}
