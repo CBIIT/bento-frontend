@@ -268,7 +268,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                 >
                   <div className={classes.searchResultDetailText}>
                     <span>
-                     Input Set
+                     INPUT SET
                     </span>
                   </div>
                   <IconButton
@@ -467,7 +467,14 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                           >
                             {/* { bulkUpload.subject_ids.length !== 0 ? 'View/Modify Case Set' : 'Upload Case Set'  } */}
                          Upload Case Set
-                            <ArrowUpwardOutlined className={classes.uploadIcon}/>
+                         <span className={classes.iconSpan}>
+            <img
+              className={classes.uploadIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
+              alt="previous button"
+            />
+
+          </span>
                           </Button>
                         </div>
                       )

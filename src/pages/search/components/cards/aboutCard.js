@@ -14,7 +14,7 @@ const AboutCard = ({
       <span>
         {' '}
         { parts.map((part, i) => (
-          <span id={i} style={part.toLowerCase() === highlight.toLowerCase() ? { color: '#0467BD', fontWeight: 'bold' } : {}}>
+          <span id={i} style={part.toLowerCase() === highlight.toLowerCase() ? { color: '#0467BD' } : {}}>
             { part }
           </span>
         ))}
@@ -39,7 +39,7 @@ const AboutCard = ({
             <span className={classes.cardTitle}>{data.title}</span>
           </div>
           <div className={classes.text}>{getHighlightedText(results, searchText)}</div>
-          <div><Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes} /></div>
+          <div className={classes.linkText}><Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes} /></div>
         </Grid>
       </Grid>
 
@@ -52,10 +52,16 @@ const styles = () => ({
     height: '22px',
     margin: '0px 0px 0px 6px',
   },
+  linkText: {
+    fontFamily: 'Nunito',
+    color: '#7747ff',
+    textDecoration: 'none',
+  },
   indexContainer: {
     padding: '18px 0px 18px 18px',
-    fontFamily: 'Nunito',
     color: '#747474',
+    fontFamily: 'Inter',
+    fontSize: '13px',
   },
   propertyContainer: {
     padding: '16px 16px 16px 0px',
@@ -65,6 +71,8 @@ const styles = () => ({
     color: '#7747FF',
     fontSize: '16px',
     fontFamily: 'Nunito',
+    paddingLeft: '9px',
+    verticalAlign: 'middle',
   },
   content: {
     fontSize: '12px',
@@ -76,9 +84,10 @@ const styles = () => ({
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '12px',
-    fontWeight: '600',
-    /* letter-spacing: 10px; */
-    lineHeight: '20px',
+    fontWeight: '400',
+    letterSpacing: '0.9px',
+    verticalAlign: 'middle',
+    borderRadius: '4px',
   },
 });
 

@@ -11,10 +11,8 @@ const PropertyItem = ({
       {value ? (
         <Grid item xs={9}>
           <span className={classes.title} id={`section_title_${index + 1}`}>
-            {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : label}
+            {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : `${label}:`}
           </span>
-          :
-          &nbsp;
           <span className={classes.content} id={`section_description_${index + 1}`}>
             {value || value === 0 ? (
               link ? <Anchor link={link} text={value} classes={classes} /> : value
@@ -31,21 +29,24 @@ const styles = () => ({
     color: '#000',
     // fontFamily: theme.custom.fontFamilySans,
     fontFamily: 'Nunito',
-    fontSize: '12px',
+    fontSize: '14px',
     whiteSpace: 'nowrap',
+    paddingLeft: '6px',
+    letterSpacing: '0.7px',
   },
   title: {
     color: '#000',
     // fontFamily: theme.custom.fontFamilySans,
-    fontFamily: 'Nunito',
+    fontFamily: 'Inter',
     fontSize: '12px',
     lineHeight: '12px',
-    letterSpacing: '0.05em',
-    fontWeight: 'bold',
+    letterSpacing: '0.7px',
+    fontWeight: '600',
     whiteSpace: 'nowrap',
   },
   propertyContainer: {
     lineHeight: '17px',
+    paddingLeft: '6px',
   },
   link: {
     color: 'black',

@@ -45,6 +45,7 @@ const styles = () => ({
     lineHeight: '120%',
     fontFamily: 'Nunito',
     fontSize: '14px',
+    fontStyle: 'italic',
   },
   searchBoxRoot: {
     marginRight: 'Auto',
