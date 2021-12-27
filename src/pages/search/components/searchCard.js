@@ -111,7 +111,7 @@ function SearchPagination({
       {Math.ceil(count / pageSize) > 1 && (
       <div className={classes.paginationContainer}>
         <Button sx={{ borderRadius: 100 }} onClick={onPrevious} className={classes.prevButton}>
-          <span className={classes.iconSpan}>
+          <span>
             <img
               className={classes.prevIcon}
               src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchPrevious.svg"
@@ -136,7 +136,7 @@ function SearchPagination({
         />
         <Button sx={{ borderRadius: 100 }} onClick={onNext} className={classes.nextButton}>
           next
-          <span className={classes.iconSpan}>
+          <span>
             <img
               className={classes.nextIcon}
               src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchNext.svg"
@@ -170,7 +170,11 @@ const styles = {
   },
   nextIcon: {
     height: '12px',
-    margin: '0px 6px 0px 12px',
+    margin: '6px 6px 0px 12px',
+  },
+  prevIcon: {
+    height: '12px',
+    margin: '6px 12px 0px 12px',
   },
   paginationContainer: {
     display: 'flex',
