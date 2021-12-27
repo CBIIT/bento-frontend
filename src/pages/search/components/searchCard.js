@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import {
   withStyles, Button, Grid,
@@ -15,42 +14,88 @@ import {
   SEARCH_PAGE_RESULT_VALUES,
   SEARCH_PAGE_RESULT_ABOUT,
 } from '../../../bento/search';
+import { getSearchPageResults } from '../../dashboardTab/store/dashboardReducer';
 
 function SearchPagination({
   datafield, classes, searchText, count,
 }) {
   const [page, setPage] = useState(1);
+
   const pageSize = 10;
   const [data, setdata] = useState([]);
 
+  async function getAll(newPage) {
+    const calcOffset = (newPage - 1) * pageSize;
+    const searchResp = await getSearchPageResults(searchText);
+
+    const people = [
+      { countField: 'subject_count', nameField: 'subjects' },
+      { countField: 'sample_count', nameField: 'samples' },
+      { countField: 'file_count', nameField: 'files' },
+      { countField: 'program_count', nameField: 'programs' },
+      { countField: 'study_count', nameField: 'studies' },
+      { countField: 'value_count', nameField: 'values' },
+      { countField: 'about_count', nameField: 'about_page' },
+    ];
+    let acc = 0;
+
+    const test = people.map((obj) => {
+      acc += searchResp[obj.countField];
+      return { ...obj, value: acc };
+    });
+    // Create filter for next Query
+    const filter = test.filter((obj) => obj.value > calcOffset)[0];
+    // Create filter to calulate the Offset
+    const filterForOffset = test.filter((obj) => obj.value <= calcOffset);
+    // eslint-disable-next-line max-len
+    const val = filterForOffset.length === 0 ? 0 : filterForOffset[filterForOffset.length - 1].value;
+    // eslint-disable-next-line max-len
+    return { datafieldValue: filter.nameField, offsetValue: (Math.abs(calcOffset - val) / pageSize) * pageSize };
+  }
+
   function getQuery(field) {
     switch (field) {
-      case 'all': {
-        return SEARCH_PAGE_RESULT_SUBJECTS;
-      }
+      case 'all':
+        return { QUERY: SEARCH_PAGE_RESULT_SUBJECTS, field: 'all' };
       case 'subjects':
-        return SEARCH_PAGE_RESULT_SUBJECTS;
+        return { QUERY: SEARCH_PAGE_RESULT_SUBJECTS, field: 'subjects' };
       case 'samples':
-        return SEARCH_PAGE_RESULT_SAMPLES;
+        return { QUERY: SEARCH_PAGE_RESULT_SAMPLES, field: 'samples' };
       case 'files':
-        return SEARCH_PAGE_RESULT_FILES;
+        return { QUERY: SEARCH_PAGE_RESULT_FILES, field: 'files' };
       case 'programs':
-        return SEARCH_PAGE_RESULT_PROGRAM;
+        return { QUERY: SEARCH_PAGE_RESULT_PROGRAM, field: 'programs' };
       case 'studies':
-        return SEARCH_PAGE_RESULT_STUDIES;
+        return { QUERY: SEARCH_PAGE_RESULT_STUDIES, field: 'studies' };
       case 'values':
-        return SEARCH_PAGE_RESULT_VALUES;
+        return { QUERY: SEARCH_PAGE_RESULT_VALUES, field: 'values' };
       case 'about_page':
-        return SEARCH_PAGE_RESULT_ABOUT;
+        return { QUERY: SEARCH_PAGE_RESULT_ABOUT, field: 'about_page' };
       default:
-        return SEARCH_PAGE_RESULT_SUBJECTS;
+        return { QUERY: SEARCH_PAGE_RESULT_SUBJECTS, field: 'subjects' };
     }
   }
 
-  async function getSearchPageResults(inputVlaue, newPage) {
+  async function getPageResults(inputVlaue, newPage) {
+    if (datafield === 'all') {
+      const { datafieldValue, offsetValue } = await getAll(newPage);
+      const { QUERY } = getQuery(datafieldValue);
+      const allids = await client
+        .query({
+          query: QUERY,
+          variables: {
+            input: inputVlaue,
+            first: pageSize,
+            offset: offsetValue,
+          },
+        })
+        .then((result) => result.data.globalSearch);
+      return allids[datafieldValue];
+    }
+    const { QUERY, field } = getQuery(datafield);
     const allids = await client
       .query({
-        query: getQuery(datafield),
+        query: QUERY,
         variables: {
           input: inputVlaue,
           first: pageSize,
@@ -58,11 +103,11 @@ function SearchPagination({
         },
       })
       .then((result) => result.data.globalSearch);
-    return allids[datafield];
+    return allids[field];
   }
 
   async function onChange(newValue = [], newPage = 1) {
-    const searchResp = await getSearchPageResults(newValue, newPage);
+    const searchResp = await getPageResults(newValue, newPage);
     setdata(searchResp);
   }
 
