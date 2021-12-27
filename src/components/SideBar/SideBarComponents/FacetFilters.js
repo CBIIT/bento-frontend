@@ -34,7 +34,6 @@ import {
   resetGroupSelections,
   uploadBulkModalSearch,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
-import LocalFindUploadCaseIcon from '../../../assets/icons/LocalFindUploadCaseIcon.svg';
 import {
   facetSectionVariables,
   defaultFacetSectionVariables,

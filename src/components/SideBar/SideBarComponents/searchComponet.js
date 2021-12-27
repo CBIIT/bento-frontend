@@ -5,7 +5,6 @@ import {
   TextField, CircularProgress, Backdrop, withStyles, List, ListItem, Divider,
 } from '@material-ui/core';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import LocalFindCaseDeleteIcon from '../../../assets/icons/LocalFindCaseDeleteIcon.svg';
 import {
   getAllIds,
   localSearch,
@@ -113,7 +112,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
                     style={{ cursor: 'pointer', marginBottom: 5 }}
                     onClick={onDelete(v.title)}
                   >
-                    <img src={LocalFindCaseDeleteIcon} alt="close icon" className={classes.closeRoot} />
+                    <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
                   </div>
 
                 </ListItem>
