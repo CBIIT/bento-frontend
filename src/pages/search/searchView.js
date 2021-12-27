@@ -142,7 +142,7 @@ function searchComponent({ classes, searchparam = '' }) {
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.sampleTab }} label={`Samples ${searchResults.sample_count || 0}`} value="3" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.fileTab }} label={`Files ${searchResults.file_count || 0}`} value="4" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Programs ${searchResults.program_count || 0}`} value="5" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Studies ${searchResults.study_count || 0}`} value="6" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.studyTab }} label={`Studies ${searchResults.study_count || 0}`} value="6" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.dataTab }} label={`Data Model ${searchResults.value_count || 0}`} value="7" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
@@ -182,7 +182,7 @@ const styles = () => ({
   sampleTab: { color: '#1EA7FB' },
   fileTab: { color: '#AC32AB' },
   programTab: { color: '#C09500' },
-  studyTab: { color: '' },
+  studyTab: { color: '#DBDBDB' },
   dataTab: { color: '#9433F7' },
   aboutTab: { color: '#AC6632' },
   allTab: { borderRight: '1px solid black' },
