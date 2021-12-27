@@ -11,13 +11,15 @@ const styles = () => ({
     borderTop: '1px solid black',
     borderBottom: '1px solid #B0CFE1',
   },
+  clearIndicatorDirty: {
+    right: '-2px',
+  },
   inputRoot: {
     borderRadius: 10,
-    marginTop: '5px',
-    marginBottom: '5px',
+    marginBottom: '7px',
     boxSizing: 'border-box',
     height: 32,
-    width: 200,
+    width: '100%',
     '& .MuiOutlinedInput-notchedOutline': {
       border: '1.25px solid #0D8461',
     },
@@ -29,27 +31,28 @@ const styles = () => ({
     },
     '& .MuiInputBase-input': {
       height: '7px',
+      color: '#555555',
+      fontFamily: 'Lato',
+      fontSize: 11,
     },
   },
   closeRoot: {
-    marginLeft: '3px',
-    height: 18,
+    height: 10,
   },
   listItemGutters: {
-    padding: '2px 0px 2px 0px',
+    padding: '2px 15px 2px 18px',
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   searchResultDetailText: {
-    marginTop: '1.5px',
-    marginLeft: 10,
     color: '#0D8662',
-    lineHeight: '120%',
-    fontFamily: 'Nunito',
-    fontSize: '14px',
+    lineHeight: '20px',
+    fontFamily: 'Lato',
+    fontSize: '11px',
     fontStyle: 'italic',
   },
   searchBoxRoot: {
-    marginRight: 'Auto',
-    width: '90%',
+    width: '100%',
   },
 });
 

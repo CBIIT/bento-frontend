@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ArrowUpwardOutlined from '@material-ui/icons/ArrowUpwardOutlined';
 import {
   Slider,
   List,
@@ -57,6 +56,10 @@ const CustomExpansionPanelSummary = withStyles({
   root: {
     marginBottom: -1,
     minHeight: 48,
+    paddingLeft: 14,
+    paddingRight: 14,
+    backgroundColor: '#f4f4f4',
+    paddingTop:6,
     '&$expanded': {
       minHeight: 48,
     },
@@ -129,7 +132,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
     state.dashboardTab
       && state.dashboardTab.sortByList
       ? state.dashboardTab.sortByList : {}));
-  
+
   const bulkUpload = useSelector((state) => (
     state.dashboardTab
       && state.dashboardTab.bulkUpload
@@ -284,9 +287,9 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                     />
                   </IconButton>
 
-                </ListItem>
-              </>
-          </List>
+        </ListItem>
+      </>
+    </List>
   }
 
   const showSelectedChecbox = (sideBarItem, currentSection, sideBarIndex) => {
@@ -457,7 +460,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                     {
                       showSearch && (
                         <div className={classes.searchContainer} onClick={handleCaseFacetClick}>
-                          { bulkUpload.subject_ids.length !== 0 ? <InputSetListItem /> : '' }
+                          {bulkUpload.subject_ids.length !== 0 ? <InputSetListItem /> : ''}
                           <AutoComplete ref={searchRef} type={facetSectionFindApi[currentSection.sectionName].api}
                             data={getAllIds(facetSectionFindApi[currentSection.sectionName].api)} />
                           <Button
