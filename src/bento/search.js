@@ -176,8 +176,6 @@ query globalSearch($input: String, $first: Int, $offset: Int){
         subject_count
         sample_count
         file_count
-        node_count
-        property_count
         value_count
         about_count
 }
