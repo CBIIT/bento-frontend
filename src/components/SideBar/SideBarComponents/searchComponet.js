@@ -4,26 +4,15 @@ import { useSelector } from 'react-redux';
 import {
   TextField, CircularProgress, Backdrop, withStyles, List, ListItem, Divider,
 } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import CloseIcon from '@material-ui/icons/Close';
+import LocalFindCaseDeleteIcon from '../../../assets/icons/LocalFindCaseDeleteIcon.svg';
 import {
   getAllIds,
   localSearch,
   addAutoComplete,
   setSideBarToLoading,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
-import {
-  search,
-  defaultSearch,
-} from '../../../bento/dashboardData';
 import styles from './styles/searchComponentStyles';
-
-function getSearchResultCrossColor(currentSection) {
-  let crossColor = 'black';
-  crossColor = search[currentSection] ? search[currentSection].color ? search[currentSection].color : '' : defaultSearch.color;
-  return crossColor;
-}
 
 const LocalSearchComponent = ({ classes, type }, ref) => {
   const [open, setOpen] = React.useState(false);
@@ -106,7 +95,9 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
                 <Divider
                   style={{
                     backgroundColor: '#B1B1B1',
-                    height: '2px',
+                    height: '1px',
+                    marginRight: 11,
+                    marginLeft: 12,
                   }}
                 />
                 <ListItem
@@ -118,18 +109,12 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
                       {`${v.title}`}
                     </span>
                   </div>
-                  <IconButton
-                    disableRipple
-                    style={{ backgroundColor: 'transparent' }}
+                  <div
+                    style={{ cursor: 'pointer', marginBottom: 5 }}
                     onClick={onDelete(v.title)}
                   >
-                    <CloseIcon
-                      classes={{ root: classes.closeRoot }}
-                      style={{
-                        color: getSearchResultCrossColor(v.type),
-                      }}
-                    />
-                  </IconButton>
+                    <img src={LocalFindCaseDeleteIcon} alt="close icon" className={classes.closeRoot} />
+                  </div>
 
                 </ListItem>
               </>
@@ -165,6 +150,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
                 size="small"
                 InputProps={{
                   ...params.InputProps,
+                  style: { paddingLeft: 12, paddingRight: 35 },
                   endAdornment: (
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}

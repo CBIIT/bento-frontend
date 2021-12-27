@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ArrowUpwardOutlined from '@material-ui/icons/ArrowUpwardOutlined';
 import {
   Slider,
   List,
@@ -35,6 +34,7 @@ import {
   resetGroupSelections,
   uploadBulkModalSearch,
 } from '../../../pages/dashboardTab/store/dashboardReducer';
+import LocalFindUploadCaseIcon from '../../../assets/icons/LocalFindUploadCaseIcon.svg';
 import {
   facetSectionVariables,
   defaultFacetSectionVariables,
@@ -57,6 +57,10 @@ const CustomExpansionPanelSummary = withStyles({
   root: {
     marginBottom: -1,
     minHeight: 48,
+    paddingLeft: 14,
+    paddingRight: 14,
+    backgroundColor: '#f4f4f4',
+    paddingTop:6,
     '&$expanded': {
       minHeight: 48,
     },
@@ -129,7 +133,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
     state.dashboardTab
       && state.dashboardTab.sortByList
       ? state.dashboardTab.sortByList : {}));
-  
+
   const bulkUpload = useSelector((state) => (
     state.dashboardTab
       && state.dashboardTab.bulkUpload
@@ -254,39 +258,39 @@ export const FacetPanelComponent = ({ classes }, ref) => {
       : facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne : '' : defaultFacetSectionVariables.checkBoxColorsOne;
   }
 
-  function InputSetListItem(){
-   return  <List classes={{ padding: classes.listPadding }}>
-              <>
-                <Divider
-                  style={{
-                    backgroundColor: '#B1B1B1',
-                    height: '2px',
-                  }}
-                />
-                <ListItem
-                  classes={{ gutters: classes.listItemGutter }}
-                >
-                  <div className={classes.searchResultDetailText}>
-                    <span>
-                     Input Set
-                    </span>
-                  </div>
-                  <IconButton
-                    disableRipple
-                    style={{ backgroundColor: 'transparent' }}
-                    onClick={()=> {uploadBulkModalSearch([],'subject')}}
-                  >
-                    <CloseIcon
-                      classes={{ root: classes.closeRoot }}
-                      style={{
-                        color: '#000',
-                      }}
-                    />
-                  </IconButton>
+  function InputSetListItem() {
+    return <List classes={{ padding: classes.listPadding }}>
+      <>
+        <Divider
+          style={{
+            backgroundColor: '#B1B1B1',
+            height: '2px',
+          }}
+        />
+        <ListItem
+          className={{ gutters: classes.listItemGutter }}
+        >
+          <div className={classes.searchResultDetailText}>
+            <span>
+              Input Set
+            </span>
+          </div>
+          <IconButton
+            disableRipple
+            style={{ backgroundColor: 'transparent' }}
+            onClick={() => { uploadBulkModalSearch([], 'subject') }}
+          >
+            <CloseIcon
+              classes={{ root: classes.closeRoot }}
+              style={{
+                color: '#000',
+              }}
+            />
+          </IconButton>
 
-                </ListItem>
-              </>
-          </List>
+        </ListItem>
+      </>
+    </List>
   }
 
   const showSelectedChecbox = (sideBarItem, currentSection, sideBarIndex) => {
@@ -457,7 +461,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                     {
                       showSearch && (
                         <div className={classes.searchContainer} onClick={handleCaseFacetClick}>
-                          { bulkUpload.subject_ids.length !== 0 ? <InputSetListItem /> : '' }
+                          {bulkUpload.subject_ids.length !== 0 ? <InputSetListItem /> : ''}
                           <AutoComplete ref={searchRef} type={facetSectionFindApi[currentSection.sectionName].api}
                             data={getAllIds(facetSectionFindApi[currentSection.sectionName].api)} />
                           <Button
@@ -466,8 +470,8 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                             className={classes.uploadButton}
                           >
                             {/* { bulkUpload.subject_ids.length !== 0 ? 'View/Modify Case Set' : 'Upload Case Set'  } */}
-                         Upload Case Set
-                            <ArrowUpwardOutlined className={classes.uploadIcon}/>
+                            Upload Case Set
+                            <img src={LocalFindUploadCaseIcon} className={classes.uploadIcon} />
                           </Button>
                         </div>
                       )
