@@ -129,12 +129,13 @@ const styles = () => ({
   },
   uploadButton: {
     boxSizing: 'border-box',
+    fontWeight: '400',
     height: 32,
     width: '100%',
-    backgroundColor: '#10A075',
-    color: '#fff',
     display: 'flex',
     justifyContent: 'space-between',
+    backgroundColor: '#10A075',
+    color: '#fff',
     border: '1px solid #0D8461',
     borderRadius: 10,
     fontFamily: 'Lato',
@@ -232,9 +233,9 @@ const styles = () => ({
     paddingBottom: '0px',
   },
   listItemGutter: {
+    padding: '2px 5px 2px 8px',
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '2px 5px 2px 8px',
   },
   clearFiltersBorder: {
     borderTop: '1px solid black',
@@ -251,6 +252,14 @@ const styles = () => ({
     lineHeight: '120%',
     fontFamily: 'Nunito',
     fontSize: '14px',
+    fontStyle: 'italic',
+  },
+  iconSpan: {
+    marginTop: '3px',
+  },
+  prevIcon: {
+    height: '12px',
+    margin: '0px 12px 0px 6px',
   },
 });
 

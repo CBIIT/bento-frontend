@@ -258,35 +258,35 @@ export const FacetPanelComponent = ({ classes }, ref) => {
       : facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne : '' : defaultFacetSectionVariables.checkBoxColorsOne;
   }
 
-  function InputSetListItem() {
-    return <List classes={{ padding: classes.listPadding }}>
-      <>
-        <Divider
-          style={{
-            backgroundColor: '#B1B1B1',
-            height: '2px',
-          }}
-        />
-        <ListItem
-          className={{ gutters: classes.listItemGutter }}
-        >
-          <div className={classes.searchResultDetailText}>
-            <span>
-              Input Set
-            </span>
-          </div>
-          <IconButton
-            disableRipple
-            style={{ backgroundColor: 'transparent' }}
-            onClick={() => { uploadBulkModalSearch([], 'subject') }}
-          >
-            <CloseIcon
-              classes={{ root: classes.closeRoot }}
-              style={{
-                color: '#000',
-              }}
-            />
-          </IconButton>
+  function InputSetListItem(){
+   return  <List classes={{ padding: classes.listPadding }}>
+              <>
+                <Divider
+                  style={{
+                    backgroundColor: '#B1B1B1',
+                    height: '2px',
+                  }}
+                />
+                <ListItem
+                  classes={{ gutters: classes.listItemGutter }}
+                >
+                  <div className={classes.searchResultDetailText}>
+                    <span>
+                     INPUT SET
+                    </span>
+                  </div>
+                  <IconButton
+                    disableRipple
+                    style={{ backgroundColor: 'transparent' }}
+                    onClick={()=> {uploadBulkModalSearch([],'subject')}}
+                  >
+                    <CloseIcon
+                      classes={{ root: classes.closeRoot }}
+                      style={{
+                        color: '#000',
+                      }}
+                    />
+                  </IconButton>
 
         </ListItem>
       </>
@@ -470,8 +470,15 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                             className={classes.uploadButton}
                           >
                             {/* { bulkUpload.subject_ids.length !== 0 ? 'View/Modify Case Set' : 'Upload Case Set'  } */}
-                            Upload Case Set
-                            <img src={LocalFindUploadCaseIcon} className={classes.uploadIcon} />
+                         Upload Case Set
+                         <span className={classes.iconSpan}>
+            <img
+              className={classes.uploadIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
+              alt="previous button"
+            />
+
+          </span>
                           </Button>
                         </div>
                       )

@@ -60,8 +60,9 @@ const styles = () => ({
   },
   indexContainer: {
     padding: '18px 0px 18px 18px',
-    fontFamily: 'Nunito',
     color: '#747474',
+    fontFamily: 'Inter',
+    fontSize: '13px',
   },
   propertyContainer: {
     padding: '16px 16px 16px 0px',
@@ -71,17 +72,20 @@ const styles = () => ({
     color: '#7747FF',
     fontSize: '16px',
     fontFamily: 'Nunito',
+    paddingLeft: '9px',
+    verticalAlign: 'middle',
   },
   detailContainerHeader: {
     textTransform: 'uppercase',
     padding: '2px 8px',
-    backgroundColor: 'white',
+    backgroundColor: '#DBDBDB',
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '12px',
-    fontWeight: '600',
-    /* letter-spacing: 10px; */
-    lineHeight: '20px',
+    fontWeight: '400',
+    letterSpacing: '0.9px',
+    verticalAlign: 'middle',
+    borderRadius: '4px',
   },
 });
 

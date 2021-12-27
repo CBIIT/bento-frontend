@@ -7,26 +7,26 @@ const SampleCard = ({ data, classes, index }) => {
   const properties = [
 
     {
-      label: 'Subject Id',
+      label: 'Subject ID',
       dataField: 'subject_id',
       link: '/case/{subject_id}',
 
     },
     {
-      label: 'Sample Id',
+      label: 'Sample ID',
       dataField: 'sample_id',
     },
     {
-      label: 'diagnosis',
+      label: 'Diagnosis',
       dataField: 'diagnosis',
     },
     {
-      label: 'sample_anatomic_site',
+      label: 'Sample Anatomic Site',
       dataField: 'sample_anatomic_site',
 
     },
     {
-      label: 'sample_procurement_method',
+      label: 'Sample Procurement Method',
       dataField: 'sample_procurement_method',
     },
   ];
@@ -43,9 +43,6 @@ const SampleCard = ({ data, classes, index }) => {
         <Grid item xs={11} className={classes.propertyContainer}>
           <div>
             <span className={classes.detailContainerHeader}>Sample</span>
-            {' '}
-&nbsp;
-            {' '}
             <span className={classes.cardTitle}>{data.sample_id}</span>
 
           </div>
@@ -85,8 +82,9 @@ const styles = () => ({
   },
   indexContainer: {
     padding: '18px 0px 18px 18px',
-    fontFamily: 'Nunito',
     color: '#747474',
+    fontFamily: 'Inter',
+    fontSize: '13px',
   },
   propertyContainer: {
     padding: '16px 16px 16px 0px',
@@ -96,6 +94,8 @@ const styles = () => ({
     color: '#7747FF',
     fontSize: '16px',
     fontFamily: 'Nunito',
+    paddingLeft: '9px',
+    verticalAlign: 'middle',
   },
   content: {
     fontSize: '12px',
@@ -107,9 +107,10 @@ const styles = () => ({
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '12px',
-    fontWeight: '600',
-    /* letter-spacing: 10px; */
-    lineHeight: '20px',
+    fontWeight: '400',
+    letterSpacing: '0.9px',
+    verticalAlign: 'middle',
+    borderRadius: '4px',
   },
 
 });
