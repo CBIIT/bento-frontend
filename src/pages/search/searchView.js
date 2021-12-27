@@ -71,6 +71,9 @@ function searchComponent({ classes, searchparam = '' }) {
     onChange(searchparam);
   }, [open]);
 
+  // eslint-disable-next-line max-len
+  const allCount = () => (searchResults.subject_count + searchResults.sample_count + searchResults.program_count + searchResults.study_count + searchResults.file_count + searchResults.value_count + searchResults.about_count);
+
   return (
     <>
       <div className={classes.heroArea}>
@@ -144,7 +147,7 @@ function searchComponent({ classes, searchparam = '' }) {
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
             </Box>
-            <TabPanel value="1"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={searchResults.subject_count || 0} datafield="subjects" /></TabPanel>
+            <TabPanel value="1"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={allCount() || 0} datafield="all" /></TabPanel>
             <TabPanel value="2"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={searchResults.subject_count || 0} datafield="subjects" /></TabPanel>
             <TabPanel value="3"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SAMPLES} count={searchResults.sample_count || 0} datafield="samples" /></TabPanel>
             <TabPanel value="4"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_FILES} count={searchResults.file_count || 0} datafield="files" /></TabPanel>

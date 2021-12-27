@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import {
   withStyles, Button, Grid,
@@ -5,51 +6,86 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 import Components from './component';
 import client from '../../../utils/graphqlClient';
+import {
+  SEARCH_PAGE_RESULT_PROGRAM,
+  SEARCH_PAGE_RESULT_STUDIES,
+  SEARCH_PAGE_RESULT_SUBJECTS,
+  SEARCH_PAGE_RESULT_SAMPLES,
+  SEARCH_PAGE_RESULT_FILES,
+  SEARCH_PAGE_RESULT_VALUES,
+  SEARCH_PAGE_RESULT_ABOUT,
+} from '../../../bento/search';
 
 function SearchPagination({
-  datafield, classes, searchText, count, queryforAPI,
+  datafield, classes, searchText, count,
 }) {
   const [page, setPage] = useState(1);
   const pageSize = 10;
   const [data, setdata] = useState([]);
 
-  async function getSearchPageResults(inputVlaue) {
+  function getQuery(field) {
+    switch (field) {
+      case 'all': {
+        return SEARCH_PAGE_RESULT_SUBJECTS;
+      }
+      case 'subjects':
+        return SEARCH_PAGE_RESULT_SUBJECTS;
+      case 'samples':
+        return SEARCH_PAGE_RESULT_SAMPLES;
+      case 'files':
+        return SEARCH_PAGE_RESULT_FILES;
+      case 'programs':
+        return SEARCH_PAGE_RESULT_PROGRAM;
+      case 'studies':
+        return SEARCH_PAGE_RESULT_STUDIES;
+      case 'values':
+        return SEARCH_PAGE_RESULT_VALUES;
+      case 'about_page':
+        return SEARCH_PAGE_RESULT_ABOUT;
+      default:
+        return SEARCH_PAGE_RESULT_SUBJECTS;
+    }
+  }
+
+  async function getSearchPageResults(inputVlaue, newPage) {
     const allids = await client
       .query({
-        query: queryforAPI,
+        query: getQuery(datafield),
         variables: {
           input: inputVlaue,
           first: pageSize,
-          offset: (page - 1) * pageSize,
+          offset: (newPage - 1) * pageSize,
         },
       })
       .then((result) => result.data.globalSearch);
-    return allids;
+    return allids[datafield];
   }
 
-  async function onChange(newValue = []) {
-    const searchResp = await getSearchPageResults(newValue);
-    setdata(searchResp[datafield]);
+  async function onChange(newValue = [], newPage = 1) {
+    const searchResp = await getSearchPageResults(newValue, newPage);
+    setdata(searchResp);
   }
 
   useEffect(() => {
     onChange(searchText);
-  }, [searchText, queryforAPI]);
+  }, [searchText, datafield]);
 
   const onNext = () => {
     if (page < Math.ceil(count / pageSize)) {
+      onChange(searchText, page + 1);
       setPage(page + 1);
     }
   };
 
   const onPrevious = () => {
     if (page > 1) {
+      onChange(searchText, page - 1);
       setPage(page - 1);
     }
   };
 
   const handleChangePage = (event, newPage) => {
-    onChange(searchText);
+    onChange(searchText, newPage);
     setPage(newPage);
   };
 
@@ -106,7 +142,6 @@ function SearchPagination({
               src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchNext.svg"
               alt="previous button"
             />
-
           </span>
         </Button>
 
@@ -123,9 +158,8 @@ const styles = {
     fontWeight: 'bold',
     fontSize: '12px',
   },
-  prevIcon: {
-    height: '12px',
-    margin: '0px 12px 0px 6px',
+  iconSpan: {
+    marginTop: '6px',
   },
   nextButton: {
     marginLeft: '44px',
@@ -136,7 +170,11 @@ const styles = {
   },
   nextIcon: {
     height: '12px',
-    margin: '0px 6px 0px 12px',
+    margin: '6px 6px 0px 12px',
+  },
+  prevIcon: {
+    height: '12px',
+    margin: '6px 12px 0px 12px',
   },
   paginationContainer: {
     display: 'flex',
@@ -156,6 +194,7 @@ const styles = {
     listStyle: 'none',
   },
   paginationUl: {
+    padding: '2px',
     '& .MuiPaginationItem-root': {
       color: '#565656',
       fontFamily: '"Open Sans", sans-serif',
