@@ -58,12 +58,12 @@ function SearchPagination({
         },
       })
       .then((result) => result.data.globalSearch);
-    return allids;
+    return allids[datafield];
   }
 
   async function onChange(newValue = [], newPage = 1) {
     const searchResp = await getSearchPageResults(newValue, newPage);
-    setdata(searchResp[datafield]);
+    setdata(searchResp);
   }
 
   useEffect(() => {
@@ -194,6 +194,7 @@ const styles = {
     listStyle: 'none',
   },
   paginationUl: {
+    padding: '2px',
     '& .MuiPaginationItem-root': {
       color: '#565656',
       fontFamily: '"Open Sans", sans-serif',
