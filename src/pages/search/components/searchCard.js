@@ -129,9 +129,17 @@ function SearchPagination({
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 54,
+      behavior: 'smooth',
+    });
+  };
+
   const handleChangePage = (event, newPage) => {
     onChange(searchText, newPage);
     setPage(newPage);
+    scrollToTop();
   };
 
   return (
