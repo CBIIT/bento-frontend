@@ -1,6 +1,7 @@
 const styles = () => ({
   expansionPanelRoot: {
     boxShadow: 'none',
+    backgroundColor: '#f4f4f4',
     margin: 'auto',
     position: 'initial',
     '&:before': {
@@ -32,7 +33,7 @@ const styles = () => ({
     fill: '#000000',
   },
   sectionSummaryText: {
-    marginLeft: '-6px',
+    marginLeft: '3px',
     color: '#000000',
     fontFamily: 'Open Sans',
     fontWeight: '300',
@@ -143,6 +144,9 @@ const styles = () => ({
     boxShadow: 'none',
     paddingLeft: 16,
     paddingRight: 12,
+    '&:hover': {
+      backgroundColor: '#10A075',
+    },
   },
   findCaseIcon: {
     width: 17,
