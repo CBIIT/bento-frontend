@@ -17,10 +17,10 @@ import {
 } from '../../bento/search';
 import { getSearch, getSearchPageResults } from '../dashboardTab/store/dashboardReducer';
 // import Pagination from './components/pagination';
-import Subsection from './components/searchCard';
+import Subsection from './components/searchResultSection';
 
 function searchComponent({ classes, searchparam = '' }) {
-  const [tab, setTab] = React.useState('2');
+  const [tab, setTab] = React.useState('1');
 
   const handleChange = (event, newValue) => {
     setTab(newValue);
@@ -36,6 +36,7 @@ function searchComponent({ classes, searchparam = '' }) {
   async function onChange(newValue = []) {
     const searchResp = await getSearchPageResults(newValue);
     setSearchResults(searchResp);
+    setTab('1');
   }
 
   const CustomPopper = (props) => <Popper {...props} className={classes.root} placement="bottom" />;
