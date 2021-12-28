@@ -50,7 +50,11 @@ function SearchPagination({
     // eslint-disable-next-line max-len
     const val = filterForOffset.length === 0 ? 0 : filterForOffset[filterForOffset.length - 1].value;
     // eslint-disable-next-line max-len
-    return { datafieldValue: filter.nameField, offsetValue: (Math.abs(calcOffset - val) / pageSize) * pageSize };
+    if (filter !== undefined) {
+      // eslint-disable-next-line max-len
+      return { datafieldValue: filter.nameField, offsetValue: (Math.abs(calcOffset - val) / pageSize) * pageSize };
+    }
+    return { datafieldValue: 'subject', offsetValue: 0 };
   }
 
   function getQuery(field) {
