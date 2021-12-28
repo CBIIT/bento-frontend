@@ -251,11 +251,11 @@ const styles = () => ({
   },
   searchResultDetailText: {
     marginTop: '1.5px',
-    marginLeft: 10,
+    marginLeft: '12px',
     color: '#0D8662',
     lineHeight: '120%',
-    fontFamily: 'Nunito',
-    fontSize: '14px',
+    fontFamily: 'Lato',
+    fontSize: '11px',
     fontStyle: 'italic',
   },
   iconSpan: {
