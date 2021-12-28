@@ -14,6 +14,30 @@ const styles = () => ({
   clearIndicatorDirty: {
     right: '-2px',
   },
+  paper: {
+    border: '1.25px solid #0D8461',
+    backgroundColor: '#717171',
+    color: '#fff',
+    borderRadius: 10,
+    fontFamily: 'Lato',
+    fontSize: 12,
+    fontWeight: 500,
+    boxShadow: '0 0 0 2px rgba(16,160,117,0.36)',
+    '& .MuiAutocomplete-listbox': {
+      height: 223,
+      '& li': {
+        // list item specific styling
+        borderBottom: '1px solid #fff',
+        '&:nth-last-child(1)': {
+          borderBottom: 'none',
+        },
+      },
+      '& :hover': {
+        color: 'white',
+        backgroundColor: '#0D8461',
+      },
+    },
+  },
   inputRoot: {
     borderRadius: 10,
     marginBottom: '7px',

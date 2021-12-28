@@ -58,7 +58,6 @@ const CustomExpansionPanelSummary = withStyles({
     minHeight: 48,
     paddingLeft: 14,
     paddingRight: 14,
-    backgroundColor: '#f4f4f4',
     paddingTop:6,
     '&$expanded': {
       minHeight: 48,
