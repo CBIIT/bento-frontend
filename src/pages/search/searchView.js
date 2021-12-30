@@ -52,6 +52,10 @@ function searchComponent({ classes, searchparam = '' }) {
   );
 
   async function getAutoCompleteRes(newValue = []) {
+    // For clear all functionality
+    if (newValue === '') {
+      onChange(newValue);
+    }
     setInputValue(newValue);
     const searchResp = await getSearch(newValue);
     const keys = ['programs', 'studies', 'subjects', 'samples', 'files', 'values', 'nodes', 'properties'];
