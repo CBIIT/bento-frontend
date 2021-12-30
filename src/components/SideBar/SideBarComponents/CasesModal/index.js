@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import {
   Modal,
   Button,
@@ -191,7 +192,14 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
       const newArr = [];
       fileData.map((file) => {
         const fileItemArray = file.split(',');
-        const fileItems = fileItemArray.map((item) => item.replace('\r', ''));
+        const fileItems = [];
+        fileItemArray.map((item) => {
+          if (!_.isEmpty(item)) {
+            item.replace('\r', '');
+            fileItems.push(item);
+          }
+          return fileItems;
+        });
         // eslint-disable-next-line
         newArr.push.apply(newArr, fileItems);
         return newArr;
