@@ -11,6 +11,15 @@ export const GET_ALL_IDS = gql`{
   }
   `;
 
+export const GET_SUBJECT_IDS = gql`
+  query search ($subject_ids: [String]){
+    findSubjectIdsInList (subject_ids: $subject_ids) {
+        subject_id
+        program_id
+    }
+}
+`;
+
 export const GET_IDS_BY_TYPE = (type) => gql`{
   idsLists {
     ${type}

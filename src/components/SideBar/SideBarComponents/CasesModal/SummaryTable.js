@@ -52,14 +52,22 @@ const useStyles = makeStyles(() => ({
   heading: {
     fontSize: 12,
     color: '#437BBE',
-    textAlign: 'left',
+    textAlign: 'center',
+  },
+  programHeading: {
+    textAlign: 'center',
   },
   divider: {
-    color: '#93C0F5',
-    width: 150,
+    backgroundColor: '#93C0F5',
+    width: '80%',
+  },
+  dividerContainer: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   tableColumn: {
     color: '#0D8662',
+    textAlign: 'center',
   },
   tableBox: {
     maxHeight: 150,
@@ -94,11 +102,20 @@ const SummaryTable = (props) => {
         {isMatched ? (
           matchedContent.length ? (
             <table className={classes.tableContainer}>
-              <th className={classes.heading}>SUBMITTED CASE ID</th>
-              <tr className={classes.heading}><Divider className={classes.divider} /></tr>
+              <tr>
+                <th className={classes.heading}>SUBMITTED CASE ID</th>
+                <th className={classes.heading}>ASSOCIATED PROGRAM</th>
+              </tr>
+              <tr className={classes.heading}>
+                <td><Divider style={{ width: '100%' }} className={classes.divider} /></td>
+                <td className={classes.dividerContainer}>
+                  <Divider className={classes.divider} />
+                </td>
+              </tr>
               {matchedContent.map((matched, id) => (
-                <tr key={id} style={id % 2 ? { backgroundColor: '#F8F8F8' } : { backgroundColor: '#fff' }}>
-                  <td className={classes.tableColumn}>{matched}</td>
+                <tr key={id} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>
+                  <td className={classes.tableColumn}>{matched.subject_id}</td>
+                  <td className={classes.programHeading}>{matched.program_id}</td>
                 </tr>
               ))}
             </table>
@@ -107,11 +124,11 @@ const SummaryTable = (props) => {
           : (
             unmatchedContent.length ? (
               <table className={classes.tableContainer}>
-                <th className={classes.heading}>SUBMITTED CASE ID</th>
-                <tr className={classes.heading}><Divider className={classes.divider} /></tr>
+                <th className={classes.heading} style={{ textAlign: 'left' }}>SUBMITTED CASE ID</th>
+                <tr className={classes.heading} style={{ width: '180' }}><Divider className={classes.divider} /></tr>
                 {unmatchedContent.map((unmatched, id) => (
-                  <tr key={id} style={id % 2 ? { backgroundColor: '#F8F8F8' } : { backgroundColor: '#fff' }}>
-                    <td className={classes.tableColumn}>{unmatched}</td>
+                  <tr key={id} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>
+                    <td className={classes.tableColumn} style={{ textAlign: 'left' }}>{unmatched}</td>
                   </tr>
                 ))}
               </table>

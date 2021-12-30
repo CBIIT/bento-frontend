@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import {
-  getAllIds, uploadBulkModalSearch,
+  uploadBulkModalSearch, getAllSubjectIds,
 } from '../../../../pages/dashboardTab/store/dashboardReducer';
 import FileUploader from '../../../FileUploader';
 import SummaryTable from './SummaryTable';
@@ -164,7 +164,6 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
   const classes = useStyles();
 
   const [fileContent, setFileContent] = React.useState('');
-  const [subjectIds, setSubjectIds] = React.useState([]);
   const [matchIds, setMatchIds] = React.useState([]);
   const [unmatchedIds, setUnmatchedIds] = React.useState([]);
   const [isClear, setIsClear] = React.useState(false);
@@ -186,46 +185,37 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
     clearData();
   };
 
-  // async function setInitIds() {
-  //   const response = await getAllIds(type);
-  //   if (response.subjectIds) {
-  //     setSubjectIds(response.subjectIds);
-  //   }
-  // }
-
   async function handleContent(content) {
-    // if (subjectIds.length === 0) {
-    //   await setInitIds();
-    // }
     if (content.trim()) {
-      const matchData = [];
       const fileData = content && content.toString().split('\n');
       const newArr = [];
       fileData.map((file) => {
         const fileItemArray = file.split(',');
+        const fileItems = fileItemArray.map((item) => item.replace('\r', ''));
         // eslint-disable-next-line
-        newArr.push.apply(newArr, fileItemArray);
+        newArr.push.apply(newArr, fileItems);
         return newArr;
       });
       const unmatchData = [...newArr];
-      subjectIds.map((subId) => newArr.filter((id, index) => {
-        const trimId = id.trim();
+      const unMatchedContent = [];
+      const matchedSubIds = await getAllSubjectIds(unmatchData);
+      unmatchData.map((subId) => {
         const trimSubId = subId.trim();
-        if (trimId && trimSubId.toLowerCase() === trimId.toLowerCase()) {
-          matchData.push(trimId);
-          const isExist = unmatchData.findIndex((item) => (
-            item.trim().toLowerCase() === trimSubId.toLowerCase()
+        const isExist = matchedSubIds.findIndex((item) => (
+          item.subject_id.trim().toLowerCase() === trimSubId.toLowerCase()
+        ));
+        if (isExist <= -1) {
+          const isItemExist = unMatchedContent.findIndex((item) => (
+            item.toLowerCase() === trimSubId.toLowerCase()
           ));
-          if (isExist > -1) {
-            unmatchData.splice(isExist, 1);
+          if (isItemExist <= -1) {
+            unMatchedContent.push(trimSubId);
           }
-        } else if (!trimId) {
-          unmatchData.splice(index, 1);
         }
-        return matchData;
-      }));
-      setMatchIds(matchData);
-      setUnmatchedIds(unmatchData);
+        return unmatchData;
+      });
+      setMatchIds(matchedSubIds);
+      setUnmatchedIds(unMatchedContent);
     }
   }
 
@@ -236,15 +226,6 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
     setFileContent(content);
     handleContent(content);
   };
-
-  React.useEffect(() => {
-    (async () => {
-      const response = await getAllIds(type);
-      if (response.subjectIds) {
-        setSubjectIds(response.subjectIds);
-      }
-    })();
-  }, []);
 
   return (
     <Modal
