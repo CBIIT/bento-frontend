@@ -60,7 +60,6 @@ const Dashboard = ({
                     />
                   </div>
                 </div>
-                {displayActiveFiltersQuery ? <ActiveFiltersQuery /> : ''}
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget, index) => {
