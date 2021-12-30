@@ -36,6 +36,7 @@ import {
 } from '../../../bento/dashboardTabData';
 import {
   GET_IDS_BY_TYPE,
+  GET_SUBJECT_IDS,
   widgetsSearchData,
   SUBJECT_OVERVIEW_QUERY,
   GET_SEARCH_NODES_BY_FACET,
@@ -269,6 +270,20 @@ export async function getAllIds(type) {
       },
     })
     .then((result) => result.data.idsLists)
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
+  return allids;
+}
+export async function getAllSubjectIds(subjectIdsArray) {
+  const allids = await client
+    .query({
+      query: GET_SUBJECT_IDS,
+      variables: {
+        subject_ids: subjectIdsArray,
+      },
+    })
+    .then((result) => result.data.findSubjectIdsInList)
     .catch((error) => store.dispatch(
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
