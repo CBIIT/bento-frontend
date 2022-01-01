@@ -37,6 +37,7 @@ function searchComponent({ classes, searchparam = '' }) {
     const searchResp = await getSearchPageResults(newValue);
     setSearchResults(searchResp);
     setTab('1');
+    setOptions([]);
   }
 
   const CustomPopper = (props) => <Popper {...props} className={classes.root} placement="bottom" />;
@@ -120,11 +121,13 @@ function searchComponent({ classes, searchparam = '' }) {
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}
                       {params.InputProps.endAdornment}
-                      <img
-                        className={classes.searchIcon}
-                        src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchSearch.svg"
-                        alt="search icon"
-                      />
+                      <span onClick={() => onChange(inputValue)}>
+                        <img
+                          className={classes.searchIcon}
+                          src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchSearch.svg"
+                          alt="search icon"
+                        />
+                      </span>
                     </>
                   ),
                 }}
