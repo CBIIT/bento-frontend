@@ -5,6 +5,8 @@ import {
 import {
   Autocomplete, TabContext, TabList, TabPanel,
 } from '@material-ui/lab';
+import { useHistory } from 'react-router-dom'; // version 5.2.0
+
 // import { Clear as ClearIcon } from '@material-ui/icons';
 import {
   SEARCH_PAGE_RESULT_PROGRAM,
@@ -21,6 +23,7 @@ import Subsection from './components/searchResultSection';
 
 function searchComponent({ classes, searchparam = '' }) {
   const [tab, setTab] = React.useState('1');
+  const history = useHistory();
 
   const handleChange = (event, newValue) => {
     setTab(newValue);
@@ -37,6 +40,7 @@ function searchComponent({ classes, searchparam = '' }) {
     const searchResp = await getSearchPageResults(newValue);
     setSearchResults(searchResp);
     setTab('1');
+    history.push(`/search/${newValue}`);
   }
 
   const CustomPopper = (props) => <Popper {...props} className={classes.root} placement="bottom" />;
