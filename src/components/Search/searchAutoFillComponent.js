@@ -104,6 +104,7 @@ function searchComponent({ classes }) {
                     style={{
                       color: '#4A8ECB', stroke: '#4A8ECB', strokeWidth: '1.1px', marginRight: '8px',
                     }}
+                    onClick={() => onChange(inputValue)}
                   />
                 </>
               ),
