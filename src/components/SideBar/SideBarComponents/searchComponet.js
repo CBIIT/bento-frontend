@@ -64,12 +64,13 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
 
   function onChange(newValue = []) {
     // make the value unique to avoid duplicate search result
+    let newValueUnique = [];
     if (newValue.length) {
-      const newValueUnique = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
-      setSideBarToLoading();
-      setValue(newValueUnique);
-      localSearch(newValueUnique);
+      newValueUnique = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
     }
+    setSideBarToLoading();
+    setValue(newValueUnique);
+    localSearch(newValueUnique);
   }
 
   React.useEffect(() => {
