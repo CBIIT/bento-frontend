@@ -292,21 +292,6 @@ export const FacetPanelComponent = ({ classes }, ref) => {
   }
 
   const showSelectedChecbox = (sideBarItem, currentSection, sideBarIndex) => {
-    const selectedCheckboxItems = !sideBarItem.checkboxItems.lowerBound ? sideBarItem.checkboxItems.filter((item) => (item.isChecked)) : [];
-    const selectedCheckbox = selectedCheckboxItems.slice(0, showCheckboxCount)
-      .map((item, index) => (
-        <CheckBoxView
-          checkboxItem={item}
-          sideBarItem={sideBarItem}
-          handleToggle={handleToggle}
-          currentSection={currentSection}
-          facetSectionVariables={facetSectionVariables}
-          backgroundColor={getCheckBoxColor(index, currentSection)}
-          defaultFacetSectionVariables={defaultFacetSectionVariables}
-          checkColor={getGroupNameColor(sideBarItem, currentSection)}
-        />
-      ));
-
     const selectedItems = sideBarItem.slider !== true
       ? sideBarItem.checkboxItems.filter((item) => (item.isChecked)) : [];
     let selectedSliderCheckbox = '';
@@ -375,7 +360,6 @@ export const FacetPanelComponent = ({ classes }, ref) => {
     return (
       <div>
         {selectedSliderCheckbox}
-        {selectedCheckbox}
         {selectedItems.length > showCheckboxCount && (
           <div className={classes.clearfix}>
             <div

@@ -195,8 +195,8 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
         const fileItems = [];
         fileItemArray.map((item) => {
           if (!_.isEmpty(item)) {
-            item.replace('\r', '');
-            fileItems.push(item);
+            const newItem = item.replace('\r', '');
+            fileItems.push(newItem);
           }
           return fileItems;
         });
