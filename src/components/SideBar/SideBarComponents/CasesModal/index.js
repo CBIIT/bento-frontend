@@ -170,7 +170,7 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
   const [isClear, setIsClear] = React.useState(false);
 
   const submitCase = () => {
-    uploadBulkModalSearch(matchIds, 'subject');
+    uploadBulkModalSearch(matchIds.map((obj) => obj.subject_id), 'subject');
     closeModal();
   };
 
