@@ -119,6 +119,9 @@ function searchComponent({ classes, searchparam = '' }) {
                 InputProps={{
                   style: {
                     paddingLeft: '20px',
+                    paddingTop: '2px',
+                    paddingBottom: '3px',
+                    color: '#1479D3',
                   },
                   classes: {
                     root: classes.input,
@@ -188,7 +191,7 @@ const styles = () => ({
   },
   tabContainter: {
     display: 'flex',
-    maxWidth: '1100px',
+    maxWidth: '840px',
     margin: '0 auto',
   },
   sampleTab: { color: '#1EA7FB' },
@@ -197,7 +200,7 @@ const styles = () => ({
   studyTab: { color: '#DBDBDB' },
   dataTab: { color: '#9433F7' },
   aboutTab: { color: '#AC6632' },
-  allTab: { borderRight: '1px solid black' },
+  allTab: { },
   searchText: {
     color: '#1479D3',
     fontFamily: 'Lato',

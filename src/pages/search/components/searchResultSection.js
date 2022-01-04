@@ -269,7 +269,7 @@ const styles = {
   },
   subsectionBody: {
     margin: '0 auto',
-    maxWidth: '1000px',
+    maxWidth: '800px',
     // borderBottom: '1px solid #8DCAFF',
     paddingBottom: '15px',
   },
@@ -296,7 +296,7 @@ const styles = {
   },
   totalResults: {
     // margin: '0 auto',
-    maxWidth: '1100px',
+    maxWidth: '900px',
     fontFamily: 'Nunito',
     color: '#000',
     fontSize: '20px',
