@@ -427,6 +427,11 @@ export async function uploadBulkModalSearch(searchcriteria, type) {
     getCaseData(variables),
     getSubjectDetails(variables),
   ]);
+
+  store.dispatch({
+    type: 'RESET_CHECKBOXES',
+  });
+
   store.dispatch({
     type: 'LOCAL_SEARCH',
     payload: {
@@ -1416,6 +1421,13 @@ const reducers = {
       dataFileSelected: item,
     }
   ),
+  RESET_CHECKBOXES: (state) => (
+    {
+      ...state,
+      allActiveFilters: allFilters(),
+    }
+  ),
+
   CLEAR_TABLE_SELECTION: (state) => ({
     ...state,
     dataCaseSelected: {
