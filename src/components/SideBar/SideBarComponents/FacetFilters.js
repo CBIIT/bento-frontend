@@ -451,8 +451,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                             onClick={() => setShowCasesModal(true)}
                             className={classes.uploadButton}
                           >
-                            {/* { bulkUpload.subject_ids.length !== 0 ? 'View/Modify Case Set' : 'Upload Case Set'  } */}
-                         Upload Case Set
+                            { bulkUpload.subject_ids.length !== 0 ? 'View Case Set' : 'Upload Case Set'  }
                          <span className={classes.iconSpan}>
             <img
               className={classes.uploadIcon}
