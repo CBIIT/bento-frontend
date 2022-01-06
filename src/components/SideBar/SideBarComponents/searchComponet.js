@@ -16,6 +16,7 @@ import styles from './styles/searchComponentStyles';
 const LocalSearchComponent = ({ classes, type }, ref) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState([]);
+  const [isInitial, setIsInitial] = React.useState(true);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
 
@@ -33,7 +34,6 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
   React.useImperativeHandle(ref, () => ({
     clear() {
       setValue([]);
-      localSearch([]);
       return null;
     },
   }));
@@ -62,15 +62,20 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
     }
   }, [open]);
 
-  function onChange(newValue = []) {
+  function onChange(newValue = [], reason) {
     // make the value unique to avoid duplicate search result
     let newValueUnique = [];
-    if (newValue.length) {
-      newValueUnique = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
+    if (isInitial) {
+      setIsInitial(false);
     }
-    setSideBarToLoading();
-    setValue(newValueUnique);
-    localSearch(newValueUnique);
+    if (reason !== 'clear') {
+      if (newValue.length) {
+        newValueUnique = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
+      }
+      setSideBarToLoading();
+      setValue(newValueUnique);
+      localSearch(newValueUnique);
+    }
   }
 
   React.useEffect(() => {
@@ -78,8 +83,10 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
       type: type.replace('Ids', ''),
       value,
     });
-    setSideBarToLoading();
-    localSearch(value);
+    if (!isInitial) {
+      setSideBarToLoading();
+      localSearch(value);
+    }
   }, [value]);
 
   const onDelete = (title) => () => {
@@ -129,7 +136,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
             freeSolo={false}
             popupIcon=""
             classes={classes}
-            onChange={(event, newValue) => onChange(newValue)}
+            onChange={(event, newValue, reason) => onChange(newValue, reason)}
             multiple
             filterOptions={createFilterOptions({ trim: true })}
             value={value}
