@@ -151,7 +151,7 @@ function searchComponent({ classes, searchparam = '' }) {
       </div>
       <div className={classes.bodyContainer}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
-          <TabContext value={tab} fullWidth inkBarStyle={{ background: '#000' }}>
+          <TabContext value={tab} fullWidth inkBarStyle={{ background: '#142D64' }}>
             <Box sx={{ borderBottom: '1px solid #828282' }}>
               <TabList onChange={handleChange} variant="scrollable" aria-label="tabs" classes={{ root: classes.tabContainter, indicator: classes.indicator }}>
                 <Tab label={AllLabel()} classes={{ root: classes.buttonRoot, wrapper: classes.allTab }} value="1" />
@@ -186,23 +186,23 @@ const styles = () => ({
     marginLeft: '8px',
   },
   subjectTab: {
-    color: '#379877',
+    color: '#142D64',
   },
   indicator: {
-    backgroundColor: 'black',
+    backgroundColor: '#142D64',
   },
   tabContainter: {
     display: 'flex',
     maxWidth: '840px',
     margin: '0 auto',
   },
-  sampleTab: { color: '#1EA7FB' },
-  fileTab: { color: '#AC32AB' },
-  programTab: { color: '#C09500' },
-  studyTab: { color: '#DBDBDB' },
-  dataTab: { color: '#9433F7' },
-  aboutTab: { color: '#AC6632' },
-  allTab: { },
+  sampleTab: { color: '#142D64' },
+  fileTab: { color: '#142D64' },
+  programTab: { color: '#142D64' },
+  studyTab: { color: '#142D64' },
+  dataTab: { color: '#142D64' },
+  aboutTab: { color: '#142D64' },
+  allTab: { color: '#142D64' },
   searchText: {
     color: '#1479D3',
     fontFamily: 'Lato',
@@ -279,8 +279,8 @@ const styles = () => ({
   },
 
   filterIcon: {
-    height: '15px',
-    margin: '0px 18px 0px 6px',
+    height: '0.86rem',
+    margin: '0px 16px 0px 6px',
     display: 'inline-flex',
     verticalAlign: 'middle',
   },
