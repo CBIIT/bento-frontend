@@ -102,7 +102,7 @@ function searchComponent({ classes }) {
                   <SearchIcon
                     size={20}
                     style={{
-                      color: '#4A8ECB', stroke: '#4A8ECB', strokeWidth: '1.1px', marginRight: '8px',
+                      color: '#4A8ECB', stroke: '#4A8ECB', strokeWidth: '1.1px', marginRight: '8px', cursor: 'pointer',
                     }}
                     onClick={() => onChange(inputValue)}
                   />
