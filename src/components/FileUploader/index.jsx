@@ -45,6 +45,7 @@ const Uploader = ({
           accept=".csv,.txt"
           onChange={handleChange}
           className={classes.uploadInput}
+          value=""
         />
         <Button variant="contained" className={classes.uploadButton}>
           Browse
