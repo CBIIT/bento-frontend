@@ -31,6 +31,7 @@ function searchComponent({ classes, searchparam = '' }) {
 
   const [open] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
+  const [searchText, setSearchText] = React.useState('');
   const [options, setOptions] = React.useState([]);
   const [searchResults, setSearchResults] = React.useState([]);
   const loading = open;
@@ -41,6 +42,7 @@ function searchComponent({ classes, searchparam = '' }) {
     setSearchResults(searchResp);
     setTab('1');
     setOptions([]);
+    setSearchText(newValue);
     history.push(`/search/${newValue}`);
   }
 
@@ -132,7 +134,7 @@ function searchComponent({ classes, searchparam = '' }) {
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}
                       {params.InputProps.endAdornment}
-                      <span onClick={() => onChange(inputValue)}>
+                      <span onClick={() => onChange(inputValue)} className={classes.searchIconSpan}>
                         <img
                           className={classes.searchIcon}
                           src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchSearch.svg"
@@ -162,14 +164,14 @@ function searchComponent({ classes, searchparam = '' }) {
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
             </Box>
-            <TabPanel value="1"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={allCount() || 0} datafield="all" /></TabPanel>
-            <TabPanel value="2"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={searchResults.subject_count || 0} datafield="subjects" /></TabPanel>
-            <TabPanel value="3"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_SAMPLES} count={searchResults.sample_count || 0} datafield="samples" /></TabPanel>
-            <TabPanel value="4"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_FILES} count={searchResults.file_count || 0} datafield="files" /></TabPanel>
-            <TabPanel value="5"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_PROGRAM} count={searchResults.program_count || 0} datafield="programs" /></TabPanel>
-            <TabPanel value="6"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_STUDIES} count={searchResults.study_count || 0} datafield="studies" /></TabPanel>
-            <TabPanel value="7"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_VALUES} count={searchResults.value_count || 0} datafield="values" /></TabPanel>
-            <TabPanel value="8"><Subsection searchText={inputValue} queryforAPI={SEARCH_PAGE_RESULT_ABOUT} count={searchResults.about_count || 0} datafield="about_page" /></TabPanel>
+            <TabPanel value="1"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={allCount() || 0} datafield="all" /></TabPanel>
+            <TabPanel value="2"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={searchResults.subject_count || 0} datafield="subjects" /></TabPanel>
+            <TabPanel value="3"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_SAMPLES} count={searchResults.sample_count || 0} datafield="samples" /></TabPanel>
+            <TabPanel value="4"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_FILES} count={searchResults.file_count || 0} datafield="files" /></TabPanel>
+            <TabPanel value="5"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_PROGRAM} count={searchResults.program_count || 0} datafield="programs" /></TabPanel>
+            <TabPanel value="6"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_STUDIES} count={searchResults.study_count || 0} datafield="studies" /></TabPanel>
+            <TabPanel value="7"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_VALUES} count={searchResults.value_count || 0} datafield="values" /></TabPanel>
+            <TabPanel value="8"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_ABOUT} count={searchResults.about_count || 0} datafield="about_page" /></TabPanel>
             {/* <Pagination count={10} shape="rounded" /> */}
 
           </TabContext>
@@ -279,6 +281,8 @@ const styles = () => ({
   filterIcon: {
     height: '15px',
     margin: '0px 18px 0px 6px',
+    display: 'inline-flex',
+    verticalAlign: 'middle',
   },
   inputRoot: {
     '& .MuiOutlinedInput-root': {
@@ -318,6 +322,10 @@ const styles = () => ({
   searchIcon: {
     height: '22px',
     margin: '0px 6px 0px 6px',
+  },
+  searchIconSpan: {
+    cursor: 'pointer',
+    zIndex: 40,
   },
   clearIcon: {
     height: '18px',
