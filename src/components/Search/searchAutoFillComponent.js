@@ -22,8 +22,10 @@ function searchComponent({ classes }) {
   }, [open]);
 
   function onChange(newValue = []) {
-    const path = `/search/${newValue}`;
-    history.push(path);
+    if (newValue !== '' && typeof newValue === 'string') {
+      const path = `/search/${newValue}`;
+      history.push(path);
+    }
   }
 
   async function getAutoCompleteRes(newValue = []) {
