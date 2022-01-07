@@ -153,7 +153,7 @@ function searchComponent({ classes, searchparam = '' }) {
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <TabContext value={tab} fullWidth inkBarStyle={{ background: '#142D64' }}>
             <Box sx={{ borderBottom: '1px solid #828282' }}>
-              <TabList onChange={handleChange} variant="scrollable" aria-label="tabs" classes={{ root: classes.tabContainter, indicator: classes.indicator }}>
+              <TabList onChange={handleChange} aria-label="tabs" classes={{ root: classes.tabContainter, indicator: classes.indicator }}>
                 <Tab label={AllLabel()} classes={{ root: classes.buttonRoot, wrapper: classes.allTab }} value="1" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.subjectTab }} label={`Cases ${searchResults.subject_count || 0}`} value="2" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.sampleTab }} label={`Samples ${searchResults.sample_count || 0}`} value="3" />
