@@ -13,10 +13,12 @@ const Uploader = ({
   onFileUpload,
   isClear,
   clearData,
+  uploadedFileName,
 }) => {
   const [fileName, setFileName] = useState('');
 
   useEffect(() => {
+    setFileName(uploadedFileName);
     if (isClear) {
       setFileName('');
     }
@@ -25,7 +27,7 @@ const Uploader = ({
     const file = e.target.files[0];
     const fileReaderObj = new FileReader();
     fileReaderObj.onload = () => {
-      onFileUpload(fileReaderObj.result);
+      onFileUpload(fileReaderObj.result, file.name);
     };
 
     setFileName(file.name);

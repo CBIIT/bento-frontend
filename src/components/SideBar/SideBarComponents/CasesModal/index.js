@@ -169,6 +169,7 @@ const FacetModal = ({
   const [matchIds, setMatchIds] = React.useState([]);
   const [unmatchedIds, setUnmatchedIds] = React.useState([]);
   const [isClear, setIsClear] = React.useState(false);
+  const [uploadedFileName, setUploadedFileName] = React.useState('');
 
   const submitCase = () => {
     uploadBulkModalSearch(matchIds.map((obj) => obj.subject_id), 'subject');
@@ -238,10 +239,11 @@ const FacetModal = ({
 
   const handleChange = ({ target: { value } }) => { setFileContent(value); handleContent(value); };
 
-  const handleFileUpload = (content) => {
+  const handleFileUpload = (content, fileName) => {
     setIsClear(false);
     setFileContent(content);
     handleContent(content);
+    setUploadedFileName(fileName);
   };
 
   return (
@@ -289,6 +291,7 @@ const FacetModal = ({
               clearData={clearData}
               onFileUpload={handleFileUpload}
               isClear={isClear}
+              uploadedFileName={uploadedFileName}
               classes={classes}
             />
           </div>
