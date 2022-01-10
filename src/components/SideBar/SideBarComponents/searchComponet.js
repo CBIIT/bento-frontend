@@ -16,9 +16,11 @@ import styles from './styles/searchComponentStyles';
 const LocalSearchComponent = ({ classes, type }, ref) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState([]);
-  const [isInitial, setIsInitial] = React.useState(true);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
+  const selectionType = type === 'subjectIds' ? 'subject_ids' : type;
+  const allFilters = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.autoCompleteSelection ? state.dashboardTab.autoCompleteSelection : {}));
 
   const isSidebarLoading = useSelector((state) => (
     state.dashboardTab
@@ -30,6 +32,25 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
     ? state.dashboardTab.isDashboardTableLoading
     : false));
   // redux use actions
+
+  const handleAddAutoComplete = (newValue) => {
+    addAutoComplete({
+      type: type.replace('Ids', ''),
+      newValue,
+    });
+    setSideBarToLoading();
+    localSearch(newValue);
+  };
+
+  React.useEffect(() => {
+    if (allFilters[selectionType].length && allFilters[selectionType].length !== value.length) {
+      const updatedValue = allFilters[selectionType].map((item) => (
+        { type: selectionType, title: item }));
+      setValue(updatedValue);
+    } else if (!allFilters[selectionType].length) {
+      setValue([]);
+    }
+  }, [allFilters[selectionType]]);
 
   React.useImperativeHandle(ref, () => ({
     clear() {
@@ -65,9 +86,6 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
   function onChange(newValue = [], reason) {
     // make the value unique to avoid duplicate search result
     let newValueUnique = [];
-    if (isInitial) {
-      setIsInitial(false);
-    }
     if (reason !== 'clear') {
       if (newValue.length) {
         newValueUnique = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
@@ -75,19 +93,9 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
       setSideBarToLoading();
       setValue(newValueUnique);
       localSearch(newValueUnique);
+      handleAddAutoComplete(newValueUnique);
     }
   }
-
-  React.useEffect(() => {
-    addAutoComplete({
-      type: type.replace('Ids', ''),
-      value,
-    });
-    if (!isInitial) {
-      setSideBarToLoading();
-      localSearch(value);
-    }
-  }, [value]);
 
   const onDelete = (title) => () => {
     const newValue = value.filter((v) => v.title !== title);

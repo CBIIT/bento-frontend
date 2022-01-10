@@ -230,6 +230,9 @@ const FacetModal = ({
       });
       setMatchIds(matchedSubIds);
       setUnmatchedIds(unMatchedContent);
+    } else {
+      setMatchIds([]);
+      setUnmatchedIds([]);
     }
   }
 
