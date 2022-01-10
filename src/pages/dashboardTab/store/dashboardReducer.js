@@ -550,8 +550,8 @@ export function resetGroupSelections(payload) {
  * @return {json} with three keys QUERY, sortfield, sortDirection
  */
 
-export function addAutoComplete({ value, type }) {
-  const items = value.map((val) => val.title);
+export function addAutoComplete({ newValue, type }) {
+  const items = newValue.map((val) => val.title);
   store.dispatch({ type: 'ADD_AUTOCOMPLETE_DATA', payload: { value: items, type } });
 }
 

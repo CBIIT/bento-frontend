@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import {
   Modal,
   Button,
@@ -194,9 +193,9 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
         const fileItemArray = file.split(',');
         const fileItems = [];
         fileItemArray.map((item) => {
-          if (!_.isEmpty(item)) {
+          if (item && item.trim()) {
             const newItem = item.replace('\r', '');
-            fileItems.push(newItem);
+            fileItems.push(newItem.trim());
           }
           return fileItems;
         });
@@ -224,6 +223,9 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
       });
       setMatchIds(matchedSubIds);
       setUnmatchedIds(unMatchedContent);
+    } else {
+      setMatchIds([]);
+      setUnmatchedIds([]);
     }
   }
 
