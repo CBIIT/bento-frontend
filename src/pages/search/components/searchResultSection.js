@@ -235,9 +235,10 @@ const styles = {
   },
   paginationContainer: {
     display: 'flex',
+    justifyContent: 'center',
     maxWidth: '680px',
     margin: '0 auto',
-    paddingBottom: '80px',
+    paddingBottom: '20px',
     '& > *': {
       marginTop: '8px',
     },
