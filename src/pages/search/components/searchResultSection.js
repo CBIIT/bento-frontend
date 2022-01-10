@@ -24,11 +24,11 @@ function SearchPagination({
   const pageSize = 10;
   const [data, setdata] = useState([]);
 
-  async function getAll(newPage) {
-    const calcOffset = (newPage - 1) * pageSize;
+  async function getAll(newPage, calcOffset) {
+    // const calcOffset = (newPage - 1) * pageSize;
     const searchResp = await getSearchPageResults(searchText);
 
-    const people = [
+    const custodianConfigForTabData = [
       { countField: 'subject_count', nameField: 'subjects' },
       { countField: 'sample_count', nameField: 'samples' },
       { countField: 'file_count', nameField: 'files' },
@@ -39,7 +39,7 @@ function SearchPagination({
     ];
     let acc = 0;
 
-    const test = people.map((obj) => {
+    const test = custodianConfigForTabData.map((obj) => {
       acc += searchResp[obj.countField];
       return { ...obj, value: acc };
     });
@@ -80,21 +80,33 @@ function SearchPagination({
     }
   }
 
+  async function getDataForAll(inputVlaue, newPage, calcOffset) {
+    const { datafieldValue, offsetValue } = await getAll(newPage, calcOffset);
+    const { QUERY } = getQuery(datafieldValue);
+    const allids = await client
+      .query({
+        query: QUERY,
+        variables: {
+          input: inputVlaue,
+          first: pageSize,
+          offset: offsetValue,
+        },
+      })
+      .then((result) => result.data.globalSearch);
+    return allids[datafieldValue];
+  }
+
   async function getPageResults(inputVlaue, newPage) {
     if (datafield === 'all') {
-      const { datafieldValue, offsetValue } = await getAll(newPage);
-      const { QUERY } = getQuery(datafieldValue);
-      const allids = await client
-        .query({
-          query: QUERY,
-          variables: {
-            input: inputVlaue,
-            first: pageSize,
-            offset: offsetValue,
-          },
-        })
-        .then((result) => result.data.globalSearch);
-      return allids[datafieldValue];
+      const calcOffset = (newPage - 1) * pageSize;
+      let allData = await getDataForAll(inputVlaue, newPage, calcOffset);
+      // Check if we need another query to get full pageSize data
+      if (allData && (allData.length !== pageSize && allData.length !== count % pageSize)) {
+        const calcOffset2 = (newPage - 1) * pageSize + allData.length;
+        const data2 = await getDataForAll(inputVlaue, newPage, calcOffset2);
+        allData = [...allData, ...data2];
+      }
+      return allData;
     }
     const { QUERY, field } = getQuery(datafield);
     const allids = await client
