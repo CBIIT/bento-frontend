@@ -160,7 +160,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FacetModal = ({ closeModal, type, ...modalProps }) => {
+const FacetModal = ({
+  closeModal, type, ...modalProps
+}, ref) => {
   const classes = useStyles();
 
   const [fileContent, setFileContent] = React.useState('');
@@ -180,9 +182,14 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
     setIsClear(true);
   };
 
+  React.useImperativeHandle(ref, () => ({
+    clear() {
+      clearData();
+    },
+  }));
+
   const cancelModal = () => {
     closeModal();
-    clearData();
   };
 
   async function handleContent(content) {
@@ -318,4 +325,6 @@ const FacetModal = ({ closeModal, type, ...modalProps }) => {
   );
 };
 
-export default FacetModal;
+const facetModal = React.forwardRef(FacetModal);
+
+export default facetModal;
