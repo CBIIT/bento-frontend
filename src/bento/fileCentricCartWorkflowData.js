@@ -22,7 +22,7 @@ export const myFilesPageData = {
   tooltipIcon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   tooltipAlt: 'tooltip icon',
   tooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
-  textareaPlaceholder: 'Please add a description for the XML file you are about to download.',
+  textareaPlaceholder: 'Please add a description for the CSV file you are about to download.',
   errorMessage: 'An error has occurred in loading CART',
   popUpWindow: {
     showNumberOfFileBeRemoved: true,
