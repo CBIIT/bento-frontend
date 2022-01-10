@@ -121,6 +121,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
   );
 
   const searchRef = React.useRef();
+
   const [showSearch, toggleSearch] = React.useState(false);
 
   const clearFilters = () => {
@@ -256,41 +257,6 @@ export const FacetPanelComponent = ({ classes }, ref) => {
       : facetSectionVariables[currentSection.sectionName] ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne ? facetSectionVariables[currentSection.sectionName].checkBoxColorsOne : '' : defaultFacetSectionVariables.checkBoxColorsOne;
   }
 
-  function InputSetListItem(){
-   return  <List classes={{ padding: classes.listPadding }}>
-              <>
-                <Divider
-                  style={{
-                    backgroundColor: '#B1B1B1',
-                    height: '2px',
-                  }}
-                />
-                <ListItem
-                  classes={{ gutters: classes.listItemGutter }}
-                >
-                  <div className={classes.searchResultDetailText}>
-                    <span>
-                     INPUT SET
-                    </span>
-                  </div>
-                  <IconButton
-                    disableRipple
-                    style={{ backgroundColor: 'transparent' }}
-                    onClick={()=> {uploadBulkModalSearch([],'subject')}}
-                  >
-                    <CloseIcon
-                      classes={{ root: classes.closeRoot }}
-                      style={{
-                        color: '#000',
-                      }}
-                    />
-                  </IconButton>
-
-        </ListItem>
-      </>
-    </List>
-  }
-
   const showSelectedChecbox = (sideBarItem, currentSection, sideBarIndex) => {
     const selectedItems = sideBarItem.slider !== true
       ? sideBarItem.checkboxItems.filter((item) => (item.isChecked)) : [];
@@ -389,6 +355,48 @@ export const FacetPanelComponent = ({ classes }, ref) => {
     setShowCasesModal(false);
   };
 
+  // This ref is used to clear case upload modal
+  const modelRef = React.useRef();
+
+  function InputSetListItem(){
+    return  <List classes={{ padding: classes.listPadding }}>
+               <>
+                 <Divider
+                   style={{
+                     backgroundColor: '#B1B1B1',
+                     height: '2px',
+                   }}
+                 />
+                 <ListItem
+                   classes={{ gutters: classes.listItemGutter }}
+                 >
+                   <div className={classes.searchResultDetailText}>
+                     <span>
+                      INPUT SET
+                     </span>
+                   </div>
+                   <IconButton
+                     disableRipple
+                     style={{ backgroundColor: 'transparent' }}
+                     onClick={()=> {
+                       modelRef.current.clear();
+                       uploadBulkModalSearch([],'subject'); 
+                   }}
+                   >
+                     <CloseIcon
+                       classes={{ root: classes.closeRoot }}
+                       style={{
+                         color: '#000',
+                       }}
+                     />
+                   </IconButton>
+ 
+         </ListItem>
+       </>
+     </List>
+   }
+
+
   React.useImperativeHandle(ref, () => ({
     clear() {
       if (showSearch) {
@@ -415,6 +423,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
             closeModal={closeCasesModal}
             handleClose={closeCasesModal}
             type={'subjectIds'}
+            ref={modelRef}
           />
           <ExpansionPanel
             expanded={sectionExpanded.includes(currentSection.sectionName)}
