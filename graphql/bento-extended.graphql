@@ -723,19 +723,6 @@ type FileInfo {
     md5sum: String
 }
 
-type FileDetail {
-    study_code: String
-    subject_id: String
-    file_name: String
-    file_type: String
-    association: String
-    file_description: String
-    file_format: String
-    file_size: Float
-    file_id: String
-    md5sum: String
-}
-
 type ProgramInfo {
     program_acronym: String
     program_id: String
@@ -1363,80 +1350,6 @@ type QueryType {
     """, passThrough: true)
 
     samplesForSubjectId(subject_id: String!): [sample] @cypher(statement: "MATCH (ss:study_subject {study_subject_id: $subject_id})<-[*]-(s:sample) RETURN s")
-
-    filesInList(file_ids: [String], order_by: String = ""): [FileDetail] @cypher(statement: """
-        MATCH (f:file)
-        WHERE f.file_id in $file_ids
-        OPTIONAL MATCH (f)-->(parent)
-        WHERE NOT (parent:laboratory_procedure)
-        OPTIONAL MATCH (f)-[*]->(ss:study_subject)-->(s:study)
-        WITH
-            toInteger(split(f.file_id,'-')[2]) AS file_id_num,
-            toInteger(split(ss.study_subject_id,'-')[2]) AS subject_id_num,
-            head(labels(parent)) AS association,
-            f, parent, ss, s
-        RETURN {
-            file_name: f.file_name,
-            file_id: f.file_id,
-            file_type: f.file_type,
-            association: association,
-            file_description: f.file_description,
-            file_format: f.file_format,
-            file_size: f.file_size,
-            md5sum: f.md5sum,
-            subject_id: ss.study_subject_id,
-            study_code: s.study_acronym
-        }
-        ORDER BY CASE $order_by
-            WHEN 'file_id' THEN f.file_id
-            WHEN 'file_name' THEN f.file_name
-            WHEN 'file_type' THEN f.file_type
-            WHEN 'association' THEN association
-            WHEN 'file_description' THEN f.file_description
-            WHEN 'file_format' THEN f.file_format
-            WHEN 'file_size' THEN f.file_size
-            WHEN 'md5sum' THEN f.md5sum
-            WHEN 'subject_id' THEN subject_id_num
-            WHEN 'study_code' THEN s.study_acronym
-            ELSE file_id_num END
-    """, passThrough: true)
-
-    filesInListDesc(file_ids: [String], order_by: String = ""): [FileDetail] @cypher(statement: """
-        MATCH (f:file)
-        WHERE f.file_id in $file_ids
-        OPTIONAL MATCH (f)-->(parent)
-        WHERE NOT (parent:laboratory_procedure)
-        OPTIONAL MATCH (f)-[*]->(ss:study_subject)-->(s:study)
-        WITH
-            toInteger(split(f.file_id,'-')[2]) AS file_id_num,
-            toInteger(split(ss.study_subject_id,'-')[2]) AS subject_id_num,
-            head(labels(parent)) AS association,
-            f, parent, ss, s
-        RETURN {
-            file_name: f.file_name,
-            file_id: f.file_id,
-            file_type: f.file_type,
-            association: association,
-            file_description: f.file_description,
-            file_format: f.file_format,
-            file_size: f.file_size,
-            md5sum: f.md5sum,
-            subject_id: ss.study_subject_id,
-            study_code: s.study_acronym
-        }
-        ORDER BY CASE $order_by
-            WHEN 'file_id' THEN f.file_id
-            WHEN 'file_name' THEN f.file_name
-            WHEN 'file_type' THEN f.file_type
-            WHEN 'association' THEN association
-            WHEN 'file_description' THEN f.file_description
-            WHEN 'file_format' THEN f.file_format
-            WHEN 'file_size' THEN f.file_size
-            WHEN 'md5sum' THEN f.md5sum
-            WHEN 'subject_id' THEN subject_id_num
-            WHEN 'study_code' THEN s.study_acronym
-            ELSE file_id_num END DESC
-    """, passThrough: true)
 
     fileIdsFromFileName(file_name: [String], order_by: String ="file_name"): [FileOverview] @cypher(statement: """
         MATCH (f:file)
