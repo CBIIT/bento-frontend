@@ -4,7 +4,6 @@ import SampleCard from './cards/sampleCard';
 import StudyCard from './cards/studyCard';
 import FileCard from './cards/fileCard';
 import ProgamCard from './cards/progamCard';
-import NodeCard from './cards/nodeCard';
 import ValueCard from './cards/valueCard';
 import AboutCard from './cards/aboutCard';
 
@@ -14,8 +13,9 @@ const Components = {
   study: StudyCard,
   file: FileCard,
   program: ProgamCard,
-  node: NodeCard,
+  node: ValueCard,
   value: ValueCard,
+  property: ValueCard,
   about: AboutCard,
 };
 

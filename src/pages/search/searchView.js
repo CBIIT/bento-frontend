@@ -14,7 +14,7 @@ import {
   SEARCH_PAGE_RESULT_SUBJECTS,
   SEARCH_PAGE_RESULT_SAMPLES,
   SEARCH_PAGE_RESULT_FILES,
-  SEARCH_PAGE_RESULT_VALUES,
+  SEARCH_PAGE_RESULT_MODEL,
   SEARCH_PAGE_RESULT_ABOUT,
 } from '../../bento/search';
 import { getSearch, getSearchPageResults } from '../dashboardTab/store/dashboardReducer';
@@ -65,8 +65,8 @@ function searchComponent({ classes, searchparam = '' }) {
     }
     setInputValue(newValue);
     const searchResp = await getSearch(newValue);
-    const keys = ['programs', 'studies', 'subjects', 'samples', 'files', 'values', 'nodes', 'properties'];
-    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id', 'value', 'node_name', 'property_name'];
+    const keys = ['programs', 'studies', 'subjects', 'samples', 'files', 'values', 'nodes', 'properties', 'model'];
+    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id', 'value', 'node_name', 'property_name', 'node_name'];
 
     const mapOption = keys.map(
       (key, index) => searchResp[key].map((id) => (id[datafields[index]])),
@@ -84,7 +84,7 @@ function searchComponent({ classes, searchparam = '' }) {
   }, [open]);
 
   // eslint-disable-next-line max-len
-  const allCount = () => (searchResults.subject_count + searchResults.sample_count + searchResults.program_count + searchResults.study_count + searchResults.file_count + searchResults.value_count + searchResults.about_count);
+  const allCount = () => (searchResults.subject_count + searchResults.sample_count + searchResults.program_count + searchResults.study_count + searchResults.file_count + searchResults.model_count + searchResults.about_count);
 
   return (
     <>
@@ -160,7 +160,7 @@ function searchComponent({ classes, searchparam = '' }) {
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.fileTab }} label={`Files ${searchResults.file_count || 0}`} value="4" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Programs ${searchResults.program_count || 0}`} value="5" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.studyTab }} label={`Studies ${searchResults.study_count || 0}`} value="6" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.dataTab }} label={`Data Model ${searchResults.value_count || 0}`} value="7" />
+                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.dataTab }} label={`Data Model ${searchResults.model_count || 0}`} value="7" />
                 <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
               </TabList>
             </Box>
@@ -170,7 +170,7 @@ function searchComponent({ classes, searchparam = '' }) {
             <TabPanel value="4"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_FILES} count={searchResults.file_count || 0} datafield="files" /></TabPanel>
             <TabPanel value="5"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_PROGRAM} count={searchResults.program_count || 0} datafield="programs" /></TabPanel>
             <TabPanel value="6"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_STUDIES} count={searchResults.study_count || 0} datafield="studies" /></TabPanel>
-            <TabPanel value="7"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_VALUES} count={searchResults.value_count || 0} datafield="values" /></TabPanel>
+            <TabPanel value="7"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_MODEL} count={searchResults.model_count || 0} datafield="model" /></TabPanel>
             <TabPanel value="8"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_ABOUT} count={searchResults.about_count || 0} datafield="about_page" /></TabPanel>
             {/* <Pagination count={10} shape="rounded" /> */}
 

@@ -1,11 +1,26 @@
 import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { prepareLinks } from 'bento-components';
 import PropertyItem from '../propertyItem';
 
 const FileCard = ({ data, classes, index }) => {
   const properties = [
+    {
+      label: 'File Name',
+      dataField: 'file_name',
+    },
+    {
+      label: 'File Format',
+      dataField: 'file_format',
 
+    },
+    {
+      label: 'Program ID',
+      dataField: 'program_id',
+      link: '/program/{program_id}',
+
+    },
     {
       label: 'Subject ID',
       dataField: 'subject_id',
@@ -15,15 +30,6 @@ const FileCard = ({ data, classes, index }) => {
     {
       label: 'Sample ID',
       dataField: 'sample_id',
-    },
-    {
-      label: 'File Name',
-      dataField: 'file_name',
-    },
-    {
-      label: 'File ID',
-      dataField: 'file_id',
-
     },
   ];
   const propertiesWithLinks = prepareLinks(properties, data);
@@ -37,7 +43,11 @@ const FileCard = ({ data, classes, index }) => {
         <Grid item xs={11} className={classes.propertyContainer}>
           <div>
             <span className={classes.detailContainerHeader}>FILE</span>
-            <span className={classes.cardTitle}>{data.file_id}</span>
+            <span className={classes.cardTitle}>
+              <Link to={`/case/${data.subject_id}`} className={classes.cardTitle}>
+                {data.file_id}
+              </Link>
+            </span>
 
           </div>
           {propertiesWithLinks.map((prop) => (
