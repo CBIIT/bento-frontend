@@ -34,8 +34,8 @@ const CaseCard = ({ data, classes, index }) => {
         <Grid item xs={11} className={classes.propertyContainer}>
           <div>
             <span className={classes.detailContainerHeader}>CASE</span>
-            <span className={classes.cardTitle}>
-              <Link to={`/case/${data.subject_id}`} className={classes.headerLink}>
+            <span>
+              <Link to={`/case/${data.subject_id}`} className={classes.cardTitle}>
                 {data.subject_id}
               </Link>
 
@@ -74,6 +74,7 @@ const styles = () => ({
   },
   cardTitle: {
     color: '#7747FF',
+    textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',
     paddingLeft: '9px',

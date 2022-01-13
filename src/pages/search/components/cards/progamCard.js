@@ -31,7 +31,7 @@ const ProgamCard = ({ data, classes, index }) => {
         <Grid item xs={11} className={classes.propertyContainer}>
           <div>
             <span className={classes.detailContainerHeader}>Program</span>
-            <Link to={`/program/${data.program_id}`} className={classes.program_code}>
+            <Link to={`/program/${data.program_id}`} className={classes.cardTitle}>
               {data.program_id}
             </Link>
 
@@ -66,6 +66,7 @@ const styles = () => ({
   },
   cardTitle: {
     color: '#7747FF',
+    textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',
     paddingLeft: '9px',

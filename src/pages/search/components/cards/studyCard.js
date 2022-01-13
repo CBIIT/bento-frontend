@@ -76,6 +76,7 @@ const styles = () => ({
   },
   cardTitle: {
     color: '#7747FF',
+    textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',
     paddingLeft: '9px',
