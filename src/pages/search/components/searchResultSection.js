@@ -11,7 +11,7 @@ import {
   SEARCH_PAGE_RESULT_SUBJECTS,
   SEARCH_PAGE_RESULT_SAMPLES,
   SEARCH_PAGE_RESULT_FILES,
-  SEARCH_PAGE_RESULT_VALUES,
+  SEARCH_PAGE_RESULT_MODEL,
   SEARCH_PAGE_RESULT_ABOUT,
 } from '../../../bento/search';
 import { getSearchPageResults } from '../../dashboardTab/store/dashboardReducer';
@@ -34,7 +34,7 @@ function SearchPagination({
       { countField: 'file_count', nameField: 'files' },
       { countField: 'program_count', nameField: 'programs' },
       { countField: 'study_count', nameField: 'studies' },
-      { countField: 'value_count', nameField: 'values' },
+      { countField: 'model_count', nameField: 'model' },
       { countField: 'about_count', nameField: 'about_page' },
     ];
     let acc = 0;
@@ -71,8 +71,8 @@ function SearchPagination({
         return { QUERY: SEARCH_PAGE_RESULT_PROGRAM, field: 'programs' };
       case 'studies':
         return { QUERY: SEARCH_PAGE_RESULT_STUDIES, field: 'studies' };
-      case 'values':
-        return { QUERY: SEARCH_PAGE_RESULT_VALUES, field: 'values' };
+      case 'model':
+        return { QUERY: SEARCH_PAGE_RESULT_MODEL, field: 'model' };
       case 'about_page':
         return { QUERY: SEARCH_PAGE_RESULT_ABOUT, field: 'about_page' };
       default:
@@ -106,7 +106,7 @@ function SearchPagination({
         const data2 = await getDataForAll(inputVlaue, newPage, calcOffset2);
         allData = [...allData, ...data2];
       }
-      return allData;
+      return allData.slice(0, pageSize);
     }
     const { QUERY, field } = getQuery(datafield);
     const allids = await client
@@ -119,7 +119,7 @@ function SearchPagination({
         },
       })
       .then((result) => result.data.globalSearch);
-    return allids[field];
+    return allids[field].slice(0, pageSize);
   }
 
   async function onChange(newValue = [], newPage = 1) {

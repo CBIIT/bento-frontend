@@ -5,19 +5,34 @@ import PropertyItem from '../propertyItem';
 
 const ValueCard = ({ data, classes, index }) => {
   const properties = [
-
     {
-      label: 'Node Name',
+      label: 'Data Model Node',
       dataField: 'node_name',
     },
     {
       label: 'Property Name',
       dataField: 'property_name',
-      link: '/resources',
     },
     {
-      label: 'Value',
-      dataField: 'filevalue_name',
+      label: 'Property Description',
+      dataField: 'property_description',
+    },
+    {
+      label: 'Property Required',
+      dataField: 'node_name',
+    },
+    {
+      label: 'Property Type',
+      dataField: 'property_description',
+    },
+    {
+      label: 'Property Type',
+      dataField: 'value',
+    },
+    {
+      label: 'Page Link',
+      dataField: 'node_name',
+      link: '/resources',
     },
   ];
   const propertiesWithLinks = prepareLinks(properties, data);

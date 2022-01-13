@@ -26,14 +26,8 @@ query globalSearch($input: String){
         files {
             file_id
         }
-        values {
-            value
-        }
-        nodes {
+        model {
             node_name
-        }
-        properties {
-            property_name
         }
     }
 }
@@ -66,7 +60,9 @@ query globalSearch($input: String, $first: Int, $offset: Int){
         studies {
             type
             study_id
+            program_id
             study_name
+            study_type
             study_code
         }
 }
@@ -82,10 +78,8 @@ query globalSearch($input: String, $first: Int, $offset: Int){
     ) {
         subjects {
             type
-            program_code
-            program_id
-            study
             subject_id
+            program_id
             diagnosis
             age
         }
@@ -102,10 +96,12 @@ query globalSearch($input: String, $first: Int, $offset: Int){
     ) {
         samples {
             type
-            subject_id
             sample_id
+            program_id
+            subject_id
             diagnosis
             sample_anatomic_site
+            tissue_type
         }
 }
 }
@@ -120,26 +116,31 @@ query globalSearch($input: String, $first: Int, $offset: Int){
     ) {
         files {
             type
+            file_id
+            file_name
+            file_format
+            program_id
             subject_id
             sample_id
-            file_name
-            file_id
         }
 }
 }
 `;
 
-export const SEARCH_PAGE_RESULT_VALUES = gql`
+export const SEARCH_PAGE_RESULT_MODEL = gql`
 query globalSearch($input: String, $first: Int, $offset: Int){
     globalSearch(
         input: $input
         first: $first
         offset: $offset
     ) {
-        values {
+        model {
             type
             node_name
             property_name
+            property_description
+            property_required
+            property_type
             value
         }
 }
@@ -176,7 +177,7 @@ query globalSearch($input: String, $first: Int, $offset: Int){
         subject_count
         sample_count
         file_count
-        value_count
+        model_count
         about_count
 }
 }
