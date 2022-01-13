@@ -142,6 +142,7 @@ query globalSearch($input: String, $first: Int, $offset: Int){
             property_required
             property_type
             value
+            highlight
         }
 }
 }
