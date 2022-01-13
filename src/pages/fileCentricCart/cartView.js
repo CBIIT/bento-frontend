@@ -74,7 +74,6 @@ const cartView = ({
   defaultSortDirection,
   updateSortOrder,
   paginationAPIField,
-  paginationAPIFieldDesc,
   localPage,
   localRowsPerPage,
   isLoading,
@@ -222,7 +221,6 @@ const cartView = ({
               defaultSortCoulmn={defaultSortCoulmn}
               defaultSortDirection={defaultSortDirection}
               paginationAPIField={paginationAPIField}
-              paginationAPIFieldDesc={paginationAPIFieldDesc}
               localPage={localPageCartView}
               localRowsPerPage={localRowsPerPageCartView}
               isLoading={isLoading}

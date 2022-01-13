@@ -9,7 +9,7 @@ import _ from 'lodash';
 import CustomDataTable from '../../../../components/serverPaginatedTable/serverPaginatedTable';
 import Styles from './cartBody.style';
 import {
-  table, GET_MY_CART_DATA_QUERY, GET_MY_CART_DATA_QUERY_DESC,
+  table, GET_MY_CART_DATA_QUERY,
 } from '../../../../bento/fileCentricCartWorkflowData';
 import TableThemeProvider from './cartTableThemeConfig';
 
@@ -22,7 +22,6 @@ const CartHeader = ({
   defaultSortDirection,
   updateSortOrder,
   paginationAPIField,
-  paginationAPIFieldDesc,
   localPage,
   localRowsPerPage,
   isLoading,
@@ -42,9 +41,7 @@ const CartHeader = ({
         className={classes.tableStyle}
         count={fileIDs.length || 0}
         overview={GET_MY_CART_DATA_QUERY}
-        overviewDesc={GET_MY_CART_DATA_QUERY_DESC}
         paginationAPIField={paginationAPIField}
-        paginationAPIFieldDesc={paginationAPIFieldDesc}
         queryCustomVaribles={{ file_ids: fileIDs }}
         defaultSortCoulmn={defaultSortCoulmn}
         defaultSortDirection={defaultSortDirection}
