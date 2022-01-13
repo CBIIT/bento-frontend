@@ -101,6 +101,7 @@ const ActiveFiltersQuery = ({ classes }) => {
           >
             Clear Query
           </Button>
+          <span className={classes.divider} />
           <span className={classes.queryContainer}>
             {(autoCompleteSelection.length || bulkUpload.length) ? (
               <span>
@@ -276,7 +277,7 @@ const styles = () => ({
     overflowY: 'auto',
   },
   queryContainer: {
-    marginLeft: '15px',
+    marginLeft: 14,
     position: 'relative',
     lineHeight: '2.5',
     letterSpacing: '0.5px',
@@ -327,6 +328,16 @@ const styles = () => ({
     textTransform: 'capitalize',
     border: '1px solid #B4B4B4',
     padding: '1px 5px 0px 6px',
+    '&:hover': {
+      backgroundColor: '#969696',
+    },
+  },
+  divider: {
+    borderRight: '2px solid #969696',
+    marginLeft: 7,
+    position: 'absolute',
+    height: 27,
+    marginTop: 5,
   },
 });
 
