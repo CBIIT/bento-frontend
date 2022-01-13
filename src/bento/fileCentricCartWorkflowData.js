@@ -49,7 +49,6 @@ export const table = {
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
   paginationAPIField: 'filesInList',
-  paginationAPIFieldDesc: 'filesInList',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
 
   columns: [
