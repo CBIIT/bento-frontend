@@ -26,15 +26,6 @@ query globalSearch($input: String){
         files {
             file_id
         }
-        values {
-            value
-        }
-        nodes {
-            node_name
-        }
-        properties {
-            property_name
-        }
         model {
             node_name
         }
