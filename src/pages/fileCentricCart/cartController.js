@@ -57,7 +57,6 @@ const cartController = () => {
       defaultSortCoulmn={defaultSortColumnValue}
       defaultSortDirection={defaultSortDirection}
       paginationAPIField={table.paginationAPIField}
-      paginationAPIFieldDesc={table.paginationAPIFieldDesc}
       tableDownloadCSV={table.tableDownloadCSV}
       localPage={localPage}
       localRowsPerPage={localRowsPerPage}
