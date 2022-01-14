@@ -14,6 +14,9 @@ const styles = () => ({
   clearIndicatorDirty: {
     right: '-2px',
   },
+  noOptions: {
+    color: '#fff',
+  },
   paper: {
     border: '1.25px solid #0D8461',
     backgroundColor: '#717171',
