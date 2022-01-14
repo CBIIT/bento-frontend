@@ -144,6 +144,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
             freeSolo={false}
             popupIcon=""
             classes={classes}
+            noOptionsText="No matching items found"
             onChange={(event, newValue, reason) => onChange(newValue, reason)}
             multiple
             filterOptions={createFilterOptions({ trim: true })}
