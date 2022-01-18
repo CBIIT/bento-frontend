@@ -39,14 +39,14 @@ function SearchPagination({
     ];
     let acc = 0;
 
-    const test = custodianConfigForTabData.map((obj) => {
+    const mapCountAndName = custodianConfigForTabData.map((obj) => {
       acc += searchResp[obj.countField];
       return { ...obj, value: acc };
     });
     // Create filter for next Query
-    const filter = test.filter((obj) => obj.value > calcOffset)[0];
+    const filter = mapCountAndName.filter((obj) => obj.value > calcOffset)[0];
     // Create filter to calulate the Offset
-    const filterForOffset = test.filter((obj) => obj.value <= calcOffset);
+    const filterForOffset = mapCountAndName.filter((obj) => obj.value <= calcOffset);
     // eslint-disable-next-line max-len
     const val = filterForOffset.length === 0 ? 0 : filterForOffset[filterForOffset.length - 1].value;
     // eslint-disable-next-line max-len
@@ -101,10 +101,12 @@ function SearchPagination({
       const calcOffset = (newPage - 1) * pageSize;
       let allData = await getDataForAll(inputVlaue, newPage, calcOffset);
       // Check if we need another query to get full pageSize data
-      if (allData && (allData.length !== pageSize && allData.length !== count % pageSize)) {
+      if (allData && (allData.length !== pageSize)) {
         const calcOffset2 = (newPage - 1) * pageSize + allData.length;
-        const data2 = await getDataForAll(inputVlaue, newPage, calcOffset2);
-        allData = [...allData, ...data2];
+        if (allData.length !== count && calcOffset2 < count) {
+          const data2 = await getDataForAll(inputVlaue, newPage, calcOffset2);
+          allData = [...allData, ...data2];
+        }
       }
       return allData.slice(0, pageSize);
     }
