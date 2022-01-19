@@ -130,6 +130,8 @@ function SearchPagination({
   }
 
   useEffect(() => {
+    setPage(1);
+    setdata([]);
     onChange(searchText);
   }, [searchText, datafield]);
 
