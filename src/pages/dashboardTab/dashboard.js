@@ -63,7 +63,7 @@ const Dashboard = ({
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
                     {displaywidgets.map((widget, index) => {
-                      if (widget.type === 'sunburst' && widget.show && data[widget.dataName].length !== 0) {
+                      if (widget.type === 'sunburst' && (widget.show && data[widget.dataName] && data[widget.dataName].children && data[widget.dataName].children.length)) {
                         return (
                           <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
                             <Widget
