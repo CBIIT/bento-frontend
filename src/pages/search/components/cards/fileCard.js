@@ -22,7 +22,7 @@ const FileCard = ({ data, classes, index }) => {
 
     },
     {
-      label: 'Subject ID',
+      label: 'Case ID',
       dataField: 'subject_id',
       link: '/case/{subject_id}',
 
