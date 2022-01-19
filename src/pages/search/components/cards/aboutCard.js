@@ -33,9 +33,6 @@ const AboutCard = ({
         <Grid item xs={11} className={classes.propertyContainer}>
           <div>
             <span className={classes.detailContainerHeader}>ABOUT</span>
-            {' '}
-&nbsp;
-            {' '}
             <span className={classes.cardTitle}>{data.title}</span>
           </div>
           <div className={classes.text}>{getHighlightedText(results, searchText)}</div>

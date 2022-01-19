@@ -33,9 +33,6 @@ const StudyCard = ({ data, classes, index }) => {
         <Grid item xs={11} className={classes.propertyContainer}>
           <div>
             <span className={classes.detailContainerHeader}>STUDY</span>
-            {' '}
-&nbsp;
-            {' '}
             <span className={classes.cardTitle}>
               <Link to={`/arm/${data.study_code}`} className={classes.cardTitle}>
                 {data.study_id}
