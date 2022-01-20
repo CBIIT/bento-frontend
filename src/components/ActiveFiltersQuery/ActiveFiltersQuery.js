@@ -1,11 +1,18 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {
   facetSectionVariables,
 } from '../../bento/dashboardData';
-import { clearAllFilters } from '../../pages/dashboardTab/store/dashboardReducer';
+import {
+  clearAllFilters, localSearch,
+  addAutoComplete,
+  setSideBarToLoading,
+  uploadBulkModalSearch,
+  toggleCheckBox,
+  resetGroupSelections,
+} from '../../pages/dashboardTab/store/dashboardReducer';
 
 const ActiveFiltersQuery = ({ classes }) => {
   // get all filters information from state
@@ -18,7 +25,6 @@ const ActiveFiltersQuery = ({ classes }) => {
     ? state.dashboardTab.autoCompleteSelection.subject_ids : {}));
   const bulkUpload = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.bulkUpload ? state.dashboardTab.bulkUpload.subject_ids : {}));
-
   // activeFilters helps filtering only active Filters
   const activeFilters = [];
   // Loop all filters except range filter to find active ones only
@@ -43,6 +49,7 @@ const ActiveFiltersQuery = ({ classes }) => {
             filterName: currentFilter.groupName,
             checkbox: [checkBox.name],
             section: currentFilter.section,
+            datafield: currentFilter.datafield,
           });
         }
       }
@@ -50,6 +57,10 @@ const ActiveFiltersQuery = ({ classes }) => {
     return '';
   });
   allFiltersinfo.data = allFiltersinfo.data.concat(rangeData);
+  const dispatch = useDispatch();
+  const onDeleteInputSet = () => {
+    uploadBulkModalSearch([], 'subject');
+  };
 
   const getInputSet = () => {
     if (bulkUpload.length && autoCompleteSelection.length) {
@@ -61,8 +72,9 @@ const ActiveFiltersQuery = ({ classes }) => {
             style={{
               color: facetSectionVariables.Cases.color,
             }}
+            onClick={onDeleteInputSet}
           >
-            INPUT SET
+            INPUT CASE SET
           </span>
           {' '}
         </>
@@ -71,7 +83,33 @@ const ActiveFiltersQuery = ({ classes }) => {
     return null;
   };
 
-  const getFilterJoin = (data, idx, isLastIndex) => (
+  const onDeleteCaseIds = (title) => {
+    const index = autoCompleteSelection.findIndex((v) => v === title);
+    if (index >= 0) {
+      const newValue = [...autoCompleteSelection];
+      newValue.splice(index, 1);
+      addAutoComplete({
+        type: 'subject',
+        newValue,
+        isFilteredData: true,
+      });
+      setSideBarToLoading();
+      localSearch(newValue);
+    }
+  };
+
+  const onDeleteFilterCheckbox = (filterData, checkboxName) => {
+    const payload = [{
+      datafield: filterData.datafield,
+      groupName: filterData.filterName,
+      isChecked: false,
+      name: checkboxName,
+      section: filterData.section,
+    }];
+    dispatch(toggleCheckBox(payload));
+  };
+
+  const getFilterJoin = (data, idx, isLastIndex, isFilter, filterData = []) => (
     <>
       <span
         className={classes.filterCheckboxes}
@@ -79,12 +117,25 @@ const ActiveFiltersQuery = ({ classes }) => {
         style={{
           color: facetSectionVariables.Cases.color,
         }}
+        onClick={() => (isFilter
+          ? onDeleteFilterCheckbox(filterData, data)
+          : onDeleteCaseIds(data))}
       >
         {data}
       </span>
       {isLastIndex ? null : ' '}
     </>
   );
+
+  const removeCaseIds = () => {
+    const newValue = [];
+    addAutoComplete({
+      type: 'subject',
+      newValue,
+    });
+    setSideBarToLoading();
+    localSearch(newValue);
+  };
 
   return (
     <div>
@@ -112,6 +163,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                       style={{
                         backgroundColor: facetSectionVariables.Cases.backgroundColor,
                       }}
+                      onClick={onDeleteInputSet}
                     >
                       INPUT CASE SET
                     </span>
@@ -125,6 +177,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                         style={{
                           backgroundColor: facetSectionVariables.Cases.backgroundColor,
                         }}
+                        onClick={removeCaseIds}
                       >
                         Case IDs
                       </span>
@@ -146,6 +199,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                           style={{
                             color: facetSectionVariables.Cases.color,
                           }}
+                          onClick={() => onDeleteCaseIds(autoCompleteSelection[0])}
                         >
                           {autoCompleteSelection[0]}
                         </span>
@@ -160,6 +214,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                           style={{
                             color: facetSectionVariables.Cases.color,
                           }}
+                          onClick={() => onDeleteCaseIds(autoCompleteSelection[0])}
                         >
                           {autoCompleteSelection[0]}
                         </span>
@@ -169,6 +224,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                           style={{
                             color: facetSectionVariables.Cases.color,
                           }}
+                          onClick={() => onDeleteCaseIds(autoCompleteSelection[1])}
                         >
                           {autoCompleteSelection[1]}
                         </span>
@@ -182,7 +238,12 @@ const ActiveFiltersQuery = ({ classes }) => {
                             <span className={classes.brackets}>(</span>
                             {getInputSet()}
                             {autoCompleteSelection.map((data, idx) => (
-                              getFilterJoin(data, idx, autoCompleteSelection.length - 1 === idx)
+                              getFilterJoin(
+                                data,
+                                idx,
+                                autoCompleteSelection.length - 1 === idx,
+                                false,
+                              )
                             ))}
                             <span className={classes.brackets}>)</span>
                           </>
@@ -207,6 +268,10 @@ const ActiveFiltersQuery = ({ classes }) => {
                     style={{
                       backgroundColor: facetSectionVariables[filter.section].backgroundColor,
                     }}
+                    onClick={() => dispatch(resetGroupSelections({
+                      dataField: filter.datafield,
+                      groupName: filter.filterName,
+                    }))}
                   >
                     {filter.filterName}
                   </span>
@@ -224,6 +289,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                         style={{
                           color: facetSectionVariables[filter.section].color,
                         }}
+                        onClick={() => onDeleteFilterCheckbox(filter, filter.checkbox[0])}
                       >
                         {filter.checkbox[0]}
                       </span>
@@ -235,6 +301,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                           style={{
                             color: facetSectionVariables[filter.section].color,
                           }}
+                          onClick={() => onDeleteFilterCheckbox(filter, filter.checkbox[0])}
                         >
                           {filter.checkbox[0]}
                         </span>
@@ -244,6 +311,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                           style={{
                             color: facetSectionVariables[filter.section].color,
                           }}
+                          onClick={() => onDeleteFilterCheckbox(filter, filter.checkbox[1])}
                         >
                           {filter.checkbox[1]}
                         </span>
@@ -254,7 +322,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                       <>
                         <span className={classes.brackets}>(</span>
                         {filter.checkbox.map((data, idx) => (
-                          getFilterJoin(data, idx, filter.checkbox.length - 1 === idx)
+                          getFilterJoin(data, idx, filter.checkbox.length - 1 === idx, true, filter)
                         ))}
                         <span className={classes.brackets}>)</span>
                       </>
@@ -291,6 +359,7 @@ const styles = () => ({
     borderRadius: 4,
     fontSize: 12,
     fontWeight: 600,
+    cursor: 'pointer',
   },
   filterCheckboxes: {
     padding: '5px 7px 3px 6px',
@@ -300,6 +369,7 @@ const styles = () => ({
     border: '0.75px solid #898989',
     width: 'fit-content',
     backgroundColor: '#fff',
+    cursor: 'pointer',
     // borderBottom: '2px solid #10A075',
   },
   brackets: {
