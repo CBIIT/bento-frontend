@@ -1020,7 +1020,7 @@ query search (
 }
 `;
 
-export const GET_FILES_OVERVIEW_QUERY_NEW = gql`
+export const GET_FILES_OVERVIEW_QUERY = gql`
 query fileOverview(
     $subject_ids: [String],
     $file_ids: [String],
@@ -1083,84 +1083,7 @@ query fileOverview(
 }
 `;
 
-// --------------- GraphQL query - Retrieve files tab details --------------
-export const GET_FILES_OVERVIEW_QUERY = gql`
-query fileOverview(
-  $programs: [String] ,
-  $studies: [String] ,
-  $diagnoses: [String] ,
-  $rc_scores: [String] ,
-  $tumor_sizes: [String] ,
-  $chemo_regimen: [String] ,
-  $tumor_grades: [String] ,
-  $er_status: [String] ,
-  $pr_status: [String] ,
-  $endo_therapies: [String] ,
-  $meno_status: [String] ,
-  $tissue_type: [String],
-  $composition: [String],
-  $association: [String],
-  $file_type: [String]
-  $first: Int, 
-  $offset: Int, 
-  $order_by:  String
-  $sort_direction: String ){
-  fileOverview(
-      programs: $programs,
-      studies: $studies,
-      diagnoses: $diagnoses,
-      rc_scores: $rc_scores,
-      tumor_sizes: $tumor_sizes,
-      chemo_regimen: $chemo_regimen,
-      tumor_grades: $tumor_grades,
-      er_status: $er_status,
-      pr_status: $pr_status,
-      endo_therapies: $endo_therapies,
-      meno_status: $meno_status,
-      tissue_type: $tissue_type,
-      composition: $composition,
-      association: $association,       
-      file_type: $file_type,
-      first: $first, 
-      offset: $offset, 
-      order_by: $order_by,
-      sort_direction: $sort_direction
-  ){
-      file_id,
-      file_name,
-      association,
-      file_description,
-      file_format,
-      file_size,
-      program,
-      arm,
-      subject_id,
-      sample_id,
-      diagnosis,
-  }
-}
-  `;
-
-export const GET_FILES_OVERVIEW_DESC_QUERY = gql`
-  query fileOverviewDesc($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name"){
-    fileOverviewDesc(file_ids: $file_ids, offset: $offset,first: $first, order_by: $order_by) {
-      file_id
-      file_name
-      association
-      file_description
-      file_format
-      file_size
-      program
-      program_id
-      arm
-      subject_id
-      sample_id
-      diagnosis
-    }
-  }
-    `;
-
-export const GET_SAMPLES_OVERVIEW_QUERY_NEW = gql`
+export const GET_SAMPLES_OVERVIEW_QUERY = gql`
 query sampleOverview(
     $subject_ids: [String],
     $sample_ids: [String],
@@ -1223,87 +1146,7 @@ query sampleOverview(
 }
 `;
 
-// --------------- GraphQL query - Retrieve sample tab details --------------
-
-export const GET_SAMPLES_OVERVIEW_QUERY = gql`
-query sampleOverview(
-  $programs: [String] ,
-  $studies: [String] ,
-  $diagnoses: [String] ,
-  $rc_scores: [String] ,
-  $tumor_sizes: [String] ,
-  $chemo_regimen: [String] ,
-  $tumor_grades: [String] ,
-  $er_status: [String] ,
-  $pr_status: [String] ,
-  $endo_therapies: [String] ,
-  $meno_status: [String] ,
-  $tissue_type: [String],
-  $composition: [String],
-  $association: [String],
-  $file_type: [String]
-  $first: Int, 
-  $offset: Int, 
-  $order_by:  String
-  $sort_direction: String ){
-  sampleOverview(
-      programs: $programs,
-      studies: $studies,
-      diagnoses: $diagnoses,
-      rc_scores: $rc_scores,
-      tumor_sizes: $tumor_sizes,
-      chemo_regimen: $chemo_regimen,
-      tumor_grades: $tumor_grades,
-      er_status: $er_status,
-      pr_status: $pr_status,
-      endo_therapies: $endo_therapies,
-      meno_status: $meno_status,
-      tissue_type: $tissue_type,
-      composition: $composition,
-      association: $association,       
-      file_type: $file_type,
-      first: $first, 
-      offset: $offset, 
-      order_by: $order_by,
-      sort_direction: $sort_direction
-  ){
-      sample_id,
-      subject_id,
-      program,
-      arm,
-      diagnosis,
-      tissue_type,
-      tissue_composition,
-      sample_anatomic_site,
-      sample_procurement_method,
-      platform,
-      files 
-  }
-}
-  `;
-
-// --------------- GraphQL query - Retrieve sample tab details --------------
-
-export const GET_SAMPLES_OVERVIEW_DESC_QUERY = gql`
-  query sampleOverview($sample_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
-  sampleOverviewDesc(sample_ids: $sample_ids, offset: $offset,first: $first, order_by: $order_by) {
-    sample_id
-    subject_id
-    program
-    program_id
-    arm
-    diagnosis
-    tissue_type
-    tissue_composition
-    sample_anatomic_site
-    sample_procurement_method
-    platform
-    files 
-}
-}
-  `;
-
-export const GET_CASES_OVERVIEW_QUERY_NEW = gql`
+export const GET_CASES_OVERVIEW_QUERY = gql`
 query subjectOverview(
     $subject_ids: [String],
     $programs: [String] ,
@@ -1374,78 +1217,6 @@ query subjectOverview(
     }
 }
 `;
-
-// --------------- GraphQL query - Retrieve sample tab details --------------
-
-export const GET_CASES_OVERVIEW_QUERY = gql`
-query subjectOverview(
-  $programs: [String] ,
-  $studies: [String] ,
-  $diagnoses: [String] ,
-  $rc_scores: [String] ,
-  $tumor_sizes: [String] ,
-  $chemo_regimen: [String] ,
-  $tumor_grades: [String] ,
-  $er_status: [String] ,
-  $pr_status: [String] ,
-  $endo_therapies: [String] ,
-  $meno_status: [String] ,
-  $tissue_type: [String],
-  $composition: [String],
-  $association: [String],
-  $age_at_index: [Float],
-  $file_type: [String]
-  $first: Int, 
-  $offset: Int, 
-  $order_by:  String
-  $sort_direction: String ){
-  subjectOverview(
-      programs: $programs,
-      studies: $studies,
-      diagnoses: $diagnoses,
-      rc_scores: $rc_scores,
-      tumor_sizes: $tumor_sizes,
-      chemo_regimen: $chemo_regimen,
-      tumor_grades: $tumor_grades,
-      er_status: $er_status,
-      pr_status: $pr_status,
-      endo_therapies: $endo_therapies,
-      meno_status: $meno_status,
-      tissue_type: $tissue_type,
-      composition: $composition,
-      association: $association,  
-      age_at_index: $age_at_index     
-      file_type: $file_type,
-      first: $first, 
-      offset: $offset, 
-      order_by: $order_by,
-      sort_direction: $sort_direction
-      
-      ) {
-      subject_id
-      program
-      program_id
-      study_acronym
-      study_short_description
-      study_info
-      diagnosis
-      recurrence_score
-      tumor_size
-      tumor_grade
-      er_status
-      pr_status
-      chemotherapy
-      endocrine_therapy
-      menopause_status
-      age_at_index
-      survival_time
-      survival_time_unit
-      files
-      lab_procedures
-      samples
-  }
-}
-  `;
 
 export const GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL = gql`
 query search (          
@@ -1653,3 +1424,4 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
           file_id
       }
   }`;
+  

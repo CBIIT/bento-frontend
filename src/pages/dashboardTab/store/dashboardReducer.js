@@ -30,9 +30,9 @@ import {
   // GET_FILE_IDS_FROM_FILE_NAME,
   tabIndex,
   DASHBOARD_QUERY_NEW,
-  GET_FILES_OVERVIEW_QUERY_NEW,
-  GET_CASES_OVERVIEW_QUERY_NEW,
-  GET_SAMPLES_OVERVIEW_QUERY_NEW,
+  GET_FILES_OVERVIEW_QUERY,
+  GET_CASES_OVERVIEW_QUERY,
+  GET_SAMPLES_OVERVIEW_QUERY,
 } from '../../../bento/dashboardTabData';
 import {
   GET_IDS_BY_TYPE,
@@ -563,11 +563,11 @@ export function addAutoComplete({ newValue, type }) {
 const querySwitch = (payload, tabContainer) => {
   switch (payload) {
     case ('Samples'):
-      return { QUERY: GET_SAMPLES_OVERVIEW_QUERY_NEW, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_SAMPLES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
     case ('Files'):
-      return { QUERY: GET_FILES_OVERVIEW_QUERY_NEW, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_FILES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
     default:
-      return { QUERY: GET_CASES_OVERVIEW_QUERY_NEW, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_CASES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
   }
 };
 
