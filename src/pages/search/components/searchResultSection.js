@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import React, { useState, useEffect } from 'react';
 import {
   withStyles, Button, Grid,
@@ -102,10 +103,11 @@ function SearchPagination({
       let allData = await getDataForAll(inputVlaue, newPage, calcOffset);
       // Check if we need another query to get full pageSize data
       if (allData && (allData.length !== pageSize)) {
-        const calcOffset2 = (newPage - 1) * pageSize + allData.length;
-        if (allData.length !== count && calcOffset2 < count) {
+        let calcOffset2 = (newPage - 1) * pageSize + allData.length;
+        while (allData.length !== count && calcOffset2 < count && allData.length !== pageSize) {
           const data2 = await getDataForAll(inputVlaue, newPage, calcOffset2);
           allData = [...allData, ...data2];
+          calcOffset2 = (newPage - 1) * pageSize + allData.length;
         }
       }
       return allData.slice(0, pageSize);
