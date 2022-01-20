@@ -49,6 +49,7 @@ const tabController = (classes) => {
   const dashboard = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.datatable
     ? state.dashboardTab.datatable : {}));
+
   // get stats data from store
   const dashboardStats = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
@@ -57,7 +58,12 @@ const tabController = (classes) => {
     && state.dashboardTab.filteredFileIds ? state.dashboardTab.filteredFileIds : null));
   const allFilters = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.allActiveFilters ? state.dashboardTab.allActiveFilters : {}));
-
+  const autoCompleteSelection = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.autoCompleteSelection
+    ? state.dashboardTab.autoCompleteSelection.subject_ids : {}));
+  const bulkUpload = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.bulkUpload ? state.dashboardTab.bulkUpload.subject_ids : {}));
+  const subjectIds = autoCompleteSelection.concat(bulkUpload);
   useEffect(() => {
     setCurrentTab(0);
   }, [dashboardStats]);
@@ -222,6 +228,7 @@ const tabController = (classes) => {
         dataKey={container.dataKey}
         filteredFileIds={filteredFileIds}
         allFilters={allFilters}
+        subjectIds={subjectIds}
         tableHasSelections={tableHasSelections}
         setRowSelection={getTableRowSelectionEvent()}
         selectedRowInfo={tableRowSelectionData[container.tabIndex].selectedRowInfo}

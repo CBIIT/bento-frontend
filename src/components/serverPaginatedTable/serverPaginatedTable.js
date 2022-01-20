@@ -118,69 +118,69 @@ class ServerPaginatedTableView extends React.Component {
     });
   }
 
-    // mock async function
-    xhrRequest = (url, page, sortOrder = {}) => new Promise((resolve) => {
-      // mock page data
-      let fullData = this.getSrcData() !== {} ? this.getSrcData() : [{}];
-      // console.log(fullData);
-      // mock record count from server - normally this would be a number attached to the return data
-      const total = 60;
-      const sortField = sortOrder.name;
-      const sortDir = sortOrder.direction;
+  // mock async function
+  xhrRequest = (url, page, sortOrder = {}) => new Promise((resolve) => {
+    // mock page data
+    let fullData = this.getSrcData() !== {} ? this.getSrcData() : [{}];
+    // console.log(fullData);
+    // mock record count from server - normally this would be a number attached to the return data
+    const total = 60;
+    const sortField = sortOrder.name;
+    const sortDir = sortOrder.direction;
 
-      if (sortField) {
-        fullData = fullData.sort((a, b) => {
-          if (a[sortField] < b[sortField]) {
-            return 1 * (sortDir === 'asc' ? -1 : 1);
-          } if (a[sortField] > b[sortField]) {
-            return -1 * (sortDir === 'asc' ? -1 : 1);
-          }
-          return 0;
-        });
-      }
-
-      // eslint-disable-next-line max-len
-      const localPage = page;
-      /* const srcData = fullData.slice(
-        page * this.state.rowsPerPage,
-        (page + 1) * this.state.rowsPerPage,
-      ); */
-      const srcData = fullData;
-      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage && this.props.localRowsPerPage === null) {
-        this.changePage(0, {});
-      } else {
-        if (this.props.count < 10) {
-          this.setState({
-            rowsPerPage: 10,
-          });
+    if (sortField) {
+      fullData = fullData.sort((a, b) => {
+        if (a[sortField] < b[sortField]) {
+          return 1 * (sortDir === 'asc' ? -1 : 1);
+        } if (a[sortField] > b[sortField]) {
+          return -1 * (sortDir === 'asc' ? -1 : 1);
         }
-        const data = srcData;
-        if (this.props.updateSortOrder) {
-          localStorage.setItem('dataLength', String(srcData.length));
-          localStorage.setItem('data', JSON.stringify(srcData));
-        }
-        setTimeout(() => {
-          resolve({
-            data, total, localPage,
-          });
-        }, 500);
-      }
-    })
-
-    // set this.props.columns display true/false depending on updatedColumns from
-    // onViewColumnsChange
-    setUpdatedColumnsDisplay = (stateUpdatedColumns) => {
-      stateUpdatedColumns.map((updatedColumns) => {
-        const index = this.props.columns.map((e) => e.name)
-          .indexOf(updatedColumns.label);
-        if (updatedColumns.status === 'remove') {
-          this.props.columns[index].options.display = false;
-        } else {
-          this.props.columns[index].options.display = true;
-        }
-        return '';
+        return 0;
       });
     }
+
+    // eslint-disable-next-line max-len
+    const localPage = page;
+    /* const srcData = fullData.slice(
+      page * this.state.rowsPerPage,
+      (page + 1) * this.state.rowsPerPage,
+    ); */
+    const srcData = fullData;
+    if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage && this.props.localRowsPerPage === null) {
+      this.changePage(0, {});
+    } else {
+      if (this.props.count < 10) {
+        this.setState({
+          rowsPerPage: 10,
+        });
+      }
+      const data = srcData;
+      if (this.props.updateSortOrder) {
+        localStorage.setItem('dataLength', String(srcData.length));
+        localStorage.setItem('data', JSON.stringify(srcData));
+      }
+      setTimeout(() => {
+        resolve({
+          data, total, localPage,
+        });
+      }, 500);
+    }
+  })
+
+  // set this.props.columns display true/false depending on updatedColumns from
+  // onViewColumnsChange
+  setUpdatedColumnsDisplay = (stateUpdatedColumns) => {
+    stateUpdatedColumns.map((updatedColumns) => {
+      const index = this.props.columns.map((e) => e.name)
+        .indexOf(updatedColumns.label);
+      if (updatedColumns.status === 'remove') {
+        this.props.columns[index].options.display = false;
+      } else {
+        this.props.columns[index].options.display = true;
+      }
+      return '';
+    });
+  }
 
   changePage = (page, sortOrder) => {
     this.setState({

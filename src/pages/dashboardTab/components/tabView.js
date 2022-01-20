@@ -44,6 +44,7 @@ const TabView = ({
   dataKey,
   filteredFileIds,
   allFilters,
+  subjectIds,
   defaultSortCoulmn,
   defaultSortDirection,
   // tableHasSelections,
@@ -64,7 +65,8 @@ const TabView = ({
   const saveButton = useRef(null);
   const saveButton2 = useRef(null);
   const AddToCartAlertDialogRef = useRef();
-
+  const updatedAllFilter=allFilters;
+  updatedAllFilter.subject_ids=subjectIds;
   const [cartIsFull, setCartIsFull] = React.useState(false);
   const buildButtonStyle = (button, styleObject) => {
     const styleKV = Object.entries(styleObject);
@@ -236,7 +238,7 @@ const TabView = ({
           className={classes.button}
           id={`${tableID}_${buttonText}`}
         >
-          { buttonText }
+          {buttonText}
         </button>
         <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={tooltipMessage} arrow placement="bottom">
           <IconButton
@@ -263,13 +265,13 @@ const TabView = ({
         <Grid item xs={12} id={tableID}>
           <CustomDataTable
             data={data}
-            columns={getColumns(customColumn, classes, data, externalLinkIcon, '', () => {}, DocumentDownload, globalData.replaceEmptyValueWith)}
+            columns={getColumns(customColumn, classes, data, externalLinkIcon, '', () => { }, DocumentDownload, globalData.replaceEmptyValueWith)}
             options={finalOptions}
             count={count}
             overview={getOverviewQuery(api)}
             paginationAPIField={paginationAPIField}
             paginationAPIFieldDesc={paginationAPIFieldDesc}
-            queryCustomVaribles={allFilters}
+            queryCustomVaribles={updatedAllFilter}
             defaultSortCoulmn={defaultSortCoulmn}
             defaultSortDirection={defaultSortDirection}
             tableDownloadCSV={tableDownloadCSV}
@@ -283,7 +285,7 @@ const TabView = ({
           onClick={exportFiles}
           className={classes.button}
         >
-          { buttonText }
+          {buttonText}
         </button>
 
         <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={tooltipMessage} arrow placement="bottom">
