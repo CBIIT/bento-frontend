@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   List,
@@ -16,14 +16,15 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
   // Replay as ReplayIcon,
 } from '@material-ui/icons';
-import {
-  toggleCheckBox,
-  setSideBarToLoading,
-  setDashboardTableLoading,
-  // eslint-disable-next-line no-unused-vars
-  sortSection,
-  resetGroupSelections,
-} from '../../../pages/dashboardTab/store/dashboardReducer';
+import { DashboardContext } from 'bento-components';
+// import {
+//   toggleCheckBox,
+//   setSideBarToLoading,
+//   setDashboardTableLoading,
+//   // eslint-disable-next-line no-unused-vars
+//   sortSection,
+//   resetGroupSelections,
+// } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
   facetSectionVariables,
   defaultFacetSectionVariables,
@@ -53,6 +54,9 @@ const CustomExpansionPanelSummary = withStyles({
 })(ExpansionPanelSummary);
 
 const FacetPanel = ({ classes }) => {
+  const {
+    dashboardFunctions,
+  } = useContext(DashboardContext);
   // data from store
   const sideBarContent = useSelector((state) => (
     state.dashboardTab
@@ -146,10 +150,10 @@ const FacetPanel = ({ classes }) => {
 
   const handleToggle = (value) => () => {
     const valueList = value.split('$$');
-    setSideBarToLoading();
-    setDashboardTableLoading();
+    dashboardFunctions.setSideBarToLoading();
+    dashboardFunctions.setDashboardTableLoading();
     // dispatch toggleCheckBox action
-    dispatch(toggleCheckBox([{
+    dispatch(dashboardFunctions.toggleCheckBox([{
       groupName: valueList[1],
       name: valueList[0],
       datafield: valueList[2],
@@ -159,10 +163,10 @@ const FacetPanel = ({ classes }) => {
   };
 
   const handleGroupReset = (dataField, groupName) => () => {
-    setSideBarToLoading();
-    setDashboardTableLoading();
+    dashboardFunctions.setSideBarToLoading();
+    dashboardFunctions.setDashboardTableLoading();
     // dispatch toggleCheckBox action
-    dispatch(resetGroupSelections({ dataField, groupName }));
+    dispatch(dashboardFunctions.resetGroupSelections({ dataField, groupName }));
   };
 
   const sideBarDisplay = sideBarContent.data.filter((sideBar) => sideBar.show === true)
@@ -320,7 +324,7 @@ const FacetPanel = ({ classes }) => {
                               className={classes.sortGroupItem}
                               style={{ color: getSortButtonColor(sideBarItem, 'alphabet') }}
                               onClick={() => {
-                                sortSection(sideBarItem.groupName, 'alphabet');
+                                dashboardFunctions.sortSection(sideBarItem.groupName, 'alphabet');
                               }}
                             >
                               {sortLabels.sortAlphabetically}
@@ -329,7 +333,7 @@ const FacetPanel = ({ classes }) => {
                               className={classes.sortGroupItemCounts}
                               style={{ color: getSortButtonColor(sideBarItem, 'count') }}
                               onClick={() => {
-                                sortSection(sideBarItem.groupName, 'count');
+                                dashboardFunctions.sortSection(sideBarItem.groupName, 'count');
                               }}
                             >
                               {sortLabels.sortByCount}

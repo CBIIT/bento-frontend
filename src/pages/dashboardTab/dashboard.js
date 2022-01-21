@@ -2,14 +2,32 @@ import React from 'react';
 import {
   Grid, withStyles, Button, Switch, Collapse, FormControlLabel,
 } from '@material-ui/core';
-import { ProgramSunburst, CustomActiveDonut } from 'bento-components';
+import {
+  ProgramSunburst, CustomActiveDonut, DashboardContext,
+  SideBar,
+} from 'bento-components';
 import { useTheme } from '../../components/ThemeContext';
 import Widget from '../../components/Widgets/WidgetView';
 import Stats from '../../components/Stats/DashboardStatsController';
-import SideBar from '../../components/SideBar/SideBarView';
-import { widgetsData } from '../../bento/dashboardData';
+// import SideBar from '../../components/SideBar/SideBarView';
+import {
+  widgetsData, facetSearchData, resetIcon, facetSectionVariables,
+  defaultFacetSectionVariables,
+  sortLabels, showCheckboxCount,
+  resetIconFilter,
+} from '../../bento/dashboardData';
 import Tab from './components/tabController';
 import colors from '../../utils/colors';
+import { sideBarSectionsConfig, sideBarCheckBoxConfig, sideBarConfig } from '../../components/SideBar/SideBarConfig';
+// import {
+//   clearAllFilters,
+//   toggleCheckBox,
+//   setSideBarToLoading,
+//   setDashboardTableLoading,
+//   // eslint-disable-next-line no-unused-vars
+//   sortSection,
+//   resetGroupSelections,
+// } from './store/dashboardReducer';
 
 const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
 
@@ -22,6 +40,25 @@ const Dashboard = ({
     setCollapse((prev) => !prev);
   };
 
+  const facetFilterProps = {
+    facetSectionVariables,
+    defaultFacetSectionVariables,
+    sortLabels,
+    showCheckboxCount,
+    resetIconFilter,
+  };
+
+  // eslint-disable-next-line no-unused-vars
+  const sideBarProps = {
+    sideBarConfig,
+    sideBarSectionsConfig,
+    sideBarCheckBoxConfig,
+    DashboardContext,
+    facetSearchData,
+    resetIcon,
+    facetFilterProps,
+  };
+
   return (
     <>
       <div className={classes.dashboardContainer}>
@@ -29,7 +66,8 @@ const Dashboard = ({
         <div>
           <div className={classes.content}>
             <div className={classes.sideBar}>
-              <SideBar />
+              <SideBar props={sideBarProps} />
+              {/* <SideBar /> */}
             </div>
             <div className={classes.rightContent}>
               <div className={classes.widgetsContainer}>

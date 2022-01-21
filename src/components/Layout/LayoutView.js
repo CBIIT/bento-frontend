@@ -19,6 +19,7 @@ import ProgramDetail from '../../pages/programDetail/programDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import fileCentricCart from '../../pages/fileCentricCart/cartController';
 import JBrowse from '../JBrowse/JBrowseView';
+import CustomDashboardContextProvider from '../../context/Dashboard/customDashboardContext';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -34,38 +35,40 @@ const Layout = ({ classes, isSidebarOpened }) => (
         <NavBar />
         {/* Reminder: Ajay need to replace the ICDC with env variable and
           change build npm to read env variable */}
-        <div
-          className={classes.content}
-        >
-          <Route component={ScrollToTop} />
-          <Switch>
-            <Route exact path="/ICDC/" component={Home} />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/home" component={Home} />
-            <Route path="/cases" component={Dashboard} />
-            <Route path="/programs" component={Programs} />
-            <Route path="/model" component={modelPage} />
-            <Route path="/table" component={table} />
-            <Route path="/fileCentricCart" component={fileCentricCart} />
-            <Route path="/program/:id" component={ProgramDetail} />
-            <Route path="/case/:id" component={CaseDetail} />
-            <Route path="/arm/:id" component={ArmDetail} />
-            <Route path="/JBrowse" component={JBrowse} />
-            {aboutPageRoutes.map(
-              (aboutPageRoute, index) => (
-                <Route
-                  key={index}
-                  path={aboutPageRoute}
-                  component={About}
-                />
-              ),
-            )}
-            <Route path="/data-dictionary" component={DataDictonary} />
-            <Route path="/graphql" component={GraphqlClient} />
-            <Route component={Error} />
-          </Switch>
-          <Footer data={{ isSidebarOpened }} />
-        </div>
+        <CustomDashboardContextProvider>
+          <div
+            className={classes.content}
+          >
+            <Route component={ScrollToTop} />
+            <Switch>
+              <Route exact path="/ICDC/" component={Home} />
+              <Route exact path="/" component={Home} />
+              <Route exact path="/home" component={Home} />
+              <Route path="/cases" component={Dashboard} />
+              <Route path="/programs" component={Programs} />
+              <Route path="/model" component={modelPage} />
+              <Route path="/table" component={table} />
+              <Route path="/fileCentricCart" component={fileCentricCart} />
+              <Route path="/program/:id" component={ProgramDetail} />
+              <Route path="/case/:id" component={CaseDetail} />
+              <Route path="/arm/:id" component={ArmDetail} />
+              <Route path="/JBrowse" component={JBrowse} />
+              {aboutPageRoutes.map(
+                (aboutPageRoute, index) => (
+                  <Route
+                    key={index}
+                    path={aboutPageRoute}
+                    component={About}
+                  />
+                ),
+              )}
+              <Route path="/data-dictionary" component={DataDictonary} />
+              <Route path="/graphql" component={GraphqlClient} />
+              <Route component={Error} />
+            </Switch>
+            <Footer data={{ isSidebarOpened }} />
+          </div>
+        </CustomDashboardContextProvider>
       </>
     </HashRouter>
   </>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import _ from 'lodash';
 import {
   customCheckBox,
@@ -1078,5 +1079,5 @@ const reducers = {
 };
 
 // INJECT-REDUCERS INTO REDUX STORE
-store.injectReducer(storeKey, (state = initialState, { type, payload }) => (
-  reducers[type] ? reducers[type](state, payload) : state));
+// store.injectReducer(storeKey, (state = initialState, { type, payload }) => (
+//   reducers[type] ? reducers[type](state, payload) : state));
