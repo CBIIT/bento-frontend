@@ -1,19 +1,46 @@
+import {
+  facetSearchData, resetIcon, facetSectionVariables,
+  defaultFacetSectionVariables,
+  sortLabels, showCheckboxCount,
+  resetIconFilter,
+} from '../../bento/dashboardData';
+
 import customSectionFunctions from './customSidebarComponents/customSectionFunctions';
 
-export const sideBarConfig = {
-  functions: null,
-  ui: null,
-  styles: null,
+const sideBarConfig = {
+  sideBar: {
+    functions: null,
+    ui: null,
+    styles: null,
+    props: {
+      facetSearchData,
+      resetIcon,
+    },
+  },
+  sideBarSections: {
+    functions: customSectionFunctions,
+    ui: null,
+    styles: null,
+    props: {
+      facetSectionVariables,
+      defaultFacetSectionVariables,
+      sortLabels,
+      showCheckboxCount,
+      resetIconFilter,
+    },
+  },
+  sideBarGroups: {
+    functions: null,
+    ui: null,
+    styles: null,
+    props: {},
+  },
+  sideBarCheckBox: {
+    functions: null,
+    ui: null,
+    styles: null,
+    props: {},
+  },
 };
 
-export const sideBarSectionsConfig = {
-  functions: customSectionFunctions,
-  ui: null,
-  styles: null,
-};
-
-export const sideBarCheckBoxConfig = {
-  functions: null,
-  ui: null,
-  styles: null,
-};
+export default sideBarConfig;

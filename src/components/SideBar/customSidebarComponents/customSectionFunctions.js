@@ -1,8 +1,8 @@
 /* eslint-disable no-useless-constructor */
-import { ExpandableSectionLogic } from 'bento-components';
+import { SectionsFunctions } from 'bento-components';
 import _ from 'lodash';
 
-class customSectionFunctions extends ExpandableSectionLogic {
+class customSectionFunctions extends SectionsFunctions {
   constructor(props) {
     super(props);
   }

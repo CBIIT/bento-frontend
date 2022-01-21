@@ -10,15 +10,10 @@ import { useTheme } from '../../components/ThemeContext';
 import Widget from '../../components/Widgets/WidgetView';
 import Stats from '../../components/Stats/DashboardStatsController';
 // import SideBar from '../../components/SideBar/SideBarView';
-import {
-  widgetsData, facetSearchData, resetIcon, facetSectionVariables,
-  defaultFacetSectionVariables,
-  sortLabels, showCheckboxCount,
-  resetIconFilter,
-} from '../../bento/dashboardData';
+import { widgetsData } from '../../bento/dashboardData';
 import Tab from './components/tabController';
 import colors from '../../utils/colors';
-import { sideBarSectionsConfig, sideBarCheckBoxConfig, sideBarConfig } from '../../components/SideBar/SideBarConfig';
+import sideBarConfig from '../../components/SideBar/SideBarConfig';
 // import {
 //   clearAllFilters,
 //   toggleCheckBox,
@@ -40,25 +35,6 @@ const Dashboard = ({
     setCollapse((prev) => !prev);
   };
 
-  const facetFilterProps = {
-    facetSectionVariables,
-    defaultFacetSectionVariables,
-    sortLabels,
-    showCheckboxCount,
-    resetIconFilter,
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  const sideBarProps = {
-    sideBarConfig,
-    sideBarSectionsConfig,
-    sideBarCheckBoxConfig,
-    DashboardContext,
-    facetSearchData,
-    resetIcon,
-    facetFilterProps,
-  };
-
   return (
     <>
       <div className={classes.dashboardContainer}>
@@ -66,7 +42,7 @@ const Dashboard = ({
         <div>
           <div className={classes.content}>
             <div className={classes.sideBar}>
-              <SideBar props={sideBarProps} />
+              <SideBar configProps={sideBarConfig} dashboardContext={DashboardContext} />
               {/* <SideBar /> */}
             </div>
             <div className={classes.rightContent}>
