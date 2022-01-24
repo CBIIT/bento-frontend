@@ -437,6 +437,7 @@ export async function uploadBulkModalSearch(searchcriteria, type) {
     payload: {
       subjectResponse,
       result: caseResponse,
+      variables,
     },
   });
 }
@@ -468,6 +469,7 @@ export async function localSearch(searchcriteria) {
       payload: {
         subjectResponse,
         result: caseResponse,
+        variables,
       },
     });
 
@@ -1198,6 +1200,7 @@ const reducers = {
       },
       checkbox: {
         data: checkboxData,
+        variables: item.variables,
       },
       stats: getFilteredStat(item.result.data.nodeCountsFromLists, statsCount),
       widgets: getSearchWidgetsData(item.result.data, widgetsSearchData),
