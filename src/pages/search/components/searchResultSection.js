@@ -98,32 +98,35 @@ function SearchPagination({
   }
 
   async function getPageResults(inputVlaue, newPage) {
-    if (datafield === 'all') {
-      const calcOffset = (newPage - 1) * pageSize;
-      let allData = await getDataForAll(inputVlaue, newPage, calcOffset);
-      // Check if we need another query to get full pageSize data
-      if (allData && (allData.length !== pageSize)) {
-        let calcOffset2 = (newPage - 1) * pageSize + allData.length;
-        while (allData.length !== count && calcOffset2 < count && allData.length !== pageSize) {
-          const data2 = await getDataForAll(inputVlaue, newPage, calcOffset2);
-          allData = [...allData, ...data2];
-          calcOffset2 = (newPage - 1) * pageSize + allData.length;
+    if (count > 0) { // no need network calls if count is zero
+      if (datafield === 'all') {
+        const calcOffset = (newPage - 1) * pageSize;
+        let allData = await getDataForAll(inputVlaue, newPage, calcOffset);
+        // Check if we need another query to get full pageSize data
+        if (allData && (allData.length !== pageSize)) {
+          let calcOffset2 = (newPage - 1) * pageSize + allData.length;
+          while (allData.length !== count && calcOffset2 < count && allData.length !== pageSize) {
+            const data2 = await getDataForAll(inputVlaue, newPage, calcOffset2);
+            allData = [...allData, ...data2];
+            calcOffset2 = (newPage - 1) * pageSize + allData.length;
+          }
         }
+        return allData.slice(0, pageSize);
       }
-      return allData.slice(0, pageSize);
+      const { QUERY, field } = getQuery(datafield);
+      const allids = await client
+        .query({
+          query: QUERY,
+          variables: {
+            input: inputVlaue,
+            first: pageSize,
+            offset: (newPage - 1) * pageSize,
+          },
+        })
+        .then((result) => result.data.globalSearch);
+      return allids[field].slice(0, pageSize);
     }
-    const { QUERY, field } = getQuery(datafield);
-    const allids = await client
-      .query({
-        query: QUERY,
-        variables: {
-          input: inputVlaue,
-          first: pageSize,
-          offset: (newPage - 1) * pageSize,
-        },
-      })
-      .then((result) => result.data.globalSearch);
-    return allids[field].slice(0, pageSize);
+    return [];
   }
 
   async function onChange(newValue = [], newPage = 1) {
