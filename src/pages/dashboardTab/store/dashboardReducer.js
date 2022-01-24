@@ -1160,13 +1160,16 @@ const reducers = {
     isLoading: false,
     isFetched: false,
   }),
-  READY_DASHBOARDTAB: (state) => ({
-    ...state,
-    isLoading: false,
-    isFetched: true,
-    setSideBarLoading: false,
-    isDashboardTableLoading: false,
-  }),
+  READY_DASHBOARDTAB: (state) => {
+    fetchDataForDashboardTab(tabIndex[0].title, state.allActiveFilters);
+    return {
+      ...state,
+      isLoading: false,
+      isFetched: true,
+      setSideBarLoading: false,
+      isDashboardTableLoading: false,
+    };
+  },
   TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
     let updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
       item.data.searchSubjects, facetSearchData,
