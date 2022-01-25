@@ -57,11 +57,24 @@ const ActiveFiltersQuery = ({ classes }) => {
     return '';
   });
   allFiltersinfo.data = allFiltersinfo.data.concat(rangeData);
+  if (allFiltersinfo.variables) {
+    allFiltersinfo.data.map((data) => {
+      if (allFiltersinfo.variables[data.datafield]
+        && allFiltersinfo.variables[data.datafield].length) {
+        activeFilters.push({
+          filterName: data.groupName,
+          checkbox: allFiltersinfo.variables[data.datafield],
+          section: data.section,
+          datafield: data.datafield,
+        });
+      }
+      return activeFilters;
+    });
+  }
   const dispatch = useDispatch();
   const onDeleteInputSet = () => {
     uploadBulkModalSearch([], 'subject');
   };
-
   const getInputSet = () => {
     if (bulkUpload.length && autoCompleteSelection.length) {
       return (
@@ -192,7 +205,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                   {autoCompleteSelection.length === 1
                     ? (
                       <>
-                        {bulkUpload.length ? <span className={classes.brackets}>(</span> : null}
+                        {bulkUpload.length ? <span className={classes.bracketsOpen}>(</span> : null}
                         {getInputSet()}
                         <span
                           className={classes.filterCheckboxes}
@@ -203,11 +216,13 @@ const ActiveFiltersQuery = ({ classes }) => {
                         >
                           {autoCompleteSelection[0]}
                         </span>
-                        {bulkUpload.length ? <span className={classes.brackets}>)</span> : null}
+                        {bulkUpload.length
+                          ? <span className={classes.bracketsClose}>)</span>
+                          : null}
                       </>
                     ) : autoCompleteSelection.length >= 3 ? (
                       <>
-                        <span className={classes.brackets}>(</span>
+                        <span className={classes.bracketsOpen}>(</span>
                         {getInputSet()}
                         <span
                           className={classes.filterCheckboxes}
@@ -229,13 +244,13 @@ const ActiveFiltersQuery = ({ classes }) => {
                           {autoCompleteSelection[1]}
                         </span>
                         ...
-                        <span className={classes.brackets}>)</span>
+                        <span className={classes.bracketsClose}>)</span>
                       </>
                     ) : (
                       autoCompleteSelection.length
                         ? (
                           <>
-                            <span className={classes.brackets}>(</span>
+                            <span className={classes.bracketsOpen}>(</span>
                             {getInputSet()}
                             {autoCompleteSelection.map((data, idx) => (
                               getFilterJoin(
@@ -245,7 +260,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                                 false,
                               )
                             ))}
-                            <span className={classes.brackets}>)</span>
+                            <span className={classes.bracketsClose}>)</span>
                           </>
                         )
                         : null
@@ -295,7 +310,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                       </span>
                     ) : filter.checkbox.length >= 3 ? (
                       <>
-                        <span className={classes.brackets}>(</span>
+                        <span className={classes.bracketsOpen}>(</span>
                         <span
                           className={classes.filterCheckboxes}
                           style={{
@@ -316,15 +331,15 @@ const ActiveFiltersQuery = ({ classes }) => {
                           {filter.checkbox[1]}
                         </span>
                         ...
-                        <span className={classes.brackets}>)</span>
+                        <span className={classes.bracketsClose}>)</span>
                       </>
                     ) : (
                       <>
-                        <span className={classes.brackets}>(</span>
+                        <span className={classes.bracketsOpen}>(</span>
                         {filter.checkbox.map((data, idx) => (
                           getFilterJoin(data, idx, filter.checkbox.length - 1 === idx, true, filter)
                         ))}
-                        <span className={classes.brackets}>)</span>
+                        <span className={classes.bracketsClose}>)</span>
                       </>
                     )}
                 </span>
@@ -347,7 +362,7 @@ const styles = () => ({
   queryContainer: {
     marginLeft: 14,
     position: 'relative',
-    lineHeight: '2.5',
+    lineHeight: '2',
     letterSpacing: '0.5px',
     fontFamily: 'Nunito',
     fontSize: '14px',
@@ -372,8 +387,18 @@ const styles = () => ({
     cursor: 'pointer',
     // borderBottom: '2px solid #10A075',
   },
-  brackets: {
+  bracketsOpen: {
     fontSize: 18,
+    fontFamily: 'Nunito Sans Semibold',
+    color: '#787878',
+    marginRight: 3,
+    fontWeight: 600,
+  },
+  bracketsClose: {
+    fontSize: 18,
+    fontFamily: 'Nunito Sans Semibold',
+    color: '#787878',
+    marginLeft: 3,
     fontWeight: 600,
   },
   operators: {
