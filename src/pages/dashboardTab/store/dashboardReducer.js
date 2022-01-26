@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable react/destructuring-assignment */
 import _ from 'lodash';
 import {
@@ -680,6 +681,7 @@ export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
       variables: {
         ...activeFilters,
         first: fileCount,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
       },
     })
     .then((result) => {
@@ -837,6 +839,7 @@ export function fetchDataForDashboardTabDataTable() {
   if (shouldFetchDataForDashboardTabDataTable(getState())) {
     return store.dispatch(fetchDashboardTab());
   }
+  fetchDataForDashboardTab(tabIndex[0].title);
   return store.dispatch({ type: 'READY_DASHBOARDTAB' });
 }
 
@@ -1163,7 +1166,6 @@ const reducers = {
     isFetched: false,
   }),
   READY_DASHBOARDTAB: (state) => {
-    fetchDataForDashboardTab(tabIndex[0].title, state.allActiveFilters);
     return {
       ...state,
       isLoading: false,
