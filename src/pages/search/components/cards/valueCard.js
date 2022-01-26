@@ -19,7 +19,7 @@ const ValueCard = ({ data, classes, index }) => {
     },
     {
       label: 'Property Required',
-      dataField: 'node_name',
+      dataField: 'property_required',
     },
     {
       label: 'Property Type',
