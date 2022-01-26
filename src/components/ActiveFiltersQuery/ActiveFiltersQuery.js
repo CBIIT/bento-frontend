@@ -356,13 +356,13 @@ const styles = () => ({
   queryWrapper: {
     height: '120px',
     backgroundColor: '#f1f1f1',
-    padding: '8px 15px 0px 40px',
+    padding: '14px 14px 0px 14px',
     overflowY: 'auto',
   },
   queryContainer: {
     marginLeft: 14,
     position: 'relative',
-    lineHeight: '2',
+    lineHeight: '2em',
     letterSpacing: '0.5px',
     fontFamily: 'Nunito',
     fontSize: '14px',
@@ -377,7 +377,7 @@ const styles = () => ({
     cursor: 'pointer',
   },
   filterCheckboxes: {
-    padding: '5px 7px 3px 6px',
+    padding: '4px 7px 3px 6px',
     borderRadius: 4,
     fontSize: 12,
     fontWeight: 600,
@@ -415,7 +415,6 @@ const styles = () => ({
     fontWeight: 600,
     fontSize: '13px',
     color: '#fff',
-    marginLeft: '-15px',
     borderRadius: '15px',
     fontFamily: 'Nunito',
     boxSizing: 'border-box',
@@ -432,7 +431,6 @@ const styles = () => ({
     marginLeft: 7,
     position: 'absolute',
     height: 27,
-    marginTop: 5,
   },
 });
 
