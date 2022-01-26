@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable react/destructuring-assignment */
 import _ from 'lodash';
 import {
@@ -838,6 +839,7 @@ export function fetchDataForDashboardTabDataTable() {
   if (shouldFetchDataForDashboardTabDataTable(getState())) {
     return store.dispatch(fetchDashboardTab());
   }
+  fetchDataForDashboardTab(tabIndex[0].title);
   return store.dispatch({ type: 'READY_DASHBOARDTAB' });
 }
 
@@ -1164,7 +1166,6 @@ const reducers = {
     isFetched: false,
   }),
   READY_DASHBOARDTAB: (state) => {
-    fetchDataForDashboardTab(tabIndex[0].title, state.allActiveFilters);
     return {
       ...state,
       isLoading: false,
