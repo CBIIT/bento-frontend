@@ -680,6 +680,7 @@ export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
       variables: {
         ...activeFilters,
         first: fileCount,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
       },
     })
     .then((result) => {

@@ -1250,6 +1250,7 @@ query search (
 
 export const GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART = gql`
 query subjectsAddAllToCart(
+  $subject_ids: [String],
   $programs: [String] ,
   $studies: [String] ,
   $diagnoses: [String] ,
@@ -1272,6 +1273,7 @@ query subjectsAddAllToCart(
   $sort_direction: String = "asc" 
   ){
   subjectOverview(
+      subject_ids: $subject_ids,
       programs: $programs,
       studies: $studies,
       diagnoses: $diagnoses,
@@ -1300,6 +1302,8 @@ query subjectsAddAllToCart(
 
 export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
     query samplesAddAllToCart(
+      $subject_ids: [String],
+      $sample_ids: [String],
       $programs: [String] ,
       $studies: [String] ,
       $diagnoses: [String] ,
@@ -1321,6 +1325,8 @@ export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
       $order_by: String = "file_id",
       $sort_direction: String = "asc" ){
       sampleOverview(
+          subject_ids: $subject_ids,
+          sample_ids: $sample_ids,
           programs: $programs,
           studies: $studies,
           diagnoses: $diagnoses,
@@ -1349,6 +1355,7 @@ export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
 
 export const GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART = gql`
 query fileAddAllToCart(
+  $subject_ids: [String],
   $programs: [String] ,
   $studies: [String] ,
   $diagnoses: [String] ,
@@ -1371,6 +1378,7 @@ query fileAddAllToCart(
   $sort_direction: String = "asc"
  ){
   fileOverview(
+      subject_ids:$subject_ids,
       programs: $programs,
       studies: $studies,
       diagnoses: $diagnoses,
