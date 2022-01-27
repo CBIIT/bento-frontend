@@ -412,9 +412,6 @@ export function addBulkModalSearchData(value, type) {
  */
 
 export async function uploadBulkModalSearch(searchcriteria, type) {
-  if (searchcriteria.length !== 0) {
-    await clearAllFiltersExceptBulkUpload();
-  }
   addBulkModalSearchData(searchcriteria, type);
   const variables = {
     ...getState().allActiveFilters,
@@ -449,8 +446,8 @@ export async function uploadBulkModalSearch(searchcriteria, type) {
  * @return distpatcher
  */
 
-export async function localSearch(searchcriteria) {
-  if (searchcriteria.length === 0) {
+export async function localSearch(searchcriteria, isQuery = false) {
+  if (searchcriteria.length === 0 && !isQuery) {
     clearAllFilters();
   } else {
     const variables = {
@@ -1197,6 +1194,22 @@ const reducers = {
   },
   LOCAL_SEARCH: (state, item) => {
     const checkboxData = customCheckBox(item.result.data, facetSearchData);
+    const newCheckboxData = [...checkboxData];
+    checkboxData.map((val, idx) => {
+      if (item.variables && item.variables[val.datafield] && item.variables[val.datafield].length) {
+        const checkboxItem = newCheckboxData[idx].checkboxItems;
+        checkboxItem.map((data, id) => {
+          // eslint-disable-next-line max-len
+          const index = item.variables[val.datafield].findIndex((check) => check === data.name);
+          if (index >= 0) {
+            checkboxItem[id].isChecked = true;
+          }
+          return null;
+        });
+        newCheckboxData[idx].checkboxItems = checkboxItem;
+      }
+      return null;
+    });
     return {
       ...state,
       setSideBarLoading: false,
@@ -1204,7 +1217,7 @@ const reducers = {
         dataCase: item.subjectResponse.data.subjectOverview,
       },
       checkbox: {
-        data: checkboxData,
+        data: newCheckboxData,
         variables: item.variables,
       },
       stats: getFilteredStat(item.result.data.nodeCountsFromLists, statsCount),

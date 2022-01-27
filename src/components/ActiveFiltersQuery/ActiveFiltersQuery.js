@@ -60,13 +60,20 @@ const ActiveFiltersQuery = ({ classes }) => {
   if (allFiltersinfo.variables) {
     allFiltersinfo.data.map((data) => {
       if (allFiltersinfo.variables[data.datafield]
-        && allFiltersinfo.variables[data.datafield].length) {
-        activeFilters.push({
+        && allFiltersinfo.variables[data.datafield].length
+        && data.checkboxItems.length < allFiltersinfo.variables[data.datafield].length) {
+        const index = activeFilters.findIndex((val) => val.filterName === data.groupName);
+        const filterObj = {
           filterName: data.groupName,
           checkbox: allFiltersinfo.variables[data.datafield],
           section: data.section,
           datafield: data.datafield,
-        });
+        };
+        if (index >= 0) {
+          activeFilters[index] = filterObj;
+        } else {
+          activeFilters.push(filterObj);
+        }
       }
       return activeFilters;
     });
@@ -107,7 +114,7 @@ const ActiveFiltersQuery = ({ classes }) => {
         isFilteredData: true,
       });
       setSideBarToLoading();
-      localSearch(newValue);
+      localSearch(newValue, true);
     }
   };
 
