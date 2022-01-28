@@ -457,6 +457,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                             data={getAllIds(facetSectionFindApi[currentSection.sectionName].api)} />
                           <Button
                             variant="contained"
+                            disableElevation
                             onClick={() => setShowCasesModal(true)}
                             className={classes.uploadButton}
                           >

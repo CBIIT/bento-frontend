@@ -26,8 +26,22 @@ const styles = () => ({
     fontSize: 12,
     fontWeight: 500,
     boxShadow: '0 0 0 2px rgba(16,160,117,0.36)',
+    '& ::-webkit-scrollbar': {
+      width: '0.6em',
+      height: '1em',
+    },
+    '& ::-webkit-scrollbar-track': {
+      '-webkit-box-shadow': 'none',
+      borderRadius: '0px',
+      backgroundColor: 'transparent',
+    },
+    '& ::-webkit-scrollbar-thumb': {
+      backgroundColor: '#000',
+      borderRadius: '0px',
+    },
     '& .MuiAutocomplete-listbox': {
       height: 223,
+      paddingTop: '0px',
       '& li': {
         // list item specific styling
         borderBottom: '1px solid #fff',
@@ -37,7 +51,7 @@ const styles = () => ({
       },
       '& :hover': {
         color: 'white',
-        backgroundColor: '#0D8461',
+        backgroundColor: '#10A075',
       },
     },
   },
