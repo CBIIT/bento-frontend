@@ -363,13 +363,13 @@ const styles = () => ({
   queryWrapper: {
     height: '120px',
     backgroundColor: '#f1f1f1',
-    padding: '14px 14px 0px 14px',
+    padding: '14px 14px 0px 21px',
     overflowY: 'auto',
   },
   queryContainer: {
-    marginLeft: 14,
+    marginLeft: 7,
     position: 'relative',
-    lineHeight: '2em',
+    lineHeight: '2.2em',
     letterSpacing: '0.5px',
     fontFamily: 'Nunito',
     fontSize: '14px',
@@ -436,8 +436,6 @@ const styles = () => ({
   divider: {
     borderRight: '2px solid #969696',
     marginLeft: 7,
-    position: 'absolute',
-    height: 27,
   },
 });
 

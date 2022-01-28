@@ -14,6 +14,7 @@ const styles = (theme) => ({
   rightContent: {
     maxWidth: 'calc(100% - 250px)',
     position: 'relative',
+    borderRight: 'thin solid #B1B1B1',
   },
   content: {
     display: 'flex',
