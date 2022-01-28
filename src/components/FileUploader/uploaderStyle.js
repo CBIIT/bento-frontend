@@ -29,6 +29,7 @@ const styles = () => ({
     color: 'white',
     position: 'absolute',
     backgroundColor: 'blue',
+    marginBottom: '12px',
   },
 });
 

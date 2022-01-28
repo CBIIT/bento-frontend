@@ -266,6 +266,9 @@ export default {
       root: {
         minHeight: '38px',
         padding: '0 12px 0 35px',
+        '&.Mui-focused': {
+          backgroundColor: '#f4f4f4',
+        },
       },
       content: {
         margin: '4px 0',

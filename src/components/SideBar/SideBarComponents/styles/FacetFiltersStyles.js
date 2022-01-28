@@ -259,7 +259,7 @@ const styles = () => ({
     fontStyle: 'italic',
   },
   iconSpan: {
-    marginTop: '3px',
+    marginTop: '5.2px',
   },
   prevIcon: {
     height: '12px',
