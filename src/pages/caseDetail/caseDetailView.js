@@ -30,9 +30,10 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
     value: 0,
+    action: 'added',
   });
   function openSnack(value1) {
-    setsnackbarState({ open: true, value: value1 });
+    setsnackbarState({ open: true, value: value1, action: 'added' });
   }
   function closeSnack() {
     setsnackbarState({ open: false });
