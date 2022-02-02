@@ -1069,6 +1069,7 @@ query fileOverview(
         sort_direction: $sort_direction
     ){
         file_id,
+        program_id,
         file_name,
         association,
         file_description,
@@ -1134,6 +1135,7 @@ query sampleOverview(
         sample_id,
         subject_id,
         program,
+        program_id,
         arm,
         diagnosis,
         tissue_type,
