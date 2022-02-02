@@ -427,10 +427,6 @@ export async function uploadBulkModalSearch(searchcriteria, type) {
   ]);
 
   store.dispatch({
-    type: 'RESET_CHECKBOXES',
-  });
-
-  store.dispatch({
     type: 'LOCAL_SEARCH',
     payload: {
       subjectResponse,
@@ -929,11 +925,11 @@ export async function singleCheckBox(payload) {
  * @param {object} payload
  * @return distpatcher
  */
-export function toggleCheckBox(payload) {
+export function toggleCheckBox(payload, isQuery = false) {
   return () => {
     const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
     // For performance issue we are using initial dasboardquery instead of fitered for empty filters
-    if (_.isEqual(currentAllFilterVariables, allFilters())) {
+    if (_.isEqual(currentAllFilterVariables, allFilters()) && !isQuery) {
       clearAllFilters();
     } else {
       toggleCheckBoxWithAPIAction(payload, {
@@ -1187,6 +1183,7 @@ const reducers = {
       allActiveFilters: item.allFilters,
       checkbox: {
         data: checkboxData1,
+        variables: item.allFilters,
       },
       stats: getFilteredStat(item.data.searchSubjects, statsCount),
       widgets: getWidgetsInitData(item.data.searchSubjects, widgetsData),

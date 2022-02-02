@@ -14,6 +14,8 @@ import {
   resetGroupSelections,
 } from '../../pages/dashboardTab/store/dashboardReducer';
 
+let updatedFilters = [];
+
 const ActiveFiltersQuery = ({ classes }) => {
   // get all filters information from state
   const allFiltersinfo = useSelector((state) => (
@@ -61,7 +63,7 @@ const ActiveFiltersQuery = ({ classes }) => {
     allFiltersinfo.data.map((data) => {
       if (allFiltersinfo.variables[data.datafield]
         && allFiltersinfo.variables[data.datafield].length
-        && data.checkboxItems.length < allFiltersinfo.variables[data.datafield].length) {
+        && data.checkboxItems.length <= allFiltersinfo.variables[data.datafield].length) {
         const index = activeFilters.findIndex((val) => val.filterName === data.groupName);
         const filterObj = {
           filterName: data.groupName,
@@ -77,6 +79,7 @@ const ActiveFiltersQuery = ({ classes }) => {
       }
       return activeFilters;
     });
+    updatedFilters = [...activeFilters];
   }
   const dispatch = useDispatch();
   const onDeleteInputSet = () => {
@@ -126,7 +129,7 @@ const ActiveFiltersQuery = ({ classes }) => {
       name: checkboxName,
       section: filterData.section,
     }];
-    dispatch(toggleCheckBox(payload));
+    dispatch(toggleCheckBox(payload, true));
   };
 
   const getFilterJoin = (data, idx, isLastIndex, isFilter, filterData = []) => (
@@ -154,19 +157,23 @@ const ActiveFiltersQuery = ({ classes }) => {
       newValue,
     });
     setSideBarToLoading();
-    localSearch(newValue);
+    localSearch(newValue, true);
   };
 
+  const clearQuery = () => {
+    updatedFilters = [];
+    clearAllFilters();
+  };
   return (
     <div>
-      {(activeFilters.length || autoCompleteSelection.length || bulkUpload.length) > 0 ? (
+      {(updatedFilters.length || autoCompleteSelection.length || bulkUpload.length) > 0 ? (
         <div className={classes.queryWrapper}>
           <Button
             color="primary"
             variant="outlined"
-            onClick={() => clearAllFilters()}
+            onClick={clearQuery}
             className={classes.clearQueryButton}
-            disabled={(activeFilters.length
+            disabled={(updatedFilters.length
               || autoCompleteSelection.length
               || bulkUpload.length) <= 0}
           >
@@ -276,11 +283,11 @@ const ActiveFiltersQuery = ({ classes }) => {
               </span>
             ) : null}
             {
-              ((autoCompleteSelection.length || bulkUpload.length) && activeFilters.length)
+              ((autoCompleteSelection.length || bulkUpload.length) && updatedFilters.length)
                 ? <span className={classes.operators}> AND </span>
                 : null
             }
-            {activeFilters.map((filter, index) => (
+            {updatedFilters.map((filter, index) => (
               <span>
                 <span>
                   {' '}
