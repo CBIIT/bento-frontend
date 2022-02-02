@@ -1187,6 +1187,7 @@ const reducers = {
       allActiveFilters: item.allFilters,
       checkbox: {
         data: checkboxData1,
+        variables: item.allFilters,
       },
       stats: getFilteredStat(item.data.searchSubjects, statsCount),
       widgets: getWidgetsInitData(item.data.searchSubjects, widgetsData),

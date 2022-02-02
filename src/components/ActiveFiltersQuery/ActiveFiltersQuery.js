@@ -14,6 +14,8 @@ import {
   resetGroupSelections,
 } from '../../pages/dashboardTab/store/dashboardReducer';
 
+let updatedFilters = [];
+
 const ActiveFiltersQuery = ({ classes }) => {
   // get all filters information from state
   const allFiltersinfo = useSelector((state) => (
@@ -61,7 +63,7 @@ const ActiveFiltersQuery = ({ classes }) => {
     allFiltersinfo.data.map((data) => {
       if (allFiltersinfo.variables[data.datafield]
         && allFiltersinfo.variables[data.datafield].length
-        && data.checkboxItems.length < allFiltersinfo.variables[data.datafield].length) {
+        && data.checkboxItems.length <= allFiltersinfo.variables[data.datafield].length) {
         const index = activeFilters.findIndex((val) => val.filterName === data.groupName);
         const filterObj = {
           filterName: data.groupName,
@@ -77,6 +79,7 @@ const ActiveFiltersQuery = ({ classes }) => {
       }
       return activeFilters;
     });
+    updatedFilters = [...activeFilters];
   }
   const dispatch = useDispatch();
   const onDeleteInputSet = () => {
@@ -280,7 +283,7 @@ const ActiveFiltersQuery = ({ classes }) => {
                 ? <span className={classes.operators}> AND </span>
                 : null
             }
-            {activeFilters.map((filter, index) => (
+            {(activeFilters.length ? activeFilters : updatedFilters).map((filter, index) => (
               <span>
                 <span>
                   {' '}
