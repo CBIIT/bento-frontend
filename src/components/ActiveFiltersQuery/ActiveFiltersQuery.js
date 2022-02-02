@@ -160,16 +160,20 @@ const ActiveFiltersQuery = ({ classes }) => {
     localSearch(newValue, true);
   };
 
+  const clearQuery = () => {
+    updatedFilters = [];
+    clearAllFilters();
+  };
   return (
     <div>
-      {(activeFilters.length || autoCompleteSelection.length || bulkUpload.length) > 0 ? (
+      {(updatedFilters.length || autoCompleteSelection.length || bulkUpload.length) > 0 ? (
         <div className={classes.queryWrapper}>
           <Button
             color="primary"
             variant="outlined"
-            onClick={() => clearAllFilters()}
+            onClick={clearQuery}
             className={classes.clearQueryButton}
-            disabled={(activeFilters.length
+            disabled={(updatedFilters.length
               || autoCompleteSelection.length
               || bulkUpload.length) <= 0}
           >
@@ -279,11 +283,11 @@ const ActiveFiltersQuery = ({ classes }) => {
               </span>
             ) : null}
             {
-              ((autoCompleteSelection.length || bulkUpload.length) && activeFilters.length)
+              ((autoCompleteSelection.length || bulkUpload.length) && updatedFilters.length)
                 ? <span className={classes.operators}> AND </span>
                 : null
             }
-            {(activeFilters.length ? activeFilters : updatedFilters).map((filter, index) => (
+            {updatedFilters.map((filter, index) => (
               <span>
                 <span>
                   {' '}
