@@ -129,7 +129,7 @@ const ActiveFiltersQuery = ({ classes }) => {
       name: checkboxName,
       section: filterData.section,
     }];
-    dispatch(toggleCheckBox(payload));
+    dispatch(toggleCheckBox(payload, true));
   };
 
   const getFilterJoin = (data, idx, isLastIndex, isFilter, filterData = []) => (
@@ -157,7 +157,7 @@ const ActiveFiltersQuery = ({ classes }) => {
       newValue,
     });
     setSideBarToLoading();
-    localSearch(newValue);
+    localSearch(newValue, true);
   };
 
   return (
