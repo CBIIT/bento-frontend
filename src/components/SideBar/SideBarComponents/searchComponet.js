@@ -33,13 +33,13 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
     : false));
   // redux use actions
 
-  const handleAddAutoComplete = (newValue) => {
+  const handleAddAutoComplete = (newValue, isDelete) => {
     addAutoComplete({
       type: type.replace('Ids', ''),
       newValue,
     });
     setSideBarToLoading();
-    localSearch(newValue);
+    localSearch(newValue, isDelete);
   };
 
   React.useEffect(() => {
@@ -83,7 +83,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
     }
   }, [open]);
 
-  function onChange(newValue = [], reason) {
+  function onChange(newValue = [], reason, isDelete) {
     // make the value unique to avoid duplicate search result
     let newValueUnique = [];
     if (reason !== 'clear') {
@@ -92,14 +92,14 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
       }
       setSideBarToLoading();
       setValue(newValueUnique);
-      localSearch(newValueUnique);
-      handleAddAutoComplete(newValueUnique);
+      localSearch(newValueUnique, isDelete);
+      handleAddAutoComplete(newValueUnique, isDelete);
     }
   }
 
   const onDelete = (title) => () => {
     const newValue = value.filter((v) => v.title !== title);
-    onChange(newValue);
+    onChange(newValue, null, true);
   };
 
   return (

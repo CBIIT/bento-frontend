@@ -466,22 +466,6 @@ export async function localSearch(searchcriteria, isQuery = false) {
         variables,
       },
     });
-
-    // const searchItems = searchcriteria.reduce((acc, curr) => {
-    //   if (!acc[curr.type]) acc[curr.type] = [];
-    //   acc[curr.type].push(curr.title);
-    //   return acc;
-    // }, {});
-    // client.query({
-    //   query: GET_SEARCH_NODECOUNTS,
-    //   variables: {
-    //     subject_ids: searchItems.subjectIds,
-    //     sample_ids: searchItems.sampleIds,
-    //     file_ids: searchItems.fileIds,
-    //     file_names: searchItems.fileNames,
-    //   },
-    // })
-    //   .then((result) => store.dispatch({ type: 'LOCAL_SEARCH', payload: { result } }));
   }
 }
 
