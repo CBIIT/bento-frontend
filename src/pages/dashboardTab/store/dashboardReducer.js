@@ -1341,6 +1341,7 @@ const reducers = {
         },
         checkbox: {
           data: checkboxData,
+          variables: {},
         },
         datatable: {
           filters: [],
