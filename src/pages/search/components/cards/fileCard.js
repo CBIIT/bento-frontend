@@ -30,6 +30,7 @@ const FileCard = ({ data, classes, index }) => {
     {
       label: 'Sample ID',
       dataField: 'sample_id',
+      link: '/case/{subject_id}',
     },
   ];
   const propertiesWithLinks = prepareLinks(properties, data);
