@@ -58,7 +58,7 @@ const table = {
     },
     {
       dataField: 'num_studies',
-      header: 'Number of ARMs',
+      header: 'Number of Arms',
     },
     {
       dataField: 'num_subjects',

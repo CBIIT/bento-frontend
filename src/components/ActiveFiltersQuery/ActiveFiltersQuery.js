@@ -67,7 +67,7 @@ const ActiveFiltersQuery = ({ classes }) => {
         const index = activeFilters.findIndex((val) => val.filterName === data.groupName);
         const filterObj = {
           filterName: data.groupName,
-          checkbox: allFiltersinfo.variables[data.datafield],
+          checkbox: [...new Set(allFiltersinfo.variables[data.datafield])],
           section: data.section,
           datafield: data.datafield,
         };
