@@ -2,7 +2,7 @@ import env from '../utils/env';
 // footerLogoImage ideal image size 310x80 px
 
 export default {
-  footerLogoImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/footer_FNL_logo.png',
+  footerLogoImage: 'https://raw.githubusercontent.com/cbiit/datacommons-assets/main/bento/images/icons/png/footerlogo.png',
   footerLogoAltText: 'Footer Logo',
   footerLogoHyperlink: 'https://frederick.cancer.gov/',
   footerStaticText: 'NIH … Turning Discovery Into Health®',

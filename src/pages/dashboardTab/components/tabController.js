@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Tabs, Tab, withStyles,
@@ -47,25 +47,34 @@ const tabController = (classes) => {
 
   // data from store
   const dashboard = useSelector((state) => (state.dashboardTab
-&& state.dashboardTab.datatable
+    && state.dashboardTab.datatable
     ? state.dashboardTab.datatable : {}));
-    // get stats data from store
+
+  // get stats data from store
   const dashboardStats = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.stats ? state.dashboardTab.stats : {}));
 
-  const filteredSubjectIds = useSelector((state) => (state.dashboardTab
-      && state.dashboardTab.filteredSubjectIds ? state.dashboardTab.filteredSubjectIds : null));
-  const filteredSampleIds = useSelector((state) => (state.dashboardTab
-    && state.dashboardTab.filteredSampleIds ? state.dashboardTab.filteredSampleIds : null));
   const filteredFileIds = useSelector((state) => (state.dashboardTab
     && state.dashboardTab.filteredFileIds ? state.dashboardTab.filteredFileIds : null));
+  const allFilters = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.allActiveFilters ? state.dashboardTab.allActiveFilters : {}));
+  const autoCompleteSelection = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.autoCompleteSelection
+    ? state.dashboardTab.autoCompleteSelection.subject_ids : {}));
+  const bulkUpload = useSelector((state) => (state.dashboardTab
+    && state.dashboardTab.bulkUpload ? state.dashboardTab.bulkUpload.subject_ids : {}));
+  const subjectIds = autoCompleteSelection.concat(bulkUpload);
+  useEffect(() => {
+    setCurrentTab(0);
+  }, [dashboardStats]);
+
+  const { isCaseSelected } = useSelector((state) => state.dashboardTab);
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
-    fetchDataForDashboardTab(tabIndex[value].title,
-      filteredSubjectIds,
-      filteredSampleIds,
-      filteredFileIds);
+    if (!isCaseSelected) {
+      fetchDataForDashboardTab(tabIndex[value].title);
+    }
   };
 
   const [snackbarState, setsnackbarState] = React.useState({
@@ -112,7 +121,7 @@ const tabController = (classes) => {
     @output [f.uuid]
   */
   function Type1OnRowsSelect(data, allRowsSelected) {
-  // use reduce to combine all the files' id into single array
+    // use reduce to combine all the files' id into single array
     return allRowsSelected.reduce((accumulator, currentValue) => {
       if (data[currentValue.dataIndex]) {
         const { files } = data[currentValue.dataIndex];
@@ -140,7 +149,7 @@ const tabController = (classes) => {
     @output [f.uuid]
   */
   function Type3OnRowsSelect(data, allRowsSelected) {
-  // use reduce to combine all the files' id into single array
+    // use reduce to combine all the files' id into single array
     return allRowsSelected.reduce((accumulator, currentValue) => {
       const { files } = data[currentValue.dataIndex];
       // check if file
@@ -217,9 +226,8 @@ const tabController = (classes) => {
         defaultSortCoulmn={container.defaultSortField || ''}
         defaultSortDirection={container.defaultSortDirection || 'asc'}
         dataKey={container.dataKey}
-        filteredSubjectIds={filteredSubjectIds}
-        filteredSampleIds={filteredSampleIds}
         filteredFileIds={filteredFileIds}
+        allFilters={{ ...allFilters, ...{ subject_ids: subjectIds } }}
         tableHasSelections={tableHasSelections}
         setRowSelection={getTableRowSelectionEvent()}
         selectedRowInfo={tableRowSelectionData[container.tabIndex].selectedRowInfo}
@@ -255,7 +263,7 @@ const tabController = (classes) => {
               File(s) successfully added to your cart
             </span>
           </div>
-)}
+        )}
       />
       <TabThemeProvider tableBorder={getBorderStyle()} tablecolor={getTableColor()}>
         <Tabs
@@ -264,7 +272,6 @@ const tabController = (classes) => {
           onChange={handleTabChange}
           indicatorColor="primary"
           textColor="primary"
-          textColorPrimary
         >
           {TABs}
         </Tabs>

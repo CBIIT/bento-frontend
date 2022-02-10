@@ -1,45 +1,63 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable react/destructuring-assignment */
 import _ from 'lodash';
 import {
-  customCheckBox,
   customSort,
   getFilters,
   filterData,
   getCheckBoxData,
+  setSelectedFilterValues,
   getStatDataFromDashboardData,
   getSunburstDataFromDashboardData,
   getDonutDataFromDashboardData,
-  setSelectedFilterValues,
   transformInitialDataForSunburst,
   transformAPIDataIntoCheckBoxData,
 } from 'bento-components';
+import store from '../../../store';
+import client from '../../../utils/graphqlClient';
+import { SEARCH_PAGE_RESULTS, SEARCH } from '../../../bento/search';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
 
-import store from '../../../store';
-import client from '../../../utils/graphqlClient';
 import {
   tabContainers,
-  DASHBOARD_QUERY,
-  FILTER_QUERY,
-  FILTER_GROUP_QUERY,
-  GET_FILES_OVERVIEW_QUERY,
-  GET_SAMPLES_OVERVIEW_QUERY,
-  GET_CASES_OVERVIEW_QUERY,
   GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
   GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
   GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
-  GET_FILES_OVERVIEW_DESC_QUERY,
-  GET_SAMPLES_OVERVIEW_DESC_QUERY,
-  GET_CASES_OVERVIEW_DESC_QUERY,
   GET_FILES_NAME_QUERY,
-  GET_FILE_IDS_FROM_FILE_NAME,
+  GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
+  GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
+  GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
+  // GET_FILE_IDS_FROM_FILE_NAME,
   tabIndex,
+  DASHBOARD_QUERY_NEW,
+  GET_FILES_OVERVIEW_QUERY,
+  GET_CASES_OVERVIEW_QUERY,
+  GET_SAMPLES_OVERVIEW_QUERY,
 } from '../../../bento/dashboardTabData';
+import {
+  GET_IDS_BY_TYPE,
+  GET_SUBJECT_IDS,
+  widgetsSearchData,
+  SUBJECT_OVERVIEW_QUERY,
+  GET_SEARCH_NODES_BY_FACET,
+  ageAtIndex,
+} from '../../../bento/localSearchData';
 
 const storeKey = 'dashboardTab';
 
 const initialState = {
   dashboardTab: {
+    autoCompleteSelection: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
+    bulkUpload: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
     isDataTableUptoDate: false,
     isFetched: false,
     isLoading: false,
@@ -48,6 +66,7 @@ const initialState = {
     error: '',
     hasError: false,
     stats: {},
+    searchCriteria: null,
     allActiveFilters: {},
     currentActiveTab: tabIndex[0].title,
     filteredSubjectIds: null,
@@ -87,6 +106,38 @@ const getState = () => store.getState()[storeKey];
 
 function shouldFetchDataForDashboardTabDataTable(state) {
   return !(state.isFetched);
+}
+
+// Custom function for mergeWith
+// eslint-disable-next-line consistent-return
+function customizer(objValue, srcValue) {
+  if (_.isArray(objValue)) {
+    return objValue.concat(srcValue);
+  }
+}
+
+export async function getSearch(inputVlaue) {
+  const allids = await client
+    .query({
+      query: SEARCH,
+      variables: {
+        input: inputVlaue,
+      },
+    })
+    .then((result) => result.data.globalSearch);
+  return allids;
+}
+
+export async function getSearchPageResults(inputVlaue) {
+  const allids = await client
+    .query({
+      query: SEARCH_PAGE_RESULTS,
+      variables: {
+        input: inputVlaue,
+      },
+    })
+    .then((result) => result.data.globalSearch);
+  return allids;
 }
 
 /**
@@ -138,32 +189,6 @@ function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
   return donut;
 }
 
-function fetchDashboardTab() {
-  return () => {
-    store.dispatch({ type: 'REQUEST_DASHBOARDTAB' });
-    return client
-      .query({
-        query: DASHBOARD_QUERY,
-      })
-      .then((result) => store.dispatch({ type: 'RECEIVE_DASHBOARDTAB', payload: _.cloneDeep(result) }))
-      .catch((error) => store.dispatch(
-        { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      ));
-  };
-}
-
-function fetchDashboardTabForClearAll() {
-  return () => client
-    .query({
-      query: DASHBOARD_QUERY,
-    })
-    .then((result) => store.dispatch({ type: 'CLEAR_ALL', payload: _.cloneDeep(result) }))
-    .then(() => store.dispatch({ type: 'SORT_ALL_GROUP_CHECKBOX' }))
-    .catch((error) => store.dispatch(
-      { type: 'DASHBOARDTAB_QUERY_ERR', error },
-    ));
-}
-
 /**
  * Generate a default varibles for filter query.
  *
@@ -177,6 +202,96 @@ function allFilters() {
   ), {});
   return emptyFilters;
 }
+
+/**
+ * Returns the widgets data.
+ * @param {object} data
+ * @param {json} widgetsInfoFromCustConfig
+ * @return {json}r
+ */
+
+function getSearchWidgetsData(data, widgetsInfoFromCustConfig) {
+  const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
+    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.mapWithDashboardWidget]) : removeEmptySubjectsFromDonutData(data[widget.mapWithDashboardWidget]);
+    const label = widget.dataName;
+    return { ...acc, [label]: Data };
+  }, {});
+  const replacements = widgetsSearchData.reduce(
+    (acc, widget) => ({ ...acc, ...{ [widget.dataName]: widget.mapWithDashboardWidget } }),
+    {},
+  );
+
+  const replacedItems = Object.keys(donut).map((key) => {
+    const newKey = replacements[key] || key;
+    return { [newKey]: donut[key] };
+  });
+  const newTab = replacedItems.reduce((a, b) => ({ ...a, ...b }));
+  return newTab;
+}
+
+function fetchDashboardTab() {
+  return () => {
+    store.dispatch({ type: 'REQUEST_DASHBOARDTAB' });
+    return client
+      .query({
+        query: DASHBOARD_QUERY_NEW,
+        variables: {
+          ...allFilters(),
+          ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+        },
+      })
+      .then((result) => store.dispatch({ type: 'RECEIVE_DASHBOARDTAB', payload: _.cloneDeep(result) }))
+      .catch((error) => store.dispatch(
+        { type: 'DASHBOARDTAB_QUERY_ERR', error },
+      ));
+  };
+}
+
+function fetchDashboardTabForClearAll() {
+  return () => client
+    .query({
+      query: DASHBOARD_QUERY_NEW,
+      variables: {
+        ...getState().allActiveFilters,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+      },
+    })
+    .then((result) => store.dispatch({ type: 'CLEAR_ALL', payload: _.cloneDeep(result) }))
+    .then(() => store.dispatch({ type: 'SORT_ALL_GROUP_CHECKBOX' }))
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
+}
+
+export async function getAllIds(type) {
+  const allids = await client
+    .query({
+      query: GET_IDS_BY_TYPE(type),
+      variables: {
+      },
+    })
+    .then((result) => result.data.idsLists)
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
+  return allids;
+}
+export async function getAllSubjectIds(subjectIdsArray) {
+  const allids = await client
+    .query({
+      query: GET_SUBJECT_IDS,
+      variables: {
+        subject_ids: subjectIdsArray,
+      },
+    })
+    .then((result) => result.data.findSubjectIdsInList)
+    .catch((error) => store.dispatch(
+      { type: 'DASHBOARDTAB_QUERY_ERR', error },
+    ));
+  return allids;
+}
+
+export const getSubjectIds = () => getState().filteredSubjectIds;
 
 /**
  * Returns filter variable for graphql query using the all filters.
@@ -199,6 +314,13 @@ function createFilterVariables(data) {
   }, {});
 
   return filter;
+}
+
+function createFilterVariablesRange(value, sideBarItem) {
+  const currentAllActiveFilters = getState().allActiveFilters;
+  currentAllActiveFilters[sideBarItem.datafield] = value;
+  return currentAllActiveFilters;
+  // eslint-disable-next-line  no-unused-vars
 }
 
 /**
@@ -229,7 +351,122 @@ export function clearSectionSort(groupName) {
  */
 
 export function clearAllFilters() {
+  store.dispatch({ type: 'RESET_ALL' });
   store.dispatch(fetchDashboardTabForClearAll());
+}
+
+export async function clearAllFiltersExceptBulkUpload() {
+  store.dispatch({ type: 'RESET_ALL_EXCEPT_BULK_UPLOAD' });
+}
+
+const convertResultInPrevType = (result) => {
+  const payload = result;
+  payload.data = {
+    ...result.data.searchSubjects,
+    nodeCountsFromLists: {
+      numberOfFiles: result.data.searchSubjects.numberOfFiles,
+      numberOfLabProcedures: result.data.searchSubjects.numberOfLabProcedures,
+      numberOfPrograms: result.data.searchSubjects.numberOfPrograms,
+      numberOfSamples: result.data.searchSubjects.numberOfSamples,
+      numberOfStudies: result.data.searchSubjects.numberOfStudies,
+      numberOfSubjects: result.data.searchSubjects.numberOfSubjects,
+    },
+  };
+
+  return payload;
+};
+
+async function getCaseData(variables) {
+  const result = await client.query({
+    query: GET_SEARCH_NODES_BY_FACET,
+    variables,
+  });
+  const data = convertResultInPrevType(result);
+  return data;
+}
+
+const getSubjectDetails = async (variables) => {
+  const result = await client.query({
+    query: SUBJECT_OVERVIEW_QUERY,
+    variables: {
+      offset: 0,
+      first: 100,
+      sort_direction: 'desc',
+      order_by: 'age_at_index',
+      age_at_index: [ageAtIndex, null],
+      ...variables,
+    },
+  });
+  return result;
+};
+
+export function addBulkModalSearchData(value, type) {
+  // const items = value.map((val) => val.title);
+  store.dispatch({ type: 'ADD_BULKSEARCHDATA', payload: { value, type } });
+}
+
+/**
+ * Uplpad Modal Set
+ *
+ * @return distpatcher
+ */
+
+export async function uploadBulkModalSearch(searchcriteria, type) {
+  addBulkModalSearchData(searchcriteria, type);
+  const variables = {
+    ...getState().allActiveFilters,
+    ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+  };
+
+  const [
+    caseResponse,
+    subjectResponse,
+  ] = await Promise.all([
+    getCaseData(variables),
+    getSubjectDetails(variables),
+  ]);
+
+  store.dispatch({
+    type: 'LOCAL_SEARCH',
+    payload: {
+      subjectResponse,
+      result: caseResponse,
+      variables,
+    },
+  });
+}
+
+/**
+ * Local search
+ *
+ * @return distpatcher
+ */
+
+export async function localSearch(searchcriteria, isQuery = false) {
+  if (searchcriteria.length === 0 && !isQuery) {
+    clearAllFilters();
+  } else {
+    const variables = {
+      ...getState().allActiveFilters,
+      ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+    };
+
+    const [
+      caseResponse,
+      subjectResponse,
+    ] = await Promise.all([
+      getCaseData(variables),
+      getSubjectDetails(variables),
+    ]);
+    store.dispatch({
+      type: 'LOCAL_SEARCH',
+      payload: {
+        subjectResponse,
+        result: caseResponse,
+        variables,
+      },
+    });
+  }
 }
 
 /**
@@ -241,28 +478,26 @@ export function clearAllFilters() {
 function toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables) {
   return client
     .query({ // request to get the filtered subjects
-      query: FILTER_QUERY,
-      variables: { ...currentAllFilterVariables, first: 100 },
+      query: DASHBOARD_QUERY_NEW,
+      variables: {
+        first: 100,
+        ...currentAllFilterVariables,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+
+      },
     })
-    .then((result) => client.query({ // request to get the filtered group counts
-      query: FILTER_GROUP_QUERY,
-      variables: { subject_ids: result.data.searchSubjects.subjectIds },
-    })
-      .then((result2) => store.dispatch({
-        type: 'TOGGGLE_CHECKBOX_WITH_API',
-        payload: {
-          filter: payload,
-          allFilters: currentAllFilterVariables,
-          groups: _.cloneDeep(result2),
-          ..._.cloneDeep(result),
-        },
-      }))
-      .then(() => store.dispatch({
-        type: 'SORT_ALL_GROUP_CHECKBOX',
-      }))
-      .catch((error) => store.dispatch(
-        { type: 'DASHBOARDTAB_QUERY_ERR', error },
-      )))
+    .then((result) => store.dispatch({
+      type: 'TOGGGLE_CHECKBOX_WITH_API',
+      payload: {
+        filter: payload,
+        allFilters: currentAllFilterVariables,
+        groups: _.cloneDeep(result),
+        ..._.cloneDeep(result),
+      },
+    }))
+    .then(() => store.dispatch({
+      type: 'SORT_ALL_GROUP_CHECKBOX',
+    }))
     .catch((error) => store.dispatch(
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
@@ -283,7 +518,12 @@ export function resetGroupSelections(payload) {
     // For performance issue we are using initial dasboardquery instead of fitered for empty filters
     if (_.isEqual(currentAllFilterVariables, allFilters())) {
       clearAllFilters();
-    } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+    } else {
+      toggleCheckBoxWithAPIAction(payload, {
+        ...currentAllFilterVariables,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+      });
+    }
   };
 }
 
@@ -295,14 +535,19 @@ export function resetGroupSelections(payload) {
  * @return {json} with three keys QUERY, sortfield, sortDirection
  */
 
+export function addAutoComplete({ newValue, type, isFilteredData = false }) {
+  const items = isFilteredData ? newValue : newValue.map((val) => val.title);
+  store.dispatch({ type: 'ADD_AUTOCOMPLETE_DATA', payload: { value: items, type } });
+}
+
 const querySwitch = (payload, tabContainer) => {
   switch (payload) {
     case ('Samples'):
-      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_SAMPLES_OVERVIEW_DESC_QUERY : GET_SAMPLES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_SAMPLES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
     case ('Files'):
-      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_FILES_OVERVIEW_DESC_QUERY : GET_FILES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_FILES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
     default:
-      return { QUERY: tabContainer.defaultSortDirection === 'desc' ? GET_CASES_OVERVIEW_DESC_QUERY : GET_CASES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
+      return { QUERY: GET_CASES_OVERVIEW_QUERY, sortfield: tabContainer.defaultSortField || '', sortDirection: tabContainer.defaultSortDirection || '' };
   }
 };
 
@@ -329,18 +574,36 @@ const getQueryAndDefaultSort = (payload = tabIndex[0].title) => {
  */
 
 export function fetchDataForDashboardTab(
-  payload,
-  subjectIDsAfterFilter = null,
-  sampleIDsAfterFilter = null,
-  fileIDsAfterFilter = null,
+  payload, filters = null,
 ) {
   const { QUERY, sortfield, sortDirection } = getQueryAndDefaultSort(payload);
-
+  const newFilters = filters;
+  // deal with empty string inside the age_at_index filter
+  if (filters && filters.age_at_index.length === 2) {
+    if (filters.age_at_index.includes('')) {
+      newFilters.age_at_index = [];
+    }
+    if (typeof filters.age_at_index[0] === 'string') {
+      newFilters.age_at_index[0] = Number(newFilters.age_at_index[0]);
+    }
+    if (typeof filters.age_at_index[1] === 'string') {
+      newFilters.age_at_index[1] = Number(newFilters.age_at_index[1]);
+    }
+  }
+  const activeFilters = newFilters === null
+    ? (getState().allActiveFilters !== {}
+      ? {
+        ...getState().allActiveFilters,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+      }
+      : allFilters()) : filters;
   return client
     .query({
       query: QUERY,
       variables: {
-        subject_ids: subjectIDsAfterFilter, sample_ids: sampleIDsAfterFilter, file_ids: fileIDsAfterFilter, order_by: sortfield || '',
+        ...activeFilters,
+        order_by: sortfield || '',
+        sort_direction: sortDirection || 'asc',
       },
     })
     .then((result) => store.dispatch({ type: 'UPDATE_CURRRENT_TAB_DATA', payload: { currentTab: payload, sortDirection, ..._.cloneDeep(result) } }))
@@ -378,27 +641,28 @@ function transformfileIdsToFiles(data) {
  * @return {json}
  */
 export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
-  const subjectIds = getState().filteredSubjectIds;
-  const sampleIds = getState().filteredSampleIds;
   const fileIds = getState().filteredFileIds;
+
+  const activeFilters = getState().allActiveFilters !== {}
+    ? getState().allActiveFilters : allFilters();
+
   const SELECT_ALL_QUERY = getState().currentActiveTab === tabIndex[2].title
-    ? GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL
+    ? GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART
     : getState().currentActiveTab === tabIndex[1].title
-      ? GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL
-      : GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL;
+      ? GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART
+      : GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART;
 
   const fetchResult = await client
     .query({
       query: SELECT_ALL_QUERY,
       variables: {
-        subject_ids: subjectIds,
-        sample_ids: sampleIds,
-        file_ids: fileIds,
+        ...activeFilters,
         first: fileCount,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
       },
     })
     .then((result) => {
-      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'subjectOverViewPaged';
+      const RESULT_DATA = getState().currentActiveTab === tabIndex[2].title ? 'fileOverview' : getState().currentActiveTab === tabIndex[1].title ? 'sampleOverview' : 'subjectOverview';
       const fileIdsFromQuery = RESULT_DATA === 'fileOverview' ? transformfileIdsToFiles(result.data[RESULT_DATA]) : RESULT_DATA === 'subjectOverViewPaged' ? transformCasesFileIdsToFiles(result.data[RESULT_DATA]) : result.data[RESULT_DATA] || [];
       return fileIdsFromQuery;
     });
@@ -421,34 +685,35 @@ export async function fetchAllFileIDsForSelectAll(fileCount = 100000) {
   return filteredFilesArray;
 }
 
-/**
- * Returns file IDs of given filenames.
- * @param array file_name
- * @param int offset
- * @param int first
- * @param SORT_SINGLE_GROUP_CHECKBOX order_by
- * @return {json}
- */
+// /**
+//  * Returns file IDs of given filenames.
+//  * @param array file_name
+//  * @param int offset
+//  * @param int first
+//  * @param SORT_SINGLE_GROUP_CHECKBOX order_by
+//  * @return {json}
+//  */
 
-async function getFileIDsByFileName(file_name = [], offset = 0, first = 100000, order_by = 'file_name') {
-  const data = await client
-    .query({
-      query: GET_FILE_IDS_FROM_FILE_NAME,
-      variables: {
-        file_name,
-        offset,
-        first,
-        order_by,
-      },
-    })
-    .then((result) => {
-      if (result && result.data && result.data.fileIdsFromFileNameDesc.length > 0) {
-        return result.data.fileIdsFromFileNameDesc.map((d) => d.file_id);
-      }
-      return [];
-    });
-  return data;
-}
+// async function getFileIDsByFileName
+// (file_name = [], offset = 0, first = 100000, order_by = 'file_name') {
+//   const data = await client
+//     .query({
+//       query: GET_FILE_IDS_FROM_FILE_NAME,
+//       variables: {
+//         file_name,
+//         offset,
+//         first,
+//         order_by,
+//       },
+//     })
+//     .then((result) => {
+//       if (result && result.data && result.data.fileIdsFromFileNameDesc.length > 0) {
+//         return result.data.fileIdsFromFileNameDesc.map((d) => d.file_id);
+//       }
+//       return [];
+//     });
+//   return data;
+// }
 
 /**
  * Returns file IDs of given sampleids or subjectids.
@@ -465,6 +730,7 @@ async function getFileIDs(
   SELECT_ALL_QUERY,
   caseIds = [],
   sampleIds = [],
+  fileNames = [],
   apiReturnField,
 ) {
   const fetchResult = await client
@@ -473,25 +739,13 @@ async function getFileIDs(
       variables: {
         subject_ids: caseIds,
         sample_ids: sampleIds,
-        file_ids: [],
+        file_names: fileNames,
         first: fileCount,
       },
     })
     .then((result) => result.data[apiReturnField] || []);
 
-  return fetchResult.reduce((accumulator, currentValue) => {
-    const { files } = currentValue;
-    // check if file
-    if (files && files.length > 0) {
-      return accumulator.concat(files.map((f) => {
-        if (typeof f.file_id !== 'undefined') {
-          return f.file_id;
-        }
-        return f;
-      }));
-    }
-    return accumulator;
-  }, []);
+  return fetchResult;
 }
 
 /*
@@ -504,10 +758,10 @@ function filterOutFileIds(fileIds) {
   const { filteredFileIds } = getState();
 
   if (fileIds
-      && fileIds.length > 0
-       && filteredFileIds
-        && filteredFileIds != null
-        && filteredFileIds.length > 0) {
+    && fileIds.length > 0
+    && filteredFileIds
+    && filteredFileIds != null
+    && filteredFileIds.length > 0) {
     return fileIds.filter((x) => filteredFileIds.includes(x));
   }
   return fileIds;
@@ -519,17 +773,17 @@ function filterOutFileIds(fileIds) {
  * @param obj fileCoubt
  * @return {json}
  */
-export async function fetchAllFileIDs(fileCount = 100000, selectedIds = [], offset = 0.0, first = 100000, order_by = 'file_name') {
+export async function fetchAllFileIDs(fileCount = 100000, selectedIds = []) {
   let filesIds = [];
   switch (getState().currentActiveTab) {
     case tabIndex[2].title:
-      filesIds = await getFileIDsByFileName(selectedIds, offset, first, order_by);
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL, [], [], selectedIds, 'fileIDsFromList');
       break;
     case tabIndex[1].title:
-      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL, [], selectedIds, 'sampleOverview');
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL, [], selectedIds, [], 'fileIDsFromList');
       break;
     default:
-      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], 'subjectOverViewPaged');
+      filesIds = await getFileIDs(fileCount, GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL, selectedIds, [], [], 'fileIDsFromList');
   }
   return filterOutFileIds(filesIds);
 }
@@ -562,6 +816,7 @@ export function fetchDataForDashboardTabDataTable() {
   if (shouldFetchDataForDashboardTabDataTable(getState())) {
     return store.dispatch(fetchDashboardTab());
   }
+  fetchDataForDashboardTab(tabIndex[0].title);
   return store.dispatch({ type: 'READY_DASHBOARDTAB' });
 }
 
@@ -642,7 +897,10 @@ export async function setSingleFilter(payload) {
 export async function singleCheckBox(payload) {
   await setSingleFilter(payload);
   const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
-  toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
+  toggleCheckBoxWithAPIAction(payload, {
+    ...currentAllFilterVariables,
+    ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+  });
 }
 
 /**
@@ -651,14 +909,31 @@ export async function singleCheckBox(payload) {
  * @param {object} payload
  * @return distpatcher
  */
-export function toggleCheckBox(payload) {
+export function toggleCheckBox(payload, isQuery = false) {
   return () => {
     const currentAllFilterVariables = payload === {} ? allFilters : createFilterVariables(payload);
+    // For performance issue we are using initial dasboardquery instead of fitered for empty filters
+    if (_.isEqual(currentAllFilterVariables, allFilters()) && !isQuery) {
+      clearAllFilters();
+    } else {
+      toggleCheckBoxWithAPIAction(payload, {
+        ...currentAllFilterVariables,
+        ..._.mergeWith({}, getState().bulkUpload, getState().autoCompleteSelection, customizer),
+      });
+    }
+  };
+}
+
+export function toggleSlider(value, sideBarItem) {
+  // console.log(value);
+  if (!value.includes('')) {
+    const payload = {};
+    const currentAllFilterVariables = createFilterVariablesRange(value, sideBarItem);
     // For performance issue we are using initial dasboardquery instead of fitered for empty filters
     if (_.isEqual(currentAllFilterVariables, allFilters())) {
       clearAllFilters();
     } else toggleCheckBoxWithAPIAction(payload, currentAllFilterVariables);
-  };
+  }
 }
 
 /**
@@ -712,13 +987,40 @@ so it contains more information and easy for front-end to show it correctly.
  * * @param {object} currentCheckboxSelection
  * @return {json}
  */
+
+function customCheckBox(data, facetSearchData1) {
+  const caseCountField = 'subjects';
+  return (
+    facetSearchData1.map((mapping) => ({
+      groupName: mapping.label,
+      checkboxItems: mapping.slider === true
+        ? data[mapping.api]
+        : transformAPIDataIntoCheckBoxData(
+          data[mapping.api],
+          mapping.field,
+          caseCountField,
+          mapping.customNumberSort,
+        ),
+      datafield: mapping.datafield,
+      show: mapping.show,
+      slider: mapping.slider,
+      quantifier: mapping.slider,
+      section: mapping.section,
+    }))
+  );
+}
+
 export function updateFilteredAPIDataIntoCheckBoxData(data, facetSearchDataFromConfig) {
   return (
     facetSearchDataFromConfig.map((mapping) => ({
       groupName: mapping.label,
-      checkboxItems: transformAPIDataIntoCheckBoxData(data[mapping.apiForFiltering], mapping.field),
+      checkboxItems: mapping.slider === true
+        ? data[mapping.api]
+        : transformAPIDataIntoCheckBoxData(data[mapping.apiForFiltering], mapping.field),
       datafield: mapping.datafield,
       show: mapping.show,
+      slider: mapping.slider,
+      quantifier: mapping.quantifier,
       section: mapping.section,
     }))
   );
@@ -824,6 +1126,13 @@ export function clearTableSelections() {
 
 export const getDashboard = () => getState();
 
+export function setSearchCriteria(payload) {
+  store.dispatch({
+    type: 'SET_SEARCH_CRITERIA',
+    payload,
+  });
+}
+
 // reducers
 const reducers = {
   DASHBOARDTAB_QUERY_ERR: (state, item) => ({
@@ -833,33 +1142,68 @@ const reducers = {
     isLoading: false,
     isFetched: false,
   }),
-  READY_DASHBOARDTAB: (state) => ({
-    ...state,
-    isLoading: false,
-    isFetched: true,
-    setSideBarLoading: false,
-    isDashboardTableLoading: false,
-  }),
+  READY_DASHBOARDTAB: (state) => {
+    return {
+      ...state,
+      isLoading: false,
+      isFetched: true,
+      setSideBarLoading: false,
+      isDashboardTableLoading: false,
+    };
+  },
   TOGGGLE_CHECKBOX_WITH_API: (state, item) => {
-    const updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
-      item.data, facetSearchData,
+    let updatedCheckboxData1 = updateFilteredAPIDataIntoCheckBoxData(
+      item.data.searchSubjects, facetSearchData,
     );
-    const checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
-    fetchDataForDashboardTab(state.currentActiveTab,
-      item.data.searchSubjects.subjectIds, item.data.searchSubjects.sampleIds,
-      item.data.searchSubjects.fileIds);
+    const rangeData = updatedCheckboxData1.filter((sideBar) => sideBar.slider === true);
+    updatedCheckboxData1 = updatedCheckboxData1.filter((sideBar) => sideBar.slider !== true);
+    let checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
+    updatedCheckboxData1 = updatedCheckboxData1.concat(rangeData);
+    checkboxData1 = checkboxData1.concat(rangeData);
+    fetchDataForDashboardTab(state.currentActiveTab, item.allFilters);
     return {
       ...state,
       setSideBarLoading: false,
       allActiveFilters: item.allFilters,
-      filteredSubjectIds: item.data.searchSubjects.subjectIds,
-      filteredSampleIds: item.data.searchSubjects.sampleIds,
-      filteredFileIds: item.data.searchSubjects.fileIds,
       checkbox: {
         data: checkboxData1,
+        variables: item.allFilters,
       },
       stats: getFilteredStat(item.data.searchSubjects, statsCount),
-      widgets: getWidgetsInitData(item.groups.data, widgetsData),
+      widgets: getWidgetsInitData(item.data.searchSubjects, widgetsData),
+    };
+  },
+  LOCAL_SEARCH: (state, item) => {
+    const checkboxData = customCheckBox(item.result.data, facetSearchData);
+    const newCheckboxData = [...checkboxData];
+    checkboxData.map((val, idx) => {
+      if (item.variables && item.variables[val.datafield] && item.variables[val.datafield].length) {
+        const checkboxItem = newCheckboxData[idx].checkboxItems;
+        checkboxItem.map((data, id) => {
+          // eslint-disable-next-line max-len
+          const index = item.variables[val.datafield].findIndex((check) => check === data.name);
+          if (index >= 0) {
+            checkboxItem[id].isChecked = true;
+          }
+          return null;
+        });
+        newCheckboxData[idx].checkboxItems = checkboxItem;
+      }
+      return null;
+    });
+    return {
+      ...state,
+      setSideBarLoading: false,
+      datatable: {
+        dataCase: item.subjectResponse.data.subjectOverview,
+      },
+      checkbox: {
+        data: newCheckboxData,
+        variables: item.variables,
+      },
+      stats: getFilteredStat(item.result.data.nodeCountsFromLists, statsCount),
+      widgets: getSearchWidgetsData(item.result.data, widgetsSearchData),
+
     };
   },
   UPDATE_CURRRENT_TAB_DATA: (state, item) => (
@@ -869,12 +1213,16 @@ const reducers = {
       currentActiveTab: item.currentTab,
       datatable: {
         ...state.datatable,
-        dataCase: item.sortDirection === 'desc' ? item.data.subjectOverViewPagedDesc : item.data.subjectOverViewPaged,
-        dataSample: item.sortDirection === 'desc' ? item.data.sampleOverviewDesc : item.data.sampleOverview,
-        dataFile: item.sortDirection === 'desc' ? item.data.fileOverviewDesc : item.data.fileOverview,
+        dataCase: item.data.subjectOverview,
+        dataSample: item.data.sampleOverview,
+        dataFile: item.data.fileOverview,
       },
     }
   ),
+  SET_SEARCH_CRITERIA: (state, item) => ({
+    ...state,
+    searchCriteria: item,
+  }),
   REQUEST_DASHBOARDTAB: (state) => ({ ...state, isLoading: true }),
   SET_SIDEBAR_LOADING: (state) => ({ ...state, setSideBarLoading: true }),
   SET_SINGLE_FILTER: (state, item) => (
@@ -912,8 +1260,8 @@ const reducers = {
     };
   },
   RECEIVE_DASHBOARDTAB: (state, item) => {
-    const checkboxData = customCheckBox(item.data, facetSearchData);
-    fetchDataForDashboardTab(tabIndex[0].title, null, null, null);
+    const checkboxData = customCheckBox(item.data.searchSubjects, facetSearchData);
+    fetchDataForDashboardTab(tabIndex[0].title, allFilters());
     return item.data
       ? {
         ...state.dashboard,
@@ -921,8 +1269,9 @@ const reducers = {
         isLoading: false,
         hasError: false,
         setSideBarLoading: false,
+        searchCriteria: null,
         error: '',
-        stats: getStatInit(item.data, statsCount),
+        stats: getStatInit(item.data.searchSubjects, statsCount),
         allActiveFilters: allFilters(),
         filteredSubjectIds: null,
         filteredSampleIds: null,
@@ -936,7 +1285,7 @@ const reducers = {
         datatable: {
           filters: [],
         },
-        widgets: getWidgetsInitData(item.data, widgetsData),
+        widgets: getWidgetsInitData(item.data.searchSubjects, widgetsData),
         dataCaseSelected: {
           selectedRowInfo: [],
           selectedRowIndex: [],
@@ -949,39 +1298,55 @@ const reducers = {
           selectedRowInfo: [],
           selectedRowIndex: [],
         },
-
+        autoCompleteSelection: {
+          subject_ids: [],
+          sample_ids: [],
+          file_ids: [],
+        },
+        bulkUpload: {
+          subject_ids: [],
+          sample_ids: [],
+          file_ids: [],
+        },
       } : { ...state };
   },
   CLEAR_ALL: (state, item) => {
-    const checkboxData = customCheckBox(item.data, facetSearchData);
-    fetchDataForDashboardTab(state.currentActiveTab, null, null, null);
+    const checkboxData = customCheckBox(item.data.searchSubjects, facetSearchData);
+    fetchDataForDashboardTab(tabIndex[0].title, allFilters());
     return item.data
       ? {
         ...state.dashboard,
         isFetched: true,
         isLoading: false,
         hasError: false,
+        setSideBarLoading: false,
         error: '',
-        stats: getStatInit(item.data, statsCount),
+        stats: getStatInit(item.data.searchSubjects, statsCount),
         allActiveFilters: allFilters(),
         filteredSubjectIds: null,
         filteredSampleIds: null,
         filteredFileIds: null,
-        subjectOverView: {
-          data: item.data.subjectOverViewPaged,
-        },
         checkboxForAll: {
           data: checkboxData,
         },
+        autoCompleteSelection: {
+          subject_ids: [],
+          sample_ids: [],
+          file_ids: [],
+        },
+        bulkUpload: {
+          subject_ids: [],
+          sample_ids: [],
+          file_ids: [],
+        },
         checkbox: {
           data: checkboxData,
+          variables: {},
         },
         datatable: {
-          dataCase: item.data.subjectOverViewPaged,
-          dataSample: item.data.sampleOverview,
-          dataFile: item.data.fileOverview,
           filters: [],
         },
+        widgets: getWidgetsInitData(item.data.searchSubjects, widgetsData),
         dataCaseSelected: {
           ...state.dataCaseSelected,
         },
@@ -994,8 +1359,6 @@ const reducers = {
         sortByList: {
           ...state.sortByList,
         },
-        widgets: getWidgetsInitData(item.data, widgetsData),
-
       } : { ...state };
   },
   SORT_SINGLE_GROUP_CHECKBOX: (state, item) => {
@@ -1021,8 +1384,9 @@ const reducers = {
   },
   SORT_ALL_GROUP_CHECKBOX: (state) => {
     const { sortByList = {} } = state;
-    const { data } = state.checkbox;
-
+    let { data } = state.checkbox;
+    const rangeData = data.filter((sideBar) => sideBar.slider === true);
+    data = data.filter((sideBar) => sideBar.slider !== true);
     data.map((group) => {
       const checkboxItems = sortByList[group.groupName] === 'count'
         ? sortByCheckboxItemsByCount(group.checkboxItems)
@@ -1031,7 +1395,7 @@ const reducers = {
       updatedGroupData.checkboxItems = checkboxItems;
       return updatedGroupData;
     });
-
+    data = data.concat(rangeData);
     return { ...state, checkbox: { data } };
   },
   CLEAR_SECTION_SORT: (state, item) => {
@@ -1060,6 +1424,13 @@ const reducers = {
       dataFileSelected: item,
     }
   ),
+  RESET_CHECKBOXES: (state) => (
+    {
+      ...state,
+      allActiveFilters: allFilters(),
+    }
+  ),
+
   CLEAR_TABLE_SELECTION: (state) => ({
     ...state,
     dataCaseSelected: {
@@ -1073,6 +1444,42 @@ const reducers = {
     dataFileSelected: {
       selectedRowInfo: [],
       selectedRowIndex: [],
+    },
+  }),
+  RESET_ALL: (state) => ({
+    ...state,
+    autoCompleteSelection: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
+    bulkUpload: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
+    allActiveFilters: {},
+  }),
+  RESET_ALL_EXCEPT_BULK_UPLOAD: (state) => ({
+    ...state,
+    autoCompleteSelection: {
+      subject_ids: [],
+      sample_ids: [],
+      file_ids: [],
+    },
+    allActiveFilters: {},
+  }),
+  ADD_AUTOCOMPLETE_DATA: (state, { type, value }) => ({
+    ...state,
+    autoCompleteSelection: {
+      ...state.autoCompleteSelection,
+      [`${type}_ids`]: value,
+    },
+  }),
+  ADD_BULKSEARCHDATA: (state, { type, value }) => ({
+    ...state,
+    bulkUpload: {
+      [`${type}_ids`]: value,
     },
   }),
 };

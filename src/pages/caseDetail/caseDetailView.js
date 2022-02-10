@@ -6,6 +6,7 @@ import {
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { getOptions, getColumns } from 'bento-components';
+import globalData from '../../bento/globalData';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import GridWithFooter from '../../components/GridWithFooter/GridView';
@@ -29,9 +30,10 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
     value: 0,
+    action: 'added',
   });
   function openSnack(value1) {
-    setsnackbarState({ open: true, value: value1 });
+    setsnackbarState({ open: true, value: value1, action: 'added' });
   }
   function closeSnack() {
     setsnackbarState({ open: false });
@@ -170,7 +172,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                           <span className={classes.tableHeader}>{table1.tableTitle}</span>
                         </div>
                       )}
-                      columns={getColumns(table1, classes, data, externalLinkIcon)}
+                      columns={getColumns(table1, classes, data, externalLinkIcon, '', () => {}, '', globalData.replaceEmptyValueWith)}
                       options={getOptions(table1, classes)}
                       customOnRowsSelect={table1.customOnRowsSelect}
                       openSnack={openSnack}
@@ -203,7 +205,7 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
                           <span className={classes.tableHeader}>{table2.tableTitle}</span>
                         </div>
                       )}
-                      columns={getColumns(table2, classes, data)}
+                      columns={getColumns(table2, classes, data, '', '', () => {}, '', globalData.replaceEmptyValueWith)}
                       options={getOptions(table2, classes)}
                       customOnRowsSelect={table2.customOnRowsSelect}
                       openSnack={openSnack}

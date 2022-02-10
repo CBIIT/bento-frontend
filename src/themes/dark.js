@@ -228,6 +228,9 @@ export default {
       default: '#E5F0FA',
       light: '#F3F5FF',
     },
+    clearQueryResultColor: {
+      color: '#A9A9A9',
+    },
   },
   customShadows: {
     widget:
@@ -263,6 +266,9 @@ export default {
       root: {
         minHeight: '38px',
         padding: '0 12px 0 35px',
+        '&.Mui-focused': {
+          backgroundColor: '#f4f4f4',
+        },
       },
       content: {
         margin: '4px 0',
@@ -362,9 +368,15 @@ export default {
         '&:nth-child(even)': {
           color: '#004C73',
         },
+        '&:nth-child(even) td': {
+          background: '#f5f5f5',
+        },
         '&:nth-child(odd)': {
           color: '#004C73 !important',
           background: '#f3f3f3 !important',
+        },
+        '&:nth-child(odd) td': {
+          background: '#fff',
         },
       },
     },

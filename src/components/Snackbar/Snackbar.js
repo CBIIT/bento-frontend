@@ -30,7 +30,7 @@ const SnackbarView = ({
           {' '}
           {snackbarState.action}
           {' '}
-          to your files
+          to your cart.
 
         </span>
       </div>

@@ -11,6 +11,7 @@ import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
+import globalData from '../../bento/globalData';
 import {
   header,
   subsections,
@@ -176,7 +177,7 @@ const ArmDetail = ({ data, classes }) => {
                           <GridWithFooter
                             tableConfig={table}
                             data={data[table.filesField]}
-                            columns={getColumns(table, classes, data)}
+                            columns={getColumns(table, classes, data, '', '', () => {}, '', globalData.replaceEmptyValueWith)}
                             options={getOptions(table, classes)}
                             customOnRowsSelect={table.customOnRowsSelect}
                             openSnack={openSnack}

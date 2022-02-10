@@ -102,18 +102,24 @@ const reducers = {
     localStorage.setItem('CartFileIds', JSON.stringify(fileIdsAfterDeletion));
     let sortColumnValue = localStorage.getItem('sortColumn');
     let sortDirectionValue = localStorage.getItem('sortDirection');
+    const dataLength = parseInt(localStorage.getItem('dataLength'), 10);
+    const page = parseInt(localStorage.getItem('page'), 10);
     // if all ids get removed, reset the sortorder value back to default
     if (fileIdsAfterDeletion.length === 0) {
       sortColumnValue = '';
       sortDirectionValue = '';
-      localStorage.setItem('sortColumn', sortColumnValue);
-      localStorage.setItem('sortDirection', sortDirectionValue);
+      // clear all local storage if we remove all record
+      localStorage.clear();
       return {
         ...state,
         fileIds: fileIdsAfterDeletion,
         sortColumn: sortColumnValue,
         sortDirection: sortDirectionValue,
       };
+    }
+    if (dataLength === 1 && page !== 0) {
+      const newPage = page - 1;
+      localStorage.setItem('page', newPage);
     }
     return {
       ...state,
