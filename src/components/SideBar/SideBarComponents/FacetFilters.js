@@ -65,7 +65,7 @@ const CustomExpansionPanelSummary = withStyles({
   },
   content: {
     '&$expanded': {
-      margin: '16px 0',
+      margin: '4px 0px 15px 0px',
     },
   },
   expanded: {},

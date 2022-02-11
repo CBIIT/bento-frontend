@@ -1,7 +1,7 @@
 const styles = () => ({
   listPadding: {
     paddingTop: '0px',
-    paddingBottom: '4px',
+    paddingBottom: '11px',
   },
   backdrop: {
     zIndex: 99999,
@@ -81,16 +81,15 @@ const styles = () => ({
     height: 10,
   },
   listItemGutters: {
-    padding: '2px 15px 2px 18px',
+    padding: '0px 15px 0px 18px',
     display: 'flex',
     justifyContent: 'space-between',
   },
   searchResultDetailText: {
     color: '#0D8662',
     lineHeight: '20px',
-    fontFamily: 'Lato',
+    fontFamily: 'Lato italic',
     fontSize: '11px',
-    fontStyle: 'italic',
   },
   searchBoxRoot: {
     width: '100%',
