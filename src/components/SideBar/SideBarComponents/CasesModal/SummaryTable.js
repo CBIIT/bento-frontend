@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Divider,
   makeStyles,
 } from '@material-ui/core';
@@ -19,13 +18,24 @@ const useStyles = makeStyles(() => ({
     fontWeight: 500,
     color: '#00387A',
     backgroundColor: '#fff',
-    borderBottom: '5px solid #00387A',
+    borderBottom: '4px solid #00387A',
+    cursor: 'pointer',
+    padding: '11px 22px',
+    fontFamily: 'Lato',
+    textTransform: 'uppercase',
   },
   unselectedButton: {
     fontSize: 12,
     fontWeight: 500,
     color: '#00387A',
     backgroundColor: '#DEE0E2',
+    cursor: 'pointer',
+    padding: '11px 22px',
+    fontFamily: 'Lato',
+    textTransform: 'uppercase',
+  },
+  btnContainer: {
+    marginBottom: 10,
   },
   summary: {
     color: '#0D4A94',
@@ -33,6 +43,9 @@ const useStyles = makeStyles(() => ({
     textAlign: 'center',
     margin: 0,
     paddingTop: 31,
+    fontFamily: 'Lato',
+    fontStyle: 'italic',
+    fontWeight: 'bold',
   },
   title: {
     display: 'flex',
@@ -40,9 +53,12 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     fontWeight: 300,
     color: '#000',
+    fontSize: 16,
+    fontFamily: 'Nunito',
   },
   arrowRight: {
     color: '#437BBE',
+    fontSize: '2.5rem',
   },
   summaryContainer: {
     backgroundColor: '#CCD4DD',
@@ -90,13 +106,19 @@ const SummaryTable = (props) => {
         Summary Table
         <ArrowRight className={classes.arrowRight} />
       </p>
-      <div>
-        <Button variant="contained" className={isMatched ? classes.button : classes.unselectedButton} onClick={() => setIsMatched(true)}>
-          {`Matched ${matchedContent.length}`}
-        </Button>
-        <Button variant="contained" className={!isMatched ? classes.button : classes.unselectedButton} onClick={() => setIsMatched(false)}>
-          {`Unmatched ${unmatchedContent.length}`}
-        </Button>
+      <div className={classes.btnContainer}>
+        <span
+          className={isMatched ? classes.button : classes.unselectedButton}
+          onClick={() => setIsMatched(true)}
+        >
+          {`Matched - ${matchedContent.length}`}
+        </span>
+        <span
+          className={!isMatched ? classes.button : classes.unselectedButton}
+          onClick={() => setIsMatched(false)}
+        >
+          {`Unmatched - ${unmatchedContent.length}`}
+        </span>
       </div>
       <div className={classes.tableBox}>
         {isMatched ? (
