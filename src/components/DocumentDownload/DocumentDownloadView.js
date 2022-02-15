@@ -3,9 +3,10 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { ToolTip } from 'bento-components';
-
+import { Link } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
+import { jBrowseOptions } from '../../bento/jbrowseDetailData';
 
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
@@ -36,18 +37,29 @@ const fetchFileToDownload = (fileURL = '') => {
 const DocumentDownload = ({
   classes,
   fileSize = 0,
-  maxFileSize = 2000,
+  fileFormat = '',
+  maxFileSize = 200000,
   toolTipTextFileDownload = 'Download a copy of this file',
   toolTipTextFilePreview = 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
+  toolTipTextFileViewer = 'Jbrowse file viewer',
   iconFileDownload = '',
   iconFilePreview = '',
+  iconFileViewer = '',
   fileLocation = '',
+  caseId = '',
 }) => (
   <>
-    { fileSize < maxFileSize ? (
+    { (fileFormat === 'bam' || fileFormat === 'bai') && jBrowseOptions.jBrowse ? (
+      <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileViewer} arrow placement="bottom">
+        <Link
+          to={`/fileViewer/${caseId}`}
+        >
+          <CustomIcon imgSrc={iconFileViewer} />
+        </Link>
+      </ToolTip>
+    ) : fileSize < maxFileSize ? (
       <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} arrow placement="bottom">
         <div onClick={() => fetchFileToDownload(fileLocation)}>
-
           <CustomIcon imgSrc={iconFileDownload} />
         </div>
       </ToolTip>

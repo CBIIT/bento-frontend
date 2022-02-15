@@ -22,7 +22,7 @@ export const myFilesPageData = {
   tooltipIcon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   tooltipAlt: 'tooltip icon',
   tooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
-  textareaPlaceholder: 'Please add a description for the XML file you are about to download.',
+  textareaPlaceholder: 'Please add a description for the CSV file you are about to download.',
   errorMessage: 'An error has occurred in loading CART',
   popUpWindow: {
     showNumberOfFileBeRemoved: true,
@@ -48,6 +48,7 @@ export const table = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
+  paginationAPIField: 'filesInList',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
 
   columns: [
@@ -100,8 +101,8 @@ export const table = {
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
 export const GET_MY_CART_DATA_QUERY = gql`
-query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="") {
-    filesInList(file_ids: $file_ids, offset: $offset,first: $first, order_by: $order_by) {
+query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name", $sort_direction:String="asc") {
+    filesInList(file_ids: $file_ids, offset: $offset,first: $first, order_by: $order_by, sort_direction: $sort_direction) {
         study_code
         subject_id
         file_name

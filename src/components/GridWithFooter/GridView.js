@@ -122,7 +122,7 @@ const GridView = ({
       // throw an alert
       setCartIsFull(true);
       AddToCartAlertDialogRef.current.open();
-    } else if (newFileIDS > 0) {
+    } else if (newFileIDS >= 0) {
       addToCart({ fileIds: selectedIDs });
       openSnack(newFileIDS);
       setSelectedIDs([]);
