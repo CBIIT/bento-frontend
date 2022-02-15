@@ -1,49 +1,49 @@
-/* eslint-disable */
-import React, { useState } from 'react';
-import { GoogleLogout, GoogleLogin } from 'react-google-login';
+import React from 'react';
+import { useGoogleLogin } from 'react-google-login';
 
+// const clientId = '707788443358-u05p46nssla3l8tmn58tpo9r5sommgks.apps.googleusercontent.com';
 
-const clientId = '617246850621-95f9qhmehd380g2df86pjhrqc84n8nij.apps.googleusercontent.com';
+// nih
+const clientId = '196014713877-0d926jpdd691roubuc0kpu6r6ha9b9t5.apps.googleusercontent.com';
+// doddapaneni.ajay
+// const clientId = '357466149206-rs20avp7k08gsb0rbgla9mstqfic4hhb.apps.googleusercontent.com';
 
-const success = (response) => {
-  console.log(response) // eslint-disable-line
-};
+function LoginHooks() {
+  const onSuccess = (res) => {
+    console.log('Login Success: currentUser:', res.profileObj);
+    sessionStorage.setItem('user', res.profileObj);
 
-const error = (response) => {
-  console.error(response) // eslint-disable-line
-};
+    console.log(res);
 
-const loading = () => {
-  console.log('loading') // eslint-disable-line
-};
+    alert(
+      `Logged in successfully welcome ${res.profileObj.name} .`,
+    );
+  };
 
-const logout = () => {
-  console.log('logout') // eslint-disable-line
-};
+  const onFailure = (res) => {
+    console.log('Login failed: res:', res);
+    alert(
+      'Failed to login. ',
+    );
+  };
 
+  const { signIn } = useGoogleLogin({
+    onSuccess,
+    onFailure,
+    clientId,
+    isSignedIn: true,
+    accessType: 'offline',
+    // responseType: 'code',
+    // prompt: 'consent',
+  });
 
-export default () => (
-  <div>
+  return (
+    // eslint-disable-next-line react/button-has-type
+    <button onClick={signIn} className="button">
 
-    <GoogleLogin
-      clientId={clientId}
-      scope="https://www.googleapis.com/auth/analytics"
-      onSuccess={success}
-      onFailure={error}
-      onRequest={loading}
-      offline={false}
-      approvalPrompt="force"
-      responseType="id_token"
-      isSignedIn
-      theme="dark"
-      // disabled
-      // prompt="consent"
-      // className='button'
-      // style={{ color: 'red' }}
-    >
-      <span>Analytics</span>
-    </GoogleLogin>
+      <span className="buttonText">Sign in with Google</span>
+    </button>
+  );
+}
 
-    <GoogleLogout buttonText="Logout" onLogoutSuccess={logout} />
-  </div>
-);
+export default LoginHooks;
