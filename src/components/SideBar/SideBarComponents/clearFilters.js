@@ -35,7 +35,7 @@ const styles = (theme) => ({
     margin: 'auto',
   },
   customButton: {
-    borderRadius: '5px',
+    borderRadius: '9px',
     maxWidth: '30px',
     maxHeight: '30px',
     minWidth: '30px',
@@ -57,7 +57,7 @@ const styles = (theme) => ({
   resetText: {
     marginTop: '0px',
     marginLeft: '8px',
-    color: '#a9b2b9',
+    color: '#638fb5',
     fontSize: 14,
   },
   resetTextDisabled: {

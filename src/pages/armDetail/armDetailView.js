@@ -106,7 +106,7 @@ const ArmDetail = ({ data, classes }) => {
                 <span className={classes.headerButtonLinkText}>Number of cases:</span>
                 <Link
                   className={classes.headerButtonLink}
-                  to={(location) => ({ ...location, pathname: '/cases' })}
+                  to={(location) => ({ ...location, pathname: '/explore' })}
                   onClick={() => redirectTo()}
                 >
                   <span className={classes.headerButtonLinkNumber} id="arm_detail_header_file_count">

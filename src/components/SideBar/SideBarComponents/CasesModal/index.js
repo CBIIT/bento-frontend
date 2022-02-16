@@ -22,20 +22,30 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   paper: {
-    minWidth: '50%',
+    minWidth: '32%',
     borderRadius: '10px',
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     backgroundColor: theme.palette.background.paper,
   },
+  closeIcon: {
+    fontFamily: 'lato',
+    fontWeight: 300,
+    cursor: 'pointer',
+  },
   modalTitle: {
+    fontFamily: 'lato',
     borderBottom: '1px solid rgba(#000,0.3)',
     fontSize: 20,
     color: '#4D6787',
-    padding: '15px 33px',
+    padding: '17px 33px 12px 33px',
     margin: '0px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontWeight: 'bold',
   },
   modalContainer: {
     display: 'flex',
@@ -50,9 +60,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   uploadFile: {
-    width: '48%',
+    width: '49%',
     border: '1px solid white',
-    margin: '10px 4px',
+    margin: '20px 4px',
     padding: 10,
     textAlign: 'center',
   },
@@ -69,12 +79,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     marginLeft: -41,
     backgroundColor: '#CCD4DD',
+    fontFamily: 'Lato',
+    fontWeight: 'bold',
   },
   textSection: {
-    width: '48%',
+    width: '49%',
     border: '1px solid white',
-    margin: '10px 4px',
-    padding: 10,
+    margin: '20px 4px',
+    padding: '7px 25px 13px 29px',
   },
   modalFooter: {
     borderTop: '1px solid rgba(#000,0.3)',
@@ -87,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginLeft: '10px',
     marginRight: '10px',
-    borderRadius: '5px',
+    borderRadius: '10px',
     boxSizing: 'border-box',
     height: 38,
     width: 97,
@@ -95,6 +107,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 11,
     textAlign: 'center',
     color: '#fff',
+    fontFamily: 'lato',
+    boxShadow: 'none',
   },
   uploadButton: {
     borderRadius: '5px',
@@ -110,19 +124,32 @@ const useStyles = makeStyles((theme) => ({
     background: 'rgba(0,0,0,0.2)',
   },
   textArea: {
-    height: '150px !important',
+    height: '151px !important',
     width: '100%',
-    overflowY: 'scroll !important',
-    border: '1.25px solid #437BBE',
+    border: '1.5px solid #437BBE',
     borderRadius: 10,
+    fontSize: 14,
+    fontFamily: 'Lato',
+    fontStyle: 'italic',
+    color: '#437BBE',
+    '&::placeholder': {
+      fontSize: 11,
+      fontFamily: 'Lato',
+      fontStyle: 'italic',
+      color: '#437BBE',
+    },
   },
   listTitle: {
     fontWeight: 300,
-    fontSize: 14,
+    fontFamily: 'Nunito',
+    color: 'black',
+    fontSize: 16,
   },
   tooltipIcon: {
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: 600,
+    marginBottom: 12,
+    marginLeft: 5,
   },
   horizontal: {
     height: 1,
@@ -257,7 +284,10 @@ const FacetModal = ({
       }}
     >
       <div className={classes.paper}>
-        <h1 className={classes.modalTitle}>Upload Case Set</h1>
+        <h1 className={classes.modalTitle}>
+          <span>Upload Case Set</span>
+          <span className={classes.closeIcon} onClick={cancelModal}>x</span>
+        </h1>
         <div className={classes.modalContainer}>
 
           <div className={classes.textSection}>
@@ -281,7 +311,7 @@ const FacetModal = ({
             <div className={classes.orTitle}>or</div>
             <div className={classes.inputLabel}>
               <Typography>
-                <p className={classes.listTitle}>Choose a file to upload</p>
+                <p className={classes.listTitle}>Choose a file to upload:</p>
               </Typography>
               <Tooltip title="Add the case indentifier." placement="left-start" className={classes.tooltipIcon}>
                 <HelpIcon />

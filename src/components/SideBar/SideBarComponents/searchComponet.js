@@ -142,7 +142,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
           <Autocomplete
             id="localSearch"
             freeSolo={false}
-            popupIcon=""
+            disableClearable
             classes={classes}
             noOptionsText="No matching items found"
             onChange={(event, newValue, reason) => onChange(newValue, reason)}
@@ -168,7 +168,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
                 size="small"
                 InputProps={{
                   ...params.InputProps,
-                  style: { paddingLeft: 12, paddingRight: 35 },
+                  style: { paddingLeft: 12, paddingRight: 35, backgroundColor: '#fff' },
                   endAdornment: (
                     <>
                       {loading ? <CircularProgress color="inherit" size={20} /> : null}

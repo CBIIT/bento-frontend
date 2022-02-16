@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -20,7 +19,7 @@ import {
 // import createMuiTheme from '@material-ui/styles';
 import _ from 'lodash';
 import {
-  ArrowDropDown as ArrowDropDownIcon, Close as CloseIcon
+  ArrowDropDown as ArrowDropDownIcon, Close as CloseIcon,
   // Replay as ReplayIcon,
 } from '@material-ui/icons';
 import {
@@ -36,6 +35,7 @@ import {
 } from '../../../pages/dashboardTab/store/dashboardReducer';
 import {
   facetSectionVariables,
+  facetSearchData,
   defaultFacetSectionVariables,
   sortLabels, showCheckboxCount,
   resetIconFilter,
@@ -58,14 +58,14 @@ const CustomExpansionPanelSummary = withStyles({
     minHeight: 48,
     paddingLeft: 14,
     paddingRight: 14,
-    paddingTop:6,
+    paddingTop: 6,
     '&$expanded': {
       minHeight: 48,
     },
   },
   content: {
     '&$expanded': {
-      margin: '16px 0',
+      margin: '4px 0px 15px 0px',
     },
   },
   expanded: {},
@@ -108,6 +108,8 @@ export const FacetPanelComponent = ({ classes }, ref) => {
   // redux use actions
   const dispatch = useDispatch();
 
+  const [showSearch, toggleSearch] = React.useState(false);
+
   const [groupsExpanded, setGroupsExpanded] = React.useState([]);
 
   const [sectionExpanded, setSectionExpanded] = React.useState(
@@ -121,8 +123,6 @@ export const FacetPanelComponent = ({ classes }, ref) => {
   );
 
   const searchRef = React.useRef();
-
-  const [showSearch, toggleSearch] = React.useState(false);
 
   const clearFilters = () => {
     searchRef.current.clear();
@@ -140,7 +140,17 @@ export const FacetPanelComponent = ({ classes }, ref) => {
         subject_ids: [],
         sample_ids: [],
         file_ids: [],
-      }))
+      }));
+
+  const autoCompleteSelection = useSelector((state) => (
+    state.dashboardTab
+          && state.dashboardTab.autoCompleteSelection
+      ? state.dashboardTab.autoCompleteSelection : {
+        subject_ids: [],
+        sample_ids: [],
+        file_ids: [],
+      }));
+
   let groupNameColor = '';
   function getGroupNameColor(sideBarItem, currentSection, sideBarIndex) {
     groupNameColor = 'black';
@@ -173,6 +183,29 @@ export const FacetPanelComponent = ({ classes }, ref) => {
       setGroupsExpanded(sideBarContent.defaultPanel);
     }
   });
+
+  React.useEffect(() => {
+    // Open toggle chnages
+    if (sectionExpanded.includes('Cases')) {
+      toggleSearch(true);
+    } else {
+      toggleSearch(false);
+    }
+  }, [sectionExpanded]);
+
+  React.useEffect(() => {
+    // Open all sections and groups when user selected auto complete
+    if (bulkUpload.subject_ids.length > 0 || autoCompleteSelection.subject_ids.length > 0) {
+      const allSectionLabels = Object.keys(facetSectionVariables);
+      const allCheckBoxLabels = facetSearchData.reduce((acc, facet) => (
+        [...acc, facet.label]
+      ), []);
+
+      setSectionExpanded(allSectionLabels);
+      setGroupsExpanded(allCheckBoxLabels);
+    }
+  }, [bulkUpload, autoCompleteSelection]);
+
   const handleGroupsChange = (panel) => (event, isExpanded) => {
     const groups = _.cloneDeep(groupsExpanded);
     if (isExpanded) {
@@ -199,7 +232,6 @@ export const FacetPanelComponent = ({ classes }, ref) => {
         sections.splice(index, 1);
       }
     }
-
     setSectionExpanded(sections);
   };
 
@@ -358,44 +390,45 @@ export const FacetPanelComponent = ({ classes }, ref) => {
   // This ref is used to clear case upload modal
   const modelRef = React.useRef();
 
-  function InputSetListItem(){
-    return  <List classes={{ padding: classes.listPadding }}>
-               <>
-                 <Divider
-                   style={{
-                     backgroundColor: '#B1B1B1',
-                     height: '2px',
-                   }}
-                 />
-                 <ListItem
-                   classes={{ gutters: classes.listItemGutter }}
-                 >
-                   <div className={classes.searchResultDetailText}>
-                     <span>
-                      INPUT SET
-                     </span>
-                   </div>
-                   <IconButton
-                     disableRipple
-                     style={{ backgroundColor: 'transparent' }}
-                     onClick={()=> {
-                       modelRef.current.clear();
-                       uploadBulkModalSearch([],'subject'); 
-                   }}
-                   >
-                     <CloseIcon
-                       classes={{ root: classes.closeRoot }}
-                       style={{
-                         color: '#000',
-                       }}
-                     />
-                   </IconButton>
- 
-         </ListItem>
-       </>
-     </List>
-   }
+  function InputSetListItem() {
+    return (
+      <List classes={{ padding: classes.listPadding }}>
+        <>
+          <Divider
+            style={{
+              backgroundColor: '#B1B1B1',
+              height: '2px',
+            }}
+          />
+          <ListItem
+            classes={{ gutters: classes.listItemGutter }}
+          >
+            <div className={classes.searchResultDetailText}>
+              <span>
+                INPUT SET
+              </span>
+            </div>
+            <IconButton
+              disableRipple
+              style={{ backgroundColor: 'transparent' }}
+              onClick={() => {
+                modelRef.current.clear();
+                uploadBulkModalSearch([], 'subject');
+              }}
+            >
+              <CloseIcon
+                classes={{ root: classes.closeRoot }}
+                style={{
+                  color: '#000',
+                }}
+              />
+            </IconButton>
 
+          </ListItem>
+        </>
+      </List>
+    );
+  }
 
   React.useImperativeHandle(ref, () => ({
     clear() {
@@ -422,7 +455,7 @@ export const FacetPanelComponent = ({ classes }, ref) => {
             open={showCasesModal}
             closeModal={closeCasesModal}
             handleClose={closeCasesModal}
-            type={'subjectIds'}
+            type="subjectIds"
             ref={modelRef}
           />
           <ExpansionPanel
@@ -453,23 +486,26 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                       showSearch && (
                         <div className={classes.searchContainer} onClick={handleCaseFacetClick}>
                           {bulkUpload.subject_ids.length !== 0 ? <InputSetListItem /> : ''}
-                          <AutoComplete ref={searchRef} type={facetSectionFindApi[currentSection.sectionName].api}
-                            data={getAllIds(facetSectionFindApi[currentSection.sectionName].api)} />
+                          <AutoComplete
+                            ref={searchRef}
+                            type={facetSectionFindApi[currentSection.sectionName].api}
+                            data={getAllIds(facetSectionFindApi[currentSection.sectionName].api)}
+                          />
                           <Button
                             variant="contained"
                             disableElevation
                             onClick={() => setShowCasesModal(true)}
                             className={classes.uploadButton}
                           >
-                            { bulkUpload.subject_ids.length !== 0 ? 'View Case Set' : 'Upload Case Set'  }
-                         <span className={classes.iconSpan}>
-            <img
-              className={classes.uploadIcon}
-              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
-              alt="previous button"
-            />
+                            { bulkUpload.subject_ids.length !== 0 ? 'View Case Set' : 'Upload Case Set' }
+                            <span className={classes.iconSpan}>
+                              <img
+                                className={classes.uploadIcon}
+                                src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
+                                alt="previous button"
+                              />
 
-          </span>
+                            </span>
                           </Button>
                         </div>
                       )
@@ -626,75 +662,75 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                                   />
                                 ),
                               )) : (
-                              <div>
-                                <div className={classes.sliderRoot}>
-                                  <div className={classes.minValue}>
-                                    <span>
-                                      Min:
-                                      &nbsp;
-                                    </span>
-                                    <InputViewMin
-                                      sideBarIndex={sideBarIndex}
-                                      sideBarItem={sideBarItem}
-                                      sliderValue={sliderValue}
-                                      setSliderValue={setSliderValue}
-                                      toggleSlider={toggleSlider}
-                                    />
-                                  </div>
-                                  <div className={classes.maxValue}>
-                                    <span>
-                                      Max:
-                                      &nbsp;
-                                    </span>
-                                    <InputViewMax
-                                      sideBarIndex={sideBarIndex}
-                                      sideBarItem={sideBarItem}
-                                      sliderValue={sliderValue}
-                                      setSliderValue={setSliderValue}
-                                      toggleSlider={toggleSlider}
-                                    />
-                                  </div>
-                                  <Slider
-                                    value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex]
-                                      : [
+                                <div>
+                                  <div className={classes.sliderRoot}>
+                                    <div className={classes.minValue}>
+                                      <span>
+                                        Min:
+                                        &nbsp;
+                                      </span>
+                                      <InputViewMin
+                                        sideBarIndex={sideBarIndex}
+                                        sideBarItem={sideBarItem}
+                                        sliderValue={sliderValue}
+                                        setSliderValue={setSliderValue}
+                                        toggleSlider={toggleSlider}
+                                      />
+                                    </div>
+                                    <div className={classes.maxValue}>
+                                      <span>
+                                        Max:
+                                        &nbsp;
+                                      </span>
+                                      <InputViewMax
+                                        sideBarIndex={sideBarIndex}
+                                        sideBarItem={sideBarItem}
+                                        sliderValue={sliderValue}
+                                        setSliderValue={setSliderValue}
+                                        toggleSlider={toggleSlider}
+                                      />
+                                    </div>
+                                    <Slider
+                                      value={typeof sliderValue[sideBarIndex] !== 'undefined' ? sliderValue[sideBarIndex]
+                                        : [
+                                          sideBarItem.checkboxItems.lowerBound,
+                                          sideBarItem.checkboxItems.upperBound,
+                                        ]}
+                                      defaultValue={[
                                         sideBarItem.checkboxItems.lowerBound,
                                         sideBarItem.checkboxItems.upperBound,
                                       ]}
-                                    defaultValue={[
-                                      sideBarItem.checkboxItems.lowerBound,
-                                      sideBarItem.checkboxItems.upperBound,
-                                    ]}
-                                    onChange={(event, value) => handleChangeSlider(
-                                      sideBarIndex,
-                                      value,
-                                    )}
-                                    onChangeCommitted={
+                                      onChange={(event, value) => handleChangeSlider(
+                                        sideBarIndex,
+                                        value,
+                                      )}
+                                      onChangeCommitted={
                                       (event, value) => handleChangeCommittedSlider(
                                         sideBarItem,
                                         value,
                                       )
                                     }
-                                    valueLabelDisplay="auto"
-                                    getAriaValueText={valuetext}
-                                    disableSwap
-                                    min={sideBarItem.checkboxItems.lowerBound}
-                                    max={sideBarItem.checkboxItems.upperBound}
-                                    classes={{
-                                      rail: classes.rail,
-                                      thumb: classes.thumb,
-                                      track: classes.track,
-                                    }}
-                                  />
-                                  <span className={classes.lowerBound}>
-                                    {sideBarItem.checkboxItems.lowerBound}
-                                  </span>
-                                  <span className={classes.upperBound}>
-                                    {sideBarItem.checkboxItems.upperBound}
-                                  </span>
-                                </div>
-                                <div>
-                                  {typeof sliderValue[sideBarIndex] !== 'undefined'
-                                    ? (sliderValue[sideBarIndex][0]
+                                      valueLabelDisplay="auto"
+                                      getAriaValueText={valuetext}
+                                      disableSwap
+                                      min={sideBarItem.checkboxItems.lowerBound}
+                                      max={sideBarItem.checkboxItems.upperBound}
+                                      classes={{
+                                        rail: classes.rail,
+                                        thumb: classes.thumb,
+                                        track: classes.track,
+                                      }}
+                                    />
+                                    <span className={classes.lowerBound}>
+                                      {sideBarItem.checkboxItems.lowerBound}
+                                    </span>
+                                    <span className={classes.upperBound}>
+                                      {sideBarItem.checkboxItems.upperBound}
+                                    </span>
+                                  </div>
+                                  <div>
+                                    {typeof sliderValue[sideBarIndex] !== 'undefined'
+                                      ? (sliderValue[sideBarIndex][0]
                                       > sideBarItem.checkboxItems.lowerBound
                                       || sliderValue[sideBarIndex][1]
                                       < sideBarItem.checkboxItems.upperBound)
@@ -738,9 +774,9 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                                       </div>
                                     ) : (
                                       <span />
-                                    )}
+                                      )}
+                                  </div>
                                 </div>
-                              </div>
                             )
                           }
                         </List>

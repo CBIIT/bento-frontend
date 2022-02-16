@@ -67,7 +67,7 @@ const styles = () => ({
   },
   searchContainer: {
     zIndex: 3,
-    paddingTop: '14px',
+    paddingTop: '15px',
     marginLeft: '8px',
   },
   subSectionSummaryText: {
