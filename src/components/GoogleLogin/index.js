@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { useGoogleLogin } from 'react-google-login';
 
@@ -11,20 +12,13 @@ const clientId = '196014713877-0d926jpdd691roubuc0kpu6r6ha9b9t5.apps.googleuserc
 function LoginHooks() {
   const onSuccess = (res) => {
     console.log('Login Success: currentUser:', res.profileObj);
-    sessionStorage.setItem('user', res.profileObj);
+    sessionStorage.setItem('user', JSON.stringify(res.profileObj));
 
     console.log(res);
-
-    alert(
-      `Logged in successfully welcome ${res.profileObj.name} .`,
-    );
   };
 
   const onFailure = (res) => {
     console.log('Login failed: res:', res);
-    alert(
-      'Failed to login. ',
-    );
   };
 
   const { signIn } = useGoogleLogin({
