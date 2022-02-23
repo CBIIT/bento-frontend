@@ -1,43 +1,106 @@
-/* eslint-disable no-console */
-import React from 'react';
-import { useGoogleLogin } from 'react-google-login';
+/* eslint-disable */
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-// const clientId = '707788443358-u05p46nssla3l8tmn58tpo9r5sommgks.apps.googleusercontent.com';
+class GoogleAuth extends Component {
 
-// nih
-const clientId = '196014713877-0d926jpdd691roubuc0kpu6r6ha9b9t5.apps.googleusercontent.com';
-// doddapaneni.ajay
-// const clientId = '357466149206-rs20avp7k08gsb0rbgla9mstqfic4hhb.apps.googleusercontent.com';
+  componentDidMount() {
+    window.gapi.load("auth2", () => {
+      window.gapi.auth2
+        .init({
+          // client_id: process.env.REACT_APP_GOOGLE_OAUTH2_CLIENT_ID,
+          clientId: '196014713877-0d926jpdd691roubuc0kpu6r6ha9b9t5.apps.googleusercontent.com'
+          // scope: "email",
+        })
+        .then(() => {
+          // create auth variable
+          this.auth = window.gapi.auth2.getAuthInstance();
+          // update state so that component will re-render
+          // this.onAuthChange(this.auth.isSignedIn.get());
+          // listen for changes to authentication status
+          // this.auth.isSignedIn.listen(this.onAuthChange);
+        });
+    });
+  }
 
-function LoginHooks() {
-  const onSuccess = (res) => {
-    console.log('Login Success: currentUser:', res.profileObj);
-    sessionStorage.setItem('user', JSON.stringify(res.profileObj));
+  // triggered when authentication status changes
+  onAuthChange = (isSignedIn) => {
+    if (isSignedIn) {
+      // this.props.signIn(this.auth.currentUser.get().getId());
+      console.log('I am signedin');
 
-    console.log(res);
+
+    } else {
+      // this.props.signOut();
+      console.log('I am signed out');
+
+    }
   };
 
-  const onFailure = (res) => {
-    console.log('Login failed: res:', res);
+  // manually trigger GAPI auth change
+  onSignInClick = () => {
+
+    this.auth.grantOfflineAccess().then(function(resp) {
+      var auth_code = resp.code;
+    });
+    // this.auth.signIn();
   };
 
-  const { signIn } = useGoogleLogin({
-    onSuccess,
-    onFailure,
-    clientId,
-    isSignedIn: true,
-    accessType: 'offline',
-    // responseType: 'code',
-    // prompt: 'consent',
-  });
+  signInCallback = (authResult) => {
+    if (authResult['code']) {
 
-  return (
-    // eslint-disable-next-line react/button-has-type
-    <button onClick={signIn} className="button">
+        // Hide the sign-in button now that the user is authorized, for example:
+        $('#signinButton').attr('style', 'display: none');
 
-      <span className="buttonText">Sign in with Google</span>
-    </button>
-  );
+        // Send the code to the server
+        (async () => {
+            const rawResponse = await fetch('/api/auth/login/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({code: authResult['code']})
+            });
+            const content = await rawResponse.json();
+
+            console.log(content);
+        })();
+    } else {
+        // There was an error.
+    }
 }
 
-export default LoginHooks;
+  onSignOutClick = () => {
+    this.auth.signOut();
+  };
+  
+
+  // helper function
+  renderAuthButton() {
+    if (this.props.isSignedIn === null) {
+      return null;
+    } else if (this.props.isSignedIn) {
+      return (
+        <button onClick={this.onSignOutClick} className="ui red google button">
+          <i className="google icon" />
+          Sign Out
+        </button>
+      );
+    } else {
+      return (
+        <button onClick={this.onSignInClick} className="ui red google button">
+          <i className="google icon" />
+          Sign In
+        </button>
+      );
+    }
+  }
+
+  render() {
+    return (
+        <>{this.renderAuthButton()}</>
+    );
+  }
+}
+export default GoogleAuth;

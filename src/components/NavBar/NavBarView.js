@@ -4,6 +4,8 @@ import { NavBar } from 'bento-components';
 import {
   navBarData, navBarCartData, navBarstyling,
 } from '../../bento/navigationBarData';
+// import Login from './loginButton';
+import Login from '../GoogleLogin';
 
 const BentoNavBar = ({ cartFieldIds }) => (
   <>
@@ -12,7 +14,10 @@ const BentoNavBar = ({ cartFieldIds }) => (
       navBarCartData={navBarCartData}
       navBarstyling={navBarstyling}
       numberOfCases={cartFieldIds.length || 0}
+      LoginComponent={Login}
     />
+    <Login />
+    <div>helo</div>
   </>
 );
 export default BentoNavBar;
