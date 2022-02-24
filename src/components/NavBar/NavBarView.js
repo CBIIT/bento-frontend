@@ -17,7 +17,6 @@ const BentoNavBar = ({ cartFieldIds }) => (
       LoginComponent={Login}
     />
     <Login />
-    <div>helo</div>
   </>
 );
 export default BentoNavBar;

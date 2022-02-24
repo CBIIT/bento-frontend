@@ -13,6 +13,7 @@ import {
   clearAllFilters,
 } from '../../pages/dashboardTab/store/dashboardReducer';
 import styles from './styles/SideBarViewStyle';
+import Login from '../GoogleLogin';
 
 if (resetIcon.src === '') {
   resetIcon.src = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg';
@@ -55,6 +56,7 @@ const SideBarContent = ({
                 divider: dividerRoot,
               }}
             >
+              <Login />
               <FacetFilter ref={searchRef} />
             </List>
           </div>
