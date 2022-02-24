@@ -1,7 +1,7 @@
 const styles = () => ({
   listPadding: {
-    paddingTop: '0px',
-    paddingBottom: '11px',
+    paddingTop: 0,
+    paddingBottom: 4,
   },
   backdrop: {
     zIndex: 99999,
@@ -55,6 +55,10 @@ const styles = () => ({
       },
     },
   },
+  deleteIcon: {
+    cursor: 'pointer',
+    marginTop: -4,
+  },
   inputRoot: {
     borderRadius: 10,
     marginBottom: '7px',
@@ -88,8 +92,9 @@ const styles = () => ({
   searchResultDetailText: {
     color: '#0D8662',
     lineHeight: '20px',
-    fontFamily: 'Lato italic',
+    fontFamily: 'Lato',
     fontSize: '11px',
+    fontStyle: 'italic',
   },
   searchBoxRoot: {
     width: '100%',

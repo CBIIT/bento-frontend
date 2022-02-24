@@ -127,7 +127,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
                     </span>
                   </div>
                   <div
-                    style={{ cursor: 'pointer', marginBottom: 5 }}
+                    className={classes.deleteIcon}
                     onClick={onDelete(v.title)}
                   >
                     <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
