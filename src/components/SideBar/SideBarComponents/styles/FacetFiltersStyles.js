@@ -64,6 +64,7 @@ const styles = () => ({
     fontSize: 20,
     fontWeight: 300,
     marginLeft: 10,
+    color: 'gray',
   },
   searchContainer: {
     zIndex: 3,
