@@ -978,6 +978,13 @@ export function sortAll() {
   });
 }
 
+function getCheckbox(data, mapping) {
+  const checkboxData = data[mapping].map((item) => {
+    return { name: item.group, isChecked: false, subjects: item.subjects };
+  });
+  return checkboxData;
+}
+
 /**
  *  updateFilteredAPIDataIntoCheckBoxData works for first time init Checkbox,
 that function transforms the data which returns from API into a another format
@@ -988,19 +995,19 @@ so it contains more information and easy for front-end to show it correctly.
  * @return {json}
  */
 
-function customCheckBox(data, facetSearchData1) {
+function customCheckBox(data, facetSearchData1, isEmpty) {
   const caseCountField = 'subjects';
   return (
     facetSearchData1.map((mapping) => ({
       groupName: mapping.label,
       checkboxItems: mapping.slider === true
         ? data[mapping.api]
-        : transformAPIDataIntoCheckBoxData(
+        : (isEmpty ? getCheckbox(data, mapping.apiForFiltering) : transformAPIDataIntoCheckBoxData(
           data[mapping.api],
           mapping.field,
           caseCountField,
           mapping.customNumberSort,
-        ),
+        )),
       datafield: mapping.datafield,
       show: mapping.show,
       slider: mapping.slider,
@@ -1174,7 +1181,10 @@ const reducers = {
     };
   },
   LOCAL_SEARCH: (state, item) => {
-    const checkboxData = customCheckBox(item.result.data, facetSearchData);
+    const isEmpty = item.subjectResponse.data
+      && item.subjectResponse.data.subjectOverview
+      && item.subjectResponse.data.subjectOverview.length < 1;
+    const checkboxData = customCheckBox(item.result.data, facetSearchData, isEmpty);
     const newCheckboxData = [...checkboxData];
     checkboxData.map((val, idx) => {
       if (item.variables && item.variables[val.datafield] && item.variables[val.datafield].length) {
