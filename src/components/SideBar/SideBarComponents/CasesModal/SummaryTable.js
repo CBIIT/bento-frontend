@@ -11,14 +11,14 @@ const useStyles = makeStyles(() => ({
     width: '-webkit-fill-available',
     backgroundColor: '#fff',
     padding: 14,
-    marginBottom: 10,
+    marginBottom: 16,
   },
   button: {
     fontSize: 12,
     fontWeight: 500,
     color: '#00387A',
     backgroundColor: '#fff',
-    borderBottom: '4px solid #00387A',
+    borderBottom: '4px solid #437bbe',
     cursor: 'pointer',
     padding: '11px 22px',
     fontFamily: 'Lato',
@@ -35,14 +35,14 @@ const useStyles = makeStyles(() => ({
     textTransform: 'uppercase',
   },
   btnContainer: {
-    marginBottom: 10,
+    marginBottom: 14,
   },
   summary: {
     color: '#0D4A94',
     fontSize: 14,
     textAlign: 'center',
     margin: 0,
-    paddingTop: 31,
+    paddingTop: 10,
     fontFamily: 'Lato',
     fontStyle: 'italic',
     fontWeight: 'bold',
@@ -71,6 +71,8 @@ const useStyles = makeStyles(() => ({
     textAlign: 'center',
     paddingBottom: 10,
     fontFamily: 'lato',
+    fontWeight: 100,
+    letterSpacing: 0.5,
   },
   header: {
     fontSize: 12,
@@ -78,6 +80,8 @@ const useStyles = makeStyles(() => ({
     textAlign: 'center',
     fontFamily: 'lato',
     paddingBottom: 10,
+    fontWeight: 100,
+    letterSpacing: 0.5,
   },
   programHeading: {
     textAlign: 'center',
@@ -161,11 +165,11 @@ const SummaryTable = (props) => {
           : (
             unmatchedContent.length ? (
               <table className={classes.tableContainer}>
-                <th className={classes.heading} style={{ textAlign: 'left' }}>SUBMITTED CASE ID</th>
-                <tr className={classes.heading} style={{ width: '180' }}><Divider className={classes.divider} /></tr>
+                <th className={classes.heading} style={{ textAlign: 'left', paddingLeft: 50 }}>SUBMITTED CASE ID</th>
+                <tr className={classes.heading} style={{ width: '180' }}><Divider className={classes.divider} style={{ width: '48%' }} /></tr>
                 {unmatchedContent.map((unmatched, id) => (
                   <tr key={id} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>
-                    <td className={classes.tableColumn} style={{ textAlign: 'left' }}>{unmatched}</td>
+                    <td className={classes.tableColumn} style={{ textAlign: 'left', paddingLeft: 40 }}>{unmatched}</td>
                   </tr>
                 ))}
               </table>
