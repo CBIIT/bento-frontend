@@ -1,5 +1,10 @@
 import React, { useContext } from 'react';
 import { useGoogleLogin } from 'react-use-googlelogin';
+import env from '../../utils/env';
+import { signInRed, signOutRed } from './state/loginReducer';
+
+const AUTH_API = env.REACT_APP_AUTH_API;
+const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const createContext = () => {
   const ctx = React.createContext();
@@ -23,7 +28,7 @@ export const GoogleAuthProvider = ({ children }) => {
     signOut,
     isSignedIn,
   } = useGoogleLogin({
-    clientId: '196014713877-0d926jpdd691roubuc0kpu6r6ha9b9t5.apps.googleusercontent.com',
+    clientId: GOOGLE_CLIENT_ID,
   });
 
   const onSignInClick = () => {
@@ -33,7 +38,7 @@ export const GoogleAuthProvider = ({ children }) => {
 
         // Send the code to the server
         (async () => {
-          const rawResponse = await fetch('http://localhost:4010/api/auth/login', {
+          const rawResponse = await fetch(`${AUTH_API}/api/auth/login`, {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -42,29 +47,30 @@ export const GoogleAuthProvider = ({ children }) => {
             body: JSON.stringify({ code: resp }),
           });
           const content = await rawResponse.json();
-          sessionStorage.setItem('username', content.name);
+          localStorage.setItem('username', content.name);
+          signInRed(content.name);
         })();
       } else {
         // There was an error.
       }
-    }).catch((e) => {
-      alert(e.message);
-      console.error(e.message); // "oh, no!"
+    }).catch(() => {
     });
     // this.auth.signIn();
   };
 
   const onSignOut = () => {
     (async () => {
-      const rawResponse = await fetch('http://localhost:4010/api/auth/logout', {
+      const rawResponse = await fetch(`${AUTH_API}/api/auth/logout`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
       });
-      const content = await rawResponse.json();
-      console.log(content);
+      await rawResponse.json();
+      localStorage.removeItem('username');
+      signOutRed();
+
       signOut();
     })();
     // this.auth.signIn();

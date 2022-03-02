@@ -5,8 +5,7 @@ import { NavBar } from 'bento-components';
 import {
   navBarData, navBarCartData, navBarstyling,
 } from '../../bento/navigationBarData';
-import Login from '../GoogleAuth/test';
-import WrapRootElement from '../GoogleAuth/wrapRootElement';
+import Login from '../GoogleAuth/loginComponent';
 
 const BentoNavBar = ({ cartFieldIds }) => (
   <>

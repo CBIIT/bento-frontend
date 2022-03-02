@@ -3,6 +3,8 @@ import ReduxThunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import layout from '../components/Layout/LayoutState';
+// eslint-disable-next-line import/no-cycle
+
 import dashboard from '../pages/dashboard/dashboardState';
 import stats from '../components/Stats/StatsState';
 
