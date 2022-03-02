@@ -8,10 +8,11 @@ const styles = () => ({
     alignItems: 'center',
   },
   uploaderComponent: {
-    height: '35px',
-    alignSelf: 'center',
-    marginRight: '10px',
-    marginBottom: '10px',
+    height: '38px',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '22px',
   },
   fileName: {
     marginLeft: '101px',
@@ -30,6 +31,8 @@ const styles = () => ({
     position: 'absolute',
     backgroundColor: 'blue',
     marginBottom: '12px',
+    width: 143,
+    boxShadow: 'none',
   },
 });
 

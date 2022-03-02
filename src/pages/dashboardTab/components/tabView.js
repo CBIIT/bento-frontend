@@ -262,6 +262,7 @@ const TabView = ({
       <Grid container>
         <Grid item xs={12} id={tableID}>
           <CustomDataTable
+            key={data.length}
             data={data}
             columns={getColumns(customColumn, classes, data, externalLinkIcon, '', () => {}, DocumentDownload, globalData.replaceEmptyValueWith)}
             options={finalOptions}

@@ -29,8 +29,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   closeIcon: {
-    fontFamily: 'lato',
-    fontWeight: 300,
     cursor: 'pointer',
   },
   modalTitle: {
@@ -38,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: '1px solid rgba(#000,0.3)',
     fontSize: 20,
     color: '#4D6787',
-    padding: '17px 33px 12px 33px',
+    padding: '16px 32px 12px 32px',
     margin: '0px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -60,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   uploadFile: {
-    width: '49%',
+    width: 315,
     border: '1px solid white',
     margin: '20px 4px',
     padding: 10,
@@ -77,16 +75,17 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: -41,
+    marginLeft: -39,
     backgroundColor: '#CCD4DD',
     fontFamily: 'Lato',
     fontWeight: 'bold',
+    marginTop: 5,
   },
   textSection: {
-    width: '49%',
+    width: 315,
     border: '1px solid white',
     margin: '20px 4px',
-    padding: '7px 25px 13px 29px',
+    padding: '10px 25px 13px 29px',
   },
   modalFooter: {
     borderTop: '1px solid rgba(#000,0.3)',
@@ -121,19 +120,20 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#437BBE',
   },
   modalRoot: {
-    background: 'rgba(0,0,0,0.2)',
+    background: 'green',
   },
   textArea: {
     height: '151px !important',
     width: '100%',
     border: '1.5px solid #437BBE',
     borderRadius: 10,
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: 'Lato',
     fontStyle: 'italic',
     color: '#437BBE',
+    padding: '9px 13px',
     '&::placeholder': {
-      fontSize: 11,
+      fontSize: 15,
       fontFamily: 'Lato',
       fontStyle: 'italic',
       color: '#437BBE',
@@ -154,17 +154,12 @@ const useStyles = makeStyles((theme) => ({
   horizontal: {
     height: 1,
     width: 214,
-    border: '1px solid #FFFFFF',
     backgroundColor: '#FFFFFF',
-    marginTop: 10,
+    marginTop: 30,
   },
   fileUploader: {
-    justifyContent: 'center',
-    marginTop: 5,
-    display: 'block',
-  },
-  uploaderComponent: {
-    paddingRight: 70,
+    display: 'flex',
+    flexDirection: 'column',
   },
   fileName: {
     margin: 'unset',
@@ -286,7 +281,12 @@ const FacetModal = ({
       <div className={classes.paper}>
         <h1 className={classes.modalTitle}>
           <span>Upload Case Set</span>
-          <span className={classes.closeIcon} onClick={cancelModal}>x</span>
+          <span
+            className={classes.closeIcon}
+            onClick={cancelModal}
+          >
+            <img style={{ height: 10 }} src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
+          </span>
         </h1>
         <div className={classes.modalContainer}>
 
