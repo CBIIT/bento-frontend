@@ -567,8 +567,9 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                         classes={{ root: classes.expansionPanelDetailsRoot }}
                       >
                         <List component="div" disablePadding dense>
-                          {sideBarItem.slider !== true
-                            && (
+                          {(sideBarItem.slider !== true && sideBarItem.checkboxItems
+                            && sideBarItem.checkboxItems.length)
+                            ? (
                               <div
                                 className={classes.sortGroup}
                               >
@@ -607,6 +608,15 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                                   }}
                                 >
                                   {sortLabels.sortByCount}
+                                </span>
+                              </div>
+                            ) : (
+                              <div className={classes.sortGroup}>
+                                <span
+                                  className={classes.sortGroupItem}
+                                  style={{ color: getSortButtonColor(sideBarItem, 'alphabet'), paddingLeft: 20 }}
+                                >
+                                  No data for this field
                                 </span>
                               </div>
                             )}

@@ -298,6 +298,11 @@ class ServerPaginatedTableView extends React.Component {
       count,
       rowsPerPage,
       rowsPerPageOptions: [],
+      textLabels: {
+        body: {
+          noMatch: 'No Matching Records Found',
+        },
+      },
       customToolbar: this.props.tableDownloadCSV.defaultFullTableDownload ? () => (
         this.props.tableDownloadCSV && (
           <CSVDownloadToolbar
