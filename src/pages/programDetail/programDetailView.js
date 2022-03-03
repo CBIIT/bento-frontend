@@ -12,7 +12,7 @@ import {
   getColumns,
   CustomActiveDonut,
 } from 'bento-components';
-import globalData from '../../bento/globalData';
+import globalData from '../../bento/siteWideConfig';
 import {
   pageTitle, table, externalLinkIcon,
   programDetailIcon, breadCrumb, aggregateCount,

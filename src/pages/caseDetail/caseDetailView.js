@@ -6,7 +6,7 @@ import {
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { getOptions, getColumns } from 'bento-components';
-import globalData from '../../bento/globalData';
+import globalData from '../../bento/siteWideConfig';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import GridWithFooter from '../../components/GridWithFooter/GridView';
