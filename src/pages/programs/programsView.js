@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { CustomDataTable, getOptions, getColumns } from 'bento-components';
-import globalData from '../../bento/globalData';
+import globalData from '../../bento/siteWideConfig';
 import {
   table, programListingIcon, externalLinkIcon,
 } from '../../bento/programData';

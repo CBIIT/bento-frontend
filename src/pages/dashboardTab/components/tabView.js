@@ -19,7 +19,7 @@ import CustomDataTable from '../../../components/serverPaginatedTable/serverPagi
 import { addToCart, getCart, cartWillFull } from '../../fileCentricCart/store/cart';
 import AddToCartAlertDialog from '../../../components/AddToCartDialog';
 import DocumentDownload from '../../../components/DocumentDownload/DocumentDownloadView';
-import globalData from '../../../bento/globalData';
+import globalData from '../../../bento/siteWideConfig';
 
 const getOverviewQuery = (api) => (api === 'GET_SAMPLES_OVERVIEW_QUERY' ? GET_SAMPLES_OVERVIEW_QUERY : api === 'GET_FILES_OVERVIEW_QUERY' ? GET_FILES_OVERVIEW_QUERY : GET_CASES_OVERVIEW_QUERY);
 
