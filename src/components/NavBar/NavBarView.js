@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavBar } from 'bento-components';
-// import { useSelector } from 'react-redux';
 import {
   navBarData, navBarCartData, navBarstyling,
 } from '../../bento/navigationBarData';
+import Login from '../GoogleAuth/loginComponent';
 
 const BentoNavBar = ({ cartFieldIds }) => (
   <>
@@ -12,6 +12,7 @@ const BentoNavBar = ({ cartFieldIds }) => (
       navBarCartData={navBarCartData}
       navBarstyling={navBarstyling}
       numberOfCases={cartFieldIds.length || 0}
+      LoginComponent={Login}
     />
   </>
 );
