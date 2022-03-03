@@ -1,7 +1,5 @@
-/* eslint-disable */
 import React from 'react';
 import { NavBar } from 'bento-components';
-// import { useSelector } from 'react-redux';
 import {
   navBarData, navBarCartData, navBarstyling,
 } from '../../bento/navigationBarData';

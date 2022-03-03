@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import store from '../../../store';
 
 const storeKey = 'login';
