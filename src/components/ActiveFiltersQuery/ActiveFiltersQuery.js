@@ -370,7 +370,7 @@ const styles = () => ({
   queryWrapper: {
     height: '120px',
     backgroundColor: '#f1f1f1',
-    padding: '14px 14px 0px 29px',
+    padding: '14px 14px 0px 35px',
     overflowY: 'auto',
   },
   queryContainer: {
@@ -426,7 +426,7 @@ const styles = () => ({
   },
   clearQueryButton: {
     margin: '1px',
-    marginLeft: 8,
+    marginLeft: -6,
     fontWeight: 600,
     fontSize: '13px',
     color: '#fff',

@@ -1167,7 +1167,7 @@ const reducers = {
     let checkboxData1 = setSelectedFilterValues(updatedCheckboxData1, item.allFilters);
     updatedCheckboxData1 = updatedCheckboxData1.concat(rangeData);
     checkboxData1 = checkboxData1.concat(rangeData);
-    fetchDataForDashboardTab(state.currentActiveTab, item.allFilters);
+    fetchDataForDashboardTab(tabIndex[0].title, item.allFilters);
     return {
       ...state,
       setSideBarLoading: false,
