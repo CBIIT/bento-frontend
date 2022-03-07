@@ -47,14 +47,14 @@ export const navBarData = [
     link: '/home',
   },
   {
-    labelText: 'programs',
-    type: 'link',
-    link: '/programs',
-  },
-  {
     labelText: 'explore',
     type: 'link',
     link: '/explore',
+  },
+  {
+    labelText: 'programs',
+    type: 'link',
+    link: '/programs',
   },
   {
     labelText: 'about',
