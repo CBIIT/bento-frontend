@@ -7,14 +7,14 @@ import {
 const AfterSignIn = ({
   classes, userName, signoutLink,
 }) => {
-  const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
+  const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(true);
 
   function handleClick() {
     setDisplayDropDownMenu(true);
   }
 
   function handleMoveOut() {
-    setDisplayDropDownMenu(false);
+    setDisplayDropDownMenu(true);
   }
 
   // function dropdownMenuClickEvent() {
@@ -33,9 +33,12 @@ const AfterSignIn = ({
       </Button>
       {displayDropDownMenu
         ? (
-          <Paper>
-            <Button onClick={signoutLink}>
-              signout
+          <Paper className={classes.paper}>
+            <Button
+              onClick={signoutLink}
+              classes={{ label: classes.textColor, text: classes.paddding0 }}
+            >
+              log out
             </Button>
           </Paper>
         ) : ''}
@@ -58,8 +61,8 @@ const styles = () => ({
       borderRadius: '0',
     },
   },
-  buttonRoot: {
-    padding: '9px 20px 0px 20px',
+  buttonRootNoRightPadding: {
+    padding: '9px 0px 0px 20px',
   },
   buttonRootClicked: {
     borderBottom: '2px solid #FFFFFF',
@@ -68,8 +71,27 @@ const styles = () => ({
     fontSize: '18px',
     margin: '0px 0px 0px 0px',
   },
+  paddding0: {
+    paddding: '0px',
+  },
   aboutMenu: {
-    display: 'inline-grid',
+    display: 'inline-block',
+  },
+  textColor: {
+    color: '#41A7FF',
+    fontSize: '17px',
+    textTrasform: 'normal',
+    textTransform: 'capitalize',
+  },
+  paper: {
+    background: '#142D64',
+    width: '120px',
+    paddingLeft: '20px',
+    position: 'absolute',
+    fontFamily: 'Nunito',
+    fontWeight: 600,
+    borderRadius: '0',
+    marginTop: '8px',
   },
 });
 

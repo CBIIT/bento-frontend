@@ -22,7 +22,7 @@ const styles = () => ({
     },
   },
   buttonRootNoRightPadding: {
-    padding: '9px 20px 0px 20px',
+    padding: '9px 0px 0px 20px',
   },
 });
 
