@@ -2,12 +2,13 @@ import React from 'react';
 import {
   Modal,
   Button,
-  Tooltip,
   makeStyles,
   Typography,
   TextareaAutosize,
+  IconButton,
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
+import { ToolTip } from 'bento-components';
 import {
   uploadBulkModalSearch, getAllSubjectIds,
 } from '../../../../pages/dashboardTab/store/dashboardReducer';
@@ -70,12 +71,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 17,
     border: '1px solid #fff',
     borderRadius: '50%',
-    padding: 8,
+    padding: '7px 8px 9px 8px',
     width: 42,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: -39,
+    marginLeft: -36,
     backgroundColor: '#CCD4DD',
     fontFamily: 'Lato',
     fontWeight: 'bold',
@@ -180,6 +181,20 @@ const useStyles = makeStyles((theme) => ({
     height: 14,
     cursor: 'pointer',
   },
+  customTooltip: {
+    border: '#03A383 1px solid',
+  },
+  customArrow: {
+    '&::before': {
+      border: '#03A383 1px solid',
+    },
+  },
+  helpIcon: {
+    zIndex: '600',
+  },
+  helpIconButton: {
+    marginBottom: 10,
+  },
 }));
 
 const FacetModal = ({
@@ -268,6 +283,20 @@ const FacetModal = ({
     setUploadedFileName(fileName);
   };
 
+  const getToolTip = (message) => (
+    <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={message} arrow placement="bottom">
+      <IconButton
+        aria-label="help"
+        className={classes.helpIconButton}
+      >
+        <HelpIcon
+          className={classes.helpIcon}
+          fontSize="small"
+        />
+      </IconButton>
+    </ToolTip>
+  );
+
   return (
     <Modal
       {...modalProps}
@@ -285,7 +314,7 @@ const FacetModal = ({
             className={classes.closeIcon}
             onClick={cancelModal}
           >
-            <img style={{ height: 10 }} src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
+            <img style={{ height: 10, marginBottom: 2 }} src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
           </span>
         </h1>
         <div className={classes.modalContainer}>
@@ -295,9 +324,7 @@ const FacetModal = ({
               <Typography>
                 <p className={classes.listTitle}>Add a list of Case IDs:</p>
               </Typography>
-              <Tooltip title="Add the case indentifier." placement="left-start" className={classes.tooltipIcon}>
-                <HelpIcon />
-              </Tooltip>
+              {getToolTip('Add the case indentifier.')}
             </div>
             <TextareaAutosize
               value={fileContent}
@@ -313,9 +340,7 @@ const FacetModal = ({
               <Typography>
                 <p className={classes.listTitle}>Choose a file to upload:</p>
               </Typography>
-              <Tooltip title="Add the case indentifier." placement="left-start" className={classes.tooltipIcon}>
-                <HelpIcon />
-              </Tooltip>
+              {getToolTip('Add the case indentifier.')}
             </div>
             <FileUploader
               clearData={clearData}
