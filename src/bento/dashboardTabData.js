@@ -329,7 +329,7 @@ export const tabContainers = [
           // datafield where file case id exists in the table which is used to get file information
           caseIdColumn: 'subject_id',
           // Unauthenticated lock icon
-          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/BENTO-1556/bento/images/icons/svgs/Access_Lock.svg',
+          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Access_Lock.svg',
           // file download icon
           iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
           // file preview icon
