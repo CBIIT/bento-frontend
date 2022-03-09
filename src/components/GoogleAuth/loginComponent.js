@@ -45,7 +45,7 @@ const IndexPage = ({ classes }) => {
           onClick={() => signIn()}
           classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
         >
-          Sign in
+          Login
         </Button>
       )}
     </>

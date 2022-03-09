@@ -28,7 +28,10 @@ const AfterSignIn = ({
       onMouseLeave={handleMoveOut}
       className={classes.aboutMenu}
     >
-      <Button classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}>
+      <Button
+        classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
+        disableRipple
+      >
         {userName}
       </Button>
       {displayDropDownMenu
@@ -37,8 +40,9 @@ const AfterSignIn = ({
             <Button
               onClick={signoutLink}
               classes={{ label: classes.textColor, text: classes.paddding0 }}
+              disableRipple
             >
-              log out
+              logout
             </Button>
           </Paper>
         ) : ''}
