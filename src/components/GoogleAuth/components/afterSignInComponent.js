@@ -7,14 +7,14 @@ import {
 const AfterSignIn = ({
   classes, userName, signoutLink,
 }) => {
-  const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(true);
+  const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
 
   function handleClick() {
     setDisplayDropDownMenu(true);
   }
 
   function handleMoveOut() {
-    setDisplayDropDownMenu(true);
+    setDisplayDropDownMenu(false);
   }
 
   // function dropdownMenuClickEvent() {
