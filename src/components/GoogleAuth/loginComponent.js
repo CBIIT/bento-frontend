@@ -39,7 +39,7 @@ const IndexPage = ({ classes }) => {
     <>
       {globalData.enableAuthentication && (typeof globalData.authEndPoint === 'undefined' || globalData.authEndPoint.includes('google') || globalData.authEndPoint.includes('Google') || globalData.authEndPoint === []) && (
       <>
-        { (isSignedIn) ? (
+        { (isSignedIn && userName !== undefined && typeof userName !== 'undefined') ? (
           <>
             <AfterSignInComponent userName={userName} signoutLink={signOut} />
           </>
