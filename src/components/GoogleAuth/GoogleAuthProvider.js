@@ -45,8 +45,11 @@ export const GoogleAuthProvider = ({ children }) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ code: resp }),
+          }).then((response) => response.json()).catch(() => {
           });
-          const content = await rawResponse.json();
+
+          if (!rawResponse) return;
+          const content = await rawResponse;
           localStorage.setItem('username', content.name);
           signInRed(content.name);
         })();
