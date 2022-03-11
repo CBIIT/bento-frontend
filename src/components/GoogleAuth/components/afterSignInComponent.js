@@ -95,7 +95,6 @@ const styles = () => ({
     fontFamily: 'Nunito',
     fontWeight: 600,
     borderRadius: '0',
-    marginTop: '8px',
   },
 });
 

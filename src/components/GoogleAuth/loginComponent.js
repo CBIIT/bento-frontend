@@ -6,6 +6,7 @@ import {
 import { useSelector } from 'react-redux';
 import { useGoogleAuth } from './GoogleAuthProvider';
 import AfterSignInComponent from './components/afterSignInComponent';
+import globalData from '../../bento/siteWideConfig';
 
 // styles
 const styles = () => ({
@@ -36,17 +37,21 @@ const IndexPage = ({ classes }) => {
 
   return (
     <>
-      {(isSignedIn) ? (
-        <>
-          <AfterSignInComponent userName={userName} signoutLink={signOut} />
-        </>
-      ) : (
-        <Button
-          onClick={() => signIn()}
-          classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
-        >
-          Login
-        </Button>
+      {globalData.enableAuthentication && (typeof globalData.authEndPoint === 'undefined' || globalData.authEndPoint.includes('google') || globalData.authEndPoint.includes('Google') || globalData.authEndPoint === []) && (
+      <>
+        { (isSignedIn && userName !== undefined && typeof userName !== 'undefined') ? (
+          <>
+            <AfterSignInComponent userName={userName} signoutLink={signOut} />
+          </>
+        ) : (
+          <Button
+            onClick={() => signIn()}
+            classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
+          >
+            Login
+          </Button>
+        )}
+      </>
       )}
     </>
   );

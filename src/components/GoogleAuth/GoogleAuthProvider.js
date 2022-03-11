@@ -45,8 +45,11 @@ export const GoogleAuthProvider = ({ children }) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ code: resp }),
+          }).then((response) => response.json()).catch(() => {
           });
-          const content = await rawResponse.json();
+
+          if (!rawResponse) return;
+          const content = await rawResponse;
           localStorage.setItem('username', content.name);
           signInRed(content.name);
         })();
@@ -60,18 +63,19 @@ export const GoogleAuthProvider = ({ children }) => {
 
   const onSignOut = () => {
     (async () => {
-      const rawResponse = await fetch(`${AUTH_API}/api/auth/logout`, {
+      localStorage.removeItem('username');
+      signOutRed();
+      await fetch(`${AUTH_API}/api/auth/logout`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-      });
-      await rawResponse.json();
-      localStorage.removeItem('username');
-      signOutRed();
-
-      signOut();
+      }).then(() => {
+        signOut();
+      })
+        .catch(() => {
+        });
     })();
     // this.auth.signIn();
   };
