@@ -80,21 +80,23 @@ const styles = () => ({
   },
   aboutMenu: {
     display: 'inline-block',
+    height: '39px',
   },
   textColor: {
-    color: '#41A7FF',
-    fontSize: '17px',
+    color: '#ffffff',
+    fontSize: '16px',
     textTrasform: 'normal',
     textTransform: 'capitalize',
   },
   paper: {
-    background: '#142D64',
+    background: '#465F96',
     width: '120px',
     paddingLeft: '20px',
     position: 'absolute',
     fontFamily: 'Nunito',
     fontWeight: 600,
     borderRadius: '0',
+    marginTop: '6px',
   },
 });
 
