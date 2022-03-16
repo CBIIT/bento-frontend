@@ -57,7 +57,7 @@ const Uploader = ({
           Browse
         </Button>
       </div>
-      <div className={classes.filesection} id="localFIndPopUpFileName">
+      <div className={classes.filesection} id="localFindPopUpFileName">
         {
           fileName
             ? (
