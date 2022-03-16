@@ -496,13 +496,14 @@ export const FacetPanelComponent = ({ classes }, ref) => {
                             disableElevation
                             onClick={() => setShowCasesModal(true)}
                             className={classes.uploadButton}
+                            id="localFindUploadCaseSetButton"
                           >
                             { bulkUpload.subject_ids.length !== 0 ? 'View Case Set' : 'Upload Case Set' }
                             <span className={classes.iconSpan}>
                               <img
                                 className={classes.uploadIcon}
                                 src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
-                                alt="previous button"
+                                alt="upload button icon"
                               />
 
                             </span>
