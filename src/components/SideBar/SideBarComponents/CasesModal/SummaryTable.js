@@ -114,8 +114,11 @@ const SummaryTable = (props) => {
   const [isMatched, setIsMatched] = React.useState(true);
 
   return (
-    <div className={classes.summaryContainer}>
-      <p className={classes.summary}>
+    <div
+      className={classes.summaryContainer}
+      id="uploadCaseSetSummarySection"
+    >
+      <p className={classes.summary} id="uploadCaseSetSummaryCount">
         {`${matchedContent.length + unmatchedContent.length} submitted Case IDs mapped to ${matchedContent.length} unique Bento Case IDs`}
       </p>
       <p className={classes.title}>
@@ -126,21 +129,29 @@ const SummaryTable = (props) => {
         <span
           className={isMatched ? classes.button : classes.unselectedButton}
           onClick={() => setIsMatched(true)}
+          id="uploadCaseSetMatched"
         >
-          {`Matched - ${matchedContent.length}`}
+          <span>Matched&nbsp;-&nbsp;</span>
+          <span id="uploadCaseSetMatchedCount">
+            {`${matchedContent.length}`}
+          </span>
         </span>
         <span
           className={!isMatched ? classes.button : classes.unselectedButton}
           onClick={() => setIsMatched(false)}
+          id="uploadCaseSetUnMatched"
         >
-          {`Unmatched - ${unmatchedContent.length}`}
+          <span>Unmatched&nbsp;-&nbsp;</span>
+          <span id="uploadCaseSetUnMatchedCount">
+            {`${unmatchedContent.length}`}
+          </span>
         </span>
       </div>
       <div className={classes.tableBox}>
         {isMatched ? (
           matchedContent.length ? (
-            <table className={classes.tableContainer}>
-              <tr>
+            <table className={classes.tableContainer} id="uploadCaseSetMatchedTable">
+              <tr id="uploadCaseSetMatchedHeader">
                 <th className={classes.header}>SUBMITTED CASE ID</th>
                 <td className={classes.emptyCell} />
                 <th className={classes.header}>ASSOCIATED PROGRAM</th>
@@ -164,8 +175,8 @@ const SummaryTable = (props) => {
         )
           : (
             unmatchedContent.length ? (
-              <table className={classes.tableContainer}>
-                <th className={classes.heading} style={{ textAlign: 'left', paddingLeft: 50 }}>SUBMITTED CASE ID</th>
+              <table className={classes.tableContainer} id="uploadCaseSetUnMatchedTable">
+                <th id="uploadCaseSetUnMatchedHeader" className={classes.heading} style={{ textAlign: 'left', paddingLeft: 50 }}>SUBMITTED CASE ID</th>
                 <tr className={classes.heading} style={{ width: '180' }}><Divider className={classes.divider} style={{ width: '48%' }} /></tr>
                 {unmatchedContent.map((unmatched, id) => (
                   <tr key={id} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>

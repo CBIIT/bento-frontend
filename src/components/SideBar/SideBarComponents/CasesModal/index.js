@@ -175,6 +175,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    paddingTop: '16px',
   },
   refresh: {
     color: '#1F2F50',
@@ -359,6 +360,8 @@ const FacetModal = ({
             onClick={cancelModal}
             style={{ backgroundColor: '#566672' }}
             className={classes.button}
+            id="uploadCaseSetCancel"
+
           >
             Cancel
           </Button>
@@ -368,6 +371,7 @@ const FacetModal = ({
             onClick={clearData}
             style={{ backgroundColor: '#437BBE' }}
             className={classes.button}
+            id="uploadCaseSetClear"
           >
             Clear
           </Button>
@@ -377,6 +381,7 @@ const FacetModal = ({
             onClick={submitCase}
             style={{ backgroundColor: '#03A383' }}
             className={classes.button}
+            id="uploadCaseSetSubmit"
           >
             Submit
           </Button>

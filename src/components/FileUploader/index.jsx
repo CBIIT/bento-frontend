@@ -49,11 +49,15 @@ const Uploader = ({
           className={classes.uploadInput}
           value=""
         />
-        <Button variant="contained" className={classes.uploadButton}>
+        <Button
+          id="uploadCaseSetBrowse"
+          variant="contained"
+          className={classes.uploadButton}
+        >
           Browse
         </Button>
       </div>
-      <div className={classes.filesection}>
+      <div className={classes.filesection} id="localFIndPopUpFileName">
         {
           fileName
             ? (

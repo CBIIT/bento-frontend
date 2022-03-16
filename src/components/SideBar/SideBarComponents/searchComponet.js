@@ -106,7 +106,7 @@ const LocalSearchComponent = ({ classes, type }, ref) => {
     <>
       <div>
         <div>
-          <List classes={{ padding: classes.listPadding }}>
+          <List classes={{ padding: classes.listPadding }} id="localFindCaseDropdown">
             {value.slice().reverse().map((v, index) => (
               <>
                 <Divider
