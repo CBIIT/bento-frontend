@@ -118,69 +118,63 @@ class ServerPaginatedTableView extends React.Component {
     });
   }
 
-    // mock async function
-    xhrRequest = (url, page, sortOrder = {}) => new Promise((resolve) => {
-      // mock page data
-      let fullData = this.getSrcData() !== {} ? this.getSrcData() : [{}];
-      // console.log(fullData);
-      // mock record count from server - normally this would be a number attached to the return data
-      const total = 60;
-      const sortField = sortOrder.name;
-      const sortDir = sortOrder.direction;
+  // mock async function
+  xhrRequest = (url, page, sortOrder = {}) => new Promise((resolve) => {
+    // mock page data
+    let fullData = this.getSrcData() !== {} ? this.getSrcData() : [{}];
+    // mock record count from server - normally this would be a number attached to the return data
+    const total = 60;
+    const sortField = sortOrder.name;
+    const sortDir = sortOrder.direction;
 
-      if (sortField) {
-        fullData = fullData.sort((a, b) => {
-          if (a[sortField] < b[sortField]) {
-            return 1 * (sortDir === 'asc' ? -1 : 1);
-          } if (a[sortField] > b[sortField]) {
-            return -1 * (sortDir === 'asc' ? -1 : 1);
-          }
-          return 0;
-        });
-      }
-
-      // eslint-disable-next-line max-len
-      const localPage = page;
-      /* const srcData = fullData.slice(
-        page * this.state.rowsPerPage,
-        (page + 1) * this.state.rowsPerPage,
-      ); */
-      const srcData = fullData;
-      if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage && this.props.localRowsPerPage === null) {
-        this.changePage(0, {});
-      } else {
-        if (this.props.count < 10) {
-          this.setState({
-            rowsPerPage: 10,
-          });
+    if (sortField) {
+      fullData = fullData.sort((a, b) => {
+        if (a[sortField] < b[sortField]) {
+          return 1 * (sortDir === 'asc' ? -1 : 1);
+        } if (a[sortField] > b[sortField]) {
+          return -1 * (sortDir === 'asc' ? -1 : 1);
         }
-        const data = srcData;
-        if (this.props.updateSortOrder) {
-          localStorage.setItem('dataLength', String(srcData.length));
-          localStorage.setItem('data', JSON.stringify(srcData));
-        }
-        setTimeout(() => {
-          resolve({
-            data, total, localPage,
-          });
-        }, 500);
-      }
-    })
-
-    // set this.props.columns display true/false depending on updatedColumns from
-    // onViewColumnsChange
-    setUpdatedColumnsDisplay = (stateUpdatedColumns) => {
-      stateUpdatedColumns.map((updatedColumns) => {
-        const index = this.props.columns.map((e) => e.name)
-          .indexOf(updatedColumns.label);
-        if (updatedColumns.status === 'remove') {
-          this.props.columns[index].options.display = false;
-        } else {
-          this.props.columns[index].options.display = true;
-        }
-        return '';
+        return 0;
       });
     }
+
+    const localPage = page;
+    const srcData = fullData;
+    if (srcData !== 'undefined' && srcData.length !== this.state.rowsPerPage && this.props.count > this.state.rowsPerPage && this.props.localRowsPerPage === null) {
+      this.changePage(0, {});
+    } else {
+      if (this.props.count < 10) {
+        this.setState({
+          rowsPerPage: 10,
+        });
+      }
+      const data = srcData;
+      if (this.props.updateSortOrder) {
+        localStorage.setItem('dataLength', String(srcData.length));
+        localStorage.setItem('data', JSON.stringify(srcData));
+      }
+      setTimeout(() => {
+        resolve({
+          data, total, localPage,
+        });
+      }, 500);
+    }
+  })
+
+  // set this.props.columns display true/false depending on updatedColumns from
+  // onViewColumnsChange
+  setUpdatedColumnsDisplay = (stateUpdatedColumns) => {
+    stateUpdatedColumns.map((updatedColumns) => {
+      const index = this.props.columns.map((e) => e.name)
+        .indexOf(updatedColumns.label);
+      if (updatedColumns.status === 'remove') {
+        this.props.columns[index].options.display = false;
+      } else {
+        this.props.columns[index].options.display = true;
+      }
+      return '';
+    });
+  }
 
   changePage = (page, sortOrder) => {
     this.setState({
@@ -226,6 +220,19 @@ class ServerPaginatedTableView extends React.Component {
     this.setState({ columns });
   };
 
+  getSortData = (arr, sortColumn, sortDirection) => arr.sort((a, b) => {
+    const keyA = parseInt(a[sortColumn].replace(/^\D+/g, ''), 10);
+    const keyB = parseInt(b[sortColumn].replace(/^\D+/g, ''), 10);
+    if (sortDirection === 'asc') {
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+    } else {
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+    }
+    return 0;
+  })
+
   async fetchData(offset, rowsRequired, sortOrder = {}) {
     // Preparing sort order for query variable
     const sortColumn = Object.keys(sortOrder).length === 0 ? this.props.defaultSortCoulmn || '' : sortOrder.name;
@@ -254,18 +261,25 @@ class ServerPaginatedTableView extends React.Component {
         page,
       });
     }
-    const fetchResult = await client
-      .query({
-        query: this.props.overview,
-        variables: {
-          offset: offsetReal,
-          first: this.props.count < rowsRequired ? this.props.count : rowsRequired,
-          order_by: sortColumn,
-          sort_direction: sortDirection,
-          ...this.props.queryCustomVaribles,
-        },
-      })
-      .then((result) => (result.data[this.props.paginationAPIField]));
+    let fetchResult = [];
+    if (this.props.data && this.props.data.length > this.state.rowsPerPage) {
+      const newData = [...this.props.data];
+      const sortedData = this.getSortData(newData, sortColumn, sortDirection);
+      fetchResult = sortedData.splice(offsetReal, this.state.rowsPerPage);
+    } else {
+      fetchResult = await client
+        .query({
+          query: this.props.overview,
+          variables: {
+            offset: offsetReal,
+            first: this.props.count < rowsRequired ? this.props.count : rowsRequired,
+            order_by: sortColumn,
+            sort_direction: sortDirection,
+            ...this.props.queryCustomVaribles,
+          },
+        })
+        .then((result) => (result.data[this.props.paginationAPIField]));
+    }
     if (this.props.updateSortOrder) {
       localStorage.setItem('dataLength', String(fetchResult.length));
       localStorage.setItem('data', JSON.stringify(fetchResult));
@@ -284,6 +298,11 @@ class ServerPaginatedTableView extends React.Component {
       count,
       rowsPerPage,
       rowsPerPageOptions: [],
+      textLabels: {
+        body: {
+          noMatch: 'No Matching Records Found',
+        },
+      },
       customToolbar: this.props.tableDownloadCSV.defaultFullTableDownload ? () => (
         this.props.tableDownloadCSV && (
           <CSVDownloadToolbar
@@ -354,6 +373,12 @@ class ServerPaginatedTableView extends React.Component {
       }
       options1.page = newPage;
     }
+    let updatedData = data;
+    if (data.length > rowsPerPage) {
+      const newData = [...data];
+      const sortedData = this.getSortData(newData, sortOrder.name, sortOrder.direction);
+      updatedData = sortedData.splice(0, rowsPerPage);
+    }
     return (
       <div>
         <Backdrop
@@ -362,9 +387,9 @@ class ServerPaginatedTableView extends React.Component {
         >
           <CircularProgress />
         </Backdrop>
-        {data === 'undefined' ? <CircularProgress /> : (
+        {updatedData === 'undefined' ? <CircularProgress /> : (
           <CustomDataTable
-            data={data}
+            data={updatedData}
             columns={columns}
             className={className}
             options={({ ...this.props.options, ...options1 })}

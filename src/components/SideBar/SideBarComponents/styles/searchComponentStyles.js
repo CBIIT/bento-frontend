@@ -1,7 +1,7 @@
 const styles = () => ({
   listPadding: {
-    paddingTop: '0px',
-    paddingBottom: '4px',
+    paddingTop: 0,
+    paddingBottom: 4,
   },
   backdrop: {
     zIndex: 99999,
@@ -55,6 +55,10 @@ const styles = () => ({
       },
     },
   },
+  deleteIcon: {
+    cursor: 'pointer',
+    marginTop: -4,
+  },
   inputRoot: {
     borderRadius: 10,
     marginBottom: '7px',
@@ -81,7 +85,7 @@ const styles = () => ({
     height: 10,
   },
   listItemGutters: {
-    padding: '2px 15px 2px 18px',
+    padding: '0px 15px 0px 18px',
     display: 'flex',
     justifyContent: 'space-between',
   },

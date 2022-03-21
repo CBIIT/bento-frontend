@@ -3,14 +3,14 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { getCart, updateSortOrder } from './store/cart';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { GET_MY_CART_DATA_QUERY, GET_MY_CART_DATA_QUERY_DESC, table } from '../../bento/fileCentricCartWorkflowData';
+import { GET_MY_CART_DATA_QUERY, table } from '../../bento/fileCentricCartWorkflowData';
 import CartView from './cartView';
 
 const cartController = () => {
   const cart = getCart();
   const ids = cart.fileIds ? cart.fileIds : [];
   const defaultSortDirection = cart.sortDirection === '' || !cart.sortDirection ? table.defaultSortDirection || 'asc' : cart.sortDirection;
-  const CART_QUERY = defaultSortDirection === 'desc' ? GET_MY_CART_DATA_QUERY_DESC : GET_MY_CART_DATA_QUERY;
+  const CART_QUERY = GET_MY_CART_DATA_QUERY;
   const defaultSortColumnValue = cart.sortColumn === '' || !cart.sortColumn ? table.defaultSortField || '' : cart.sortColumn;
   // if the user open the webpage for the first time.
   if (!localStorage.getItem('sortColumn') || !localStorage.getItem('page') || !localStorage.getItem('rowsPerPage')) {
@@ -61,9 +61,7 @@ const cartController = () => {
       localPage={localPage}
       localRowsPerPage={localRowsPerPage}
       data={
-        defaultSortDirection === 'desc'
-          ? data.filesInListDesc === null || data.filesInListDesc === '' ? [] : data.filesInListDesc
-          : data.filesInList === null || data.filesInList === '' ? [] : data.filesInList
+        data.filesInList === null || data.filesInList === '' ? [] : data.filesInList
         }
     />
   );

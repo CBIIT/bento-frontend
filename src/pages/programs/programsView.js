@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { CustomDataTable, getOptions, getColumns } from 'bento-components';
-import globalData from '../../bento/globalData';
+import globalData from '../../bento/siteWideConfig';
 import {
   table, programListingIcon, externalLinkIcon,
 } from '../../bento/programData';
@@ -57,7 +57,7 @@ const Programs = ({ classes, data }) => {
                 <Grid item xs={12}>
                   <CustomDataTable
                     data={data[table.dataField]}
-                    columns={getColumns(table, classes, data, externalLinkIcon, '/cases', redirectTo, '', globalData.replaceEmptyValueWith)}
+                    columns={getColumns(table, classes, data, externalLinkIcon, '/explore', redirectTo, '', globalData.replaceEmptyValueWith)}
                     options={getOptions(table, classes)}
                   />
                 </Grid>

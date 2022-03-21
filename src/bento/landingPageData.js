@@ -8,7 +8,7 @@ export const landingPageData = {
   callToActionTitle: 'Explore, Analyze, Visualize Clinical Trial Data Sets',
   callToActionDescription: 'Model, Store and Share your Data Sets using the Bento Framework for Data Sharing Platforms.',
   callToActionButtonText: 'EXPLORE THE SITE',
-  callToActionLink: '/cases',
+  callToActionLink: '/explore',
   landingPageHero: {
     alt: 'Alt tag1',
     img: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/landing_Hero_Graphic.png',
@@ -65,7 +65,7 @@ export const landingPageData = {
     titleText: 'Cases',
     descriptionText: 'Analyze cases from the TAILORx clinical trial.',
     callToActionText: 'Explore',
-    callToActionLink: '/cases', // This links to the cases dashboard.
+    callToActionLink: '/explore', // This links to the cases dashboard.
   },
 };
 

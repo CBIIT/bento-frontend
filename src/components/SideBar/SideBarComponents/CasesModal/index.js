@@ -2,12 +2,13 @@ import React from 'react';
 import {
   Modal,
   Button,
-  Tooltip,
   makeStyles,
   Typography,
   TextareaAutosize,
+  IconButton,
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
+import { ToolTip } from 'bento-components';
 import {
   uploadBulkModalSearch, getAllSubjectIds,
 } from '../../../../pages/dashboardTab/store/dashboardReducer';
@@ -22,20 +23,28 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   paper: {
-    minWidth: '50%',
+    minWidth: '32%',
     borderRadius: '10px',
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     backgroundColor: theme.palette.background.paper,
   },
+  closeIcon: {
+    cursor: 'pointer',
+  },
   modalTitle: {
+    fontFamily: 'lato',
     borderBottom: '1px solid rgba(#000,0.3)',
     fontSize: 20,
     color: '#4D6787',
-    padding: '15px 33px',
+    padding: '16px 32px 12px 32px',
     margin: '0px',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontWeight: 'bold',
   },
   modalContainer: {
     display: 'flex',
@@ -50,9 +59,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   uploadFile: {
-    width: '48%',
+    width: 315,
     border: '1px solid white',
-    margin: '10px 4px',
+    margin: '20px 4px',
     padding: 10,
     textAlign: 'center',
   },
@@ -62,19 +71,22 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 17,
     border: '1px solid #fff',
     borderRadius: '50%',
-    padding: 8,
+    padding: '7px 8px 9px 8px',
     width: 42,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: -41,
+    marginLeft: -36,
     backgroundColor: '#CCD4DD',
+    fontFamily: 'Lato',
+    fontWeight: 'bold',
+    marginTop: 5,
   },
   textSection: {
-    width: '48%',
+    width: 315,
     border: '1px solid white',
-    margin: '10px 4px',
-    padding: 10,
+    margin: '20px 4px',
+    padding: '10px 25px 13px 29px',
   },
   modalFooter: {
     borderTop: '1px solid rgba(#000,0.3)',
@@ -87,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginLeft: '10px',
     marginRight: '10px',
-    borderRadius: '5px',
+    borderRadius: '10px',
     boxSizing: 'border-box',
     height: 38,
     width: 97,
@@ -95,6 +107,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 11,
     textAlign: 'center',
     color: '#fff',
+    fontFamily: 'lato',
+    boxShadow: 'none',
   },
   uploadButton: {
     borderRadius: '5px',
@@ -107,37 +121,46 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#437BBE',
   },
   modalRoot: {
-    background: 'rgba(0,0,0,0.2)',
+    background: 'green',
   },
   textArea: {
-    height: '150px !important',
+    height: '151px !important',
     width: '100%',
-    overflowY: 'scroll !important',
-    border: '1.25px solid #437BBE',
+    border: '1.5px solid #437BBE',
     borderRadius: 10,
+    fontSize: 15,
+    fontFamily: 'Lato',
+    fontStyle: 'italic',
+    color: '#437BBE',
+    padding: '9px 13px',
+    '&::placeholder': {
+      fontSize: 15,
+      fontFamily: 'Lato',
+      fontStyle: 'italic',
+      color: '#437BBE',
+    },
   },
   listTitle: {
     fontWeight: 300,
-    fontSize: 14,
+    fontFamily: 'Nunito',
+    color: 'black',
+    fontSize: 16,
   },
   tooltipIcon: {
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: 600,
+    marginBottom: 12,
+    marginLeft: 5,
   },
   horizontal: {
     height: 1,
     width: 214,
-    border: '1px solid #FFFFFF',
     backgroundColor: '#FFFFFF',
-    marginTop: 10,
+    marginTop: 30,
   },
   fileUploader: {
-    justifyContent: 'center',
-    marginTop: 5,
-    display: 'block',
-  },
-  uploaderComponent: {
-    paddingRight: 70,
+    display: 'flex',
+    flexDirection: 'column',
   },
   fileName: {
     margin: 'unset',
@@ -152,11 +175,26 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    paddingTop: '16px',
   },
   refresh: {
     color: '#1F2F50',
     height: 14,
     cursor: 'pointer',
+  },
+  customTooltip: {
+    border: '#03A383 1px solid',
+  },
+  customArrow: {
+    '&::before': {
+      border: '#03A383 1px solid',
+    },
+  },
+  helpIcon: {
+    zIndex: '600',
+  },
+  helpIconButton: {
+    marginBottom: 10,
   },
 }));
 
@@ -246,6 +284,20 @@ const FacetModal = ({
     setUploadedFileName(fileName);
   };
 
+  const getToolTip = (message) => (
+    <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={message} arrow placement="bottom">
+      <IconButton
+        aria-label="help"
+        className={classes.helpIconButton}
+      >
+        <HelpIcon
+          className={classes.helpIcon}
+          fontSize="small"
+        />
+      </IconButton>
+    </ToolTip>
+  );
+
   return (
     <Modal
       {...modalProps}
@@ -257,7 +309,15 @@ const FacetModal = ({
       }}
     >
       <div className={classes.paper}>
-        <h1 className={classes.modalTitle}>Upload Case Set</h1>
+        <h1 className={classes.modalTitle}>
+          <span>Upload Case Set</span>
+          <span
+            className={classes.closeIcon}
+            onClick={cancelModal}
+          >
+            <img style={{ height: 10, marginBottom: 2 }} src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
+          </span>
+        </h1>
         <div className={classes.modalContainer}>
 
           <div className={classes.textSection}>
@@ -265,9 +325,7 @@ const FacetModal = ({
               <Typography>
                 <p className={classes.listTitle}>Add a list of Case IDs:</p>
               </Typography>
-              <Tooltip title="Add the case indentifier." placement="left-start" className={classes.tooltipIcon}>
-                <HelpIcon />
-              </Tooltip>
+              {getToolTip('Add the case indentifier.')}
             </div>
             <TextareaAutosize
               value={fileContent}
@@ -281,11 +339,9 @@ const FacetModal = ({
             <div className={classes.orTitle}>or</div>
             <div className={classes.inputLabel}>
               <Typography>
-                <p className={classes.listTitle}>Choose a file to upload</p>
+                <p className={classes.listTitle}>Choose a file to upload:</p>
               </Typography>
-              <Tooltip title="Add the case indentifier." placement="left-start" className={classes.tooltipIcon}>
-                <HelpIcon />
-              </Tooltip>
+              {getToolTip('Add the case indentifier.')}
             </div>
             <FileUploader
               clearData={clearData}
@@ -304,6 +360,8 @@ const FacetModal = ({
             onClick={cancelModal}
             style={{ backgroundColor: '#566672' }}
             className={classes.button}
+            id="uploadCaseSetCancel"
+
           >
             Cancel
           </Button>
@@ -313,6 +371,7 @@ const FacetModal = ({
             onClick={clearData}
             style={{ backgroundColor: '#437BBE' }}
             className={classes.button}
+            id="uploadCaseSetClear"
           >
             Clear
           </Button>
@@ -322,6 +381,7 @@ const FacetModal = ({
             onClick={submitCase}
             style={{ backgroundColor: '#03A383' }}
             className={classes.button}
+            id="uploadCaseSetSubmit"
           >
             Submit
           </Button>
