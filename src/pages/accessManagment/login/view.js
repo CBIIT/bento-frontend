@@ -5,12 +5,13 @@ import {
   loginProvidersData,
   loginGovCreateAccountURL,
   bentoHelpEmail,
+  registrationBoxData,
 } from '../../../bento/userLoginData';
 
-// import Container from '@material-ui/core/Container';
+function loginView({ history, classes }) {
+  const { buttonText, redirectRoute } = registrationBoxData;
+  const handleRegisterButtonClick = () => history.push(redirectRoute);
 
-// eslint-disable-next-line no-unused-vars
-function loginView({ data, classes }) {
   return (
     <div className={classes.Container}>
       {/* ROW 1 */}
@@ -96,8 +97,8 @@ function loginView({ data, classes }) {
               </div>
             </Grid>
             <Grid container item xs={12} justifyContent="center">
-              <Button variant="contained" className={classes.registerButtton}>
-                REGISTER
+              <Button variant="contained" className={classes.registerButtton} onClick={handleRegisterButtonClick}>
+                {buttonText}
               </Button>
             </Grid>
             <Grid item xs={12} justifyContent="center" className={[classes.helperMessage, classes.registerHelpMessage]}>
@@ -197,6 +198,9 @@ const styles = () => ({
     height: '40px',
     color: '#FFFFFF',
     backgroundColor: '#5D53F6',
+    '&:hover': {
+      backgroundColor: '#5D53F6',
+    },
   },
   registerHelpMessage: {
     marginTop: '18px',

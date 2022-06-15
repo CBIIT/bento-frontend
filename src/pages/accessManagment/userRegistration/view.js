@@ -1,33 +1,15 @@
-/* eslint-disable jsx-quotes */
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import Input from '@material-ui/core/Input';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
-import ListItemText from '@material-ui/core/ListItemText';
-import DoneRoundedIcon from '@material-ui/icons/DoneRounded';
-import Checkbox from '@material-ui/core/Checkbox';
-import Chip from '@material-ui/core/Chip';
-import { useQuery, useMutation } from '@apollo/client';
-import Alert from '@material-ui/lab/Alert';
-import Slide from '@material-ui/core/Slide';
+import { useMutation } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import { registrationForm, SUBMIT_REGISTER } from '../../../bento/userRegistrationData';
 import { bentoHelpEmail } from '../../../bento/userLoginData';
-import BootstrapInput from './bootstrapInput';
 import AlertMessage from './alertMessage';
 import SelectMenu from './components/selectMenu';
+import TextBox from './components/textBox';
 
+// eslint-disable-next-line no-unused-vars
 const checkIsValid = (field, formValues) => {
   const { type, id } = field;
   const value = formValues[id];
@@ -42,87 +24,7 @@ const checkIsValid = (field, formValues) => {
   return false;
 };
 
-const getDropdownComponent = (field, formValues, handleInputChange, classes) => {
-  const {
-    id, options, multiple, required, type,
-  } = field;
-  const selectOptions = options; // Add API Call
-
-  return (
-    <Grid item>
-      <FormControl>
-        <div className={classes.formLabel}>{field.label}</div>
-        <Select
-          id="demo-customized-select-native"
-          multiple={multiple}
-          name={id}
-          displayEmpty
-          value={formValues[id]}
-          required={required}
-          onChange={handleInputChange}
-          input={<BootstrapInput />}
-          className={classes.inputSelect}
-          MenuProps={{
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left',
-            },
-            transformOrigin: {
-              vertical: 'top',
-              horizontal: 'left',
-            },
-            getContentAnchorEl: null,
-          }}
-          // error={!checkIsValid(field, formValues)}
-          renderValue={(selectedKey) => (
-            (selectedKey.length === 0) ? field.label
-              : multiple
-                ? (
-                  <div className={classes.chips}>
-                    {selectedKey.map((value) => (
-                      <Chip key={value} label={value} className={classes.chip} />
-                    ))}
-                  </div>
-                ) : selectOptions[selectedKey].title
-          )}
-        >
-          {Object.keys(selectOptions).map((key) => (
-            <MenuItem dense key={key} value={key} className={classes.selectMenuItem}>
-              <Checkbox checked={formValues[id].indexOf(key) > -1} />
-              {selectOptions[key].title}
-              {/* <ListItemText primary={} /> */}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Grid>
-  );
-};
-
-const getTextBoxComponent = (field, formValues, handleInputChange, classes) => {
-  const { id, type, required } = field;
-
-  return (
-    <Grid item>
-      <div className={classes.formLabel}>{field.label}</div>
-      <TextField
-        id="name-input"
-        name={id}
-        placeholder={field.placeHolder}
-        type={type}
-        required={required}
-        variant="outlined"
-        value={formValues[id]}
-        onChange={handleInputChange}
-        // error={!checkIsValid(field, formValues)}
-        InputProps={{ classes: { input: classes.inputText } }}
-      />
-    </Grid>
-  );
-};
-
-// eslint-disable-next-line no-unused-vars
-function userRegistrationView({ data, classes }) {
+function userRegistrationView({ classes }) {
   // Initial State and Reset functions
   const setDefaultValues = () => registrationForm.reduce((values, field) => {
     const { id, type, multiple } = field;
@@ -143,10 +45,12 @@ function userRegistrationView({ data, classes }) {
   // GraphQL Operations
   const [mutate, response] = useMutation(SUBMIT_REGISTER, {
     context: { clientName: 'authService' },
-    onCompleted(responseData) {
+    onCompleted() {
+      // INPUT parm can be 'responseData'
       clearAll();
     },
-    onError(ApolloError) {
+    onError() {
+      // INPUT parm can be 'ApolloError'
     },
   });
   const { loading, error, data: successData } = response;
@@ -183,7 +87,7 @@ function userRegistrationView({ data, classes }) {
 
   // State Change Managemnt
   const handleInputChange = (e) => {
-    const { name, type, value } = e.target;
+    const { name, value } = e.target;
     setFormValues({
       ...formValues,
       [name]: value,
@@ -236,7 +140,7 @@ function userRegistrationView({ data, classes }) {
                       field.type === 'dropdown'
                         ? SelectMenu(field, formValues, handleInputChange, classes)
                         : field.type
-                          ? getTextBoxComponent(field, formValues, handleInputChange, classes)
+                          ? TextBox(field, formValues, handleInputChange, classes)
                           : null))}
                     <Grid item sm={12} style={{ textAlign: 'center' }} justifyContent="center">
                       <Button

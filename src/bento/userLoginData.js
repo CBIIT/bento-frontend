@@ -22,6 +22,11 @@ export const loginProvidersData = {
   },
 };
 
+export const registrationBoxData = {
+  buttonText: 'REGISTER',
+  redirectRoute: '/register',
+};
+
 export const loginGovCreateAccountURL = 'https://www.login.gov/create-an-account/';
 
 export const bentoHelpEmail = 'bento-help@nih.gov';
