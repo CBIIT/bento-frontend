@@ -22,6 +22,8 @@ import JBrowse from '../JBrowse/JBrowseView';
 import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
 import GlobalSearch from '../../pages/search/searchView';
 import GlobalSearchController from '../../pages/search/searchViewController';
+import Login from '../../pages/accessManagment/login';
+import userRegistration from '../../pages/accessManagment/userRegistration';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -68,6 +70,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             )}
             <Route path="/data-dictionary" component={DataDictonary} />
             <Route path="/graphql" component={GraphqlClient} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={userRegistration} />
             <Route component={Error} />
           </Switch>
           <Footer data={{ isSidebarOpened }} />
