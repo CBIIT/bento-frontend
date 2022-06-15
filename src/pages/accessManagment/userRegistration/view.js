@@ -1,6 +1,5 @@
 /* eslint-disable jsx-quotes */
 /* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
 import React, { useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
@@ -27,13 +26,27 @@ import { registrationForm, SUBMIT_REGISTER } from '../../../bento/userRegistrati
 import { bentoHelpEmail } from '../../../bento/userLoginData';
 import BootstrapInput from './bootstrapInput';
 import AlertMessage from './alertMessage';
+import SelectMenu from './components/selectMenu';
+
+const checkIsValid = (field, formValues) => {
+  const { type, id } = field;
+  const value = formValues[id];
+
+  if (type === 'email') {
+    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
+  }
+
+  if (value !== '') {
+    return true;
+  }
+  return false;
+};
 
 const getDropdownComponent = (field, formValues, handleInputChange, classes) => {
   const {
-    id, options, multiple, required,
+    id, options, multiple, required, type,
   } = field;
   const selectOptions = options; // Add API Call
-  console.log(formValues);
 
   return (
     <Grid item>
@@ -49,6 +62,18 @@ const getDropdownComponent = (field, formValues, handleInputChange, classes) => 
           onChange={handleInputChange}
           input={<BootstrapInput />}
           className={classes.inputSelect}
+          MenuProps={{
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left',
+            },
+            transformOrigin: {
+              vertical: 'top',
+              horizontal: 'left',
+            },
+            getContentAnchorEl: null,
+          }}
+          // error={!checkIsValid(field, formValues)}
           renderValue={(selectedKey) => (
             (selectedKey.length === 0) ? field.label
               : multiple
@@ -62,9 +87,10 @@ const getDropdownComponent = (field, formValues, handleInputChange, classes) => 
           )}
         >
           {Object.keys(selectOptions).map((key) => (
-            <MenuItem key={key} value={key}>
+            <MenuItem dense key={key} value={key} className={classes.selectMenuItem}>
               <Checkbox checked={formValues[id].indexOf(key) > -1} />
-              <ListItemText primary={selectOptions[key].title} />
+              {selectOptions[key].title}
+              {/* <ListItemText primary={} /> */}
             </MenuItem>
           ))}
         </Select>
@@ -88,6 +114,7 @@ const getTextBoxComponent = (field, formValues, handleInputChange, classes) => {
         variant="outlined"
         value={formValues[id]}
         onChange={handleInputChange}
+        // error={!checkIsValid(field, formValues)}
         InputProps={{ classes: { input: classes.inputText } }}
       />
     </Grid>
@@ -117,28 +144,46 @@ function userRegistrationView({ data, classes }) {
   const [mutate, response] = useMutation(SUBMIT_REGISTER, {
     context: { clientName: 'authService' },
     onCompleted(responseData) {
-      console.log(responseData);
       clearAll();
     },
     onError(ApolloError) {
-      console.log(ApolloError.networkError);
     },
   });
   const { loading, error, data: successData } = response;
 
-  const getErrorDetails = (errorObject) => {
+  const getErrorDetails = () => {
     const {
       networkError: {
         statusCode,
       },
-    } = errorObject;
+    } = error;
 
-    return statusCode === 409 ? 'The provided email and IDP combination is already registered' : 'Server Erro';
+    return statusCode === 409 ? 'The provided email and IDP combination is already registered' : 'Server Error';
+  };
+
+  const showAlert = (alertType) => {
+    if (alertType === 'error') {
+      return (
+        <AlertMessage severity="error" backgroundColor="#f44336">
+          {getErrorDetails()}
+        </AlertMessage>
+      );
+    }
+
+    if (alertType === 'success') {
+      return (
+        <AlertMessage severity="success">
+          Your registration request has been submitted for review.
+        </AlertMessage>
+      );
+    }
+
+    return null;
   };
 
   // State Change Managemnt
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, type, value } = e.target;
     setFormValues({
       ...formValues,
       [name]: value,
@@ -161,7 +206,15 @@ function userRegistrationView({ data, classes }) {
         alignItems="center"
       >
         {/* Top Space */}
-        <Grid container item justifyContent="center" className={classes.emptySpace} />
+        <Grid container item justifyContent="center" className={classes.emptySpace}>
+          {/* ######## ALERT MESSAGES ######## */}
+          {/* Error on Submit */}
+          {error && (showAlert('error'))}
+
+          {/* Success on Submit */}
+          {successData && successData.registerUser && showAlert('success')}
+
+        </Grid>
 
         {/* ROW 2 */}
         <Grid container item justifyContent="center">
@@ -175,30 +228,15 @@ function userRegistrationView({ data, classes }) {
                 User Registration
               </div>
 
-              {/* ######## ALERT MESSAGES ######## */}
-              {/* Error on Submit */}
-              {error ? (
-                <Alert severity="error">
-                  {getErrorDetails(error)}
-                </Alert>
-              ) : null}
-
-              {/* Success on Submit */}
-              {successData && successData.registerUser && (
-              <AlertMessage severity="success" timeout={50000}>
-                <AlertTitle>Congratulatons, Sign Up request is submitted!</AlertTitle>
-                You will recive an email one request is approved.
-              </AlertMessage>
-              )}
-
               {/* Box Grid */}
               <div className={classes.Box}>
                 <Grid container alignItems="center" justify="center" direction="column">
                   <form onSubmit={handleSubmit}>
                     {registrationForm.map((field) => (
                       field.type === 'dropdown'
-                        ? getDropdownComponent(field, formValues, handleInputChange, classes)
-                        : field.type ? getTextBoxComponent(field, formValues, handleInputChange, classes)
+                        ? SelectMenu(field, formValues, handleInputChange, classes)
+                        : field.type
+                          ? getTextBoxComponent(field, formValues, handleInputChange, classes)
                           : null))}
                     <Grid item sm={12} style={{ textAlign: 'center' }} justifyContent="center">
                       <Button
@@ -249,6 +287,7 @@ const styles = () => ({
     fontWeight: '500',
     lineHeight: '40px',
     marginBottom: '10px',
+    marginTop: '10px',
   },
   Box: {
     width: '535px',
@@ -269,6 +308,7 @@ const styles = () => ({
     letterSpacing: '0',
     lineHeight: '22px',
     margin: 'auto',
+    marginTop: '25px',
   },
   createAccountMessage: {
     marginTop: '4px',
@@ -323,6 +363,12 @@ const styles = () => ({
   chip: {
     margin: 2,
   },
+  selectMenuItem: {
+    paddingTop: '0px',
+    paddingRight: '10px',
+    paddingBottom: '0px',
+  },
+
 });
 
 export default withStyles(styles, { withTheme: true })(userRegistrationView);

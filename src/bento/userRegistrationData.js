@@ -50,10 +50,25 @@ export const registrationForm = [
   },
   {
     id: 'acl',
-    type: 'textBox',
+    type: 'dropdown',
     required: false,
     label: 'Study Arm',
     placeHolder: 'Study Arm',
+    multiple: false,
+    options: {
+      a: {
+        title: 'A: RS 0-10, assigned endocrine therapy alone',
+      },
+      b: {
+        title: 'B: RS 11-25, randomized to endocrine therapy alone',
+      },
+      c: {
+        title: 'C: RS 11-25, randomized to chemo + endocrine therapy',
+      },
+      d: {
+        title: 'D: RS > 25, assigned to chemo +',
+      },
+    },
   },
 ];
 
