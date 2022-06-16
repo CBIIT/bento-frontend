@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+export const pageTitle = 'User Registration';
+
 export const registrationForm = [
   {
     id: 'IDP',
@@ -8,6 +10,7 @@ export const registrationForm = [
     label: 'Account Type',
     placeHolder: 'Account Type',
     multiple: false,
+    message: '',
     options: {
       google: {
         title: 'Google',
@@ -51,7 +54,7 @@ export const registrationForm = [
   {
     id: 'acl',
     type: 'dropdown',
-    required: false,
+    required: true,
     label: 'Study Arm',
     placeHolder: 'Study Arm',
     multiple: false,

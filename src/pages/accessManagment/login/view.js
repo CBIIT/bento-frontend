@@ -1,7 +1,12 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+
+import { useGoogleAuth } from '../../../components/GoogleAuth/GoogleAuthProvider';
+
+// Custodian data imports
 import {
+  pageTitle,
   loginProvidersData,
   loginGovCreateAccountURL,
   bentoHelpEmail,
@@ -11,6 +16,12 @@ import {
 function loginView({ history, classes }) {
   const { buttonText, redirectRoute } = registrationBoxData;
   const handleRegisterButtonClick = () => history.push(redirectRoute);
+  const { signIn } = useGoogleAuth();
+  const signInCall = (provider) => {
+    if (provider) {
+      if (provider.key === 'google') signIn();
+    }
+  };
 
   return (
     <div className={classes.Container}>
@@ -30,42 +41,52 @@ function loginView({ history, classes }) {
             {/* Spacing */}
             <Grid container item sm={4} />
 
-            {/* Login Box */}
-            <Grid container item sm={4} justifyContent="center" className={[classes.Box, classes.LoginBox]}>
-              <div className={classes.LoginBoxTitle}>
-                Log in with either of these Identity providers:
+            <Grid container item sm={4} justifyContent="center">
+              {/* Page Title */}
+              <div className={classes.pageTitle}>
+                {pageTitle}
               </div>
-              <Grid container item xs={12} justifyContent="center" className={classes.LoginButtonGroup}>
 
-                {Object.values(loginProvidersData).map((provider) => (provider.enabled
-                  ? (
-                    <Button
-                      variant="outlined"
-                      className={[classes.LoginButton, classes.Color_092E50]}
-                      disableRipple
-                    >
-                      <Grid container item xs={1} justifyContent="center">
-                        <img src={provider.icon} className={classes.root} alt="alt coming" />
-                      </Grid>
-                      <Grid container item xs={11} justifyContent="center">
-                        {provider.loginButtonText}
-                      </Grid>
-                    </Button>
-                  )
-                  : null))}
+              {/* Login Box */}
+              <div className={classes.Box}>
+                <Grid container alignItems="center" justify="center" direction="column">
+                  <div className={classes.LoginBoxTitle}>
+                    Log in with either of these Identity providers:
+                  </div>
+                  <Grid container item xs={12} justifyContent="center" className={classes.LoginButtonGroup}>
 
-                <Grid item xs={12} justifyContent="center" className={[classes.helperMessage, classes.createAccountMessage]}>
-                  If you don't have a login.gov account, click
-                  {' '}
-                  <span className={classes.supportEmail}>
-                    <a href={loginGovCreateAccountURL}>
-                      here
-                    </a>
-                  </span>
-                  {' '}
-                  to sign up.
+                    {Object.values(loginProvidersData).map((provider) => (provider.enabled
+                      ? (
+                        <Button
+                          variant="outlined"
+                          className={[classes.LoginButton, classes.Color_092E50]}
+                          disableRipple
+                          onClick={() => signInCall(provider)}
+                        >
+                          <Grid container item xs={1} justifyContent="center">
+                            <img src={provider.icon} className={classes.root} alt="alt coming" />
+                          </Grid>
+                          <Grid container item xs={11} justifyContent="center">
+                            {provider.loginButtonText}
+                          </Grid>
+                        </Button>
+                      )
+                      : null))}
+
+                    <Grid item xs={12} justifyContent="center" className={[classes.helperMessage, classes.createAccountMessage]}>
+                      If you don't have a login.gov account, click
+                      {' '}
+                      <span className={classes.supportEmail}>
+                        <a href={loginGovCreateAccountURL}>
+                          here
+                        </a>
+                      </span>
+                      {' '}
+                      to sign up.
+                    </Grid>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </div>
             </Grid>
 
             {/* Spacing */}
@@ -128,6 +149,16 @@ const styles = () => ({
   NoBold: {
     fontWeight: 'normal',
   },
+  pageTitle: {
+    color: '#3974A8',
+    fontSize: '30px',
+    textAlign: 'center',
+    fontFamily: 'Nunito',
+    fontWeight: '500',
+    lineHeight: '40px',
+    marginBottom: '10px',
+    marginTop: '10px',
+  },
   Box: {
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09);',
     border: '#A9C8E3 2px solid',
@@ -135,9 +166,6 @@ const styles = () => ({
     margin: '10px 0px',
     padding: '5px !important',
     backgroundColor: '#F2F6FA',
-  },
-  LoginBox: {
-    // height: '150px',
   },
   LoginBoxTitle: {
     height: '16px',

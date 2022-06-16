@@ -4,13 +4,16 @@ import {
 import env from './env';
 
 const BACKEND = env.REACT_APP_BACKEND_API;
+const AUTH = `${env.REACT_APP_AUTH_API}/api/auth/graphql`;
+const AUTH_FORCE_DEV = false;
+const AUTH_DEV = 'https://bento-dev.bento-tools.org/api/auth/graphql';
 
 const backendService = new HttpLink({
   uri: BACKEND,
 });
 
 const authService = new HttpLink({
-  uri: 'https://bento-dev.bento-tools.org/api/auth/graphql',
+  uri: AUTH_FORCE_DEV ? AUTH_DEV : AUTH,
 });
 
 const client = new ApolloClient({

@@ -3,11 +3,14 @@ import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { registrationForm, SUBMIT_REGISTER } from '../../../bento/userRegistrationData';
+
 import { bentoHelpEmail } from '../../../bento/userLoginData';
 import AlertMessage from './alertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
+
+// Custodian data imports
+import { pageTitle, registrationForm, SUBMIT_REGISTER } from '../../../bento/userRegistrationData';
 
 // eslint-disable-next-line no-unused-vars
 const checkIsValid = (field, formValues) => {
@@ -126,10 +129,10 @@ function userRegistrationView({ classes }) {
             {/* Spacing */}
             <Grid container item sm={4} />
 
-            {/* Box Grid */}
             <Grid container item sm={4} justifyContent="center">
+              {/* Page Title */}
               <div className={classes.pageTitle}>
-                User Registration
+                {pageTitle}
               </div>
 
               {/* Box Grid */}
