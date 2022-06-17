@@ -4,7 +4,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
-import Chip from '@material-ui/core/Chip';
 import BootstrapInput from '../bootstrapInput';
 
 const SelectMenu = (field, formValues, handleInputChange, classes) => {
@@ -12,6 +11,20 @@ const SelectMenu = (field, formValues, handleInputChange, classes) => {
     id, options, multiple, required, label,
   } = field;
   const selectOptions = options; // Add API Call
+
+  const getMultiSelectView = (selectedKey) => {
+    const firstOption = field.options[selectedKey[0]].title.split(',')[0];
+    if (selectedKey.length <= 1) return firstOption;
+
+    return (
+      <div>
+        {firstOption}
+        {' and '}
+        {selectedKey.length}
+        {' more'}
+      </div>
+    );
+  };
 
   return (
     <Grid item>
@@ -42,13 +55,7 @@ const SelectMenu = (field, formValues, handleInputChange, classes) => {
           renderValue={(selectedKey) => (
             (selectedKey.length === 0) ? label
               : multiple
-                ? (
-                  <div className={classes.chips}>
-                    {selectedKey.map((value) => (
-                      <Chip key={value} label={value} className={classes.chip} />
-                    ))}
-                  </div>
-                ) : selectOptions[selectedKey].title
+                ? (getMultiSelectView(selectedKey)) : selectOptions[selectedKey].title
           )}
         >
           {Object.keys(selectOptions).map((key) => (
