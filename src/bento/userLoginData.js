@@ -1,6 +1,3 @@
-import Google from '../assets/login/google.png';
-import LoginGov from '../assets/login/login.gov.png';
-import NihItrust from '../assets/login/nih_itrust.png';
 import { registrationRoute } from './siteWideConfig';
 
 export const pageTitle = 'Login or Register';
@@ -8,19 +5,19 @@ export const pageTitle = 'Login or Register';
 export const loginProvidersData = {
   google: {
     key: 'google',
-    icon: Google,
+    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/google.png',
     loginButtonText: 'Sign in with Google',
     enabled: true,
   },
   loginGov: {
     key: 'loginGov',
-    icon: LoginGov,
+    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/login.gov.png',
     loginButtonText: 'Sign in Login.gov',
     enabled: true,
   },
   'NIH Login': {
     key: 'NIH Login',
-    icon: NihItrust,
+    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/nih_itrust.png',
     loginButtonText: 'Sign in NIH iTrust',
     enabled: true,
   },

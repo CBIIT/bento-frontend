@@ -57,7 +57,7 @@ export const registrationForm = [
     required: true,
     label: 'Study Arm',
     placeHolder: 'Study Arm',
-    multiple: false,
+    multiple: true,
     options: {
       a: {
         title: 'A: RS 0-10, assigned endocrine therapy alone',
