@@ -6,14 +6,14 @@ import {
 import { useSelector } from 'react-redux';
 import { useGoogleAuth } from './GoogleAuthProvider';
 import AfterSignInComponent from './components/afterSignInComponent';
-import globalData from '../../bento/siteWideConfig';
+import globalData, { loginRoute } from '../../bento/siteWideConfig';
 
 // styles
 const styles = () => ({
 
   logotype: {
     whiteSpace: 'nowrap',
-    color: '#FFFFFF',
+    color: '#24E4BE',
     fontFamily: 'Raleway',
     fontSize: '13px',
     letterSpacing: '1.25px',
@@ -29,11 +29,12 @@ const styles = () => ({
 
 const IndexPage = ({ classes }) => {
   const {
-    signIn, signOut,
+    signOut,
   } = useGoogleAuth();
   // const classes = useStyles();
   const userName = useSelector((state) => state.login.userId);
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  const redirectToLogin = () => window.location.replace(`/#${loginRoute}`);
 
   return (
     <>
@@ -44,12 +45,14 @@ const IndexPage = ({ classes }) => {
             <AfterSignInComponent userName={userName} signoutLink={signOut} />
           </>
         ) : (
-          <Button
-            onClick={() => signIn()}
-            classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
-          >
-            Login
-          </Button>
+          <>
+            <Button
+              onClick={redirectToLogin}
+              classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
+            >
+              Login/Register
+            </Button>
+          </>
         )}
       </>
       )}
