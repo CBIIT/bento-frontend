@@ -27,7 +27,7 @@ import userRegistration from '../../pages/accessManagment/userRegistration';
 import SysInfoView from '../../pages/sysInfo/view';
 
 // Access control imports
-import PrivateRoute from './privateRoute';
+import PrivateRoute, { LoginRoute } from './privateRoute';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
