@@ -24,6 +24,7 @@ import GlobalSearch from '../../pages/search/searchView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/accessManagment/login';
 import userRegistration from '../../pages/accessManagment/userRegistration';
+import SysInfoView from '../../pages/sysInfo/view';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -72,6 +73,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/graphql" component={GraphqlClient} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={userRegistration} />
+            <Route path="/sysinfo" component={SysInfoView} />
             <Route component={Error} />
           </Switch>
           <Footer data={{ isSidebarOpened }} />

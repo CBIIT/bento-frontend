@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core';
 import { CustomDataTable, getColumns } from 'bento-components';
 import env from '../../utils/env';
-import packageJson from '../../../package.json';
 import bentoComponentsPackageJson from '../../../node_modules/bento-components/package.json';
 import materialUICorePackageJson from '../../../node_modules/@material-ui/core/package.json';
 
@@ -19,6 +18,14 @@ const useStyles = makeStyles({
 
 function createRow(key, value) {
   return { key, value };
+}
+
+function getHashlessUrl() {
+  if (window.location.href.indexOf('localhost') !== -1) return 'https://bento-dev.bento-tools.org/';
+  const url = window.location.href;
+  const { hash } = window.location;
+  const indexOfHash = url.indexOf(hash) || url.length;
+  return url.substr(0, indexOfHash);
 }
 
 async function getBEVersion(url) {
@@ -37,12 +44,23 @@ async function getBEVersion(url) {
 async function getFileServiceVersion() {
   const fileServiceURL = env.REACT_APP_FILE_SERVICE_API;
   const route = 'version';
-  const version = await fetch(
+  const response = await fetch(
     `${fileServiceURL}${route}`,
-  ).then((resp) => (resp.json().version))
-    .catch(() => ({ version: '' }));
-  console.log(version);
-  return version;
+  ).then((resp) => (resp))
+    .catch(() => ({ version: '0.0.0' }));
+  const data = response.json();
+
+  return data.version || '0.0.0';
+}
+
+async function getAuthVersions(route) {
+  const serviceUrl = getHashlessUrl();
+
+  const response = await fetch(`${serviceUrl}${route}`)
+    .then((resp) => resp.json())
+    .catch(() => ({ version: '0.0.0' }));
+
+  return response.version || '0.0.0';
 }
 
 // Main Function
@@ -52,20 +70,22 @@ function SysInfoView({ data }) {
 
   useEffect(() => {
     const getSystems = async () => {
-      const response = await fetch(
-        `${env.REACT_APP_FILE_SERVICE_API}version`,
-      ).then((resp) => (resp))
-        .catch(() => ({ version: '' }));
-      const fsData = response.json();
-      setState({ fileService: fsData.version });
+      const fileServiceVersion = await getFileServiceVersion();
+      const backendVersion = await getBEVersion(getHashlessUrl());
+      const authVersion = await getAuthVersions('/api/auth/version');
+      const authUserVersion = await getAuthVersions('/api/users/version');
+      setState({
+        fileService: fileServiceVersion, backendVersion, authVersion, authUserVersion,
+      });
     };
     getSystems();
   }, []);
 
   const microservicesData = [
-    createRow('Backednd Version', 1),
+    createRow('Backend Version', state.backendVersion),
     createRow('File Service Version', state.fileService),
-    createRow('Auth Version', 1),
+    createRow('Authentication Version', state.authVersion),
+    createRow('Authentication User Version', state.authUserVersion),
   ];
 
   const enviromentVariableData = [
