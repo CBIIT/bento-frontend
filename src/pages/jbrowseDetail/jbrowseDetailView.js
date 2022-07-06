@@ -1,159 +1,199 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 import {
-  createViewState,
-  createJBrowseTheme,
-  JBrowseLinearGenomeView,
-  ThemeProvider,
-} from '@jbrowse/react-linear-genome-view';
+  JBrowseComponent,
+  FileLocation,
+  Index,
+  Adapter,
+  Track,
+  Display,
+  ViewTrack,
+} from 'bento-components';
+import {
+  assemblies,
+  assemblyNames,
+  UriLocation,
+  BamAdapter,
+  // VariantAdapter,
+  FILE_TYPE_BAM,
+  FILE_TYPE_BAI,
+  // FILE_TYPE_VCF,
+  // FILE_TYPE_VCF_INDEX,
+  alignment,
+  variant,
+  chunkSizeLimit,
+  // alignemntLocation,
+  // variantLocation,
+  defaultSession,
+  theme,
+} from './jbrowseData';
 
-const defaultFooterStyles = {
+const getAdapter = ({ bamLocationUri, indexUri }) => {
+  const bamFileLocation = new FileLocation(
+    bamLocationUri,
+    UriLocation,
+  );
+  const index = new Index(new FileLocation(
+    indexUri,
+    UriLocation,
+  ));
+  return new Adapter(
+    BamAdapter,
+    bamFileLocation,
+    index,
+  );
 };
 
-const theme = createJBrowseTheme();
+const getDefaultSession = (alignments, session) => {
+  if (alignments && alignments.length > 0) {
+    alignments.forEach((item) => {
+      if (item.type === alignment.type) {
+        const display = new Display(
+          alignment.display,
+          alignment.height,
+          alignment.maxDisplayedBpPerPx,
+          `${item.trackId}-${alignment.display}`,
+        );
+        const viewTrack = new ViewTrack(
+          item.type,
+          item.trackId,
+          [{ ...display }],
+        );
+        session.view.tracks.push({ ...viewTrack });
+      }
 
-const createAssembly = ({ fastaLocation, faiLocation, gziLocation }) => ({
-  name: 'hg19',
-  aliases: ['GRCh37'],
-  sequence: {
-    type: 'ReferenceSequenceTrack',
-    trackId: 'Pd8Wh30ei9R',
-    adapter: {
-      type: 'BgzipFastaAdapter',
-      fastaLocation,
-      faiLocation,
-      gziLocation,
-    },
-  },
-  refNameAliases: {
-    adapter: {
-      type: 'RefNameAliasAdapter',
-      location: {
-        uri: 'https://s3.amazonaws.com/jbrowse.org/genomes/hg19/hg19_aliases.txt',
-        locationType: 'UriLocation',
-      },
-    },
-  },
-});
-
-const getVariantsAdapter = ({ vcfGzLocationUri, indexUri }) => ({
-  type: 'VcfTabixAdapter',
-  vcfGzLocation: { uri: vcfGzLocationUri },
-  index: { location: { uri: indexUri } },
-});
-
-const getAlignmentAdapter = ({ bamLocationUri, indexUri }) => ({
-  type: 'BamAdapter',
-  bamLocation: { uri: bamLocationUri },
-  index: { location: { uri: indexUri } },
-});
+      if (item.type === variant.type) {
+        const display = new Display(
+          variant.display,
+          variant.height,
+          variant.maxDisplayedBpPerPx,
+          `${item.trackId}-${variant.display}`,
+        );
+        const viewTrack = new ViewTrack(
+          item.type,
+          item.trackId,
+          [{ ...display }],
+        );
+        session.view.tracks.push({ ...viewTrack });
+      }
+    });
+  }
+  return session;
+};
 
 const getTracks = ({
-  alignments, variants, variantsUris, alignmentUris,
+  alignmentUris, optionalTracks,
 }) => {
-  const tracks = [];
-  const alignmentOpts = {
-    adapter: {},
-    name: 'My Alignments',
-    assemblyNames: ['hg19'],
-    type: 'AlignmentsTrack',
-    trackId: 'my_alignments_track',
-  };
-
-  const variantsOpts = {
-    adapter: {},
-    name: 'My Variants',
-    trackId: 'my_track',
-    type: 'VariantTrack',
-    assemblyNames: ['hg19'],
-  };
-
-  if (alignments) {
-    alignmentOpts.adapter = getAlignmentAdapter(alignmentUris);
-    tracks.push(alignmentOpts);
+  const allTracks = [];
+  if (alignmentUris && alignmentUris.file_name) {
+    const aligmentAdapter = getAdapter(alignmentUris);
+    aligmentAdapter.chunkSizeLimit = chunkSizeLimit;
+    const alignmentOpts = new Track(
+      alignment.trackId,
+      alignment.trackName,
+      assemblyNames,
+      alignment.type,
+      aligmentAdapter,
+    );
+    allTracks.push(alignmentOpts);
   }
 
-  if (variants) {
-    variantsOpts.adapter = getVariantsAdapter(variantsUris);
-    tracks.push(variantsOpts);
-  }
-
-  return tracks;
+  // eslint-disable-next-line no-unused-expressions
+  optionalTracks && optionalTracks.forEach((track) => {
+    if (track.display) {
+      allTracks.push(track);
+    }
+  });
+  return allTracks;
 };
 
-const JBrowseDetail = ({
+const JBrowseViewDetail = ({
   bamFiles,
+  vcfFiles,
   options: {
-    variants,
     alignments,
-    variantsUris,
-    referenceSequenceUris,
+    optionalTracks,
   },
 }) => {
   const [trackList, setTracks] = useState([]);
-
-  const getState = () => {
-    const state = createViewState({
-      tracks: trackList,
-      assembly: createAssembly(referenceSequenceUris),
-      location: '10:29,838,737..29,838,819',
-    });
-    return state;
-  };
+  const [session, setSession] = useState([]);
 
   const configureAdapters = () => {
     const alignmentUris = {};
 
-    if (alignments) {
+    if (bamFiles.length > 0 && alignments) {
       bamFiles.forEach((file) => {
-        if (file.file_type === 'bam') {
+        alignmentUris.file_name = file.file_name;
+        if (file.file_type === FILE_TYPE_BAM) {
           alignmentUris.bamLocationUri = file.file_location;
         }
-        if (file.file_type === 'bai') {
+        if (file.file_type === FILE_TYPE_BAI) {
           alignmentUris.indexUri = file.file_location;
         }
       });
     }
 
     const currentTracks = getTracks({
-      alignmentUris, variantsUris, alignments, variants,
+      alignmentUris, alignments, optionalTracks,
     });
 
+    const initSession = getDefaultSession(currentTracks, session);
+    setSession(initSession);
     setTracks(currentTracks);
   };
 
   useEffect(() => {
-    if (bamFiles.length > 0) {
+    setSession(_.cloneDeep(defaultSession));
+    if (bamFiles.length > 0 || (vcfFiles && vcfFiles.length > 0)) {
       configureAdapters();
     }
-  }, [bamFiles]);
+  }, [bamFiles, vcfFiles]);
 
+  const trackData = [{
+    trackId: 'my_alignments_track',
+    name: 'My Alignment',
+    assemblyNames: ['canFam6', 'canFam5', 'canFam4', 'canFam3', 'canFam2', 'canFam1'],
+    type: 'AlignmentsTrack',
+    adapter: {
+      type: 'BamAdapter', bamLocation: { uri: 'https://nci-cbiit-caninedatacommons-file.s3.amazonaws.com/Final/NCATS/NCATS01/Bam-files/010015_0103_sorted.bam?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAINBJ6QVTSWMR7UZQ%2F20220614%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220614T024331Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&user_id=anonymous&username=anonymous&X-Amz-Signature=d188d59bd2c11e35728d00966c60d11f779ced17a5b59287b3942467604c4d19', locationType: 'UriLocation' }, index: { location: { uri: 'https://nci-cbiit-caninedatacommons-file.s3.amazonaws.com/Final/NCATS/NCATS01/Bam-files/010015_0103_sorted.bam.bai?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAINBJ6QVTSWMR7UZQ%2F20220614%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220614T024331Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&user_id=anonymous&username=anonymous&X-Amz-Signature=90641a74360b2890041ad7fdd84bb1cf2e9bf879cdc5f44f30d7ed9bf369e152', locationType: 'UriLocation' } }, chunkSizeLimit: 20000000,
+    },
+  }];
+
+  const sessionData = {
+    name: 'My session',
+    view: {
+      id: 'linearGenomeView',
+      type: 'LinearGenomeView',
+      tracks: [{
+        type: 'ReferenceSequenceTrack',
+        configuration: 'reference_id_canFam6',
+        displays: [{
+          type: 'LinearReferenceSequenceDisplay', maxDisplayedBpPerPx: 22345, height: 200, configuration: 'reference_id_canFam6-LinearReferenceSequenceDisplay',
+        }],
+      }, {
+        type: 'AlignmentsTrack',
+        configuration: 'my_alignments_track',
+        displays: [{
+          type: 'LinearPileupDisplay', height: 200, maxDisplayedBpPerPx: 50000, configuration: 'my_alignments_track-LinearPileupDisplay',
+        }],
+      }],
+    },
+  };
   return (
-    <ThemeProvider theme={theme}>
-      <JBrowseLinearGenomeView viewState={getState()} />
-    </ThemeProvider>
+    <>
+      <JBrowseComponent
+        theme={theme}
+        tracks={trackData}
+        assemblies={assemblies}
+        // location={location}
+        defaultSession={sessionData}
+      />
+    </>
   );
 };
 
-JBrowseDetail.propTypes = {
-  bamFiles: PropTypes.arrayOf(
-    PropTypes.shape({
-      file_type: PropTypes.string.isRequired,
-      file_location: PropTypes.string.isRequired,
-    }),
-  ),
-  options: PropTypes.shape({
-    variants: PropTypes.bool,
-    alignments: PropTypes.bool,
-    referenceSequenceUris: PropTypes.shape({
-      faiLocation: PropTypes.string.isRequired,
-      fastaLocation: PropTypes.string.isRequired,
-    }).isRequired,
-  }),
-};
-
-JBrowseDetail.defaultProps = {
+JBrowseViewDetail.defaultProps = {
   options: {
     variants: false,
     alignments: false,
@@ -161,4 +201,4 @@ JBrowseDetail.defaultProps = {
   bamFiles: [],
 };
 
-export default withStyles(defaultFooterStyles, { withTheme: true })(JBrowseDetail);
+export default JBrowseViewDetail;

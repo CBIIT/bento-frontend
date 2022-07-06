@@ -19,7 +19,12 @@ const JbrowseDetailContainer = ({ match }) => {
     variables: { [caseIDField]: match.params.id },
   });
 
+  // const { loading, error, data } = useQuery(GET_FILES_ID_BY_NAME, {
+  //   variables: { file_name: files },
+  // });
+
   const getAllFilesUri = async (file) => {
+    console.log('>>>>> files', file);
     const resp = await axios.get(
       `${FILE_SERVICE_API}${file.file_id}`,
       {
@@ -31,6 +36,7 @@ const JbrowseDetailContainer = ({ match }) => {
     return {
       file_location: resp.data,
       file_type: file.file_type,
+      file_name: file.file_id,
     };
   };
 

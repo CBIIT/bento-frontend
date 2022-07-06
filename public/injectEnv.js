@@ -4,8 +4,8 @@ window.injectedEnv = {
 	REACT_APP_USER_LOGOUT_URL:'https://k9dc.essential-dev.com/fence/logout',
 	REACT_APP_BACKEND_API:'https://bento-dev.bento-tools.org/v1/graphql/',
 	REACT_APP_AUTH_API:'http://localhost:4010',
-	REACT_APP_GOOGLE_CLIENT_ID:'',
+	REACT_APP_GOOGLE_CLIENT_ID: '196014713877-0d926jpdd691roubuc0kpu6r6ha9b9t5.apps.googleusercontent.com',
 	REACT_APP_APPLICATION_VERSION:'YYYY_MM_DD/HH:MM',
 	REACT_APP_ABOUT_CONTENT_URL:'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/content/dev/aboutPagesContent.yaml',
-	REACT_APP_FILE_SERVICE_API:'https://bento-dev.bento-tools.org/api/files/',
+	REACT_APP_FILE_SERVICE_API:'http://localhost:4000/api/files/',
 };
