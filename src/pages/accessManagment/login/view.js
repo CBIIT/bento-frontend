@@ -1,26 +1,66 @@
 import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-
-import { useGoogleAuth } from '../../../components/GoogleAuth/GoogleAuthProvider';
+import { useAuth } from '../../../components/Auth/AuthProvider';
+import AlertMessage from '../../../components/alertMessage';
 
 // Custodian data imports
 import {
   pageTitle,
   loginProvidersData,
   loginGovCreateAccountURL,
-  bentoHelpEmail,
-  registrationBoxData,
 } from '../../../bento/userLoginData';
+import { afterLoginRedirect } from '../../../components/Layout/privateRoute';
 
-function loginView({ history, classes }) {
-  const { buttonText, redirectRoute } = registrationBoxData;
-  const handleRegisterButtonClick = () => history.push(redirectRoute);
-  const { signIn } = useGoogleAuth();
+function useQuery() {
+  const { search } = useLocation();
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+function getRedirectPath(query) {
+  const path = query.get('redirect') || '/';
+  return path;
+}
+
+function loginView({ classes }) {
+  const { signInWithGoogle, signInWithNIH } = useAuth();
+  const history = useHistory();
+  const query = useQuery();
+  const redirectPath = getRedirectPath(query);
+
+  const onSuccess = () => afterLoginRedirect(history, redirectPath);
+  const onError = () => {};
+
   const signInCall = (provider) => {
+    // if(!provider.enabled) callAlert();
     if (provider) {
-      if (provider.key === 'google') signIn();
+      if (provider.key === 'google') signInWithGoogle(onSuccess, onError);
+      if (provider.key === 'NIH') signInWithNIH();
     }
+  };
+
+  const showAlert = (alertType) => {
+    if (alertType === 'error') {
+      return (
+        <AlertMessage severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000000}>
+          {/* {getErrorDetails()} */}
+          Sample
+        </AlertMessage>
+      );
+    }
+
+    if (alertType === 'redirect') {
+      return (
+        <AlertMessage severity="error" timeout={5000}>
+          Please sign in to access
+          {' '}
+          {redirectPath}
+        </AlertMessage>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -33,7 +73,12 @@ function loginView({ history, classes }) {
         alignItems="center"
       >
         {/* Top Space */}
-        <Grid container item justifyContent="center" className={classes.emptySpace} />
+        <Grid container item justifyContent="center" className={classes.emptySpace}>
+          {/* ######## ALERT MESSAGES ######## */}
+          {/* TODO: Add error for whitelisted users */}
+          {/* {showAlert('error')} */}
+          {redirectPath !== '/' && showAlert('redirect')}
+        </Grid>
 
         {/* ROW 2 */}
         <Grid container item justifyContent="center">
@@ -92,44 +137,6 @@ function loginView({ history, classes }) {
             {/* Spacing */}
             <Grid container item sm={4} />
           </Grid>
-        </Grid>
-
-        {/* ROW 3 */}
-        <Grid container item justifyContent="center">
-          <h3>OR</h3>
-        </Grid>
-      </Grid>
-
-      {/* ROW 4 */}
-      <Grid container item justifyContent="center">
-        <Grid container spacing={1}>
-          <Grid container item sm={4} />
-          <Grid
-            container
-            item
-            sm={4}
-            justifyContent="center"
-            direction="row"
-            className={[classes.Box, classes.RegisterBox, classes.Color_092E50]}
-          >
-            <Grid container item xs={12} justifyContent="center">
-              <div className={classes.RegisterBoxTitle}>
-                Register and create a new account
-              </div>
-            </Grid>
-            <Grid container item xs={12} justifyContent="center">
-              <Button variant="contained" className={classes.registerButtton} onClick={handleRegisterButtonClick}>
-                {buttonText}
-              </Button>
-            </Grid>
-            <Grid item xs={12} justifyContent="center" className={[classes.helperMessage, classes.registerHelpMessage]}>
-              If you have any questions about access or the registration process,
-              please contact
-              {' '}
-              <span className={classes.supportEmail}><a href={`mailto:${bentoHelpEmail}`}>{bentoHelpEmail}</a></span>
-            </Grid>
-          </Grid>
-          <Grid container item sm={4} />
         </Grid>
       </Grid>
 
