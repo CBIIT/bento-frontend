@@ -15,13 +15,15 @@ export const loginProvidersData = {
     loginButtonText: 'Sign in Login.gov',
     enabled: true,
   },
-  'NIH Login': {
-    key: 'NIH Login',
+  NIH: {
+    key: 'NIH',
     icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/nih_itrust.png',
     loginButtonText: 'Sign in NIH iTrust',
     enabled: true,
   },
 };
+
+// TODO: Remove registration all custodian settings from below. We are no longer using it.
 
 export const registrationBoxData = {
   buttonText: 'REGISTER',

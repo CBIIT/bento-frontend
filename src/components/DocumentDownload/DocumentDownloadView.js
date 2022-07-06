@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 import { jBrowseOptions } from '../../bento/jbrowseDetailData';
-import { useGoogleAuth } from '../GoogleAuth/GoogleAuthProvider';
+import { useAuth } from '../Auth/AuthProvider';
 import globalData from '../../bento/siteWideConfig';
 import SessionTimeOutModal from '../sessionTimeOutModal';
 
@@ -65,9 +65,9 @@ const DocumentDownload = ({
   caseId = '',
 }) => {
   const {
-    signIn,
+    signInWithGoogle,
     signOut,
-  } = useGoogleAuth();
+  } = useAuth();
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
   const [showModal, setShowModal] = React.useState(false);
 
@@ -82,7 +82,7 @@ const DocumentDownload = ({
           <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} arrow placement="bottom">
             <div
               style={{ textAlign: 'center' }}
-              onClick={() => signIn()}
+              onClick={() => signInWithGoogle()}
             >
               <CustomIcon imgSrc={iconUnauthenticated} />
             </div>
@@ -112,7 +112,7 @@ const DocumentDownload = ({
           open={showModal}
           closeModal={closeModal}
           handleClose={closeModal}
-          submit={signIn}
+          submit={signInWithGoogle}
           message="Please login to access files!"
         />
       </div>
