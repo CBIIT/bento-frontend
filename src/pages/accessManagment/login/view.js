@@ -30,7 +30,7 @@ function loginView({ classes }) {
   const redirectPath = getRedirectPath(query);
 
   const onSuccess = () => afterLoginRedirect(history, redirectPath);
-  const onError = (error) => console.log(error);
+  const onError = () => {};
 
   const signInCall = (provider) => {
     // if(!provider.enabled) callAlert();

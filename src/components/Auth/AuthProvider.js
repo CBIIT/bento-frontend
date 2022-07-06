@@ -33,9 +33,7 @@ export const AuthProvider = ({ children }) => {
     clientId: GOOGLE_CLIENT_ID,
   });
 
-  const onError = (error) => {
-    console.log(error);
-  };
+  const onError = () => {};
 
   async function authServiceLogin(
     code, type, redirectUri, signInSuccess = () => {}, signInError = onError,
