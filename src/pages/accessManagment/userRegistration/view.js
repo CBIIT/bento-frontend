@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { bentoHelpEmail } from '../../../bento/userLoginData';
-import AlertMessage from './alertMessage';
+import AlertMessage from '../../../components/alertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 

@@ -25,6 +25,9 @@ import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/accessManagment/login';
 import userRegistration from '../../pages/accessManagment/userRegistration';
 
+// Access control imports
+import PrivateRoute, { LoginRoute } from './privateRoute';
+
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
   return null;
@@ -44,21 +47,24 @@ const Layout = ({ classes, isSidebarOpened }) => (
         >
           <Route component={ScrollToTop} />
           <Switch>
-            <Route exact path="/ICDC/" component={Home} />
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
-            <Route path="/explore" component={Dashboard} />
-            <Route path="/programs" component={Programs} />
-            <Route path="/model" component={modelPage} />
-            <Route path="/table" component={table} />
-            <Route path="/fileCentricCart" component={fileCentricCart} />
-            <Route path="/program/:id" component={ProgramDetail} />
-            <Route path="/case/:id" component={CaseDetail} />
-            <Route path="/arm/:id" component={ArmDetail} />
-            <Route path="/JBrowse" component={JBrowse} />
-            <Route exact path="/search" component={GlobalSearch} />
-            <Route path="/search/:id" component={GlobalSearchController} />
-            <Route path="/fileViewer/:id" component={JBrowseDetail} />
+
+            {/* START: Private Routes */}
+            <PrivateRoute path="/explore" component={Dashboard} />
+            <PrivateRoute path="/programs" component={Programs} />
+            <PrivateRoute path="/model" component={modelPage} />
+            <PrivateRoute path="/table" component={table} />
+            <PrivateRoute path="/fileCentricCart" component={fileCentricCart} />
+            <PrivateRoute path="/program/:id" component={ProgramDetail} />
+            <PrivateRoute path="/case/:id" component={CaseDetail} />
+            <PrivateRoute path="/arm/:id" component={ArmDetail} />
+            <PrivateRoute path="/JBrowse" component={JBrowse} />
+            <PrivateRoute exact path="/search" component={GlobalSearch} />
+            <PrivateRoute path="/search/:id" component={GlobalSearchController} />
+            <PrivateRoute path="/fileViewer/:id" component={JBrowseDetail} />
+            {/* END: Private Routes */}
+
             {aboutPageRoutes.map(
               (aboutPageRoute, index) => (
                 <Route
@@ -70,8 +76,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             )}
             <Route path="/data-dictionary" component={DataDictonary} />
             <Route path="/graphql" component={GraphqlClient} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={userRegistration} />
+            <LoginRoute path="/login" component={Login} />
+            <LoginRoute path="/register" component={userRegistration} />
             <Route component={Error} />
           </Switch>
           <Footer data={{ isSidebarOpened }} />

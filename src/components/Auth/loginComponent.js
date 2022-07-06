@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-import { useGoogleAuth } from './GoogleAuthProvider';
+import { useAuth } from './AuthProvider';
 import AfterSignInComponent from './components/afterSignInComponent';
 import globalData, { loginRoute } from '../../bento/siteWideConfig';
 
@@ -30,7 +30,7 @@ const styles = () => ({
 const IndexPage = ({ classes }) => {
   const {
     signOut,
-  } = useGoogleAuth();
+  } = useAuth();
   // const classes = useStyles();
   const userName = useSelector((state) => state.login.userId);
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
