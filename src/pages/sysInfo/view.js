@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import {
   Grid,
@@ -8,6 +7,18 @@ import { CustomDataTable, getColumns } from 'bento-components';
 import env from '../../utils/env';
 import bentoComponentsPackageJson from '../../../node_modules/bento-components/package.json';
 import materialUICorePackageJson from '../../../node_modules/@material-ui/core/package.json';
+
+async function getVersionDataFromService(url) {
+  const result = await fetch(url)
+    .then((response) => {
+      if (!response.ok) throw new Error(response.status);
+      else return response.json();
+    })
+    .then((data) => data.version)
+    .catch((error) => error);
+
+  return result;
+}
 
 // Supporting functions
 const useStyles = makeStyles({
@@ -21,7 +32,7 @@ function createRow(key, value) {
 }
 
 function getHashlessUrl() {
-  if (window.location.href.indexOf('localhost') !== -1) return 'https://bento-dev.bento-tools.org/';
+  // if (window.location.href.indexOf('localhost') !== -1) return 'https://bento-dev.bento-tools.org';
   const url = window.location.href;
   const { hash } = window.location;
   const indexOfHash = url.indexOf(hash) || url.length;
@@ -30,7 +41,7 @@ function getHashlessUrl() {
 
 async function getBEVersion(url) {
   const schemaVersion = await fetch(
-    `${url}version`,
+    `${url}/version`,
   )
     .then((response) => response.text())
     .then((data) => {
@@ -41,39 +52,26 @@ async function getBEVersion(url) {
   return schemaVersion;
 }
 
-async function getFileServiceVersion() {
-  const fileServiceURL = env.REACT_APP_FILE_SERVICE_API;
-  const route = 'version';
-  const response = await fetch(
-    `${fileServiceURL}${route}`,
-  ).then((resp) => (resp))
-    .catch(() => ({ version: '0.0.0' }));
-  const data = response.json();
-
-  return data.version || '0.0.0';
+async function getVersion(envVariable, route = 'version') {
+  const response = await getVersionDataFromService(`${envVariable}${route}`);
+  return response || '0.0.0';
 }
 
-async function getAuthVersions(route) {
-  const serviceUrl = getHashlessUrl();
-
-  const response = await fetch(`${serviceUrl}${route}`)
-    .then((resp) => resp.json())
-    .catch(() => ({ version: '0.0.0' }));
-
-  return response.version || '0.0.0';
+function envVariableNotSetError(variable) {
+  return `Please Check enviroment variable ${variable}`;
 }
 
 // Main Function
-function SysInfoView({ data }) {
+function SysInfoView() {
   const classes = useStyles();
   const [state, setState] = useState({});
 
   useEffect(() => {
     const getSystems = async () => {
-      const fileServiceVersion = await getFileServiceVersion();
       const backendVersion = await getBEVersion(getHashlessUrl());
-      const authVersion = await getAuthVersions('/api/auth/version');
-      const authUserVersion = await getAuthVersions('/api/users/version');
+      const fileServiceVersion = env.REACT_APP_FILE_SERVICE_API ? await getVersion(env.REACT_APP_FILE_SERVICE_API) : envVariableNotSetError('REACT_APP_FILE_SERVICE_API');
+      const authVersion = env.REACT_APP_AUTH_SERVICE_API ? await getVersion(env.REACT_APP_AUTH_SERVICE_API) : envVariableNotSetError('REACT_APP_AUTH_SERVICE_API');
+      const authUserVersion = env.REACT_APP_USER_SERVICE_API ? await getVersion(env.REACT_APP_USER_SERVICE_API) : envVariableNotSetError('REACT_APP_USER_SERVICE_API');
       setState({
         fileService: fileServiceVersion, backendVersion, authVersion, authUserVersion,
       });
@@ -90,8 +88,8 @@ function SysInfoView({ data }) {
 
   const enviromentVariableData = [
     createRow('Backend API Endpoint', env.REACT_APP_BACKEND_API),
-    createRow('Auth Service API Endpoint', env.REACT_APP_AUTH_API),
     createRow('File Service API Endpoint', env.REACT_APP_FILE_SERVICE_API),
+    createRow('Auth Service API Endpoint', env.REACT_APP_AUTH_SERVICE_API),
     createRow('REACT_APP_ABOUT_CONTENT_URL', env.REACT_APP_ABOUT_CONTENT_URL),
   ];
 

@@ -4,7 +4,7 @@ import {
 import env from './env';
 
 const BACKEND = env.REACT_APP_BACKEND_API;
-const AUTH = `${env.REACT_APP_AUTH_API}/api/auth/graphql`;
+const AUTH = `${env.REACT_APP_AUTH_SERVICE_API}graphql`;
 const AUTH_FORCE_DEV = false;
 const AUTH_DEV = 'https://bento-dev.bento-tools.org/api/auth/graphql';
 

@@ -77,8 +77,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             )}
             <Route path="/data-dictionary" component={DataDictonary} />
             <Route path="/graphql" component={GraphqlClient} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={userRegistration} />
+            <LoginRoute path="/login" component={Login} />
+            <LoginRoute path="/register" component={userRegistration} />
             <Route path="/sysinfo" component={SysInfoView} />
             <Route component={Error} />
           </Switch>

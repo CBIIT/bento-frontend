@@ -3,7 +3,7 @@ import { useGoogleLogin } from 'react-use-googlelogin';
 import env from '../../utils/env';
 import { signInRed, signOutRed } from './state/loginReducer';
 
-const AUTH_API = env.REACT_APP_AUTH_API;
+const AUTH_API = env.REACT_APP_AUTH_SERVICE_API;
 const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID;
 const NIH_CLIENT_ID = env.REACT_APP_NIH_CLIENT_ID;
 const NIH_AUTH_URL = env.REACT_APP_NIH_AUTH_URL;
