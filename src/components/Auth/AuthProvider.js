@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   const onError = () => {};
 
   async function authServiceLogin(
-    code, type, redirectUri, signInSuccess = () => {}, signInError = onError,
+    code, IDP, redirectUri, signInSuccess = () => {}, signInError = onError,
   ) {
     const rawResponse = await fetch(`${AUTH_API}/api/auth/login`, {
       method: 'POST',
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ code, type, redirectUri }),
+      body: JSON.stringify({ code, IDP, redirectUri }),
     }).then((response) => response).catch(() => {
     });
 
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
       redirect_uri: 'http://localhost:3000/nihloginsuccess',
       response_type: 'code',
       scope: 'openid email profile',
-      state: JSON.stringify(state),
+      state: JSON.stringify(state || {}),
     };
 
     const params = new URLSearchParams(urlParam).toString();

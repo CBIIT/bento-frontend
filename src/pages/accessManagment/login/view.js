@@ -27,16 +27,16 @@ function loginView({ classes }) {
   const { signInWithGoogle, signInWithNIH } = useAuth();
   const history = useHistory();
   const query = useQuery();
-  const redirectPath = getRedirectPath(query);
+  const internalRedirectPath = getRedirectPath(query);
 
-  const onSuccess = () => afterLoginRedirect(history, redirectPath);
+  const onSuccess = () => afterLoginRedirect(history, internalRedirectPath);
   const onError = () => {};
 
   const signInCall = (provider) => {
     // if(!provider.enabled) callAlert();
     if (provider) {
       if (provider.key === 'google') signInWithGoogle(onSuccess, onError);
-      if (provider.key === 'NIH') signInWithNIH();
+      if (provider.key === 'NIH') signInWithNIH({ internalRedirectPath });
     }
   };
 
@@ -55,7 +55,7 @@ function loginView({ classes }) {
         <AlertMessage severity="error" timeout={5000}>
           Please sign in to access
           {' '}
-          {redirectPath}
+          {internalRedirectPath}
         </AlertMessage>
       );
     }
@@ -77,7 +77,7 @@ function loginView({ classes }) {
           {/* ######## ALERT MESSAGES ######## */}
           {/* TODO: Add error for whitelisted users */}
           {/* {showAlert('error')} */}
-          {redirectPath !== '/' && showAlert('redirect')}
+          {internalRedirectPath !== '/' && showAlert('redirect')}
         </Grid>
 
         {/* ROW 2 */}
