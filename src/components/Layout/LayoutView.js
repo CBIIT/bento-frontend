@@ -22,6 +22,7 @@ import JBrowse from '../JBrowse/JBrowseView';
 import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
 import GlobalSearch from '../../pages/search/searchView';
 import GlobalSearchController from '../../pages/search/searchViewController';
+import adminController from '../../pages/admin/adminController';
 import Login from '../../pages/accessManagment/login';
 import userRegistration from '../../pages/accessManagment/userRegistration';
 
@@ -63,6 +64,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute exact path="/search" component={GlobalSearch} />
             <PrivateRoute path="/search/:id" component={GlobalSearchController} />
             <PrivateRoute path="/fileViewer/:id" component={JBrowseDetail} />
+            <Route path="/admin" component={adminController} />
             {/* END: Private Routes */}
 
             {aboutPageRoutes.map(
