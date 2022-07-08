@@ -7,17 +7,20 @@ export const SIGN_OUT = 'SIGN_OUT';
 
 export const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('username');
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    const { name, email } = userDetails;
 
-    if (serializedState === null) {
+    if (userDetails === null) {
       return {
         isSignedIn: false,
         userId: null,
+        email: null,
       };
     }
     return {
       isSignedIn: true,
-      userId: serializedState,
+      userId: name,
+      email,
     };
   } catch (error) {
     return {
@@ -29,7 +32,9 @@ export const loadState = () => {
 
 const initialState = loadState();
 
-export const signInRed = (userId = null) => store.dispatch({ type: SIGN_IN, payload: userId });
+export const signInRed = (userId = null, email = null) => store.dispatch(
+  { type: SIGN_IN, payload: { userId, email } },
+);
 
 // export function signInRed() {
 //   return {
@@ -41,13 +46,16 @@ export const signOutRed = () => store.dispatch({ type: SIGN_OUT });
 
 const reducers = {
   SIGN_IN:
-    (state, item) => ({ ...state, isSignedIn: true, userId: item }),
+    (state, item) => ({
+      ...state, isSignedIn: true, userId: item.userId, email: item.email,
+    }),
   SIGN_OUT:
     (state) => (
       {
         ...state,
         isSignedIn: false,
         userId: null,
+        email: null,
       }
     ),
 

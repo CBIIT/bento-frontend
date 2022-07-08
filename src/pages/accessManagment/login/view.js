@@ -37,6 +37,7 @@ function loginView({ classes }) {
     if (provider) {
       if (provider.key === 'google') signInWithGoogle(onSuccess, onError);
       if (provider.key === 'NIH') signInWithNIH({ internalRedirectPath });
+      if (provider.key === 'loginGov') signInWithNIH({ internalRedirectPath });
     }
   };
 

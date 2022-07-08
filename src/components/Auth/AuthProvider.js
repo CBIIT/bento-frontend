@@ -33,12 +33,14 @@ export const AuthProvider = ({ children }) => {
     clientId: GOOGLE_CLIENT_ID,
   });
 
-  const onError = () => {};
+  const originDomain = window.location.origin;
+
+  const storeInLocalStorage = (userdetails) => { localStorage.setItem('userDetails', JSON.stringify(userdetails)); };
 
   async function authServiceLogin(
-    code, IDP, redirectUri, signInSuccess = () => {}, signInError = onError,
+    code, IDP, redirectUri, signInSuccess = () => {}, signInError = () => {},
   ) {
-    const rawResponse = await fetch(`${AUTH_API}/api/auth/login`, {
+    const rawResponse = await fetch(`${AUTH_API}login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -54,9 +56,8 @@ export const AuthProvider = ({ children }) => {
       const content = await responseData;
 
       // TODO: Find some better solution to store data in local storage.
-      localStorage.setItem('username', content.name);
-      signInRed(content.name);
-
+      signInRed(content.name, content.email);
+      storeInLocalStorage(content);
       signInSuccess();
     } else if (rawResponse.status === 400) signInError('⛔️ User not registered or not found!');
     else if (rawResponse.status === 403) signInError('❌ User has not been approved!');
@@ -67,7 +68,7 @@ export const AuthProvider = ({ children }) => {
     grantOfflineAccess().then((resp) => {
       if (resp) {
         // Send the code to auth service
-        authServiceLogin(resp, 'google', 'http://localhost:4010', success, error);
+        authServiceLogin(resp, 'google', originDomain, success, error);
       } else {
         error();
       }
@@ -76,7 +77,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInWithNIH = (state) => {
-    const originDomain = window.location.origin;
     const urlParam = {
       client_id: NIH_CLIENT_ID,
       redirect_uri: `${originDomain}/nihloginsuccess`,
@@ -91,9 +91,9 @@ export const AuthProvider = ({ children }) => {
 
   const onSignOut = () => {
     (async () => {
-      localStorage.removeItem('username');
+      localStorage.removeItem('userDetails');
       signOutRed();
-      await fetch(`${AUTH_API}/api/auth/logout`, {
+      await fetch(`${AUTH_API}logout`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
