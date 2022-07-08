@@ -6,7 +6,7 @@ import { signInRed, signOutRed } from './state/loginReducer';
 const AUTH_API = env.REACT_APP_AUTH_SERVICE_API;
 const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID;
 const NIH_CLIENT_ID = env.REACT_APP_NIH_CLIENT_ID;
-const NIH_AUTH_URL = env.REACT_APP_NIH_AUTH_URL;
+const NIH_AUTH_URL = env.REACT_APP_NIH_AUTH_URL || 'https://stsstg.nih.gov/auth/oauth/v2/authorize';
 
 const createContext = () => {
   const ctx = React.createContext();
@@ -76,9 +76,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInWithNIH = (state) => {
+    const originDomain = window.location.origin;
     const urlParam = {
       client_id: NIH_CLIENT_ID,
-      redirect_uri: 'http://localhost:3000/nihloginsuccess',
+      redirect_uri: `${originDomain}/nihloginsuccess`,
       response_type: 'code',
       scope: 'openid email profile',
       state: JSON.stringify(state || {}),
