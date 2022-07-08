@@ -21,11 +21,12 @@ function nihLoginSuccess() {
   const { authServiceLogin } = useAuth();
   const redirectPath = getRedirectPath(query);
   const nihCode = query.get('code');
+  const originDomain = window.location.origin;
 
   const onSuccess = () => afterLoginRedirect(history, redirectPath);
   const onError = (error) => {};
 
-  authServiceLogin(nihCode, 'nih', 'http://localhost:3000/nihloginsuccess', onSuccess, onError);
+  authServiceLogin(nihCode, 'nih', `${originDomain}/nihloginsuccess`, onSuccess, onError);
   return (
     <div> ⚠️ Please wait communicating with server! ⚠️ </div>
   );
