@@ -43,7 +43,6 @@ const data = [
 ['Wu,Ye', 'Login.gov', 'wuye@nih.gov', '', 'Non-Member', '', '','id'],
 ['Smith,John', 'Login.gov', 'john.smith@nih.gov', '','Non-Member', '', '','id'],
 ['Stog,Hannah', 'Login.gov', 'khannah.stog@nih.gov', 'other(CBIIT)', 'Member', 'Inactive', '0','id'],
-
 ];
 
 const options = {
