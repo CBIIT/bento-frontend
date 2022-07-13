@@ -4,16 +4,16 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-import { useGoogleAuth } from './GoogleAuthProvider';
+import { useAuth } from './AuthProvider';
 import AfterSignInComponent from './components/afterSignInComponent';
-import globalData from '../../bento/siteWideConfig';
+import globalData, { loginRoute } from '../../bento/siteWideConfig';
 
 // styles
 const styles = () => ({
 
   logotype: {
     whiteSpace: 'nowrap',
-    color: '#FFFFFF',
+    color: '#24E4BE',
     fontFamily: 'Raleway',
     fontSize: '13px',
     letterSpacing: '1.25px',
@@ -29,27 +29,31 @@ const styles = () => ({
 
 const IndexPage = ({ classes }) => {
   const {
-    signIn, signOut,
-  } = useGoogleAuth();
+    signOut,
+  } = useAuth();
   // const classes = useStyles();
   const userName = useSelector((state) => state.login.userId);
+  const email = useSelector((state) => state.login.email);
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  const redirectToLogin = () => window.location.replace(`/#${loginRoute}`);
 
   return (
     <>
       {globalData.enableAuthentication && (typeof globalData.authEndPoint === 'undefined' || globalData.authEndPoint.includes('google') || globalData.authEndPoint.includes('Google') || globalData.authEndPoint === []) && (
       <>
-        { (isSignedIn && userName !== undefined && typeof userName !== 'undefined') ? (
+        { (isSignedIn) ? (
           <>
-            <AfterSignInComponent userName={userName} signoutLink={signOut} />
+            <AfterSignInComponent userName={userName || email} signoutLink={signOut} />
           </>
         ) : (
-          <Button
-            onClick={() => signIn()}
-            classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
-          >
-            Login
-          </Button>
+          <>
+            <Button
+              onClick={redirectToLogin}
+              classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
+            >
+              Login/Register
+            </Button>
+          </>
         )}
       </>
       )}

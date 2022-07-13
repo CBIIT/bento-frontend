@@ -6,3 +6,6 @@ export default {
   // List for options for authentication empty array defaults to google
   authEndPoint: ['google'], // authEndPoint: []
 };
+
+export const loginRoute = '/login';
+export const registrationRoute = '/register';

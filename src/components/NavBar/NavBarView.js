@@ -3,7 +3,7 @@ import { NavBar } from 'bento-components';
 import {
   navBarData, navBarCartData, navBarstyling,
 } from '../../bento/navigationBarData';
-import Login from '../GoogleAuth/loginComponent';
+import Login from '../Auth/loginComponent';
 import globalData from '../../bento/siteWideConfig';
 
 const BentoNavBar = ({ cartFieldIds }) => (
