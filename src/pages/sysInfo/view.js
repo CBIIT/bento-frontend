@@ -7,6 +7,9 @@ import { CustomDataTable, getColumns } from 'bento-components';
 import env from '../../utils/env';
 import bentoComponentsPackageJson from '../../../node_modules/bento-components/package.json';
 import materialUICorePackageJson from '../../../node_modules/@material-ui/core/package.json';
+import jbrowsePackageJson from '../../../node_modules/@jbrowse/core/package.json';
+import packageJson from '../../../package.json';
+import { coreRequirements, microServiceRequirements, dependencyRequirements } from '../../bento/sysinfoData';
 
 async function getVersionDataFromService(url) {
   const result = await fetch(url)
@@ -27,6 +30,11 @@ const useStyles = makeStyles({
   },
 });
 
+// eslint-disable-next-line camelcase
+function createThreeColumnRow(key, requiredValue, value) {
+  return { key, requiredValue, value };
+}
+
 function createRow(key, value) {
   return { key, value };
 }
@@ -41,7 +49,7 @@ function getHashlessUrl() {
 
 async function getBEVersion(url) {
   const schemaVersion = await fetch(
-    `${url}/version`,
+    `${url}version`,
   )
     .then((response) => response.text())
     .then((data) => {
@@ -79,29 +87,58 @@ function SysInfoView() {
     getSystems();
   }, []);
 
-  const microservicesData = [
-    createRow('Backend Version', state.backendVersion),
-    createRow('File Service Version', state.fileService),
-    createRow('Authentication Version', state.authVersion),
-    createRow('Authentication User Version', state.authUserVersion),
+  const coreServicesData = [
+    createThreeColumnRow('Frontend Version', coreRequirements.frontend, packageJson.version),
+    createThreeColumnRow('Backend Version', coreRequirements.backend, state.backendVersion),
+    createThreeColumnRow('Bento Components (aka Bento-tools) Version', coreRequirements['bento-tools'], bentoComponentsPackageJson.version),
   ];
 
-  const enviromentVariableData = [
+  const microservicesData = [
+    createThreeColumnRow('File Service Version', microServiceRequirements.file, state.fileService),
+    createThreeColumnRow('Authentication Version', microServiceRequirements.auth, state.authVersion),
+    createThreeColumnRow('Authentication User Version', microServiceRequirements.user, state.authUserVersion),
+  ];
+
+  const environmentVariablesData = [
     createRow('Backend API Endpoint', env.REACT_APP_BACKEND_API),
     createRow('File Service API Endpoint', env.REACT_APP_FILE_SERVICE_API),
     createRow('Auth Service API Endpoint', env.REACT_APP_AUTH_SERVICE_API),
     createRow('REACT_APP_ABOUT_CONTENT_URL', env.REACT_APP_ABOUT_CONTENT_URL),
   ];
 
-  const packageDetailData = [
-    createRow('Bento-components(aka Bento-tools)', bentoComponentsPackageJson.version),
-    createRow('Material UI Core', materialUICorePackageJson.version),
+  const dependenciesData = [
+    createThreeColumnRow('Node Version', dependencyRequirements.node, packageJson.engines.node),
+    createThreeColumnRow('NPM Version', dependencyRequirements.npm, packageJson.engines.npm),
+    createThreeColumnRow('MUI Core Version', packageJson.dependencies['@material-ui/core'], materialUICorePackageJson.version),
+    createThreeColumnRow('JBrowse Version', packageJson.dependencies['@jbrowse/react-linear-genome-view'], jbrowsePackageJson.version),
   ];
-  const microservicesColumns = {
+
+  const coreServiceOptions = {
     columns: [
       {
         dataField: 'key',
-        header: 'Service',
+        header: 'Name',
+      },
+      {
+        dataField: 'requiredValue',
+        header: 'Required Version',
+      },
+      {
+        dataField: 'value',
+        header: 'Current Version',
+      },
+    ],
+  };
+
+  const microservicesOptions = {
+    columns: [
+      {
+        dataField: 'key',
+        header: 'Name',
+      },
+      {
+        dataField: 'requiredValue',
+        header: 'Required Version',
       },
       {
         dataField: 'value',
@@ -110,11 +147,11 @@ function SysInfoView() {
     ],
   };
 
-  const enviromentVariableColumns = {
+  const environmentVariableOptions = {
     columns: [
       {
         dataField: 'key',
-        header: 'Enviroment Variable',
+        header: 'Variable',
       },
       {
         dataField: 'value',
@@ -123,40 +160,51 @@ function SysInfoView() {
     ],
   };
 
-  const packageDetailColumns = {
+  const dependenciesOptions = {
     columns: [
       {
         dataField: 'key',
-        header: 'NPM Package',
+        header: 'Name',
+      },
+      {
+        dataField: 'requiredValue',
+        header: 'Required Version',
       },
       {
         dataField: 'value',
-        header: 'Version',
+        header: 'Current Version',
       },
     ],
   };
 
   return (
     <>
-      <Grid item xs={12} id="table_file">
+      <Grid item xs={12} id="table_core">
+        <CustomDataTable
+          title="Core"
+          data={coreServicesData}
+          columns={getColumns(coreServiceOptions, classes)}
+        />
+      </Grid>
+      <Grid item xs={12} id="table_micro">
         <CustomDataTable
           title="Micro Services"
           data={microservicesData}
-          columns={getColumns(microservicesColumns, classes)}
+          columns={getColumns(microservicesOptions, classes)}
+        />
+      </Grid>
+      <Grid item xs={12} id="table_env">
+        <CustomDataTable
+          title="Environment Variables"
+          data={environmentVariablesData}
+          columns={getColumns(environmentVariableOptions, classes)}
         />
       </Grid>
       <Grid item xs={12} id="table_file">
         <CustomDataTable
-          title="Enviroment Variables"
-          data={enviromentVariableData}
-          columns={getColumns(enviromentVariableColumns, classes)}
-        />
-      </Grid>
-      <Grid item xs={12} id="table_file">
-        <CustomDataTable
-          title="NPM Packages"
-          data={packageDetailData}
-          columns={getColumns(packageDetailColumns, classes)}
+          title="Dependencies"
+          data={dependenciesData}
+          columns={getColumns(dependenciesOptions, classes)}
         />
       </Grid>
     </>
