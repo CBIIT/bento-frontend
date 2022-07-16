@@ -10,9 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Stats from '../../components/Stats/AllStatsController';
-import {
-   icon,
-} from '../../bento/adminData';
+import { icon } from '../../bento/adminData';
 import TableManageAccess from './components/tableManageAccess.js';
 import TablePendingRequest from './components/tablePendingRequest.js'
 
@@ -50,21 +48,21 @@ function a11yProps(index) {
 
 const adminView = ({ classes, data }) => {
   const [value, setValue] = React.useState(0);
-  const [checked, setChecked] = React.useState(true);
+  const [includeNonMember, setIncludeNonMember] = React.useState(true);
+
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const handleCheckBoxChange= (event) => {
-    setChecked(event.target.checked);
+    setIncludeNonMember(event.target.checked);
   };
-
 
 
   return (
     <div className={classes.pageContainer}>
-        <Stats />
         <div className={classes.container}>
           <div className={classes.header}>
               <div className={classes.logo}>
@@ -102,7 +100,7 @@ const adminView = ({ classes, data }) => {
                       classes={{
                       root:classes.checkbox,
                     }}
-                    checked={checked}
+                    checked={includeNonMember}
                     onChange={handleCheckBoxChange}
                     name="Non-MembersCK"
                   />
@@ -111,9 +109,8 @@ const adminView = ({ classes, data }) => {
               />
             </Tabs>
 
-
           <TabPanel value={value} index={0}>
-            <TableManageAccess/>
+            <TableManageAccess includeNonMember={includeNonMember}/>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <TablePendingRequest/>

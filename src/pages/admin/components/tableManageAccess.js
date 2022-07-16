@@ -6,16 +6,44 @@ import {
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import { useQuery } from '@apollo/client';
 import { CustomDataTable } from 'bento-components';
+import { GET_LIST_USERS,useMock } from '../../../bento/adminData';
 
-const TableManageAccess = ({classes}) => {
+const TableManageAccess = ({classes,includeNonMember}) => {
 
-const columns = [{ name: 'name', label: 'Name' },
-  { name: 'type', label: 'Account Type' },
-  { name: 'email', label: 'Email' },
-  { name: 'org', label: 'Organization' },
+ // get data
+ const { loading, error, data } = useQuery(GET_LIST_USERS, {
+   context: {
+        clientName: useMock? "mockService":""
+    },
+    variables: { role: includeNonMember?["member","non-member"]:["member"] },
+ });
+
+
+const cleanData = (data) =>{
+  let res = [];
+  data.map(d=>{
+
+    //copy d
+    let newData = {...d};
+    // get name
+    newData["name"] = d.lastName+" " +d.firstName;
+    // get approved requests
+    newData["arm"] = d.acl.filter(arm=> arm.accessStatus === "approved").length;
+
+    res.push(newData);
+  })
+
+  return res;
+}
+
+const columns = [{ name: 'name', label: 'Name'},
+  { name: 'IDP', label: 'Account Type' },
+  { name: 'email', label: 'Email', },
+  { name: 'organization', label: 'Organization' },
   { name: 'role', label: 'Role' },
-  { name: 'status', label: 'Status' },
+  { name: 'userStatus', label: 'Status' },
   { name: 'arm', label: 'Arm(s)',
   options: {
   customBodyRender: (value, tableMeta, updateValue) => (
@@ -34,15 +62,7 @@ const columns = [{ name: 'name', label: 'Name' },
             </Button>
           )
       }
-  }
-];
-const data = [
-['Chen,Kailing', 'NIH', 'kai-ling.chen@nih.gov', 'other(CBIIT)', 'Admin', 'Active', '28','id'],
-['Mukherhee,Amit', 'Login.gov', 'amit.mukherjee@nih.gov', 'other(CBIIT)', 'Member', 'Active', '13','id'],
-['Kuffel,Gina', 'Google', 'gina.kuffel@nih.gov', 'other(CBIIT)', 'Admin', 'Active', '4','id'],
-['Wu,Ye', 'Login.gov', 'wuye@nih.gov', '', 'Non-Member', '', '','id'],
-['Smith,John', 'Login.gov', 'john.smith@nih.gov', '','Non-Member', '', '','id'],
-['Stog,Hannah', 'Login.gov', 'khannah.stog@nih.gov', 'other(CBIIT)', 'Member', 'Inactive', '0','id'],
+  },
 ];
 
 const options = {
@@ -61,7 +81,7 @@ return(
     <Grid container spacing={32}>
       <Grid item xs={12}>
         <CustomDataTable
-          data={data}
+          data={data?cleanData(data.User):[]}
           columns={columns}
           options={options}
         />

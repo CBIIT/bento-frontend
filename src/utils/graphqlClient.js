@@ -8,7 +8,7 @@ const BACKEND = env.REACT_APP_BACKEND_API;
 const AUTH = `${env.REACT_APP_AUTH_API}/api/auth/graphql`;
 const AUTH_FORCE_DEV = false;
 const AUTH_DEV = 'https://bento-dev.bento-tools.org/api/auth/graphql';
-const MOCK = 'https://f20e5514-ae0a-4e09-b498-94283cdf9d2c.mock.pstmn.io/v1/graphql/';
+const MOCK = 'https://f20e5514-ae0a-4e09-b498-94283cdf9d2c.mock.pstmn.io/v1/graphql';
 
 const backendService = new HttpLink({
   uri: BACKEND,
@@ -20,6 +20,9 @@ const authService = new HttpLink({
 
 const mockService = new HttpLink({
   uri: MOCK,
+  headers: {
+     "x-mock-match-request-body": true
+    }
 });
 
 const client = new ApolloClient({
