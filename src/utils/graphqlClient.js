@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   ApolloClient, InMemoryCache, ApolloLink, HttpLink,
 } from '@apollo/client';
@@ -26,10 +27,12 @@ const client = new ApolloClient({
   link: ApolloLink.split(
     (operation) => operation.getContext().clientName === 'mockService',
     mockService,
+    ApolloLink.split(
     (operation) => operation.getContext().clientName === 'authService',
     // the string "authService" can be anything you want,
     authService, // <= apollo will send to this if clientName is "authService"
     backendService, // <= otherwise will send to this
-  ),
+  )
+),
 });
 export default client;
