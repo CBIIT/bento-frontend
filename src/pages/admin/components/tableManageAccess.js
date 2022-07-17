@@ -17,7 +17,10 @@ const TableManageAccess = ({classes,includeNonMember}) => {
    context: {
         clientName: useMock? "mockService":""
     },
-    variables: { role: includeNonMember?["member","non-member"]:["member"] },
+    variables: { 
+      role: includeNonMember?["member","non-member"]:["member"],
+      accessStatus: ["approved"]
+    },
  });
 
 
@@ -30,7 +33,7 @@ const cleanData = (data) =>{
     // get name
     newData["name"] = d.lastName+" " +d.firstName;
     // get approved requests
-    newData["arm"] = d.acl.filter(arm=> arm.accessStatus === "approved").length;
+    newData["arm"] = d.acl.length;
 
     res.push(newData);
   })
@@ -51,16 +54,21 @@ const columns = [{ name: 'name', label: 'Name'},
           )
       }
   },
-  { name: 'action', label: 'Actions',
+  { name: 'userID', label: 'Actions',
     options: {
-  customBodyRender: (value, tableMeta, updateValue) => (
-            <Button variant="contained" 
+  customBodyRender: (value, tableMeta, updateValue) => { 
+    const href = 'admin/'+value; 
+    return(
+
+            <Button variant="contained"  component={Link} href={href}
             classes={{
                 root:classes.btn
-              }}>
+              }}
+                >
                Edit
             </Button>
           )
+}
       }
   },
 ];
