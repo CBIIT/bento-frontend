@@ -15,7 +15,7 @@
     REACT_APP_USER_SERVICE_API=http://localhost:3000/api/users/
 ```
 9. PORT=3010 npm start
-
+10. Access Frontend with __http://localhost:3000/__
 
 
 
