@@ -24,30 +24,13 @@ const TableManageAccess = ({classes,includeNonMember}) => {
  });
 
 
-const cleanData = (data) =>{
-  let res = [];
-  data.map(d=>{
-
-    //copy d
-    let newData = {...d};
-    // get name
-    newData["name"] = d.lastName+" " +d.firstName;
-    // get approved requests
-    newData["arm"] = d.acl.length;
-
-    res.push(newData);
-  })
-
-  return res;
-}
-
-const columns = [{ name: 'name', label: 'Name'},
+const columns = [{ name: 'displayName', label: 'Name'},
   { name: 'IDP', label: 'Account Type' },
   { name: 'email', label: 'Email', },
   { name: 'organization', label: 'Organization' },
   { name: 'role', label: 'Role' },
   { name: 'userStatus', label: 'Status' },
-  { name: 'arm', label: 'Arm(s)',
+  { name: 'numberOfArms', label: 'Arm(s)',
   options: {
   customBodyRender: (value, tableMeta, updateValue) => (
     <Link href="#"> {value}</Link>
@@ -89,7 +72,7 @@ return(
     <Grid container spacing={32}>
       <Grid item xs={12}>
         <CustomDataTable
-          data={data?cleanData(data.User):[]}
+          data={data?data.User:[]}
           columns={columns}
           options={options}
         />
