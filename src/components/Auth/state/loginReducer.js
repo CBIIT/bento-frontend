@@ -1,4 +1,5 @@
 import store from '../../../store';
+import { getFromLocalStorage } from '../../../utils/localStorage';
 
 const storeKey = 'login';
 
@@ -7,47 +8,42 @@ export const SIGN_OUT = 'SIGN_OUT';
 
 export const loadState = () => {
   try {
-    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
-    const { name, email } = userDetails;
+    const userDetails = getFromLocalStorage('userDetails');
 
-    if (userDetails === null) {
-      return {
-        isSignedIn: false,
-        userId: null,
-        email: null,
-      };
-    }
-    return {
-      isSignedIn: true,
-      userId: name,
-      email,
+    const DEFAULT_INITIAL_STATE = {
+      isSignedIn: false,
     };
+
+    /*
+      Note for Developer:
+      Here we are checking does userDetails object contains at least email or not.
+      Email is used in navigation bar as backup property when name is not present.
+    */
+
+    if (userDetails.email) {
+      return { ...DEFAULT_INITIAL_STATE, ...userDetails, isSignedIn: true };
+    }
+
+    return DEFAULT_INITIAL_STATE;
   } catch (error) {
     return {
       isSignedIn: false,
-      userId: null,
     };
   }
 };
 
 const initialState = loadState();
 
-export const signInRed = (userId = null, email = null) => store.dispatch(
-  { type: SIGN_IN, payload: { userId, email } },
+export const signInRed = (userDetails) => store.dispatch(
+  { type: SIGN_IN, payload: { userDetails } },
 );
-
-// export function signInRed() {
-//   return {
-//     type: SIGN_OUT,
-//   };
-// }
 
 export const signOutRed = () => store.dispatch({ type: SIGN_OUT });
 
 const reducers = {
   SIGN_IN:
     (state, item) => ({
-      ...state, isSignedIn: true, userId: item.userId, email: item.email,
+      ...state, isSignedIn: true, ...item.userDetails,
     }),
   SIGN_OUT:
     (state) => (

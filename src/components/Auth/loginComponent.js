@@ -32,9 +32,10 @@ const IndexPage = ({ classes }) => {
     signOut,
   } = useAuth();
   // const classes = useStyles();
-  const userName = useSelector((state) => state.login.userId);
-  const email = useSelector((state) => state.login.email);
-  const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  const {
+    isSignedIn, email, firstName,
+  } = useSelector((state) => state.login);
+
   const redirectToLogin = () => window.location.replace(`/#${loginRoute}`);
 
   return (
@@ -43,7 +44,7 @@ const IndexPage = ({ classes }) => {
       <>
         { (isSignedIn) ? (
           <>
-            <AfterSignInComponent userName={userName || email} signoutLink={signOut} />
+            <AfterSignInComponent userName={firstName || email} signoutLink={signOut} />
           </>
         ) : (
           <>

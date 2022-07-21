@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { bentoHelpEmail } from '../../../bento/userLoginData';
-import AlertMessage from '../../../components/alertMessage';
+import { bentoHelpEmail } from '../../bento/userLoginData';
+import AlertMessage from '../../components/alertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 
 // Custodian data imports
-import { pageTitle, registrationForm, SUBMIT_REGISTER } from '../../../bento/userRegistrationData';
+import { pageTitle, formFields, SUBMIT_REGISTER } from '../../bento/requestAccessData';
 
 // eslint-disable-next-line no-unused-vars
 const checkIsValid = (field, formValues) => {
@@ -27,9 +28,9 @@ const checkIsValid = (field, formValues) => {
   return false;
 };
 
-function userRegistrationView({ classes }) {
+function requestAccessView({ data, classes }) {
   // Initial State and Reset functions
-  const setDefaultValues = () => registrationForm.reduce((values, field) => {
+  const setDefaultValues = () => formFields.reduce((values, field) => {
     const { id, type, multiple } = field;
     if (!values[id]) {
       // eslint-disable-next-line no-param-reassign
@@ -40,6 +41,7 @@ function userRegistrationView({ classes }) {
 
   // Init state for inputs.
   const [formValues, setFormValues] = useState(setDefaultValues());
+  const userEmail = useSelector((state) => state.login.email);
 
   const clearAll = () => {
     setFormValues(setDefaultValues());
@@ -133,15 +135,26 @@ function userRegistrationView({ classes }) {
               {/* Page Title */}
               <div className={classes.pageTitle}>
                 {pageTitle}
+                <hr className={classes.pageTitleUnderline} />
+              </div>
+
+              {/* User's Email Address */}
+              <div className={classes.emailAddress}>
+                Email Address:
+                <span className={classes.emailAddressValue}>
+                  {' '}
+                  {userEmail}
+                  {' '}
+                </span>
               </div>
 
               {/* Box Grid */}
               <div className={classes.Box}>
                 <Grid container alignItems="center" justify="center" direction="column">
                   <form onSubmit={handleSubmit}>
-                    {registrationForm.map((field) => (
+                    {formFields.map((field) => (
                       field.type === 'dropdown'
-                        ? SelectMenu(field, formValues, handleInputChange, classes)
+                        ? SelectMenu(field, formValues, handleInputChange, data, classes)
                         : field.type
                           ? TextBox(field, formValues, handleInputChange, classes)
                           : null))}
@@ -188,13 +201,37 @@ const styles = () => ({
   },
   pageTitle: {
     color: '#3974A8',
-    fontSize: '30px',
+    fontSize: '27px',
     textAlign: 'center',
-    fontFamily: 'Nunito',
+    fontFamily: 'Inter',
     fontWeight: '500',
     lineHeight: '40px',
     marginBottom: '10px',
     marginTop: '10px',
+  },
+  pageTitleUnderline: {
+    boxSizing: 'border-box',
+    height: '2px',
+    width: '434px',
+    border: '1px solid #88B4DA',
+    backgroundColor: '#F2F6FA',
+    boxShadow: '-4px 8px 27px 4px rgb(27 28 28 / 9%)',
+  },
+  emailAddress: {
+    color: '#0467BD',
+    fontFamily: 'Nunito',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    lineHeight: '22px',
+    marginBottom: '15px',
+  },
+  emailAddressValue: {
+    color: '#8493A0',
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    fontStyle: 'italic',
+    fontWeight: '600',
+    lineHeight: '35px',
   },
   Box: {
     width: '535px',
@@ -255,7 +292,7 @@ const styles = () => ({
   formLabel: {
     height: '18px',
     color: '#0467BD',
-    fontFamily: '"Nunito"',
+    fontFamily: 'Nunito',
     fontSize: '18px',
     fontWeight: 'bold',
     letterSpacing: '0',
@@ -278,4 +315,4 @@ const styles = () => ({
 
 });
 
-export default withStyles(styles, { withTheme: true })(userRegistrationView);
+export default withStyles(styles, { withTheme: true })(requestAccessView);
