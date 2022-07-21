@@ -1,34 +1,19 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   Button, withStyles, Paper,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Badge from '@material-ui/core/Badge';
 // import DropdownItemsMenu from './DropdownItemsMenu';
-
-const getDropDownMenu = (data) => {
-  const { classes, signoutLink } = data;
-
-  return (
-    <Paper className={classes.paper}>
-      <Link className={classes.paperLink} to="/profile">
-        User Profile
-      </Link>
-
-      <Button
-        onClick={signoutLink}
-        classes={{ label: classes.textColor, text: classes.paddding0 }}
-        disableRipple
-      >
-        logout
-      </Button>
-    </Paper>
-  );
-};
 
 const AfterSignIn = ({
   classes, userName, signoutLink,
 }) => {
   const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
+
+  const { role } = useSelector((state) => state.login);
 
   function handleClick() {
     setDisplayDropDownMenu(true);
@@ -55,9 +40,27 @@ const AfterSignIn = ({
       >
         {userName}
       </Button>
+
+      <IconButton
+        color="inherit"
+        className={classes.profileIcon}
+      >
+        <Badge badgeContent={role[0]} color="secondary" className={classes.badge}>
+          <AccountCircle />
+        </Badge>
+      </IconButton>
+
       {displayDropDownMenu
         ? (
-          getDropDownMenu({ classes, signoutLink })
+          <Paper className={classes.paper}>
+            <Button
+              onClick={signoutLink}
+              classes={{ label: classes.textColor, text: classes.paddding0 }}
+              disableRipple
+            >
+              logout
+            </Button>
+          </Paper>
         ) : ''}
     </div>
   );
@@ -89,7 +92,7 @@ const styles = () => ({
     margin: '0px 0px 0px 0px',
   },
   paddding0: {
-    padding: '0px',
+    paddding: '0px',
   },
   aboutMenu: {
     display: 'inline-block',
@@ -102,10 +105,8 @@ const styles = () => ({
     textTransform: 'capitalize',
   },
   paper: {
-    display: 'flex',
-    flexDirection: 'column',
     background: '#465F96',
-    minWidth: '120px',
+    width: '120px',
     paddingLeft: '20px',
     position: 'absolute',
     fontFamily: 'Nunito',
@@ -113,12 +114,12 @@ const styles = () => ({
     borderRadius: '0',
     marginTop: '6px',
   },
-  paperLink: {
-    color: '#ffffff',
-    fontWeight: 'normal',
-    textDecoration: 'none',
-    fontSize: '16px',
+  badge: {
     textTransform: 'capitalize',
+  },
+  profileIcon: {
+    paddingBottom: '0px',
+    marginBottom: '-8px',
   },
 });
 
