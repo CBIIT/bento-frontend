@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import { useGoogleLogin } from 'react-use-googlelogin';
 import env from '../../utils/env';
 import { signInRed, signOutRed } from './state/loginReducer';
+import { storeInLocalStorage, deleteFromLocalStorage } from '../../utils/localStorage';
+
+import GET_USER_DETAILS from '../../bento/authProviderData';
 
 const AUTH_API = env.REACT_APP_AUTH_SERVICE_API;
 const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -33,9 +37,9 @@ export const AuthProvider = ({ children }) => {
     clientId: GOOGLE_CLIENT_ID,
   });
 
-  const originDomain = window.location.origin;
+  const [getUserDetails] = useLazyQuery(GET_USER_DETAILS, { context: { clientName: 'userService' } });
 
-  const storeInLocalStorage = (userdetails) => { localStorage.setItem('userDetails', JSON.stringify(userdetails)); };
+  const originDomain = window.location.origin;
 
   async function authServiceLogin(
     code, IDP, redirectUri, signInSuccess = () => {}, signInError = () => {},
@@ -53,12 +57,19 @@ export const AuthProvider = ({ children }) => {
     const responseData = rawResponse.json();
     if (!responseData) return;
     if (rawResponse.status === 200) {
-      const content = await responseData;
+      /*
+        NOTE FOR Developers: Calling /api/users/graphql with "getMyUser" every time after login.
+        This call will create user profile in the database.
+      */
 
-      // TODO: Find some better solution to store data in local storage.
-      signInRed(content.name, content.email);
-      storeInLocalStorage(content);
-      signInSuccess();
+      getUserDetails().then((response) => {
+        const {
+          data: { getMyUser: userDetails },
+        } = response;
+        signInRed(userDetails);
+        storeInLocalStorage('userDetails', userDetails);
+        signInSuccess(userDetails);
+      });
     } else if (rawResponse.status === 400) signInError('⛔️ User not registered or not found!');
     else if (rawResponse.status === 403) signInError('❌ User has not been approved!');
     else signInError('Internal Error');
@@ -91,7 +102,7 @@ export const AuthProvider = ({ children }) => {
 
   const onSignOut = () => {
     (async () => {
-      localStorage.removeItem('userDetails');
+      deleteFromLocalStorage('userDetails');
       signOutRed();
       await fetch(`${AUTH_API}logout`, {
         method: 'POST',
