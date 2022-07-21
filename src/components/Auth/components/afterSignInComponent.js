@@ -1,13 +1,19 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   Button, withStyles, Paper,
 } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Badge from '@material-ui/core/Badge';
 // import DropdownItemsMenu from './DropdownItemsMenu';
 
 const AfterSignIn = ({
   classes, userName, signoutLink,
 }) => {
   const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
+
+  const { role } = useSelector((state) => state.login);
 
   function handleClick() {
     setDisplayDropDownMenu(true);
@@ -34,6 +40,16 @@ const AfterSignIn = ({
       >
         {userName}
       </Button>
+
+      <IconButton
+        color="inherit"
+        className={classes.profileIcon}
+      >
+        <Badge badgeContent={role[0]} color="secondary" className={classes.badge}>
+          <AccountCircle />
+        </Badge>
+      </IconButton>
+
       {displayDropDownMenu
         ? (
           <Paper className={classes.paper}>
@@ -97,6 +113,13 @@ const styles = () => ({
     fontWeight: 600,
     borderRadius: '0',
     marginTop: '6px',
+  },
+  badge: {
+    textTransform: 'capitalize',
+  },
+  profileIcon: {
+    paddingBottom: '0px',
+    marginBottom: '-8px',
   },
 });
 

@@ -52,7 +52,7 @@ const IndexPage = ({ classes }) => {
               onClick={redirectToLogin}
               classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
             >
-              Login/Register
+              Login
             </Button>
           </>
         )}
