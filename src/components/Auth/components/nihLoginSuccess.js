@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { afterLoginRedirect } from '../../Layout/privateRoute';
 import { useAuth } from '../AuthProvider';
@@ -26,7 +26,10 @@ function nihLoginSuccess() {
   const onSuccess = () => afterLoginRedirect(history, redirectPath);
   const onError = (error) => {};
 
-  authServiceLogin(nihCode, 'nih', `${originDomain}/nihloginsuccess`, onSuccess, onError);
+  useEffect(() => {
+    authServiceLogin(nihCode, 'nih', `${originDomain}/nihloginsuccess`, onSuccess, onError);
+  }, []);
+
   return (
     <div> ⚠️ Please wait communicating with server! ⚠️ </div>
   );
