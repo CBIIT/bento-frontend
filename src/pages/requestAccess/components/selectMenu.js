@@ -14,8 +14,6 @@ const SelectMenu = (field, formValues, handleInputChange, data, classes, propOpt
     id, options: custodianOptions, optionsAPIField, multiple, required, label,
   } = field;
 
-  console.log(propOptions);
-
   function getOptions() {
     return (propOptions || ((optionsAPIField && data && data[optionsAPIField])
       ? data[optionsAPIField] : custodianOptions));
