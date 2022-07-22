@@ -11,6 +11,11 @@ export const externalLinkIcon = {
   alt: 'External link icon',
 };
 
+export const adminPortalIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/AdminPortal.Icon.svg',
+  alt: 'Admin Portal Icon',
+};
+
 
 export const useMock = true;
 
