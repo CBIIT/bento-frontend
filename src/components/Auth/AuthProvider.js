@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     clientId: GOOGLE_CLIENT_ID,
   });
 
-  const [getUserDetails] = useLazyQuery(GET_USER_DETAILS, { context: { clientName: 'userService' } });
+  const [getUserDetails] = useLazyQuery(GET_USER_DETAILS, { context: { clientName: 'userService' }, fetchPolicy: 'no-cache' });
 
   const originDomain = window.location.origin;
 

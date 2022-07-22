@@ -9,3 +9,5 @@ export default {
 
 export const loginRoute = '/login';
 export const requestAccessRoute = '/request';
+export const adminPortal = '/adminportal';
+export const userProfileRoute = '/profile';
