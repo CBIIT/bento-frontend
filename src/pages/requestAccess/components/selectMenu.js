@@ -7,13 +7,18 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import BootstrapInput from './bootstrapInput';
 
-const SelectMenu = (field, formValues, handleInputChange, data, classes) => {
+// NOTE FOR DEVELOPER: Add instructions for props what are the input types.
+
+const SelectMenu = (field, formValues, handleInputChange, data, classes, propOptions = null) => {
   const {
-    id, options, optionsAPIField, multiple, required, label,
+    id, options: custodianOptions, optionsAPIField, multiple, required, label,
   } = field;
 
+  console.log(propOptions);
+
   function getOptions() {
-    return ((optionsAPIField && data && data[optionsAPIField]) ? data[optionsAPIField] : options);
+    return (propOptions || ((optionsAPIField && data && data[optionsAPIField])
+      ? data[optionsAPIField] : custodianOptions));
   }
 
   const selectOptions = getOptions();
