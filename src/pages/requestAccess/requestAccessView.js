@@ -37,8 +37,7 @@ const getAvailableArms = (currentACL, listOfArms) => {
 function requestAccessView({ data, classes }) {
   const { getMyUser, listArms } = data;
 
-  const temp = getAvailableArms(getMyUser.acl, listArms);
-  console.log(temp);
+  const availableArms = getAvailableArms(getMyUser.acl, listArms);
 
   // Initial State and Reset functions
   const setDefaultValues = () => formFields.reduce((values, field) => {
@@ -165,7 +164,7 @@ function requestAccessView({ data, classes }) {
                     {formFields.map((field) => (
                       field.type === 'dropdown'
                         ? SelectMenu(field, formValues, handleInputChange,
-                          data, classes, temp)
+                          data, classes, availableArms)
                         : field.type
                           ? TextBox(field, formValues, handleInputChange, classes)
                           : null))}
