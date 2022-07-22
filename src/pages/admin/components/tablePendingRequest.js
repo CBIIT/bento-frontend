@@ -39,9 +39,10 @@ const columns = [
     options: {
  customBodyRender: (value, tableMeta, updateValue) => { 
     const href = 'admin/'+value; 
+    const reviewHref = '/#/review/'+value
     return(
 
-            <Button variant="contained"  component={Link} href={href}
+            <Button variant="contained"  component={Link} href={reviewHref}
             classes={{
                 root:classes.btn
               }}
