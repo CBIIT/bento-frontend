@@ -11,7 +11,7 @@ import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 
 // Custodian data imports
-import { pageTitle, formFields, SUBMIT_REGISTER } from '../../bento/requestAccessData';
+import { pageTitle, formFields, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
 
 // eslint-disable-next-line no-unused-vars
 const checkIsValid = (field, formValues) => {
@@ -28,13 +28,24 @@ const checkIsValid = (field, formValues) => {
   return false;
 };
 
+const getAvailableArms = (currentACL, listOfArms) => {
+  const unavailableArms = Object.keys(currentACL).map((key) => currentACL[key].armID);
+  const availableArms = listOfArms.filter((arm) => !unavailableArms.includes(arm.id));
+  return availableArms;
+};
+
 function requestAccessView({ data, classes }) {
+  const { getMyUser, listArms } = data;
+
+  const temp = getAvailableArms(getMyUser.acl, listArms);
+  console.log(temp);
+
   // Initial State and Reset functions
   const setDefaultValues = () => formFields.reduce((values, field) => {
     const { id, type, multiple } = field;
     if (!values[id]) {
       // eslint-disable-next-line no-param-reassign
-      values[id] = (type === 'dropdown' && multiple) ? [] : '';
+      values[id] = (type === 'dropdown' && multiple) ? [] : getMyUser[id] || '';
     }
     return values;
   }, {});
@@ -42,14 +53,13 @@ function requestAccessView({ data, classes }) {
   // Init state for inputs.
   const [formValues, setFormValues] = useState(setDefaultValues());
   const userEmail = useSelector((state) => state.login.email);
-
   const clearAll = () => {
     setFormValues(setDefaultValues());
   };
 
   // GraphQL Operations
-  const [mutate, response] = useMutation(SUBMIT_REGISTER, {
-    context: { clientName: 'authService' },
+  const [mutate, response] = useMutation(SUBMIT_REQUEST_ACCESS, {
+    context: { clientName: 'userService' },
     onCompleted() {
       // INPUT parm can be 'responseData'
       clearAll();
@@ -101,8 +111,8 @@ function requestAccessView({ data, classes }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const user = formValues;
-    mutate({ variables: { user } });
+    const userInfo = formValues;
+    mutate({ variables: { userInfo } });
   };
 
   return (
@@ -154,7 +164,8 @@ function requestAccessView({ data, classes }) {
                   <form onSubmit={handleSubmit}>
                     {formFields.map((field) => (
                       field.type === 'dropdown'
-                        ? SelectMenu(field, formValues, handleInputChange, data, classes)
+                        ? SelectMenu(field, formValues, handleInputChange,
+                          data, classes, temp)
                         : field.type
                           ? TextBox(field, formValues, handleInputChange, classes)
                           : null))}
@@ -316,3 +327,9 @@ const styles = () => ({
 });
 
 export default withStyles(styles, { withTheme: true })(requestAccessView);
+
+/* TODO:
+1. Dropdown is not generalized.
+2. After Submit it's not clreaing and referashing updated arms.
+3. Need reset button.
+*/
