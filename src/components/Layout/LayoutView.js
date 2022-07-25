@@ -54,8 +54,10 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
 
-            {/* START: Private Routes */}
+            {/* todo: change to private route once dev is up again */}
             <Route exact path="/profile" component={ProfileController} />
+
+            {/* START: Private Routes */}
             <PrivateRoute path="/explore" component={Dashboard} />
             <PrivateRoute path="/programs" component={Programs} />
             <PrivateRoute path="/model" component={modelPage} />

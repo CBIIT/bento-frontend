@@ -1,13 +1,29 @@
 import React from 'react';
-import { Button, TextField, withStyles } from '@material-ui/core';
+import {
+  Button, TextField, withStyles, InputAdornment,
+} from '@material-ui/core';
 import { editTool } from '../../../bento/profileData';
+
+const checkProp = (obj, prop) => {
+  if (!obj || !prop) {
+    return false;
+  }
+
+  return Object.prototype.hasOwnProperty.call(obj, prop) ? obj[prop] : null;
+};
+
+const defaultValidation = (val) => val && val.length > 0;
 
 function TextEditComponent({
   data, classes, customOptions, onSave,
 }) {
-  const [value, setValue] = React.useState(`${data.firstName}, ${data.lastName}`);
+  const [value, setValue] = React.useState(data || '');
   const [editActivated, setEditActivated] = React.useState(false);
   const [formerValue, setFormerValue] = React.useState('');
+  const [error, setError] = React.useState({
+    value: false,
+    message: '',
+  });
 
   const handleChange = (event) => {
     if (event && event.target.value) {
@@ -16,15 +32,30 @@ function TextEditComponent({
   };
 
   const handleEdit = () => {
-    if (!editActivated) {
+    const disabled = checkProp(customOptions, 'disabled');
+
+    if (!editActivated && !disabled) {
       setFormerValue(value);
       setEditActivated(true);
     }
   };
 
   const handleSave = () => {
+    const validationEnabled = checkProp(customOptions, 'validationEnabled');
+    const validation = checkProp(customOptions, 'validation');
+    let errorFound = false;
+
     setEditActivated(false);
-    if (onSave && typeof onSave === 'function') {
+    if (validationEnabled) {
+      if (validation && typeof validation === 'function') {
+        errorFound = validation(value);
+      } else {
+        errorFound = defaultValidation(value);
+      }
+    }
+    setError({ value: errorFound, message: errorFound ? 'please enter value prior to saving.' : '' });
+
+    if (!error.value && onSave && typeof onSave === 'function') {
       onSave(value);
     }
   };
@@ -37,15 +68,27 @@ function TextEditComponent({
   return (
     <div className={classes.textField}>
       <TextField
+        error={error.value}
         value={value}
         onChange={handleChange}
-        inputProps={{ readOnly: !editActivated }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="start" onClick={handleEdit}>
+              <img
+                className={classes.editIcon}
+                src={editTool.src}
+                alt={checkProp(customOptions, 'alt') || 'edit'}
+              />
+            </InputAdornment>
+          ),
+          readOnly: !editActivated,
+        }}
+        helperText={error.message}
       />
-      <Button variant="text" onClick={handleEdit}><img className={classes.editIcon} src={editTool.src} alt={customOptions.alt || 'edit'} /></Button>
       {editActivated ? (
         <div className={classes.buttonGroup}>
-          <Button variant="text" onClick={handleSave}>Save</Button>
-          <Button variant="text" onClick={handleCancel}>Cancel</Button>
+          <Button className={classes.btnSave} variant="contained" onClick={handleSave}>Save</Button>
+          <Button className={classes.btnCancel} variant="text" onClick={handleCancel}>Cancel</Button>
         </div>
       ) : ''}
     </div>
@@ -53,20 +96,46 @@ function TextEditComponent({
 }
 
 const styles = () => ({
-  ':root': {
+  textField: {
     display: 'flex',
     flexDirection: 'row',
     boxSizing: 'border-box',
+    flex: 2,
+    fontWeight: 'bold',
   },
-
+  btnEdit: {
+    minWidth: '34px',
+    padding: 0,
+    margin: '0 5px',
+  },
   editIcon: {
-    width: '18px',
+    width: '14px',
     cursor: 'pointer',
   },
   buttonGroup: {
     display: 'flex',
     flexDirection: 'row',
     boxSizing: 'border-box',
+    alignSelf: 'center',
+  },
+  btnCancel: {
+    padding: 0,
+    minWidth: '50px',
+    margin: '0 5px',
+    lineHeight: 1.5,
+    height: '26px',
+  },
+  btnSave: {
+    padding: 0,
+    minWidth: '50px',
+    margin: '0 5px 0 10px',
+    lineHeight: 1.5,
+    height: '26px',
+    backgroundColor: '#375fac',
+    color: '#ffffff',
+    '&:hover': {
+      color: '#000000',
+    },
   },
 });
 
