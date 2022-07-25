@@ -1,84 +1,105 @@
-import * as React from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
-import { styled } from '@material-ui/core/styles';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import { Grid, IconButton, Typography } from '@material-ui/core';
+import { styled, withStyles } from '@material-ui/core/styles';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  IconButton,
+  Typography,
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  p: {
-    padding: theme.spacing(2),
+const BootstrapDialog = styled(Dialog)(() => ({
+  '& .MuiBackdrop-root': {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  '& .MuiDialog-paper': {
+    position: 'absolute',
+    margin: '0 auto',
+    top: 118,
+    width: '539px',
+  },
+  '& .MuiDialogTitle-root': {
+    flex: '0 0 auto',
+    margin: 0,
+    padding: '15px 23px 8px 37px',
+    marginBottom: '45px',
+    fontFamily: 'Lato',
+  },
+  '& .MuiDialogContent-root': {
+    flex: '1 1 auto',
+    padding: '0px 40px',
+    marginBottom: '45px',
+    overflowY: 'auto',
+  },
+  '& .MuiDialogContentText-root': {
+    fontFamily: 'Nunito Sans',
+    fontSize: '17px',
+    color: '#000000;',
+    textAlign: 'center',
+    marginBottom: '17px',
+  },
+  '& .MuiDialogActions-root': {
+    flex: '0 0 auto',
+    display: 'flex',
+    alignTtems: 'center',
+    justifyContent: 'center',
+    padding: '0px',
+    marginBottom: '58px',
   },
 }));
 
-export const BootstrapDialogTitle = (props) => {
-  const { children, onClose, ...other } = props;
-  return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other} style={{ display: 'flex' }}>
-      {children}
-      <div style={{ border: '1px solid red' }}>
-        {onClose ? (
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{
-              position: 'absolute',
-              right: 0,
-              top: 0,
-              color: (theme) => theme.palette.grey[500],
-            }}
-            style={{ border: '1px solid black' }}
-          >
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </div>
-    </DialogTitle>
-  );
-};
-
-export default function CustomizedDialogs(props) {
+function CustomizedDialogs(props) {
   const {
-    handleOpen, handleClose, handleConfrim, accessObj,
+    classes, handleOpen, handleClose, handleConfrim, accessObj, comment, handleCommentChange,
   } = props;
   const {
     dialogTitle, placeholder,
   } = accessObj;
+
   return (
     <div>
       <BootstrapDialog
         onClose={handleClose}
-        aria-labelledby="approve-access-dialog"
         open={handleOpen}
+        aria-labelledby="Review Data Access Request(s) dialog"
       >
-        <BootstrapDialogTitle id="approve-access-dialog" onClose={handleClose}>
-          {dialogTitle}
-        </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <Grid container alignItems="center" justifyContent="center">
-            <Grid item xs={12}>
-              <Typography align="center">
-                Enter a comment that will be sent to the user.
-              </Typography>
-              <br />
-              <TextareaAutosize
-                aria-label="Message"
-                minRows={5}
-                placeholder={placeholder}
-                style={{ width: '100%' }}
-              />
-            </Grid>
-          </Grid>
+        <DialogTitle id={dialogTitle} className={classes.dialogTitleContainer}>
+          <div className={classes.dialogTitleBox}>
+            <Typography className={classes.dialogTitle}>
+              { dialogTitle }
+            </Typography>
+            <div className={classes.closeIconContainer}>
+              <IconButton
+                onClick={handleClose}
+                aria-label="Close"
+                size="small"
+              >
+                <CloseIcon fontSize="inherit" className={classes.closeIcon} />
+              </IconButton>
+            </div>
+          </div>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Enter a comment that will be sent to the user.
+          </DialogContentText>
+          <textarea
+            onChange={handleCommentChange}
+            value={comment}
+            className={classes.textArea}
+            placeholder={placeholder}
+            label="Comment"
+          />
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+        <DialogActions className={classes.dialogActions}>
+          <Button variant="contained" onClick={handleClose} className={classes.cancelButton}>
             CANCEL
           </Button>
-          <Button autoFocus onClick={handleConfrim}>
+          <Button variant="contained" onClick={handleConfrim} className={classes.confrimButton}>
             CONFIRM
           </Button>
         </DialogActions>
@@ -86,3 +107,53 @@ export default function CustomizedDialogs(props) {
     </div>
   );
 }
+const styles = () => ({
+  dialogTitleContainer: {
+    borderBottom: '1.25px solid #BDBFC2',
+  },
+  dialogTitleBox: {
+    display: 'flex',
+    alignItems: 'flexStart',
+    color: '#4D6787',
+  },
+  dialogTitle: {
+    flexGrow: 1,
+    color: '#4D6787',
+    fontFamily: 'Lato',
+    fontSize: '20px',
+    fontWeight: 'bold',
+  },
+  closeIconContainer: {
+    position: 'relative',
+    top: '-6px',
+    right: '-5px',
+  },
+  closeIcon: {
+    color: '#4D6787',
+  },
+  textArea: {
+    width: '100%',
+    height: '129px',
+    padding: '12px 20px',
+    boxSizing: 'border-box',
+    border: '1px solid #7D94A4',
+    borderRadius: '10px',
+    backgroundColor: '#EAF1FF',
+    fontSize: '16px',
+    fontFamily: 'Lato',
+    resize: 'none',
+  },
+  cancelButton: {
+    color: '#FFFFFF',
+    border: '1px solid #626262',
+    backgroundColor: '#566672',
+  },
+  confrimButton: {
+    color: '#FFFFFF',
+    border: '1px solid #626262',
+    backgroundColor: '#437BBE',
+    marginLeft: '13px !important',
+  },
+});
+
+export default withStyles(styles, { withTheme: true })(CustomizedDialogs);

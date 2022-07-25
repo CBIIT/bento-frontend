@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/styles';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { cn, CustomDataTable } from 'bento-components';
@@ -54,8 +54,9 @@ const ReviewRequestView = ({classes, data}) => {
    viewColumns: false,
  }
  
- const [openAproveDialog, setOpenAproveDialog] = React.useState(false);
- const [openRefectDialog, setOpenRefectDialog] = React.useState(false);
+ const [openAproveDialog, setOpenAproveDialog] = useState(false);
+ const [openRefectDialog, setOpenRefectDialog] = useState(false);
+ const [comment, setComment] = useState('');
  
  
  const handleOpenAproveDialog = () => {
@@ -79,6 +80,9 @@ const ReviewRequestView = ({classes, data}) => {
    setOpenRefectDialog(false)
    console.log("handle Reject Access been done")
  }
+ const handleCommentChange = (event) => {
+  setComment(event.target.value);
+};
  
  return (
    <>
@@ -109,7 +113,7 @@ const ReviewRequestView = ({classes, data}) => {
            </Typography>
          </div>
  
-         <Grid container spacing={32}>
+         <Grid container>
            <Grid item xs={12}>
              <CustomDataTable
                data={fakeData}
@@ -119,17 +123,19 @@ const ReviewRequestView = ({classes, data}) => {
          </Grid>
        </div>
      </div>
-    {/* Approve */}
+    {/* Approve Dialog */}
      <CustomizedDialogs
        handleOpen={openAproveDialog}
        handleClose={handleCloseAproveDialog}
        handleConfrim={handleApproveAccess}
+       comment={comment}
+       handleCommentChange={handleCommentChange}
        accessObj = {{
          dialogTitle: "Approve Access",
          placeholder: "e.g. Access to this Arm has been approved.",
        }}
      />
-    {/* Approve */}
+    {/* Reject Dialog */}
      <CustomizedDialogs
        handleOpen={openRefectDialog}
        handleClose={handleCloseRejectDialog}
