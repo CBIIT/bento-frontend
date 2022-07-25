@@ -2,7 +2,28 @@ import React from 'react';
 import {
   Button, withStyles, Paper,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 // import DropdownItemsMenu from './DropdownItemsMenu';
+
+const getDropDownMenu = (data) => {
+  const { classes, signoutLink } = data;
+
+  return (
+    <Paper className={classes.paper}>
+      <Link className={classes.paperLink} to="/profile">
+        User Profile
+      </Link>
+
+      <Button
+        onClick={signoutLink}
+        classes={{ label: classes.textColor, text: classes.paddding0 }}
+        disableRipple
+      >
+        logout
+      </Button>
+    </Paper>
+  );
+};
 
 const AfterSignIn = ({
   classes, userName, signoutLink,
@@ -36,15 +57,7 @@ const AfterSignIn = ({
       </Button>
       {displayDropDownMenu
         ? (
-          <Paper className={classes.paper}>
-            <Button
-              onClick={signoutLink}
-              classes={{ label: classes.textColor, text: classes.paddding0 }}
-              disableRipple
-            >
-              logout
-            </Button>
-          </Paper>
+          getDropDownMenu({ classes, signoutLink })
         ) : ''}
     </div>
   );
@@ -76,7 +89,7 @@ const styles = () => ({
     margin: '0px 0px 0px 0px',
   },
   paddding0: {
-    paddding: '0px',
+    padding: '0px',
   },
   aboutMenu: {
     display: 'inline-block',
@@ -89,14 +102,23 @@ const styles = () => ({
     textTransform: 'capitalize',
   },
   paper: {
+    display: 'flex',
+    flexDirection: 'column',
     background: '#465F96',
-    width: '120px',
+    minWidth: '120px',
     paddingLeft: '20px',
     position: 'absolute',
     fontFamily: 'Nunito',
     fontWeight: 600,
     borderRadius: '0',
     marginTop: '6px',
+  },
+  paperLink: {
+    color: '#ffffff',
+    fontWeight: 'normal',
+    textDecoration: 'none',
+    fontSize: '16px',
+    textTransform: 'capitalize',
   },
 });
 

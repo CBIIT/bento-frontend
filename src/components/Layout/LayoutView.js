@@ -26,6 +26,9 @@ import Login from '../../pages/accessManagment/login';
 import userRegistration from '../../pages/accessManagment/userRegistration';
 import SysInfoView from '../../pages/sysInfo/view';
 
+/* no ready yet */
+import ProfileController from '../../pages/profile/profileController';
+
 // Access control imports
 import PrivateRoute, { LoginRoute } from './privateRoute';
 
@@ -52,6 +55,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route exact path="/home" component={Home} />
 
             {/* START: Private Routes */}
+            <Route exact path="/profile" component={ProfileController} />
             <PrivateRoute path="/explore" component={Dashboard} />
             <PrivateRoute path="/programs" component={Programs} />
             <PrivateRoute path="/model" component={modelPage} />
