@@ -135,3 +135,57 @@ query listUsers($role: [String], $accessStatus: [String]) {
   }
 }
 `;
+export const GET_USER = gql`
+  query getUser ($userID: ID!){
+    getUser (userID: $userID){
+      firstName
+      lastName
+      organization
+      userID
+      email
+      IDP
+      role
+      userStatus
+      creationDate
+      editDate
+      acl {
+        armID
+        armName
+        accessStatus
+        requestDate
+        reviewAdminName
+        reviewDate
+        comment
+      }
+    }
+  }
+`;
+
+export const REJECT_ACCESS = gql`
+  mutation rejectAccess($userID: ID!, $armIDs: [String]!, $comment: String!){
+    rejectAccess (userID: $userID, armIDs: $armIDs, comment: $comment){
+      armID
+      armName
+      accessStatus
+      requestDate
+      reviewAdminName
+      reviewDate
+      comment
+    }
+}
+`;
+
+export const APPROVE_ACCESS = gql`
+  mutation approveAccess($userID: ID!, $armIDs: [String]!, $comment: String){
+    approveAccess (userID: $userID, armIDs: $armIDs, comment: $comment){
+      armID
+      armName
+      accessStatus
+      requestDate
+      reviewAdminName
+      reviewDate
+      comment
+    }
+  }
+`;
+
