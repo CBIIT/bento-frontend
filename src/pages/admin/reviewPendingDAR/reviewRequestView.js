@@ -32,7 +32,15 @@ const ReviewRequestView = ({classes, data}) => {
      }
    },
  ];
- 
+  const fakeUserInfo = {
+    acountType: 'NIH',
+    email: 'j@nih.gov',
+    firstName: 'Smith',
+    lastName: 'John',
+    organization: 'Other (CBIIT)',
+    status: 'Active',
+    role: 'Non-member',
+  };
  const fakeData = [
    [ 'RS 0-10, assigned endocrine therapy alone', '05/10/2022', 'id' ],
    [ 'RS 11-25, randomized to endocrine therapy alone', '05/10/2022', 'id' ],
@@ -104,13 +112,39 @@ const ReviewRequestView = ({classes, data}) => {
              </Typography>
            </div>
          </div>
-         <div className={classes.nameOrganizationHeader}>
-           <Typography className={classes.userInfo}>
-             <span className={classes.nameOrgSpan}>NAME:&nbsp; &nbsp; &nbsp; &nbsp; </span>
-               <span className={classes.floatRight}> {individualName} </span> <br/>
-             <span className={classes.nameOrgSpan}>Organization: &nbsp; &nbsp; &nbsp; &nbsp; </span>
-               <span className={classes.floatRight}> {individualOrganization} </span>
-           </Typography>
+         <div className={classes.userInfoHeader}>
+          <div className={classes.firstInfoSection}>
+            <div className={classes.infoKeyWrapper}>
+              <Typography>
+                <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span> <br/>
+                <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span> <br/>
+                <span className={classes.infoKey}>NAME: </span>
+              </Typography>
+            </div>
+            <div className={classes.userInfoValue}>
+              <Typography>
+                <span className={classes.infoValue}> {fakeUserInfo.acountType} </span> <br/>
+                <span className={classes.infoValue}> {fakeUserInfo.email} </span> <br/>
+                <span className={classes.infoValue}> {fakeUserInfo.firstName}, {fakeUserInfo.lastName}</span>
+              </Typography>
+            </div>
+          </div>
+          <div className={classes.secondInfoSection}>
+            <div className={classes.infoKeyWrapper}>
+              <Typography className={classes.userInfo}>
+                <span className={classes.infoKey}>ORGANIZATION: </span> <br/>
+                <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span> <br/>
+                <span className={classes.infoKey}>ROLE: </span>
+              </Typography>
+            </div>
+            <div className={classes.userInfoValue}>
+              <Typography className={classes.userInfo}>
+                <span className={classes.infoValue}> {fakeUserInfo.organization} </span> <br/>
+                <span className={classes.infoValue}> {fakeUserInfo.status} </span> <br/>
+                <span className={classes.infoValue}> {fakeUserInfo.role} </span>
+              </Typography>
+            </div>
+          </div>
          </div>
  
          <Grid container>
@@ -160,18 +194,39 @@ const styles = (theme) => ({
  pageContainer: {
    background: '#fff',
  },
- nameOrganizationHeader: {
-   padding: '42px 0 38px 36px',
- 
+  userInfoHeader: {
+    minWidth: 'fit-content',
+    margin: '42px 0 38px 0',
+    padding: '0 0 0 36px',
+    display: 'flex',
+    gap: '12px',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+    },
  },
- nameOrgSpan: {
-   paddingLeft: '5px',
+  firstInfoSection: {
+    display: 'flex',
+    flexGrow: 1,
+  },
+  secondInfoSection: {
+    display: 'flex',
+    flexGrow: 1,
+  },
+  infoKeyWrapper: {
+    [theme.breakpoints.down('xs')]: {
+      width: '120px',
+    },
+  },
+ infoKey: {
+  whiteSpace: 'nowrap',
    color: '#708292',
    fontFamily: "Nunito Sans",
    fontSize: '11px',
  },
- floatRight: {
-   float: 'right',
+ infoValue: {
+  whiteSpace: 'nowrap',
+   marginLeft: '21px',
+   float: 'left',
    color: '#4F5D69',
    fontFamily: "Nunito Sans",
  },
@@ -188,6 +243,10 @@ const styles = (theme) => ({
    borderBottom: '#AAB2C8 10px solid',
    height: '128px',
    paddingTop: '35px',
+   [theme.breakpoints.down('xs')]: {
+    paddingLeft: '0',
+    paddingRight: '0',
+   }
  },
  headerTitle: {
    maxWidth: '1440px',
@@ -195,6 +254,9 @@ const styles = (theme) => ({
    float: 'left',
    marginLeft: '90px',
    paddingTop: '20px',
+   [theme.breakpoints.down('xs')]: {
+    paddingTop: '0',
+   }
  },
  headerMainTitle  : {
    fontFamily: 'Lato',
@@ -221,9 +283,6 @@ const styles = (theme) => ({
  },
  rejectButton: {
    backgroundColor: '#BA2810',
- },
- userInfo: {
-   width: 'fit-content',
  },
 });
  
