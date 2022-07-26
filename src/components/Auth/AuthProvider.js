@@ -1,12 +1,16 @@
 import React, { useContext } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import { useGoogleLogin } from 'react-use-googlelogin';
 import env from '../../utils/env';
 import { signInRed, signOutRed } from './state/loginReducer';
+import { storeInLocalStorage, deleteFromLocalStorage } from '../../utils/localStorage';
 
-const AUTH_API = env.REACT_APP_AUTH_API;
+import GET_USER_DETAILS from '../../bento/authProviderData';
+
+const AUTH_API = env.REACT_APP_AUTH_SERVICE_API;
 const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID;
 const NIH_CLIENT_ID = env.REACT_APP_NIH_CLIENT_ID;
-const NIH_AUTH_URL = env.REACT_APP_NIH_AUTH_URL;
+const NIH_AUTH_URL = env.REACT_APP_NIH_AUTH_URL || 'https://stsstg.nih.gov/auth/oauth/v2/authorize';
 
 const createContext = () => {
   const ctx = React.createContext();
@@ -33,33 +37,39 @@ export const AuthProvider = ({ children }) => {
     clientId: GOOGLE_CLIENT_ID,
   });
 
-  const onError = (error) => {
-    console.log(error);
-  };
+  const [getUserDetails] = useLazyQuery(GET_USER_DETAILS, { context: { clientName: 'userService' }, fetchPolicy: 'no-cache' });
+
+  const originDomain = window.location.origin;
 
   async function authServiceLogin(
-    code, type, redirectUri, signInSuccess = () => {}, signInError = onError,
+    code, IDP, redirectUri, signInSuccess = () => {}, signInError = () => {},
   ) {
-    const rawResponse = await fetch(`${AUTH_API}/api/auth/login`, {
+    const rawResponse = await fetch(`${AUTH_API}login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ code, type, redirectUri }),
+      body: JSON.stringify({ code, IDP, redirectUri }),
     }).then((response) => response).catch(() => {
     });
 
     const responseData = rawResponse.json();
     if (!responseData) return;
     if (rawResponse.status === 200) {
-      const content = await responseData;
+      /*
+        NOTE FOR Developers: Calling /api/users/graphql with "getMyUser" every time after login.
+        This call will create user profile in the database.
+      */
 
-      // TODO: Find some better solution to store data in local storage.
-      localStorage.setItem('username', content.name);
-      signInRed(content.name);
-
-      signInSuccess();
+      getUserDetails().then((response) => {
+        const {
+          data: { getMyUser: userDetails },
+        } = response;
+        signInRed(userDetails);
+        storeInLocalStorage('userDetails', userDetails);
+        signInSuccess(userDetails);
+      });
     } else if (rawResponse.status === 400) signInError('⛔️ User not registered or not found!');
     else if (rawResponse.status === 403) signInError('❌ User has not been approved!');
     else signInError('Internal Error');
@@ -69,7 +79,7 @@ export const AuthProvider = ({ children }) => {
     grantOfflineAccess().then((resp) => {
       if (resp) {
         // Send the code to auth service
-        authServiceLogin(resp, 'google', 'http://localhost:4010', success, error);
+        authServiceLogin(resp, 'google', originDomain, success, error);
       } else {
         error();
       }
@@ -80,10 +90,10 @@ export const AuthProvider = ({ children }) => {
   const signInWithNIH = (state) => {
     const urlParam = {
       client_id: NIH_CLIENT_ID,
-      redirect_uri: 'http://localhost:3000/nihloginsuccess',
+      redirect_uri: `${originDomain}/nihloginsuccess`,
       response_type: 'code',
       scope: 'openid email profile',
-      state: JSON.stringify(state),
+      state: JSON.stringify(state || {}),
     };
 
     const params = new URLSearchParams(urlParam).toString();
@@ -92,9 +102,9 @@ export const AuthProvider = ({ children }) => {
 
   const onSignOut = () => {
     (async () => {
-      localStorage.removeItem('username');
+      deleteFromLocalStorage('userDetails');
       signOutRed();
-      await fetch(`${AUTH_API}/api/auth/logout`, {
+      await fetch(`${AUTH_API}logout`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

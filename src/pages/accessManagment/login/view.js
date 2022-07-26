@@ -9,7 +9,6 @@ import AlertMessage from '../../../components/alertMessage';
 import {
   pageTitle,
   loginProvidersData,
-  loginGovCreateAccountURL,
 } from '../../../bento/userLoginData';
 import { afterLoginRedirect } from '../../../components/Layout/privateRoute';
 
@@ -27,16 +26,17 @@ function loginView({ classes }) {
   const { signInWithGoogle, signInWithNIH } = useAuth();
   const history = useHistory();
   const query = useQuery();
-  const redirectPath = getRedirectPath(query);
+  const internalRedirectPath = getRedirectPath(query);
 
-  const onSuccess = () => afterLoginRedirect(history, redirectPath);
-  const onError = (error) => console.log(error);
+  const onSuccess = () => afterLoginRedirect(history, internalRedirectPath);
+  const onError = () => {};
 
   const signInCall = (provider) => {
     // if(!provider.enabled) callAlert();
     if (provider) {
       if (provider.key === 'google') signInWithGoogle(onSuccess, onError);
-      if (provider.key === 'NIH') signInWithNIH();
+      if (provider.key === 'NIH') signInWithNIH({ internalRedirectPath });
+      if (provider.key === 'loginGov') signInWithNIH({ internalRedirectPath });
     }
   };
 
@@ -55,7 +55,7 @@ function loginView({ classes }) {
         <AlertMessage severity="error" timeout={5000}>
           Please sign in to access
           {' '}
-          {redirectPath}
+          {internalRedirectPath}
         </AlertMessage>
       );
     }
@@ -77,7 +77,7 @@ function loginView({ classes }) {
           {/* ######## ALERT MESSAGES ######## */}
           {/* TODO: Add error for whitelisted users */}
           {/* {showAlert('error')} */}
-          {redirectPath !== '/' && showAlert('redirect')}
+          {internalRedirectPath !== '/' && showAlert('redirect')}
         </Grid>
 
         {/* ROW 2 */}
@@ -102,33 +102,23 @@ function loginView({ classes }) {
 
                     {Object.values(loginProvidersData).map((provider) => (provider.enabled
                       ? (
-                        <Button
-                          variant="outlined"
-                          className={[classes.LoginButton, classes.Color_092E50]}
-                          disableRipple
-                          onClick={() => signInCall(provider)}
-                        >
-                          <Grid container item xs={1} justifyContent="center">
-                            <img src={provider.icon} className={classes.root} alt="alt coming" />
-                          </Grid>
-                          <Grid container item xs={11} justifyContent="center">
-                            {provider.loginButtonText}
-                          </Grid>
-                        </Button>
+                        <Grid container item xs={12} justifyContent="center">
+                          <Button
+                            variant="outlined"
+                            className={[classes.LoginButton, classes.Color_092E50]}
+                            disableRipple
+                            onClick={() => signInCall(provider)}
+                          >
+                            <Grid container item xs={1} justifyContent="center">
+                              <img src={provider.icon} className={classes.root} alt="alt coming" />
+                            </Grid>
+                            <Grid container item xs={11} justifyContent="center">
+                              {provider.loginButtonText}
+                            </Grid>
+                          </Button>
+                        </Grid>
                       )
                       : null))}
-
-                    <Grid item xs={12} justifyContent="center" className={[classes.helperMessage, classes.createAccountMessage]}>
-                      If you don't have a login.gov account, click
-                      {' '}
-                      <span className={classes.supportEmail}>
-                        <a href={loginGovCreateAccountURL}>
-                          here
-                        </a>
-                      </span>
-                      {' '}
-                      to sign up.
-                    </Grid>
                   </Grid>
                 </Grid>
               </div>
@@ -141,7 +131,7 @@ function loginView({ classes }) {
       </Grid>
 
       {/* Bottom Space */}
-      <Grid container item justifyContent="center" className={classes.emptySpace} />
+      <Grid container item justifyContent="center" className={[classes.emptySpace, classes.extraSpaceInBorrom]} />
 
     </div>
   );
@@ -247,6 +237,9 @@ const styles = () => ({
   },
   emptySpace: {
     height: '50px',
+  },
+  extraSpaceInBorrom: {
+    height: '150px',
   },
   Color_092E50: {
     color: '#092E50 !important',

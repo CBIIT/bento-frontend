@@ -32,17 +32,19 @@ const IndexPage = ({ classes }) => {
     signOut,
   } = useAuth();
   // const classes = useStyles();
-  const userName = useSelector((state) => state.login.userId);
-  const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  const {
+    isSignedIn, email, firstName,
+  } = useSelector((state) => state.login);
+
   const redirectToLogin = () => window.location.replace(`/#${loginRoute}`);
 
   return (
     <>
       {globalData.enableAuthentication && (typeof globalData.authEndPoint === 'undefined' || globalData.authEndPoint.includes('google') || globalData.authEndPoint.includes('Google') || globalData.authEndPoint === []) && (
       <>
-        { (isSignedIn && userName !== undefined && typeof userName !== 'undefined') ? (
+        { (isSignedIn) ? (
           <>
-            <AfterSignInComponent userName={userName} signoutLink={signOut} />
+            <AfterSignInComponent userName={firstName || email} signoutLink={signOut} />
           </>
         ) : (
           <>
@@ -50,7 +52,7 @@ const IndexPage = ({ classes }) => {
               onClick={redirectToLogin}
               classes={{ label: classes.logotype, text: classes.buttonRootNoRightPadding }}
             >
-              Login/Register
+              Login
             </Button>
           </>
         )}

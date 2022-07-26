@@ -1,19 +1,32 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
-import BootstrapInput from '../bootstrapInput';
+import BootstrapInput from './bootstrapInput';
 
-const SelectMenu = (field, formValues, handleInputChange, classes) => {
+// NOTE FOR DEVELOPER: Add instructions for props what are the input types.
+
+const SelectMenu = (field, formValues, handleInputChange,
+  data, classes, propOptions = null, disabled = false) => {
   const {
-    id, options, multiple, required, label,
+    id, options: custodianOptions, optionsAPIField, multiple, required, label,
   } = field;
-  const selectOptions = options; // Add API Call
+
+  function getOptions() {
+    return (propOptions || ((optionsAPIField && data && data[optionsAPIField])
+      ? data[optionsAPIField] : custodianOptions));
+  }
+
+  const selectOptions = getOptions();
 
   const getMultiSelectView = (selectedKey) => {
-    const firstOption = field.options[selectedKey[0]].title.split(',')[0];
+    const firstOptionObject = selectOptions.find(
+      (optionObject) => optionObject.id === selectedKey[0],
+    );
+    const firstOption = firstOptionObject.name;
     if (selectedKey.length <= 1) return firstOption;
 
     return (
@@ -29,10 +42,18 @@ const SelectMenu = (field, formValues, handleInputChange, classes) => {
   return (
     <Grid item>
       <FormControl>
-        <div className={classes.formLabel}>{label}</div>
+        <div className={classes.formLabel}>
+          {label}
+          {required ? (
+            <span className={classes.required}>
+              *
+            </span>
+          ) : null}
+        </div>
         <Select
           id="demo-customized-select-native"
           multiple={multiple}
+          disabled={disabled}
           name={id}
           displayEmpty
           value={formValues[id]}
@@ -58,11 +79,10 @@ const SelectMenu = (field, formValues, handleInputChange, classes) => {
                 ? (getMultiSelectView(selectedKey)) : selectOptions[selectedKey].title
           )}
         >
-          {Object.keys(selectOptions).map((key) => (
+          {selectOptions.map(({ id: key, name }) => (
             <MenuItem dense key={key} value={key} className={classes.selectMenuItem}>
               <Checkbox checked={formValues[id].indexOf(key) > -1} />
-              {selectOptions[key].title}
-              {/* <ListItemText primary={} /> */}
+              {name}
             </MenuItem>
           ))}
         </Select>
