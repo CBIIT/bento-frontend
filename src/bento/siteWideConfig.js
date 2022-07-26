@@ -8,4 +8,4 @@ export default {
 };
 
 export const loginRoute = '/login';
-export const registrationRoute = '/register';
+export const requestAccessRoute = '/request';
