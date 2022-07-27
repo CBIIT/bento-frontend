@@ -32,20 +32,20 @@ const TablePendingRequest = ({ classes }) => {
       </Typography>
     );
   }
-
-  const columns = [
-    { name: 'displayName', label: 'Name' },
+const columns = [{ name: 'displayName', label: 'Name' },
     { name: 'IDP', label: 'Account Type' },
     { name: 'email', label: 'Email' },
     { name: 'organization', label: 'Organization' },
+    { name: 'userStatus', label: 'Membership Status' },
+    { name: 'role', label: 'Role' },
     {
       name: 'numberOfArms',
       label: 'Arm(s)',
       options: {
         customBodyRender: (value, tableMeta) => {
-          const reviewHref = `/#/review/${tableMeta.rowData[7]}`;
+          const href = `/#/review/${tableMeta.rowData[7]}`;
           return (
-            <Link href={reviewHref}>
+            <Link href={href}>
               {' '}
               {value}
             </Link>
@@ -53,24 +53,22 @@ const TablePendingRequest = ({ classes }) => {
         },
       },
     },
-    { name: 'creationDate', label: 'Access Request Date' },
     {
       name: 'userID',
       label: 'Actions',
       options: {
         customBodyRender: (value) => {
-          const reviewHref = `/#/review/${value}`;
+          const href = `/#/review/${value}`;
           return (
-
             <Button
               variant="contained"
               component={Link}
-              href={reviewHref}
+              href={href}
               classes={{
                 root: classes.btn,
               }}
             >
-              View
+              Edit
             </Button>
           );
         },
