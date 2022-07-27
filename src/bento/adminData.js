@@ -189,3 +189,19 @@ export const APPROVE_ACCESS = gql`
   }
 `;
 
+export const SAVE_UPDATED_USER = gql`
+  mutation editUser($userID: ID!, $role: String, $userStatus: String, $armIDs: [String]!, $comment: String!){
+    editUser(userID: $userID, role: $role userStatus:$userStatus){
+      userID
+      firstName
+      lastName
+      IDP
+      email
+      role
+      userStatus
+  }
+  revokeAccess(userID: $userID, armIDs: $armIDs, comment: $comment){
+      accessStatus
+    }
+}
+`;

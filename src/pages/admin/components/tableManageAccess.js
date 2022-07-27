@@ -40,7 +40,7 @@ const columns = [{ name: 'displayName', label: 'Name'},
   { name: 'userID', label: 'Actions',
     options: {
   customBodyRender: (value, tableMeta, updateValue) => { 
-    const href = 'admin/'+value; 
+    const href = '/#/admin/edit/'+value; 
     return(
 
             <Button variant="contained"  component={Link} href={href}

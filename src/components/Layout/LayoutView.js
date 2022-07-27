@@ -27,6 +27,7 @@ import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRe
 import Login from '../../pages/accessManagment/login';
 import RequestAccess from '../../pages/requestAccess/requestAccessController';
 import SysInfoView from '../../pages/sysInfo/view';
+import editUserController from '../../pages/admin/editUser/editUserController';
 
 import fakeAdminView from '../../pages/fakeAdmin';
 
@@ -71,12 +72,13 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute exact path="/search" access={['admin', 'member']} component={GlobalSearch} />
             <PrivateRoute path="/search/:id" access={['admin', 'member']} component={GlobalSearchController} />
             <PrivateRoute path="/fileViewer/:id" access={['admin', 'member']} component={JBrowseDetail} />
-            <Route path="/admin" component={adminController} />
-            <Route path="/review/:id" component={reviewRequestController} />
             {/* END SECTION */}
 
             {/* SECTION: Admin only Path */}
             <PrivateRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
+            <PrivateRoute path="/admin/edit/:id" access={['admin']} component={editUserController} />
+            <PrivateRoute path="/admin" access={['admin']} component={adminController} />
+            <PrivateRoute path="/review/:id" access={['admin']} component={reviewRequestController} />
             {/* END SECTION */}
 
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
