@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
@@ -9,10 +7,17 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { cn, CustomDataTable } from 'bento-components';
+import { CustomDataTable } from 'bento-components';
 import Stats from '../../../components/Stats/AllStatsController';
 
-import { adminPortalIcon, SAVE_UPDATED_USER, GET_USER } from '../../../bento/adminData';
+import {
+  adminPortalIcon,
+  viewPageTitle,
+  editViewPageTitle,
+  SAVE_UPDATED_USER,
+  VIEW,
+  EDIT,
+} from '../../../bento/adminData';
 import getDateInFormat from '../../../utils/date';
 
 // acl is array of object.
@@ -35,23 +40,15 @@ function getApprovedArms(acl) {
   return approvedArms;
 }
 
-function test(seletedArms, value) {
-  const testResult = seletedArms.indexOf(value);
-  console.log(testResult);
-  return testResult;
-}
-
-const ReviewRequestView = ({ classes, data }) => {
-  const { getUser: userInfo } = data;
-  const [seletedArms, setSeletedArms] = useState([]);
+const UserDetailView = ({ classes, data, accessType = VIEW }) => {
+  const [userInfo, setUserInfo] = useState(data.getUser);
   const [userRole, setUserRole] = useState(userInfo.role);
+  const [seletedArms, setSeletedArms] = useState([]);
 
   // GraphQL Operations
-  const [mutate, response] = useMutation(SAVE_UPDATED_USER, {
+  // eslint-disable-next-line no-unused-vars
+  const [mutate, { loading, error }] = useMutation(SAVE_UPDATED_USER, {
     context: { clientName: 'userService' },
-    refetchQueries: [
-      { query: GET_USER }, // DocumentNode object parsed with gql
-    ],
     onCompleted() {
       // INPUT parm can be 'responseData'
 
@@ -71,8 +68,8 @@ const ReviewRequestView = ({ classes, data }) => {
       name: 'remove',
       label: 'Remove',
       options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const { id } = value;
+        display: (accessType === EDIT),
+        customBodyRender: (value) => {
           const { checked } = seletedArms.includes(value);
           return (
             <div>
@@ -111,8 +108,6 @@ const ReviewRequestView = ({ classes, data }) => {
     viewColumns: false,
   };
 
-  const loading = false;
-
   function handleSaveUserDetails() {
     const Obj = {
       userID: userInfo.userID,
@@ -122,7 +117,11 @@ const ReviewRequestView = ({ classes, data }) => {
       comment: '',
     };
 
-    mutate({ variables: { ...Obj } });
+    mutate({ variables: { ...Obj } }).then(({ data: responseData }) => {
+      if (responseData) {
+        setUserInfo(responseData.editUser);
+      }
+    }).catch(() => {});
   }
 
   const handleRoleChange = (e) => {
@@ -146,7 +145,9 @@ const ReviewRequestView = ({ classes, data }) => {
               <Typography className={classes.headerMainTitle}>
                 <span className={classes.adminTitle}>Admin Portal</span>
                 <span> / </span>
-                <span className={classes.reviewTitle}>Edit User</span>
+                <span className={classes.reviewTitle}>
+                  {(accessType === EDIT) ? editViewPageTitle : viewPageTitle }
+                </span>
               </Typography>
             </div>
           </div>
@@ -219,16 +220,19 @@ const ReviewRequestView = ({ classes, data }) => {
                   <br />
                   <span className={classes.infoValue}>
                     {' '}
-                    <Select
-                      value={userRole}
-                      onChange={handleRoleChange}
-                      displayEmpty
-                      className={classes.selectEmpty}
-                      inputProps={{ 'aria-label': 'Without label' }}
-                    >
-                      <MenuItem value="admin"> Admin </MenuItem>
-                      <MenuItem value="member"> Member </MenuItem>
-                    </Select>
+                    {accessType === EDIT ? (
+                      <Select
+                        value={userRole}
+                        onChange={handleRoleChange}
+                        displayEmpty
+                        className={classes.selectEmpty}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                      >
+                        <MenuItem value="admin"> Admin </MenuItem>
+                        <MenuItem value="member"> Member </MenuItem>
+                      </Select>
+                    )
+                      : userRole }
                     {' '}
                   </span>
                 </Typography>
@@ -236,24 +240,33 @@ const ReviewRequestView = ({ classes, data }) => {
             </div>
           </div>
           <Grid container>
-            <Grid item xs={12}>
-              <CustomDataTable
-                data={approvedArms}
-                columns={columns}
-                options={options}
-              />
-            </Grid>
-            <Grid item xs={12} style={{ textAlign: 'center' }} justifyContent="center">
-              <Button
-                variant="contained"
-                type="submit"
-                className={classes.saveButtton}
-                endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
-                onClick={handleSaveUserDetails}
-              >
-                Save
-              </Button>
-            </Grid>
+            {userInfo.role !== 'admin' ? (
+              <Grid item xs={12}>
+                <CustomDataTable
+                  data={approvedArms}
+                  columns={columns}
+                  options={options}
+                />
+              </Grid>
+            )
+              : (
+                <Grid item xs={12} className={classes.adminMessageGrid}>
+                  <div className={classes.adminMessage}> You have access to all Arm(s) </div>
+                </Grid>
+              )}
+            {accessType === EDIT ? (
+              <Grid item xs={12} style={{ textAlign: 'center' }} justifyContent="center">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  className={classes.saveButtton}
+                  endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
+                  onClick={handleSaveUserDetails}
+                >
+                  Save
+                </Button>
+              </Grid>
+            ) : null }
           </Grid>
         </div>
       </div>
@@ -277,6 +290,7 @@ const styles = (theme) => ({
     padding: '0 0 0 36px',
     display: 'flex',
     gap: '12px',
+    fontFamily: 'Nunito',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
     },
@@ -297,7 +311,7 @@ const styles = (theme) => ({
   infoKey: {
     whiteSpace: 'nowrap',
     color: '#708292',
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontSize: '11px',
   },
   infoValue: {
@@ -305,7 +319,10 @@ const styles = (theme) => ({
     marginLeft: '21px',
     float: 'left',
     color: '#4F5D69',
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
+  },
+  upperCase: {
+    textTransform: 'capitalize',
   },
   container: {
     margin: 'auto',
@@ -365,6 +382,21 @@ const styles = (theme) => ({
       backgroundColor: '#5D53F6',
     },
   },
+  adminMessageGrid: {
+    boxSizing: 'border-box',
+    height: '143px',
+    border: '1px solid #000000',
+    backgroundColor: '#F6F6F6',
+  },
+  adminMessage: {
+    color: '#000000',
+    fontFamily: '“Nunito”',
+    fontSize: '18px',
+    letterSpacing: '0',
+    lineHeight: '35px',
+    textAlign: 'center',
+    margin: '0 auto',
+  },
 });
 
-export default withStyles(styles, { withTheme: true })(ReviewRequestView);
+export default withStyles(styles, { withTheme: true })(UserDetailView);

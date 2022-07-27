@@ -16,6 +16,11 @@ export const adminPortalIcon = {
   alt: 'Admin Portal Icon',
 };
 
+export const EDIT = 'edit';
+export const VIEW = 'view';
+
+export const editViewPageTitle = 'Edit User';
+export const viewPageTitle = 'Approved Arm(s)';
 
 export const useMock = true;
 
@@ -191,17 +196,29 @@ export const APPROVE_ACCESS = gql`
 
 export const SAVE_UPDATED_USER = gql`
   mutation editUser($userID: ID!, $role: String, $userStatus: String, $armIDs: [String]!, $comment: String!){
-    editUser(userID: $userID, role: $role userStatus:$userStatus){
-      userID
-      firstName
-      lastName
-      IDP
-      email
-      role
-      userStatus
-  }
-  revokeAccess(userID: $userID, armIDs: $armIDs, comment: $comment){
+    revokeAccess(userID: $userID, armIDs: $armIDs, comment: $comment){
       accessStatus
     }
+    editUser(userID: $userID, role: $role userStatus:$userStatus){
+      firstName
+      lastName
+      organization
+      userID
+      email
+      IDP
+      role
+      userStatus
+      creationDate
+      editDate
+      acl {
+        armID
+        armName
+        accessStatus
+        requestDate
+        reviewAdminName
+        reviewDate
+        comment
+      }
+  }
 }
 `;

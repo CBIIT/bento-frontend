@@ -27,7 +27,8 @@ import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRe
 import Login from '../../pages/accessManagment/login';
 import RequestAccess from '../../pages/requestAccess/requestAccessController';
 import SysInfoView from '../../pages/sysInfo/view';
-import editUserController from '../../pages/admin/editUser/editUserController';
+import editUserController from '../../pages/admin/userDetails/editUserController';
+import viewUserController from '../../pages/admin/userDetails/viewUserController';
 
 import fakeAdminView from '../../pages/fakeAdmin';
 
@@ -77,6 +78,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* SECTION: Admin only Path */}
             <PrivateRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
             <PrivateRoute path="/admin/edit/:id" access={['admin']} component={editUserController} />
+            <PrivateRoute path="/admin/view/:id" access={['admin']} component={viewUserController} />
             <PrivateRoute path="/admin" access={['admin']} component={adminController} />
             <PrivateRoute path="/review/:id" access={['admin']} component={reviewRequestController} />
             {/* END SECTION */}
