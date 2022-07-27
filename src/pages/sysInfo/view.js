@@ -30,7 +30,6 @@ const useStyles = makeStyles({
   },
 });
 
-// eslint-disable-next-line camelcase
 function createThreeColumnRow(key, requiredValue, value) {
   return { key, requiredValue, value };
 }

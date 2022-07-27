@@ -2,30 +2,25 @@ import React from 'react';
 import { Chip, withStyles } from '@material-ui/core';
 
 const badgeProps = {
-  non_member: {
+  'non-member': {
     label: 'Non-Member',
     class: 'nonmember',
-    color: '#acacac',
   },
   member: {
-    label: 'Active',
+    label: 'Member',
     class: 'member',
-    color: 'blue',
   },
   admin: {
     label: 'Admin',
     class: 'admin',
-    color: 'green',
   },
-  inActive: {
+  inactive: {
     label: 'Inactive',
     class: 'inactive',
-    color: '',
   },
   active: {
     label: 'Active',
     class: 'active',
-    color: '',
   },
 };
 
@@ -39,25 +34,19 @@ const getBadges = (badgeData, classes) => {
   }
 
   badges.forEach((element) => {
-    badgeComp.push(<Chip className={classes[element.class]} label={element.label} />);
+    if (element) {
+      const classValue = `${classes.badge} ${classes[element.class]}`;
+      badgeComp.push(<Chip className={classValue} label={element.label} />);
+    }
   });
 
   return badgeComp;
 };
 
-const processRoleData = (data) => {
-  if (Array.isArray(data)) {
-    return data;
-  }
-  if (typeof data === 'string') {
-    return data.split(',');
-  }
-
-  return [];
-};
+const processRoleData = (data) => [data.role, data.userStatus];
 
 function RoleBadgeGroup({ data, classes }) {
-  const roleData = processRoleData(data.role);
+  const roleData = processRoleData(data);
   const badgeInfo = getBadges(roleData, classes);
   return (
     <>
@@ -72,8 +61,14 @@ const styles = () => ({
   badgeGroup: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     boxSizing: 'border-box',
+    margin: '10px',
+  },
+  badge: {
+    borderRadius: '5px',
+    height: '20px',
+    border: '1px solid #a0a2b1',
+    margin: '0 5px',
   },
   inactive: {
     backgroundColor: '#ebc0bc',

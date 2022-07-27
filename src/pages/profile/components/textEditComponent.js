@@ -56,7 +56,7 @@ function TextEditComponent({
     setError({ value: errorFound, message: errorFound ? 'please enter value prior to saving.' : '' });
 
     if (!error.value && onSave && typeof onSave === 'function') {
-      onSave(value);
+      onSave(value, customOptions.field);
     }
   };
 
@@ -72,6 +72,9 @@ function TextEditComponent({
         value={value}
         onChange={handleChange}
         InputProps={{
+          classes: {
+            input: classes.inputFont,
+          },
           endAdornment: (
             <InputAdornment position="start" onClick={handleEdit}>
               <img
@@ -136,6 +139,9 @@ const styles = () => ({
     '&:hover': {
       color: '#000000',
     },
+  },
+  inputFont: {
+    fontSize: 'bold',
   },
 });
 

@@ -25,8 +25,6 @@ import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/accessManagment/login';
 import RequestAccess from '../../pages/requestAccess/requestAccessController';
 import SysInfoView from '../../pages/sysInfo/view';
-
-/* no ready yet */
 import ProfileController from '../../pages/profile/profileController';
 
 import fakeAdminView from '../../pages/fakeAdmin';
@@ -56,11 +54,10 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
 
-            <PrivateRoute path="/profile" access={['member', 'non-member', 'admin']} component={ProfileController} />
-
             {/* START: Private Routes */}
             {/* SECTION: Non-Member & Member only Path */}
             <PrivateRoute path="/request" access={['member', 'non-member']} component={RequestAccess} />
+            <Route path="/profile" access={['member', 'non-member', 'admin']} component={ProfileController} />
             {/* END SECTION */}
 
             {/* SECTION: Member & Admin only Path */}
@@ -99,7 +96,6 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/data-dictionary" component={DataDictonary} />
             <Route path="/graphql" component={GraphqlClient} />
             <LoginRoute path="/login" component={Login} />
-            <LoginRoute path="/register" component={userRegistration} />
             <Route path="/sysinfo" component={SysInfoView} />
             <Route component={Error} />
           </Switch>

@@ -21,61 +21,64 @@ const editTool = {
 };
 
 const testProfileInfoData = {
-  data: {
+  getMyUser: {
     firstName: 'Jonathan',
     lastName: 'Dorian',
     IDP: 'don\'t know',
     organization: 'NCI/NIH',
     email: 'jondoe@emailaddress.com',
     acl: [
-      {
-        armId: 1,
+      /* {
+        armID: 1,
         armName: 'AbbVie Inc.',
         accessStatus: 'active',
       }, {
-        armId: 2,
+        armID: 2,
         armName: 'McKesson Contract Packaging',
         accessStatus: 'active',
       }, {
-        armId: 3,
+        armID: 3,
         armName: 'State of Florida DOH Central Pharmacy',
         accessStatus: 'in-active',
       }, {
-        armId: 4,
+        armID: 4,
         armName: 'Sagent Pharmaceuticals',
         accessStatus: 'in-active',
       }, {
-        armId: 5,
+        armID: 5,
         armName: 'Nelco Laboratories, Inc.',
         accessStatus: 'active',
       }, {
-        armId: 6,
+        armID: 6,
         armName: 'CVS Pharmacy',
         accessStatus: 'in-active',
       }, {
-        armId: 7,
+        armID: 7,
         armName: 'Migranade Inc.',
         accessStatus: 'in-active',
       }, {
-        armId: 8,
+        armID: 8,
         armName: 'Northwind Pharmaceuticals',
         accessStatus: 'active',
       }, {
-        armId: 9,
+        armID: 9,
         armName: 'Almatica Pharma Inc.',
         accessStatus: 'active',
       }, {
-        armId: 10,
+        armID: 10,
         armName: 'Western Family Foods Inc',
         accessStatus: 'active',
-      },
+      }, */
     ],
     associations: ['first arm of justice'],
     userId: 'jondorian',
     editDate: new Date(),
     creationDate: new Date(),
+    // role: 'admin',
     role: 'member',
-    userStatus: 'active',
+    // role: 'non-member',
+    // userStatus: 'active',
+    userStatus: 'inactive',
   },
 };
 
@@ -88,7 +91,7 @@ export const profileArmsTable = {
   selectableRows: false,
   columns: [
     {
-      dataField: 'armId',
+      dataField: 'armID',
       header: 'Arms',
       primary: true,
       display: true,
@@ -105,12 +108,12 @@ export const profileArmsTable = {
     },
     {
       dataField: 'requestDate',
-      header: 'Request Date',
+      header: 'Access Request Date',
       display: true,
     },
     {
-      dataField: 'approvedDate',
-      header: 'Approved Date',
+      dataField: 'reviewDate',
+      header: 'Access Approved Date',
       display: true,
     },
   ],
@@ -118,7 +121,7 @@ export const profileArmsTable = {
 
 const GET_MY_PROFILE_QUERY = gql`
     query getMyUser {
-        getMyUser {
+        getMyUser{
             firstName
             lastName
             email
@@ -127,6 +130,8 @@ const GET_MY_PROFILE_QUERY = gql`
             acl {
                 armID
                 armName
+                requestDate
+                reviewDate
                 accessStatus
             }
             userID
@@ -134,72 +139,31 @@ const GET_MY_PROFILE_QUERY = gql`
             editDate
             role
             userStatus
-        }
-    }`;
-
-const listOfUserProfiles = gql`
-    query listUsers(
-        $role: [String] = ["standard"],
-        $status: [String] = ["active"],
-        $accessStatus: [String] = ["requested", "approved"]) {
-        listUsers(role: $role, status: $status, accessStatus: $accessStatus) {
-            firstName
-            lastName
-            email
-            IDP
-            organization
-            acl {
-                armId
-                armName
-                accessStatus
-            }
-            userID
-            creationDate
-            editDate
-            role
-            userStatus
-        }
-    } 
-`;
-
-const changeUserBasicInfo = gql`
-    mutation changeUserInformation($firstName: String ){
-        changeUser(firstName: $firstName) {
-            irstName
-            lastName
-            email
-            IDP
-            organization
-            acl
-            userID
-            registrationDate
-            approvalDate
-            editDate
-            role
-            status
         }
     }
 `;
 
-const getUserById = gql`
-    query getUser($user: [String]) {
-        getUser(user: $user){
+const changeUserBasicInfo = gql`
+    mutation updateMyUser($userInfo: UpdateUserInput! ){
+        updateMyUser(userInfo: $userInfo) {
             firstName
             lastName
-            email
-            IDP
             organization
+            userID
+            userStatus
+            IDP
+            role
             acl {
-                armId
+                armID
                 armName
+                requestDate
+                reviewDate
+                comment
                 accessStatus
             }
-            userID
-            creationDate
             editDate
-            role
-            userStatus
-        }        
+            creationDate
+        }
     }
 `;
 
@@ -209,8 +173,6 @@ export {
   userIcon,
   editTool,
   inactiveUserIcon,
-  listOfUserProfiles,
-  getUserById,
   GET_MY_PROFILE_QUERY,
   changeUserBasicInfo,
   testProfileInfoData,

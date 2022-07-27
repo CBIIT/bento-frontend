@@ -1,12 +1,13 @@
 const style = () => ({
   profileView: {
     backgroundColor: '#ffffff',
+    paddingTop: '45px',
   },
   profile_container: {
     background: '#ffffff',
     margin: '0 auto',
-    height: '70vh',
-    maxWidth: '80vh',
+    minHeight: '70vh',
+    maxWidth: '70vw',
   },
   profile_header: {
     display: 'flex',
@@ -53,7 +54,7 @@ const style = () => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: '50px 0',
+    padding: '20px 0 50px 0',
   },
   tableDiv: {
     margin: 'auto',
@@ -61,7 +62,7 @@ const style = () => ({
   btnRequest: {
     textDecoration: 'none',
     backgroundColor: '#5d53f6',
-    margin: '10px 500px',
+    margin: '20px 0',
     '&hover btnRequestLink': {
       color: '#000',
     },
@@ -78,8 +79,7 @@ const style = () => ({
     display: 'flex',
     flexDirection: 'row',
     boxSizing: 'border-box',
-    justifyContent: 'space-between',
-    marginBottom: '10px',
+    marginBottom: '5px',
   },
   splitBodyColumn1: {
     flex: 1,
@@ -99,9 +99,11 @@ const style = () => ({
   },
   textLabel: {
     textTransform: 'uppercase',
-    flex: 0.5,
-    lineHeight: 2,
+    lineHeight: '3em',
+    fontStyle: 'italic',
+    fontSize: 'small',
     padding: '0 10px',
+    minWidth: '200px',
   },
   editIcon: {
     width: '18px',

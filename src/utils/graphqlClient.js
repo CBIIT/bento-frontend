@@ -30,7 +30,7 @@ const client = new ApolloClient({
       (operation) => operation.getContext().clientName === 'userService',
       // the string "userService" can be anything you want,
       userService, // <= apollo will send to this if clientName is "userService"
-      backendService, // <= otherwise will send to this
+      backendService, // <= otherwise will send to thisnpm
     ), // <= otherwise will send to this
   ),
 });
