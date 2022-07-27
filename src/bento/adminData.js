@@ -21,7 +21,7 @@ export const VIEW = 'view';
 export const editViewPageTitle = 'Edit User';
 export const viewPageTitle = 'Approved Arm(s)';
 
-export const useMock = true;
+export const useMock = false;
 
 // --------------- tab Pending Request --------------
 const tabPendingRequest = {
