@@ -44,7 +44,7 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
       label: 'Arm(s)',
       options: {
         customBodyRender: (value, tableMeta) => {
-          const href = `/#/admin/review/${tableMeta.rowData[7]}`;
+          const href = `/#/admin/view/${tableMeta.rowData[7]}`;
           return (
             <Link href={href}>
               {' '}
