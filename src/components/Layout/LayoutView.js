@@ -86,6 +86,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
             <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
             <PrivateRoute path="/table" component={table} />
+            <PrivateRoute path="/admin" access={['admin']} component={adminController} />
+            <Route path="/review/:id" access={['admin']} component={reviewRequestController} />
             {/* END NOTE */}
 
             {/* END: Private Routes */}
