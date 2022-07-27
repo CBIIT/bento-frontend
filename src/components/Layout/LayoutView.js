@@ -25,7 +25,10 @@ import GlobalSearchController from '../../pages/search/searchViewController';
 import adminController from '../../pages/admin/adminController';
 import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRequestController';
 import Login from '../../pages/accessManagment/login';
-import userRegistration from '../../pages/accessManagment/userRegistration';
+import RequestAccess from '../../pages/requestAccess/requestAccessController';
+import SysInfoView from '../../pages/sysInfo/view';
+
+import fakeAdminView from '../../pages/fakeAdmin';
 
 // Access control imports
 import PrivateRoute, { LoginRoute } from './privateRoute';
@@ -53,19 +56,31 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route exact path="/home" component={Home} />
 
             {/* START: Private Routes */}
-            <PrivateRoute path="/explore" component={Dashboard} />
-            <PrivateRoute path="/programs" component={Programs} />
-            <PrivateRoute path="/model" component={modelPage} />
+            {/* SECTION: Non-Member & Member only Path */}
+            <PrivateRoute path="/request" access={['member', 'non-member']} component={RequestAccess} />
+            {/* END SECTION */}
+
+            {/* SECTION: Member & Admin only Path */}
+            <PrivateRoute path="/explore" access={['admin', 'member']} component={Dashboard} />
+            <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
+            <PrivateRoute path="/model" access={['admin', 'member']} component={modelPage} />
+            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={fileCentricCart} />
+            <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
+            <PrivateRoute path="/case/:id" access={['admin', 'member']} component={CaseDetail} />
+            <PrivateRoute path="/arm/:id" access={['admin', 'member']} component={ArmDetail} />
+            <PrivateRoute exact path="/search" access={['admin', 'member']} component={GlobalSearch} />
+            <PrivateRoute path="/search/:id" access={['admin', 'member']} component={GlobalSearchController} />
+            <PrivateRoute path="/fileViewer/:id" access={['admin', 'member']} component={JBrowseDetail} />
+            {/* END SECTION */}
+
+            {/* SECTION: Admin only Path */}
+            <PrivateRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
+            {/* END SECTION */}
+
+            {/* NOTE: Please check these below paths. if no longer needed please remove it */}
+            <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
             <PrivateRoute path="/table" component={table} />
-            <PrivateRoute path="/fileCentricCart" component={fileCentricCart} />
-            <PrivateRoute path="/program/:id" component={ProgramDetail} />
-            <PrivateRoute path="/case/:id" component={CaseDetail} />
-            <PrivateRoute path="/arm/:id" component={ArmDetail} />
-            <PrivateRoute path="/JBrowse" component={JBrowse} />
-            <PrivateRoute exact path="/search" component={GlobalSearch} />
-            <PrivateRoute path="/search/:id" component={GlobalSearchController} />
-            <PrivateRoute path="/fileViewer/:id" component={JBrowseDetail} />
-            <Route path="/admin" component={adminController} />
+            <PrivateRoute path="/admin" access={['admin']} component={adminController} />
             <Route path="/review/:id" component={reviewRequestController} />
             {/* END: Private Routes */}
 
@@ -81,7 +96,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <Route path="/data-dictionary" component={DataDictonary} />
             <Route path="/graphql" component={GraphqlClient} />
             <LoginRoute path="/login" component={Login} />
-            <LoginRoute path="/register" component={userRegistration} />
+            <Route path="/sysinfo" component={SysInfoView} />
             <Route component={Error} />
           </Switch>
           <Footer data={{ isSidebarOpened }} />

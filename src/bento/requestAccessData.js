@@ -1,28 +1,15 @@
 import gql from 'graphql-tag';
 
-export const pageTitle = 'User Registration';
+export const pageTitle = 'Data Access Request';
 
-export const registrationForm = [
-  {
-    id: 'IDP',
-    type: 'dropdown',
-    required: true,
-    label: 'Account Type',
-    placeHolder: 'Account Type',
-    multiple: false,
-    message: '',
-    options: {
-      google: {
-        title: 'Google',
-      },
-      'login.gov': {
-        title: 'Login.Ggov',
-      },
-      nih: {
-        title: 'NIH iTrust',
-      },
-    },
-  },
+/*
+  "levelDetails" variable is used to get accessControlLevel related data
+  from GET_ACCESS_CONTROL_LEVEL_DETAILS_QUERY's response object.
+*/
+export const acl = 'Arms';
+export const aclAPIOptionsField = 'listArms';
+
+export const formFields = [
   {
     id: 'lastName',
     type: 'textBox',
@@ -38,13 +25,6 @@ export const registrationForm = [
     placeHolder: 'First Name',
   },
   {
-    id: 'email',
-    type: 'email',
-    required: true,
-    label: 'Email Address',
-    placeHolder: 'Email Address',
-  },
-  {
     id: 'organization',
     type: 'textBox',
     required: true,
@@ -58,20 +38,25 @@ export const registrationForm = [
     label: 'Study Arm',
     placeHolder: 'Study Arm',
     multiple: true,
-    options: {
-      a: {
-        title: 'A: RS 0-10, assigned endocrine therapy alone',
+    optionsAPIField: aclAPIOptionsField,
+    options: [
+      {
+        id: 'a',
+        name: 'A: RS 0-10, assigned endocrine therapy alone',
       },
-      b: {
-        title: 'B: RS 11-25, randomized to endocrine therapy alone',
+      {
+        id: 'b',
+        name: 'B: RS 11-25, randomized to endocrine therapy alone',
       },
-      c: {
-        title: 'C: RS 11-25, randomized to chemo + endocrine therapy',
+      {
+        id: 'c',
+        name: 'C: RS 11-25, randomized to chemo + endocrine therapy',
       },
-      d: {
-        title: 'D: RS > 25, assigned to chemo +',
+      {
+        id: 'd',
+        name: 'D: RS > 25, assigned to chemo +',
       },
-    },
+    ],
   },
 ];
 
@@ -91,6 +76,14 @@ mutation registerUser($user: RegisterUserInput!) {
     role
     status
   }
+}`;
+
+export const GET_ACCESS_CONTROL_LEVEL_DETAILS_QUERY = gql`
+query listArms {
+  listArms{
+        id,
+        name
+}
 }`;
 
 export default null;

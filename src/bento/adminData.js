@@ -1,4 +1,3 @@
-/* eslint-disable */
 import gql from 'graphql-tag';
 
 export const icon = {
@@ -16,100 +15,95 @@ export const adminPortalIcon = {
   alt: 'Admin Portal Icon',
 };
 
-
-export const useMock = true;
+export const useMock = false;
 
 // --------------- tab Pending Request --------------
 const tabPendingRequest = {
 
-  tabTitle: "PENDING REQUESTS",
+  tabTitle: 'PENDING REQUESTS',
 
   table: {
-      // Set 'display' to false to hide the table entirely
-      display: true,
-      // Value must be one of the 'dataField's in "columns"
-      defaultSortField: 'name',
-      // 'asc' or 'desc'
-      defaultSortDirection: 'asc',
-     
-      columns: [
-        {
-          dataField: 'displayName',
-          header: 'Name',
-        },
-        {
-          dataField: 'IDP',
-          header: 'Account Type',
-        },
-        {
-          dataField: 'email',
-          header: 'Email',
-        },
-        {
-          dataField: 'organization',
-          header: 'Organization',
-        },
-        {
-          dataField: 'numberOfArms',
-          header: 'Arm(s)',
-        }
-      ]
-  }
+    // Set 'display' to false to hide the table entirely
+    display: true,
+    // Value must be one of the 'dataField's in "columns"
+    defaultSortField: 'name',
+    // 'asc' or 'desc'
+    defaultSortDirection: 'asc',
 
-}
+    columns: [
+      {
+        dataField: 'displayName',
+        header: 'Name',
+      },
+      {
+        dataField: 'IDP',
+        header: 'Account Type',
+      },
+      {
+        dataField: 'email',
+        header: 'Email',
+      },
+      {
+        dataField: 'organization',
+        header: 'Organization',
+      },
+      {
+        dataField: 'numberOfArms',
+        header: 'Arm(s)',
+      },
+    ],
+  },
 
-
+};
 
 // --------------- tab Pending Request --------------
 const tabManageAccess = {
 
-  tabTitle: "MANAGE ACCESS",
+  tabTitle: 'MANAGE ACCESS',
 
   table: {
-      // Set 'display' to false to hide the table entirely
-      display: true,
-      // Value must be one of the 'dataField's in "columns"
-      defaultSortField: 'displayName',
-      // 'asc' or 'desc'
-      defaultSortDirection: 'asc',
-     
-      columns: [
-        {
-          dataField: 'displayName',
-          header: 'Name',
-        },
-        {
-          dataField: 'IDP',
-          header: 'Account Type',
-        },
-        {
-          dataField: 'email',
-          header: 'Email',
-        },
-        {
-          dataField: 'organization',
-          header: 'Organization',
-        },
-        {
-          dataField: 'role',
-          header: 'Role',
-        },
-        {
-          dataField: 'userStatus',
-          header: 'Status',
-        },
-        {
-          dataField: 'numberOfArms',
-          header: 'Arm(s)',
-        }
-      ]
-  }
+    // Set 'display' to false to hide the table entirely
+    display: true,
+    // Value must be one of the 'dataField's in "columns"
+    defaultSortField: 'displayName',
+    // 'asc' or 'desc'
+    defaultSortDirection: 'asc',
 
-}
+    columns: [
+      {
+        dataField: 'displayName',
+        header: 'Name',
+      },
+      {
+        dataField: 'IDP',
+        header: 'Account Type',
+      },
+      {
+        dataField: 'email',
+        header: 'Email',
+      },
+      {
+        dataField: 'organization',
+        header: 'Organization',
+      },
+      {
+        dataField: 'role',
+        header: 'Role',
+      },
+      {
+        dataField: 'userStatus',
+        header: 'Status',
+      },
+      {
+        dataField: 'numberOfArms',
+        header: 'Arm(s)',
+      },
+    ],
+  },
 
+};
 
-export const tabs = [ tabManageAccess, tabPendingRequest]
-
+export const tabs = [tabManageAccess, tabPendingRequest];
 
 // --------------- GraphQL query configuration --------------
 
@@ -118,21 +112,30 @@ export const tabs = [ tabManageAccess, tabPendingRequest]
 // Get pending data access requests  role == member,non-member ,accessStatus ==requested
 
 export const GET_LIST_USERS = gql`
-query listUsers($role: [String], $accessStatus: [String]) {
-  User(role: $role) {
-    displayName
-    IDP
-    email
-    organization
-    role
-    userStatus
-    numberOfArms
-    userID
-    creationDate
-    acl(accessStatus: $accessStatus) {
+query listUsers($role: [String], $userStatus: [String], $accessStatus: [String]){
+    listUsers (role: $role, userStatus: $userStatus, accessStatus: $accessStatus){
+        firstName
+        lastName
+        displayName
+        organization
+        userID
+        email
+        IDP
+        role
+        userStatus
+        creationDate
+        editDate
+        numberOfArms
+        acl {
+            armID
+            armName
             accessStatus
+            requestDate
+            reviewAdminName
+            reviewDate
+            comment
         }
-  }
+    }
 }
 `;
 export const GET_USER = gql`
@@ -188,4 +191,3 @@ export const APPROVE_ACCESS = gql`
     }
   }
 `;
-

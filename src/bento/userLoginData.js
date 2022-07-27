@@ -1,6 +1,4 @@
-import { registrationRoute } from './siteWideConfig';
-
-export const pageTitle = 'Login or Register';
+export const pageTitle = 'Login';
 
 export const loginProvidersData = {
   google: {
@@ -22,15 +20,6 @@ export const loginProvidersData = {
     enabled: true,
   },
 };
-
-// TODO: Remove registration all custodian settings from below. We are no longer using it.
-
-export const registrationBoxData = {
-  buttonText: 'REGISTER',
-  redirectRoute: registrationRoute,
-};
-
-export const loginGovCreateAccountURL = 'https://www.login.gov/create-an-account/';
 
 export const bentoHelpEmail = 'bento-help@nih.gov';
 
