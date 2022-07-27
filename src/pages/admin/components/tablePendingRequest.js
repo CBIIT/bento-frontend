@@ -18,7 +18,7 @@ const TablePendingRequest = ({ classes }) => {
       clientName: useMock ? 'mockService' : 'userService',
     },
     variables: {
-      role: ['member', 'non-member'],
+      role: ['member', 'non-member', 'admin'],
       accessStatus: ['requested'],
     },
   });
@@ -38,21 +38,7 @@ const TablePendingRequest = ({ classes }) => {
     { name: 'organization', label: 'Organization' },
     { name: 'userStatus', label: 'Membership Status' },
     { name: 'role', label: 'Role' },
-    {
-      name: 'numberOfArms',
-      label: 'Arm(s)',
-      options: {
-        customBodyRender: (value, tableMeta) => {
-          const href = `/#/review/${tableMeta.rowData[7]}`;
-          return (
-            <Link href={href}>
-              {' '}
-              {value}
-            </Link>
-          );
-        },
-      },
-    },
+    { name: 'numberOfArms', label: 'Arm(s)' },
     {
       name: 'userID',
       label: 'Actions',
@@ -68,7 +54,7 @@ const TablePendingRequest = ({ classes }) => {
                 root: classes.btn,
               }}
             >
-              Edit
+              review
             </Button>
           );
         },

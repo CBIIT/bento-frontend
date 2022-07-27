@@ -18,7 +18,7 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
       clientName: useMock ? 'mockService' : 'userService',
     },
     variables: {
-      role: includeNonMember ? ['member', 'non-member'] : ['member'],
+      role: includeNonMember ? ['member', 'non-member', 'admin'] : ['member', 'admin'],
       accessStatus: ['approved'],
     },
   });
@@ -44,7 +44,7 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
       label: 'Arm(s)',
       options: {
         customBodyRender: (value, tableMeta) => {
-          const href = `/#/admin/edit/${tableMeta.rowData[7]}`;
+          const href = `/#/admin/review/${tableMeta.rowData[7]}`;
           return (
             <Link href={href}>
               {' '}
