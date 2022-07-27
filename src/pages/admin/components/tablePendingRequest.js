@@ -32,7 +32,7 @@ const TablePendingRequest = ({ classes }) => {
       </Typography>
     );
   }
-const columns = [{ name: 'displayName', label: 'Name' },
+  const columns = [{ name: 'displayName', label: 'Name' },
     { name: 'IDP', label: 'Account Type' },
     { name: 'email', label: 'Email' },
     { name: 'organization', label: 'Organization' },
@@ -92,7 +92,7 @@ const columns = [{ name: 'displayName', label: 'Name' },
       <Grid container spacing={32}>
         <Grid item xs={12}>
           <CustomDataTable
-            data={data ? data.User : []}
+            data={data ? data.listUsers : []}
             columns={columns}
             options={options}
           />

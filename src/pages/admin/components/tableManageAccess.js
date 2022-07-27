@@ -44,7 +44,7 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
       label: 'Arm(s)',
       options: {
         customBodyRender: (value, tableMeta) => {
-          const href = `admin/${tableMeta.rowData[7]}`;
+          const href = `/#/admin/edit/${tableMeta.rowData[7]}`;
           return (
             <Link href={href}>
               {' '}
@@ -59,7 +59,7 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
       label: 'Actions',
       options: {
         customBodyRender: (value) => {
-          const href = `admin/${value}`;
+          const href = `/#/admin/edit/${value}`;
           return (
             <Button
               variant="contained"
@@ -93,7 +93,7 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
       <Grid container spacing={32}>
         <Grid item xs={12}>
           <CustomDataTable
-            data={data ? data.User : []}
+            data={data ? data.listUsers : []}
             columns={columns}
             options={options}
           />
