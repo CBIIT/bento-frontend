@@ -7,13 +7,17 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import BootstrapInput from './bootstrapInput';
 
-const SelectMenu = (field, formValues, handleInputChange, data, classes) => {
+// NOTE FOR DEVELOPER: Add instructions for props what are the input types.
+
+const SelectMenu = (field, formValues, handleInputChange,
+  data, classes, propOptions = null, disabled = false) => {
   const {
-    id, options, optionsAPIField, multiple, required, label,
+    id, options: custodianOptions, optionsAPIField, multiple, required, label,
   } = field;
 
   function getOptions() {
-    return ((optionsAPIField && data && data[optionsAPIField]) ? data[optionsAPIField] : options);
+    return (propOptions || ((optionsAPIField && data && data[optionsAPIField])
+      ? data[optionsAPIField] : custodianOptions));
   }
 
   const selectOptions = getOptions();
@@ -38,10 +42,18 @@ const SelectMenu = (field, formValues, handleInputChange, data, classes) => {
   return (
     <Grid item>
       <FormControl>
-        <div className={classes.formLabel}>{label}</div>
+        <div className={classes.formLabel}>
+          {label}
+          {required ? (
+            <span className={classes.required}>
+              *
+            </span>
+          ) : null}
+        </div>
         <Select
           id="demo-customized-select-native"
           multiple={multiple}
+          disabled={disabled}
           name={id}
           displayEmpty
           value={formValues[id]}

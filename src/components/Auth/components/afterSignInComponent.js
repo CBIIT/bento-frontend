@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   Button, withStyles, Paper,
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { requestAccessRoute, adminPortal, userProfileRoute } from '../../../bento/siteWideConfig';
 // import DropdownItemsMenu from './DropdownItemsMenu';
 
 const AfterSignIn = ({
@@ -9,12 +12,19 @@ const AfterSignIn = ({
 }) => {
   const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
 
+  const { role } = useSelector((state) => state.login);
+  const history = useHistory();
+
   function handleClick() {
     setDisplayDropDownMenu(true);
   }
 
   function handleMoveOut() {
     setDisplayDropDownMenu(false);
+  }
+
+  function redirectUser(path) {
+    history.push(path);
   }
 
   // function dropdownMenuClickEvent() {
@@ -34,9 +44,39 @@ const AfterSignIn = ({
       >
         {userName}
       </Button>
+
       {displayDropDownMenu
         ? (
           <Paper className={classes.paper}>
+            {role === 'admin' ? (
+              <Button
+                onClick={() => redirectUser(adminPortal)}
+                classes={{ label: classes.textColor, text: classes.paddding0 }}
+                disableRipple
+              >
+                Admin Portal
+              </Button>
+            )
+              : (
+                <div>
+                  <Button
+                    onClick={() => redirectUser(requestAccessRoute)}
+                    classes={{ label: classes.textColor, text: classes.paddding0 }}
+                    disableRipple
+                  >
+                    Request Access
+                  </Button>
+                </div>
+              )}
+            <div>
+              <Button
+                onClick={() => redirectUser(userProfileRoute)}
+                classes={{ label: classes.textColor, text: classes.paddding0 }}
+                disableRipple
+              >
+                User Profile
+              </Button>
+            </div>
             <Button
               onClick={signoutLink}
               classes={{ label: classes.textColor, text: classes.paddding0 }}
@@ -90,13 +130,20 @@ const styles = () => ({
   },
   paper: {
     background: '#465F96',
-    width: '120px',
+    // width: '120px',
     paddingLeft: '20px',
     position: 'absolute',
     fontFamily: 'Nunito',
     fontWeight: 600,
     borderRadius: '0',
     marginTop: '6px',
+  },
+  badge: {
+    textTransform: 'capitalize',
+  },
+  profileIcon: {
+    paddingBottom: '0px',
+    marginBottom: '-8px',
   },
 });
 

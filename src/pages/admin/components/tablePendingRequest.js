@@ -18,7 +18,7 @@ const TablePendingRequest = ({ classes }) => {
       clientName: useMock ? 'mockService' : 'userService',
     },
     variables: {
-      role: ['member', 'non-member'],
+      role: ['member', 'non-member', 'admin'],
       accessStatus: ['requested'],
     },
   });
@@ -32,45 +32,29 @@ const TablePendingRequest = ({ classes }) => {
       </Typography>
     );
   }
-
-  const columns = [
-    { name: 'displayName', label: 'Name' },
+  const columns = [{ name: 'displayName', label: 'Name' },
     { name: 'IDP', label: 'Account Type' },
     { name: 'email', label: 'Email' },
     { name: 'organization', label: 'Organization' },
-    {
-      name: 'numberOfArms',
-      label: 'Arm(s)',
-      options: {
-        customBodyRender: (value, tableMeta) => {
-          const reviewHref = `/#/review/${tableMeta.rowData[7]}`;
-          return (
-            <Link href={reviewHref}>
-              {' '}
-              {value}
-            </Link>
-          );
-        },
-      },
-    },
-    { name: 'creationDate', label: 'Access Request Date' },
+    { name: 'userStatus', label: 'Membership Status' },
+    { name: 'role', label: 'Role' },
+    { name: 'numberOfArms', label: 'Arm(s)' },
     {
       name: 'userID',
       label: 'Actions',
       options: {
         customBodyRender: (value) => {
-          const reviewHref = `/#/review/${value}`;
+          const href = `/#/review/${value}`;
           return (
-
             <Button
               variant="contained"
               component={Link}
-              href={reviewHref}
+              href={href}
               classes={{
                 root: classes.btn,
               }}
             >
-              View
+              review
             </Button>
           );
         },
@@ -94,7 +78,7 @@ const TablePendingRequest = ({ classes }) => {
       <Grid container spacing={32}>
         <Grid item xs={12}>
           <CustomDataTable
-            data={data ? data.User : []}
+            data={data ? data.listUsers : []}
             columns={columns}
             options={options}
           />

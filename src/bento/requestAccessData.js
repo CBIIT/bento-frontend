@@ -28,13 +28,13 @@ export const formFields = [
     id: 'organization',
     type: 'textBox',
     required: true,
-    label: 'Organization/Institution',
-    placeHolder: 'Organization/Institution',
+    label: 'Organization / Institution',
+    placeHolder: 'Organization / Institution',
   },
   {
-    id: 'acl',
+    id: 'armIDs',
     type: 'dropdown',
-    required: true,
+    required: false,
     label: 'Study Arm',
     placeHolder: 'Study Arm',
     multiple: true,
@@ -60,21 +60,21 @@ export const formFields = [
   },
 ];
 
-export const SUBMIT_REGISTER = gql`
-mutation registerUser($user: RegisterUserInput!) {
-  registerUser(userInfo: $user) {
+export const SUBMIT_REQUEST_ACCESS = gql`
+mutation requestAccess($userInfo: RequestAccessInput!) {
+  requestAccess(userInfo: $userInfo) {
     firstName
     lastName
-    email
-    IDP
     organization
-    acl
-    userID
-    registrationDate
-    approvalDate
-    editDate
-    role
-    status
+    acl {
+      armID
+      armName
+      accessStatus
+      requestDate
+      reviewAdminName
+      reviewDate
+      comment
+    }
   }
 }`;
 
@@ -84,6 +84,27 @@ query listArms {
         id,
         name
 }
+getMyUser {
+    firstName
+    lastName
+    organization
+    userID
+    email
+    IDP
+    role
+    userStatus
+    creationDate
+    editDate
+    acl {
+      armID
+      armName
+      accessStatus
+      requestDate
+      reviewAdminName
+      reviewDate
+      comment
+    }
+  }
 }`;
 
 export default null;

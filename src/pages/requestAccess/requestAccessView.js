@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
+import { useHistory } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { bentoHelpEmail } from '../../bento/userLoginData';
@@ -11,7 +11,7 @@ import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 
 // Custodian data imports
-import { pageTitle, formFields, SUBMIT_REGISTER } from '../../bento/requestAccessData';
+import { pageTitle, formFields, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
 
 // eslint-disable-next-line no-unused-vars
 const checkIsValid = (field, formValues) => {
@@ -28,31 +28,50 @@ const checkIsValid = (field, formValues) => {
   return false;
 };
 
+const unavailableArmsStatus = ['approved', 'requested'];
+
+const getAvailableArms = (currentACL, listOfArms) => {
+  const unavailableArms = Object.keys(currentACL).reduce((previousArms, key) => {
+    const armObject = currentACL[key];
+    const resultArray = previousArms;
+    if (unavailableArmsStatus.includes(armObject.accessStatus)) resultArray.push(armObject.armID);
+    return resultArray;
+  }, []);
+  const availableArms = listOfArms.filter((arm) => !unavailableArms.includes(arm.id));
+  return availableArms;
+};
+
 function requestAccessView({ data, classes }) {
+  const { getMyUser, listArms } = data;
+  const { email: userEmail, IDP, userStatus } = getMyUser;
+  const history = useHistory();
+
+  const availableArms = getAvailableArms(getMyUser.acl, listArms);
+
   // Initial State and Reset functions
   const setDefaultValues = () => formFields.reduce((values, field) => {
     const { id, type, multiple } = field;
     if (!values[id]) {
       // eslint-disable-next-line no-param-reassign
-      values[id] = (type === 'dropdown' && multiple) ? [] : '';
+      values[id] = (type === 'dropdown' && multiple) ? [] : getMyUser[id] || '';
     }
     return values;
   }, {});
 
   // Init state for inputs.
   const [formValues, setFormValues] = useState(setDefaultValues());
-  const userEmail = useSelector((state) => state.login.email);
+  const [isFormSubmitted, setSubmitted] = useState(false);
 
-  const clearAll = () => {
-    setFormValues(setDefaultValues());
-  };
+  // const clearAll = () => {
+  //   setFormValues(setDefaultValues());
+  // };
 
   // GraphQL Operations
-  const [mutate, response] = useMutation(SUBMIT_REGISTER, {
-    context: { clientName: 'authService' },
+  const [mutate, response] = useMutation(SUBMIT_REQUEST_ACCESS, {
+    context: { clientName: 'userService' },
     onCompleted() {
       // INPUT parm can be 'responseData'
-      clearAll();
+      setSubmitted(true);
     },
     onError() {
       // INPUT parm can be 'ApolloError'
@@ -67,7 +86,7 @@ function requestAccessView({ data, classes }) {
       },
     } = error;
 
-    return statusCode === 409 ? 'The provided email and IDP combination is already registered' : 'Server Error';
+    return statusCode === 409 ? 'The request arm does not exist or attempting to request an invalid ARM' : 'Server Error';
   };
 
   const showAlert = (alertType) => {
@@ -81,7 +100,7 @@ function requestAccessView({ data, classes }) {
 
     if (alertType === 'success') {
       return (
-        <AlertMessage severity="success">
+        <AlertMessage severity="success" timeout={5000000}>
           Your registration request has been submitted for review.
         </AlertMessage>
       );
@@ -101,9 +120,13 @@ function requestAccessView({ data, classes }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const user = formValues;
-    mutate({ variables: { user } });
+    const userInfo = formValues;
+    mutate({ variables: { userInfo } });
   };
+
+  function redirectUser(path) {
+    history.push(path);
+  }
 
   return (
     <div className={classes.Container}>
@@ -121,7 +144,7 @@ function requestAccessView({ data, classes }) {
           {error && (showAlert('error'))}
 
           {/* Success on Submit */}
-          {successData && successData.registerUser && showAlert('success')}
+          {successData && successData.requestAccess && showAlert('success')}
 
         </Grid>
 
@@ -133,20 +156,48 @@ function requestAccessView({ data, classes }) {
 
             <Grid container item sm={4} justifyContent="center">
               {/* Page Title */}
-              <div className={classes.pageTitle}>
-                {pageTitle}
-                <hr className={classes.pageTitleUnderline} />
-              </div>
+              <Grid container item xs={12} justifyContent="center">
+                <div className={classes.pageTitle}>
+                  {pageTitle}
+                  <hr className={classes.pageTitleUnderline} />
+                </div>
+              </Grid>
 
               {/* User's Email Address */}
-              <div className={classes.emailAddress}>
-                Email Address:
-                <span className={classes.emailAddressValue}>
-                  {' '}
-                  {userEmail}
-                  {' '}
-                </span>
-              </div>
+              <Grid container item xs={12} justifyContent="center">
+                <div className={classes.emailAddress}>
+                  Email Address:
+                  <span className={classes.emailAddressValue}>
+                    {' '}
+                    {userEmail}
+                    {' '}
+                  </span>
+                </div>
+              </Grid>
+
+              {/* User's Account type */}
+              <Grid container item xs={12} justifyContent="center">
+                <div className={classes.emailAddress}>
+                  Account Type:
+                  <span className={classes.emailAddressValue}>
+                    {' '}
+                    {IDP}
+                    {' '}
+                  </span>
+                </div>
+              </Grid>
+
+              {/* User's Membership Status */}
+              <Grid container item xs={12} justifyContent="center">
+                <div className={classes.emailAddress}>
+                  Membership Status:
+                  <span className={classes.emailAddressValue}>
+                    {' '}
+                    {userStatus}
+                    {' '}
+                  </span>
+                </div>
+              </Grid>
 
               {/* Box Grid */}
               <div className={classes.Box}>
@@ -154,19 +205,31 @@ function requestAccessView({ data, classes }) {
                   <form onSubmit={handleSubmit}>
                     {formFields.map((field) => (
                       field.type === 'dropdown'
-                        ? SelectMenu(field, formValues, handleInputChange, data, classes)
+                        ? SelectMenu(field, formValues, handleInputChange,
+                          data, classes, availableArms, isFormSubmitted)
                         : field.type
-                          ? TextBox(field, formValues, handleInputChange, classes)
+                          ? TextBox(field, formValues, handleInputChange, classes, isFormSubmitted)
                           : null))}
                     <Grid item sm={12} style={{ textAlign: 'center' }} justifyContent="center">
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        className={classes.submitButtton}
-                        endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
-                      >
-                        Submit
-                      </Button>
+                      {isFormSubmitted ? (
+                        <Button
+                          variant="contained"
+                          className={classes.submitButtton}
+                          endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
+                          onClick={() => redirectUser('/')}
+                        >
+                          Home
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          type="submit"
+                          className={classes.submitButtton}
+                          endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
+                        >
+                          Submit
+                        </Button>
+                      )}
                     </Grid>
                   </form>
                 </Grid>
@@ -288,18 +351,6 @@ const styles = () => ({
     backgroundColor: '#FFFFFF',
     padding: '0px 0px 0px 15px',
   },
-
-  formLabel: {
-    height: '18px',
-    color: '#0467BD',
-    fontFamily: 'Nunito',
-    fontSize: '18px',
-    fontWeight: 'bold',
-    letterSpacing: '0',
-    lineHeight: '22px',
-    marginBottom: '10px',
-    marginTop: '10px',
-  },
   chips: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -313,6 +364,33 @@ const styles = () => ({
     paddingBottom: '0px',
   },
 
+  // Styles for inputs
+  required: {
+    color: '#BC3900',
+    marginLeft: '5px',
+    fontFamily: 'Lato',
+    fontSize: '15px',
+    letterSpacing: '-100px',
+    lineHeight: '22px',
+  },
+  formLabel: {
+    height: '18px',
+    color: '#0467BD',
+    fontFamily: 'Nunito',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    letterSpacing: '0',
+    lineHeight: '22px',
+    marginBottom: '10px',
+    marginTop: '10px',
+  },
+
 });
 
 export default withStyles(styles, { withTheme: true })(requestAccessView);
+
+/* TODO:
+1. Dropdown is not generalized.
+2. After Submit it's not clreaing and referashing updated arms.
+3. Need reset button.
+*/
