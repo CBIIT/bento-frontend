@@ -23,6 +23,7 @@ import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
 import GlobalSearch from '../../pages/search/searchView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import adminController from '../../pages/admin/adminController';
+import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRequestController';
 import Login from '../../pages/accessManagment/login';
 import RequestAccess from '../../pages/requestAccess/requestAccessController';
 import SysInfoView from '../../pages/sysInfo/view';
@@ -79,9 +80,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
             <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
             <PrivateRoute path="/table" component={table} />
-            <Route path="/admin" component={adminController} />
-            {/* END NOTE */}
-
+            <PrivateRoute path="/admin" access={['admin']} component={adminController} />
+            <Route path="/review/:id" component={reviewRequestController} />
             {/* END: Private Routes */}
 
             {aboutPageRoutes.map(

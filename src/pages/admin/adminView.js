@@ -1,21 +1,19 @@
-/* eslint-disable */
 import React from 'react';
-import PropTypes from 'prop-types';
-import {  withStyles } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
+import { withStyles } from '@material-ui/core';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Stats from '../../components/Stats/AllStatsController';
 import { icon } from '../../bento/adminData';
-import TableManageAccess from './components/tableManageAccess.js';
-import TablePendingRequest from './components/tablePendingRequest.js'
+import TableManageAccess from './components/tableManageAccess';
+import TablePendingRequest from './components/tablePendingRequest';
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const {
+    children, value, index, ...other
+  } = props;
 
   return (
     <div
@@ -26,17 +24,11 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-          <Typography>{children}</Typography>
+      <Typography>{children}</Typography>
       )}
     </div>
   );
 }
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
 
 function a11yProps(index) {
   return {
@@ -45,83 +37,87 @@ function a11yProps(index) {
   };
 }
 
-
-const adminView = ({ classes, data }) => {
+const adminView = ({ classes }) => {
   const [value, setValue] = React.useState(0);
   const [includeNonMember, setIncludeNonMember] = React.useState(true);
-
-
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleCheckBoxChange= (event) => {
+  const handleCheckBoxChange = (event) => {
     setIncludeNonMember(event.target.checked);
   };
 
-
   return (
     <div className={classes.pageContainer}>
-        <div className={classes.container}>
-          <div className={classes.header}>
-              <div className={classes.logo}>
-                {<img
-                  src={icon.src}
-                  alt={icon.alt}
-                />}
+      <Stats />
+      <div className={classes.container}>
+        <div className={classes.header}>
+          <div className={classes.logo}>
+            <img
+              src={icon.src}
+              alt={icon.alt}
+            />
 
-              </div>
-              <div className={classes.headerTitle}>
-                <div className={classes.headerMainTitle}>
-                    <Typography>
-                      <span className={classes.headerMainTitle}>Admin Portal</span>
-                    </Typography>
-                </div>
-              </div>
           </div>
-       
-        <Tabs classes={{
-                indicator: classes.tabIndicator
-              }} 
-              value={value} onChange={handleChange} aria-label="simple tabs example">
-              <Tab label="MANAGE ACCESS" {...a11yProps(0)} 
-              classes={{
-                root:classes.tab,
-              }}/>
-              <Tab label="PENDING REQUESTS" {...a11yProps(1)} 
-               classes={{
-                root:classes.tab,
-              }}
-              />
-               <FormControlLabel
-                control={
-                  <Checkbox
-                      classes={{
-                      root:classes.checkbox,
-                    }}
-                    checked={includeNonMember}
-                    onChange={handleCheckBoxChange}
-                    name="Non-MembersCK"
-                  />
-                }
-                label="Include Non-Members"
-              />
-            </Tabs>
+          <div className={classes.headerTitle}>
+            <div className={classes.headerMainTitle}>
+              <Typography>
+                <span className={classes.headerMainTitle}>Admin Portal</span>
+              </Typography>
+            </div>
+          </div>
+        </div>
 
-          <TabPanel value={value} index={0}>
-            <TableManageAccess includeNonMember={includeNonMember}/>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <TablePendingRequest/>
-          </TabPanel>
-         </div>
+        <Tabs
+          classes={{
+            indicator: classes.tabIndicator,
+          }}
+          value={value}
+          onChange={handleChange}
+          aria-label="simple tabs example"
+        >
+          <Tab
+            label="MANAGE ACCESS"
+            {...a11yProps(0)}
+            classes={{
+              root: classes.tab,
+            }}
+          />
+          <Tab
+            label="PENDING REQUESTS"
+            {...a11yProps(1)}
+            classes={{
+              root: classes.tab,
+            }}
+          />
+          <FormControlLabel
+            control={(
+              <Checkbox
+                classes={{
+                  root: classes.checkbox,
+                }}
+                checked={includeNonMember}
+                onChange={handleCheckBoxChange}
+                name="Non-MembersCK"
+              />
+                )}
+            label="Include Non-Members"
+          />
+        </Tabs>
+
+        <TabPanel value={value} index={0}>
+          <TableManageAccess includeNonMember={includeNonMember} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <TablePendingRequest />
+        </TabPanel>
+      </div>
     </div>
-     
+
   );
-}
-
-
+};
 
 const styles = (theme) => ({
   pageContainer: {
@@ -176,7 +172,7 @@ const styles = (theme) => ({
     marginTop: '16px',
     lineHeight: '25px',
     marginLeft: '-3px',
-        width: '200px',
+    width: '200px',
   },
 
   headerTitle: {
@@ -201,12 +197,12 @@ const styles = (theme) => ({
   },
   tabIndicator: {
     backgroundColor: '#20C1AA',
-    height:'4px',
+    height: '4px',
   },
   checkbox: {
-   color: '#20C1AA !important',
+    color: '#20C1AA !important',
   },
- 
+
 });
 
 export default withStyles(styles, { withTheme: true })(adminView);
