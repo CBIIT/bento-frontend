@@ -6,24 +6,53 @@ import { cn, CustomDataTable } from 'bento-components';
 import Stats from '../../../components/Stats/AllStatsController';
 import { adminPortalIcon } from '../../../bento/adminData'
 import CustomizedDialogs from './components/Dialog'
- 
+import { useMutation } from '@apollo/client';
+
+import { APPROVE_ACCESS } from '../../../bento/adminData';
+import { REJECT_ACCESS } from '../../../bento/adminData';
+
 const ReviewRequestView = ({classes, data}) => {
+  // GraphQL Operations
+  const [mutateApprove, responseApprove] = useMutation(APPROVE_ACCESS, {
+    context: { clientName: 'userService' },
+    onCompleted() {
+      console.log("Approve Query got Completed")
+    },
+    onError() {
+      console.log("Approve Query got Error")
+    },
+  });
+
+  // GraphQL Operations
+  const [mutateReject, responseReject] = useMutation(REJECT_ACCESS, {
+    context: { clientName: 'userService' },
+    onCompleted() {
+      console.log("Reject Query got Completed")
+    },
+    onError() {
+      console.log("Reject Query got Error")
+    },
+  });
+
+  const { getUser } = data;
+  const userId = getUser.userID;
+
   const columns = [
-    { name: 'arm', label: 'Arms' },
-    { name: 'date', label: 'Request Date' },
-    { name: 'action', label: 'Actions',
+    { name: 'armName', label: 'Arms' },
+    { name: 'requestDate', label: 'Request Date' },
+    { name: 'armID', label: 'Actions',
       options: {
-        customBodyRender: () => (
+        customBodyRender: (value) => (
           <div>
             <Button variant="contained"
               className={cn(classes.actionButton, classes.approveButton)}
-              onClick={handleOpenAproveDialog}
+              onClick={() => handleOpenAproveDialog(value)}
             >
               APPROVE
             </Button>&nbsp;&nbsp;
             <Button variant="contained"
               className={cn(classes.actionButton, classes.rejectButton)}
-              onClick={handleOpenRejectDialog}
+              onClick={() => handleOpenRejectDialog(value)}
             >
               REJECT
             </Button>
@@ -32,21 +61,33 @@ const ReviewRequestView = ({classes, data}) => {
       }
     },
   ];
-  const fakeUserInfo = {
-    acountType: 'NIH',
-    email: 'j@nih.gov',
+
+  const userInfo = getUser || {
+    IDP: 'NIH',
+    email: 'jsmith@nih.gov',
     firstName: 'Smith',
     lastName: 'John',
     organization: 'Other (CBIIT)',
-    status: 'Active',
+    userStatus: 'Active',
     role: 'Non-member',
   };
-  const fakeData = [
+  const hardCodedData = [
     [ 'RS 0-10, assigned endocrine therapy alone', '05/10/2022', 'id' ],
     [ 'RS 11-25, randomized to endocrine therapy alone', '05/10/2022', 'id' ],
     [ 'RS 11-25, randomized to chemo + endocrine', '05/10/2021', 'id' ],
     [ 'RS > 25, assigned to chemo +', '05/10/2022', 'id' ],
   ];
+
+  const fakeData = hardCodedData;
+
+  const getRequestedArms = () => {
+    let data = getUser || []
+    if (getUser) {
+      data = getUser.acl.filter(arm => arm.accessStatus === "requested")
+    }
+    console.log("List of Requested Arm: ", data)
+    return data
+  } 
 
   const options = {
     selectableRows: 'none',
@@ -60,30 +101,63 @@ const ReviewRequestView = ({classes, data}) => {
   }
 
   const [openAproveDialog, setOpenAproveDialog] = useState(false);
-  const [openRefectDialog, setOpenRefectDialog] = useState(false);
+  const [openRejectDialog, setOpenRejectDialog] = useState(false);
   const [comment, setComment] = useState('');
+  const [armsToBeGivenAccess, setArmsToBeGivenAccess] = useState([])
  
-  const handleOpenAproveDialog = () => {
+  const handleOpenAproveDialog = (value) => {
+    console.log("Approve armsToBeGivenAccess: ", value)
+    setArmsToBeGivenAccess([value])
     setOpenAproveDialog(true)
   }
   const handleCloseAproveDialog = () => {
     setOpenAproveDialog(false)
   }
 
-  const handleOpenRejectDialog = () => {
-    setOpenRefectDialog(true)
+  const handleOpenRejectDialog = (value) => {
+    console.log("Reject armsToBeGivenAccess: ", value)
+    setArmsToBeGivenAccess([value])
+    setOpenRejectDialog(true)
   }
   const handleCloseRejectDialog = () => {
-    setOpenRefectDialog(false)
+    setOpenRejectDialog(false)
   }
 
   const handleApproveAccess = () => {
     setOpenAproveDialog(false)
-    console.log("handle Approve Access been done")
+   
+    console.log("Approve: Handling Approve Access has been done")
+    console.log("Approve: userID ", userId)
+    console.log("Approve: armIDs ", armsToBeGivenAccess)
+    console.log("Approve: comment ", comment)
+
+    mutateApprove({ 
+      variables: { 
+        userID: userId,
+        armIDs: armsToBeGivenAccess,
+        comment: comment
+      } 
+    });
+
+    console.log("Approve: responseApprove ", responseApprove)
   }
   const handleRejectAccess = () => {
-    setOpenRefectDialog(false)
-    console.log("handle Reject Access been done")
+    setOpenRejectDialog(false)
+    console.log("Reject: handling Reject Access has been done ")
+
+    console.log("Reject: userID ", userId)
+    console.log("Reject: armIDs ", armsToBeGivenAccess)
+    console.log("Reject: Comment ", comment)
+
+    mutateReject({ 
+      variables: { 
+        userID: userId,
+        armIDs: armsToBeGivenAccess,
+        comment: comment
+      } 
+    });
+
+    console.log("Reject: responseReject ", responseReject)
   }
 
   const handleCommentChange = (event) => {
@@ -94,6 +168,16 @@ const ReviewRequestView = ({classes, data}) => {
     <>
       <div className={classes.pageContainer}>
         <Stats />
+        { /* Alert After Giving Arm Reject or Approve Access
+          <div>
+            {/* On Reject
+            {rejectArm && (showAlert('reject'))}
+
+            {/* On Approve 
+            {approveArm && showAlert('approve')} 
+          </div>
+        */}
+
         <div className={classes.container}>
           <div className={classes.header}>
             <div className={classes.logo}>
@@ -121,9 +205,9 @@ const ReviewRequestView = ({classes, data}) => {
             </div>
             <div className={classes.userInfoValue}>
               <Typography>
-                <span className={classes.infoValue}> {fakeUserInfo.acountType} </span> <br/>
-                <span className={classes.infoValue}> {fakeUserInfo.email} </span> <br/>
-                <span className={classes.infoValue}> {fakeUserInfo.firstName}, {fakeUserInfo.lastName}</span>
+                <span className={classes.infoValue}> {userInfo.IDP} </span> <br/>
+                <span className={classes.infoValue}> {userInfo.email} </span> <br/>
+                <span className={classes.infoValue}> {userInfo.firstName}, {userInfo.lastName}</span>
               </Typography>
             </div>
           </div>
@@ -137,9 +221,9 @@ const ReviewRequestView = ({classes, data}) => {
             </div>
             <div className={classes.userInfoValue}>
               <Typography className={classes.userInfo}>
-                <span className={classes.infoValue}> {fakeUserInfo.organization} </span> <br/>
-                <span className={classes.infoValue}> {fakeUserInfo.status} </span> <br/>
-                <span className={classes.infoValue}> {fakeUserInfo.role} </span>
+                <span className={classes.infoValue}> {userInfo.organization} </span> <br/>
+                <span className={classes.infoValue}> {userInfo.userStatus} </span> <br/>
+                <span className={classes.infoValue}> {userInfo.role} </span>
               </Typography>
             </div>
           </div>
@@ -147,7 +231,7 @@ const ReviewRequestView = ({classes, data}) => {
           <Grid container>
             <Grid item xs={12}>
               <CustomDataTable
-                data={fakeData}
+                data={getRequestedArms() || fakeData || []}
                 columns={columns}
                 options={options}/>
             </Grid>
@@ -168,9 +252,11 @@ const ReviewRequestView = ({classes, data}) => {
       />
       {/* Reject Dialog */}
       <CustomizedDialogs
-        handleOpen={openRefectDialog}
+        handleOpen={openRejectDialog}
         handleClose={handleCloseRejectDialog}
         handleConfrim={handleRejectAccess}
+        comment={comment}
+        handleCommentChange={handleCommentChange}
         accessObj = {{
           dialogTitle: "Reject Access",
           placeholder: "e.g. Arm is restricted to authorized personnel.",
