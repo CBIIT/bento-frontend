@@ -81,7 +81,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
             <PrivateRoute path="/table" component={table} />
             <PrivateRoute path="/admin" access={['admin']} component={adminController} />
-            <Route path="/review/:id" component={reviewRequestController} />
+            <Route path="/review/:id" access={['admin']} component={reviewRequestController} />
             {/* END: Private Routes */}
 
             {aboutPageRoutes.map(
