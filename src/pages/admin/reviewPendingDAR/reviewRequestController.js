@@ -1,20 +1,17 @@
-/* eslint-disable */
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { Typography, CircularProgress } from '@material-ui/core';
-import View from './reviewRequestView.js';
+import View from './reviewRequestView';
 import { GET_USER } from '../../../bento/adminData';
 
 const ReviewRequestController = ({ match }) => {
-  console.log('User ID: ', match.params.id);
-
-  const userId = match.params.id
+  const userId = match.params.id;
   // get data
   const { data, loading, error } = useQuery(
-    GET_USER, 
-    { 
+    GET_USER,
+    {
       context: { clientName: 'userService' },
-      variables: { userID: userId } 
+      variables: { userID: userId },
     },
   );
 
@@ -26,7 +23,6 @@ const ReviewRequestController = ({ match }) => {
       </Typography>
     );
   }
-  console.log('Data: ', data);
 
   return (
     <View data={data} />
