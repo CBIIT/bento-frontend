@@ -35,7 +35,8 @@ const IndexPage = ({ classes }) => {
   const {
     isSignedIn, email, firstName,
   } = useSelector((state) => state.login);
-
+  
+  const userName = firstName || (email && email.substring(0, email.lastIndexOf('@')));
   const redirectToLogin = () => window.location.replace(`/#${loginRoute}`);
 
   return (
