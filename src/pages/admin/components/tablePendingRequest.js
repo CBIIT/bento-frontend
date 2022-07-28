@@ -44,7 +44,7 @@ const TablePendingRequest = ({ classes }) => {
       label: 'Actions',
       options: {
         customBodyRender: (value) => {
-          const href = `/#/review/${value}`;
+          const href = `/#/admin/review/${value}`;
           return (
             <Button
               variant="contained"
