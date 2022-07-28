@@ -142,7 +142,6 @@ const styles = () => ({
   },
   paper: {
     background: '#465F96',
-    // width: '120px',
     paddingLeft: '20px',
     position: 'absolute',
     fontFamily: 'Nunito',
