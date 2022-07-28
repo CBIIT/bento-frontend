@@ -10,6 +10,7 @@ import { useMutation } from '@apollo/client';
 
 import { APPROVE_ACCESS } from '../../../bento/adminData';
 import { REJECT_ACCESS } from '../../../bento/adminData';
+import getFormattedDate from './utils/reviewDARUtilFun'
 
 const ReviewRequestView = ({classes, data}) => {
   // GraphQL Operations
@@ -38,8 +39,10 @@ const ReviewRequestView = ({classes, data}) => {
   const userId = getUser.userID;
 
   const columns = [
-    { name: 'armName', label: 'Arms' },
-    { name: 'requestDate', label: 'Request Date' },
+    { name: 'armName', label: 'Arm(s)' },
+    { name: 'requestDate', label: 'Request Date',
+      options: { customBodyRender: (value) => <p>{getFormattedDate(value)}</p>}
+    },
     { name: 'armID', label: 'Actions',
       options: {
         customBodyRender: (value) => (
@@ -358,7 +361,10 @@ const styles = (theme) => ({
   actionButton: {
     height: '28px',
     width: '80px',
-    color: '#fff'
+    color: '#fff',
+    fontSize: '13px',
+    borderRadius: '8px',
+    fontFamily: 'Lato',
   },
   approveButton: {
     backgroundColor: '#0F8573',
