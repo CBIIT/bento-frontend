@@ -16,12 +16,13 @@ const getFormattedDate = (strDate) => {
   return `${month}/${day}/${year}`;
 };
 
-export const getRequestedArms = (userArmData) => {
-  let data = userArmData || [];
+// Filter data arms that only has requested for accessStatus
+export const getOnlyRequestedArms = (userArmData) => {
+  let filteredData = userArmData || [];
   if (userArmData) {
-    data = userArmData.acl.filter((arm) => arm.accessStatus === 'requested');
+    filteredData = userArmData.filter((arm) => arm.accessStatus === 'requested');
   }
-  return data;
+  return filteredData;
 };
 
 export const showAlert = (accessStatus, setAccessStatus) => {

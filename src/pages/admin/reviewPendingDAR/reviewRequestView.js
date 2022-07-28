@@ -7,16 +7,26 @@ import { useMutation } from '@apollo/client';
 import Stats from '../../../components/Stats/AllStatsController';
 import CustomizedDialogs from './components/Dialog';
 import { REJECT_ACCESS, APPROVE_ACCESS, adminPortalIcon } from '../../../bento/adminData';
-import getFormattedDate, { getRequestedArms, showAlert } from './utils/reviewDARUtilFun';
+import getFormattedDate, { getOnlyRequestedArms, showAlert } from './utils/reviewDARUtilFun';
 
 const ReviewRequestView = ({ classes, data }) => {
+  const { getUser } = data;
+
+  const userInfo = getUser;
+  const userId = userInfo.userID;
+  const arms = userInfo.acl;
+
   // Alert state notifier
   const [accessStatus, setAccessStatus] = useState('');
 
   const [openAproveDialog, setOpenAproveDialog] = useState(false);
   const [openRejectDialog, setOpenRejectDialog] = useState(false);
-  const [comment, setComment] = useState('');
+
   const [armsToBeGivenAccess, setArmsToBeGivenAccess] = useState([]);
+  // Get Arms with requested Status
+  const [filteredArms, setFilteredArms] = useState(getOnlyRequestedArms(arms));
+
+  const [comment, setComment] = useState('');
 
   // Handle Functions
   const handleOpenAproveDialog = (value) => {
@@ -39,30 +49,33 @@ const ReviewRequestView = ({ classes, data }) => {
     setComment(event.target.value);
   };
 
-  const handleCleanUp = (accessSt) => {
+  const handleCleanUp = (armGivenAccess, accessSt) => {
     setAccessStatus(accessSt);
     setComment('');
+    /*
+     * Remove Arms with approved or rejected status from filteredArms
+     * Right now, Arms are filtered based on the assumption that only
+     * one Arm at a time can be given an Access
+     * */
+    const newFilteredArms = filteredArms.filter((arm) => armGivenAccess[0].armID !== arm.armID);
+    setFilteredArms(newFilteredArms);
   };
 
-  // GraphQL Operations
+  // Approve GraphQL Operations
   const [mutateApprove] = useMutation(APPROVE_ACCESS, {
     context: { clientName: 'userService' },
-    onCompleted() {
-      handleCleanUp('approved');
+    onCompleted({ approveAccess }) {
+      handleCleanUp(approveAccess, 'approved');
     },
-
   });
 
-  // GraphQL Operations
+  // Reject GraphQL Operations
   const [mutateReject] = useMutation(REJECT_ACCESS, {
     context: { clientName: 'userService' },
-    onCompleted() {
-      handleCleanUp('rejected');
+    onCompleted({ rejectAccess }) {
+      handleCleanUp(rejectAccess, 'rejected');
     },
   });
-
-  const { getUser } = data;
-  const userId = getUser.userID;
 
   const columns = [
     { name: 'armName', label: 'Arm(s)' },
@@ -97,9 +110,6 @@ const ReviewRequestView = ({ classes, data }) => {
       },
     },
   ];
-
-  const userInfo = getUser;
-  const armsData = getRequestedArms(getUser) || [];
 
   // Table Options
   const options = {
@@ -218,7 +228,7 @@ const ReviewRequestView = ({ classes, data }) => {
           <Grid container>
             <Grid item xs={12}>
               <CustomDataTable
-                data={armsData}
+                data={filteredArms}
                 columns={columns}
                 options={options}
               />
