@@ -10,14 +10,18 @@ import { useMutation } from '@apollo/client';
 
 import { APPROVE_ACCESS } from '../../../bento/adminData';
 import { REJECT_ACCESS } from '../../../bento/adminData';
-import getFormattedDate from './utils/reviewDARUtilFun'
+import getFormattedDate, { showAlert } from './utils/reviewDARUtilFun';
+import AlertMessage from './components/AlertView'
 
 const ReviewRequestView = ({classes, data}) => {
+  const [ accessStatus, setAccessStatus ] = useState('')
   // GraphQL Operations
+
   const [mutateApprove, responseApprove] = useMutation(APPROVE_ACCESS, {
     context: { clientName: 'userService' },
-    onCompleted() {
-      console.log("Approve Query got Completed")
+    onCompleted(data) {
+      handleCleanUp("approved")
+      console.log("Approve Query got Completed", data)
     },
     onError() {
       console.log("Approve Query got Error")
@@ -27,8 +31,9 @@ const ReviewRequestView = ({classes, data}) => {
   // GraphQL Operations
   const [mutateReject, responseReject] = useMutation(REJECT_ACCESS, {
     context: { clientName: 'userService' },
-    onCompleted() {
-      console.log("Reject Query got Completed")
+    onCompleted(data) {
+      handleCleanUp("rejected")
+      console.log("Reject Query got Completed", data)
     },
     onError() {
       console.log("Reject Query got Error")
@@ -140,7 +145,12 @@ const ReviewRequestView = ({classes, data}) => {
         armIDs: armsToBeGivenAccess,
         comment: comment
       } 
-    });
+    }).then(({ data: responseData }) => {
+      console.log("Approve then responseData: ", responseData)
+      console.log("Approve data: ", data)
+
+    }).catch(() => {});
+
 
     console.log("Approve: responseApprove ", responseApprove)
   }
@@ -158,7 +168,11 @@ const ReviewRequestView = ({classes, data}) => {
         armIDs: armsToBeGivenAccess,
         comment: comment
       } 
-    });
+    }).then(({ data: responseData }) => {
+      console.log("Reject then responseData: ", responseData)
+      console.log("Reject data: ", data)
+
+    }).catch(() => {});
 
     console.log("Reject: responseReject ", responseReject)
   }
@@ -166,21 +180,21 @@ const ReviewRequestView = ({classes, data}) => {
   const handleCommentChange = (event) => {
     setComment(event.target.value);
   };
- 
+
+  const handleCleanUp = (accessStatus) => {
+    setAccessStatus(accessStatus)
+    setComment("")
+  }
+
   return (
     <>
       <div className={classes.pageContainer}>
         <Stats />
-        { /* Alert After Giving Arm Reject or Approve Access
-          <div>
-            {/* On Reject
-            {rejectArm && (showAlert('reject'))}
-
-            {/* On Approve 
-            {approveArm && showAlert('approve')} 
-          </div>
-        */}
-
+        { /* Alert Box */}
+        <Grid container item justifyContent="center" className={classes.alertContainer}>
+          {accessStatus && showAlert(accessStatus, setAccessStatus)}
+        </Grid>
+   
         <div className={classes.container}>
           <div className={classes.header}>
             <div className={classes.logo}>
@@ -270,6 +284,11 @@ const ReviewRequestView = ({classes, data}) => {
 }
  
 const styles = (theme) => ({
+  alertContainer: {
+    position: 'absolute',
+    top: '184px', // Logo(100px) + NavBar(39px) + Stats(47px) - 2px
+    height: '70px',
+  },
   adminTitle: {
     borderBottom: '1px solid #274FA5',
   },
@@ -320,7 +339,7 @@ const styles = (theme) => ({
     maxWidth: '1440px',
     paddingLeft: '36px',
     paddingRight: '36px',
-    paddingBottom: '50px',
+    paddingBottom: '27px',
   },
   header: {
     paddingLeft: '20px',

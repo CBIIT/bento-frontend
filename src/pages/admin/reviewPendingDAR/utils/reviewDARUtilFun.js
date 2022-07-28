@@ -1,3 +1,7 @@
+import React from 'react';
+import { Typography } from '@material-ui/core';
+import AlertMessage from '../components/AlertView';
+
 const getFormattedDate = (strDate) => {
   const date = new Date(strDate);
 
@@ -10,6 +14,21 @@ const getFormattedDate = (strDate) => {
   day = day.length > 1 ? day : '0'.concat(day);
 
   return `${month}/${day}/${year}`;
+};
+
+export const showAlert = (accessStatus, setAccessStatus) => {
+  if (accessStatus === 'rejected' || accessStatus === 'approved') {
+    return (
+      <AlertMessage timeout={3000} onClose={setAccessStatus}>
+        <Typography align="center">
+          {`This Arm has been ${accessStatus}.`}
+          <br />
+          An email confirmation will be sent to the user.
+        </Typography>
+      </AlertMessage>
+    );
+  }
+  return <></>;
 };
 
 export default getFormattedDate;
