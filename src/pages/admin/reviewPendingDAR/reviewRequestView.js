@@ -10,13 +10,19 @@ import { useMutation } from '@apollo/client';
 
 import { APPROVE_ACCESS } from '../../../bento/adminData';
 import { REJECT_ACCESS } from '../../../bento/adminData';
-import getFormattedDate, { showAlert } from './utils/reviewDARUtilFun';
+import getFormattedDate, { getRequestedArms, showAlert } from './utils/reviewDARUtilFun';
 import AlertMessage from './components/AlertView'
 
 const ReviewRequestView = ({classes, data}) => {
+  // Alert state notifier
   const [ accessStatus, setAccessStatus ] = useState('')
-  // GraphQL Operations
 
+  const [openAproveDialog, setOpenAproveDialog] = useState(false);
+  const [openRejectDialog, setOpenRejectDialog] = useState(false);
+  const [comment, setComment] = useState('');
+  const [armsToBeGivenAccess, setArmsToBeGivenAccess] = useState([])
+
+  // GraphQL Operations
   const [mutateApprove, responseApprove] = useMutation(APPROVE_ACCESS, {
     context: { clientName: 'userService' },
     onCompleted(data) {
@@ -70,33 +76,10 @@ const ReviewRequestView = ({classes, data}) => {
     },
   ];
 
-  const userInfo = getUser || {
-    IDP: 'NIH',
-    email: 'jsmith@nih.gov',
-    firstName: 'Smith',
-    lastName: 'John',
-    organization: 'Other (CBIIT)',
-    userStatus: 'Active',
-    role: 'Non-member',
-  };
-  const hardCodedData = [
-    [ 'RS 0-10, assigned endocrine therapy alone', '05/10/2022', 'id' ],
-    [ 'RS 11-25, randomized to endocrine therapy alone', '05/10/2022', 'id' ],
-    [ 'RS 11-25, randomized to chemo + endocrine', '05/10/2021', 'id' ],
-    [ 'RS > 25, assigned to chemo +', '05/10/2022', 'id' ],
-  ];
+  const userInfo = getUser;
+  const armsData = getRequestedArms(getUser) || []
 
-  const fakeData = hardCodedData;
-
-  const getRequestedArms = () => {
-    let data = getUser || []
-    if (getUser) {
-      data = getUser.acl.filter(arm => arm.accessStatus === "requested")
-    }
-    console.log("List of Requested Arm: ", data)
-    return data
-  } 
-
+  // Table Options
   const options = {
     selectableRows: 'none',
     responsive: 'stacked',
@@ -108,13 +91,8 @@ const ReviewRequestView = ({classes, data}) => {
     viewColumns: false,
   }
 
-  const [openAproveDialog, setOpenAproveDialog] = useState(false);
-  const [openRejectDialog, setOpenRejectDialog] = useState(false);
-  const [comment, setComment] = useState('');
-  const [armsToBeGivenAccess, setArmsToBeGivenAccess] = useState([])
- 
+  {/* Handle Functions */}
   const handleOpenAproveDialog = (value) => {
-    console.log("Approve armsToBeGivenAccess: ", value)
     setArmsToBeGivenAccess([value])
     setOpenAproveDialog(true)
   }
@@ -123,7 +101,6 @@ const ReviewRequestView = ({classes, data}) => {
   }
 
   const handleOpenRejectDialog = (value) => {
-    console.log("Reject armsToBeGivenAccess: ", value)
     setArmsToBeGivenAccess([value])
     setOpenRejectDialog(true)
   }
@@ -133,11 +110,6 @@ const ReviewRequestView = ({classes, data}) => {
 
   const handleApproveAccess = () => {
     setOpenAproveDialog(false)
-   
-    console.log("Approve: Handling Approve Access has been done")
-    console.log("Approve: userID ", userId)
-    console.log("Approve: armIDs ", armsToBeGivenAccess)
-    console.log("Approve: comment ", comment)
 
     mutateApprove({ 
       variables: { 
@@ -150,17 +122,9 @@ const ReviewRequestView = ({classes, data}) => {
       console.log("Approve data: ", data)
 
     }).catch(() => {});
-
-
-    console.log("Approve: responseApprove ", responseApprove)
   }
   const handleRejectAccess = () => {
     setOpenRejectDialog(false)
-    console.log("Reject: handling Reject Access has been done ")
-
-    console.log("Reject: userID ", userId)
-    console.log("Reject: armIDs ", armsToBeGivenAccess)
-    console.log("Reject: Comment ", comment)
 
     mutateReject({ 
       variables: { 
@@ -173,8 +137,6 @@ const ReviewRequestView = ({classes, data}) => {
       console.log("Reject data: ", data)
 
     }).catch(() => {});
-
-    console.log("Reject: responseReject ", responseReject)
   }
 
   const handleCommentChange = (event) => {
@@ -248,7 +210,7 @@ const ReviewRequestView = ({classes, data}) => {
           <Grid container>
             <Grid item xs={12}>
               <CustomDataTable
-                data={getRequestedArms() || fakeData || []}
+                data={armsData}
                 columns={columns}
                 options={options}/>
             </Grid>
@@ -339,14 +301,14 @@ const styles = (theme) => ({
     maxWidth: '1440px',
     paddingLeft: '36px',
     paddingRight: '36px',
-    paddingBottom: '27px',
+    paddingBottom: '50px',
   },
   header: {
     paddingLeft: '20px',
     paddingRight: '50px',
     borderBottom: '#AAB2C8 10px solid',
-    height: '128px',
-    paddingTop: '35px',
+    height: '108px',
+    paddingTop: '15px',
     [theme.breakpoints.down('xs')]: {
     paddingLeft: '0',
     paddingRight: '0',

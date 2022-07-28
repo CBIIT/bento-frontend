@@ -16,6 +16,14 @@ const getFormattedDate = (strDate) => {
   return `${month}/${day}/${year}`;
 };
 
+export const getRequestedArms = (userArmData) => {
+  let data = userArmData || [];
+  if (userArmData) {
+    data = userArmData.acl.filter((arm) => arm.accessStatus === 'requested');
+  }
+  return data;
+};
+
 export const showAlert = (accessStatus, setAccessStatus) => {
   if (accessStatus === 'rejected' || accessStatus === 'approved') {
     return (
