@@ -61,7 +61,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* START: Private Routes */}
             {/* SECTION: Non-Member & Member only Path */}
             <PrivateRoute path="/request" access={['member', 'non-member']} component={RequestAccess} />
-            <Route path="/profile" access={['member', 'non-member', 'admin']} component={ProfileController} />
+            <PrivateRoute path="/profile" access={['member', 'non-member', 'admin']} component={ProfileController} />
             {/* END SECTION */}
 
             {/* SECTION: Member & Admin only Path */}
