@@ -22,10 +22,14 @@ import JBrowse from '../JBrowse/JBrowseView';
 import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
 import GlobalSearch from '../../pages/search/searchView';
 import GlobalSearchController from '../../pages/search/searchViewController';
+import adminController from '../../pages/admin/adminController';
+import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRequestController';
 import Login from '../../pages/accessManagment/login';
 import RequestAccess from '../../pages/requestAccess/requestAccessController';
 import SysInfoView from '../../pages/sysInfo/view';
 import ProfileController from '../../pages/profile/profileController';
+import editUserController from '../../pages/admin/userDetails/editUserController';
+import viewUserController from '../../pages/admin/userDetails/viewUserController';
 
 import fakeAdminView from '../../pages/fakeAdmin';
 
@@ -75,6 +79,10 @@ const Layout = ({ classes, isSidebarOpened }) => (
 
             {/* SECTION: Admin only Path */}
             <PrivateRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
+            <PrivateRoute path="/admin/edit/:id" access={['admin']} component={editUserController} />
+            <PrivateRoute path="/admin/view/:id" access={['admin']} component={viewUserController} />
+            <PrivateRoute path="/admin" access={['admin']} component={adminController} />
+            <PrivateRoute path="/review/:id" access={['admin']} component={reviewRequestController} />
             {/* END SECTION */}
 
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}

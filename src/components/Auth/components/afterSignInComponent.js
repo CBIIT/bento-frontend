@@ -3,9 +3,6 @@ import { useSelector } from 'react-redux';
 import {
   Button, withStyles, Paper,
 } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Badge from '@material-ui/core/Badge';
 import { useHistory } from 'react-router-dom';
 import { requestAccessRoute, adminPortal, userProfileRoute } from '../../../bento/siteWideConfig';
 // import DropdownItemsMenu from './DropdownItemsMenu';
@@ -47,15 +44,6 @@ const AfterSignIn = ({
       >
         {userName}
       </Button>
-
-      <IconButton
-        color="inherit"
-        className={classes.profileIcon}
-      >
-        <Badge badgeContent={role[0]} color="secondary" className={classes.badge}>
-          <AccountCircle />
-        </Badge>
-      </IconButton>
 
       {displayDropDownMenu
         ? (
