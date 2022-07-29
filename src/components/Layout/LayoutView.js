@@ -27,6 +27,7 @@ import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRe
 import Login from '../../pages/accessManagment/login';
 import RequestAccess from '../../pages/requestAccess/requestAccessController';
 import SysInfoView from '../../pages/sysInfo/view';
+import ProfileController from '../../pages/profile/profileController';
 import editUserController from '../../pages/admin/userDetails/editUserController';
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
 
@@ -60,6 +61,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* START: Private Routes */}
             {/* SECTION: Non-Member & Member only Path */}
             <PrivateRoute path="/request" access={['member', 'non-member']} component={RequestAccess} />
+            <PrivateRoute path="/profile" access={['member', 'non-member', 'admin']} component={ProfileController} />
             {/* END SECTION */}
 
             {/* SECTION: Member & Admin only Path */}
@@ -86,7 +88,6 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
             <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
             <PrivateRoute path="/table" component={table} />
-            <PrivateRoute path="/admin" access={['admin']} component={adminController} />
             {/* END NOTE */}
 
             {/* END: Private Routes */}
