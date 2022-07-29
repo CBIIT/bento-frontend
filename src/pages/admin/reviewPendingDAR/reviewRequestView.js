@@ -28,27 +28,35 @@ const ReviewRequestView = ({ classes, data }) => {
 
   const [comment, setComment] = useState('');
 
-  // Handle Functions
+  // Below are Function Handlers when:
+  // Admin open Approve dialog
   const handleOpenAproveDialog = (value) => {
     setArmsToBeGivenAccess([value]);
     setOpenAproveDialog(true);
   };
+  // Admin close or cancel Approve dialog
   const handleCloseAproveDialog = () => {
     setOpenAproveDialog(false);
+    setComment('');
+    setArmsToBeGivenAccess([]);
   };
 
+  // Admin open Reject dialog
   const handleOpenRejectDialog = (value) => {
     setArmsToBeGivenAccess([value]);
     setOpenRejectDialog(true);
   };
+  // Admin close Reject dialog
   const handleCloseRejectDialog = () => {
     setOpenRejectDialog(false);
+    setComment('');
+    setArmsToBeGivenAccess([]);
   };
-
+  // Admin Access comment
   const handleCommentChange = (event) => {
     setComment(event.target.value);
   };
-
+  // Clean up for granting Reject or Approve access
   const handleCleanUp = (armGivenAccess, accessSt) => {
     setAccessStatus(accessSt);
     setComment('');
@@ -59,6 +67,7 @@ const ReviewRequestView = ({ classes, data }) => {
      * */
     const newFilteredArms = filteredArms.filter((arm) => armGivenAccess[0].armID !== arm.armID);
     setFilteredArms(newFilteredArms);
+    setArmsToBeGivenAccess([]);
   };
 
   // Approve GraphQL Operations
@@ -192,7 +201,7 @@ const ReviewRequestView = ({ classes, data }) => {
                   <br />
                   <span className={classes.infoValue}>
                     {userInfo.firstName}
-                    {',&nbsp;'}
+                    ,&nbsp;
                     {userInfo.lastName}
                   </span>
                 </Typography>
