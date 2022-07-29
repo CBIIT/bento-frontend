@@ -28,8 +28,8 @@ export const formFields = [
     id: 'organization',
     type: 'textBox',
     required: true,
-    label: 'Organization/Institution',
-    placeHolder: 'Organization/Institution',
+    label: 'Organization / Institution',
+    placeHolder: 'Organization / Institution',
   },
   {
     id: 'armIDs',
@@ -92,6 +92,7 @@ getMyUser {
     email
     IDP
     role
+    userStatus
     creationDate
     editDate
     acl {

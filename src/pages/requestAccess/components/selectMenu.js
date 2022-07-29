@@ -9,7 +9,8 @@ import BootstrapInput from './bootstrapInput';
 
 // NOTE FOR DEVELOPER: Add instructions for props what are the input types.
 
-const SelectMenu = (field, formValues, handleInputChange, data, classes, propOptions = null) => {
+const SelectMenu = (field, formValues, handleInputChange,
+  data, classes, propOptions = null, disabled = false) => {
   const {
     id, options: custodianOptions, optionsAPIField, multiple, required, label,
   } = field;
@@ -41,10 +42,18 @@ const SelectMenu = (field, formValues, handleInputChange, data, classes, propOpt
   return (
     <Grid item>
       <FormControl>
-        <div className={classes.formLabel}>{label}</div>
+        <div className={classes.formLabel}>
+          {label}
+          {required ? (
+            <span className={classes.required}>
+              *
+            </span>
+          ) : null}
+        </div>
         <Select
           id="demo-customized-select-native"
           multiple={multiple}
+          disabled={disabled}
           name={id}
           displayEmpty
           value={formValues[id]}
