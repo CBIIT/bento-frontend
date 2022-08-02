@@ -9,8 +9,12 @@ function getDateInFormat(dateString, strSeparator) {
   const dd = date.getDate();
   const mm = (date.getMonth() + 1);
 
+  if (!dateString || !dateString.length) {
+    return '';
+  }
+
   if (strSeparator && strSeparator.length) {
-    return `${yyyy}${strSeparator}${mm}${strSeparator}${dd}`;
+    return `${mm}${strSeparator}${dd}${strSeparator}${yyyy}`;
   }
 
   return `${yyyy}-${mm}-${dd}`;

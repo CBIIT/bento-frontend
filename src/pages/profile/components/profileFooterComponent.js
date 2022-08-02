@@ -60,8 +60,8 @@ const ProfileViewFooter = ({ classes, data }) => {
     const newData = JSON.parse(JSON.stringify({ ...data }));
     /* eslint no-param-reassign: ["error", { "props": false }] */
     newData.getMyUser.acl.forEach((element) => {
-      element.requestDate = getDateInFormat(element.requestDate);
-      element.reviewDate = getDateInFormat(element.reviewDate);
+      element.requestDate = getDateInFormat(element.requestDate, '/');
+      element.reviewDate = getDateInFormat(element.reviewDate, '/');
     });
 
     return newData.getMyUser;
