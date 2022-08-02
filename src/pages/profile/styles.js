@@ -100,7 +100,7 @@ const style = () => ({
   textFieldInput: {
     color: '#76818a',
     padding: '5px 0 5px 10px',
-    width: '209px',
+    width: '208px',
   },
   textLabel: {
     textTransform: 'uppercase',
