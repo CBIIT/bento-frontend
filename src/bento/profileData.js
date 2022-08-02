@@ -20,68 +20,6 @@ const editTool = {
   alt: 'edit',
 };
 
-const testProfileInfoData = {
-  getMyUser: {
-    firstName: 'Jonathan',
-    lastName: 'Dorian',
-    IDP: 'don\'t know',
-    organization: 'NCI/NIH',
-    email: 'jondoe@emailaddress.com',
-    acl: [
-      /* {
-        armID: 1,
-        armName: 'AbbVie Inc.',
-        accessStatus: 'active',
-      }, {
-        armID: 2,
-        armName: 'McKesson Contract Packaging',
-        accessStatus: 'active',
-      }, {
-        armID: 3,
-        armName: 'State of Florida DOH Central Pharmacy',
-        accessStatus: 'in-active',
-      }, {
-        armID: 4,
-        armName: 'Sagent Pharmaceuticals',
-        accessStatus: 'in-active',
-      }, {
-        armID: 5,
-        armName: 'Nelco Laboratories, Inc.',
-        accessStatus: 'active',
-      }, {
-        armID: 6,
-        armName: 'CVS Pharmacy',
-        accessStatus: 'in-active',
-      }, {
-        armID: 7,
-        armName: 'Migranade Inc.',
-        accessStatus: 'in-active',
-      }, {
-        armID: 8,
-        armName: 'Northwind Pharmaceuticals',
-        accessStatus: 'active',
-      }, {
-        armID: 9,
-        armName: 'Almatica Pharma Inc.',
-        accessStatus: 'active',
-      }, {
-        armID: 10,
-        armName: 'Western Family Foods Inc',
-        accessStatus: 'active',
-      }, */
-    ],
-    associations: ['first arm of justice'],
-    userId: 'jondorian',
-    editDate: new Date(),
-    creationDate: new Date(),
-    // role: 'admin',
-    role: 'member',
-    // role: 'non-member',
-    // userStatus: 'active',
-    userStatus: 'inactive',
-  },
-};
-
 export const profileArmsTable = {
   display: true,
   title: 'Access List',
@@ -108,12 +46,12 @@ export const profileArmsTable = {
     },
     {
       dataField: 'requestDate',
-      header: 'Access Request Date',
+      header: 'Request Date',
       display: true,
     },
     {
       dataField: 'reviewDate',
-      header: 'Access Approved Date',
+      header: 'Approved Date',
       display: true,
     },
   ],
@@ -167,7 +105,6 @@ const changeUserBasicInfo = gql`
     }
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export {
   adminIcon,
   userIcon,
@@ -175,5 +112,4 @@ export {
   inactiveUserIcon,
   GET_MY_PROFILE_QUERY,
   changeUserBasicInfo,
-  testProfileInfoData,
 };

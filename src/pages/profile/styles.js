@@ -55,6 +55,7 @@ const style = () => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: '20px 0 50px 0',
+    color: '#919daa',
   },
   tableDiv: {
     margin: 'auto',
@@ -91,19 +92,26 @@ const style = () => ({
     padding: '10px',
   },
   textField: {
-    minWidth: '220px',
-    borderBottom: '1px solid #acacac',
+    minWidth: '210px',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  textFieldInput: {
+    color: '#76818a',
+    padding: '5px 0 5px 10px',
+    width: '209px',
+  },
   textLabel: {
     textTransform: 'uppercase',
-    lineHeight: '3em',
+    lineHeight: '1.5em',
     fontStyle: 'italic',
     fontSize: 'small',
     padding: '0 10px',
     minWidth: '200px',
+  },
+  labelSpan: {
+    verticalAlign: '-webkit-baseline-middle',
   },
   editIcon: {
     width: '18px',
