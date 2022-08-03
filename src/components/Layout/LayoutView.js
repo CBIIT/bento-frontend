@@ -81,8 +81,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
             <PrivateRoute path="/admin/edit/:id" access={['admin']} component={editUserController} />
             <PrivateRoute path="/admin/view/:id" access={['admin']} component={viewUserController} />
+            <PrivateRoute path="/admin/review/:id" access={['admin']} component={reviewRequestController} />
             <PrivateRoute path="/admin" access={['admin']} component={adminController} />
-            <PrivateRoute path="/review/:id" access={['admin']} component={reviewRequestController} />
             {/* END SECTION */}
 
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
