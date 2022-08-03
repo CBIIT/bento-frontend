@@ -105,6 +105,7 @@ const styles = () => ({
     boxSizing: 'border-box',
     flex: 2,
     fontWeight: 'bold',
+    color: '#7b858f',
   },
   btnEdit: {
     minWidth: '34px',
@@ -125,14 +126,14 @@ const styles = () => ({
     padding: 0,
     minWidth: '50px',
     margin: '0 5px',
-    lineHeight: 1.5,
+    lineHeight: '1.5em',
     height: '26px',
   },
   btnSave: {
     padding: 0,
     minWidth: '50px',
     margin: '0 5px 0 10px',
-    lineHeight: 1.5,
+    lineHeight: '1.5em',
     height: '26px',
     backgroundColor: '#375fac',
     color: '#ffffff',
@@ -141,7 +142,9 @@ const styles = () => ({
     },
   },
   inputFont: {
-    fontSize: 'bold',
+    color: '#525f6b',
+    fontWeight: 'bold',
+    padding: '5px 0 5px 10px',
   },
 });
 

@@ -21,7 +21,7 @@ const ProfileController = () => {
   if (error) {
     return (
       <Typography variant="headline" color="error" size="md">
-        {error && 'An error has occurred in loading profile page controller'}
+        {error && 'An error has occurred in loading profile page'}
       </Typography>
     );
   }
