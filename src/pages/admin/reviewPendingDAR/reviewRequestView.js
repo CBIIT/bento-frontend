@@ -1,53 +1,126 @@
-/* eslint-disable */
 import React, { useState } from 'react';
-import { withStyles } from '@material-ui/styles';
-import { Button, Grid, Typography } from '@material-ui/core';
+import {
+  Button, Grid, Typography, withStyles,
+} from '@material-ui/core';
 import { cn, CustomDataTable } from 'bento-components';
+import { useMutation } from '@apollo/client';
 import Stats from '../../../components/Stats/AllStatsController';
-import { adminPortalIcon } from '../../../bento/adminData'
-import CustomizedDialogs from './components/Dialog'
- 
-const ReviewRequestView = ({classes, data}) => {
+import CustomizedDialogs from './components/Dialog';
+import { REJECT_ACCESS, APPROVE_ACCESS, adminPortalIcon } from '../../../bento/adminData';
+import getFormattedDate, { getOnlyRequestedArms, showAlert } from './utils/reviewDARUtilFun';
+
+const ReviewRequestView = ({ classes, data }) => {
+  const { getUser } = data;
+
+  const userInfo = getUser;
+  const userId = userInfo.userID;
+  const arms = userInfo.acl;
+
+  // Alert state notifier
+  const [accessStatus, setAccessStatus] = useState('');
+
+  const [openAproveDialog, setOpenAproveDialog] = useState(false);
+  const [openRejectDialog, setOpenRejectDialog] = useState(false);
+
+  const [armsToBeGivenAccess, setArmsToBeGivenAccess] = useState([]);
+  // Get Arms with requested Status
+  const [filteredArms, setFilteredArms] = useState(getOnlyRequestedArms(arms));
+
+  const [comment, setComment] = useState('');
+
+  // Below are Function Handlers when:
+  // Admin open Approve dialog
+  const handleOpenAproveDialog = (value) => {
+    setArmsToBeGivenAccess([value]);
+    setOpenAproveDialog(true);
+  };
+  // Admin close or cancel Approve dialog
+  const handleCloseAproveDialog = () => {
+    setOpenAproveDialog(false);
+    setComment('');
+    setArmsToBeGivenAccess([]);
+  };
+
+  // Admin open Reject dialog
+  const handleOpenRejectDialog = (value) => {
+    setArmsToBeGivenAccess([value]);
+    setOpenRejectDialog(true);
+  };
+  // Admin close Reject dialog
+  const handleCloseRejectDialog = () => {
+    setOpenRejectDialog(false);
+    setComment('');
+    setArmsToBeGivenAccess([]);
+  };
+  // Admin Access comment
+  const handleCommentChange = (event) => {
+    setComment(event.target.value);
+  };
+  // Clean up for granting Reject or Approve access
+  const handleCleanUp = (armGivenAccess, accessSt) => {
+    setAccessStatus(accessSt);
+    setComment('');
+    /*
+     * Remove Arms with approved or rejected status from filteredArms
+     * Right now, Arms are filtered based on the assumption that only
+     * one Arm at a time can be given an Access
+     * */
+    const newFilteredArms = filteredArms.filter((arm) => armGivenAccess[0].armID !== arm.armID);
+    setFilteredArms(newFilteredArms);
+    setArmsToBeGivenAccess([]);
+  };
+
+  // Approve GraphQL Operations
+  const [mutateApprove] = useMutation(APPROVE_ACCESS, {
+    context: { clientName: 'userService' },
+    onCompleted({ approveAccess }) {
+      handleCleanUp(approveAccess, 'approved');
+    },
+  });
+
+  // Reject GraphQL Operations
+  const [mutateReject] = useMutation(REJECT_ACCESS, {
+    context: { clientName: 'userService' },
+    onCompleted({ rejectAccess }) {
+      handleCleanUp(rejectAccess, 'rejected');
+    },
+  });
+
   const columns = [
-    { name: 'arm', label: 'Arms' },
-    { name: 'date', label: 'Request Date' },
-    { name: 'action', label: 'Actions',
+    { name: 'armName', label: 'Arm(s)' },
+    {
+      name: 'requestDate',
+      label: 'Request Date',
+      options: { customBodyRender: (value) => <p>{getFormattedDate(value)}</p> },
+    },
+    {
+      name: 'armID',
+      label: 'Actions',
       options: {
-        customBodyRender: () => (
+        customBodyRender: (value) => (
           <div>
-            <Button variant="contained"
+            <Button
+              variant="contained"
               className={cn(classes.actionButton, classes.approveButton)}
-              onClick={handleOpenAproveDialog}
+              onClick={() => handleOpenAproveDialog(value)}
             >
               APPROVE
-            </Button>&nbsp;&nbsp;
-            <Button variant="contained"
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              variant="contained"
               className={cn(classes.actionButton, classes.rejectButton)}
-              onClick={handleOpenRejectDialog}
+              onClick={() => handleOpenRejectDialog(value)}
             >
               REJECT
             </Button>
           </div>
-        )
-      }
+        ),
+      },
     },
   ];
-  const fakeUserInfo = {
-    acountType: 'NIH',
-    email: 'j@nih.gov',
-    firstName: 'Smith',
-    lastName: 'John',
-    organization: 'Other (CBIIT)',
-    status: 'Active',
-    role: 'Non-member',
-  };
-  const fakeData = [
-    [ 'RS 0-10, assigned endocrine therapy alone', '05/10/2022', 'id' ],
-    [ 'RS 11-25, randomized to endocrine therapy alone', '05/10/2022', 'id' ],
-    [ 'RS 11-25, randomized to chemo + endocrine', '05/10/2021', 'id' ],
-    [ 'RS > 25, assigned to chemo +', '05/10/2022', 'id' ],
-  ];
 
+  // Table Options
   const options = {
     selectableRows: 'none',
     responsive: 'stacked',
@@ -57,50 +130,45 @@ const ReviewRequestView = ({classes, data}) => {
     print: false,
     download: false,
     viewColumns: false,
-  }
-
-  const [openAproveDialog, setOpenAproveDialog] = useState(false);
-  const [openRefectDialog, setOpenRefectDialog] = useState(false);
-  const [comment, setComment] = useState('');
- 
-  const handleOpenAproveDialog = () => {
-    setOpenAproveDialog(true)
-  }
-  const handleCloseAproveDialog = () => {
-    setOpenAproveDialog(false)
-  }
-
-  const handleOpenRejectDialog = () => {
-    setOpenRefectDialog(true)
-  }
-  const handleCloseRejectDialog = () => {
-    setOpenRefectDialog(false)
-  }
+  };
 
   const handleApproveAccess = () => {
-    setOpenAproveDialog(false)
-    console.log("handle Approve Access been done")
-  }
-  const handleRejectAccess = () => {
-    setOpenRefectDialog(false)
-    console.log("handle Reject Access been done")
-  }
+    setOpenAproveDialog(false);
 
-  const handleCommentChange = (event) => {
-    setComment(event.target.value);
+    mutateApprove({
+      variables: {
+        userID: userId,
+        armIDs: armsToBeGivenAccess,
+        comment,
+      },
+    });
   };
- 
+  const handleRejectAccess = () => {
+    setOpenRejectDialog(false);
+
+    mutateReject({
+      variables: {
+        userID: userId,
+        armIDs: armsToBeGivenAccess,
+        comment,
+      },
+    });
+  };
   return (
     <>
       <div className={classes.pageContainer}>
         <Stats />
+        { /* Alert Box */}
+        <Grid container item justifyContent="center" className={classes.alertContainer}>
+          {accessStatus && showAlert(accessStatus, setAccessStatus)}
+        </Grid>
         <div className={classes.container}>
           <div className={classes.header}>
             <div className={classes.logo}>
-              {<img
+              <img
                 src={adminPortalIcon.src}
                 alt={adminPortalIcon.alt}
-              />}
+              />
             </div>
             <div className={classes.headerTitle}>
               <Typography className={classes.headerMainTitle}>
@@ -111,45 +179,68 @@ const ReviewRequestView = ({classes, data}) => {
             </div>
           </div>
           <div className={classes.userInfoHeader}>
-          <div className={classes.firstInfoSection}>
-            <div className={classes.infoKeyWrapper}>
-              <Typography>
-                <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span> <br/>
-                <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span> <br/>
-                <span className={classes.infoKey}>NAME: </span>
-              </Typography>
+            <div className={classes.firstInfoSection}>
+              <div className={classes.infoKeyWrapper}>
+                <Typography>
+                  <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span>
+                  <br />
+                  <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span>
+                  <br />
+                  <span className={classes.infoKey}>NAME: </span>
+                </Typography>
+              </div>
+              <div className={classes.userInfoValue}>
+                <Typography>
+                  <span className={classes.infoValue}>
+                    {userInfo.IDP}
+                  </span>
+                  <br />
+                  <span className={classes.infoValue}>
+                    {userInfo.email}
+                  </span>
+                  <br />
+                  <span className={classes.infoValue}>
+                    {userInfo.firstName}
+                    ,&nbsp;
+                    {userInfo.lastName}
+                  </span>
+                </Typography>
+              </div>
             </div>
-            <div className={classes.userInfoValue}>
-              <Typography>
-                <span className={classes.infoValue}> {fakeUserInfo.acountType} </span> <br/>
-                <span className={classes.infoValue}> {fakeUserInfo.email} </span> <br/>
-                <span className={classes.infoValue}> {fakeUserInfo.firstName}, {fakeUserInfo.lastName}</span>
-              </Typography>
+            <div className={classes.secondInfoSection}>
+              <div className={classes.infoKeyWrapper}>
+                <Typography className={classes.userInfo}>
+                  <span className={classes.infoKey}>ORGANIZATION: </span>
+                  <br />
+                  <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
+                  <br />
+                  <span className={classes.infoKey}>ROLE: </span>
+                </Typography>
+              </div>
+              <div className={classes.userInfoValue}>
+                <Typography className={classes.userInfo}>
+                  <span className={classes.infoValue}>
+                    {userInfo.organization}
+                  </span>
+                  <br />
+                  <span className={classes.infoValue}>
+                    {userInfo.userStatus}
+                  </span>
+                  <br />
+                  <span className={classes.infoValue}>
+                    {userInfo.role}
+                  </span>
+                </Typography>
+              </div>
             </div>
-          </div>
-          <div className={classes.secondInfoSection}>
-            <div className={classes.infoKeyWrapper}>
-              <Typography className={classes.userInfo}>
-                <span className={classes.infoKey}>ORGANIZATION: </span> <br/>
-                <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span> <br/>
-                <span className={classes.infoKey}>ROLE: </span>
-              </Typography>
-            </div>
-            <div className={classes.userInfoValue}>
-              <Typography className={classes.userInfo}>
-                <span className={classes.infoValue}> {fakeUserInfo.organization} </span> <br/>
-                <span className={classes.infoValue}> {fakeUserInfo.status} </span> <br/>
-                <span className={classes.infoValue}> {fakeUserInfo.role} </span>
-              </Typography>
-            </div>
-          </div>
           </div>
           <Grid container>
             <Grid item xs={12}>
               <CustomDataTable
-                data={fakeData}
+                data={filteredArms}
                 columns={columns}
-                options={options}/>
+                options={options}
+              />
             </Grid>
           </Grid>
         </div>
@@ -161,31 +252,37 @@ const ReviewRequestView = ({classes, data}) => {
         handleConfrim={handleApproveAccess}
         comment={comment}
         handleCommentChange={handleCommentChange}
-        accessObj = {{
-          dialogTitle: "Approve Access",
-          placeholder: "e.g. Access to this Arm has been approved.",
+        accessObj={{
+          dialogTitle: 'Approve Access',
+          placeholder: 'e.g. Access to this Arm has been approved.',
         }}
       />
       {/* Reject Dialog */}
       <CustomizedDialogs
-        handleOpen={openRefectDialog}
+        handleOpen={openRejectDialog}
         handleClose={handleCloseRejectDialog}
         handleConfrim={handleRejectAccess}
-        accessObj = {{
-          dialogTitle: "Reject Access",
-          placeholder: "e.g. Arm is restricted to authorized personnel.",
+        comment={comment}
+        handleCommentChange={handleCommentChange}
+        accessObj={{
+          dialogTitle: 'Reject Access',
+          placeholder: 'e.g. Arm is restricted to authorized personnel.',
         }}
       />
     </>
   );
-}
- 
+};
 const styles = (theme) => ({
+  alertContainer: {
+    position: 'absolute',
+    top: '184px', // Logo(100px) + NavBar(39px) + Stats(47px) - 2px
+    height: '70px',
+  },
   adminTitle: {
     borderBottom: '1px solid #274FA5',
   },
   reviewTitle: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   pageContainer: {
     background: '#fff',
@@ -214,17 +311,17 @@ const styles = (theme) => ({
     },
   },
   infoKey: {
-  whiteSpace: 'nowrap',
+    whiteSpace: 'nowrap',
     color: '#708292',
-    fontFamily: "Nunito Sans",
+    fontFamily: 'Nunito Sans',
     fontSize: '11px',
   },
   infoValue: {
-  whiteSpace: 'nowrap',
+    whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
     color: '#4F5D69',
-    fontFamily: "Nunito Sans",
+    fontFamily: 'Nunito Sans',
   },
   container: {
     margin: 'auto',
@@ -237,12 +334,12 @@ const styles = (theme) => ({
     paddingLeft: '20px',
     paddingRight: '50px',
     borderBottom: '#AAB2C8 10px solid',
-    height: '128px',
-    paddingTop: '35px',
+    height: '108px',
+    paddingTop: '15px',
     [theme.breakpoints.down('xs')]: {
-    paddingLeft: '0',
-    paddingRight: '0',
-    }
+      paddingLeft: '0',
+      paddingRight: '0',
+    },
   },
   headerTitle: {
     maxWidth: '1440px',
@@ -251,10 +348,10 @@ const styles = (theme) => ({
     marginLeft: '90px',
     paddingTop: '20px',
     [theme.breakpoints.down('xs')]: {
-    paddingTop: '0',
-    }
+      paddingTop: '0',
+    },
   },
-  headerMainTitle  : {
+  headerMainTitle: {
     fontFamily: 'Lato',
     letterSpacing: '0.005em',
     color: '#274FA5',
@@ -272,7 +369,10 @@ const styles = (theme) => ({
   actionButton: {
     height: '28px',
     width: '80px',
-    color: '#fff'
+    color: '#fff',
+    fontSize: '13px',
+    borderRadius: '8px',
+    fontFamily: 'Lato',
   },
   approveButton: {
     backgroundColor: '#0F8573',
@@ -281,5 +381,5 @@ const styles = (theme) => ({
     backgroundColor: '#BA2810',
   },
 });
- 
+
 export default withStyles(styles, { withTheme: true })(ReviewRequestView);

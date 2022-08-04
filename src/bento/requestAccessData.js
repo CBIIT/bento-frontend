@@ -34,7 +34,7 @@ export const formFields = [
   {
     id: 'armIDs',
     type: 'dropdown',
-    required: false,
+    required: true,
     label: 'Study Arm',
     placeHolder: 'Study Arm',
     multiple: true,

@@ -27,6 +27,7 @@ import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRe
 import Login from '../../pages/accessManagment/login';
 import RequestAccess from '../../pages/requestAccess/requestAccessController';
 import SysInfoView from '../../pages/sysInfo/view';
+import ProfileController from '../../pages/profile/profileController';
 import editUserController from '../../pages/admin/userDetails/editUserController';
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
 
@@ -60,6 +61,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* START: Private Routes */}
             {/* SECTION: Non-Member & Member only Path */}
             <PrivateRoute path="/request" access={['member', 'non-member']} component={RequestAccess} />
+            <PrivateRoute path="/profile" access={['member', 'non-member', 'admin']} component={ProfileController} />
             {/* END SECTION */}
 
             {/* SECTION: Member & Admin only Path */}
@@ -79,15 +81,13 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
             <PrivateRoute path="/admin/edit/:id" access={['admin']} component={editUserController} />
             <PrivateRoute path="/admin/view/:id" access={['admin']} component={viewUserController} />
+            <PrivateRoute path="/admin/review/:id" access={['admin']} component={reviewRequestController} />
             <PrivateRoute path="/admin" access={['admin']} component={adminController} />
-            <PrivateRoute path="/review/:id" access={['admin']} component={reviewRequestController} />
             {/* END SECTION */}
 
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
             <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
             <PrivateRoute path="/table" component={table} />
-            <PrivateRoute path="/admin" access={['admin']} component={adminController} />
-            <Route path="/review/:id" access={['admin']} component={reviewRequestController} />
             {/* END NOTE */}
 
             {/* END: Private Routes */}

@@ -96,7 +96,7 @@ const ModelPage = ({ classes }) => {
             </div>
             <div className={classes.imgSection}>
               <TransformComponent>
-                <img src="https://cbiit.github.io/ctdc-model/model-desc/ctdc-model.svg" alt="ICDC schema" className={classes.img} />
+                <img src="//ctdc-model/model-desc/ctdc-model.svg" alt="ICDC schema" className={classes.img} />
               </TransformComponent>
             </div>
           </div>

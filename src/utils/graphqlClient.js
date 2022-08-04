@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-unused-vars */
 import {
   ApolloClient, InMemoryCache, ApolloLink, HttpLink,
 } from '@apollo/client';
@@ -34,16 +34,16 @@ const client = new ApolloClient({
     (operation) => operation.getContext().clientName === 'mockService',
     mockService,
     ApolloLink.split(
-    (operation) => operation.getContext().clientName === 'authService',
-    // the string "authService" can be anything you want,
-    authService, // <= apollo will send to this if clientName is "authService"
-    ApolloLink.split( // This is 2nd level of ApolloLink.
-      (operation) => operation.getContext().clientName === 'userService',
-      // the string "userService" can be anything you want,
-      userService, // <= apollo will send to this if clientName is "userService"
-      backendService, // <= otherwise will send to this
-    ), // <= otherwise will send to this
-   ),
+      (operation) => operation.getContext().clientName === 'authService',
+      // the string "authService" can be anything you want,
+      authService, // <= apollo will send to this if clientName is "authService"
+      ApolloLink.split( // This is 2nd level of ApolloLink.
+        (operation) => operation.getContext().clientName === 'userService',
+        // the string "userService" can be anything you want,
+        userService, // <= apollo will send to this if clientName is "userService"
+        backendService, // <= otherwise will send to this
+      ), // <= otherwise will send to this
+    ),
   ),
 });
 export default client;
