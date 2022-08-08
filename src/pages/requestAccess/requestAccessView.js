@@ -28,7 +28,7 @@ const checkIsValid = (field, formValues) => {
   return false;
 };
 
-const unavailableArmsStatus = ['approved', 'pending'];
+const unavailableArmsStatus = ['approved', 'requested'];
 
 const getAvailableArms = (currentACL, listOfArms) => {
   const unavailableArms = Object.keys(currentACL).reduce((previousArms, key) => {

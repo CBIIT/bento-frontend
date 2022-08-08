@@ -20,7 +20,7 @@ const getFormattedDate = (strDate) => {
 export const getOnlyRequestedArms = (userArmData) => {
   let filteredData = userArmData || [];
   if (userArmData) {
-    filteredData = userArmData.filter((arm) => arm.accessStatus === 'pending');
+    filteredData = userArmData.filter((arm) => arm.accessStatus === 'requested');
   }
   return filteredData;
 };

@@ -19,7 +19,7 @@ const TablePendingRequest = ({ classes }) => {
     },
     variables: {
       role: ['member', 'non-member', 'admin'],
-      accessStatus: ['pending'],
+      accessStatus: ['requested'],
     },
   });
 
