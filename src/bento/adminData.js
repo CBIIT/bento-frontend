@@ -1,3 +1,4 @@
+/* eslint-disable */
 import gql from 'graphql-tag';
 
 export const icon = {
@@ -23,6 +24,7 @@ export const viewPageTitle = 'Approved Arm(s)';
 
 export const useMock = false;
 
+const nodeName ="Node Name"
 // --------------- tab Pending Request --------------
 const tabPendingRequest = {
 
