@@ -11,7 +11,9 @@ import { useQuery } from '@apollo/client';
 import {
   getColumns, getOptions, getDefaultCustomFooter, CustomDataTable,
 } from 'bento-components';
-import { GET_LIST_USERS, useMock, tabPendingRequest } from '../../../bento/adminData';
+import {
+  GET_LIST_USERS, useMock, tabPendingRequest, nodeField, nodeName, nodeLevelAccess,
+} from '../../../bento/adminData';
 
 const TablePendingRequest = ({ classes }) => {
   // get data
@@ -37,7 +39,12 @@ const TablePendingRequest = ({ classes }) => {
 
   const { table } = tabPendingRequest;
 
-  const extendColumns = [{
+  const nodeLevelColumn = [{
+    name: nodeField,
+    label: nodeName,
+  }];
+
+  const actionColumn = [{
     name: 'userID',
     label: 'Actions',
     options: {
@@ -60,7 +67,9 @@ const TablePendingRequest = ({ classes }) => {
   },
   ];
 
-  const columns = getColumns(table, classes).concat(extendColumns);
+  const columns = nodeLevelAccess
+    ? getColumns(table, classes).concat(nodeLevelColumn).concat(actionColumn)
+    : getColumns(table, classes).concat(actionColumn);
   const options = getOptions(table, classes, getDefaultCustomFooter);
 
   return (

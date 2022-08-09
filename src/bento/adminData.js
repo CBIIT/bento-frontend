@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import env from '../utils/env';
 
 export const icon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programIcon.svg',
@@ -23,11 +24,11 @@ export const viewPageTitle = 'Approved Arm(s)';
 
 export const useMock = false;
 
-export const nodeName = 'Node Name'; // Node Name configured in the Data Access Request form
+export const nodeName = 'Arm(s)'; // Node Name configured in the Data Access Request form
 
 export const nodeField = 'numberOfArms'; // Node field
 
-export const nodeLevelAccess = true; // Node-Level Access is configured as "Off"
+export const nodeLevelAccess = env.NODE_LEVEL_ACCESS; // Node-Level Access is configured as "Off"
 // --------------- tab Pending Request --------------
 export const tabPendingRequest = {
 
@@ -57,10 +58,6 @@ export const tabPendingRequest = {
       {
         dataField: 'organization',
         header: 'Organization',
-      },
-      {
-        dataField: 'numberOfArms',
-        header: 'Arm(s)',
       },
     ],
   },
@@ -100,14 +97,6 @@ export const tabManageAccess = {
       {
         dataField: 'role',
         header: 'Role',
-      },
-      {
-        dataField: 'numberOfArms',
-        header: 'Arm(s)',
-      },
-      {
-        dataField: 'userID',
-        header: 'Actions',
       },
     ],
   },
