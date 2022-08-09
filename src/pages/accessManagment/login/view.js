@@ -4,7 +4,6 @@ import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../../../components/Auth/AuthProvider';
 import AlertMessage from '../../../components/alertMessage';
-
 // Custodian data imports
 import {
   pageTitle,
@@ -27,9 +26,47 @@ function loginView({ classes }) {
   const history = useHistory();
   const query = useQuery();
   const internalRedirectPath = getRedirectPath(query);
+  const [error, setError] = React.useState('');
 
   const onSuccess = () => afterLoginRedirect(history, internalRedirectPath);
   const onError = () => {};
+
+  const defaultIdP = {
+    google: {
+      key: 'google',
+      icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/google.png',
+      loginButtonText: 'Sign in with Google',
+      enabled: true,
+    },
+  };
+
+  let idps = loginProvidersData;
+  if (typeof (loginProvidersData) === 'undefined' || Object.values(loginProvidersData).length === 0) {
+    idps = defaultIdP;
+  }
+
+  const showAlert = (alertType, errorMsg) => {
+    const key = Math.random();
+    if (alertType === 'error') {
+      setError(
+        <AlertMessage key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={500000}>
+          {errorMsg}
+        </AlertMessage>,
+      );
+    }
+
+    if (alertType === 'redirect') {
+      setError(
+        <AlertMessage key={key} severity="error" timeout={5000}>
+          Please sign in to access
+          {' '}
+          {internalRedirectPath}
+        </AlertMessage>,
+      );
+    }
+
+    return null;
+  };
 
   const signInCall = (provider) => {
     // if(!provider.enabled) callAlert();
@@ -37,30 +74,8 @@ function loginView({ classes }) {
       if (provider.key === 'google') signInWithGoogle(onSuccess, onError);
       if (provider.key === 'NIH') signInWithNIH({ internalRedirectPath });
       if (provider.key === 'loginGov') signInWithNIH({ internalRedirectPath });
+      showAlert('error', `Sorry, current IdP ${provider.key} is not supported,Please contact bento team for more information.`);
     }
-  };
-
-  const showAlert = (alertType) => {
-    if (alertType === 'error') {
-      return (
-        <AlertMessage severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000000}>
-          {/* {getErrorDetails()} */}
-          Sample
-        </AlertMessage>
-      );
-    }
-
-    if (alertType === 'redirect') {
-      return (
-        <AlertMessage severity="error" timeout={5000}>
-          Please sign in to access
-          {' '}
-          {internalRedirectPath}
-        </AlertMessage>
-      );
-    }
-
-    return null;
   };
 
   return (
@@ -77,7 +92,7 @@ function loginView({ classes }) {
           {/* ######## ALERT MESSAGES ######## */}
           {/* TODO: Add error for whitelisted users */}
           {/* {showAlert('error')} */}
-          {internalRedirectPath !== '/' && showAlert('redirect')}
+          {error}
         </Grid>
 
         {/* ROW 2 */}
@@ -100,7 +115,7 @@ function loginView({ classes }) {
                   </div>
                   <Grid container item xs={12} justifyContent="center" className={classes.LoginButtonGroup}>
 
-                    {Object.values(loginProvidersData).map((provider) => (provider.enabled
+                    {Object.values(idps).map((provider) => (provider.enabled
                       ? (
                         <Grid container item xs={12} justifyContent="center">
                           <Button
