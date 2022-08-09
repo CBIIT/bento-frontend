@@ -20,6 +20,4 @@ window.injectedEnv = {
   REACT_APP_GOOGLE_CLIENT_ID: 'Sample Id',
   REACT_APP_NIH_CLIENT_ID: 'Sample Id',
 
-  // Node level access
-  NODE_LEVEL_ACCESS: false,
 };
