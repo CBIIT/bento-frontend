@@ -81,7 +81,7 @@ function loginView({ classes }) {
           signInWithNIH({ internalRedirectPath });
           break;
         default:
-          showAlert('error', `Sorry, current IdP ${provider.key} is not supported,Please contact bento team for more information.`);
+          showAlert('error', `The selected Identity Provider, ${provider.key}, is not currently supported. Please contact bento-help@nih.gov for more information.`);
       }
     }
   };
