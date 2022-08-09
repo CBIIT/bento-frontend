@@ -1,4 +1,3 @@
-/* eslint-disable */
 import gql from 'graphql-tag';
 
 export const icon = {
@@ -22,14 +21,13 @@ export const VIEW = 'view';
 export const editViewPageTitle = 'Edit User';
 export const viewPageTitle = 'Approved Arm(s)';
 
-
 export const useMock = false;
 
-export const nodeName ="Node Name";  // Node Name configured in the Data Access Request form
+export const nodeName = 'Node Name'; // Node Name configured in the Data Access Request form
 
-export const nodeField ="numberOfArms";  // Node field
+export const nodeField = 'numberOfArms'; // Node field
 
-export const nodeLevelAccess = true;  //Node-Level Access is configured as "Off"
+export const nodeLevelAccess = true; // Node-Level Access is configured as "Off"
 // --------------- tab Pending Request --------------
 export const tabPendingRequest = {
 
@@ -115,7 +113,6 @@ export const tabManageAccess = {
   },
 
 };
-
 
 // --------------- GraphQL query configuration --------------
 
