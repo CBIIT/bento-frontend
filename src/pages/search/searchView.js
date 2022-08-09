@@ -7,7 +7,6 @@ import {
 } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom'; // version 5.2.0
 
-// import { Clear as ClearIcon } from '@material-ui/icons';
 import {
   SEARCH_PAGE_RESULT_PROGRAM,
   SEARCH_PAGE_RESULT_STUDIES,
@@ -18,10 +17,11 @@ import {
   SEARCH_PAGE_RESULT_ABOUT,
 } from '../../bento/search';
 import { getSearch, getSearchPageResults } from '../dashboardTab/store/dashboardReducer';
-// import Pagination from './components/pagination';
 import Subsection from './components/searchResultSection';
 
-function searchComponent({ classes, searchparam = '' }) {
+function searchComponent({
+  classes, searchparam = '', loggedIn, userInformation,
+}) {
   const [tab, setTab] = React.useState('1');
   const history = useHistory();
 
