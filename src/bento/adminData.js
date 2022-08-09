@@ -22,11 +22,16 @@ export const VIEW = 'view';
 export const editViewPageTitle = 'Edit User';
 export const viewPageTitle = 'Approved Arm(s)';
 
+
 export const useMock = false;
 
-const nodeName ="Node Name"
+export const nodeName ="Node Name";  // Node Name configured in the Data Access Request form
+
+export const nodeField ="numberOfArms";  // Node field
+
+export const nodeLevelAccess = true;  //Node-Level Access is configured as "Off"
 // --------------- tab Pending Request --------------
-const tabPendingRequest = {
+export const tabPendingRequest = {
 
   tabTitle: 'PENDING REQUESTS',
 
@@ -65,17 +70,13 @@ const tabPendingRequest = {
 };
 
 // --------------- tab Pending Request --------------
-const tabManageAccess = {
+export const tabManageAccess = {
 
   tabTitle: 'MANAGE ACCESS',
 
   table: {
     // Set 'display' to false to hide the table entirely
     display: true,
-    // Value must be one of the 'dataField's in "columns"
-    defaultSortField: 'displayName',
-    // 'asc' or 'desc'
-    defaultSortDirection: 'asc',
 
     columns: [
       {
@@ -95,23 +96,26 @@ const tabManageAccess = {
         header: 'Organization',
       },
       {
+        dataField: 'userStatus',
+        header: 'Membership Status',
+      },
+      {
         dataField: 'role',
         header: 'Role',
       },
       {
-        dataField: 'userStatus',
-        header: 'Status',
-      },
-      {
         dataField: 'numberOfArms',
         header: 'Arm(s)',
+      },
+      {
+        dataField: 'userID',
+        header: 'Actions',
       },
     ],
   },
 
 };
 
-export const tabs = [tabManageAccess, tabPendingRequest];
 
 // --------------- GraphQL query configuration --------------
 

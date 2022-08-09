@@ -8,8 +8,10 @@ import Link from '@material-ui/core/Link';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import { useQuery } from '@apollo/client';
-import { CustomDataTable } from 'bento-components';
-import { GET_LIST_USERS, useMock } from '../../../bento/adminData';
+import {
+  getColumns, getOptions, getDefaultCustomFooter, CustomDataTable,
+} from 'bento-components';
+import { GET_LIST_USERS, useMock, tabPendingRequest } from '../../../bento/adminData';
 
 const TablePendingRequest = ({ classes }) => {
   // get data
@@ -32,46 +34,34 @@ const TablePendingRequest = ({ classes }) => {
       </Typography>
     );
   }
-  const columns = [{ name: 'displayName', label: 'Name' },
-    { name: 'IDP', label: 'Account Type' },
-    { name: 'email', label: 'Email' },
-    { name: 'organization', label: 'Organization' },
-    { name: 'userStatus', label: 'Membership Status' },
-    { name: 'role', label: 'Role' },
-    { name: 'numberOfArms', label: 'Arm(s)' },
-    {
-      name: 'userID',
-      label: 'Actions',
-      options: {
-        customBodyRender: (value) => {
-          const href = `/#/admin/review/${value}`;
-          return (
-            <Button
-              variant="contained"
-              component={Link}
-              href={href}
-              classes={{
-                root: classes.btn,
-              }}
-            >
-              review
-            </Button>
-          );
-        },
+
+  const { table } = tabPendingRequest;
+
+  const extendColumns = [{
+    name: 'userID',
+    label: 'Actions',
+    options: {
+      customBodyRender: (value) => {
+        const href = `/#/admin/review/${value}`;
+        return (
+          <Button
+            variant="contained"
+            component={Link}
+            href={href}
+            classes={{
+              root: classes.btn,
+            }}
+          >
+            review
+          </Button>
+        );
       },
     },
+  },
   ];
 
-  const options = {
-    selectableRows: 'none',
-    responsive: 'stacked',
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    viewColumns: false,
-  };
+  const columns = getColumns(table, classes).concat(extendColumns);
+  const options = getOptions(table, classes, getDefaultCustomFooter);
 
   return (
     <>
