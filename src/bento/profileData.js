@@ -20,7 +20,7 @@ const editTool = {
   alt: 'edit',
 };
 
-export const profileArmsTable = {
+export const profileArmsTable = (nodeLevelAccess) => ({
   display: true,
   title: 'Access List',
   dataField: 'acl',
@@ -32,11 +32,11 @@ export const profileArmsTable = {
       dataField: 'armID',
       header: 'Arms',
       primary: true,
-      display: true,
+      display: !nodeLevelAccess,
     },
     {
       dataField: 'armName',
-      header: 'Arm Name',
+      header: nodeLevelAccess ? 'Data Commons' : 'Arm Name',
       display: true,
     },
     {
@@ -55,7 +55,7 @@ export const profileArmsTable = {
       display: true,
     },
   ],
-};
+});
 
 const GET_MY_PROFILE_QUERY = gql`
     query getMyUser {
