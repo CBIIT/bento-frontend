@@ -32,11 +32,11 @@ export const profileArmsTable = (nodeLevelAccess) => ({
       dataField: 'armID',
       header: 'Arms',
       primary: true,
-      display: !nodeLevelAccess || nodeLevelAccess !== 'off',
+      display: !nodeLevelAccess,
     },
     {
       dataField: 'armName',
-      header: nodeLevelAccess && nodeLevelAccess === 'off' ? 'Data Commons' : 'Arm Name',
+      header: nodeLevelAccess ? 'Data Commons' : 'Arm Name',
       display: true,
     },
     {
