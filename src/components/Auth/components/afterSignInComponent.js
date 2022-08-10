@@ -59,13 +59,15 @@ const AfterSignIn = ({
             </div>
 
             {role === 'admin' ? (
-              <Button
-                onClick={() => redirectUser(adminPortal)}
-                classes={{ label: classes.textColor, text: classes.paddding0 }}
-                disableRipple
-              >
-                Admin Portal
-              </Button>
+              <div>
+                <Button
+                  onClick={() => redirectUser(adminPortal)}
+                  classes={{ label: classes.textColor, text: classes.paddding0 }}
+                  disableRipple
+                >
+                  Admin Portal
+                </Button>
+              </div>
             )
               : (
                 <div>
