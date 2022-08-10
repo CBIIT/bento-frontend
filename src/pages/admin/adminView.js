@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Stats from '../../components/Stats/AllStatsController';
-import { icon } from '../../bento/adminData';
+import { icon, tabManageAccess, tabPendingRequest } from '../../bento/adminData';
 import TableManageAccess from './components/tableManageAccess';
 import TablePendingRequest from './components/tablePendingRequest';
 
@@ -38,15 +38,14 @@ function a11yProps(index) {
 }
 
 const adminView = ({ classes }) => {
-  const [value, setValue] = React.useState(0);
-  const [includeNonMember, setIncludeNonMember] = React.useState(true);
+  const [pageState, setPageState] = React.useState({ tabValue: 0, includeNonMember: false });
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setPageState({ ...pageState, tabValue: newValue });
   };
 
   const handleCheckBoxChange = (event) => {
-    setIncludeNonMember(event.target.checked);
+    setPageState({ ...pageState, includeNonMember: event.target.checked });
   };
 
   return (
@@ -69,48 +68,50 @@ const adminView = ({ classes }) => {
             </div>
           </div>
         </div>
-
-        <Tabs
-          classes={{
-            indicator: classes.tabIndicator,
-          }}
-          value={value}
-          onChange={handleChange}
-          aria-label="simple tabs example"
-        >
-          <Tab
-            label="MANAGE ACCESS"
-            {...a11yProps(0)}
-            classes={{
-              root: classes.tab,
-            }}
-          />
-          <Tab
-            label="PENDING REQUESTS"
-            {...a11yProps(1)}
-            classes={{
-              root: classes.tab,
-            }}
-          />
+        <div className={`${pageState.tabValue && pageState.tabValue === 1 ? classes.hide : classes.display}`}>
           <FormControlLabel
             control={(
               <Checkbox
                 classes={{
                   root: classes.checkbox,
                 }}
-                checked={includeNonMember}
+                checked={pageState.includeNonMember}
                 onChange={handleCheckBoxChange}
                 name="Non-MembersCK"
               />
                 )}
             label="Include Non-Members"
           />
+        </div>
+        <Tabs
+          classes={{
+            indicator: classes.tabIndicator,
+          }}
+          value={pageState.tabValue}
+          onChange={handleChange}
+          aria-label="tabs"
+        >
+          <Tab
+            label={tabManageAccess.tabTitle}
+            {...a11yProps(0)}
+            classes={{
+              root: classes.tab,
+            }}
+          />
+          <Tab
+            label={tabPendingRequest.tabTitle}
+            {...a11yProps(1)}
+            classes={{
+              root: classes.tab,
+            }}
+          />
+
         </Tabs>
 
-        <TabPanel value={value} index={0}>
-          <TableManageAccess includeNonMember={includeNonMember} />
+        <TabPanel value={pageState.tabValue} index={0}>
+          <TableManageAccess includeNonMember={pageState.includeNonMember} />
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={pageState.tabValue} index={1}>
           <TablePendingRequest />
         </TabPanel>
       </div>
@@ -202,7 +203,15 @@ const styles = (theme) => ({
   checkbox: {
     color: '#20C1AA !important',
   },
-
+  hide: {
+    display: 'none',
+  },
+  display: {
+    display: 'block',
+    float: 'right',
+    marginRight: 'calc(100% - 549px)',
+    marginTop: '3px',
+  },
 });
 
 export default withStyles(styles, { withTheme: true })(adminView);

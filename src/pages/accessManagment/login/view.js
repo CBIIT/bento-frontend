@@ -69,12 +69,20 @@ function loginView({ classes }) {
   };
 
   const signInCall = (provider) => {
-    // if(!provider.enabled) callAlert();
     if (provider) {
-      if (provider.key === 'google') signInWithGoogle(onSuccess, onError);
-      if (provider.key === 'NIH') signInWithNIH({ internalRedirectPath });
-      if (provider.key === 'loginGov') signInWithNIH({ internalRedirectPath });
-      showAlert('error', `Sorry, current IdP ${provider.key} is not supported,Please contact bento team for more information.`);
+      switch (provider.key) {
+        case 'google':
+          signInWithGoogle(onSuccess, onError);
+          break;
+        case 'NIH':
+          signInWithNIH({ internalRedirectPath });
+          break;
+        case 'loginGov':
+          signInWithNIH({ internalRedirectPath });
+          break;
+        default:
+          showAlert('error', `The selected Identity Provider, ${provider.key}, is not currently supported. Please contact bento-help@nih.gov for more information.`);
+      }
     }
   };
 
