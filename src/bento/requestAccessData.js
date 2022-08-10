@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { NODE_LEVEL_ACCESS, NODE_LABEL } from './siteWideConfig';
 
 export const pageTitle = 'Data Access Request';
 
@@ -16,6 +17,7 @@ export const formFields = [
     required: true,
     label: 'Last Name',
     placeHolder: 'Last Name',
+    display: true,
   },
   {
     id: 'firstName',
@@ -23,6 +25,7 @@ export const formFields = [
     required: true,
     label: 'First Name',
     placeHolder: 'First Name',
+    display: true,
   },
   {
     id: 'organization',
@@ -30,14 +33,16 @@ export const formFields = [
     required: true,
     label: 'Organization / Institution',
     placeHolder: 'Organization / Institution',
+    display: true,
   },
   {
     id: 'armIDs',
-    type: 'dropdown',
+    type: 'aclDropdown',
     required: true,
-    label: 'Study Arm',
-    placeHolder: 'Study Arm',
+    label: NODE_LABEL,
+    placeHolder: NODE_LABEL,
     multiple: true,
+    display: NODE_LEVEL_ACCESS,
     optionsAPIField: aclAPIOptionsField,
     options: [
       {

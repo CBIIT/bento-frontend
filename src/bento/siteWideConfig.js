@@ -13,4 +13,6 @@ export const adminPortal = '/admin';
 export const userProfileRoute = '/profile';
 
 // Node level access
-export const NODE_LEVEL_ACCESS = false;
+export const NODE_LEVEL_ACCESS = true;
+export const NODE_NAME = 'Arm';
+export const NODE_LABEL = 'Study Arm';
