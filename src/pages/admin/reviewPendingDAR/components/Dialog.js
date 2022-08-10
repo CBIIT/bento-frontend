@@ -11,6 +11,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import { isEmpty } from 'lodash';
+import { commentField } from '../../../../bento/adminData';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiBackdrop-root': {
@@ -32,7 +34,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiDialogContent-root': {
     flex: '1 1 auto',
     padding: '0px 40px',
-    marginBottom: '45px',
+    marginBottom: ({ requiredMB }) => requiredMB || '45px',
     overflowY: 'auto',
   },
   '& .MuiDialogContentText-root': {
@@ -66,6 +68,7 @@ function CustomizedDialogs(props) {
         onClose={handleClose}
         open={handleOpen}
         aria-labelledby="Review Data Access Request(s) dialog"
+        requiredMB={commentField === 'Required' ? '25px' : ''}
       >
         <DialogTitle id={dialogTitle} className={classes.dialogTitleContainer}>
           <div className={classes.dialogTitleBox}>
@@ -85,7 +88,9 @@ function CustomizedDialogs(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter a comment that will be sent to the user.
+            Enter a comment that will be sent to the user
+            { commentField === 'Required' ? <sup className={classes.requiredAsterisk}>*</sup> : null }
+            .
           </DialogContentText>
           <textarea
             onChange={handleCommentChange}
@@ -94,12 +99,25 @@ function CustomizedDialogs(props) {
             placeholder={placeholder}
             label="Comment"
           />
+          {commentField === 'Required'
+            ? (
+              <div className={classes.requiredLabel}>
+                <sup className={classes.requiredAsterisk}>*</sup>
+                Comment is required.
+              </div>
+            )
+            : null}
         </DialogContent>
         <DialogActions className={classes.dialogActions}>
           <Button variant="contained" onClick={handleClose} className={classes.cancelButton}>
             CANCEL
           </Button>
-          <Button variant="contained" onClick={handleConfrim} className={classes.confrimButton}>
+          <Button
+            variant="contained"
+            onClick={handleConfrim}
+            className={classes.confrimButton}
+            {...commentField === 'Required' && isEmpty(comment && comment.trim()) ? { disabled: true } : {}}
+          >
             CONFIRM
           </Button>
         </DialogActions>
@@ -110,6 +128,13 @@ function CustomizedDialogs(props) {
 const styles = () => ({
   dialogTitleContainer: {
     borderBottom: '1.25px solid #BDBFC2',
+  },
+  requiredLabel: {
+    fontFamily: 'Lato',
+    fontSize: '16px',
+    color: 'red',
+    marginTop: '10px',
+    textAlign: 'center',
   },
   dialogTitleBox: {
     display: 'flex',
@@ -142,6 +167,7 @@ const styles = () => ({
     fontSize: '16px',
     fontFamily: 'Lato',
     resize: 'none',
+    marginBottom: ({ requiredTextMT }) => requiredTextMT || '0px',
   },
   cancelButton: {
     color: '#FFFFFF',
@@ -153,6 +179,11 @@ const styles = () => ({
     border: '1px solid #626262',
     backgroundColor: '#437BBE',
     marginLeft: '13px !important',
+  },
+  requiredAsterisk: {
+    fontFamily: 'Nunito Sans',
+    fontSize: '16px',
+    color: 'red',
   },
 });
 
