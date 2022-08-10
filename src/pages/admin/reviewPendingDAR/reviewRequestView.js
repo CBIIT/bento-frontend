@@ -23,7 +23,7 @@ const ReviewRequestView = ({ classes, data }) => {
   const [openRejectDialog, setOpenRejectDialog] = useState(false);
 
   const [armsToBeGivenAccess, setArmsToBeGivenAccess] = useState([]);
-  // Get Arms with requested Status
+  // Get Arms with pending Status
   const [filteredArms, setFilteredArms] = useState(getOnlyRequestedArms(arms));
 
   const [comment, setComment] = useState('');

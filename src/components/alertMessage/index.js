@@ -8,11 +8,12 @@ const useStyles = makeStyles(() => ({
     backgroundColor: (props) => props.backgroundColor || '#5D53F6',
     width: '535px',
     boxSizing: 'border-box',
-    height: '50px',
+    minHeight: '50px',
     border: '1.5px solid',
     borderColor: (props) => props.backgroundColor || 'none',
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09)',
     justifyContent: 'center',
+    zIndex: '1100',
   },
 }));
 
@@ -20,7 +21,9 @@ const AlertMessage = (props) => {
   // the alert is displayed by default
   const [alert, setAlert] = useState(true);
 
-  const { severity, timeout, children } = props;
+  const {
+    severity, timeout, children, key,
+  } = props;
 
   const classes = useStyles(props);
 
@@ -34,7 +37,7 @@ const AlertMessage = (props) => {
   return (
     <>
       {alert && (
-      <Alert icon={false} severity={severity} className={classes.myAlert}>
+      <Alert key={key} icon={false} severity={severity} className={classes.myAlert}>
         {children}
       </Alert>
       )}
