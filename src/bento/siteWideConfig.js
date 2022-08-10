@@ -11,3 +11,6 @@ export const loginRoute = '/login';
 export const requestAccessRoute = '/request';
 export const adminPortal = '/admin';
 export const userProfileRoute = '/profile';
+
+// Node level access
+export const NODE_LEVEL_ACCESS = false;
