@@ -116,6 +116,17 @@ function customizer(objValue, srcValue) {
   }
 }
 
+export async function getSearchPublic(inputValue) {
+  const allIds = await client.query({
+    query: SEARCH,
+    variables: {
+      input: inputValue,
+    },
+  }).then((results) => (results.data.globalSearch));
+
+  return allIds;
+}
+
 export async function getSearch(inputVlaue) {
   const allids = await client
     .query({

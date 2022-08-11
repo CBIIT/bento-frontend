@@ -1,34 +1,23 @@
 import React from 'react';
 import {
-  TextField, CircularProgress, withStyles, Box, Tab, Popper,
+  TextField, CircularProgress, withStyles, Box, Popper,
 } from '@material-ui/core';
 import {
-  Autocomplete, TabContext, TabList, TabPanel,
+  Autocomplete,
 } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom'; // version 5.2.0
 
-import {
-  SEARCH_PAGE_RESULT_PROGRAM,
-  SEARCH_PAGE_RESULT_STUDIES,
-  SEARCH_PAGE_RESULT_SUBJECTS,
-  SEARCH_PAGE_RESULT_SAMPLES,
-  SEARCH_PAGE_RESULT_FILES,
-  SEARCH_PAGE_RESULT_MODEL,
-  SEARCH_PAGE_RESULT_ABOUT,
-} from '../../bento/search';
-import { getSearch, getSearchPageResults } from '../dashboardTab/store/dashboardReducer';
-import Subsection from './components/searchResultSection';
+import { getSearch, getSearchPageResults, getSearchPublic } from '../dashboardTab/store/dashboardReducer';
+
+import PrivateTabView from './components/tabs/privateTabView';
+import PublicTabView from './components/tabs/publicTabView';
 
 function searchComponent({
   classes, searchparam = '', loggedIn, userInformation,
 }) {
   const [tab, setTab] = React.useState('1');
   const history = useHistory();
-
-  const handleChange = (event, newValue) => {
-    setTab(newValue);
-  };
-
+  const isAuthorized = userInformation && userInformation.getMyUser.acl.some((arm) => arm.accessStatus === 'approved');
   const [open] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [searchText, setSearchText] = React.useState('');
@@ -36,6 +25,16 @@ function searchComponent({
   const [searchResults, setSearchResults] = React.useState([]);
   const loading = open;
   const [value] = React.useState([]);
+
+  const handleChange = (event, newValue) => {
+    const activeVal = newValue.split('-')[0];
+
+    if (activeVal === 'inactive') {
+      history.push(`/login?redirect=/search/${searchText}`);
+      return;
+    }
+    setTab(activeVal);
+  };
 
   async function onChange(newValue = []) {
     const searchResp = await getSearchPageResults(newValue);
@@ -58,13 +57,24 @@ function searchComponent({
     </div>
   );
 
+  /**
+   * Chooses the search method based on whether user is logged in,
+   * returns function */
+  function getSearchMethod() {
+    if ((loggedIn && isAuthorized)) {
+      return getSearch;
+    }
+
+    return getSearchPublic;
+  }
+
   async function getAutoCompleteRes(newValue = []) {
     // For clear all functionality
     if (newValue === '') {
       onChange(newValue);
     }
     setInputValue(newValue);
-    const searchResp = await getSearch(newValue);
+    const searchResp = await getSearchMethod()(newValue);
     const keys = ['programs', 'studies', 'subjects', 'samples', 'files', 'model'];
     const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id', 'node_name'];
 
@@ -82,9 +92,6 @@ function searchComponent({
     getAutoCompleteRes(searchparam);
     onChange(searchparam);
   }, [open]);
-
-  // eslint-disable-next-line max-len
-  const allCount = () => (searchResults.subject_count + searchResults.sample_count + searchResults.program_count + searchResults.study_count + searchResults.file_count + searchResults.model_count + searchResults.about_count);
 
   return (
     <>
@@ -151,30 +158,25 @@ function searchComponent({
       </div>
       <div className={classes.bodyContainer}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
-          <TabContext value={tab} fullWidth inkBarStyle={{ background: '#142D64' }}>
-            <Box sx={{ borderBottom: '1px solid #828282' }}>
-              <TabList onChange={handleChange} aria-label="tabs" classes={{ root: classes.tabContainter, indicator: classes.indicator }}>
-                <Tab label={AllLabel()} classes={{ root: classes.buttonRoot, wrapper: classes.allTab }} value="1" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.subjectTab }} label={`Cases ${searchResults.subject_count || 0}`} value="2" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.sampleTab }} label={`Samples ${searchResults.sample_count || 0}`} value="3" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.fileTab }} label={`Files ${searchResults.file_count || 0}`} value="4" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.programTab }} label={`Programs ${searchResults.program_count || 0}`} value="5" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.studyTab }} label={`Studies ${searchResults.study_count || 0}`} value="6" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.dataTab }} label={`Data Model ${searchResults.model_count || 0}`} value="7" />
-                <Tab classes={{ root: classes.buttonRoot, wrapper: classes.aboutTab }} label={`About ${searchResults.about_count || 0}`} value="8" />
-              </TabList>
-            </Box>
-            <TabPanel value="1"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={allCount() || 0} datafield="all" /></TabPanel>
-            <TabPanel value="2"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_SUBJECTS} count={searchResults.subject_count || 0} datafield="subjects" /></TabPanel>
-            <TabPanel value="3"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_SAMPLES} count={searchResults.sample_count || 0} datafield="samples" /></TabPanel>
-            <TabPanel value="4"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_FILES} count={searchResults.file_count || 0} datafield="files" /></TabPanel>
-            <TabPanel value="5"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_PROGRAM} count={searchResults.program_count || 0} datafield="programs" /></TabPanel>
-            <TabPanel value="6"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_STUDIES} count={searchResults.study_count || 0} datafield="studies" /></TabPanel>
-            <TabPanel value="7"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_MODEL} count={searchResults.model_count || 0} datafield="model" /></TabPanel>
-            <TabPanel value="8"><Subsection searchText={searchText} queryforAPI={SEARCH_PAGE_RESULT_ABOUT} count={searchResults.about_count || 0} datafield="about_page" /></TabPanel>
-            {/* <Pagination count={10} shape="rounded" /> */}
+          {loggedIn && isAuthorized
+            ? (
+              <PrivateTabView
+                tab={tab}
+                options={{ handleChange, searchResults }}
+                classes={classes}
+                AllLabel={AllLabel}
+                searchText={searchText}
+              />
+            ) : (
+              <PublicTabView
+                tab={tab}
+                options={{ handleChange, searchResults }}
+                classes={classes}
+                AllLabel={AllLabel}
+                searchText={searchText}
+              />
+            )}
 
-          </TabContext>
         </Box>
       </div>
     </>

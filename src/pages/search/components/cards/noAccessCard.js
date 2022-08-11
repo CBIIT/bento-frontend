@@ -2,7 +2,7 @@ import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
 
 const NoAccessCard = ({
-  data, classes, index, tab,
+  classes, index, tab,
 }) => (
   <>
     <Grid item container className={classes.card}>

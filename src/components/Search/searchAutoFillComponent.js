@@ -5,10 +5,19 @@ import {
 import { Search as SearchIcon } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { getSearch } from '../../pages/dashboardTab/store/dashboardReducer';
+import { getSearch, getSearchPublic } from '../../pages/dashboardTab/store/dashboardReducer';
+import { getFromLocalStorage } from '../../utils/localStorage';
 
 function searchComponent({ classes }) {
   const history = useHistory();
+  const userData = getFromLocalStorage('userDetails');
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [isAuthorized, setIsAuthorized] = React.useState(false);
+
+  if (userData.userDetails && userData.userDetails.firstName.length) {
+    setLoggedIn(true);
+    setIsAuthorized(userData.userDetails.acl.some((armData) => armData.accessStatus === 'approved'));
+  }
 
   const [open] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
@@ -28,9 +37,17 @@ function searchComponent({ classes }) {
     }
   }
 
+  function getSearchQuery() {
+    if (loggedIn && isAuthorized) {
+      return getSearch;
+    }
+
+    return getSearchPublic;
+  }
+
   async function getAutoCompleteRes(newValue = []) {
     setInputValue(newValue);
-    const searchResp = await getSearch(newValue);
+    const searchResp = await getSearchQuery()(newValue);
     const keys = ['programs', 'studies', 'subjects', 'samples', 'files'];
     const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'];
 
