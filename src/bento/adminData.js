@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 import { NODE_LEVEL_ACCESS } from './siteWideConfig';
 
-
 export const icon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programIcon.svg',
   alt: 'Bento program logo',
