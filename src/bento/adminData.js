@@ -28,9 +28,9 @@ export const nodeName = 'Arm(s)'; // Node Name configured in the Data Access Req
 
 export const nodeField = 'numberOfArms'; // Node field
 
-export const nodeLevelAccess = NODE_LEVEL_ACCESS; // Node-Level Access is configured as "Off"
-
 export const commentField = 'Required'; // Comment Field configured as "Required" for Access Pop-up
+
+export const nodeLevelAccess = NODE_LEVEL_ACCESS; // Node-Level Access is configured as "Off"
 
 // --------------- tab Pending Request --------------
 export const tabPendingRequest = {
