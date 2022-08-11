@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { NODE_LEVEL_ACCESS } from 'siteWideConfig';
+import { NODE_LEVEL_ACCESS } from './siteWideConfig';
 
 
 export const icon = {
