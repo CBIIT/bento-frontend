@@ -12,7 +12,6 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { isEmpty } from 'lodash';
-import { commentField } from '../../../../bento/adminData';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiBackdrop-root': {
@@ -56,11 +55,11 @@ const BootstrapDialog = styled(Dialog)(() => ({
 
 function CustomizedDialogs(props) {
   const {
-    classes, handleOpen, handleClose, handleConfrim, accessObj, comment, handleCommentChange,
+    classes, handleOpen, handleClose, handleConfrim,
+    accessObj, comment, handleCommentChange, commentField,
   } = props;
-  const {
-    dialogTitle, placeholder,
-  } = accessObj;
+
+  const { dialogTitle, placeholder } = accessObj;
 
   return (
     <div>

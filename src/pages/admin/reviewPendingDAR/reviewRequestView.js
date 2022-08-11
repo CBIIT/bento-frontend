@@ -6,7 +6,13 @@ import { cn, CustomDataTable } from 'bento-components';
 import { useMutation } from '@apollo/client';
 import Stats from '../../../components/Stats/AllStatsController';
 import CustomizedDialogs from './components/Dialog';
-import { REJECT_ACCESS, APPROVE_ACCESS, adminPortalIcon } from '../../../bento/adminData';
+import {
+  REJECT_ACCESS,
+  APPROVE_ACCESS,
+  rejectCommentField,
+  approveCommentField,
+  adminPortalIcon,
+} from '../../../bento/adminData';
 import getFormattedDate, { getOnlyRequestedArms, showAlert } from './utils/reviewDARUtilFun';
 
 const ReviewRequestView = ({ classes, data }) => {
@@ -252,6 +258,7 @@ const ReviewRequestView = ({ classes, data }) => {
         handleConfrim={handleApproveAccess}
         comment={comment}
         handleCommentChange={handleCommentChange}
+        commentField={approveCommentField}
         accessObj={{
           dialogTitle: 'Approve Access',
           placeholder: 'e.g. Access to this Arm has been approved.',
@@ -264,6 +271,7 @@ const ReviewRequestView = ({ classes, data }) => {
         handleConfrim={handleRejectAccess}
         comment={comment}
         handleCommentChange={handleCommentChange}
+        commentField={rejectCommentField}
         accessObj={{
           dialogTitle: 'Reject Access',
           placeholder: 'e.g. Arm is restricted to authorized personnel.',
