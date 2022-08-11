@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import env from '../utils/env';
+import { NODE_LEVEL_ACCESS } from './siteWideConfig';
 
 export const icon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programIcon.svg',
@@ -28,7 +28,7 @@ export const nodeName = 'Arm(s)'; // Node Name configured in the Data Access Req
 
 export const nodeField = 'numberOfArms'; // Node field
 
-export const nodeLevelAccess = env.NODE_LEVEL_ACCESS; // Node-Level Access is configured as "Off"
+export const nodeLevelAccess = NODE_LEVEL_ACCESS; // Node-Level Access is configured as "Off"
 // --------------- tab Pending Request --------------
 export const tabPendingRequest = {
 
