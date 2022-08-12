@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -58,9 +58,7 @@ function loginView({ classes }) {
     if (alertType === 'redirect') {
       setError(
         <AlertMessage key={key} severity="error" timeout={5000}>
-          Please sign in to access
-          {' '}
-          {internalRedirectPath}
+          Please login to access protected pages
         </AlertMessage>,
       );
     }
@@ -86,6 +84,10 @@ function loginView({ classes }) {
     }
   };
 
+  useEffect(() => {
+    showAlert('redirect');
+  }, [internalRedirectPath]);
+
   return (
     <div className={classes.Container}>
       {/* ROW 1 */}
@@ -97,9 +99,6 @@ function loginView({ classes }) {
       >
         {/* Top Space */}
         <Grid container item justifyContent="center" className={classes.emptySpace}>
-          {/* ######## ALERT MESSAGES ######## */}
-          {/* TODO: Add error for whitelisted users */}
-          {/* {showAlert('error')} */}
           {error}
         </Grid>
 
