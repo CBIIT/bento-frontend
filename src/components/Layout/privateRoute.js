@@ -57,8 +57,7 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
       }
 
       if (enableAuthentication && !hasAccess) {
-        const base = requestAccessRoute;
-        const redirectPath = `${base}`;
+        const redirectPath = (role !== 'admin') ? requestAccessRoute : '/';
         return <Redirect to={redirectPath} />;
       }
       return <ChildComponent {...props} match={rest.computedMatch} {...rest} />;
