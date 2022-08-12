@@ -28,7 +28,18 @@ export const nodeName = 'Arm(s)'; // Node Name configured in the Data Access Req
 
 export const nodeField = 'numberOfArms'; // Node field
 
+/* Approve DAR Comment Field configuration
+    - "Optional" By Default or "Required"
+*/
+export const approveCommentField = 'Optional';
+
+/* Reject DAR Comment Field configuration
+    - "Optional" By Default or "Required"
+*/
+export const rejectCommentField = 'Optional';
+
 export const nodeLevelAccess = NODE_LEVEL_ACCESS; // Node-Level Access is configured as "Off"
+
 // --------------- tab Pending Request --------------
 export const tabPendingRequest = {
 
