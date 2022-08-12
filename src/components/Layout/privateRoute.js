@@ -66,7 +66,7 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
   );
 }
 
-function privateRouteWrapper({ component: ChildComponent, ...rest }) {
+export function privateRouteWrapper({ component: ChildComponent, ...rest }) {
   const { loading, error, data } = useQuery(GET_USER_DETAILS, {
     context: { clientName: 'userService' },
     fetchPolicy: 'no-cache',
@@ -93,4 +93,4 @@ function privateRouteWrapper({ component: ChildComponent, ...rest }) {
   );
 }
 
-export default privateRouteWrapper;
+export default PrivateRoute;
