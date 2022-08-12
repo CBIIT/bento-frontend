@@ -1,6 +1,6 @@
 export const coreRequirements = {
   frontend: '0.1.0',
-  backend: '',
+  backend: '4.6.0',
   'bento-tools': '0.1.105',
 };
 
