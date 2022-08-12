@@ -13,7 +13,11 @@ import {
 import RequestAccessView from './requestAccessView';
 
 const accessRequestController = ({ match }) => {
-  const { loading, error, data } = useQuery(GET_ACCESS_CONTROL_LEVEL_DETAILS_QUERY, { context: { clientName: 'userService' } });
+  const { loading, error, data } = useQuery(GET_ACCESS_CONTROL_LEVEL_DETAILS_QUERY,
+    {
+      context: { clientName: 'userService' },
+      fetchPolicy: 'no-cache',
+    });
 
   if (loading) return <CircularProgress />;
 
