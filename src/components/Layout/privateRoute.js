@@ -1,7 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { CircularProgress } from '@material-ui/core';
+import { useQuery } from '@apollo/client';
 import { Route, Redirect, useLocation } from 'react-router-dom';
-import globalData, { loginRoute, requestAccessRoute } from '../../bento/siteWideConfig';
+import GET_USER_DETAILS from '../../bento/authProviderData';
+import globalData, { loginRoute, requestAccessRoute, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
 
 /*
   Notes For Developer: We have 3 roles in Bento System.
@@ -42,7 +45,8 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
   const { isSignedIn, role } = useSelector((state) => state.login);
   const { pathname } = useLocation();
   const { access } = rest;
-  const hasAccess = (isSignedIn && access.includes(role));
+  const updateRole = (role === 'non-member' && PUBLIC_ACCESS === 'Metadata Only') ? 'member' : role;
+  const hasAccess = (isSignedIn && access.includes(updateRole));
 
   return (
     <Route render={(props) => {
@@ -63,4 +67,31 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
   );
 }
 
-export default PrivateRoute;
+function privateRouteWrapper({ component: ChildComponent, ...rest }) {
+  const { loading, error, data } = useQuery(GET_USER_DETAILS, {
+    context: { clientName: 'userService' },
+    fetchPolicy: 'no-cache',
+  });
+
+  // useEffect(() => {
+  //   if (data && data.getMyUser) {
+  //     signInRed(data.getMyUser);
+  //   }
+  // }, [data]);
+
+  if (loading) return <CircularProgress />;
+
+  if (error || !data) {
+    return (
+      <div variant="h5" color="error" size="sm">
+        {error ? 'Loggd Out. Please Sign in again.' : 'Recieved wrong data'}
+      </div>
+    );
+  }
+
+  return (
+    <PrivateRoute component={ChildComponent} {...rest} />
+  );
+}
+
+export default privateRouteWrapper;
