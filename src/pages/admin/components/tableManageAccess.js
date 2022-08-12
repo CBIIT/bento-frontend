@@ -8,8 +8,12 @@ import Link from '@material-ui/core/Link';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import { useQuery } from '@apollo/client';
-import { CustomDataTable } from 'bento-components';
-import { GET_LIST_USERS, useMock } from '../../../bento/adminData';
+import {
+  getColumns, getOptions, getDefaultCustomFooter, CustomDataTable,
+} from 'bento-components';
+import {
+  GET_LIST_USERS, useMock, tabManageAccess, nodeName, nodeField, nodeLevelAccess,
+} from '../../../bento/adminData';
 
 const TableManageAccess = ({ classes, includeNonMember }) => {
   // get data
@@ -33,60 +37,50 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
     );
   }
 
-  const columns = [{ name: 'displayName', label: 'Name' },
-    { name: 'IDP', label: 'Account Type' },
-    { name: 'email', label: 'Email' },
-    { name: 'organization', label: 'Organization' },
-    { name: 'userStatus', label: 'Membership Status' },
-    { name: 'role', label: 'Role' },
-    {
-      name: 'numberOfArms',
-      label: 'Arm(s)',
-      options: {
-        customBodyRender: (value, tableMeta) => {
-          const href = `/#/admin/view/${tableMeta.rowData[7]}`;
-          return (
-            <Link href={href}>
-              {' '}
-              {value}
-            </Link>
-          );
-        },
-      },
-    },
-    {
-      name: 'userID',
-      label: 'Actions',
-      options: {
-        customBodyRender: (value) => {
-          const href = `/#/admin/edit/${value}`;
-          return (
-            <Button
-              variant="contained"
-              component={Link}
-              href={href}
-              classes={{
-                root: classes.btn,
-              }}
-            >
-              Edit
-            </Button>
-          );
-        },
-      },
-    },
-  ];
+  const { table } = tabManageAccess;
 
-  const options = {
-    selectableRows: 'none',
-    responsive: 'stacked',
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    viewColumns: false,
-  };
+  const nodeLevelColumn = [{
+    name: nodeField,
+    label: nodeName,
+    options: {
+      customBodyRender: (value, tableMeta) => {
+        const href = `/#/admin/view/${tableMeta.rowData[7]}`;
+        return (
+          <Link href={href}>
+            {' '}
+            {value}
+          </Link>
+        );
+      },
+    },
+  }];
+
+  const actionColumn = [{
+    name: 'userID',
+    label: 'Actions',
+    options: {
+      customBodyRender: (value) => {
+        const href = `/#/admin/edit/${value}`;
+        return (
+          <Button
+            variant="contained"
+            component={Link}
+            href={href}
+            classes={{
+              root: classes.btn,
+            }}
+          >
+            Edit
+          </Button>
+        );
+      },
+    },
+  }];
+
+  const columns = nodeLevelAccess
+    ? getColumns(table, classes).concat(nodeLevelColumn).concat(actionColumn)
+    : getColumns(table, classes).concat(actionColumn);
+  const options = getOptions(table, classes, getDefaultCustomFooter);
 
   return (
     <>

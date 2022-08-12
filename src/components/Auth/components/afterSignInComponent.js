@@ -48,14 +48,26 @@ const AfterSignIn = ({
       {displayDropDownMenu
         ? (
           <Paper className={classes.paper}>
-            {role === 'admin' ? (
+            <div>
               <Button
-                onClick={() => redirectUser(adminPortal)}
+                onClick={() => redirectUser(userProfileRoute)}
                 classes={{ label: classes.textColor, text: classes.paddding0 }}
                 disableRipple
               >
-                Admin Portal
+                User Profile
               </Button>
+            </div>
+
+            {role === 'admin' ? (
+              <div>
+                <Button
+                  onClick={() => redirectUser(adminPortal)}
+                  classes={{ label: classes.textColor, text: classes.paddding0 }}
+                  disableRipple
+                >
+                  Admin Portal
+                </Button>
+              </div>
             )
               : (
                 <div>
@@ -68,15 +80,7 @@ const AfterSignIn = ({
                   </Button>
                 </div>
               )}
-            <div>
-              <Button
-                onClick={() => redirectUser(userProfileRoute)}
-                classes={{ label: classes.textColor, text: classes.paddding0 }}
-                disableRipple
-              >
-                User Profile
-              </Button>
-            </div>
+
             <Button
               onClick={signoutLink}
               classes={{ label: classes.textColor, text: classes.paddding0 }}

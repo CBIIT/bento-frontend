@@ -4,7 +4,6 @@ import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../../../components/Auth/AuthProvider';
 import AlertMessage from '../../../components/alertMessage';
-
 // Custodian data imports
 import {
   pageTitle,
@@ -27,40 +26,64 @@ function loginView({ classes }) {
   const history = useHistory();
   const query = useQuery();
   const internalRedirectPath = getRedirectPath(query);
+  const [error, setError] = React.useState('');
 
   const onSuccess = () => afterLoginRedirect(history, internalRedirectPath);
   const onError = () => {};
 
-  const signInCall = (provider) => {
-    // if(!provider.enabled) callAlert();
-    if (provider) {
-      if (provider.key === 'google') signInWithGoogle(onSuccess, onError);
-      if (provider.key === 'NIH') signInWithNIH({ internalRedirectPath });
-      if (provider.key === 'loginGov') signInWithNIH({ internalRedirectPath });
-    }
+  const defaultIdP = {
+    google: {
+      key: 'google',
+      icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/google.png',
+      loginButtonText: 'Sign in with Google',
+      enabled: true,
+    },
   };
 
-  const showAlert = (alertType) => {
+  let idps = loginProvidersData;
+  if (typeof (loginProvidersData) === 'undefined' || Object.values(loginProvidersData).length === 0) {
+    idps = defaultIdP;
+  }
+
+  const showAlert = (alertType, errorMsg) => {
+    const key = Math.random();
     if (alertType === 'error') {
-      return (
-        <AlertMessage severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000000}>
-          {/* {getErrorDetails()} */}
-          Sample
-        </AlertMessage>
+      setError(
+        <AlertMessage key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={500000}>
+          {errorMsg}
+        </AlertMessage>,
       );
     }
 
     if (alertType === 'redirect') {
-      return (
-        <AlertMessage severity="error" timeout={5000}>
+      setError(
+        <AlertMessage key={key} severity="error" timeout={5000}>
           Please sign in to access
           {' '}
           {internalRedirectPath}
-        </AlertMessage>
+        </AlertMessage>,
       );
     }
 
     return null;
+  };
+
+  const signInCall = (provider) => {
+    if (provider) {
+      switch (provider.key) {
+        case 'google':
+          signInWithGoogle(onSuccess, onError);
+          break;
+        case 'NIH':
+          signInWithNIH({ internalRedirectPath });
+          break;
+        case 'loginGov':
+          signInWithNIH({ internalRedirectPath });
+          break;
+        default:
+          showAlert('error', `The selected Identity Provider, ${provider.key}, is not currently supported. Please contact bento-help@nih.gov for more information.`);
+      }
+    }
   };
 
   return (
@@ -77,7 +100,7 @@ function loginView({ classes }) {
           {/* ######## ALERT MESSAGES ######## */}
           {/* TODO: Add error for whitelisted users */}
           {/* {showAlert('error')} */}
-          {internalRedirectPath !== '/' && showAlert('redirect')}
+          {error}
         </Grid>
 
         {/* ROW 2 */}
@@ -100,7 +123,7 @@ function loginView({ classes }) {
                   </div>
                   <Grid container item xs={12} justifyContent="center" className={classes.LoginButtonGroup}>
 
-                    {Object.values(loginProvidersData).map((provider) => (provider.enabled
+                    {Object.values(idps).map((provider) => (provider.enabled
                       ? (
                         <Grid container item xs={12} justifyContent="center">
                           <Button
