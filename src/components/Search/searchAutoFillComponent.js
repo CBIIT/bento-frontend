@@ -51,18 +51,20 @@ function searchComponent({ classes }) {
     const mapOption = keys.map((key, ind) => searchResp[key].map((id) => (id[datafields[ind]])));
     const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
 
-    setOptions(option.length === 0 ? [] : [...option.slice(0, 6),
-      <div onClick={() => {}}>
-        Press ENTER for more search results
-        {' '}
-        <span>
-          <img
-            className={classes.enterIcon}
-            src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/EnterIcon.svg"
-            alt="enter icon"
-          />
-        </span>
-      </div>]);
+    if (isAuthorized) {
+      setOptions(option.length === 0 ? [] : [...option.slice(0, 6),
+        <div onClick={() => {}}>
+          Press ENTER for more search results
+          {' '}
+          <span>
+            <img
+              className={classes.enterIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/EnterIcon.svg"
+              alt="enter icon"
+            />
+          </span>
+        </div>]);
+    }
   }
   const CustomPopper = (props) => (
     <Popper
