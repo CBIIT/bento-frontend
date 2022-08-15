@@ -23,7 +23,7 @@ const userService = new HttpLink({
 });
 
 const publicService = new HttpLink({
-  url: PUBLIC_BACKEND,
+  uri: PUBLIC_BACKEND,
 });
 
 const mockService = new HttpLink({
@@ -33,26 +33,56 @@ const mockService = new HttpLink({
   },
 });
 
+const serviceMap = {
+  backendService,
+  authService,
+  userService,
+  publicService,
+  mockService,
+};
+
+const getService = (strname) => {
+  if (!strname || typeof strname !== 'string' || strname.length === 0) {
+    return serviceMap.backendService;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(serviceMap, strname)) {
+    return serviceMap[strname];
+  }
+
+  return serviceMap.backendService;
+};
+
+// const client = new ApolloClient({
+//   cache: new InMemoryCache(),
+//   link: ApolloLink.split(
+//     (operation) => operation.getContext().clientName === 'mockService',
+//     mockService,
+//     ApolloLink.split(
+//       (operation) => operation.getContext().clientName === 'authService',
+//       // the string "authService" can be anything you want,
+//       authService, // <= apollo will send to this if clientName is "authService"
+//       ApolloLink.split(
+//         (operation) => operation.getContext().clientName === 'publicService',
+//         publicService,
+//         ApolloLink.split( // This is 2nd level of ApolloLink.
+//           (operation) => operation.getContext().clientName === 'userService',
+//           // the string "userService" can be anything you want,
+//           userService, // <= apollo will send to this if clientName is "userService"
+//           backendService, // <= otherwise will send to this
+//         ), // <= otherwise will send to this
+//       ),
+//     ),
+//   ),
+// });
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: ApolloLink.split(
-    (operation) => operation.getContext().clientName === 'mockService',
-    mockService,
-    ApolloLink.split(
-      (operation) => operation.getContext().clientName === 'authService',
-      // the string "authService" can be anything you want,
-      authService, // <= apollo will send to this if clientName is "authService"
-      ApolloLink.split(
-        (operation) => operation.getContext().clientName === 'publicService',
-        publicService,
-        ApolloLink.split( // This is 2nd level of ApolloLink.
-          (operation) => operation.getContext().clientName === 'userService',
-          // the string "userService" can be anything you want,
-          userService, // <= apollo will send to this if clientName is "userService"
-          backendService, // <= otherwise will send to this
-        ), // <= otherwise will send to this
-      ),
-    ),
-  ),
+  link: ApolloLink.split((op) => op.getContext().clientName === 'mockService', mockService,
+    ApolloLink.split((op) => op.getContext().clientName === 'authService', authService,
+      ApolloLink.split((op) => op.getContext().clientName === 'userService', userService,
+        ApolloLink.split((op) => op.getContext().clientName === 'publicService', publicService),
+        backendService))),
 });
+
 export default client;

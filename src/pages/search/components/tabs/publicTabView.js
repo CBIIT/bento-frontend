@@ -1,8 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
 import {
-  SEARCH_PAGE_RESULT_ABOUT,
-  SEARCH_PAGE_RESULT_FILES, SEARCH_PAGE_RESULT_MODEL, SEARCH_PAGE_RESULT_PROGRAM,
+  SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
+  SEARCH_PAGE_RESULT_FILES, SEARCH_PAGE_RESULT_MODEL, SEARCH_PAGE_RESULT_PROGRAM_PUBLIC,
   SEARCH_PAGE_RESULT_SAMPLES, SEARCH_PAGE_RESULT_STUDIES,
   SEARCH_PAGE_RESULT_SUBJECTS,
 } from '../../../../bento/search';
@@ -50,9 +50,9 @@ export const getTabProperties = (classes, searchResults) => [
       root: classes.buttonRoot,
       wrapper: classes.programTab,
     },
-    queryForApi: SEARCH_PAGE_RESULT_PROGRAM,
+    queryForApi: SEARCH_PAGE_RESULT_PROGRAM_PUBLIC,
     count: searchResults.program_count || 0,
-    value: 'inactive-5',
+    value: '5',
   },
   {
     name: 'Studies',
@@ -74,7 +74,7 @@ export const getTabProperties = (classes, searchResults) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_MODEL,
     count: searchResults.model_count || 0,
-    value: 'inactive-7',
+    value: '7',
   },
   {
     name: 'About',
@@ -83,7 +83,7 @@ export const getTabProperties = (classes, searchResults) => [
       root: classes.buttonRoot,
       wrapper: classes.aboutTab,
     },
-    queryForApi: SEARCH_PAGE_RESULT_ABOUT,
+    queryForApi: SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
     count: searchResults.about_count || 0,
     value: '8',
   },

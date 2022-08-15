@@ -8,17 +8,13 @@ export const programListingIcon = {
   alt: 'Bento program logo',
 };
 
+/** Public search queries */
+
 export const SEARCH_PUBLIC = gql`
-    query publicGlobalsearchQuery($input: String) {
-        publicGlobalsearchQuery(input: $input) {
+    query publicGlobalSearchQuery($input: String) {
+        publicGlobalSearch(input: $input) {
             model_count
             about_count
-            programs {
-                program_id
-            }
-            studies {
-                study_id
-            }
             programs{
                 type
                 program_id
@@ -44,6 +40,54 @@ export const SEARCH_PUBLIC = gql`
         }
     }
 `;
+
+export const SEARCH_PAGE_RESULT_PROGRAM_PUBLIC = gql`
+    query publicGlobalSearchQuery($input: String, $first: Int, $offset: Int) {
+        publicGlobalSearchQuery(
+            input: $input
+            first: $first
+            offset: $offset) {
+            programs{
+                type
+                program_id
+                program_name
+                program_code
+            }
+        }
+    }
+`;
+
+export const SEARCH_PAGE_RESULT_ABOUT_PUBLIC = gql`
+    query publicGlobalSearch($input: String, $first: Int, $offset: Int){
+        publicGlobalSearch(
+            input: $input
+            first: $first
+            offset: $offset
+        ) {
+            about_page {
+                type
+                text
+                page
+                title
+            }
+        }
+    }`;
+
+export const SEARCH_PAGE_RESULTS_PUBLIC = gql`
+    query publicGlobalSearch($input: String, $first: Int, $offset: Int){
+        publicGlobalSearch(
+            input: $input
+            first: $first
+            offset: $offset
+        ) {
+            program_count
+            model_count
+            about_count
+        }
+    }
+`;
+
+/** End of public searches */
 
 export const SEARCH = gql`
     query globalSearch($input: String){

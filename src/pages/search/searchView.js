@@ -7,7 +7,12 @@ import {
 } from '@material-ui/lab';
 import { useHistory } from 'react-router-dom'; // version 5.2.0
 
-import { getSearch, getSearchPageResults, getSearchPublic } from '../dashboardTab/store/dashboardReducer';
+import {
+  getPublicSearchPageResults,
+  getSearch,
+  getSearchPageResults,
+  getSearchPublic,
+} from '../dashboardTab/store/dashboardReducer';
 
 import PrivateTabView from './components/tabs/privateTabView';
 import PublicTabView from './components/tabs/publicTabView';
@@ -30,14 +35,26 @@ function searchComponent({
     const activeVal = newValue.split('-')[0];
 
     if (activeVal === 'inactive') {
+      if (loggedIn && !isAuthorized) {
+        history.push(`/request?redirect=/search/${searchText}`);
+        return;
+      }
       history.push(`/login?redirect=/search/${searchText}`);
       return;
     }
     setTab(activeVal);
   };
 
+  const getAuthorizedResultQuery = (strValue) => {
+    if (isAuthorized) {
+      return getSearchPageResults(strValue);
+    }
+
+    return getPublicSearchPageResults(strValue);
+  };
+
   async function onChange(newValue = []) {
-    const searchResp = await getSearchPageResults(newValue);
+    const searchResp = await getAuthorizedResultQuery(newValue);
     setSearchResults(searchResp);
     setTab('1');
     setOptions([]);
@@ -75,11 +92,19 @@ function searchComponent({
     }
     setInputValue(newValue);
     const searchResp = await getSearchMethod()(newValue);
-    const keys = ['programs', 'studies', 'subjects', 'samples', 'files', 'model'];
-    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id', 'node_name'];
+    const keys = {
+      public: ['programs', 'model'],
+      private: ['programs', 'studies', 'subjects', 'samples', 'files', 'model'],
+    };
+    const datafields = {
+      private: ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id', 'node_name'],
+      public: ['program_id', 'node_name'],
+    };
 
-    const mapOption = keys.map(
-      (key, index) => searchResp[key].map((id) => (id[datafields[index]])),
+    const mapOption = (isAuthorized ? keys.private : keys.public).map(
+      (key, index) => searchResp[key].map(
+        (id) => (id[isAuthorized ? datafields.private[index] : datafields.public[index]]),
+      ),
     );
     const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
     setOptions(newValue !== '' ? [...[newValue.toUpperCase()], ...option] : option);

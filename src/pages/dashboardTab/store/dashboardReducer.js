@@ -15,7 +15,9 @@ import {
 } from 'bento-components';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
-import { SEARCH_PAGE_RESULTS, SEARCH } from '../../../bento/search';
+import {
+  SEARCH_PAGE_RESULTS, SEARCH, SEARCH_PUBLIC, SEARCH_PAGE_RESULTS_PUBLIC,
+} from '../../../bento/search';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';
 import { widgetsData, facetSearchData } from '../../../bento/dashboardData';
 
@@ -118,11 +120,12 @@ function customizer(objValue, srcValue) {
 
 export async function getSearchPublic(inputValue) {
   const allIds = await client.query({
-    query: SEARCH,
+    query: SEARCH_PUBLIC,
     variables: {
       input: inputValue,
     },
-  }).then((results) => (results.data.globalSearch));
+    context: { clientName: 'publicService' },
+  }).then((results) => (results.data.publicGlobalSearch));
 
   return allIds;
 }
@@ -137,6 +140,17 @@ export async function getSearch(inputVlaue) {
     })
     .then((result) => result.data.globalSearch);
   return allids;
+}
+
+export async function getPublicSearchPageResults(inputValue) {
+  const allIds = await client.query({
+    query: SEARCH_PAGE_RESULTS_PUBLIC,
+    variables: {
+      input: inputValue,
+    },
+    context: { clientName: 'publicService' },
+  }).then((response) => response.data.publicGlobalSearch);
+  return allIds;
 }
 
 export async function getSearchPageResults(inputVlaue) {
