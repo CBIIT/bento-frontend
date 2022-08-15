@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -10,6 +10,7 @@ import {
   pageTitle,
   loginProvidersData,
 } from '../../../bento/userLoginData';
+import globalData from '../../../bento/siteWideConfig';
 import { afterLoginRedirect } from '../../../components/Layout/privateRoute';
 
 function useQuery() {
@@ -24,44 +25,75 @@ function getRedirectPath(query) {
 
 function loginView({ classes }) {
   const { signInWithGoogle, signInWithNIH } = useAuth();
+  const { authProviders } = globalData;
   const history = useHistory();
   const query = useQuery();
   const internalRedirectPath = getRedirectPath(query);
+  const [error, setError] = React.useState('');
 
   const onSuccess = () => afterLoginRedirect(history, internalRedirectPath);
   const onError = () => {};
 
-  const signInCall = (provider) => {
-    // if(!provider.enabled) callAlert();
-    if (provider) {
-      if (provider.key === 'google') signInWithGoogle(onSuccess, onError);
-      if (provider.key === 'NIH') signInWithNIH({ internalRedirectPath });
-      if (provider.key === 'loginGov') signInWithNIH({ internalRedirectPath });
-    }
+  const defaultIdP = {
+    google: {
+      key: 'google',
+      icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/google.png',
+      loginButtonText: 'Sign in with Google',
+    },
   };
 
-  const showAlert = (alertType) => {
+  function filterObject(obj, callback) {
+    return Object.fromEntries(Object.entries(obj).filter(([key]) => callback(key)));
+  }
+
+  let idps = filterObject(loginProvidersData, (key) => authProviders.includes(key));
+
+  if (typeof (idps) === 'undefined' || Object.values(idps).length === 0) {
+    idps = defaultIdP;
+  }
+
+  const showAlert = (alertType, errorMsg) => {
+    const key = Math.random();
     if (alertType === 'error') {
-      return (
-        <AlertMessage severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000000}>
-          {/* {getErrorDetails()} */}
-          Sample
-        </AlertMessage>
+      setError(
+        <AlertMessage key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={500000}>
+          {errorMsg}
+        </AlertMessage>,
       );
     }
 
     if (alertType === 'redirect') {
-      return (
-        <AlertMessage severity="error" timeout={5000}>
-          Please sign in to access
-          {' '}
-          {internalRedirectPath}
-        </AlertMessage>
+      setError(
+        <AlertMessage key={key} severity="error" timeout={5000}>
+          Please login to access protected pages
+        </AlertMessage>,
       );
     }
 
     return null;
   };
+
+  const signInCall = (provider) => {
+    if (provider) {
+      switch (provider.key) {
+        case 'google':
+          signInWithGoogle(onSuccess, onError);
+          break;
+        case 'nih':
+          signInWithNIH({ internalRedirectPath });
+          break;
+        case 'loginGov':
+          signInWithNIH({ internalRedirectPath });
+          break;
+        default:
+          showAlert('error', `The selected Identity Provider, ${provider.key}, is not currently supported. Please contact bento-help@nih.gov for more information.`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    showAlert('redirect');
+  }, [internalRedirectPath]);
 
   return (
     <div className={classes.Container}>
@@ -74,10 +106,7 @@ function loginView({ classes }) {
       >
         {/* Top Space */}
         <Grid container item justifyContent="center" className={classes.emptySpace}>
-          {/* ######## ALERT MESSAGES ######## */}
-          {/* TODO: Add error for whitelisted users */}
-          {/* {showAlert('error')} */}
-          {internalRedirectPath !== '/' && showAlert('redirect')}
+          {error}
         </Grid>
 
         {/* ROW 2 */}
@@ -88,40 +117,35 @@ function loginView({ classes }) {
 
             <Grid container item sm={4} justifyContent="center">
               {/* Page Title */}
-              <div className={classes.pageTitle}>
+              <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.pageTitle}>
                 {pageTitle}
-              </div>
+              </Grid>
 
               {/* Login Box */}
-              <div className={classes.Box}>
-                <Grid container alignItems="center" justify="center" direction="column">
-                  <div className={classes.LoginBoxTitle}>
-                    Log in with either of these Identity providers:
-                  </div>
-                  <Grid container item xs={12} justifyContent="center" className={classes.LoginButtonGroup}>
-
-                    {Object.values(loginProvidersData).map((provider) => (provider.enabled
-                      ? (
-                        <Grid container item xs={12} justifyContent="center">
-                          <Button
-                            variant="outlined"
-                            className={[classes.LoginButton, classes.Color_092E50]}
-                            disableRipple
-                            onClick={() => signInCall(provider)}
-                          >
-                            <Grid container item xs={1} justifyContent="center">
-                              <img src={provider.icon} className={classes.root} alt="alt coming" />
-                            </Grid>
-                            <Grid container item xs={11} justifyContent="center">
-                              {provider.loginButtonText}
-                            </Grid>
-                          </Button>
-                        </Grid>
-                      )
-                      : null))}
-                  </Grid>
+              <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.Box}>
+                <Grid container item justifyContent="center" className={classes.LoginBoxTitle}>
+                  Log in with either of these Identity providers:
                 </Grid>
-              </div>
+                <Grid container item justifyContent="center" className={classes.LoginButtonGroup}>
+                  {Object.values(idps).map((provider) => (
+                    <Grid container item xs={12} justifyContent="center">
+                      <Button
+                        variant="outlined"
+                        className={[classes.LoginButton, classes.Color_092E50]}
+                        disableRipple
+                        onClick={() => signInCall(provider)}
+                      >
+                        <Grid container item xs={1} justifyContent="center">
+                          <img src={provider.icon} className={classes.root} alt="alt coming" />
+                        </Grid>
+                        <Grid container item xs={11} justifyContent="center">
+                          {provider.loginButtonText}
+                        </Grid>
+                      </Button>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
             </Grid>
 
             {/* Spacing */}

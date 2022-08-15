@@ -42,7 +42,7 @@ const IndexPage = ({ classes }) => {
 
   return (
     <>
-      {globalData.enableAuthentication && (typeof globalData.authEndPoint === 'undefined' || globalData.authEndPoint.includes('google') || globalData.authEndPoint.includes('Google') || globalData.authEndPoint === []) && (
+      {globalData.enableAuthentication && (typeof globalData.authProviders === 'undefined' || globalData.authProviders.includes('google') || globalData.authProviders.includes('Google') || globalData.authProviders === []) && (
       <>
         { (isSignedIn) ? (
           <>
