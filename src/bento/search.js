@@ -8,8 +8,18 @@ export const programListingIcon = {
   alt: 'Bento program logo',
 };
 
-/** Public search queries */
+/** certain search data items */
+export const SEARCH_KEYS = {
+  public: ['programs', 'model'],
+  private: ['programs', 'studies', 'subjects', 'samples', 'files'],
+};
 
+export const SEARCH_DATAFIELDS = {
+  public: ['program_id', 'node_name'],
+  private: ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'],
+};
+
+/** Public search queries */
 export const SEARCH_PUBLIC = gql`
     query publicGlobalSearchQuery($input: String) {
         publicGlobalSearch(input: $input) {

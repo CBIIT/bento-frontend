@@ -5,19 +5,16 @@ import {
 import { Search as SearchIcon } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useSelector } from 'react-redux';
 import { getSearch, getSearchPublic } from '../../pages/dashboardTab/store/dashboardReducer';
-import { getFromLocalStorage } from '../../utils/localStorage';
+import { SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
 
 function searchComponent({ classes }) {
   const history = useHistory();
-  const userData = getFromLocalStorage('userDetails');
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [isAuthorized, setIsAuthorized] = React.useState(false);
-
-  if (userData.userDetails && userData.userDetails.firstName.length) {
-    setLoggedIn(true);
-    setIsAuthorized(userData.userDetails.acl.some((armData) => armData.accessStatus === 'approved'));
-  }
+  const { isSignedIn } = useSelector((state) => state && state.login.isSignedIn);
+  const isAuthorized = isSignedIn && useSelector(
+    (state) => state.login.acl.some((arm) => arm.accessStatus === 'approved'),
+  );
 
   const [open] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
@@ -38,7 +35,7 @@ function searchComponent({ classes }) {
   }
 
   function getSearchQuery() {
-    if (loggedIn && isAuthorized) {
+    if (isAuthorized) {
       return getSearch;
     }
 
@@ -48,8 +45,8 @@ function searchComponent({ classes }) {
   async function getAutoCompleteRes(newValue = []) {
     setInputValue(newValue);
     const searchResp = await getSearchQuery()(newValue);
-    const keys = ['programs', 'studies', 'subjects', 'samples', 'files'];
-    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'];
+    const keys = isAuthorized ? SEARCH_KEYS.private : SEARCH_KEYS.public;
+    const datafields = isAuthorized ? SEARCH_DATAFIELDS.private : SEARCH_DATAFIELDS.public;
 
     const mapOption = keys.map((key, ind) => searchResp[key].map((id) => (id[datafields[ind]])));
     const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
