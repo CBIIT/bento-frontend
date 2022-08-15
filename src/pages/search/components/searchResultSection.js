@@ -14,11 +14,14 @@ import {
   SEARCH_PAGE_RESULT_FILES,
   SEARCH_PAGE_RESULT_MODEL,
   SEARCH_PAGE_RESULT_ABOUT,
+  SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
+  SEARCH_PAGE_RESULT_MODEL_PUBLIC,
+  SEARCH_PAGE_RESULT_PROGRAM_PUBLIC,
 } from '../../../bento/search';
-import { getSearchPageResults } from '../../dashboardTab/store/dashboardReducer';
+import { getSearchPageResults, getPublicSearchPageResults } from '../../dashboardTab/store/dashboardReducer';
 
 function SearchPagination({
-  datafield, classes, searchText, count,
+  datafield, classes, searchText, count, isPublic,
 }) {
   const [page, setPage] = useState(1);
 
@@ -27,7 +30,8 @@ function SearchPagination({
 
   async function getAll(newPage, calcOffset) {
     // const calcOffset = (newPage - 1) * pageSize;
-    const searchResp = await getSearchPageResults(searchText);
+    const searchResp = isPublic
+      ? await getPublicSearchPageResults(searchText) : await getSearchPageResults(searchText);
 
     const custodianConfigForTabData = [
       { countField: 'subject_count', nameField: 'subjects' },
@@ -58,6 +62,21 @@ function SearchPagination({
     return { datafieldValue: 'subject', offsetValue: 0 };
   }
 
+  function getPublicQuery(field) {
+    switch (field) {
+      case 'all':
+        return { QUERY: SEARCH_PAGE_RESULT_ABOUT_PUBLIC, field: 'all' };
+      case 'programs':
+        return { QUERY: SEARCH_PAGE_RESULT_PROGRAM_PUBLIC, field: 'programs' };
+      case 'model':
+        return { QUERY: SEARCH_PAGE_RESULT_MODEL_PUBLIC, field: 'model' };
+      case 'about_page':
+        return { QUERY: SEARCH_PAGE_RESULT_ABOUT_PUBLIC, field: 'about_page' };
+      default:
+        return { QUERY: SEARCH_PAGE_RESULT_ABOUT_PUBLIC, field: 'about_page' };
+    }
+  }
+
   function getQuery(field) {
     switch (field) {
       case 'all':
@@ -83,7 +102,7 @@ function SearchPagination({
 
   async function getDataForAll(inputVlaue, newPage, calcOffset) {
     const { datafieldValue, offsetValue } = await getAll(newPage, calcOffset);
-    const { QUERY } = getQuery(datafieldValue);
+    const { QUERY } = isPublic ? getPublicQuery(datafieldValue) : getQuery(datafieldValue);
     const allids = await client
       .query({
         query: QUERY,
@@ -92,8 +111,11 @@ function SearchPagination({
           first: pageSize,
           offset: offsetValue,
         },
+        context: {
+          clientName: isPublic ? 'publicService' : '',
+        },
       })
-      .then((result) => result.data.globalSearch);
+      .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch));
     return allids[datafieldValue];
   }
 
@@ -111,9 +133,10 @@ function SearchPagination({
             calcOffset2 = (newPage - 1) * pageSize + allData.length;
           }
         }
-        return allData.slice(0, pageSize);
+
+        return allData && allData.slice(0, pageSize);
       }
-      const { QUERY, field } = getQuery(datafield);
+      const { QUERY, field } = isPublic ? getPublicQuery(datafield) : getQuery(datafield);
       const allids = await client
         .query({
           query: QUERY,
@@ -122,8 +145,11 @@ function SearchPagination({
             first: pageSize,
             offset: (newPage - 1) * pageSize,
           },
+          context: {
+            clientName: isPublic ? 'publicService' : '',
+          },
         })
-        .then((result) => result.data.globalSearch);
+        .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch));
       return allids[field].slice(0, pageSize);
     }
     return [];

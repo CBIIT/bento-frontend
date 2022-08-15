@@ -9,7 +9,21 @@ import {
 import styles from '../../styles';
 import SearchViewTabs from './searchViewTabs';
 
-export const getTabProperties = (classes, searchResults) => [
+const allCount = (searchResults) => (searchResults.program_count
+  + searchResults.model_count + searchResults.about_count);
+
+const getTabProperties = (classes, searchResults, allLabel) => [
+  {
+    name: allLabel && typeof allLabel === 'function' ? allLabel() : 'All',
+    datafield: 'all',
+    classes: {
+      root: classes.buttonRoot,
+      wrapper: classes.allTab,
+    },
+    queryForApi: SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
+    count: allCount(searchResults) || 0,
+    value: '1',
+  },
   {
     name: 'Cases',
     datafield: 'subjects',
@@ -90,15 +104,27 @@ export const getTabProperties = (classes, searchResults) => [
 ];
 
 const PublicTabView = ({
-  AllLabel, classes, options, tab, searchText,
+  classes, options, tab, searchText,
 }) => {
   const { searchResults } = options;
   const tabProperties = getTabProperties(classes, searchResults);
+
+  const AllLabel = () => (
+    <div>
+      <img
+        className={classes.filterIcon}
+        src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/FunnelIcon.svg"
+        alt="filter icon"
+      />
+      <span classes={classes.allText}>ALL</span>
+    </div>
+  );
 
   return (
     <SearchViewTabs
       AllLabel={AllLabel}
       classes={classes}
+      isPublic
       options={{ ...options, properties: tabProperties }}
       tab={tab}
       searchText={searchText}

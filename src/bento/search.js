@@ -87,6 +87,27 @@ export const SEARCH_PAGE_RESULTS_PUBLIC = gql`
     }
 `;
 
+export const SEARCH_PAGE_RESULT_MODEL_PUBLIC = gql`
+    query publicGlobalSearch($input: String, $first: Int, $offset: Int){
+        publicGlobalSearch(
+            input: $input
+            first: $first
+            offset: $offset
+        ) {
+            model {
+                type
+                node_name
+                property_name
+                property_description
+                property_required
+                property_type
+                value
+                highlight
+            }
+        }
+    }
+`;
+
 /** End of public searches */
 
 export const SEARCH = gql`

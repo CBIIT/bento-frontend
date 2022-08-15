@@ -18,11 +18,10 @@ import PrivateTabView from './components/tabs/privateTabView';
 import PublicTabView from './components/tabs/publicTabView';
 
 function searchComponent({
-  classes, searchparam = '', loggedIn, userInformation,
+  classes, searchparam = '', isSignedIn, isAuthorized,
 }) {
   const [tab, setTab] = React.useState('1');
   const history = useHistory();
-  const isAuthorized = userInformation && userInformation.getMyUser.acl.some((arm) => arm.accessStatus === 'approved');
   const [open] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
   const [searchText, setSearchText] = React.useState('');
@@ -35,7 +34,7 @@ function searchComponent({
     const activeVal = newValue.split('-')[0];
 
     if (activeVal === 'inactive') {
-      if (loggedIn && !isAuthorized) {
+      if (isSignedIn && !isAuthorized) {
         history.push(`/request?redirect=/search/${searchText}`);
         return;
       }
@@ -63,22 +62,12 @@ function searchComponent({
   }
 
   const CustomPopper = (props) => <Popper {...props} className={classes.root} placement="bottom" />;
-  const AllLabel = () => (
-    <div>
-      <img
-        className={classes.filterIcon}
-        src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/FunnelIcon.svg"
-        alt="filter icon"
-      />
-      <span classes={classes.allText}>ALL</span>
-    </div>
-  );
 
   /**
    * Chooses the search method based on whether user is logged in,
    * returns function */
   function getSearchMethod() {
-    if ((loggedIn && isAuthorized)) {
+    if ((isSignedIn && isAuthorized)) {
       return getSearch;
     }
 
@@ -183,13 +172,12 @@ function searchComponent({
       </div>
       <div className={classes.bodyContainer}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
-          {loggedIn && isAuthorized
+          {isSignedIn && isAuthorized
             ? (
               <PrivateTabView
                 tab={tab}
                 options={{ handleChange, searchResults }}
                 classes={classes}
-                AllLabel={AllLabel}
                 searchText={searchText}
               />
             ) : (
@@ -197,7 +185,6 @@ function searchComponent({
                 tab={tab}
                 options={{ handleChange, searchResults }}
                 classes={classes}
-                AllLabel={AllLabel}
                 searchText={searchText}
               />
             )}

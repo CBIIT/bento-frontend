@@ -53,36 +53,27 @@ const getService = (strname) => {
   return serviceMap.backendService;
 };
 
-// const client = new ApolloClient({
-//   cache: new InMemoryCache(),
-//   link: ApolloLink.split(
-//     (operation) => operation.getContext().clientName === 'mockService',
-//     mockService,
-//     ApolloLink.split(
-//       (operation) => operation.getContext().clientName === 'authService',
-//       // the string "authService" can be anything you want,
-//       authService, // <= apollo will send to this if clientName is "authService"
-//       ApolloLink.split(
-//         (operation) => operation.getContext().clientName === 'publicService',
-//         publicService,
-//         ApolloLink.split( // This is 2nd level of ApolloLink.
-//           (operation) => operation.getContext().clientName === 'userService',
-//           // the string "userService" can be anything you want,
-//           userService, // <= apollo will send to this if clientName is "userService"
-//           backendService, // <= otherwise will send to this
-//         ), // <= otherwise will send to this
-//       ),
-//     ),
-//   ),
-// });
-
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: ApolloLink.split((op) => op.getContext().clientName === 'mockService', mockService,
-    ApolloLink.split((op) => op.getContext().clientName === 'authService', authService,
-      ApolloLink.split((op) => op.getContext().clientName === 'userService', userService,
-        ApolloLink.split((op) => op.getContext().clientName === 'publicService', publicService),
-        backendService))),
+  link: ApolloLink.split(
+    (op) => op.getContext().clientName === 'publicService',
+    publicService,
+    ApolloLink.split(
+      (operation) => operation.getContext().clientName === 'mockService',
+      mockService,
+      ApolloLink.split(
+        (operation) => operation.getContext().clientName === 'authService',
+        // the string "authService" can be anything you want,
+        authService, // <= apollo will send to this if clientName is "authService"
+        ApolloLink.split( // This is 2nd level of ApolloLink.
+          (operation) => operation.getContext().clientName === 'userService',
+          // the string "userService" can be anything you want,
+          userService, // <= apollo will send to this if clientName is "userService"
+          backendService, // <= otherwise will send to this
+        ), // <= otherwise will send to this
+      ),
+    ),
+  ),
 });
 
 export default client;
