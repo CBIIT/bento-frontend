@@ -4,7 +4,7 @@ import {
   SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
   SEARCH_PAGE_RESULT_FILES, SEARCH_PAGE_RESULT_MODEL, SEARCH_PAGE_RESULT_PROGRAM_PUBLIC,
   SEARCH_PAGE_RESULT_SAMPLES, SEARCH_PAGE_RESULT_STUDIES,
-  SEARCH_PAGE_RESULT_SUBJECTS,
+  SEARCH_PAGE_RESULT_SUBJECTS, SEARCH_PUBLIC,
 } from '../../../../bento/search';
 import styles from '../../styles';
 import SearchViewTabs from './searchViewTabs';
@@ -20,7 +20,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
       root: classes.buttonRoot,
       wrapper: classes.allTab,
     },
-    queryForApi: SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
+    queryForApi: SEARCH_PUBLIC,
     count: allCount(searchResults) || 0,
     value: '1',
   },

@@ -15,6 +15,7 @@ export const SEARCH_PUBLIC = gql`
         publicGlobalSearch(input: $input) {
             model_count
             about_count
+            program_count
             programs{
                 type
                 program_id
