@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Button, Grid, Typography, withStyles,
 } from '@material-ui/core';
-import { cn, CustomDataTable } from 'bento-components';
+import { cn, CustomDataTable, getColumns } from 'bento-components';
 import { useMutation } from '@apollo/client';
 import Stats from '../../../components/Stats/AllStatsController';
 import CustomizedDialogs from './components/Dialog';
@@ -12,8 +12,9 @@ import {
   rejectCommentField,
   approveCommentField,
   adminPortalIcon,
+  getReviewDARConfig,
 } from '../../../bento/adminData';
-import getFormattedDate, { getOnlyRequestedArms, showAlert } from './utils/reviewDARUtilFun';
+import { filterData, showAlert } from './utils/reviewDARUtilFun';
 
 const ReviewRequestView = ({ classes, data }) => {
   const { getUser } = data;
@@ -29,8 +30,8 @@ const ReviewRequestView = ({ classes, data }) => {
   const [openRejectDialog, setOpenRejectDialog] = useState(false);
 
   const [armsToBeGivenAccess, setArmsToBeGivenAccess] = useState([]);
-  // Get Arms with pending Status
-  const [filteredArms, setFilteredArms] = useState(getOnlyRequestedArms(arms));
+  // Get Arms with pending Status and formatted date
+  const [filteredArms, setFilteredArms] = useState(filterData(arms));
 
   const [comment, setComment] = useState('');
 
@@ -92,17 +93,12 @@ const ReviewRequestView = ({ classes, data }) => {
     },
   });
 
-  const columns = [
-    { name: 'armName', label: 'Arm(s)' },
-    {
-      name: 'requestDate',
-      label: 'Request Date',
-      options: { customBodyRender: (value) => <p>{getFormattedDate(value)}</p> },
-    },
+  const actionColumn = [
     {
       name: 'armID',
-      label: 'Actions',
+      label: 'Action',
       options: {
+        sort: false,
         customBodyRender: (value) => (
           <div>
             <Button
@@ -125,6 +121,9 @@ const ReviewRequestView = ({ classes, data }) => {
       },
     },
   ];
+  const tableConfig = getReviewDARConfig();
+
+  const columns = getColumns(tableConfig, classes).concat(actionColumn);
 
   // Table Options
   const options = {

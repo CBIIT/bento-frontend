@@ -1,26 +1,18 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 import AlertMessage from '../components/AlertView';
+import getDateInFormat from '../../../../utils/date';
 
-const getFormattedDate = (strDate) => {
-  const date = new Date(strDate);
-
-  const year = date.getFullYear();
-
-  let month = (1 + date.getMonth()).toString();
-  month = month.length > 1 ? month : '0'.concat(month);
-
-  let day = date.getDate().toString();
-  day = day.length > 1 ? day : '0'.concat(day);
-
-  return `${month}/${day}/${year}`;
-};
-
-// Filter data arms that only has requested for accessStatus
-export const getOnlyRequestedArms = (userArmData) => {
-  let filteredData = userArmData || [];
-  if (userArmData) {
-    filteredData = userArmData.filter((arm) => arm.accessStatus === 'pending');
+// Filter data based on "accessStatus" being equal to "pending", then reformat "requestDate"
+export const filterData = (userData) => {
+  let filteredData = [];
+  if (userData && Array.isArray(userData)) {
+    filteredData = userData
+      .filter((element) => element.accessStatus === 'pending')
+      .map((element) => {
+        const formattedDate = getDateInFormat(element.requestDate, '/');
+        return { ...element, requestDate: formattedDate };
+      });
   }
   return filteredData;
 };
@@ -40,4 +32,4 @@ export const showAlert = (accessStatus, setAccessStatus) => {
   return <></>;
 };
 
-export default getFormattedDate;
+export default filterData;

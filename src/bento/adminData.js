@@ -114,6 +114,25 @@ export const tabManageAccess = {
 
 };
 
+// --------------- Columns Configuration for Review DAR Table --------------
+export const getReviewDARConfig = () => ({
+  // Set 'display' to false to hide the table entirely
+  display: true,
+  title: 'Review individual pending data access requests',
+  columns: [
+    {
+      dataField: 'armName',
+      header: nodeLevelAccess ? nodeName : 'Data Commons',
+      display: true,
+    },
+    {
+      dataField: 'requestDate',
+      header: 'Request Date',
+      display: true,
+    },
+  ],
+});
+
 // --------------- GraphQL query configuration --------------
 
 // Get a list of MEMBER info  role == member
