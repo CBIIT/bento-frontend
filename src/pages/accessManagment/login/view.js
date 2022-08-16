@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useAuth } from '../../../components/Auth/AuthProvider';
 import AlertMessage from '../../../components/alertMessage';
+
 // Custodian data imports
 import {
   pageTitle,
   loginProvidersData,
 } from '../../../bento/userLoginData';
+import globalData from '../../../bento/siteWideConfig';
 import { afterLoginRedirect } from '../../../components/Layout/privateRoute';
 
 function useQuery() {
@@ -23,6 +25,7 @@ function getRedirectPath(query) {
 
 function loginView({ classes }) {
   const { signInWithGoogle, signInWithNIH } = useAuth();
+  const { authProviders } = globalData;
   const history = useHistory();
   const query = useQuery();
   const internalRedirectPath = getRedirectPath(query);
@@ -36,12 +39,16 @@ function loginView({ classes }) {
       key: 'google',
       icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/google.png',
       loginButtonText: 'Sign in with Google',
-      enabled: true,
     },
   };
 
-  let idps = loginProvidersData;
-  if (typeof (loginProvidersData) === 'undefined' || Object.values(loginProvidersData).length === 0) {
+  function filterObject(obj, callback) {
+    return Object.fromEntries(Object.entries(obj).filter(([key]) => callback(key)));
+  }
+
+  let idps = filterObject(loginProvidersData, (key) => authProviders.includes(key));
+
+  if (typeof (idps) === 'undefined' || Object.values(idps).length === 0) {
     idps = defaultIdP;
   }
 
@@ -58,9 +65,7 @@ function loginView({ classes }) {
     if (alertType === 'redirect') {
       setError(
         <AlertMessage key={key} severity="error" timeout={5000}>
-          Please sign in to access
-          {' '}
-          {internalRedirectPath}
+          Please login to access protected pages
         </AlertMessage>,
       );
     }
@@ -74,7 +79,7 @@ function loginView({ classes }) {
         case 'google':
           signInWithGoogle(onSuccess, onError);
           break;
-        case 'NIH':
+        case 'nih':
           signInWithNIH({ internalRedirectPath });
           break;
         case 'loginGov':
@@ -85,6 +90,10 @@ function loginView({ classes }) {
       }
     }
   };
+
+  useEffect(() => {
+    showAlert('redirect');
+  }, [internalRedirectPath]);
 
   return (
     <div className={classes.Container}>
@@ -97,9 +106,6 @@ function loginView({ classes }) {
       >
         {/* Top Space */}
         <Grid container item justifyContent="center" className={classes.emptySpace}>
-          {/* ######## ALERT MESSAGES ######## */}
-          {/* TODO: Add error for whitelisted users */}
-          {/* {showAlert('error')} */}
           {error}
         </Grid>
 
@@ -111,40 +117,35 @@ function loginView({ classes }) {
 
             <Grid container item sm={4} justifyContent="center">
               {/* Page Title */}
-              <div className={classes.pageTitle}>
+              <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.pageTitle}>
                 {pageTitle}
-              </div>
+              </Grid>
 
               {/* Login Box */}
-              <div className={classes.Box}>
-                <Grid container alignItems="center" justify="center" direction="column">
-                  <div className={classes.LoginBoxTitle}>
-                    Log in with either of these Identity providers:
-                  </div>
-                  <Grid container item xs={12} justifyContent="center" className={classes.LoginButtonGroup}>
-
-                    {Object.values(idps).map((provider) => (provider.enabled
-                      ? (
-                        <Grid container item xs={12} justifyContent="center">
-                          <Button
-                            variant="outlined"
-                            className={[classes.LoginButton, classes.Color_092E50]}
-                            disableRipple
-                            onClick={() => signInCall(provider)}
-                          >
-                            <Grid container item xs={1} justifyContent="center">
-                              <img src={provider.icon} className={classes.root} alt="alt coming" />
-                            </Grid>
-                            <Grid container item xs={11} justifyContent="center">
-                              {provider.loginButtonText}
-                            </Grid>
-                          </Button>
-                        </Grid>
-                      )
-                      : null))}
-                  </Grid>
+              <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.Box}>
+                <Grid container item justifyContent="center" className={classes.LoginBoxTitle}>
+                  Log in with either of these Identity providers:
                 </Grid>
-              </div>
+                <Grid container item justifyContent="center" className={classes.LoginButtonGroup}>
+                  {Object.values(idps).map((provider) => (
+                    <Grid container item xs={12} justifyContent="center">
+                      <Button
+                        variant="outlined"
+                        className={[classes.LoginButton, classes.Color_092E50]}
+                        disableRipple
+                        onClick={() => signInCall(provider)}
+                      >
+                        <Grid container item xs={1} justifyContent="center">
+                          <img src={provider.icon} className={classes.root} alt="alt coming" />
+                        </Grid>
+                        <Grid container item xs={11} justifyContent="center">
+                          {provider.loginButtonText}
+                        </Grid>
+                      </Button>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
             </Grid>
 
             {/* Spacing */}

@@ -28,7 +28,7 @@ const checkIsValid = (field, formValues) => {
   return false;
 };
 
-const unavailableArmsStatus = ['approved', 'pending'];
+const unavailableArmsStatus = ['approved', 'pending', 'requested'];
 
 const getAvailableArms = (currentACL, listOfArms) => {
   const unavailableArms = Object.keys(currentACL).reduce((previousArms, key) => {
@@ -48,13 +48,19 @@ function requestAccessView({ data, classes }) {
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
 
+  const getDefaultACL = () => (availableArms[0] || []).id;
+
   // Initial State and Reset functions
   const setDefaultValues = () => formFields.reduce((values, field) => {
-    const { id, type, multiple } = field;
+    const {
+      id, type, multiple, display,
+    } = field;
+
     if (!values[id]) {
       // eslint-disable-next-line no-param-reassign
-      values[id] = (type === 'dropdown' && multiple) ? [] : getMyUser[id] || '';
+      values[id] = (['dropdown', 'aclDropdown'].includes(type) && !display) ? getDefaultACL() : multiple ? [] : getMyUser[id] || '';
     }
+
     return values;
   }, {});
 
@@ -90,23 +96,28 @@ function requestAccessView({ data, classes }) {
   };
 
   const showAlert = (alertType) => {
-    if (alertType === 'error') {
-      return (
-        <AlertMessage severity="error" backgroundColor="#f44336">
-          {getErrorDetails()}
-        </AlertMessage>
-      );
+    switch (alertType) {
+      case 'error':
+        return (
+          <AlertMessage severity="error" backgroundColor="#f44336">
+            {getErrorDetails()}
+          </AlertMessage>
+        );
+      case 'success':
+        return (
+          <AlertMessage severity="success" timeout={5000000}>
+            Your request has been submitted for review.
+          </AlertMessage>
+        );
+      case 'noAclToRequest':
+        return (
+          <AlertMessage severity="error" backgroundColor="#f44336">
+            Your data access request has been submitted. No additional access can be requested.
+          </AlertMessage>
+        );
+      default:
+        return null;
     }
-
-    if (alertType === 'success') {
-      return (
-        <AlertMessage severity="success" timeout={5000000}>
-          Your registration request has been submitted for review.
-        </AlertMessage>
-      );
-    }
-
-    return null;
   };
 
   // State Change Managemnt
@@ -128,6 +139,10 @@ function requestAccessView({ data, classes }) {
     history.push(path);
   }
 
+  function isACLAvailable() {
+    return availableArms.length > 0;
+  }
+
   return (
     <div className={classes.Container}>
       {/* ROW 1 */}
@@ -146,6 +161,8 @@ function requestAccessView({ data, classes }) {
           {/* Success on Submit */}
           {successData && successData.requestAccess && showAlert('success')}
 
+          {/* Show message when there is no ACL Available */}
+          {!isACLAvailable() && showAlert('noAclToRequest')}
         </Grid>
 
         {/* ROW 2 */}
@@ -193,7 +210,7 @@ function requestAccessView({ data, classes }) {
                   Membership Status:
                   <span className={classes.emailAddressValue}>
                     {' '}
-                    {userStatus}
+                    {userStatus || 'N/A'}
                     {' '}
                   </span>
                 </div>
@@ -203,13 +220,22 @@ function requestAccessView({ data, classes }) {
               <div className={classes.Box}>
                 <Grid container alignItems="center" justify="center" direction="column">
                   <form onSubmit={handleSubmit}>
-                    {formFields.map((field) => (
-                      field.type === 'dropdown'
-                        ? SelectMenu(field, formValues, handleInputChange,
-                          data, classes, availableArms, isFormSubmitted)
-                        : field.type
-                          ? TextBox(field, formValues, handleInputChange, classes, isFormSubmitted)
-                          : null))}
+                    {formFields.map((field) => {
+                      if (!field.display) { return null; }
+                      switch (field.type) {
+                        case 'aclDropdown':
+                          return SelectMenu(field, formValues, handleInputChange,
+                            data, classes, availableArms, isFormSubmitted);
+                        case 'dropdown':
+                          return SelectMenu(field, formValues, handleInputChange,
+                            data, classes, availableArms, isFormSubmitted);
+                        case 'textBox':
+                          return TextBox(field, formValues, handleInputChange,
+                            classes, isFormSubmitted);
+                        default:
+                          return null;
+                      }
+                    })}
                     <Grid item sm={12} style={{ textAlign: 'center' }} justifyContent="center">
                       {isFormSubmitted ? (
                         <Button
@@ -225,6 +251,7 @@ function requestAccessView({ data, classes }) {
                           variant="contained"
                           type="submit"
                           className={classes.submitButtton}
+                          disabled={!isACLAvailable()}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                         >
                           Submit

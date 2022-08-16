@@ -96,7 +96,7 @@ function SysInfoView() {
   const microservicesData = [
     createThreeColumnRow('File Service Version', microServiceRequirements.file, state.fileService),
     createThreeColumnRow('Authentication Version', microServiceRequirements.auth, state.authVersion),
-    createThreeColumnRow('Authentication User Version', microServiceRequirements.user, state.authUserVersion),
+    createThreeColumnRow('AuthZ Version', microServiceRequirements.user, state.authUserVersion),
   ];
 
   const environmentVariablesData = [
