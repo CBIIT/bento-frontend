@@ -106,7 +106,7 @@ function requestAccessView({ data, classes }) {
       case 'success':
         return (
           <AlertMessage severity="success" timeout={5000000}>
-            Your request has been submitted for review.
+            The Data Access Request has been sent to a System Administrator for review
           </AlertMessage>
         );
       case 'noAclToRequest':
