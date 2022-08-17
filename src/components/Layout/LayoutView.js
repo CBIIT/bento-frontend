@@ -72,8 +72,6 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             <PrivateRoute path="/case/:id" access={['admin', 'member']} component={CaseDetail} />
             <PrivateRoute path="/arm/:id" access={['admin', 'member']} component={ArmDetail} />
-            <PrivateRoute exact path="/search" access={['admin', 'member']} component={GlobalSearch} />
-            <PrivateRoute path="/search/:id" access={['admin', 'member']} component={GlobalSearchController} />
             <PrivateRoute path="/fileViewer/:id" access={['admin', 'member']} component={JBrowseDetail} />
             {/* END SECTION */}
 
@@ -89,6 +87,11 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
             <PrivateRoute path="/table" component={table} />
             {/* END NOTE */}
+
+            {/* Psuedo Private routes where minor
+            functionality can be accessed my unauthorized users */}
+            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearch} />
+            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
 
             {/* END: Private Routes */}
 
