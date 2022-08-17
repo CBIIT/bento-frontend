@@ -34,7 +34,7 @@ import viewUserController from '../../pages/admin/userDetails/viewUserController
 import fakeAdminView from '../../pages/fakeAdmin';
 
 // Access control imports
-import PrivateRoute, { LoginRoute } from './privateRoute';
+import PrivateRoute, { LoginRoute, AdminRoute } from './privateRoute';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -78,11 +78,11 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* END SECTION */}
 
             {/* SECTION: Admin only Path */}
-            <PrivateRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
-            <PrivateRoute path="/admin/edit/:id" access={['admin']} component={editUserController} />
-            <PrivateRoute path="/admin/view/:id" access={['admin']} component={viewUserController} />
-            <PrivateRoute path="/admin/review/:id" access={['admin']} component={reviewRequestController} />
-            <PrivateRoute path="/admin" access={['admin']} component={adminController} />
+            <AdminRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
+            <AdminRoute path="/admin/edit/:id" access={['admin']} component={editUserController} />
+            <AdminRoute path="/admin/view/:id" access={['admin']} component={viewUserController} />
+            <AdminRoute path="/admin/review/:id" access={['admin']} component={reviewRequestController} />
+            <AdminRoute path="/admin" access={['admin']} component={adminController} />
             {/* END SECTION */}
 
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}

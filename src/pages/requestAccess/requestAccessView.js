@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { bentoHelpEmail } from '../../bento/userLoginData';
@@ -28,6 +28,16 @@ const checkIsValid = (field, formValues) => {
   return false;
 };
 
+function useQuery() {
+  const { search } = useLocation();
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+function getRedirectedType(query) {
+  const path = query.get('type') || '/';
+  return path;
+}
+
 const unavailableArmsStatus = ['approved', 'pending', 'requested'];
 
 const getAvailableArms = (currentACL, listOfArms) => {
@@ -45,6 +55,8 @@ function requestAccessView({ data, classes }) {
   const { getMyUser, listArms } = data;
   const { email: userEmail, IDP, userStatus } = getMyUser;
   const history = useHistory();
+  const query = useQuery();
+  const redirectdType = getRedirectedType(query);
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
 
@@ -115,6 +127,12 @@ function requestAccessView({ data, classes }) {
             Your data access request has been submitted. No additional access can be requested.
           </AlertMessage>
         );
+      case 'noAccess':
+        return (
+          <AlertMessage severity="success" timeout={5000000}>
+            Please submit a Data Access Request (DAR) to access protected pages
+          </AlertMessage>
+        );
       default:
         return null;
     }
@@ -143,6 +161,18 @@ function requestAccessView({ data, classes }) {
     return availableArms.length > 0;
   }
 
+  function getNotification() {
+    if (error) { return showAlert('error'); }
+
+    if (!isACLAvailable()) { return showAlert('noAclToRequest'); }
+
+    if (successData && successData.requestAccess) { return showAlert('success'); }
+
+    if (redirectdType && redirectdType === 'noAccess') { return showAlert(redirectdType); }
+
+    return null;
+  }
+
   return (
     <div className={classes.Container}>
       {/* ROW 1 */}
@@ -154,15 +184,7 @@ function requestAccessView({ data, classes }) {
       >
         {/* Top Space */}
         <Grid container item justifyContent="center" className={classes.emptySpace}>
-          {/* ######## ALERT MESSAGES ######## */}
-          {/* Error on Submit */}
-          {error && (showAlert('error'))}
-
-          {/* Success on Submit */}
-          {successData && successData.requestAccess && showAlert('success')}
-
-          {/* Show message when there is no ACL Available */}
-          {!isACLAvailable() && showAlert('noAclToRequest')}
+          {getNotification()}
         </Grid>
 
         {/* ROW 2 */}

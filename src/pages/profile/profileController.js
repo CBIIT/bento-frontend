@@ -12,6 +12,7 @@ const ProfileController = () => {
     context: {
       clientName: 'userService',
     },
+    fetchPolicy: 'no-cache',
   });
 
   if (loading) {
