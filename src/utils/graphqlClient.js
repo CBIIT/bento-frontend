@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   ApolloClient, InMemoryCache, ApolloLink, HttpLink,
 } from '@apollo/client';
@@ -32,26 +31,6 @@ const mockService = new HttpLink({
     'x-mock-match-request-body': true,
   },
 });
-
-const serviceMap = {
-  backendService,
-  authService,
-  userService,
-  publicService,
-  mockService,
-};
-
-const getService = (strname) => {
-  if (!strname || typeof strname !== 'string' || strname.length === 0) {
-    return serviceMap.backendService;
-  }
-
-  if (Object.prototype.hasOwnProperty.call(serviceMap, strname)) {
-    return serviceMap[strname];
-  }
-
-  return serviceMap.backendService;
-};
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
