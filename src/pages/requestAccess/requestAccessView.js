@@ -244,7 +244,7 @@ function requestAccessView({ data, classes }) {
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                           onClick={() => redirectUser('/')}
                         >
-                          Home
+                          Go Back To Home Page
                         </Button>
                       ) : (
                         <Button
