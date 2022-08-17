@@ -1,10 +1,13 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import GET_USER_DETAILS from '../../bento/authProviderData';
 import globalData, { loginRoute, requestAccessRoute, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
+import { signInRed, signOutRed } from '../Auth/state/loginReducer';
+import { deleteFromLocalStorage } from '../../utils/localStorage';
 
 /*
   Notes For Developer: We have 3 roles in Bento System.
@@ -31,7 +34,7 @@ export function LoginRoute({ component: ChildComponent, ...rest }) {
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
   return (
     <Route render={(props) => {
-      if (enableAuthentication && isSignedIn) {
+      if ((enableAuthentication && isSignedIn) || !enableAuthentication) {
         return <Redirect to="/" />;
       }
       return <ChildComponent {...props} match={rest.computedMatch} {...rest} />;
@@ -40,57 +43,81 @@ export function LoginRoute({ component: ChildComponent, ...rest }) {
   );
 }
 
-function PrivateRoute({ component: ChildComponent, ...rest }) {
-  const { enableAuthentication } = globalData;
-  const { isSignedIn, role } = useSelector((state) => state.login);
-  const { pathname } = useLocation();
-  const { access } = rest;
-  const updateRole = (role === 'non-member' && PUBLIC_ACCESS === 'Metadata Only') ? 'member' : role;
-  const hasAccess = (isSignedIn && access.includes(updateRole));
-
-  return (
-    <Route render={(props) => {
-      if (enableAuthentication && !isSignedIn) {
-        const base = loginRoute;
-        const redirectPath = `${base}?redirect=${pathname}`;
-        return <Redirect to={redirectPath} />;
-      }
-
-      if (enableAuthentication && !hasAccess) {
-        const redirectPath = (role !== 'admin') ? requestAccessRoute : '/';
-        return <Redirect to={redirectPath} />;
-      }
-      return <ChildComponent {...props} match={rest.computedMatch} {...rest} />;
-    }}
-    />
-  );
-}
-
-export function privateRouteWrapper({ component: ChildComponent, ...rest }) {
-  const { loading, error, data } = useQuery(GET_USER_DETAILS, {
+export function FetchUserDetails(props) {
+  const { children, path } = props;
+  const [getUserDetails, { loading, error, data }] = useLazyQuery(GET_USER_DETAILS, {
     context: { clientName: 'userService' },
     fetchPolicy: 'no-cache',
   });
 
-  // useEffect(() => {
-  //   if (data && data.getMyUser) {
-  //     signInRed(data.getMyUser);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    getUserDetails().then((response) => {
+      const { data: responseData, error: responseError } = response;
+      if (responseError && responseError.graphQLErrors) {
+        signOutRed();
+        deleteFromLocalStorage('userDetails');
+      } else if (responseData && responseData.getMyUser) {
+        signInRed(responseData.getMyUser);
+      }
+    });
+  }, [path]);
 
   if (loading) return <CircularProgress />;
 
-  if (error || !data) {
+  return (
+    <>
+      {children}
+    </>
+  );
+}
+
+function PrivateRoute({ component: ChildComponent, ...rest }) {
+  const { enableAuthentication } = globalData;
+  if (!enableAuthentication) {
     return (
-      <div variant="h5" color="error" size="sm">
-        {error ? 'Loggd Out. Please Sign in again.' : 'Recieved wrong data'}
-      </div>
+      <Route render={
+      (props) => <ChildComponent {...props} match={rest.computedMatch} {...rest} />
+    } />
     );
   }
 
+  const { isSignedIn, role } = useSelector((state) => state.login);
+  const { pathname } = useLocation();
+  const { access, path } = rest;
+  const updateRole = (role === 'non-member' && PUBLIC_ACCESS === 'Metadata Only') ? 'member' : role;
+  const hasAccess = (isSignedIn && access.includes(updateRole));
+
   return (
-    <PrivateRoute component={ChildComponent} {...rest} />
+    <FetchUserDetails path={path}>
+      <Route render={(props) => {
+        if (enableAuthentication && !isSignedIn) {
+          const base = loginRoute;
+          const redirectPath = `${base}?redirect=${pathname}`;
+          return <Redirect to={redirectPath} />;
+        }
+
+        if (enableAuthentication && !hasAccess) {
+          const redirectPath = (role !== 'admin') ? `${requestAccessRoute}?type=noAccess` : '/';
+          return <Redirect to={redirectPath} />;
+        }
+        return <ChildComponent {...props} match={rest.computedMatch} {...rest} />;
+      }}
+      />
+    </FetchUserDetails>
   );
+}
+
+export function AdminRoute({ component: ChildComponent, ...rest }) {
+  const { enableAuthentication } = globalData;
+  if (!enableAuthentication) {
+    return (
+      <Route render={
+      (props) => <Redirect to="/" />
+    } />
+    );
+  }
+
+  return <PrivateRoute component={ChildComponent} {...rest} />;
 }
 
 export default PrivateRoute;
