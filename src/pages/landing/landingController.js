@@ -7,8 +7,11 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_LANDING_PAGE_DATA_QUERY } from '../../bento/landingPageData';
 
 const landingController = () => {
-  const { isSignedIn } = useSelector((state) => state.login.isSignedIn);
-  const { loading, error, data } = useQuery(GET_LANDING_PAGE_DATA_QUERY, { context: { clientName: !isSignedIn ? 'publicService' : '' } });
+  const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  const { loading, error, data } = useQuery(GET_LANDING_PAGE_DATA_QUERY, {
+    context: { clientName: isSignedIn ? '' : 'publicService' },
+    fetchPolicy: 'no-cache',
+  });
 
   if (loading) return <CircularProgress />;
   if (error) {
