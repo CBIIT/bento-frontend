@@ -5,10 +5,16 @@ import {
 import { Search as SearchIcon } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { getSearch } from '../../pages/dashboardTab/store/dashboardReducer';
+import { useSelector } from 'react-redux';
+import { getSearch, getSearchPublic } from '../../pages/dashboardTab/store/dashboardReducer';
+import { SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
 
 function searchComponent({ classes }) {
   const history = useHistory();
+  const { isSignedIn } = useSelector((state) => state && state.login.isSignedIn);
+  const isAuthorized = isSignedIn && useSelector(
+    (state) => state.login.acl.some((arm) => arm.accessStatus === 'approved'),
+  );
 
   const [open] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
@@ -28,27 +34,37 @@ function searchComponent({ classes }) {
     }
   }
 
+  function getSearchQuery() {
+    if (isAuthorized) {
+      return getSearch;
+    }
+
+    return getSearchPublic;
+  }
+
   async function getAutoCompleteRes(newValue = []) {
     setInputValue(newValue);
-    const searchResp = await getSearch(newValue);
-    const keys = ['programs', 'studies', 'subjects', 'samples', 'files'];
-    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'];
+    const searchResp = await getSearchQuery()(newValue);
+    const keys = isAuthorized ? SEARCH_KEYS.private : SEARCH_KEYS.public;
+    const datafields = isAuthorized ? SEARCH_DATAFIELDS.private : SEARCH_DATAFIELDS.public;
 
     const mapOption = keys.map((key, ind) => searchResp[key].map((id) => (id[datafields[ind]])));
     const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
 
-    setOptions(option.length === 0 ? [] : [...option.slice(0, 6),
-      <div onClick={() => {}}>
-        Press ENTER for more search results
-        {' '}
-        <span>
-          <img
-            className={classes.enterIcon}
-            src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/EnterIcon.svg"
-            alt="enter icon"
-          />
-        </span>
-      </div>]);
+    if (isAuthorized) {
+      setOptions(option.length === 0 ? [] : [...option.slice(0, 6),
+        <div onClick={() => {}}>
+          Press ENTER for more search results
+          {' '}
+          <span>
+            <img
+              className={classes.enterIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/EnterIcon.svg"
+              alt="enter icon"
+            />
+          </span>
+        </div>]);
+    }
   }
   const CustomPopper = (props) => (
     <Popper
