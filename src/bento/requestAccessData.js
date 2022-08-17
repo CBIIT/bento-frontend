@@ -12,19 +12,19 @@ export const aclAPIOptionsField = 'listArms';
 
 export const formFields = [
   {
-    id: 'lastName',
-    type: 'textBox',
-    required: true,
-    label: 'Last Name',
-    placeHolder: 'Last Name',
-    display: true,
-  },
-  {
     id: 'firstName',
     type: 'textBox',
     required: true,
     label: 'First Name',
     placeHolder: 'First Name',
+    display: true,
+  },
+  {
+    id: 'lastName',
+    type: 'textBox',
+    required: true,
+    label: 'Last Name',
+    placeHolder: 'Last Name',
     display: true,
   },
   {

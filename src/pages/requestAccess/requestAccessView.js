@@ -180,18 +180,6 @@ function requestAccessView({ data, classes }) {
                 </div>
               </Grid>
 
-              {/* User's Email Address */}
-              <Grid container item xs={12} justifyContent="center">
-                <div className={classes.emailAddress}>
-                  Email Address:
-                  <span className={classes.emailAddressValue}>
-                    {' '}
-                    {userEmail}
-                    {' '}
-                  </span>
-                </div>
-              </Grid>
-
               {/* User's Account type */}
               <Grid container item xs={12} justifyContent="center">
                 <div className={classes.emailAddress}>
@@ -199,6 +187,18 @@ function requestAccessView({ data, classes }) {
                   <span className={classes.emailAddressValue}>
                     {' '}
                     {IDP}
+                    {' '}
+                  </span>
+                </div>
+              </Grid>
+
+              {/* User's Email Address */}
+              <Grid container item xs={12} justifyContent="center">
+                <div className={classes.emailAddress}>
+                  Email Address:
+                  <span className={classes.emailAddressValue}>
+                    {' '}
+                    {userEmail}
                     {' '}
                   </span>
                 </div>
