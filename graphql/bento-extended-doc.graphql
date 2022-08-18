@@ -723,17 +723,6 @@ type FileInfo {
     md5sum: String
 }
 
-type ProgramInfo {
-    program_acronym: String
-    program_id: String
-    program_name: String
-    start_date: String
-    end_date: String
-    pubmed_id: String
-    num_studies: Int
-    num_subjects: Int
-}
-
 type StudyInfo {
     study_acronym: String
     study_name: String
@@ -886,9 +875,6 @@ type QueryType {
     numberOfLabProcedures: Int  
     numberOfFiles: Int 
 
-    "Get lists of all subject ids, sample ids, and file ids"
-    idsLists: IdsLists 
-
     "Group counts from lists of subject ids, file ids, and sample ids"
 
     subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
@@ -931,7 +917,6 @@ type QueryType {
 
     filesOfSubjects(subject_ids: [String]=[]): [FileInfo] 
 
-    programInfo: [ProgramInfo] 
     programDetail(program_id: String):  ProgramDetail 
 
     subjectDetail(subject_id: String): SubjectDetail 
