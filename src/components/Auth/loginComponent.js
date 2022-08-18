@@ -40,6 +40,8 @@ const IndexPage = ({ classes }) => {
 
   const redirectToLogin = () => window.location.replace(`/#${loginRoute}`);
 
+  globalData.authProviders = globalData.authProviders.concat(['google']);
+
   return (
     <>
       {globalData.enableAuthentication && (typeof globalData.authProviders === 'undefined' || globalData.authProviders.includes('google') || globalData.authProviders.includes('Google') || globalData.authProviders === []) && (

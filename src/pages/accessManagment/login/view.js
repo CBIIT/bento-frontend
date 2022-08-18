@@ -25,7 +25,10 @@ function getRedirectPath(query) {
 
 function loginView({ classes }) {
   const { signInWithGoogle, signInWithNIH } = useAuth();
-  const { authProviders } = globalData;
+  let { authProviders } = globalData;
+  if (!authProviders || authProviders.length === 0) {
+    authProviders = ['google'];
+  }
   const history = useHistory();
   const query = useQuery();
   const internalRedirectPath = getRedirectPath(query);
