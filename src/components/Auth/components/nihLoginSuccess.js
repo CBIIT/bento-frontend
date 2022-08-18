@@ -31,7 +31,7 @@ function nihLoginSuccess() {
   }, []);
 
   return (
-    <div> ⚠️ Please wait communicating with server! ⚠️ </div>
+    <div>Please wait while redirecting....</div>
   );
 }
 
