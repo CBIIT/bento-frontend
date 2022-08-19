@@ -137,7 +137,7 @@ export const getReviewDARConfig = () => ({
 
 // Get a list of MEMBER info  role == member
 // Get all user info info  role == member,non-member
-// Get pending data access requests  role == member,non-member ,accessStatus ==requested
+// Get pending data access requests  role == member,non-member ,accessStatus ==pending
 
 export const GET_LIST_USERS = gql`
 query listUsers($role: [String], $userStatus: [String], $accessStatus: [String]){

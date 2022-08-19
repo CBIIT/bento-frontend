@@ -38,7 +38,7 @@ function getRedirectedType(query) {
   return path;
 }
 
-const unavailableArmsStatus = ['approved', 'pending', 'requested'];
+const unavailableArmsStatus = ['approved', 'pending'];
 
 const getAvailableArms = (currentACL, listOfArms) => {
   const unavailableArms = Object.keys(currentACL).reduce((previousArms, key) => {
