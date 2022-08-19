@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { useAuth } from '../../../components/Auth/AuthProvider';
 import AlertMessage from '../../../components/alertMessage';
-
 // Custodian data imports
 import {
   pageTitle,
@@ -52,11 +52,11 @@ function loginView({ classes }) {
     idps = defaultIdP;
   }
 
-  const showAlert = (alertType, errorMsg) => {
+  const showAlert = (alertType, errorMsg = '') => {
     const key = Math.random();
     if (alertType === 'error') {
       setError(
-        <AlertMessage key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={500000}>
+        <AlertMessage key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000}>
           {errorMsg}
         </AlertMessage>,
       );
@@ -93,7 +93,19 @@ function loginView({ classes }) {
 
   useEffect(() => {
     showAlert('redirect');
-  }, [internalRedirectPath]);
+
+    // validate the config
+    for (let i = 0; i < Object.values(idps).length; i) {
+      i += 1;
+      const provider = Object.values(idps)[i];
+      if (provider) {
+        if (typeof (provider.icon) === 'undefined' || typeof (provider.key) === 'undefined' || typeof (provider.loginButtonText) === 'undefined') {
+          showAlert('error', 'Incomplete configuration settings for selected Identity Provides');
+          break;
+        }
+      }
+    }
+  }, [Object.values(idps).length, internalRedirectPath]);
 
   return (
     <div className={classes.Container}>
@@ -136,7 +148,10 @@ function loginView({ classes }) {
                         onClick={() => signInCall(provider)}
                       >
                         <Grid container item xs={1} justifyContent="center">
-                          <img src={provider.icon} className={classes.root} alt="alt coming" />
+                          {provider.icon
+                            ? <img src={provider.icon} className={classes.root} alt="alt coming" />
+                            : <VpnKeyIcon />}
+
                         </Grid>
                         <Grid container item xs={11} justifyContent="center">
                           {provider.loginButtonText}
