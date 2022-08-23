@@ -57,6 +57,7 @@ function requestAccessView({ data, classes }) {
   const history = useHistory();
   const query = useQuery();
   const redirectdType = getRedirectedType(query);
+  const [changeDetected, setChangeDetected] = useState(false);
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
 
@@ -145,6 +146,7 @@ function requestAccessView({ data, classes }) {
       ...formValues,
       [name]: value,
     });
+    setChangeDetected(true);
   };
 
   const handleSubmit = (event) => {
@@ -158,7 +160,7 @@ function requestAccessView({ data, classes }) {
   }
 
   function isACLAvailable() {
-    return availableArms.length > 0;
+    return availableArms.length > 0 && changeDetected;
   }
 
   function getNotification() {
@@ -191,9 +193,9 @@ function requestAccessView({ data, classes }) {
         <Grid container item justifyContent="center">
           <Grid container>
             {/* Spacing */}
-            <Grid container item sm={4} />
+            <Grid container item sm={2} />
 
-            <Grid container item sm={4} justifyContent="center">
+            <Grid container item sm={8} justifyContent="center">
               {/* Page Title */}
               <Grid container item xs={12} justifyContent="center">
                 <div className={classes.pageTitle}>
@@ -203,40 +205,44 @@ function requestAccessView({ data, classes }) {
               </Grid>
 
               {/* User's Account type */}
-              <Grid container item xs={12} justifyContent="center">
-                <div className={classes.emailAddress}>
-                  Account Type:
-                  <span className={classes.emailAddressValue}>
-                    {' '}
-                    {IDP}
-                    {' '}
-                  </span>
+              <div className={classes.segment}>
+                <div className={classes.row}>
+                  <div className={classes.column}>
+                    <div className={classes.itemTitles}>Account Type:</div>
+                  </div>
+                  <div className={classes.column}>
+                    <div className={classes.emailAddressValue}>{IDP}</div>
+                  </div>
                 </div>
-              </Grid>
 
-              {/* User's Email Address */}
-              <Grid container item xs={12} justifyContent="center">
-                <div className={classes.emailAddress}>
-                  Email Address:
-                  <span className={classes.emailAddressValue}>
-                    {' '}
-                    {userEmail}
-                    {' '}
-                  </span>
+                {/* User's Email Address */}
+                <div className={classes.row}>
+                  <div className={classes.column}>
+                    <div className={classes.itemTitles}>Email Address:</div>
+                  </div>
+                  <div className={classes.column}>
+                    <div className={classes.emailAddressValue}>
+                      {' '}
+                      {userEmail}
+                      {' '}
+                    </div>
+                  </div>
                 </div>
-              </Grid>
 
-              {/* User's Membership Status */}
-              <Grid container item xs={12} justifyContent="center">
-                <div className={classes.emailAddress}>
-                  Membership Status:
-                  <span className={classes.emailAddressValue}>
-                    {' '}
-                    {userStatus || 'N/A'}
-                    {' '}
-                  </span>
+                {/* User's Membership Status */}
+                <div className={classes.row}>
+                  <div className={classes.column}>
+                    <div className={classes.itemTitles}> Membership Status: </div>
+                  </div>
+                  <div className={classes.column}>
+                    <div className={classes.emailAddressValue}>
+                      {' '}
+                      {userStatus || 'N/A'}
+                      {' '}
+                    </div>
+                  </div>
                 </div>
-              </Grid>
+              </div>
 
               {/* Box Grid */}
               <div className={classes.Box}>
@@ -286,7 +292,7 @@ function requestAccessView({ data, classes }) {
             </Grid>
 
             {/* Spacing */}
-            <Grid container item sm={4} />
+            <Grid container item sm={2} />
           </Grid>
         </Grid>
       </Grid>
@@ -324,26 +330,51 @@ const styles = () => ({
   pageTitleUnderline: {
     boxSizing: 'border-box',
     height: '2px',
-    width: '434px',
+    width: '35vw',
+    minWidth: '200px',
     border: '1px solid #88B4DA',
     backgroundColor: '#F2F6FA',
     boxShadow: '-4px 8px 27px 4px rgb(27 28 28 / 9%)',
   },
-  emailAddress: {
-    color: '#0467BD',
+  segment: {
+    display: 'flex',
+    boxSizing: 'border-box',
+    flexDirection: 'column',
+    width: '65%',
+    minWidth: '500px',
+    justifyContent: 'center',
     fontFamily: 'Nunito',
-    fontSize: '18px',
+    margin: '25px 0',
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  column: {
+    '&:first-child': {
+      flex: '.7',
+    },
+    flex: 1,
+  },
+  itemTitles: {
+    color: '#9EAAB5',
+    textTransform: 'uppercase',
+    fontSize: '10pt',
+    fontStyle: 'italic',
     fontWeight: 'bold',
-    lineHeight: '22px',
-    marginBottom: '15px',
+    lineHeight: '30px',
+    flex: 1,
+    textAlign: 'left',
+    padding: '0 10px 0 20%',
   },
   emailAddressValue: {
-    color: '#8493A0',
+    color: '#6C7882',
     fontFamily: 'Nunito',
-    fontSize: '16px',
-    fontStyle: 'italic',
+    fontSize: '14pt',
     fontWeight: '600',
-    lineHeight: '35px',
+    lineHeight: '30px',
+    flex: 1,
   },
   Box: {
     width: '535px',

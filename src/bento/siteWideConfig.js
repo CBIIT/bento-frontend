@@ -18,4 +18,4 @@ export const PUBLIC_ACCESS = 'none';
 // Node level access
 export const NODE_LEVEL_ACCESS = true;
 export const NODE_NAME = 'Arm';
-export const NODE_LABEL = 'Study Arm';
+export const NODE_LABEL = 'Study Arm(s)';
