@@ -9,6 +9,7 @@ import { bentoHelpEmail } from '../../bento/userLoginData';
 import AlertMessage from '../../components/alertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
+import Stats from '../../components/Stats/AllStatsController';
 
 // Custodian data imports
 import { pageTitle, formFields, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
@@ -177,6 +178,7 @@ function requestAccessView({ data, classes }) {
 
   return (
     <div className={classes.Container}>
+      <Stats />
       {/* ROW 1 */}
       <Grid
         container
