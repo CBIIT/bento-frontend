@@ -28,7 +28,9 @@ function TextEditComponent({
   const handleChange = (event) => {
     if (event && event.target.value) {
       setValue(event.target.value);
+      return;
     }
+    setValue('');
   };
 
   const handleEdit = () => {
@@ -71,6 +73,7 @@ function TextEditComponent({
         error={error.value}
         value={value}
         onChange={handleChange}
+        className={classes.textField_ex}
         InputProps={{
           classes: {
             input: classes.inputFont,
@@ -106,6 +109,9 @@ const styles = () => ({
     flex: 2,
     fontWeight: 'bold',
     color: '#7b858f',
+  },
+  textField_ex: {
+    minWidth: '70%',
   },
   btnEdit: {
     minWidth: '34px',

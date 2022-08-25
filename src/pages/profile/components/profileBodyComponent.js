@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { TextField, withStyles } from '@material-ui/core';
-import { changeUserBasicInfo } from '../../../bento/profileData';
+import { changeUserBasicInfo, getAuthenticatorName } from '../../../bento/profileData';
 import TextEditComponent from './textEditComponent';
 import style from '../styles';
 import { getFromLocalStorage, storeInLocalStorage } from '../../../utils/localStorage';
@@ -47,7 +47,7 @@ const ProfileViewBody = ({ classes, data }) => {
             </div>
             <TextField
               className={classes.textField}
-              value={(getMyUser.IDP || '').toUpperCase()}
+              value={getAuthenticatorName(getMyUser.IDP || '')}
               inputProps={{ readOnly: true, className: classes.textFieldInput }}
             />
           </div>
