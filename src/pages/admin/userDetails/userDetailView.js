@@ -112,7 +112,6 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     const Obj = {
       userID: userInfo.userID,
       role: userRole,
-      userStatus: userInfo.userStatus,
       armIDs: seletedArms,
       comment: '',
     };
