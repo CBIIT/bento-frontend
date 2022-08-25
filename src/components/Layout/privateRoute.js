@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { useLazyQuery } from '@apollo/client';
@@ -45,29 +44,65 @@ export function LoginRoute({ component: ChildComponent, ...rest }) {
 
 export function FetchUserDetails(props) {
   const { children, path } = props;
-  const [getUserDetails, { loading, error, data }] = useLazyQuery(GET_USER_DETAILS, {
+  const [localLoading, setLocalLoading] = useState(true);
+  const [getUserDetails, { loading }] = useLazyQuery(GET_USER_DETAILS, {
     context: { clientName: 'userService' },
     fetchPolicy: 'no-cache',
+    onCompleted: (data) => {
+      signInRed(data.getMyUser);
+      setLocalLoading(false);
+    },
+    onError: ({
+      graphQLErrors, networkError,
+    }) => {
+      console.log('on Error Run');
+      if (graphQLErrors) {
+        signOutRed();
+        deleteFromLocalStorage('userDetails');
+      }
+
+      // To retry on network errors, we recommend the RetryLink
+      // instead of the onError link. This just logs the error.
+      if (networkError) {
+        console.log(`[Network error]: ${networkError}`);
+      }
+      setLocalLoading(false);
+    },
   });
 
   useEffect(() => {
-    getUserDetails().then((response) => {
-      const { data: responseData, error: responseError } = response;
-      if (responseError && responseError.graphQLErrors) {
-        signOutRed();
-        deleteFromLocalStorage('userDetails');
-      } else if (responseData && responseData.getMyUser) {
-        signInRed(responseData.getMyUser);
-      }
-    });
+    setLocalLoading(true);
+    getUserDetails();
   }, [path]);
 
-  if (loading) return <CircularProgress />;
+  console.log(loading, localLoading);
+  if (loading || localLoading) return <CircularProgress />;
 
   return (
     <>
       {children}
     </>
+  );
+}
+
+export function MixedRoute({ component: ChildComponent, ...rest }) {
+  const { enableAuthentication } = globalData;
+  if (!enableAuthentication) {
+    return (
+      <Route render={
+      (props) => <ChildComponent {...props} match={rest.computedMatch} {...rest} />
+    } />
+    );
+  }
+
+  const { path } = rest;
+  console.log('Route');
+  return (
+    <FetchUserDetails path={path}>
+      <Route render={
+      (props) => <ChildComponent {...props} match={rest.computedMatch} {...rest} />
+    } />
+    </FetchUserDetails>
   );
 }
 
@@ -112,7 +147,7 @@ export function AdminRoute({ component: ChildComponent, ...rest }) {
   if (!enableAuthentication) {
     return (
       <Route render={
-      (props) => <Redirect to="/" />
+      () => <Redirect to="/" />
     } />
     );
   }

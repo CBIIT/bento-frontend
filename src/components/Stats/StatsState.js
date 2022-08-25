@@ -42,10 +42,11 @@ function errorhandler(error, type) {
 }
 
 function fetchStats(statQuery, state) {
+  console.log(state.login);
   return (dispatch) => client
     .query({
       query: statQuery,
-      client: state && state.login.isSignedIn ? '' : 'publicService',
+      context: { clientName: state && state.login.isSignedIn ? '' : 'publicService' },
     })
     .then((result) => dispatch(receiveStats(result)))
     .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
