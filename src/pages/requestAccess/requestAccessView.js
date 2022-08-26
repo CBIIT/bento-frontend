@@ -378,7 +378,7 @@ const styles = () => ({
   itemTitles: {
     color: '#9EAAB5',
     textTransform: 'uppercase',
-    fontSize: '10pt',
+    fontSize: '9pt',
     fontStyle: 'italic',
     lineHeight: '20px',
     flex: 1,
@@ -388,13 +388,13 @@ const styles = () => ({
   emailAddressValue: {
     color: '#6C7882',
     fontFamily: 'Nunito',
-    fontSize: '15pt',
+    fontSize: '14pt',
     fontWeight: '500',
     lineHeight: '20px',
     flex: 1,
   },
   Box: {
-    width: '535px',
+    width: '600px',
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09);',
     border: '#A9C8E3 2px solid',
     borderRadius: '10px',
