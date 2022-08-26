@@ -76,7 +76,7 @@ const ProfileViewBody = ({ classes, data }) => {
               <span className={classes.labelSpan}>Organization:</span>
             </div>
             <TextEditComponent
-              customOptions={{ alt: 'edit organization', field: 'organization' }}
+              customOptions={{ alt: 'edit organization', field: 'organization', useLargerField: true }}
               data={organization}
               onSave={completeSave}
             />

@@ -67,12 +67,14 @@ function TextEditComponent({
     setEditActivated(false);
   };
 
+  const useLargerField = checkProp(customOptions, 'useLargerField');
+
   return (
     <div className={classes.textField}>
       <TextField
         error={error.value}
         value={value}
-        className={classes.textField_ex}
+        className={`${useLargerField ? classes.textField_ex : ''}`}
         onChange={handleChange}
         InputProps={{
           classes: {
