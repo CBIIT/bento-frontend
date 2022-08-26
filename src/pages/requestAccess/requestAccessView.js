@@ -62,6 +62,7 @@ function requestAccessView({ data, classes }) {
   const getDefaultACL = () => (availableArms[0] || []).id;
 
   // Initial State and Reset functions
+  const fieldsToChk = formFields.map((field) => (field.required ? field.id : null));
   const setDefaultValues = () => formFields.reduce((values, field) => {
     const {
       id, type, multiple, display,
@@ -138,9 +139,9 @@ function requestAccessView({ data, classes }) {
   };
 
   const validateFields = () => {
-    const fieldsToChk = ['firstName', 'lastName', 'organization'];
     const armsChk = availableArms.length > 0;
-    const chk = fieldsToChk.some((key) => Object.prototype.hasOwnProperty.call(formValues, key)
+    const chk = fieldsToChk.some((key) => key !== null
+      && Object.prototype.hasOwnProperty.call(formValues, key)
       && !formValues[key].length);
 
     setDisableSubmit((chk && armsChk));
