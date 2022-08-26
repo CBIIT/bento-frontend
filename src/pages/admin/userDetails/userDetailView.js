@@ -9,6 +9,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { CustomDataTable } from 'bento-components';
 import Stats from '../../../components/Stats/AllStatsController';
+import { getColumnInfo, options } from '../../../bento/userDetailViewData';
 
 import {
   adminPortalIcon,
@@ -58,55 +59,41 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     },
   });
 
-  // TODO: Move to Custodian files.
-  const columns = [
-    { name: 'arm', label: 'Arms' },
-    { name: 'date', label: 'Request Date' },
-    { name: 'date1', label: 'Approved Date' },
-    { name: 'date2', label: 'Approved By' },
-    {
-      name: 'remove',
-      label: 'Remove',
-      options: {
-        display: (accessType === EDIT),
-        customBodyRender: (value) => {
-          const { checked } = seletedArms.includes(value);
-          return (
-            <div>
-              <Checkbox
-                checked={checked}
-                value={checked}
-                onChange={() => {
-                  const armIndex = seletedArms.indexOf(value);
-                  const updatedSeletedArms = seletedArms;
-                  if (armIndex > -1) {
-                    updatedSeletedArms.splice(armIndex, 1);
-                  } else {
-                    updatedSeletedArms.push(value);
-                  }
-                  setSeletedArms(updatedSeletedArms);
-                }}
-                inputProps={{ 'aria-label': 'primary checkbox' }}
-              />
-            </div>
-          );
-        },
-      },
-    },
-  ];
+  const approvedRender = (value) => {
+    const spltStr = value.split(' ');
+
+    if (spltStr.length !== 2) {
+      return value;
+    }
+    return `${spltStr[1]}, ${spltStr[0]}`;
+  };
+
+  const checkBoxRenderFunc = (value) => {
+    const { checked } = seletedArms.includes(value);
+    return (
+      <div>
+        <Checkbox
+          checked={checked}
+          value={checked}
+          onChange={() => {
+            const armIndex = seletedArms.indexOf(value);
+            const updatedSeletedArms = seletedArms;
+            if (armIndex > -1) {
+              updatedSeletedArms.splice(armIndex, 1);
+            } else {
+              updatedSeletedArms.push(value);
+            }
+            setSeletedArms(updatedSeletedArms);
+          }}
+          inputProps={{ 'aria-label': 'primary checkbox' }}
+        />
+      </div>
+    );
+  };
+
+  const columns = getColumnInfo(checkBoxRenderFunc, approvedRender, accessType);
 
   const approvedArms = getApprovedArms(userInfo.acl);
-
-  const options = {
-    selectableRows: false,
-    responsive: 'stacked',
-    search: false,
-    filter: false,
-    searchable: false,
-    print: false,
-    download: false,
-    viewColumns: false,
-  };
 
   function handleSaveUserDetails() {
     const Obj = {
@@ -182,10 +169,10 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                   <br />
                   <span className={classes.infoValue}>
                     {' '}
-                    {userInfo.firstName}
+                    {userInfo.lastName}
                     ,
                     {' '}
-                    {userInfo.lastName}
+                    {userInfo.firstName}
                   </span>
                 </Typography>
               </div>
