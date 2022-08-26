@@ -5,6 +5,8 @@ import Button from '@material-ui/core/Button';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { useAuth } from '../../../components/Auth/AuthProvider';
 import AlertMessage from '../../../components/alertMessage';
+import Stats from '../../../components/Stats/AllStatsController';
+
 // Custodian data imports
 import {
   pageTitle,
@@ -109,6 +111,7 @@ function loginView({ classes }) {
 
   return (
     <div className={classes.Container}>
+      <Stats />
       {/* ROW 1 */}
       <Grid
         container
@@ -179,7 +182,6 @@ function loginView({ classes }) {
 const styles = () => ({
   Container: {
     backgroundColor: '#FFFFFF',
-    marginTop: '-47px',
     fontFamily: 'Nunito',
   },
   NoBold: {
