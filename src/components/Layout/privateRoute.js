@@ -53,9 +53,8 @@ export function FetchUserDetails(props) {
       setLocalLoading(false);
     },
     onError: ({
-      graphQLErrors, networkError,
+      graphQLErrors,
     }) => {
-      console.log('on Error Run');
       if (graphQLErrors) {
         signOutRed();
         deleteFromLocalStorage('userDetails');
@@ -63,9 +62,6 @@ export function FetchUserDetails(props) {
 
       // To retry on network errors, we recommend the RetryLink
       // instead of the onError link. This just logs the error.
-      if (networkError) {
-        console.log(`[Network error]: ${networkError}`);
-      }
       setLocalLoading(false);
     },
   });
@@ -75,7 +71,6 @@ export function FetchUserDetails(props) {
     getUserDetails();
   }, [path]);
 
-  console.log(loading, localLoading);
   if (loading || localLoading) return <CircularProgress />;
 
   return (
@@ -96,7 +91,6 @@ export function MixedRoute({ component: ChildComponent, ...rest }) {
   }
 
   const { path } = rest;
-  console.log('Route');
   return (
     <FetchUserDetails path={path}>
       <Route render={

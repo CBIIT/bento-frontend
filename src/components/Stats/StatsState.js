@@ -42,7 +42,6 @@ function errorhandler(error, type) {
 }
 
 function fetchStats(statQuery, state) {
-  console.log(state.login);
   return (dispatch) => client
     .query({
       query: statQuery,
