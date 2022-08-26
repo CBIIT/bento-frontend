@@ -301,6 +301,7 @@ type file {
   file_status: String
   file_type: String
   md5sum: String
+  acl: String
   diagnosis: diagnosis @relation(name:"file_of_diagnosis", direction:OUT)
   laboratory_procedure: laboratory_procedure @relation(name:"file_of_laboratory_procedure", direction:OUT)
   study_subject: study_subject @relation(name:"file_of_study_subject", direction:OUT)
