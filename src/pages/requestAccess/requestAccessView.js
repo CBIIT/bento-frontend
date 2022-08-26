@@ -371,7 +371,7 @@ const styles = () => ({
   },
   column: {
     '&:first-child': {
-      flex: '.6',
+      flex: '.5',
     },
     flex: 1,
   },
