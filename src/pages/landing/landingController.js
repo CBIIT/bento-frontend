@@ -8,6 +8,7 @@ import { GET_LANDING_PAGE_DATA_QUERY } from '../../bento/landingPageData';
 
 const landingController = () => {
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  console.log('inHomePage', isSignedIn);
   const { loading, error, data } = useQuery(GET_LANDING_PAGE_DATA_QUERY, {
     context: { clientName: isSignedIn ? '' : 'publicService' },
     fetchPolicy: 'no-cache',
