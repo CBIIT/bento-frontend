@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
@@ -57,6 +57,7 @@ function requestAccessView({ data, classes }) {
   const history = useHistory();
   const query = useQuery();
   const redirectdType = getRedirectedType(query);
+  const [disableSubmit, setDisableSubmit] = useState(false);
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
 
@@ -137,6 +138,18 @@ function requestAccessView({ data, classes }) {
         return null;
     }
   };
+
+  const validateFields = () => {
+    const fieldsToChk = ['firstName', 'lastName', 'organization'];
+    const armsChk = availableArms.length > 0;
+    const chk = fieldsToChk.some((key) => Object.prototype.hasOwnProperty.call(formValues, key)
+      && !formValues[key].length);
+
+    setDisableSubmit((chk && armsChk));
+  };
+
+  // use effect to track form changes
+  useEffect(validateFields);
 
   // State Change Managemnt
   const handleInputChange = (e) => {
@@ -263,6 +276,7 @@ function requestAccessView({ data, classes }) {
                         <Button
                           variant="contained"
                           className={classes.submitButtton}
+                          disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                           onClick={() => redirectUser('/')}
                         >
@@ -273,7 +287,7 @@ function requestAccessView({ data, classes }) {
                           variant="contained"
                           type="submit"
                           className={classes.submitButtton}
-                          disabled={!isACLAvailable()}
+                          disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                         >
                           Submit
