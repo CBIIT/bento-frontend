@@ -72,8 +72,8 @@ function TextEditComponent({
       <TextField
         error={error.value}
         value={value}
-        onChange={handleChange}
         className={classes.textField_ex}
+        onChange={handleChange}
         InputProps={{
           classes: {
             input: classes.inputFont,
@@ -109,9 +109,10 @@ const styles = () => ({
     flex: 2,
     fontWeight: 'bold',
     color: '#7b858f',
+    minWidth: '70%',
   },
   textField_ex: {
-    minWidth: '70%',
+    minWidth: '75%',
   },
   btnEdit: {
     minWidth: '34px',

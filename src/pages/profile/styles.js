@@ -109,7 +109,7 @@ const style = () => ({
     fontStyle: 'italic',
     fontSize: 'small',
     padding: '0 10px',
-    minWidth: '200px',
+    maxWidth: '200px',
     flex: 1,
   },
   labelSpan: {
