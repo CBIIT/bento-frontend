@@ -58,15 +58,9 @@ const ProfileViewFooter = ({ classes, data }) => {
   );
 
   const formatDate = () => {
-    const removeRevokedStatus = (dataItem) => {
-      if (ignoredArms.indexOf(dataItem.accessStatus) > -1) {
-        return null;
-      }
-
-      return dataItem;
-    };
+    const removeRevokedStatus = (dataItem) => ignoredArms.indexOf(dataItem.accessStatus) === -1;
     const newData = JSON.parse(JSON.stringify({ ...data }));
-    newData.getMyUser.acl = newData.getMyUser.acl.map(removeRevokedStatus).filter((item) => item);
+    newData.getMyUser.acl = newData.getMyUser.acl.filter(removeRevokedStatus);
     /* eslint no-param-reassign: ["error", { "props": false }] */
     (newData.getMyUser.acl || []).forEach((element) => {
       element.requestDate = getDateInFormat(element.requestDate, '/');
