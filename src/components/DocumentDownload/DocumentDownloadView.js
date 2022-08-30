@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { ToolTip } from 'bento-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 import { jBrowseOptions } from '../../bento/jbrowseDetailData';
@@ -63,16 +63,35 @@ const DocumentDownload = ({
   iconUnauthenticated = '',
   fileLocation = '',
   caseId = '',
+  requiredACLs = [],
 }) => {
   const {
     signInWithGoogle,
     signOut,
   } = useAuth();
-  const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  const history = useHistory();
+
+  const { isSignedIn, acl: currentUserACL, role } = useSelector((state) => state.login);
   const [showModal, setShowModal] = React.useState(false);
+
+  const approvedACLs = currentUserACL.reduce(
+    (results, acl) => {
+      if (acl.accessStatus === 'approved') results.push(acl.armID);
+      return results;
+    },
+    [],
+  );
 
   const closeModal = () => {
     setShowModal(false);
+  };
+
+  const hasAccess = () => {
+    if (role === 'admin') return true;
+
+    return requiredACLs.reduce(
+      (status, rACL) => approvedACLs.includes(rACL) || status, false,
+    );
   };
 
   return (
@@ -83,6 +102,15 @@ const DocumentDownload = ({
             <div
               style={{ textAlign: 'center' }}
               onClick={() => signInWithGoogle()}
+            >
+              <CustomIcon imgSrc={iconUnauthenticated} />
+            </div>
+          </ToolTip>
+        ) : (globalData.enableAuthentication && isSignedIn && !hasAccess()) ? (
+          <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} arrow placement="bottom">
+            <div
+              style={{ textAlign: 'center' }}
+              onClick={() => history.push('/request')}
             >
               <CustomIcon imgSrc={iconUnauthenticated} />
             </div>
