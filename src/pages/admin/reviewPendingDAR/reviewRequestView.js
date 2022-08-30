@@ -320,16 +320,24 @@ const styles = (theme) => ({
   },
   infoKey: {
     whiteSpace: 'nowrap',
-    color: '#708292',
     fontFamily: 'Nunito Sans',
-    fontSize: '11px',
+    fontStyle: 'italic',
+    fontWeight: '400', // regular
+    fontSize: '12px',
+    color: '#708292',
+    letterSpacing: 0,
+    lineHeight: '34px',
   },
   infoValue: {
-    whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
-    color: '#4F5D69',
     fontFamily: 'Nunito Sans',
+    fontStyle: 'italic',
+    fontWeight: '300', // light
+    fontSize: '17px',
+    color: '#4F5D69',
+    letterSpacing: 0,
+    lineHeight: '35px',
   },
   container: {
     margin: 'auto',
