@@ -1,11 +1,16 @@
 import gql from 'graphql-tag';
-import { NODE_LEVEL_ACCESS, NODE_LABEL } from './siteWideConfig';
+import { NODE_LEVEL_ACCESS } from './siteWideConfig';
+import custodianUtils from '../utils/custodianUtilFuncs';
 
 export const pageTitle = 'Data Access Request';
 
 /*
   "levelDetails" variable is used to get accessControlLevel related data
   from GET_ACCESS_CONTROL_LEVEL_DETAILS_QUERY's response object.
+
+  using the custodialUtils file to process the node_label
+  since it must be restricted to 30 characters
+  and there is a chance a developer/user has entered more than 30 characters.
 */
 export const acl = 'Arms';
 export const aclAPIOptionsField = 'listArms';
@@ -39,8 +44,8 @@ export const formFields = [
     id: 'armIDs',
     type: 'aclDropdown',
     required: true,
-    label: NODE_LABEL(),
-    placeHolder: NODE_LABEL(),
+    label: custodianUtils.getNodeLevelLabel(),
+    placeHolder: custodianUtils.getNodeLevelLabel(),
     multiple: true,
     display: NODE_LEVEL_ACCESS,
     optionsAPIField: aclAPIOptionsField,
