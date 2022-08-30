@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { TextField, withStyles } from '@material-ui/core';
-import { changeUserBasicInfo, getAuthenticatorName } from '../../../bento/profileData';
+import { changeUserBasicInfo } from '../../../bento/profileData';
 import TextEditComponent from './textEditComponent';
 import style from '../styles';
 import { getFromLocalStorage, storeInLocalStorage } from '../../../utils/localStorage';
+import custodianUtils from '../../../utils/custodianUtilFuncs';
 
 const ProfileViewBody = ({ classes, data }) => {
   const { getMyUser } = data;
@@ -47,7 +48,7 @@ const ProfileViewBody = ({ classes, data }) => {
             </div>
             <TextField
               className={classes.textField}
-              value={getAuthenticatorName(getMyUser.IDP || '')}
+              value={custodianUtils.getAuthenticatorName(getMyUser.IDP || '')}
               inputProps={{ readOnly: true, className: classes.textFieldInput }}
             />
           </div>

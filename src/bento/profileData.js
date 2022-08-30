@@ -20,24 +20,6 @@ const editTool = {
   alt: 'edit',
 };
 
-/**
- * Gets the display format for the authenticator.
- * @param {string} loginNm - The IDP used to login.
- * */
-export const getAuthenticatorName = (loginNm) => {
-  const loginMap = {
-    google: 'Google',
-    nih: 'NIH',
-    'login.gov': 'Login.gov',
-  };
-
-  if (Object.prototype.hasOwnProperty.call(loginMap, loginNm)) {
-    return loginMap[loginNm];
-  }
-
-  return loginNm;
-};
-
 export const profileArmsTable = (nodeLevelAccess) => ({
   display: true,
   title: 'Access List',
