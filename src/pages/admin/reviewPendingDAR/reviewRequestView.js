@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import { cn, CustomDataTable, getColumns } from 'bento-components';
 import { useMutation } from '@apollo/client';
+import _ from 'lodash';
 import Stats from '../../../components/Stats/AllStatsController';
 import CustomizedDialogs from './components/Dialog';
 import {
@@ -197,7 +198,7 @@ const ReviewRequestView = ({ classes, data }) => {
               <div className={classes.userInfoValue}>
                 <Typography>
                   <span className={classes.infoValue}>
-                    {userInfo.IDP}
+                    {_.startCase(userInfo.IDP)}
                   </span>
                   <br />
                   <span className={classes.infoValue}>
@@ -205,9 +206,9 @@ const ReviewRequestView = ({ classes, data }) => {
                   </span>
                   <br />
                   <span className={classes.infoValue}>
-                    {userInfo.firstName}
+                    {_.startCase(userInfo.firstName)}
                     ,&nbsp;
-                    {userInfo.lastName}
+                    {_.startCase(userInfo.lastName)}
                   </span>
                 </Typography>
               </div>
@@ -225,15 +226,15 @@ const ReviewRequestView = ({ classes, data }) => {
               <div className={classes.userInfoValue}>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
-                    {userInfo.organization}
+                    {_.startCase(userInfo.organization)}
                   </span>
                   <br />
                   <span className={classes.infoValue}>
-                    {userInfo.userStatus}
+                    {_.startCase(userInfo.userStatus)}
                   </span>
                   <br />
                   <span className={classes.infoValue}>
-                    {userInfo.role}
+                    {_.startCase(userInfo.role)}
                   </span>
                 </Typography>
               </div>
