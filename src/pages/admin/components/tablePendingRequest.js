@@ -18,11 +18,12 @@ import {
 const TablePendingRequest = ({ classes }) => {
   // get data
   const { loading, error, data } = useQuery(GET_LIST_USERS, {
+    fetchPolicy: 'no-cache',
     context: {
       clientName: useMock ? 'mockService' : 'userService',
     },
     variables: {
-      role: ['member', 'non-member', 'admin'],
+      role: ['member', 'non-member'],
       accessStatus: ['pending'],
     },
   });
