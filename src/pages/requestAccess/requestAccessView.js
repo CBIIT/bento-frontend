@@ -165,24 +165,13 @@ function requestAccessView({ data, classes }) {
   }
 
   function getNotification() {
-    if (!isFormSubmitted) {
-      return null;
-    }
-    if (error) {
-      return showAlert('error');
-    }
+    if (error) { return showAlert('error'); }
 
-    if (!isACLAvailable()) {
-      return showAlert('noAclToRequest');
-    }
+    if (!isACLAvailable()) { return showAlert('noAclToRequest'); }
 
-    if (successData && successData.requestAccess) {
-      return showAlert('success');
-    }
+    if (successData && successData.requestAccess) { return showAlert('success'); }
 
-    if (redirectdType && redirectdType === 'noAccess') {
-      return showAlert(redirectdType);
-    }
+    if (redirectdType && redirectdType === 'noAccess') { return showAlert(redirectdType); }
 
     return null;
   }
