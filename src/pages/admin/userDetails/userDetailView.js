@@ -9,7 +9,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { CustomDataTable } from 'bento-components';
 import Stats from '../../../components/Stats/AllStatsController';
-import { getColumnInfo, options } from '../../../bento/userDetailViewData';
+import { columnInfo, options } from '../../../bento/userDetailViewData';
 
 import {
   adminPortalIcon,
@@ -39,6 +39,24 @@ function getApprovedArms(acl) {
   });
 
   return approvedArms;
+}
+
+function getColumnInfo(accessType, approvedRenderer, removeRenderer) {
+  return columnInfo.concat([{
+    name: 'date2',
+    label: 'Approved By',
+    options: {
+      customBodyRender: approvedRenderer,
+    },
+  },
+  {
+    name: 'remove',
+    label: 'Remove',
+    options: {
+      display: (accessType === EDIT),
+      customBodyRender: removeRenderer,
+    },
+  }]);
 }
 
 const UserDetailView = ({ classes, data, accessType = VIEW }) => {
@@ -91,7 +109,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     );
   };
 
-  const columns = getColumnInfo(checkBoxRenderFunc, approvedRender, accessType);
+  const columns = getColumnInfo(accessType, approvedRender, checkBoxRenderFunc);
 
   const approvedArms = getApprovedArms(userInfo.acl);
 
