@@ -301,6 +301,7 @@ type file {
   file_status: String
   file_type: String
   md5sum: String
+  acl: String
   diagnosis: diagnosis 
   laboratory_procedure: laboratory_procedure 
   study_subject: study_subject 

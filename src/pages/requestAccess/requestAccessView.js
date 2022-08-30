@@ -316,7 +316,6 @@ function requestAccessView({ data, classes }) {
 const styles = () => ({
   Container: {
     backgroundColor: '#FFFFFF',
-    marginTop: '-47px',
     fontFamily: 'Nunito',
   },
   pageTitle: {

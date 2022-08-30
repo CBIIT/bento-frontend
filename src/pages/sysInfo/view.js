@@ -88,7 +88,7 @@ function SysInfoView() {
   }, []);
 
   const coreServicesData = [
-    createThreeColumnRow('Frontend Version', coreRequirements.frontend, packageJson.version),
+    createThreeColumnRow('Frontend Version', coreRequirements.frontend, env.REACT_APP_FE_VERSION),
     createThreeColumnRow('Backend Version', coreRequirements.backend, state.backendVersion),
     createThreeColumnRow('Bento Components (aka Bento-tools) Version', coreRequirements['bento-tools'], bentoComponentsPackageJson.version),
   ];

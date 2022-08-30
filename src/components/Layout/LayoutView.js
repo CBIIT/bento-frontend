@@ -34,7 +34,7 @@ import viewUserController from '../../pages/admin/userDetails/viewUserController
 import fakeAdminView from '../../pages/fakeAdmin';
 
 // Access control imports
-import PrivateRoute, { LoginRoute, AdminRoute } from './privateRoute';
+import PrivateRoute, { LoginRoute, AdminRoute, MixedRoute } from './privateRoute';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -55,8 +55,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
         >
           <Route component={ScrollToTop} />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/home" component={Home} />
+            <MixedRoute exact path="/" component={Home} />
+            <MixedRoute exact path="/home" component={Home} />
 
             {/* START: Private Routes */}
             {/* SECTION: Non-Member & Member only Path */}
