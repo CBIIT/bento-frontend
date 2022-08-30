@@ -1081,6 +1081,7 @@ query fileOverview(
         file_size,
         program,
         arm,
+        acl,
         subject_id,
         sample_id,
         diagnosis,

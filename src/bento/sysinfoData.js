@@ -1,6 +1,8 @@
+import env from '../utils/env';
+
 export const coreRequirements = {
-  frontend: '0.1.0',
-  backend: '4.6.0',
+  frontend: env.REACT_APP_FE_VERSION || '0.1.0',
+  backend: env.REACT_APP_BE_VERSION || '4.6.0',
   'bento-tools': '0.1.105',
 };
 

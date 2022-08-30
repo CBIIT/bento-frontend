@@ -3,6 +3,12 @@ import {
 } from '@apollo/client';
 import env from './env';
 
+const defaultOptions = {
+  query: {
+    fetchPolicy: 'no-cache',
+  },
+};
+
 const BACKEND = env.REACT_APP_BACKEND_API;
 const PUBLIC_BACKEND = env.REACT_APP_BACKEND_PUBLIC_API;
 const MOCK = 'https://f20e5514-ae0a-4e09-b498-94283cdf9d2c.mock.pstmn.io/v1/graphql';
@@ -34,6 +40,7 @@ const mockService = new HttpLink({
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
+  defaultOptions,
   link: ApolloLink.split(
     (op) => op.getContext().clientName === 'publicService',
     publicService,
