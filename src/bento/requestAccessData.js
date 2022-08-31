@@ -14,6 +14,7 @@ export const formFields = [
   {
     id: 'firstName',
     type: 'textBox',
+    dataType: 'string',
     required: true,
     label: 'First Name',
     placeHolder: 'First Name',
@@ -22,6 +23,7 @@ export const formFields = [
   {
     id: 'lastName',
     type: 'textBox',
+    dataType: 'string',
     required: true,
     label: 'Last Name',
     placeHolder: 'Last Name',
@@ -30,6 +32,7 @@ export const formFields = [
   {
     id: 'organization',
     type: 'textBox',
+    dataType: 'string',
     required: true,
     label: 'Organization / Institution',
     placeHolder: 'Organization / Institution',
@@ -38,6 +41,7 @@ export const formFields = [
   {
     id: 'armIDs',
     type: 'aclDropdown',
+    dataType: 'array',
     required: true,
     label: NODE_LABEL,
     placeHolder: NODE_LABEL,
