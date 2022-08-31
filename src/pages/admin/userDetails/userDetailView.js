@@ -162,31 +162,22 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
               <div className={classes.infoKeyWrapper}>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span>
-                  {' '}
                   <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span>
-                  {' '}
                   <span className={classes.infoKey}>NAME: </span>
                 </Typography>
               </div>
               <div>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
-                    {' '}
                     {custodianUtils.getAuthenticatorName(userInfo.IDP)}
-                    {' '}
                   </span>
-                  {' '}
                   <span className={classes.infoValue}>
-                    {' '}
                     {userInfo.email}
-                    {' '}
                   </span>
-                  {' '}
                   <span className={classes.infoValue}>
-                    {' '}
                     {_.startCase(userInfo.lastName)}
                     ,
-                    {' '}
+                    &nbsp;
                     {_.startCase(userInfo.firstName)}
                   </span>
                 </Typography>
@@ -196,28 +187,19 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
               <div className={classes.infoKeyWrapper}>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoKey}>ORGANIZATION: </span>
-                  {' '}
                   <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
-                  {' '}
                   <span className={classes.infoKey}>ROLE: </span>
                 </Typography>
               </div>
               <div>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
-                    {' '}
                     {_.startCase(userInfo.organization)}
-                    {' '}
                   </span>
-                  {' '}
                   <span className={classes.infoValue}>
-                    {' '}
                     {_.startCase(userInfo.userStatus)}
-                    {' '}
                   </span>
-                  {' '}
                   <span className={classes.infoValue}>
-                    {' '}
                     {accessType === EDIT ? (
                       <Select
                         value={userRole}
@@ -231,7 +213,6 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                       </Select>
                     )
                       : _.startCase(userRole) }
-                    {' '}
                   </span>
                 </Typography>
               </div>
