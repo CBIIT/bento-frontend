@@ -321,7 +321,7 @@ const styles = (theme) => ({
   },
   infoKey: {
     whiteSpace: 'nowrap',
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '400', // regular
     fontSize: '12px',
@@ -333,7 +333,7 @@ const styles = (theme) => ({
     minHeight: '32px',
     marginLeft: '21px',
     float: 'left',
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
