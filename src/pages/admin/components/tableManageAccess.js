@@ -24,7 +24,7 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
     },
     variables: {
       role: includeNonMember ? ['member', 'non-member', 'admin'] : ['member', 'admin'],
-      accessStatus: [],
+      accessStatus: ['approved'],
     },
   });
 

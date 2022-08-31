@@ -14,6 +14,7 @@ import {
 import {
   GET_LIST_USERS, useMock, tabPendingRequest, nodeField, nodeName, nodeLevelAccess,
 } from '../../../bento/adminData';
+import getDateInFormat from '../../../utils/date';
 
 const TablePendingRequest = ({ classes }) => {
   // get data
@@ -45,6 +46,28 @@ const TablePendingRequest = ({ classes }) => {
     label: nodeName,
   }];
 
+  let dateColumn = [];
+
+  const draftCloumns = getColumns(table, classes);
+
+  const customizedCloumns = [];
+  for (let i = 0; i < draftCloumns.length; i += 1) {
+    if (draftCloumns[i].name === 'creationDate') {
+      dateColumn = [
+        {
+          name: 'creationDate',
+          label: 'Request Date',
+          options: {
+            display: true,
+            filter: false,
+            customBodyRender: (value) => (getDateInFormat(value, '-')),
+          },
+        }];
+    } else {
+      customizedCloumns.push(draftCloumns[i]);
+    }
+  }
+
   const actionColumn = [{
     name: 'userID',
     label: 'Actions',
@@ -69,8 +92,8 @@ const TablePendingRequest = ({ classes }) => {
   ];
 
   const columns = nodeLevelAccess
-    ? getColumns(table, classes).concat(nodeLevelColumn).concat(actionColumn)
-    : getColumns(table, classes).concat(actionColumn);
+    ? customizedCloumns.concat(nodeLevelColumn).concat(dateColumn).concat(actionColumn)
+    : customizedCloumns.concat(dateColumn).concat(actionColumn);
   const options = getOptions(table, classes, getDefaultCustomFooter);
 
   return (
