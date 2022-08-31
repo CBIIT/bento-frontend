@@ -71,6 +71,14 @@ export const tabPendingRequest = {
         header: 'Organization',
       },
       {
+        dataField: 'userStatus',
+        header: 'Membership Status',
+      },
+      {
+        dataField: 'role',
+        header: 'Role',
+      },
+      {
         dataField: 'creationDate',
         header: 'Request Date',
       },
