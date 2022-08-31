@@ -29,8 +29,8 @@ function getApprovedArms(acl) {
       approvedArms.push(
         [
           arm.armName,
-          getDateInFormat(arm.requestDate),
-          getDateInFormat(arm.reviewDate),
+          getDateInFormat(arm.requestDate, '/'),
+          getDateInFormat(arm.reviewDate, '/'),
           arm.reviewAdminName,
           arm.armID,
         ],

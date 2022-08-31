@@ -17,7 +17,7 @@ function getDateInFormat(dateString, strSeparator) {
     return `${mm}${strSeparator}${dd}${strSeparator}${yyyy}`;
   }
 
-  return `${yyyy}-${mm}-${dd}`;
+  return `${yyyy}/${mm}/${dd}`;
 }
 
 export default getDateInFormat;
