@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
@@ -10,6 +11,7 @@ import AlertMessage from '../../components/alertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 import Stats from '../../components/Stats/AllStatsController';
+import custodianUtils from '../../utils/custodianUtilFuncs';
 
 // Custodian data imports
 import { pageTitle, formFields, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
@@ -240,7 +242,7 @@ function requestAccessView({ data, classes }) {
                       <div className={classes.itemTitles}>Account Type:</div>
                     </div>
                     <div className={classes.column}>
-                      <div className={classes.emailAddressValue}>{IDP}</div>
+                      <div className={classes.emailAddressValue}>{custodianUtils.getAuthenticatorName(IDP || '')}</div>
                     </div>
                   </div>
 
@@ -266,7 +268,7 @@ function requestAccessView({ data, classes }) {
                     <div className={classes.column}>
                       <div className={classes.emailAddressValue}>
                         {' '}
-                        {userStatus || 'N/A'}
+                        {_.startCase(userStatus || 'N/A')}
                         {' '}
                       </div>
                     </div>
@@ -295,6 +297,11 @@ function requestAccessView({ data, classes }) {
                           return null;
                       }
                     })}
+                    <Grid item sm={12} style={{ textAlign: 'center', marginTop: '19px' }} justifyContent="center">
+                      <span className={classes.requiredFieldMessage}>
+                        * denotes  required field
+                      </span>
+                    </Grid>
                     <Grid item sm={12} style={{ textAlign: 'center' }} justifyContent="center">
                       {isFormSubmitted ? (
                         <Button
@@ -445,7 +452,7 @@ const styles = () => ({
     height: '40px',
     color: '#FFFFFF',
     backgroundColor: '#5D53F6',
-    marginTop: '33px',
+    marginTop: '23px',
     marginBottom: '50px',
     '&:hover': {
       backgroundColor: '#5D53F6',
@@ -503,6 +510,14 @@ const styles = () => ({
     lineHeight: '22px',
     marginBottom: '10px',
     marginTop: '10px',
+  },
+  requiredFieldMessage: {
+    color: '#BC3900',
+    fontFamily: 'Lato',
+    fontSize: '15px',
+    letterSpacing: '0',
+    lineHeight: '22px',
+    textAlign: 'center',
   },
 
 });
