@@ -63,7 +63,7 @@ function requestAccessView({ data, classes }) {
 
   // Initial State and Reset functions
   const fieldsToChk = formFields.map(
-    (field) => (field.required ? { id: field.id, dType: field.dataType } : null),
+    (field) => (field.required ? field.id : null),
   );
   const setDefaultValues = () => formFields.reduce((values, field) => {
     const {
@@ -140,7 +140,9 @@ function requestAccessView({ data, classes }) {
     }
   };
 
-  const testFieldsByType = (dType, key) => {
+  const testFieldsByType = (key) => {
+    const dType = Array.isArray(formValues[key]) ? 'array' : typeof formValues[key];
+
     switch (dType) {
       case 'string':
         return !!(formValues[key] && formValues[key].trim() !== '');
@@ -154,7 +156,7 @@ function requestAccessView({ data, classes }) {
   const validateFields = () => {
     const armsChk = availableArms.length > 0;
     const valid = fieldsToChk.map(
-      (field) => field !== null && testFieldsByType(field.dType, field.id),
+      (field) => field !== null && testFieldsByType(field),
     ).indexOf(false) !== -1;
 
     setDisableSubmit((valid && armsChk));
