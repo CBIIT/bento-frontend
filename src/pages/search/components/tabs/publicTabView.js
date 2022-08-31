@@ -66,7 +66,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_PROGRAM_PUBLIC,
     count: searchResults.program_count || 0,
-    value: '5',
+    value: 'inactive-5',
   },
   {
     name: 'Studies',
@@ -88,7 +88,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_MODEL,
     count: searchResults.model_count || 0,
-    value: '7',
+    value: 'inactive-7',
   },
   {
     name: 'About',

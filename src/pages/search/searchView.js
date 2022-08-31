@@ -67,7 +67,7 @@ function searchComponent({
    * Chooses the search method based on whether user is logged in,
    * returns function */
   function getSearchMethod() {
-    if ((isSignedIn && isAuthorized)) {
+    if ((isAuthorized)) {
       return getSearch;
     }
 
@@ -172,7 +172,7 @@ function searchComponent({
       </div>
       <div className={classes.bodyContainer}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
-          {isSignedIn && isAuthorized
+          {isAuthorized
             ? (
               <PrivateTabView
                 tab={tab}
