@@ -288,7 +288,7 @@ function requestAccessView({ data, classes }) {
                           return null;
                       }
                     })}
-                    <Grid item sm={12} style={{ textAlign: 'center' }} justify="center">
+                    <Grid item sm={12} style={{ textAlign: 'center' }} justifyContent="center">
                       {isFormSubmitted ? (
                         <Button
                           variant="contained"
