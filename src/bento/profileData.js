@@ -20,6 +20,8 @@ const editTool = {
   alt: 'edit',
 };
 
+const ignoredArms = ['revoked', 'rejected'];
+
 export const profileArmsTable = (nodeLevelAccess) => ({
   display: true,
   title: 'Access List',
@@ -112,4 +114,5 @@ export {
   inactiveUserIcon,
   GET_MY_PROFILE_QUERY,
   changeUserBasicInfo,
+  ignoredArms,
 };
