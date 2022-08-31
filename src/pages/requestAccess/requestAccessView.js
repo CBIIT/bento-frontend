@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
@@ -23,10 +23,7 @@ const checkIsValid = (field, formValues) => {
     return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
   }
 
-  if (value !== '') {
-    return true;
-  }
-  return false;
+  return value !== '';
 };
 
 function useQuery() {
@@ -58,13 +55,14 @@ function requestAccessView({ data, classes }) {
   const history = useHistory();
   const query = useQuery();
   const redirectdType = getRedirectedType(query);
-  const [changeDetected, setChangeDetected] = useState(false);
+  const [disableSubmit, setDisableSubmit] = useState(false);
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
 
   const getDefaultACL = () => (availableArms[0] || []).id;
 
   // Initial State and Reset functions
+  const fieldsToChk = formFields.map((field) => (field.required ? field.id : null));
   const setDefaultValues = () => formFields.reduce((values, field) => {
     const {
       id, type, multiple, display,
@@ -140,6 +138,18 @@ function requestAccessView({ data, classes }) {
     }
   };
 
+  const validateFields = () => {
+    const armsChk = availableArms.length > 0;
+    const chk = fieldsToChk.some((key) => key !== null
+      && formValues[key]
+      && !formValues[key].length);
+
+    setDisableSubmit((chk && armsChk));
+  };
+
+  // use effect to track form changes
+  useEffect(validateFields);
+
   // State Change Managemnt
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -147,7 +157,6 @@ function requestAccessView({ data, classes }) {
       ...formValues,
       [name]: value,
     });
-    setChangeDetected(true);
   };
 
   const handleSubmit = (event) => {
@@ -161,7 +170,7 @@ function requestAccessView({ data, classes }) {
   }
 
   function isACLAvailable() {
-    return availableArms.length > 0 && changeDetected;
+    return availableArms.length > 0;
   }
 
   function getNotification() {
@@ -271,6 +280,7 @@ function requestAccessView({ data, classes }) {
                         <Button
                           variant="contained"
                           className={classes.submitButtton}
+                          disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                           onClick={() => redirectUser('/')}
                         >
@@ -281,7 +291,7 @@ function requestAccessView({ data, classes }) {
                           variant="contained"
                           type="submit"
                           className={classes.submitButtton}
-                          disabled={!isACLAvailable()}
+                          disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                         >
                           Submit
