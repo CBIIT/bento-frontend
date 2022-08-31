@@ -60,7 +60,7 @@ const TablePendingRequest = ({ classes }) => {
           options: {
             display: true,
             filter: false,
-            customBodyRender: (value) => (getDateInFormat(value, '-')),
+            customBodyRender: (value) => (getDateInFormat(value, '/')),
           },
         }];
     } else {
