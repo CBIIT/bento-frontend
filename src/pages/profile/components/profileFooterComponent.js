@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { CustomDataTable, getColumns, getOptions } from 'bento-components';
-import { profileArmsTable } from '../../../bento/profileData';
+import { ignoredArms, profileArmsTable } from '../../../bento/profileData';
 import style from '../styles';
 import getDateInFormat from '../../../utils/date';
 
@@ -57,9 +57,11 @@ const ProfileViewFooter = ({ classes, data }) => {
   );
 
   const formatDate = () => {
+    const removeRevokedStatus = (dataItem) => ignoredArms.indexOf(dataItem.accessStatus) === -1;
     const newData = JSON.parse(JSON.stringify({ ...data }));
+    newData.getMyUser.acl = newData.getMyUser.acl.filter(removeRevokedStatus);
     /* eslint no-param-reassign: ["error", { "props": false }] */
-    newData.getMyUser.acl.forEach((element) => {
+    (newData.getMyUser.acl || []).forEach((element) => {
       element.requestDate = getDateInFormat(element.requestDate, '/');
       element.reviewDate = getDateInFormat(element.reviewDate, '/');
     });

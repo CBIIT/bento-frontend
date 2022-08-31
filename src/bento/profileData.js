@@ -20,6 +20,7 @@ const editTool = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/userProfileEditTool.svg',
   alt: 'edit',
 };
+const ignoredArms = ['revoked', 'rejected'];
 
 export const profileArmsTable = {
   display: true,
@@ -113,4 +114,5 @@ export {
   inactiveUserIcon,
   GET_MY_PROFILE_QUERY,
   changeUserBasicInfo,
+  ignoredArms,
 };

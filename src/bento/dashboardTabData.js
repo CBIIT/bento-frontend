@@ -306,7 +306,7 @@ export const tabContainers = [
         formatBytes: true,
       },
       {
-        dataField: '', // This need to left empty if no data need to be displayed before file download icon
+        dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon
         header: 'Access',
         sort: 'asc',
         display: true,
