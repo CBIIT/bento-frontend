@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { ToolTip } from 'bento-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 import { jBrowseOptions } from '../../bento/jbrowseDetailData';
@@ -48,6 +48,7 @@ const fetchFileToDownload = (fileURL = '', signOut, setShowModal) => {
     });
 };
 
+// NOTE: This component is getting more complex, will need to refactor at some point.
 const DocumentDownload = ({
   classes,
   fileSize = 0,
@@ -63,16 +64,35 @@ const DocumentDownload = ({
   iconUnauthenticated = '',
   fileLocation = '',
   caseId = '',
+  requiredACLs = [],
 }) => {
   const {
     signInWithGoogle,
     signOut,
   } = useAuth();
-  const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  const history = useHistory();
+
+  const { isSignedIn, acl: currentUserACL = [], role } = useSelector((state) => state.login);
   const [showModal, setShowModal] = React.useState(false);
+
+  const approvedACLs = currentUserACL.reduce(
+    (results, acl) => {
+      if (acl.accessStatus === 'approved') results.push(acl.armID);
+      return results;
+    },
+    [],
+  );
 
   const closeModal = () => {
     setShowModal(false);
+  };
+
+  const hasAccess = () => {
+    if (role === 'admin') return true;
+
+    return requiredACLs.reduce(
+      (status, rACL) => approvedACLs.includes(rACL) || status, false,
+    );
   };
 
   return (
@@ -87,6 +107,15 @@ const DocumentDownload = ({
               <CustomIcon imgSrc={iconUnauthenticated} />
             </div>
           </ToolTip>
+        ) : (globalData.enableAuthentication && isSignedIn && !hasAccess()) ? (
+          <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} arrow placement="bottom">
+            <div
+              style={{ textAlign: 'center' }}
+              onClick={() => history.push('/request')}
+            >
+              <CustomIcon imgSrc={iconUnauthenticated} />
+            </div>
+          </ToolTip>
         ) : (fileFormat === 'bam' || fileFormat === 'bai') && jBrowseOptions.jBrowse ? (
           <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileViewer} arrow placement="bottom">
             <Link
@@ -97,15 +126,20 @@ const DocumentDownload = ({
           </ToolTip>
         ) : fileSize < maxFileSize ? (
           <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} arrow placement="bottom">
-            <div onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal)}>
+            <div
+              style={{ textAlign: 'center' }}
+              onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal)}
+            >
               <CustomIcon imgSrc={iconFileDownload} />
             </div>
           </ToolTip>
         ) : (
           <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFilePreview} arrow placement="bottom">
-            <span>
+            <div
+              style={{ textAlign: 'center' }}
+            >
               <CustomIcon imgSrc={iconFilePreview} />
-            </span>
+            </div>
           </ToolTip>
         )}
         <SessionTimeOutModal
