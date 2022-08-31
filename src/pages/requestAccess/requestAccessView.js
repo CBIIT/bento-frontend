@@ -141,7 +141,7 @@ function requestAccessView({ data, classes }) {
   const validateFields = () => {
     const armsChk = availableArms.length > 0;
     const chk = fieldsToChk.some((key) => key !== null
-      && Object.prototype.hasOwnProperty.call(formValues, key)
+      && formValues[key]
       && !formValues[key].length);
 
     setDisableSubmit((chk && armsChk));
