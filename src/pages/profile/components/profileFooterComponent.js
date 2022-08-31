@@ -7,7 +7,6 @@ import { CustomDataTable, getColumns, getOptions } from 'bento-components';
 import { profileArmsTable } from '../../../bento/profileData';
 import style from '../styles';
 import getDateInFormat from '../../../utils/date';
-import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
 
 const ProfileViewFooter = ({ classes, data }) => {
   const { role, userStatus } = data.getMyUser;
@@ -68,7 +67,7 @@ const ProfileViewFooter = ({ classes, data }) => {
     return newData.getMyUser;
   };
 
-  const gridConfig = profileArmsTable(NODE_LEVEL_ACCESS);
+  const gridConfig = profileArmsTable;
 
   const renderGrid = () => (
     <>
