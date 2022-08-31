@@ -62,7 +62,9 @@ function requestAccessView({ data, classes }) {
   const getDefaultACL = () => (availableArms[0] || []).id;
 
   // Initial State and Reset functions
-  const fieldsToChk = formFields.map((field) => (field.required ? field.id : null));
+  const fieldsToChk = formFields.map(
+    (field) => (field.required ? field.id : null),
+  );
   const setDefaultValues = () => formFields.reduce((values, field) => {
     const {
       id, type, multiple, display,
@@ -138,13 +140,26 @@ function requestAccessView({ data, classes }) {
     }
   };
 
+  const testFieldsByType = (key) => {
+    const dType = Array.isArray(formValues[key]) ? 'array' : typeof formValues[key];
+
+    switch (dType) {
+      case 'string':
+        return !!(formValues[key] && formValues[key].trim() !== '');
+      case 'array':
+        return formValues[key] && formValues[key].length > 0;
+      default:
+        return !!(formValues[key]);
+    }
+  };
+
   const validateFields = () => {
     const armsChk = availableArms.length > 0;
-    const chk = fieldsToChk.some((key) => key !== null
-      && formValues[key]
-      && !formValues[key].length);
+    const valid = fieldsToChk.map(
+      (field) => field !== null && testFieldsByType(field),
+    ).indexOf(false) !== -1;
 
-    setDisableSubmit((chk && armsChk));
+    setDisableSubmit((valid && armsChk));
   };
 
   // use effect to track form changes
@@ -257,7 +272,7 @@ function requestAccessView({ data, classes }) {
 
               {/* Box Grid */}
               <div className={classes.Box}>
-                <Grid container alignItems="center" justify="center" direction="column">
+                <Grid container alignItems="center" justifyContent="center" direction="column">
                   <form onSubmit={handleSubmit}>
                     {formFields.map((field) => {
                       if (!field.display) { return null; }
@@ -280,7 +295,6 @@ function requestAccessView({ data, classes }) {
                         <Button
                           variant="contained"
                           className={classes.submitButtton}
-                          disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                           onClick={() => redirectUser('/')}
                         >
