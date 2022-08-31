@@ -16,6 +16,7 @@ import {
   getReviewDARConfig,
 } from '../../../bento/adminData';
 import { filterData, showAlert } from './utils/reviewDARUtilFun';
+import custodianUtils from '../../../utils/custodianUtilFuncs';
 
 const ReviewRequestView = ({ classes, data }) => {
   const { getUser } = data;
@@ -198,7 +199,7 @@ const ReviewRequestView = ({ classes, data }) => {
               <div className={classes.userInfoValue}>
                 <Typography>
                   <span className={classes.infoValue}>
-                    {_.startCase(userInfo.IDP)}
+                    {custodianUtils.getAuthenticatorName(userInfo.IDP)}
                   </span>
                   <br />
                   <span className={classes.infoValue}>
@@ -329,6 +330,7 @@ const styles = (theme) => ({
     lineHeight: '34px',
   },
   infoValue: {
+    minHeight: '32px',
     marginLeft: '21px',
     float: 'left',
     fontFamily: 'Nunito Sans',
