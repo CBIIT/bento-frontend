@@ -230,44 +230,49 @@ function requestAccessView({ data, classes }) {
                 </div>
               </Grid>
 
-              {/* User's Account type */}
-              <div className={classes.segment}>
-                <div className={classes.row}>
-                  <div className={classes.column}>
-                    <div className={classes.itemTitles}>Account Type:</div>
-                  </div>
-                  <div className={classes.column}>
-                    <div className={classes.emailAddressValue}>{IDP}</div>
-                  </div>
-                </div>
+              <div className={classes.container}>
+                <div className={classes.brace} />
+                <div className={classes.segment}>
 
-                {/* User's Email Address */}
-                <div className={classes.row}>
-                  <div className={classes.column}>
-                    <div className={classes.itemTitles}>Email Address:</div>
+                  {/* User's Account type */}
+                  <div className={classes.row}>
+                    <div className={classes.column}>
+                      <div className={classes.itemTitles}>Account Type:</div>
+                    </div>
+                    <div className={classes.column}>
+                      <div className={classes.emailAddressValue}>{IDP}</div>
+                    </div>
                   </div>
-                  <div className={classes.column}>
-                    <div className={classes.emailAddressValue}>
-                      {' '}
-                      {userEmail}
-                      {' '}
+
+                  {/* User's Email Address */}
+                  <div className={classes.row}>
+                    <div className={classes.column}>
+                      <div className={classes.itemTitles}>Email Address:</div>
+                    </div>
+                    <div className={classes.column}>
+                      <div className={classes.emailAddressValue}>
+                        {' '}
+                        {userEmail}
+                        {' '}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* User's Membership Status */}
+                  <div className={classes.row}>
+                    <div className={classes.column}>
+                      <div className={classes.itemTitles}> Membership Status: </div>
+                    </div>
+                    <div className={classes.column}>
+                      <div className={classes.emailAddressValue}>
+                        {' '}
+                        {userStatus || 'N/A'}
+                        {' '}
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                {/* User's Membership Status */}
-                <div className={classes.row}>
-                  <div className={classes.column}>
-                    <div className={classes.itemTitles}> Membership Status: </div>
-                  </div>
-                  <div className={classes.column}>
-                    <div className={classes.emailAddressValue}>
-                      {' '}
-                      {userStatus || 'N/A'}
-                      {' '}
-                    </div>
-                  </div>
-                </div>
+                <div className={classes.brace} />
               </div>
 
               {/* Box Grid */}
@@ -361,8 +366,16 @@ const styles = () => ({
     backgroundColor: '#F2F6FA',
     boxShadow: '-4px 8px 27px 4px rgb(27 28 28 / 9%)',
   },
-  segment: {
+  container: {
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  brace: {
+    flex: 1,
+  },
+  segment: {
     boxSizing: 'border-box',
     flexDirection: 'column',
     width: '65%',
@@ -370,39 +383,41 @@ const styles = () => ({
     justifyContent: 'center',
     fontFamily: 'Nunito',
     margin: '25px 0',
+    padding: '0 20px',
+    flex: '1.5',
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: '5px',
   },
   column: {
     '&:first-child': {
-      flex: '.7',
+      flex: '.5',
     },
     flex: 1,
   },
   itemTitles: {
     color: '#9EAAB5',
     textTransform: 'uppercase',
-    fontSize: '10pt',
+    fontSize: '9pt',
     fontStyle: 'italic',
-    fontWeight: 'bold',
-    lineHeight: '30px',
+    lineHeight: '20px',
     flex: 1,
     textAlign: 'left',
-    padding: '0 10px 0 20%',
+    padding: '0 10px 0 10px',
   },
   emailAddressValue: {
     color: '#6C7882',
     fontFamily: 'Nunito',
     fontSize: '14pt',
-    fontWeight: '600',
-    lineHeight: '30px',
+    fontWeight: '500',
+    lineHeight: '20px',
     flex: 1,
   },
   Box: {
-    width: '535px',
+    width: '600px',
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09);',
     border: '#A9C8E3 2px solid',
     borderRadius: '10px',
