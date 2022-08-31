@@ -5,6 +5,7 @@ import { changeUserBasicInfo } from '../../../bento/profileData';
 import TextEditComponent from './textEditComponent';
 import style from '../styles';
 import { getFromLocalStorage, storeInLocalStorage } from '../../../utils/localStorage';
+import custodianUtils from '../../../utils/custodianUtilFuncs';
 
 const ProfileViewBody = ({ classes, data }) => {
   const { getMyUser } = data;
@@ -47,7 +48,7 @@ const ProfileViewBody = ({ classes, data }) => {
             </div>
             <TextField
               className={classes.textField}
-              value={(getMyUser.IDP || '').toUpperCase()}
+              value={custodianUtils.getAuthenticatorName(getMyUser.IDP || '')}
               inputProps={{ readOnly: true, className: classes.textFieldInput }}
             />
           </div>
@@ -76,7 +77,7 @@ const ProfileViewBody = ({ classes, data }) => {
               <span className={classes.labelSpan}>Organization:</span>
             </div>
             <TextEditComponent
-              customOptions={{ alt: 'edit organization', field: 'organization' }}
+              customOptions={{ alt: 'edit organization', field: 'organization', useLargerField: true }}
               data={organization}
               onSave={completeSave}
             />

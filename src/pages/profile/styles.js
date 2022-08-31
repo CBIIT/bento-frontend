@@ -96,6 +96,7 @@ const style = () => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flex: 2,
   },
   textFieldInput: {
     color: '#76818a',
@@ -108,7 +109,8 @@ const style = () => ({
     fontStyle: 'italic',
     fontSize: 'small',
     padding: '0 10px',
-    minWidth: '200px',
+    maxWidth: '200px',
+    flex: 1,
   },
   labelSpan: {
     verticalAlign: '-webkit-baseline-middle',

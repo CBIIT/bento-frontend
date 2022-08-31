@@ -28,7 +28,9 @@ function TextEditComponent({
   const handleChange = (event) => {
     if (event && event.target.value) {
       setValue(event.target.value);
+      return;
     }
+    setValue('');
   };
 
   const handleEdit = () => {
@@ -65,11 +67,14 @@ function TextEditComponent({
     setEditActivated(false);
   };
 
+  const useLargerField = checkProp(customOptions, 'useLargerField');
+
   return (
     <div className={classes.textField}>
       <TextField
         error={error.value}
         value={value}
+        className={`${useLargerField ? classes.textField_ex : ''}`}
         onChange={handleChange}
         InputProps={{
           classes: {
@@ -106,6 +111,10 @@ const styles = () => ({
     flex: 2,
     fontWeight: 'bold',
     color: '#7b858f',
+    minWidth: '70%',
+  },
+  textField_ex: {
+    minWidth: '75%',
   },
   btnEdit: {
     minWidth: '34px',
