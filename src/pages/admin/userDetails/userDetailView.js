@@ -8,6 +8,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { CustomDataTable } from 'bento-components';
+import _ from 'lodash';
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
 
@@ -20,6 +21,7 @@ import {
   EDIT,
 } from '../../../bento/adminData';
 import getDateInFormat from '../../../utils/date';
+import custodianUtils from '../../../utils/custodianUtilFuncs';
 
 // acl is array of object.
 function getApprovedArms(acl) {
@@ -158,38 +160,34 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
           <div className={classes.userInfoHeader}>
             <div className={classes.firstInfoSection}>
               <div className={classes.infoKeyWrapper}>
-                <Typography>
+                <Typography className={classes.userInfo}>
                   <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span>
                   {' '}
-                  <br />
                   <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span>
                   {' '}
-                  <br />
                   <span className={classes.infoKey}>NAME: </span>
                 </Typography>
               </div>
-              <div className={classes.userInfoValue}>
-                <Typography>
+              <div>
+                <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
                     {' '}
-                    {userInfo.IDP}
+                    {custodianUtils.getAuthenticatorName(userInfo.IDP)}
                     {' '}
                   </span>
                   {' '}
-                  <br />
                   <span className={classes.infoValue}>
                     {' '}
                     {userInfo.email}
                     {' '}
                   </span>
                   {' '}
-                  <br />
                   <span className={classes.infoValue}>
                     {' '}
-                    {userInfo.lastName}
+                    {_.startCase(userInfo.lastName)}
                     ,
                     {' '}
-                    {userInfo.firstName}
+                    {_.startCase(userInfo.firstName)}
                   </span>
                 </Typography>
               </div>
@@ -199,29 +197,25 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoKey}>ORGANIZATION: </span>
                   {' '}
-                  <br />
                   <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
                   {' '}
-                  <br />
                   <span className={classes.infoKey}>ROLE: </span>
                 </Typography>
               </div>
-              <div className={classes.userInfoValue}>
+              <div>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
                     {' '}
-                    {userInfo.organization}
+                    {_.startCase(userInfo.organization)}
                     {' '}
                   </span>
                   {' '}
-                  <br />
                   <span className={classes.infoValue}>
                     {' '}
-                    {userInfo.userStatus}
+                    {_.startCase(userInfo.userStatus)}
                     {' '}
                   </span>
                   {' '}
-                  <br />
                   <span className={classes.infoValue}>
                     {' '}
                     {accessType === EDIT ? (
@@ -236,7 +230,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                         <MenuItem value="member"> Member </MenuItem>
                       </Select>
                     )
-                      : userRole }
+                      : _.startCase(userRole) }
                     {' '}
                   </span>
                 </Typography>
@@ -312,18 +306,42 @@ const styles = (theme) => ({
       width: '120px',
     },
   },
+  userInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   infoKey: {
     whiteSpace: 'nowrap',
+    fontFamily: 'Nunito Sans',
+    fontStyle: 'italic',
+    fontWeight: '400', // regular
+    fontSize: '12px',
     color: '#708292',
-    fontFamily: 'Nunito',
-    fontSize: '11px',
+    letterSpacing: 0,
+    lineHeight: '34px',
   },
   infoValue: {
+    minHeight: '32px',
     whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
+    fontFamily: 'Nunito Sans',
+    fontStyle: 'italic',
+    fontWeight: '300', // light
+    fontSize: '17px',
     color: '#4F5D69',
-    fontFamily: 'Nunito',
+    letterSpacing: 0,
+    lineHeight: '35px',
+  },
+  selectEmpty: {
+    whiteSpace: 'nowrap',
+    fontFamily: 'Nunito Sans',
+    fontStyle: 'italic',
+    fontWeight: '300', // light
+    fontSize: '17px',
+    color: '#4F5D69',
+    letterSpacing: 0,
+    lineHeight: '35px',
   },
   upperCase: {
     textTransform: 'capitalize',
