@@ -23,6 +23,12 @@ const custodianUtils = {
 
     return idpValue;
   },
+  // Capitalize first letter of each word
+  capitalizeFirstLetter: (str) => {
+    const words = str.split(' ');
+    return words.map((word) => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
+  },
+
 };
 
 export default custodianUtils;
