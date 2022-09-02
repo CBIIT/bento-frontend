@@ -301,6 +301,7 @@ type file {
   file_status: String
   file_type: String
   md5sum: String
+  acl: String
   diagnosis: diagnosis 
   laboratory_procedure: laboratory_procedure 
   study_subject: study_subject 
@@ -866,14 +867,6 @@ schema {
 
 type QueryType {
     schemaVersion: String 
-
-    "Simple counts"
-    numberOfPrograms: Int 
-    numberOfStudies: Int 
-    numberOfSubjects: Int 
-    numberOfSamples: Int 
-    numberOfLabProcedures: Int  
-    numberOfFiles: Int 
 
     "Group counts from lists of subject ids, file ids, and sample ids"
 
