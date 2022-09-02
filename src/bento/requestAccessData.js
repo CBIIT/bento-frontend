@@ -36,8 +36,8 @@ export const formFields = [
     id: 'organization',
     type: 'textBox',
     required: true,
-    label: 'Organization / Institution',
-    placeHolder: 'Organization / Institution',
+    label: 'Organization/Institution',
+    placeHolder: 'Organization/Institution',
     display: true,
   },
   {

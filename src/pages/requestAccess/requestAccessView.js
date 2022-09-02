@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
@@ -10,6 +11,7 @@ import AlertMessage from '../../components/alertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 import Stats from '../../components/Stats/AllStatsController';
+import custodianUtils from '../../utils/custodianUtilFuncs';
 
 // Custodian data imports
 import { pageTitle, formFields, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
@@ -62,7 +64,9 @@ function requestAccessView({ data, classes }) {
   const getDefaultACL = () => (availableArms[0] || []).id;
 
   // Initial State and Reset functions
-  const fieldsToChk = formFields.map((field) => (field.required ? field.id : null));
+  const fieldsToChk = formFields.map(
+    (field) => (field.required ? field.id : null),
+  );
   const setDefaultValues = () => formFields.reduce((values, field) => {
     const {
       id, type, multiple, display,
@@ -138,13 +142,26 @@ function requestAccessView({ data, classes }) {
     }
   };
 
+  const testFieldsByType = (key) => {
+    const dType = Array.isArray(formValues[key]) ? 'array' : typeof formValues[key];
+
+    switch (dType) {
+      case 'string':
+        return !!(formValues[key] && formValues[key].trim() !== '');
+      case 'array':
+        return formValues[key] && formValues[key].length > 0;
+      default:
+        return !!(formValues[key]);
+    }
+  };
+
   const validateFields = () => {
     const armsChk = availableArms.length > 0;
-    const chk = fieldsToChk.some((key) => key !== null
-      && formValues[key]
-      && !formValues[key].length);
+    const valid = fieldsToChk.map(
+      (field) => field !== null && testFieldsByType(field),
+    ).indexOf(false) !== -1;
 
-    setDisableSubmit((chk && armsChk));
+    setDisableSubmit((valid && armsChk));
   };
 
   // use effect to track form changes
@@ -215,49 +232,54 @@ function requestAccessView({ data, classes }) {
                 </div>
               </Grid>
 
-              {/* User's Account type */}
-              <div className={classes.segment}>
-                <div className={classes.row}>
-                  <div className={classes.column}>
-                    <div className={classes.itemTitles}>Account Type:</div>
-                  </div>
-                  <div className={classes.column}>
-                    <div className={classes.emailAddressValue}>{IDP}</div>
-                  </div>
-                </div>
+              <div className={classes.container}>
+                <div className={classes.brace} />
+                <div className={classes.segment}>
 
-                {/* User's Email Address */}
-                <div className={classes.row}>
-                  <div className={classes.column}>
-                    <div className={classes.itemTitles}>Email Address:</div>
+                  {/* User's Account type */}
+                  <div className={classes.row}>
+                    <div className={classes.column}>
+                      <div className={classes.itemTitles}>Account Type:</div>
+                    </div>
+                    <div className={classes.column}>
+                      <div className={classes.emailAddressValue}>{custodianUtils.getAuthenticatorName(IDP || '')}</div>
+                    </div>
                   </div>
-                  <div className={classes.column}>
-                    <div className={classes.emailAddressValue}>
-                      {' '}
-                      {userEmail}
-                      {' '}
+
+                  {/* User's Email Address */}
+                  <div className={classes.row}>
+                    <div className={classes.column}>
+                      <div className={classes.itemTitles}>Email Address:</div>
+                    </div>
+                    <div className={classes.column}>
+                      <div className={classes.emailAddressValue}>
+                        {' '}
+                        {userEmail}
+                        {' '}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* User's Membership Status */}
+                  <div className={classes.row}>
+                    <div className={classes.column}>
+                      <div className={classes.itemTitles}> Membership Status: </div>
+                    </div>
+                    <div className={classes.column}>
+                      <div className={classes.emailAddressValue}>
+                        {' '}
+                        {_.startCase(userStatus || 'N/A')}
+                        {' '}
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                {/* User's Membership Status */}
-                <div className={classes.row}>
-                  <div className={classes.column}>
-                    <div className={classes.itemTitles}> Membership Status: </div>
-                  </div>
-                  <div className={classes.column}>
-                    <div className={classes.emailAddressValue}>
-                      {' '}
-                      {userStatus || 'N/A'}
-                      {' '}
-                    </div>
-                  </div>
-                </div>
+                <div className={classes.brace} />
               </div>
 
               {/* Box Grid */}
               <div className={classes.Box}>
-                <Grid container alignItems="center" justify="center" direction="column">
+                <Grid container alignItems="center" justifyContent="center" direction="column">
                   <form onSubmit={handleSubmit}>
                     {formFields.map((field) => {
                       if (!field.display) { return null; }
@@ -275,12 +297,16 @@ function requestAccessView({ data, classes }) {
                           return null;
                       }
                     })}
+                    <Grid item sm={12} style={{ textAlign: 'center', marginTop: '19px' }} justifyContent="center">
+                      <span className={classes.requiredFieldMessage}>
+                        * denotes  required field
+                      </span>
+                    </Grid>
                     <Grid item sm={12} style={{ textAlign: 'center' }} justifyContent="center">
                       {isFormSubmitted ? (
                         <Button
                           variant="contained"
                           className={classes.submitButtton}
-                          disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                           onClick={() => redirectUser('/')}
                         >
@@ -347,8 +373,16 @@ const styles = () => ({
     backgroundColor: '#F2F6FA',
     boxShadow: '-4px 8px 27px 4px rgb(27 28 28 / 9%)',
   },
-  segment: {
+  container: {
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  brace: {
+    flex: 1,
+  },
+  segment: {
     boxSizing: 'border-box',
     flexDirection: 'column',
     width: '65%',
@@ -356,39 +390,41 @@ const styles = () => ({
     justifyContent: 'center',
     fontFamily: 'Nunito',
     margin: '25px 0',
+    padding: '0 20px',
+    flex: '1.5',
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: '5px',
   },
   column: {
     '&:first-child': {
-      flex: '.7',
+      flex: '.5',
     },
     flex: 1,
   },
   itemTitles: {
     color: '#9EAAB5',
     textTransform: 'uppercase',
-    fontSize: '10pt',
+    fontSize: '9pt',
     fontStyle: 'italic',
-    fontWeight: 'bold',
-    lineHeight: '30px',
+    lineHeight: '20px',
     flex: 1,
     textAlign: 'left',
-    padding: '0 10px 0 20%',
+    padding: '0 10px 0 10px',
   },
   emailAddressValue: {
     color: '#6C7882',
     fontFamily: 'Nunito',
     fontSize: '14pt',
-    fontWeight: '600',
-    lineHeight: '30px',
+    fontWeight: '500',
+    lineHeight: '20px',
     flex: 1,
   },
   Box: {
-    width: '535px',
+    width: '600px',
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09);',
     border: '#A9C8E3 2px solid',
     borderRadius: '10px',
@@ -416,7 +452,7 @@ const styles = () => ({
     height: '40px',
     color: '#FFFFFF',
     backgroundColor: '#5D53F6',
-    marginTop: '33px',
+    marginTop: '23px',
     marginBottom: '50px',
     '&:hover': {
       backgroundColor: '#5D53F6',
@@ -474,6 +510,14 @@ const styles = () => ({
     lineHeight: '22px',
     marginBottom: '10px',
     marginTop: '10px',
+  },
+  requiredFieldMessage: {
+    color: '#BC3900',
+    fontFamily: 'Lato',
+    fontSize: '15px',
+    letterSpacing: '0',
+    lineHeight: '22px',
+    textAlign: 'center',
   },
 
 });

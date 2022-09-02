@@ -18,12 +18,13 @@ import {
 const TableManageAccess = ({ classes, includeNonMember }) => {
   // get data
   const { loading, error, data } = useQuery(GET_LIST_USERS, {
+    fetchPolicy: 'no-cache',
     context: {
       clientName: useMock ? 'mockService' : 'userService',
     },
     variables: {
       role: includeNonMember ? ['member', 'non-member', 'admin'] : ['member', 'admin'],
-      accessStatus: [],
+      accessStatus: ['approved'],
     },
   });
 

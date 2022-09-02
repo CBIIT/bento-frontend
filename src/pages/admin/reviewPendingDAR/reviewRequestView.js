@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import { cn, CustomDataTable, getColumns } from 'bento-components';
 import { useMutation } from '@apollo/client';
+import _ from 'lodash';
 import Stats from '../../../components/Stats/AllStatsController';
 import CustomizedDialogs from './components/Dialog';
 import {
@@ -15,6 +16,7 @@ import {
   getReviewDARConfig,
 } from '../../../bento/adminData';
 import { filterData, showAlert } from './utils/reviewDARUtilFun';
+import custodianUtils from '../../../utils/custodianUtilFuncs';
 
 const ReviewRequestView = ({ classes, data }) => {
   const { getUser } = data;
@@ -197,7 +199,7 @@ const ReviewRequestView = ({ classes, data }) => {
               <div className={classes.userInfoValue}>
                 <Typography>
                   <span className={classes.infoValue}>
-                    {userInfo.IDP}
+                    {custodianUtils.getAuthenticatorName(userInfo.IDP)}
                   </span>
                   <br />
                   <span className={classes.infoValue}>
@@ -205,9 +207,9 @@ const ReviewRequestView = ({ classes, data }) => {
                   </span>
                   <br />
                   <span className={classes.infoValue}>
-                    {userInfo.firstName}
+                    {_.startCase(userInfo.firstName)}
                     ,&nbsp;
-                    {userInfo.lastName}
+                    {_.startCase(userInfo.lastName)}
                   </span>
                 </Typography>
               </div>
@@ -225,15 +227,15 @@ const ReviewRequestView = ({ classes, data }) => {
               <div className={classes.userInfoValue}>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
-                    {userInfo.organization}
+                    {_.startCase(userInfo.organization)}
                   </span>
                   <br />
                   <span className={classes.infoValue}>
-                    {userInfo.userStatus}
+                    {_.startCase(userInfo.userStatus)}
                   </span>
                   <br />
                   <span className={classes.infoValue}>
-                    {userInfo.role}
+                    {_.startCase(userInfo.role)}
                   </span>
                 </Typography>
               </div>
@@ -319,16 +321,25 @@ const styles = (theme) => ({
   },
   infoKey: {
     whiteSpace: 'nowrap',
+    fontFamily: 'Nunito',
+    fontStyle: 'italic',
+    fontWeight: '400', // regular
+    fontSize: '12px',
     color: '#708292',
-    fontFamily: 'Nunito Sans',
-    fontSize: '11px',
+    letterSpacing: 0,
+    lineHeight: '34px',
   },
   infoValue: {
-    whiteSpace: 'nowrap',
+    minHeight: '32px',
     marginLeft: '21px',
     float: 'left',
+    fontFamily: 'Nunito',
+    fontStyle: 'italic',
+    fontWeight: '300', // light
+    fontSize: '17px',
     color: '#4F5D69',
-    fontFamily: 'Nunito Sans',
+    letterSpacing: 0,
+    lineHeight: '35px',
   },
   container: {
     margin: 'auto',

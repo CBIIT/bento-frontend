@@ -37,7 +37,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
     overflowY: 'auto',
   },
   '& .MuiDialogContentText-root': {
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontSize: '17px',
     color: '#000000;',
     textAlign: 'center',
@@ -180,7 +180,7 @@ const styles = () => ({
     marginLeft: '13px !important',
   },
   requiredAsterisk: {
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontSize: '16px',
     color: 'red',
   },
