@@ -723,17 +723,6 @@ type FileInfo {
     md5sum: String
 }
 
-type ProgramInfo {
-    program_acronym: String
-    program_id: String
-    program_name: String
-    start_date: String
-    end_date: String
-    pubmed_id: String
-    num_studies: Int
-    num_subjects: Int
-}
-
 type StudyInfo {
     study_acronym: String
     study_name: String
@@ -885,22 +874,6 @@ type QueryType {
     numberOfSamples: Int @cypher(statement: "MATCH (n:sample) return count(n)")
     numberOfLabProcedures: Int  @cypher(statement: "MATCH (n:laboratory_procedure) return count(n)")
     numberOfFiles: Int @cypher(statement: "MATCH (n:file) return count(n)")
-
-    "Get lists of all subject ids, sample ids, and file ids"
-    idsLists: IdsLists @cypher(statement: """
-        MATCH (samp:sample)
-        WITH COLLECT(DISTINCT  samp.sample_id) as samples
-        MATCH (ss:study_subject)
-        WITH COLLECT(DISTINCT ss.study_subject_id) as study_subjects, samples
-        MATCH (f:file)
-        WITH COLLECT(DISTINCT f.file_id) as fileIds, COLLECT(DISTINCT f.file_name) as fileNames, samples, study_subjects
-        RETURN {
-            sampleIds: samples,
-            fileIds: fileIds,
-            fileNames: fileNames,
-            subjectIds: study_subjects 
-        }
-    """, passThrough: true)
 
     "Group counts from lists of subject ids, file ids, and sample ids"
 
@@ -1216,21 +1189,6 @@ type QueryType {
         }
     """, passThrough: true)
 
-    programInfo: [ProgramInfo] @cypher(statement: """
-        MATCH (p:program)
-        OPTIONAL MATCH (p)<--(s:study)
-        OPTIONAL MATCH (s)<--(ss:study_subject)
-        RETURN {
-            program_acronym: p.program_acronym,
-            program_id: p.program_id,
-            program_name: p.program_name,
-            start_date: p.start_date,
-            end_date: p.end_date,
-            pubmed_id: p.pubmed_id,
-            num_studies: COUNT(DISTINCT s),
-            num_subjects: COUNT(DISTINCT ss)
-        }
-    """, passThrough: true)
     programDetail(program_id: String):  ProgramDetail @cypher(statement: """
         MATCH (p:program {program_id: $program_id})
         OPTIONAL MATCH (p)<-[:study_of_program]-()<-[:study_subject_of_study]-(ss)
