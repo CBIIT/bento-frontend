@@ -49,7 +49,8 @@ function searchComponent({ classes }) {
     const datafields = isAuthorized ? SEARCH_DATAFIELDS.private : SEARCH_DATAFIELDS.public;
 
     const mapOption = keys.map((key, ind) => searchResp[key].map((id) => (id[datafields[ind]])));
-    const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
+    const option = mapOption.length
+      ? mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]) : [];
 
     if (isAuthorized) {
       setOptions(option.length === 0 ? [] : [...option.slice(0, 6),

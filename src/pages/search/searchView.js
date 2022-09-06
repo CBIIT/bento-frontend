@@ -82,12 +82,12 @@ function searchComponent({
     setInputValue(newValue);
     const searchResp = await getSearchMethod()(newValue);
     const keys = {
-      public: ['programs', 'model'],
+      public: [],
       private: ['programs', 'studies', 'subjects', 'samples', 'files', 'model'],
     };
     const datafields = {
       private: ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id', 'node_name'],
-      public: ['program_id', 'node_name'],
+      public: [],
     };
 
     const mapOption = (isAuthorized ? keys.private : keys.public).map(
@@ -95,7 +95,9 @@ function searchComponent({
         (id) => (id[isAuthorized ? datafields.private[index] : datafields.public[index]]),
       ),
     );
-    const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
+    const option = mapOption.length > 0
+      ? mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]) : [];
+
     setOptions(newValue !== '' ? [...[newValue.toUpperCase()], ...option] : option);
   }
 

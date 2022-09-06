@@ -15,8 +15,7 @@ import {
   SEARCH_PAGE_RESULT_MODEL,
   SEARCH_PAGE_RESULT_ABOUT,
   SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
-  SEARCH_PAGE_RESULT_MODEL_PUBLIC,
-  SEARCH_PAGE_RESULT_PROGRAM_PUBLIC, SEARCH_PUBLIC,
+  SEARCH_PUBLIC,
 } from '../../../bento/search';
 import { getSearchPageResults, getPublicSearchPageResults } from '../../dashboardTab/store/dashboardReducer';
 
@@ -34,8 +33,8 @@ function SearchPagination({
       ? await getPublicSearchPageResults(searchText) : await getSearchPageResults(searchText);
 
     const custodianConfigForTabData = isPublic ? [
-      { countField: 'program_count', nameField: 'programs' },
-      { countField: 'model_count', nameField: 'model' },
+      /* { countField: 'program_count', nameField: 'programs' },
+      { countField: 'model_count', nameField: 'model' }, */
       { countField: 'about_count', nameField: 'about_page' },
     ] : [
       { countField: 'subject_count', nameField: 'subjects' },
@@ -70,10 +69,6 @@ function SearchPagination({
     switch (field) {
       case 'all':
         return { QUERY: SEARCH_PUBLIC, field: 'all' };
-      case 'programs':
-        return { QUERY: SEARCH_PAGE_RESULT_PROGRAM_PUBLIC, field: 'programs' };
-      case 'model':
-        return { QUERY: SEARCH_PAGE_RESULT_MODEL_PUBLIC, field: 'model' };
       case 'about_page':
         return { QUERY: SEARCH_PAGE_RESULT_ABOUT_PUBLIC, field: 'about_page' };
       default:

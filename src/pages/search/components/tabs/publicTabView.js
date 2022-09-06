@@ -9,8 +9,7 @@ import {
 import styles from '../../styles';
 import SearchViewTabs from './searchViewTabs';
 
-const allCount = (searchResults) => (searchResults.program_count
-  + searchResults.model_count + searchResults.about_count);
+const allCount = (searchResults) => (searchResults.about_count || 0);
 
 const getTabProperties = (classes, searchResults, allLabel) => [
   {
