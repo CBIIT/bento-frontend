@@ -12,9 +12,10 @@ import {
   getColumns, getOptions, getDefaultCustomFooter, CustomDataTable,
 } from 'bento-components';
 import {
-  GET_LIST_USERS, useMock, tabPendingRequest, nodeField, nodeName, nodeLevelAccess,
+  GET_LIST_USERS, useMock, tabPendingRequest,
 } from '../../../bento/adminData';
 import getDateInFormat from '../../../utils/date';
+import transformData from './utils';
 
 const TablePendingRequest = ({ classes }) => {
   // get data
@@ -41,15 +42,11 @@ const TablePendingRequest = ({ classes }) => {
 
   const { table } = tabPendingRequest;
 
-  const nodeLevelColumn = [{
-    name: nodeField,
-    label: nodeName,
-  }];
-
   let dateColumn = [];
 
   const draftCloumns = getColumns(table, classes);
 
+  // transform the datetime
   const customizedCloumns = [];
   for (let i = 0; i < draftCloumns.length; i += 1) {
     if (draftCloumns[i].name === 'creationDate') {
@@ -60,7 +57,7 @@ const TablePendingRequest = ({ classes }) => {
           options: {
             display: true,
             filter: false,
-            customBodyRender: (value) => (getDateInFormat(value, '-')),
+            customBodyRender: (value) => (getDateInFormat(value, '/')),
           },
         }];
     } else {
@@ -91,9 +88,8 @@ const TablePendingRequest = ({ classes }) => {
   },
   ];
 
-  const columns = nodeLevelAccess
-    ? customizedCloumns.concat(nodeLevelColumn).concat(dateColumn).concat(actionColumn)
-    : customizedCloumns.concat(dateColumn).concat(actionColumn);
+  const columns = customizedCloumns.concat(dateColumn).concat(actionColumn);
+
   const options = getOptions(table, classes, getDefaultCustomFooter);
 
   return (
@@ -101,7 +97,7 @@ const TablePendingRequest = ({ classes }) => {
       <Grid container spacing={32}>
         <Grid item xs={12}>
           <CustomDataTable
-            data={data ? data.listUsers : []}
+            data={data ? transformData(data.listUsers, table.columns) : []}
             columns={columns}
             options={options}
           />

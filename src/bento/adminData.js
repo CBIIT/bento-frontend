@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { NODE_LEVEL_ACCESS } from './siteWideConfig';
+import { NODE_LEVEL_ACCESS, NODE_LABEL } from './siteWideConfig';
 
 export const icon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programIcon.svg',
@@ -24,7 +24,7 @@ export const viewPageTitle = 'Approved Arm(s)';
 
 export const useMock = false;
 
-export const nodeName = 'Arm(s)'; // Node Name configured in the Data Access Request form
+export const nodeName = NODE_LABEL; // Node Name configured in the Data Access Request form
 
 export const nodeField = 'numberOfArms'; // Node field
 
@@ -57,10 +57,12 @@ export const tabPendingRequest = {
       {
         dataField: 'displayName',
         header: 'Name',
+        isCapital: true,
       },
       {
         dataField: 'IDP',
         header: 'Account Type',
+        isCapital: true,
       },
       {
         dataField: 'email',
@@ -69,18 +71,27 @@ export const tabPendingRequest = {
       {
         dataField: 'organization',
         header: 'Organization',
+        isCapital: true,
       },
       {
         dataField: 'userStatus',
         header: 'Membership Status',
+        isCapital: true,
       },
       {
         dataField: 'role',
         header: 'Role',
+        isCapital: true,
       },
       {
         dataField: 'creationDate',
         header: 'Request Date',
+      },
+      {
+        dataField: nodeField,
+        header: nodeName,
+        noEmpty: true,
+        display: nodeLevelAccess,
       },
     ],
   },
@@ -100,10 +111,12 @@ export const tabManageAccess = {
       {
         dataField: 'displayName',
         header: 'Name',
+        isCapital: true,
       },
       {
         dataField: 'IDP',
         header: 'Account Type',
+        isCapital: true,
       },
       {
         dataField: 'email',
@@ -112,14 +125,17 @@ export const tabManageAccess = {
       {
         dataField: 'organization',
         header: 'Organization',
+        isCapital: true,
       },
       {
         dataField: 'userStatus',
         header: 'Membership Status',
+        isCapital: true,
       },
       {
         dataField: 'role',
         header: 'Role',
+        isCapital: true,
       },
     ],
   },
