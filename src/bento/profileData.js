@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { NODE_LEVEL_ACCESS } from './siteWideConfig';
 
 const adminIcon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/userProfileAdminIcon.svg',
@@ -19,10 +20,9 @@ const editTool = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/userProfileEditTool.svg',
   alt: 'edit',
 };
-
 const ignoredArms = ['revoked', 'rejected'];
 
-export const profileArmsTable = (nodeLevelAccess) => ({
+export const profileArmsTable = {
   display: true,
   title: 'Access List',
   dataField: 'acl',
@@ -34,11 +34,11 @@ export const profileArmsTable = (nodeLevelAccess) => ({
       dataField: 'armID',
       header: 'Arms',
       primary: true,
-      display: !nodeLevelAccess,
+      display: !NODE_LEVEL_ACCESS,
     },
     {
       dataField: 'armName',
-      header: nodeLevelAccess ? 'Data Commons' : 'Arm Name',
+      header: NODE_LEVEL_ACCESS ? 'Data Commons' : 'Arm Name',
       display: true,
     },
     {
@@ -57,7 +57,7 @@ export const profileArmsTable = (nodeLevelAccess) => ({
       display: true,
     },
   ],
-});
+};
 
 const GET_MY_PROFILE_QUERY = gql`
     query getMyUser {
