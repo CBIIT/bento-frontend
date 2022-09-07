@@ -14,6 +14,7 @@ import {
 import {
   GET_LIST_USERS, useMock, tabManageAccess, nodeName, nodeField, nodeLevelAccess,
 } from '../../../bento/adminData';
+import transformData from './utils';
 
 const TableManageAccess = ({ classes, includeNonMember }) => {
   // get data
@@ -88,7 +89,7 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
       <Grid container spacing={32}>
         <Grid item xs={12}>
           <CustomDataTable
-            data={data ? data.listUsers : []}
+            data={data ? transformData(data.listUsers, table.columns) : []}
             columns={columns}
             options={options}
           />
