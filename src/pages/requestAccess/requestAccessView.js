@@ -12,9 +12,8 @@ import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 import Stats from '../../components/Stats/AllStatsController';
 import custodianUtils from '../../utils/custodianUtilFuncs';
-
 // Custodian data imports
-import { pageTitle, formFields, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
+import { formFields, pageTitle, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
 
 // eslint-disable-next-line no-unused-vars
 const checkIsValid = (field, formValues) => {
@@ -57,7 +56,8 @@ function requestAccessView({ data, classes }) {
   const history = useHistory();
   const query = useQuery();
   const redirectdType = getRedirectedType(query);
-  const [disableSubmit, setDisableSubmit] = useState(false);
+  const [disableSubmit, setDisableSubmit] = useState(true);
+  const [changeDetected, setChangeDetected] = useState(false);
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
 
@@ -83,6 +83,8 @@ function requestAccessView({ data, classes }) {
   // Init state for inputs.
   const [formValues, setFormValues] = useState(setDefaultValues());
   const [isFormSubmitted, setSubmitted] = useState(false);
+  // USED TO TEST IF A CHANGE HAS OCCURRED INORDER TO SUBMIT A DAR
+  const initialFormValues = JSON.parse(JSON.stringify(setDefaultValues()));
 
   // const clearAll = () => {
   //   setFormValues(setDefaultValues());
@@ -94,6 +96,7 @@ function requestAccessView({ data, classes }) {
     onCompleted() {
       // INPUT parm can be 'responseData'
       setSubmitted(true);
+      setChangeDetected(false);
     },
     onError() {
       // INPUT parm can be 'ApolloError'
@@ -142,7 +145,7 @@ function requestAccessView({ data, classes }) {
     }
   };
 
-  const testFieldsByType = (key) => {
+  /* const testFieldsByType = (key) => {
     const dType = Array.isArray(formValues[key]) ? 'array' : typeof formValues[key];
 
     switch (dType) {
@@ -155,13 +158,45 @@ function requestAccessView({ data, classes }) {
     }
   };
 
-  const validateFields = () => {
-    const armsChk = availableArms.length > 0;
-    const valid = fieldsToChk.map(
-      (field) => field !== null && testFieldsByType(field),
-    ).indexOf(false) !== -1;
+  const checkAgainstInitialVals = () => {
+    const all = fieldsToChk.reduce((prevVal, key) => {
+      const checked = Array.isArray(formValues[key])
+        ? formValues[key].length === initialFormValues[key].length
+        : formValues[key] === initialFormValues[key];
 
-    setDisableSubmit((valid && armsChk));
+      return [...prevVal, checked];
+    }, []);
+
+    console.log(all); // eslint-disable-line
+
+    return all.indexOf(false) === -1;
+  }; */
+
+  const validateNames = (key) => {
+    const iniValue = initialFormValues[key];
+    const currentVal = formValues[key];
+
+    if (iniValue !== currentVal && !changeDetected) {
+      setChangeDetected(true);
+    }
+
+    return currentVal.length > 0;
+  };
+
+  const validateFields = () => {
+    const armsAvailable = availableArms.length > 0;
+    const checkFieldValues = fieldsToChk.map((field) => validateNames(field)).indexOf(false) === -1;
+
+    if (!armsAvailable) {
+      setDisableSubmit(true);
+      return;
+    }
+
+    if (changeDetected && checkFieldValues) {
+      setDisableSubmit(false);
+    } else {
+      setDisableSubmit(true);
+    }
   };
 
   // use effect to track form changes
