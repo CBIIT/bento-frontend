@@ -9,8 +9,7 @@ import {
 import styles from '../../styles';
 import SearchViewTabs from './searchViewTabs';
 
-const allCount = (searchResults) => (searchResults.program_count
-  + searchResults.model_count + searchResults.about_count);
+const allCount = (searchResults) => (searchResults.about_count || 0);
 
 const getTabProperties = (classes, searchResults, allLabel) => [
   {
@@ -66,7 +65,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_PROGRAM_PUBLIC,
     count: searchResults.program_count || 0,
-    value: '5',
+    value: 'inactive-5',
   },
   {
     name: 'Studies',
@@ -88,7 +87,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_MODEL,
     count: searchResults.model_count || 0,
-    value: '7',
+    value: 'inactive-7',
   },
   {
     name: 'About',
