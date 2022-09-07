@@ -7,9 +7,10 @@ import GET_USER_DETAILS from '../../bento/authProviderData';
 import globalData, { loginRoute, requestAccessRoute, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
 import { signInRed, signOutRed } from '../Auth/state/loginReducer';
 import { deleteFromLocalStorage } from '../../utils/localStorage';
+import accessLevelTypes from '../../utils/enums';
 
 /*
-  Notes For Developer: We have 3 roles in Bento System.
+  Notes For Developer: We have 3 roles in Bento System for Access Level METADATA_ONLY.
     1. non-member:
                   a. One who can NOT access any meta data,
                   b. One who can access "Request Access" page to get access of arm data.
@@ -112,23 +113,32 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
 
   const { isSignedIn, role } = useSelector((state) => state.login);
   const { pathname } = useLocation();
+  const { NONE, METADATA_ONLY } = accessLevelTypes;
   const { access, path } = rest;
-  const updateRole = (role === 'non-member' && PUBLIC_ACCESS === 'Metadata Only') ? 'member' : role;
-  const hasAccess = (isSignedIn && access.includes(updateRole));
+  const hasAccess = (isSignedIn && access.includes(role));
 
   return (
     <FetchUserDetails path={path}>
       <Route render={(props) => {
-        if (enableAuthentication && !isSignedIn) {
-          const base = loginRoute;
-          const redirectPath = `${base}?redirect=${pathname}`;
-          return <Redirect to={redirectPath} />;
+        if (PUBLIC_ACCESS === NONE) {
+          if (!isSignedIn) {
+            const base = loginRoute;
+            const redirectPath = `${base}?redirect=${pathname}`;
+            return <Redirect to={redirectPath} />;
+          }
+
+          if (!hasAccess) {
+            const redirectPath = (role !== 'admin') ? `${requestAccessRoute}?type=noAccess` : '/';
+            return <Redirect to={redirectPath} />;
+          }
         }
 
-        if (enableAuthentication && !hasAccess) {
-          const redirectPath = (role !== 'admin') ? `${requestAccessRoute}?type=noAccess` : '/';
-          return <Redirect to={redirectPath} />;
+        if (PUBLIC_ACCESS === METADATA_ONLY) {
+          if (path === '/request' && !isSignedIn) {
+            return <Redirect to="/" />;
+          }
         }
+
         return <ChildComponent {...props} match={rest.computedMatch} {...rest} />;
       }}
       />
