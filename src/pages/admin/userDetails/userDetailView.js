@@ -305,7 +305,7 @@ const styles = (theme) => ({
   },
   infoKey: {
     whiteSpace: 'nowrap',
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '400', // regular
     fontSize: '12px',
@@ -315,7 +315,7 @@ const styles = (theme) => ({
   },
   infoValue: {
     lineHeight: '35px',
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
@@ -328,7 +328,7 @@ const styles = (theme) => ({
   },
   selectRole: {
     width: '140px',
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
@@ -360,7 +360,7 @@ const styles = (theme) => ({
     },
   },
   menuItem: {
-    fontFamily: 'Nunito Sans',
+    fontFamily: 'Nunito',
     fontSize: '16px',
     color: '#4F5D69 !important',
     height: '29px',
@@ -435,7 +435,7 @@ const styles = (theme) => ({
   },
   adminMessage: {
     color: '#000000',
-    fontFamily: '“Nunito”',
+    fontFamily: 'Nunito',
     fontSize: '18px',
     letterSpacing: '0',
     lineHeight: '35px',
