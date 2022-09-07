@@ -7,7 +7,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { CustomDataTable } from 'bento-components';
+import { cn, CustomDataTable } from 'bento-components';
+
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
 
@@ -20,6 +21,7 @@ import {
   EDIT,
 } from '../../../bento/adminData';
 import getDateInFormat from '../../../utils/date';
+import custodianUtils from '../../../utils/custodianUtilFuncs';
 
 // acl is array of object.
 function getApprovedArms(acl) {
@@ -63,6 +65,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userInfo, setUserInfo] = useState(data.getUser);
   const [userRole, setUserRole] = useState(userInfo.role);
   const [seletedArms, setSeletedArms] = useState([]);
+  const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   // GraphQL Operations
   // eslint-disable-next-line no-unused-vars
@@ -155,41 +158,33 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
               </Typography>
             </div>
           </div>
-          <div className={classes.userInfoHeader}>
+          <div className={
+            accessType === EDIT
+              ? cn(classes.editUserInfoHeader, classes.userInfoHeader)
+              : classes.userInfoHeader
+          }
+          >
             <div className={classes.firstInfoSection}>
               <div className={classes.infoKeyWrapper}>
-                <Typography>
+                <Typography className={classes.userInfo}>
                   <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span>
-                  {' '}
-                  <br />
                   <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span>
-                  {' '}
-                  <br />
                   <span className={classes.infoKey}>NAME: </span>
                 </Typography>
               </div>
-              <div className={classes.userInfoValue}>
-                <Typography>
+              <div>
+                <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
-                    {' '}
-                    {userInfo.IDP}
-                    {' '}
+                    {getAuthenticatorName(userInfo.IDP)}
                   </span>
-                  {' '}
-                  <br />
                   <span className={classes.infoValue}>
-                    {' '}
                     {userInfo.email}
-                    {' '}
                   </span>
-                  {' '}
-                  <br />
                   <span className={classes.infoValue}>
-                    {' '}
-                    {userInfo.lastName}
+                    {capitalizeFirstLetter(userInfo.lastName)}
                     ,
-                    {' '}
-                    {userInfo.firstName}
+                    &nbsp;
+                    {capitalizeFirstLetter(userInfo.firstName)}
                   </span>
                 </Typography>
               </div>
@@ -198,47 +193,37 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
               <div className={classes.infoKeyWrapper}>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoKey}>ORGANIZATION: </span>
-                  {' '}
-                  <br />
                   <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
-                  {' '}
-                  <br />
                   <span className={classes.infoKey}>ROLE: </span>
                 </Typography>
               </div>
-              <div className={classes.userInfoValue}>
-                <Typography className={classes.userInfo}>
+              <div>
+                <Typography component="div" className={classes.userInfo}>
                   <span className={classes.infoValue}>
-                    {' '}
-                    {userInfo.organization}
-                    {' '}
+                    {capitalizeFirstLetter(userInfo.organization)}
                   </span>
-                  {' '}
-                  <br />
                   <span className={classes.infoValue}>
-                    {' '}
-                    {userInfo.userStatus}
-                    {' '}
+                    {capitalizeFirstLetter(userInfo.userStatus)}
                   </span>
-                  {' '}
-                  <br />
-                  <span className={classes.infoValue}>
-                    {' '}
-                    {accessType === EDIT ? (
-                      <Select
-                        value={userRole}
-                        onChange={handleRoleChange}
-                        displayEmpty
-                        className={classes.selectEmpty}
-                        inputProps={{ 'aria-label': 'Without label' }}
-                      >
-                        <MenuItem value="admin"> Admin </MenuItem>
-                        <MenuItem value="member"> Member </MenuItem>
-                      </Select>
-                    )
-                      : userRole }
-                    {' '}
-                  </span>
+                  {accessType === EDIT ? (
+                    <Select
+                      disableUnderline
+                      value={userRole}
+                      onChange={handleRoleChange}
+                      inputProps={{ 'aria-label': 'Without label' }}
+                      className={classes.selectRole}
+                      MenuProps={{
+                        anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
+                        transformOrigin: { vertical: 'top', horizontal: 'left' },
+                        getContentAnchorEl: null,
+                        classes: { paper: classes.menuPaperStyle },
+                      }}
+                    >
+                      <MenuItem value="admin" className={classes.menuItem}> Admin </MenuItem>
+                      <MenuItem value="member" className={classes.menuItem}> Member </MenuItem>
+                    </Select>
+                  )
+                    : <span className={classes.infoValue}>{capitalizeFirstLetter(userRole)}</span> }
                 </Typography>
               </div>
             </div>
@@ -277,7 +262,6 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     </>
   );
 };
-
 const styles = (theme) => ({
   adminTitle: {
     borderBottom: '1px solid #274FA5',
@@ -290,7 +274,7 @@ const styles = (theme) => ({
   },
   userInfoHeader: {
     minWidth: 'fit-content',
-    margin: '42px 0 38px 0',
+    margin: '42px 0 48px 0',
     padding: '0 0 0 36px',
     display: 'flex',
     gap: '12px',
@@ -298,6 +282,9 @@ const styles = (theme) => ({
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
     },
+  },
+  editUserInfoHeader: {
+    margin: '42px 0 78px 0',
   },
   firstInfoSection: {
     display: 'flex',
@@ -312,18 +299,72 @@ const styles = (theme) => ({
       width: '120px',
     },
   },
+  userInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   infoKey: {
     whiteSpace: 'nowrap',
-    color: '#708292',
     fontFamily: 'Nunito',
-    fontSize: '11px',
+    fontStyle: 'italic',
+    fontWeight: '400', // regular
+    fontSize: '12px',
+    color: '#708292',
+    letterSpacing: 0,
+    lineHeight: '34px',
   },
   infoValue: {
+    lineHeight: '34px',
+    fontFamily: 'Nunito',
+    fontStyle: 'italic',
+    fontWeight: '300', // light
+    fontSize: '17px',
+    color: '#4F5D69',
+    letterSpacing: 0,
+    minHeight: '32px',
     whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
-    color: '#4F5D69',
+  },
+  selectRole: {
+    width: '140px',
     fontFamily: 'Nunito',
+    fontStyle: 'italic',
+    fontWeight: '300', // light
+    fontSize: '17px',
+    color: '#4F5D69',
+    minHeight: '32px',
+    whiteSpace: 'nowrap',
+    marginLeft: '7px',
+    float: 'left',
+    '& .MuiSelect-select:focus': {
+      backgroundColor: 'white',
+    },
+    '& .MuiInput-input': {
+      paddingLeft: '15px !important',
+    },
+    '& .MuiSelect-icon': {
+      fontSize: '32px',
+      top: '0px',
+      color: '#5E6A76',
+    },
+  },
+  menuPaperStyle: {
+    width: '232px',
+    border: '1px solid #8493A0',
+    backgroundColor: '#F1F5FD',
+    borderRadius: '0px',
+    boxShadow: 'none',
+    '& .MuiList-padding': {
+      padding: '0px',
+    },
+  },
+  menuItem: {
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    color: '#4F5D69 !important',
+    height: '29px',
+    paddingLeft: '14px',
   },
   upperCase: {
     textTransform: 'capitalize',
@@ -394,7 +435,7 @@ const styles = (theme) => ({
   },
   adminMessage: {
     color: '#000000',
-    fontFamily: '“Nunito”',
+    fontFamily: 'Nunito',
     fontSize: '18px',
     letterSpacing: '0',
     lineHeight: '35px',
