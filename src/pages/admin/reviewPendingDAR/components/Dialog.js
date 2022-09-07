@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { isEmpty } from 'lodash';
+import { cn } from 'bento-components';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiBackdrop-root': {
@@ -22,11 +23,12 @@ const BootstrapDialog = styled(Dialog)(() => ({
     margin: '0 auto',
     top: 118,
     width: '539px',
+    borderRadius: '8px',
   },
   '& .MuiDialogTitle-root': {
     flex: '0 0 auto',
     margin: 0,
-    padding: '15px 23px 8px 37px',
+    padding: '12px 23px 6px 37px',
     marginBottom: '45px',
     fontFamily: 'Lato',
   },
@@ -42,6 +44,9 @@ const BootstrapDialog = styled(Dialog)(() => ({
     color: '#000000;',
     textAlign: 'center',
     marginBottom: '17px',
+    fontWeight: '300',
+    letterSpacing: 0,
+    lineHeight: '24px',
   },
   '& .MuiDialogActions-root': {
     flex: '0 0 auto',
@@ -101,20 +106,23 @@ function CustomizedDialogs(props) {
           {commentField === 'Required'
             ? (
               <div className={classes.requiredLabel}>
-                <sup className={classes.requiredAsterisk}>*</sup>
-                Comment is required.
+                * Comment is required.
               </div>
             )
             : null}
         </DialogContent>
         <DialogActions className={classes.dialogActions}>
-          <Button variant="contained" onClick={handleClose} className={classes.cancelButton}>
+          <Button
+            variant="contained"
+            onClick={handleClose}
+            className={cn(classes.actionBtn, classes.cancelButton)}
+          >
             CANCEL
           </Button>
           <Button
             variant="contained"
             onClick={handleConfrim}
-            className={classes.confrimButton}
+            className={cn(classes.actionBtn, classes.confrimButton)}
             {...commentField === 'Required' && isEmpty(comment && comment.trim()) ? { disabled: true } : {}}
           >
             CONFIRM
@@ -126,13 +134,14 @@ function CustomizedDialogs(props) {
 }
 const styles = () => ({
   dialogTitleContainer: {
-    borderBottom: '1.25px solid #BDBFC2',
+    borderBottom: '1.5px solid #BDBFC2',
   },
   requiredLabel: {
     fontFamily: 'Lato',
-    fontSize: '16px',
-    color: 'red',
-    marginTop: '10px',
+    fontSize: '15px',
+    color: '#BC3900',
+    lineHeight: '22px',
+    marginTop: '5px',
     textAlign: 'center',
   },
   dialogTitleBox: {
@@ -163,26 +172,35 @@ const styles = () => ({
     border: '1px solid #7D94A4',
     borderRadius: '10px',
     backgroundColor: '#EAF1FF',
-    fontSize: '16px',
+    fontSize: '14px',
     fontFamily: 'Lato',
     resize: 'none',
+    color: '#555555',
+    lineHeight: '21px',
     marginBottom: ({ requiredTextMT }) => requiredTextMT || '0px',
   },
-  cancelButton: {
+  actionBtn: {
     color: '#FFFFFF',
+    fontFamily: 'Lato',
+    fontSize: '11px',
+    lineHeight: '22px',
+    textAlign: 'center',
+    borderRadius: '8px',
     border: '1px solid #626262',
+    height: '38px',
+    width: '97px',
+  },
+  cancelButton: {
     backgroundColor: '#566672',
   },
   confrimButton: {
-    color: '#FFFFFF',
-    border: '1px solid #626262',
     backgroundColor: '#437BBE',
     marginLeft: '13px !important',
   },
   requiredAsterisk: {
-    fontFamily: 'Nunito',
-    fontSize: '16px',
-    color: 'red',
+    fontFamily: 'Lato',
+    fontSize: '15px',
+    color: '#BC3900',
   },
 });
 
