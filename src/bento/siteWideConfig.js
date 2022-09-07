@@ -13,7 +13,7 @@ export const adminPortal = '/admin';
 export const userProfileRoute = '/profile';
 
 // Public Level Access
-export const PUBLIC_ACCESS = 'none';
+export const PUBLIC_ACCESS = 'Metadata Only';
 
 // Node level access
 export const NODE_LEVEL_ACCESS = true;
