@@ -95,19 +95,7 @@ function loginView({ classes }) {
 
   useEffect(() => {
     showAlert('redirect');
-
-    // validate the config
-    for (let i = 0; i < Object.values(idps).length; i) {
-      i += 1;
-      const provider = Object.values(idps)[i];
-      if (provider) {
-        if (typeof (provider.icon) === 'undefined' || typeof (provider.key) === 'undefined' || typeof (provider.loginButtonText) === 'undefined') {
-          showAlert('error', 'Incomplete configuration settings for selected Identity Provides');
-          break;
-        }
-      }
-    }
-  }, [Object.values(idps).length, internalRedirectPath]);
+  }, [internalRedirectPath]);
 
   return (
     <div className={classes.Container}>
