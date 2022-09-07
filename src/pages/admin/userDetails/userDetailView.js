@@ -314,7 +314,7 @@ const styles = (theme) => ({
     lineHeight: '34px',
   },
   infoValue: {
-    lineHeight: '35px',
+    lineHeight: '34px',
     fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '300', // light
