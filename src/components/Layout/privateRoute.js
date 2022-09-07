@@ -156,6 +156,14 @@ export function AdminRoute({ component: ChildComponent, ...rest }) {
     );
   }
 
+  // Check if this one is not Admin, Send them back to Home.
+  const { role } = useSelector((state) => state.login);
+  if (role !== 'admin') {
+    return (
+      <Route render={() => <Redirect to="/" />} />
+    );
+  }
+
   return <PrivateRoute component={ChildComponent} {...rest} />;
 }
 
