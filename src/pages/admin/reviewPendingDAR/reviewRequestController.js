@@ -12,6 +12,7 @@ const ReviewRequestController = ({ match }) => {
     {
       context: { clientName: 'userService' },
       variables: { userID: userId },
+      fetchPolicy: 'no-cache',
     },
   );
 
