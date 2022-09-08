@@ -7,6 +7,7 @@ query getMyUser {
     lastName
     organization
     userID
+    userStatus
     email
     IDP
     role
