@@ -59,8 +59,9 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
 
   const actionColumn = [{
     name: 'userID',
-    label: 'Actions',
+    label: 'Action',
     options: {
+      sort: false,
       customBodyRender: (value) => {
         const href = `/#/admin/edit/${value}`;
         return (
