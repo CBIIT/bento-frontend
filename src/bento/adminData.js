@@ -1,3 +1,4 @@
+/* eslint-disable */
 import gql from 'graphql-tag';
 import { NODE_LEVEL_ACCESS, NODE_LABEL } from './siteWideConfig';
 
@@ -84,10 +85,6 @@ export const tabPendingRequest = {
         isCapital: true,
       },
       {
-        dataField: 'creationDate',
-        header: 'Request Date',
-      },
-      {
         dataField: nodeField,
         header: nodeName,
         noEmpty: true,
@@ -161,6 +158,33 @@ export const getReviewDARConfig = () => ({
   ],
 });
 
+export const GET_LIST_REQUESTS = gql`
+query listRequest($requestID: [ID], $accessStatus: [String]){
+    listRequest (requestID: $requestID, accessStatus: $accessStatus){
+        firstName
+        lastName
+        displayName
+        organization
+        userID
+        email
+        IDP
+        role
+        userStatus
+        numberOfArms
+        requestID
+        acl {
+            armID
+            armName
+            accessStatus
+            requestDate
+            reviewAdminName
+            reviewDate
+            comment
+            requestID
+        }
+    }
+}
+`;
 // --------------- GraphQL query configuration --------------
 
 // Get a list of MEMBER info  role == member

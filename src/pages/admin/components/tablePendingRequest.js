@@ -12,20 +12,19 @@ import {
   getColumns, getOptions, getDefaultCustomFooter, CustomDataTable,
 } from 'bento-components';
 import {
-  GET_LIST_USERS, useMock, tabPendingRequest,
+  GET_LIST_REQUESTS, useMock, tabPendingRequest,
 } from '../../../bento/adminData';
 import getDateInFormat from '../../../utils/date';
 import transformData from './utils';
 
 const TablePendingRequest = ({ classes }) => {
   // get data
-  const { loading, error, data } = useQuery(GET_LIST_USERS, {
+  const { loading, error, data } = useQuery(GET_LIST_REQUESTS, {
     fetchPolicy: 'no-cache',
     context: {
       clientName: useMock ? 'mockService' : 'userService',
     },
     variables: {
-      role: ['member', 'non-member'],
       accessStatus: ['pending'],
     },
   });
@@ -66,7 +65,7 @@ const TablePendingRequest = ({ classes }) => {
   }
 
   const actionColumn = [{
-    name: 'userID',
+    name: 'requestID',
     label: 'Actions',
     options: {
       customBodyRender: (value) => {
@@ -97,7 +96,7 @@ const TablePendingRequest = ({ classes }) => {
       <Grid container spacing={32}>
         <Grid item xs={12}>
           <CustomDataTable
-            data={data ? transformData(data.listUsers, table.columns) : []}
+            data={data ? transformData(data.listRequest, table.columns) : []}
             columns={columns}
             options={options}
           />
