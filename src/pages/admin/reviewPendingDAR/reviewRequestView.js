@@ -4,7 +4,6 @@ import {
 } from '@material-ui/core';
 import { cn, CustomDataTable, getColumns } from 'bento-components';
 import { useMutation } from '@apollo/client';
-import _ from 'lodash';
 import Stats from '../../../components/Stats/AllStatsController';
 import CustomizedDialogs from './components/Dialog';
 import {
@@ -161,6 +160,8 @@ const ReviewRequestView = ({ classes, data }) => {
       },
     });
   };
+  const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
+
   return (
     <>
       <div className={classes.pageContainer}>
@@ -188,28 +189,24 @@ const ReviewRequestView = ({ classes, data }) => {
           <div className={classes.userInfoHeader}>
             <div className={classes.firstInfoSection}>
               <div className={classes.infoKeyWrapper}>
-                <Typography>
+                <Typography className={classes.userInfo}>
                   <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span>
-                  <br />
                   <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span>
-                  <br />
                   <span className={classes.infoKey}>NAME: </span>
                 </Typography>
               </div>
-              <div className={classes.userInfoValue}>
-                <Typography>
+              <div>
+                <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
-                    {custodianUtils.getAuthenticatorName(userInfo.IDP)}
+                    {getAuthenticatorName(userInfo.IDP)}
                   </span>
-                  <br />
                   <span className={classes.infoValue}>
                     {userInfo.email}
                   </span>
-                  <br />
                   <span className={classes.infoValue}>
-                    {_.startCase(userInfo.firstName)}
+                    {capitalizeFirstLetter(userInfo.firstName)}
                     ,&nbsp;
-                    {_.startCase(userInfo.lastName)}
+                    {capitalizeFirstLetter(userInfo.lastName)}
                   </span>
                 </Typography>
               </div>
@@ -218,24 +215,20 @@ const ReviewRequestView = ({ classes, data }) => {
               <div className={classes.infoKeyWrapper}>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoKey}>ORGANIZATION: </span>
-                  <br />
                   <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
-                  <br />
                   <span className={classes.infoKey}>ROLE: </span>
                 </Typography>
               </div>
-              <div className={classes.userInfoValue}>
+              <div>
                 <Typography className={classes.userInfo}>
                   <span className={classes.infoValue}>
-                    {_.startCase(userInfo.organization)}
+                    {capitalizeFirstLetter(userInfo.organization)}
                   </span>
-                  <br />
                   <span className={classes.infoValue}>
-                    {_.startCase(userInfo.userStatus)}
+                    {capitalizeFirstLetter(userInfo.userStatus)}
                   </span>
-                  <br />
                   <span className={classes.infoValue}>
-                    {_.startCase(userInfo.role)}
+                    {capitalizeFirstLetter(userInfo.role)}
                   </span>
                 </Typography>
               </div>
@@ -298,7 +291,7 @@ const styles = (theme) => ({
   },
   userInfoHeader: {
     minWidth: 'fit-content',
-    margin: '42px 0 38px 0',
+    margin: '42px 0 48px 0',
     padding: '0 0 0 36px',
     display: 'flex',
     gap: '12px',
@@ -319,6 +312,10 @@ const styles = (theme) => ({
       width: '120px',
     },
   },
+  userInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   infoKey: {
     whiteSpace: 'nowrap',
     fontFamily: 'Nunito',
@@ -330,16 +327,17 @@ const styles = (theme) => ({
     lineHeight: '34px',
   },
   infoValue: {
-    minHeight: '32px',
-    marginLeft: '21px',
-    float: 'left',
+    lineHeight: '34px',
     fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
     letterSpacing: 0,
-    lineHeight: '35px',
+    minHeight: '32px',
+    whiteSpace: 'nowrap',
+    marginLeft: '21px',
+    float: 'left',
   },
   container: {
     margin: 'auto',
