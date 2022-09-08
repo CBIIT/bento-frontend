@@ -86,7 +86,6 @@ function requestAccessView({ data, classes }) {
   // USED TO TEST IF A CHANGE HAS OCCURRED INORDER TO SUBMIT A DAR
   const initialFormValues = JSON.parse(JSON.stringify(setDefaultValues()));
 
-  
   // GraphQL Operations
   const [mutate, response] = useMutation(SUBMIT_REQUEST_ACCESS, {
     context: { clientName: 'userService' },
