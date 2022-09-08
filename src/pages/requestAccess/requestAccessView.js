@@ -86,10 +86,7 @@ function requestAccessView({ data, classes }) {
   // USED TO TEST IF A CHANGE HAS OCCURRED INORDER TO SUBMIT A DAR
   const initialFormValues = JSON.parse(JSON.stringify(setDefaultValues()));
 
-  // const clearAll = () => {
-  //   setFormValues(setDefaultValues());
-  // };
-
+  
   // GraphQL Operations
   const [mutate, response] = useMutation(SUBMIT_REQUEST_ACCESS, {
     context: { clientName: 'userService' },
@@ -144,33 +141,6 @@ function requestAccessView({ data, classes }) {
         return null;
     }
   };
-
-  /* const testFieldsByType = (key) => {
-    const dType = Array.isArray(formValues[key]) ? 'array' : typeof formValues[key];
-
-    switch (dType) {
-      case 'string':
-        return !!(formValues[key] && formValues[key].trim() !== '');
-      case 'array':
-        return formValues[key] && formValues[key].length > 0;
-      default:
-        return !!(formValues[key]);
-    }
-  };
-
-  const checkAgainstInitialVals = () => {
-    const all = fieldsToChk.reduce((prevVal, key) => {
-      const checked = Array.isArray(formValues[key])
-        ? formValues[key].length === initialFormValues[key].length
-        : formValues[key] === initialFormValues[key];
-
-      return [...prevVal, checked];
-    }, []);
-
-    console.log(all); // eslint-disable-line
-
-    return all.indexOf(false) === -1;
-  }; */
 
   const validateNames = (key) => {
     const iniValue = initialFormValues[key];
