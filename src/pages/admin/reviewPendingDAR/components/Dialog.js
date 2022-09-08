@@ -24,6 +24,7 @@ const BootstrapDialog = styled(Dialog)(() => ({
     top: 118,
     width: '539px',
     borderRadius: '8px',
+    boxShadow: '0 0 29px 16px rgba(0,0,0,0.36)',
   },
   '& .MuiDialogTitle-root': {
     flex: '0 0 auto',
@@ -92,9 +93,8 @@ function CustomizedDialogs(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter a comment that will be sent to the user
+            Enter a comment that will be sent to the user.
             { commentField === 'Required' ? <sup className={classes.requiredAsterisk}>*</sup> : null }
-            .
           </DialogContentText>
           <textarea
             onChange={handleCommentChange}
@@ -139,6 +139,7 @@ const styles = () => ({
   requiredLabel: {
     fontFamily: 'Lato',
     fontSize: '15px',
+    fontWeight: '400',
     color: '#BC3900',
     lineHeight: '22px',
     marginTop: '5px',
