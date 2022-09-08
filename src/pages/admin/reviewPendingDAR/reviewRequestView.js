@@ -18,9 +18,9 @@ import { filterData, showAlert } from './utils/reviewDARUtilFun';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
 
 const ReviewRequestView = ({ classes, data }) => {
-  const { getUser } = data;
+  const { listRequest } = data;
 
-  const userInfo = getUser;
+  const userInfo = listRequest[0];
   const userId = userInfo.userID;
   const arms = userInfo.acl;
 

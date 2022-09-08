@@ -84,7 +84,7 @@ export const tabPendingRequest = {
         isCapital: true,
       },
       {
-        dataField: 'creationDate',
+        dataField: 'requestDate',
         header: 'Request Date',
       },
       {
@@ -161,6 +161,34 @@ export const getReviewDARConfig = () => ({
   ],
 });
 
+export const GET_LIST_REQUESTS = gql`
+query listRequest($requestID: [ID], $accessStatus: [String]){
+    listRequest (requestID: $requestID, accessStatus: $accessStatus){
+        firstName
+        lastName
+        displayName
+        organization
+        userID
+        email
+        IDP
+        role
+        userStatus
+        numberOfArms
+        requestID
+        requestDate
+        acl {
+            armID
+            armName
+            accessStatus
+            requestDate
+            reviewAdminName
+            reviewDate
+            comment
+            requestID
+        }
+    }
+}
+`;
 // --------------- GraphQL query configuration --------------
 
 // Get a list of MEMBER info  role == member

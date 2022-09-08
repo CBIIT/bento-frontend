@@ -2,16 +2,16 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { Typography, CircularProgress } from '@material-ui/core';
 import View from './reviewRequestView';
-import { GET_USER } from '../../../bento/adminData';
+import { GET_LIST_REQUESTS } from '../../../bento/adminData';
 
 const ReviewRequestController = ({ match }) => {
-  const userId = match.params.id;
+  const reqId = match.params.id;
   // get data
   const { data, loading, error } = useQuery(
-    GET_USER,
+    GET_LIST_REQUESTS,
     {
       context: { clientName: 'userService' },
-      variables: { userID: userId },
+      variables: { requestID: [reqId] },
       fetchPolicy: 'no-cache',
     },
   );
