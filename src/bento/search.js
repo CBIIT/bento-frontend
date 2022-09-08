@@ -10,12 +10,12 @@ export const programListingIcon = {
 
 /** certain search data items */
 export const SEARCH_KEYS = {
-  public: ['programs', 'model'],
+  public: [],
   private: ['programs', 'studies', 'subjects', 'samples', 'files'],
 };
 
 export const SEARCH_DATAFIELDS = {
-  public: ['program_id', 'node_name'],
+  public: [],
   private: ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'],
 };
 
@@ -26,27 +26,15 @@ export const SEARCH_PUBLIC = gql`
             model_count
             about_count
             program_count
-            programs{
-                type
-                program_id
-                program_code
-                program_name
-            }
+            study_count
+            subject_count
+            sample_count
+            file_count
             about_page{
                 page
                 title
                 type
                 text
-            }
-            model{
-                type
-                node_name
-                property_name
-                property_description
-                property_required
-                property_type
-                value
-                highlight
             }
         }
     }
@@ -94,6 +82,10 @@ export const SEARCH_PAGE_RESULTS_PUBLIC = gql`
             program_count
             model_count
             about_count
+            study_count
+            subject_count
+            sample_count
+            file_count
         }
     }
 `;
