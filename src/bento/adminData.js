@@ -1,4 +1,3 @@
-/* eslint-disable */
 import gql from 'graphql-tag';
 import { NODE_LEVEL_ACCESS, NODE_LABEL } from './siteWideConfig';
 
@@ -83,6 +82,10 @@ export const tabPendingRequest = {
         dataField: 'role',
         header: 'Role',
         isCapital: true,
+      },
+      {
+        dataField: 'requestDate',
+        header: 'Request Date',
       },
       {
         dataField: nodeField,
@@ -172,6 +175,7 @@ query listRequest($requestID: [ID], $accessStatus: [String]){
         userStatus
         numberOfArms
         requestID
+        requestDate
         acl {
             armID
             armName

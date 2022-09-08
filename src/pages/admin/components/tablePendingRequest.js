@@ -48,10 +48,10 @@ const TablePendingRequest = ({ classes }) => {
   // transform the datetime
   const customizedCloumns = [];
   for (let i = 0; i < draftCloumns.length; i += 1) {
-    if (draftCloumns[i].name === 'creationDate') {
+    if (draftCloumns[i].name === 'requestDate') {
       dateColumn = [
         {
-          name: 'creationDate',
+          name: 'requestDate',
           label: 'Request Date',
           options: {
             display: true,
