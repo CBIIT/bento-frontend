@@ -102,7 +102,7 @@ const DocumentDownload = ({
           <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} arrow placement="bottom">
             <div
               style={{ textAlign: 'center' }}
-              onClick={() => signInWithGoogle()}
+              onClick={() => history.push('/login')}
             >
               <CustomIcon imgSrc={iconUnauthenticated} />
             </div>
