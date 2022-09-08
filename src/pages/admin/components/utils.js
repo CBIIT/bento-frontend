@@ -1,5 +1,4 @@
-import _ from 'lodash';
-
+import custodianUtils from '../../../utils/custodianUtilFuncs';
 /**
  * transform data with required formation
  * @param {obj} data
@@ -8,6 +7,8 @@ import _ from 'lodash';
 
 const transformData = (data, metaData) => {
   // find field need to be transform.
+
+  const { capitalizeFirstLetter } = custodianUtils;
 
   const capitalizedField = metaData.filter((d) => d.isCapital && d.isCapital === true);
 
@@ -23,7 +24,7 @@ const transformData = (data, metaData) => {
       // capitalizedField
       for (let j = capitalizedField.length - 1; j >= 0; j -= 1) {
         const field = capitalizedField[j].dataField;
-        customizedData[field] = _.capitalize(customizedData[field]);
+        customizedData[field] = capitalizeFirstLetter(customizedData[field]);
       }
     }
 

@@ -67,8 +67,9 @@ const TablePendingRequest = ({ classes }) => {
 
   const actionColumn = [{
     name: 'userID',
-    label: 'Actions',
+    label: 'Action',
     options: {
+      sort: false,
       customBodyRender: (value) => {
         const href = `/#/admin/review/${value}`;
         return (

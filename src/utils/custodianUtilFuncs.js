@@ -25,6 +25,9 @@ const custodianUtils = {
   },
   // Capitalize first letter of each word
   capitalizeFirstLetter: (str) => {
+    if (str.toLowerCase() === 'non-member') {
+      return 'Non-Member';
+    }
     const words = str.split(' ');
     return words.map((word) => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
   },
