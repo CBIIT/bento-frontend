@@ -114,7 +114,7 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
   const { isSignedIn, role, userStatus } = useSelector((state) => state.login);
   const { pathname } = useLocation();
   const { NONE, METADATA_ONLY } = accessLevelTypes;
-  const { access, path } = rest;
+  const { access, path, requiuredSignIn } = rest;
   const updatedRole = (userStatus !== 'active' && role !== 'admin') ? 'non-member' : role;
   const hasAccess = (isSignedIn && access.includes(updatedRole));
 
@@ -135,7 +135,7 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
         }
 
         if (PUBLIC_ACCESS === METADATA_ONLY) {
-          if (!isSignedIn || (path === '/request' && !isSignedIn)) {
+          if (requiuredSignIn && !isSignedIn) {
             return <Redirect to="/" />;
           }
         }

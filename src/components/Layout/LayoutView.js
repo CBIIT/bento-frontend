@@ -60,8 +60,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
 
             {/* START: Private Routes */}
             {/* SECTION: Non-Member & Member only Path */}
-            <PrivateRoute path="/request" access={['member', 'non-member']} component={RequestAccess} />
-            <PrivateRoute path="/profile" access={['member', 'non-member', 'admin']} component={ProfileController} />
+            <PrivateRoute path="/request" requiuredSignIn access={['member', 'non-member']} component={RequestAccess} />
+            <PrivateRoute path="/profile" requiuredSignIn access={['member', 'non-member', 'admin']} component={ProfileController} />
             {/* END SECTION */}
 
             {/* SECTION: Member & Admin only Path */}
@@ -76,11 +76,11 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* END SECTION */}
 
             {/* SECTION: Admin only Path */}
-            <AdminRoute path="/adminportal" access={['admin']} component={fakeAdminView} />
-            <AdminRoute path="/admin/edit/:id" access={['admin']} component={editUserController} />
-            <AdminRoute path="/admin/view/:id" access={['admin']} component={viewUserController} />
-            <AdminRoute path="/admin/review/:id" access={['admin']} component={reviewRequestController} />
-            <AdminRoute path="/admin" access={['admin']} component={adminController} />
+            <AdminRoute path="/adminportal" requiuredSignIn access={['admin']} component={fakeAdminView} />
+            <AdminRoute path="/admin/edit/:id" requiuredSignIn access={['admin']} component={editUserController} />
+            <AdminRoute path="/admin/view/:id" requiuredSignIn access={['admin']} component={viewUserController} />
+            <AdminRoute path="/admin/review/:id" requiuredSignIn access={['admin']} component={reviewRequestController} />
+            <AdminRoute path="/admin" access={['admin']} requiuredSignIn component={adminController} />
             {/* END SECTION */}
 
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
