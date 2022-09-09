@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { NODE_LEVEL_ACCESS } from './siteWideConfig';
+import { nodeName } from './adminData';
 
 const adminIcon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/userProfileAdminIcon.svg',
@@ -33,17 +34,17 @@ export const profileArmsTable = {
     {
       dataField: 'armID',
       header: 'Arms',
-      primary: true,
-      display: !NODE_LEVEL_ACCESS,
+      display: false,
     },
     {
       dataField: 'armName',
-      header: NODE_LEVEL_ACCESS ? 'Data Commons' : 'Arm Name',
+      header: NODE_LEVEL_ACCESS ? nodeName : 'Data Commons',
       display: true,
     },
     {
       dataField: 'accessStatus',
       header: 'Status',
+      primary: true,
       display: true,
     },
     {

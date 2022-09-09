@@ -252,7 +252,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                   endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                   onClick={handleSaveUserDetails}
                 >
-                  Save
+                  Save changes
                 </Button>
               </Grid>
             ) : null }
