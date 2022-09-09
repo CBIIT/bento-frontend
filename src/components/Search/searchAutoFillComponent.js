@@ -8,6 +8,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useSelector } from 'react-redux';
 import { getSearch, getSearchPublic } from '../../pages/dashboardTab/store/dashboardReducer';
 import { SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
+import { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
+import accessLevelTypes from '../../utils/enums';
 
 function searchComponent({ classes }) {
   const history = useHistory();
@@ -15,6 +17,7 @@ function searchComponent({ classes }) {
   const isAuthorized = isSignedIn && useSelector(
     (state) => state.login.acl.some((arm) => arm.accessStatus === 'approved'),
   );
+  const checkAuth = () => isAuthorized || PUBLIC_ACCESS === accessLevelTypes.METADATA_ONLY;
 
   const [open] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
@@ -35,7 +38,7 @@ function searchComponent({ classes }) {
   }
 
   function getSearchQuery() {
-    if (isAuthorized) {
+    if (checkAuth()) {
       return getSearch;
     }
 
@@ -45,14 +48,14 @@ function searchComponent({ classes }) {
   async function getAutoCompleteRes(newValue = []) {
     setInputValue(newValue);
     const searchResp = await getSearchQuery()(newValue);
-    const keys = isAuthorized ? SEARCH_KEYS.private : SEARCH_KEYS.public;
-    const datafields = isAuthorized ? SEARCH_DATAFIELDS.private : SEARCH_DATAFIELDS.public;
+    const keys = checkAuth() ? SEARCH_KEYS.private : SEARCH_KEYS.public;
+    const datafields = checkAuth() ? SEARCH_DATAFIELDS.private : SEARCH_DATAFIELDS.public;
 
     const mapOption = keys.map((key, ind) => searchResp[key].map((id) => (id[datafields[ind]])));
     const option = mapOption.length
       ? mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]) : [];
 
-    if (isAuthorized) {
+    if (checkAuth()) {
       setOptions(option.length === 0 ? [] : [...option.slice(0, 6),
         <div onClick={() => {}}>
           Press ENTER for more search results

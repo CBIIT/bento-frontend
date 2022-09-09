@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import SearchView from './searchView';
+import { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
+import accessLevelTypes from '../../utils/enums';
 
 const SearchViewContainer = ({ match }) => {
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
@@ -11,6 +13,7 @@ const SearchViewContainer = ({ match }) => {
 
   return (
     <SearchView
+      publicAccessEnabled={PUBLIC_ACCESS === accessLevelTypes.METADATA_ONLY}
       isAuthorized={isAuthorized}
       isSignedIn={isSignedIn}
       loggedIn
