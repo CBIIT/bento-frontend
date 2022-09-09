@@ -143,7 +143,7 @@ function requestAccessView({ data, classes }) {
 
   const validateNames = (key) => {
     const iniValue = initialFormValues[key];
-    const currentVal = formValues[key];
+    const currentVal = formValues[key] || [];
 
     if (iniValue !== currentVal && !changeDetected) {
       setChangeDetected(true);
