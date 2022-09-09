@@ -1,6 +1,6 @@
 const accessLevelTypes = {
   METADATA_ONLY: 'Metadata Only',
-  NONE: 'none',
+  NONE: 'None',
 };
 
 export default accessLevelTypes;
