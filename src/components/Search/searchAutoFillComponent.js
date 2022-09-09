@@ -14,9 +14,11 @@ import accessLevelTypes from '../../utils/enums';
 function searchComponent({ classes }) {
   const history = useHistory();
   const { isSignedIn } = useSelector((state) => state && state.login.isSignedIn);
-  const isAuthorized = isSignedIn && useSelector(
+  const isAdmin = useSelector((state) => state.login && state.login.role && state.login.role === 'admin');
+  const hasApprovedArms = useSelector(
     (state) => state.login.acl.some((arm) => arm.accessStatus === 'approved'),
   );
+  const isAuthorized = isSignedIn && (hasApprovedArms || isAdmin);
   const checkAuth = () => isAuthorized || PUBLIC_ACCESS === accessLevelTypes.METADATA_ONLY;
 
   const [open] = React.useState(false);
