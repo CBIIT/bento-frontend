@@ -67,7 +67,7 @@ function loginView({ classes }) {
     if (alertType === 'redirect') {
       setError(
         <AlertMessage key={key} severity="error" timeout={5000}>
-          Please login to access protected pages
+          Please login to access protected data
         </AlertMessage>,
       );
     }
