@@ -94,8 +94,10 @@ function loginView({ classes }) {
   };
 
   useEffect(() => {
-    showAlert('redirect');
-  }, [internalRedirectPath]);
+    if (internalRedirectPath !== '/') {
+      showAlert('redirect');
+    }
+  }, []);
 
   return (
     <div className={classes.Container}>

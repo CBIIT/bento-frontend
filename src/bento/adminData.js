@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
-import { NODE_LEVEL_ACCESS, NODE_LABEL } from './siteWideConfig';
+import { NODE_LEVEL_ACCESS } from './siteWideConfig';
+import custodianUtils from '../utils/custodianUtilFuncs';
 
 export const icon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programIcon.svg',
@@ -24,7 +25,8 @@ export const viewPageTitle = 'Approved Arm(s)';
 
 export const useMock = false;
 
-export const nodeName = NODE_LABEL; // Node Name configured in the Data Access Request form
+// Node Name configured in the Data Access Request form
+export const nodeName = custodianUtils.getNodeLevelLabel();
 
 export const nodeField = 'numberOfArms'; // Node field
 
