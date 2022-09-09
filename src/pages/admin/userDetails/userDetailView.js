@@ -8,6 +8,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { cn, CustomDataTable } from 'bento-components';
+import AlertMessage from '../../../components/alertMessage';
 
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
@@ -65,6 +66,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userInfo, setUserInfo] = useState(data.getUser);
   const [userRole, setUserRole] = useState(userInfo.role);
   const [seletedArms, setSeletedArms] = useState([]);
+  const [notification, setNotification] = React.useState('');
   const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   // GraphQL Operations
@@ -79,6 +81,27 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
       // INPUT parm can be 'ApolloError'
     },
   });
+
+  const showAlert = (alertType, errorMsg = '') => {
+    const key = Math.random();
+    if (alertType === 'error') {
+      setNotification(
+        <AlertMessage key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000}>
+          {errorMsg}
+        </AlertMessage>,
+      );
+    }
+
+    if (alertType === 'success') {
+      setNotification(
+        <AlertMessage key={key} severity="error" timeout={5000}>
+          All changes have been saved
+        </AlertMessage>,
+      );
+    }
+
+    return null;
+  };
 
   const approvedRender = (value) => {
     const spltStr = value.split(' ');
@@ -127,8 +150,11 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     mutate({ variables: { ...Obj } }).then(({ data: responseData }) => {
       if (responseData) {
         setUserInfo(responseData.editUser);
+        showAlert('success');
       }
-    }).catch(() => {});
+    }).catch(() => {
+      showAlert('error');
+    });
   }
 
   const handleRoleChange = (e) => {
@@ -140,6 +166,9 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     <>
       <div className={classes.pageContainer}>
         <Stats />
+        <Grid container item justifyContent="center" className={classes.emptySpace}>
+          {notification}
+        </Grid>
         <div className={classes.container}>
           <div className={classes.header}>
             <div className={classes.logo}>
@@ -372,6 +401,7 @@ const styles = (theme) => ({
   container: {
     margin: 'auto',
     maxWidth: '1440px',
+    marginTop: '-50px',
     paddingLeft: '36px',
     paddingRight: '36px',
     paddingBottom: '50px',
@@ -441,6 +471,9 @@ const styles = (theme) => ({
     lineHeight: '35px',
     textAlign: 'center',
     margin: '0 auto',
+  },
+  emptySpace: {
+    height: '50px',
   },
 });
 
