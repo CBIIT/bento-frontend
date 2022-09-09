@@ -18,7 +18,7 @@ import PrivateTabView from './components/tabs/privateTabView';
 import PublicTabView from './components/tabs/publicTabView';
 
 function searchComponent({
-  classes, searchparam = '', isSignedIn, isAuthorized,
+  classes, searchparam = '', isSignedIn, isAuthorized, publicAccessEnabled,
 }) {
   const [tab, setTab] = React.useState('1');
   const history = useHistory();
@@ -29,6 +29,8 @@ function searchComponent({
   const [searchResults, setSearchResults] = React.useState([]);
   const loading = open;
   const [value] = React.useState([]);
+
+  const authCheck = () => isAuthorized || publicAccessEnabled;
 
   const handleChange = (event, newValue) => {
     const activeVal = newValue.split('-')[0];
@@ -45,7 +47,7 @@ function searchComponent({
   };
 
   const getAuthorizedResultQuery = (strValue) => {
-    if (isAuthorized) {
+    if (authCheck()) {
       return getSearchPageResults(strValue);
     }
 
@@ -67,7 +69,7 @@ function searchComponent({
    * Chooses the search method based on whether user is logged in,
    * returns function */
   function getSearchMethod() {
-    if ((isAuthorized)) {
+    if ((authCheck())) {
       return getSearch;
     }
 
@@ -90,9 +92,9 @@ function searchComponent({
       public: [],
     };
 
-    const mapOption = (isAuthorized ? keys.private : keys.public).map(
+    const mapOption = (authCheck() ? keys.private : keys.public).map(
       (key, index) => searchResp[key].map(
-        (id) => (id[isAuthorized ? datafields.private[index] : datafields.public[index]]),
+        (id) => (id[authCheck() ? datafields.private[index] : datafields.public[index]]),
       ),
     );
     const option = mapOption.length > 0
@@ -174,7 +176,7 @@ function searchComponent({
       </div>
       <div className={classes.bodyContainer}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
-          {isAuthorized
+          {authCheck()
             ? (
               <PrivateTabView
                 tab={tab}
