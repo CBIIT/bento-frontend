@@ -28,6 +28,12 @@ const custodianUtils = {
     if (str.toLowerCase() === 'non-member') {
       return 'Non-Member';
     }
+    if (str.toLowerCase() === 'nih') {
+      return 'NIH';
+    }
+    if (str.toLowerCase() === 'esi') {
+      return 'ESI';
+    }
     const words = str.split(' ');
     return words.map((word) => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
   },
