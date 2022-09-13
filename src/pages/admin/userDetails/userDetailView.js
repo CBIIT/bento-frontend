@@ -143,6 +143,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     const Obj = {
       userID: userInfo.userID,
       role: userRole,
+      userStatus: userRole.toLowerCase() === 'admin' ? 'active' : '',
       armIDs: seletedArms,
       comment: '',
     };
