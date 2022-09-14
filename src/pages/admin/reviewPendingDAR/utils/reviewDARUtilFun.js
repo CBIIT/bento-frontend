@@ -3,18 +3,17 @@ import { Typography } from '@material-ui/core';
 import AlertMessage from '../components/AlertView';
 import getDateInFormat from '../../../../utils/date';
 
-// Filter data based on "accessStatus" being equal to "pending", then reformat "requestDate"
-export const filterData = (userData) => {
-  let filteredData = [];
+// Reformat requestDate
+export const reformatDate = (userData) => {
+  let formattedData = [];
   if (userData && Array.isArray(userData)) {
-    filteredData = userData
-      .filter((element) => element.accessStatus === 'pending')
+    formattedData = userData
       .map((element) => {
         const formattedDate = getDateInFormat(element.requestDate, '/');
         return { ...element, requestDate: formattedDate };
       });
   }
-  return filteredData;
+  return formattedData;
 };
 
 export const showAlert = (accessStatus, setAccessStatus) => {
@@ -32,4 +31,4 @@ export const showAlert = (accessStatus, setAccessStatus) => {
   return <></>;
 };
 
-export default filterData;
+export default reformatDate;
