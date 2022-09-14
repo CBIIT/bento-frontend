@@ -140,18 +140,17 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const approvedArms = getApprovedArms(userInfo.acl);
 
   function handleSaveUserDetails() {
-    const Obj = {
+    const updatedUserDetails = {
       userID: userInfo.userID,
       role: userRole,
       armIDs: seletedArms,
       comment: '',
     };
 
-    if (userRole.toLowerCase() === 'admin') {
-      Obj.userStatus = 'active';
-    }
+    if (userInfo.role === 'non-member' && userRole === 'admin') updatedUserDetails.userStatus = 'active';
 
-    mutate({ variables: { ...Obj } }).then(({ data: responseData }) => {
+    mutate({ variables: { ...updatedUserDetails } }).then(({ data: responseData }) => {
+
       if (responseData) {
         setUserInfo(responseData.editUser);
         showAlert('success');
@@ -236,7 +235,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                     {capitalizeFirstLetter(userInfo.organization)}
                   </span>
                   <span className={classes.infoValue}>
-                    {capitalizeFirstLetter(userInfo.userStatus)}
+                    {userInfo.userStatus === '' ? 'N/A' : capitalizeFirstLetter(userInfo.userStatus)}
                   </span>
                   {accessType === EDIT ? (
                     <Select

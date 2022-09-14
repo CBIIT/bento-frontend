@@ -23,7 +23,7 @@ const editUserController = ({ match }) => {
 
   if (loading) return <CircularProgress />;
 
-  if (error || !data) {
+  if (error || !data || !data.getUser) {
     return (
       <Typography variant="h5" color="error" size="sm">
         {error ? `An error has occurred in loading stats component: ${error}` : 'Recieved wrong data'}
