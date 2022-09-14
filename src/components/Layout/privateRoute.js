@@ -133,9 +133,10 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
             return <Redirect to={redirectPath} />;
           }
 
-          if (role === 'admin' && userStatus !== 'active') {
+          // Condition for admins who are inactive & skipping it for profile route.
+          if (path !== '/profile' && role === 'admin' && userStatus !== 'active') {
             return (
-              <div><h2 style={{ textAlign: 'center' }}>Inactive Account!</h2></div>
+              <div><h2 style={{ textAlign: 'center' }}>Inactive Admin Account!</h2></div>
             );
           }
         }
@@ -143,6 +144,14 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
         if (PUBLIC_ACCESS === METADATA_ONLY) {
           if (requiuredSignIn && !isSignedIn) {
             return <Redirect to="/" />;
+          }
+
+          // Condition for admins who are inactive & skipping it for profile route.
+          if (requiuredSignIn && path !== '/profile'
+             && role === 'admin' && userStatus !== 'active') {
+            return (
+              <div><h2 style={{ textAlign: 'center' }}>Inactive Account!</h2></div>
+            );
           }
         }
 
