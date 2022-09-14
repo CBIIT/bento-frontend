@@ -15,7 +15,7 @@ import {
   adminPortalIcon,
   getReviewDARConfig,
 } from '../../../bento/adminData';
-import { filterData, showAlert } from './utils/reviewDARUtilFun';
+import { reformatDate, showAlert } from './utils/reviewDARUtilFun';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
 import { adminPortal } from '../../../bento/siteWideConfig';
 
@@ -35,8 +35,8 @@ const ReviewRequestView = ({ classes, data }) => {
   const [openRejectDialog, setOpenRejectDialog] = useState(false);
 
   const [armsToBeGivenAccess, setArmsToBeGivenAccess] = useState([]);
-  // Get Arms with requested Status and formatted date
-  const [filteredArms, setFilteredArms] = useState(filterData(arms));
+  // Get Arms with formatted date
+  const [filteredArms, setFilteredArms] = useState(reformatDate(arms));
 
   const [comment, setComment] = useState('');
 
