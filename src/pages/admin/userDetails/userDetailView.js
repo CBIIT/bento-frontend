@@ -147,7 +147,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
       comment: '',
     };
 
-    if (userInfo.role === 'non-member' && userRole === 'admin') updatedUserDetails.userStatus = 'active';
+    if (userRole === 'admin') updatedUserDetails.userStatus = 'active';
 
     mutate({ variables: { ...updatedUserDetails } }).then(({ data: responseData }) => {
       if (responseData) {
