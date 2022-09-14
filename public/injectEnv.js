@@ -18,6 +18,6 @@ window.injectedEnv = {
   // IDP Auth url
   REACT_APP_NIH_AUTH_URL: 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
   // Client IDs for IDP
-  REACT_APP_GOOGLE_CLIENT_ID: 'Sample ID',
-  REACT_APP_NIH_CLIENT_ID: 'Sample ID',
+  REACT_APP_GOOGLE_CLIENT_ID: 'Sample id',
+  REACT_APP_NIH_CLIENT_ID: 'Sample id',
   };
