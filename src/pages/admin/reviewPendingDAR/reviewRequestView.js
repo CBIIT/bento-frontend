@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import { cn, CustomDataTable, getColumns } from 'bento-components';
 import { useMutation } from '@apollo/client';
+import { Redirect } from 'react-router-dom';
 import Stats from '../../../components/Stats/AllStatsController';
 import CustomizedDialogs from './components/Dialog';
 import {
@@ -16,9 +17,12 @@ import {
 } from '../../../bento/adminData';
 import { filterData, showAlert } from './utils/reviewDARUtilFun';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
+import { adminPortal } from '../../../bento/siteWideConfig';
 
 const ReviewRequestView = ({ classes, data }) => {
   const { listRequest } = data;
+  // Redirect to Admin page once all individual DAR has been given an Access
+  if (listRequest.length === 0) return <Redirect to={adminPortal} />;
 
   const userInfo = listRequest[0];
   const userId = userInfo.userID;
