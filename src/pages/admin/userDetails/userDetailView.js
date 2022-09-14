@@ -23,6 +23,7 @@ import {
 } from '../../../bento/adminData';
 import getDateInFormat from '../../../utils/date';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
+import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
 
 // acl is array of object.
 function getApprovedArms(acl) {
@@ -271,7 +272,11 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
             )
               : (
                 <Grid item xs={12} className={classes.adminMessageGrid}>
-                  <div className={classes.adminMessage}> You have access to all Arm(s) </div>
+                  <div className={classes.adminMessage}>
+                    You have access to all
+                    {' '}
+                    {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+                  </div>
                 </Grid>
               )}
             {accessType === EDIT ? (
