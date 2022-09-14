@@ -34,6 +34,9 @@ const custodianUtils = {
     if (str.toLowerCase() === 'esi') {
       return 'ESI';
     }
+    if (str.toLowerCase() === 'google') {
+      return 'Google';
+    }
     const words = str.split(' ');
     return words.map((word) => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
   },
