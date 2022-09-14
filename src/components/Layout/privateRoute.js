@@ -132,6 +132,12 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
             const redirectPath = (role !== 'admin') ? `${requestAccessRoute}?type=noAccess` : '/';
             return <Redirect to={redirectPath} />;
           }
+
+          if (role === 'admin' && userStatus !== 'active') {
+            return (
+              <div><h2 style={{ textAlign: 'center' }}>Inactive Account!</h2></div>
+            );
+          }
         }
 
         if (PUBLIC_ACCESS === METADATA_ONLY) {
