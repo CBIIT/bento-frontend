@@ -5,6 +5,8 @@ import {
 import { Link } from 'react-router-dom';
 import { CustomDataTable, getColumns, getOptions } from 'bento-components';
 import { ignoredArms, profileArmsTable } from '../../../bento/profileData';
+import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
+import custodianUtils from '../../../utils/custodianUtilFuncs';
 import style from '../styles';
 import getDateInFormat from '../../../utils/date';
 
@@ -23,7 +25,11 @@ const ProfileViewFooter = ({ classes, data }) => {
     }}
     >
       <Paper elevation={0}>
-        <div>You have access to all Arm(s).</div>
+        <div>
+          You have access to all
+          {' '}
+          {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+        </div>
       </Paper>
     </Box>
   );
