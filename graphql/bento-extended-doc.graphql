@@ -868,14 +868,6 @@ schema {
 type QueryType {
     schemaVersion: String 
 
-    "Simple counts"
-    numberOfPrograms: Int 
-    numberOfStudies: Int 
-    numberOfSubjects: Int 
-    numberOfSamples: Int 
-    numberOfLabProcedures: Int  
-    numberOfFiles: Int 
-
     "Group counts from lists of subject ids, file ids, and sample ids"
 
     subjectCountByProgramFromLists(subject_ids: [String] = [], sample_ids: [String] = [], file_ids: [String] = [], file_names: [String] = []): [GroupCount] 
