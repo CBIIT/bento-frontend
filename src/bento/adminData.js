@@ -3,7 +3,7 @@ import { NODE_LEVEL_ACCESS } from './siteWideConfig';
 import custodianUtils from '../utils/custodianUtilFuncs';
 
 export const icon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programIcon.svg',
+  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/AdminPortal.Icon.svg',
   alt: 'Bento program logo',
 };
 
