@@ -403,7 +403,7 @@ const styles = (theme) => ({
     backgroundColor: '#BA2810',
   },
   customDataTable: {
-    '& .MUIDataTableFooter-root-142': {
+    '& .MuiTableFooter-root': {
       borderBottom: '3px solid #42779A',
     },
     '& .MuiTableCell-head:last-child': {
