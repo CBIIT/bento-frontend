@@ -105,7 +105,7 @@ const ReviewRequestView = ({ classes, data }) => {
       options: {
         sort: false,
         customBodyRender: (value) => (
-          <div>
+          <div className={classes.actionColumn}>
             <Button
               variant="contained"
               className={cn(classes.actionButton, classes.approveButton)}
@@ -385,6 +385,9 @@ const styles = (theme) => ({
     marginLeft: '-17px',
     width: '100px',
   },
+  actionColumn: {
+    textAlign: 'center',
+  },
   actionButton: {
     height: '28px',
     width: '80px',
@@ -402,6 +405,9 @@ const styles = (theme) => ({
   customDataTable: {
     '& .MUIDataTableFooter-root-142': {
       borderBottom: '3px solid #42779A',
+    },
+    '& .MuiTableCell-head:last-child': {
+      textAlign: 'center',
     },
   },
 });
