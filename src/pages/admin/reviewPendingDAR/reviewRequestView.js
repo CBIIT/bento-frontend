@@ -244,6 +244,7 @@ const ReviewRequestView = ({ classes, data }) => {
                 data={filteredArms}
                 columns={columns}
                 options={options}
+                className={classes.customDataTable}
               />
             </Grid>
           </Grid>
@@ -397,6 +398,11 @@ const styles = (theme) => ({
   },
   rejectButton: {
     backgroundColor: '#BA2810',
+  },
+  customDataTable: {
+    '& .MUIDataTableFooter-root-142': {
+      borderBottom: '3px solid #42779A',
+    },
   },
 });
 
