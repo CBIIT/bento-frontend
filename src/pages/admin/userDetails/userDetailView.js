@@ -96,7 +96,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
 
     if (alertType === 'success') {
       setNotification(
-        <AlertMessage classNames={classes.alertMsg} key={key} severity="error" timeout={500000}>
+        <AlertMessage classNames={classes.alertMsg} key={key} severity="error" timeout={5000}>
           All changes have been saved
         </AlertMessage>,
       );
