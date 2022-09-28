@@ -346,7 +346,7 @@ const styles = (theme) => ({
     maxWidth: '1000px',
     paddingLeft: '36px',
     paddingRight: '36px',
-    paddingBottom: '50px',
+    paddingBottom: '80px',
   },
   header: {
     paddingLeft: '20px',
