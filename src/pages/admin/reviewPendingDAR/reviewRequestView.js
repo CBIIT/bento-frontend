@@ -295,7 +295,7 @@ const styles = (theme) => ({
   },
   userInfoHeader: {
     minWidth: 'fit-content',
-    margin: '42px 0 48px 0',
+    margin: '32px 0 38px 0',
     padding: '0 0 0 36px',
     display: 'flex',
     gap: '12px',
@@ -323,29 +323,27 @@ const styles = (theme) => ({
   infoKey: {
     whiteSpace: 'nowrap',
     fontFamily: 'Nunito',
-    fontStyle: 'italic',
-    fontWeight: '400', // regular
+    fontWeight: '300', // light
     fontSize: '12px',
     color: '#708292',
     letterSpacing: 0,
-    lineHeight: '34px',
+    lineHeight: '30px',
   },
   infoValue: {
-    lineHeight: '34px',
+    lineHeight: '30px',
     fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
     letterSpacing: 0,
-    minHeight: '32px',
     whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
   },
   container: {
     margin: 'auto',
-    maxWidth: '1440px',
+    maxWidth: '1000px',
     paddingLeft: '36px',
     paddingRight: '36px',
     paddingBottom: '50px',
