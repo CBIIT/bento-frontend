@@ -24,6 +24,7 @@ import {
 import getDateInFormat from '../../../utils/date';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
 import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
+import TableThemeProvider from './tableThemeConfig';
 
 // acl is array of object.
 function getApprovedArms(acl) {
@@ -87,7 +88,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     const key = Math.random();
     if (alertType === 'error') {
       setNotification(
-        <AlertMessage key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000}>
+        <AlertMessage classNames={classes.alertMsg} key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000}>
           {errorMsg}
         </AlertMessage>,
       );
@@ -95,7 +96,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
 
     if (alertType === 'success') {
       setNotification(
-        <AlertMessage key={key} severity="error" timeout={5000}>
+        <AlertMessage classNames={classes.alertMsg} key={key} severity="error" timeout={500000}>
           All changes have been saved
         </AlertMessage>,
       );
@@ -239,7 +240,6 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                   </span>
                   {accessType === EDIT ? (
                     <Select
-                      disableUnderline
                       value={userRole}
                       onChange={handleRoleChange}
                       inputProps={{ 'aria-label': 'Without label' }}
@@ -255,7 +255,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                       <MenuItem value="member" className={classes.menuItem}> Member </MenuItem>
                     </Select>
                   )
-                    : <span className={classes.infoValue}>{capitalizeFirstLetter(userRole)}</span> }
+                    : <span className={`${classes.infoValue}`}>{capitalizeFirstLetter(userRole)}</span> }
                 </Typography>
               </div>
             </div>
@@ -263,19 +263,23 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
           <Grid container>
             {userInfo.role !== 'admin' ? (
               <Grid item xs={12}>
-                <CustomDataTable
-                  data={approvedArms}
-                  columns={columns}
-                  options={options}
-                />
+                <TableThemeProvider>
+                  <CustomDataTable
+                    data={approvedArms}
+                    columns={columns}
+                    options={options}
+                  />
+                </TableThemeProvider>
               </Grid>
             )
               : (
                 <Grid item xs={12} className={classes.adminMessageGrid}>
                   <div className={classes.adminMessage}>
-                    You have access to all
-                    {' '}
-                    {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+                    <span className={classes.adminTxtMessage}>
+                      You have access to all
+                      {' '}
+                      {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+                    </span>
                   </div>
                 </Grid>
               )}
@@ -302,6 +306,9 @@ const styles = (theme) => ({
   adminTitle: {
     borderBottom: '1px solid #274FA5',
   },
+  alertMsg: {
+    borderRadius: '0',
+  },
   reviewTitle: {
     fontWeight: 'bold',
   },
@@ -320,7 +327,7 @@ const styles = (theme) => ({
     },
   },
   editUserInfoHeader: {
-    margin: '42px 0 78px 0',
+    margin: '30px 0 48px 0',
   },
   firstInfoSection: {
     display: 'flex',
@@ -328,7 +335,7 @@ const styles = (theme) => ({
   },
   secondInfoSection: {
     display: 'flex',
-    flexGrow: 1,
+    flexGrow: 2,
   },
   infoKeyWrapper: {
     [theme.breakpoints.down('xs')]: {
@@ -341,35 +348,35 @@ const styles = (theme) => ({
   },
   infoKey: {
     whiteSpace: 'nowrap',
-    fontFamily: 'Nunito',
-    fontStyle: 'italic',
-    fontWeight: '400', // regular
-    fontSize: '12px',
+    fontFamily: 'Nunito Sans Regular',
+    letter: '50px',
+    // fontStyle: 'italic',
+    // fontWeight: '400', // regular
+    fontSize: '11px',
     color: '#708292',
     letterSpacing: 0,
     lineHeight: '34px',
   },
   infoValue: {
     lineHeight: '34px',
-    fontFamily: 'Nunito',
-    fontStyle: 'italic',
-    fontWeight: '300', // light
+    fontFamily: 'Nunito Sans Light Italic',
+    // fontStyle: 'italic',
+    // fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
     letterSpacing: 0,
-    minHeight: '32px',
     whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
   },
   selectRole: {
     width: '140px',
-    fontFamily: 'Nunito',
-    fontStyle: 'italic',
-    fontWeight: '300', // light
+    fontFamily: 'Nunito Sans Light Italic',
+    // fontStyle: 'italic',
+    // fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
-    minHeight: '32px',
+    minHeight: '20px',
     whiteSpace: 'nowrap',
     marginLeft: '7px',
     float: 'left',
@@ -409,9 +416,9 @@ const styles = (theme) => ({
     margin: 'auto',
     maxWidth: '1440px',
     marginTop: '-50px',
-    paddingLeft: '36px',
-    paddingRight: '36px',
-    paddingBottom: '50px',
+    paddingLeft: '60px',
+    paddingRight: '60px',
+    paddingBottom: '80px',
   },
   header: {
     paddingLeft: '20px',
@@ -433,6 +440,10 @@ const styles = (theme) => ({
     [theme.breakpoints.down('xs')]: {
       paddingTop: '0',
     },
+  },
+  underlined: {
+    // borderBottom: '1px solid black',
+    textDecoration: 'underline',
   },
   headerMainTitle: {
     fontFamily: 'Lato',
@@ -467,17 +478,23 @@ const styles = (theme) => ({
   adminMessageGrid: {
     boxSizing: 'border-box',
     height: '143px',
-    border: '1px solid #000000',
-    backgroundColor: '#F6F6F6',
+    borderTop: '1px solid #88B4DA',
+    borderBottom: '1px solid #88B4DA',
+    backgroundColor: '#fff',
   },
   adminMessage: {
     color: '#000000',
-    fontFamily: 'Nunito',
+    height: '121px',
+    fontFamily: 'Nunito Sans Regular',
     fontSize: '18px',
     letterSpacing: '0',
-    lineHeight: '35px',
+    lineHeight: '74px',
     textAlign: 'center',
-    margin: '0 auto',
+    margin: '10px auto',
+    backgroundColor: '#F6F6F6',
+  },
+  adminTxtMessage: {
+    paddingTop: '20px',
   },
   emptySpace: {
     height: '50px',
