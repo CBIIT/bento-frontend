@@ -21,7 +21,7 @@ export const EDIT = 'edit';
 export const VIEW = 'view';
 
 export const editViewPageTitle = 'Edit User';
-export const viewPageTitle = 'Approved Arm(s)';
+export const viewPageTitle = `Approved ${custodianUtils.getNodeLevelLabel()}`;
 
 export const useMock = false;
 
