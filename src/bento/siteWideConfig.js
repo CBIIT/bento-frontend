@@ -13,8 +13,8 @@ export const adminPortal = '/admin';
 export const userProfileRoute = '/profile';
 
 // Public Level Access
-export const PUBLIC_ACCESS = 'Metadata Only';
+export const PUBLIC_ACCESS = 'None';
 
 // Node level access
-export const NODE_LEVEL_ACCESS = true;
+export const NODE_LEVEL_ACCESS = false;
 export const NODE_LABEL = 'Study Arm(s)';
