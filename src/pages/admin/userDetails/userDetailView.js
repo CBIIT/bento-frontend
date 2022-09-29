@@ -23,6 +23,7 @@ import {
 } from '../../../bento/adminData';
 import getDateInFormat from '../../../utils/date';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
+import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
 
 // acl is array of object.
 function getApprovedArms(acl) {
@@ -140,14 +141,16 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const approvedArms = getApprovedArms(userInfo.acl);
 
   function handleSaveUserDetails() {
-    const Obj = {
+    const updatedUserDetails = {
       userID: userInfo.userID,
       role: userRole,
       armIDs: seletedArms,
       comment: '',
     };
 
-    mutate({ variables: { ...Obj } }).then(({ data: responseData }) => {
+    if (userRole === 'admin') updatedUserDetails.userStatus = 'active';
+
+    mutate({ variables: { ...updatedUserDetails } }).then(({ data: responseData }) => {
       if (responseData) {
         setUserInfo(responseData.editUser);
         showAlert('success');
@@ -232,7 +235,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                     {capitalizeFirstLetter(userInfo.organization)}
                   </span>
                   <span className={classes.infoValue}>
-                    {capitalizeFirstLetter(userInfo.userStatus)}
+                    {userInfo.userStatus === '' ? 'N/A' : capitalizeFirstLetter(userInfo.userStatus)}
                   </span>
                   {accessType === EDIT ? (
                     <Select
@@ -269,7 +272,11 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
             )
               : (
                 <Grid item xs={12} className={classes.adminMessageGrid}>
-                  <div className={classes.adminMessage}> You have access to all Arm(s) </div>
+                  <div className={classes.adminMessage}>
+                    You have access to all
+                    {' '}
+                    {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+                  </div>
                 </Grid>
               )}
             {accessType === EDIT ? (
