@@ -48,7 +48,12 @@ const TableManageAccess = ({ classes, includeNonMember }) => {
       customBodyRender: (value, tableMeta) => {
         const href = `/#/admin/view/${tableMeta.rowData[7]}`;
         return (
-          <Link href={href}>
+          <Link
+            href={href}
+            classes={{
+              root: classes.link,
+            }}
+          >
             {' '}
             {value}
           </Link>
@@ -104,6 +109,12 @@ const styles = () => ({
   btn: {
     backgroundColor: '#437BBE',
     color: '#fff',
+    borderRadius: '10px',
+    marginLeft: '-6px',
+  },
+  link: {
+    fontWeight: 'bold',
+    textDecoration: 'underline',
   },
 });
 export default withStyles(styles, { withTheme: true })(TableManageAccess);

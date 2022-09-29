@@ -70,6 +70,9 @@ const adminView = ({ classes }) => {
         </div>
         <div className={`${pageState.tabValue && pageState.tabValue === 1 ? classes.hide : classes.display}`}>
           <FormControlLabel
+            classes={{
+              label: classes.label,
+            }}
             control={(
               <Checkbox
                 classes={{
@@ -142,7 +145,7 @@ const styles = (theme) => ({
     maxWidth: '1440px',
     paddingLeft: '36px',
     paddingRight: '36px',
-    paddingBottom: '50px',
+    paddingBottom: '80px',
   },
   paper: {
     textAlign: 'center',
@@ -165,6 +168,7 @@ const styles = (theme) => ({
     paddingTop: '35px',
   },
   headerMainTitle: {
+
     fontFamily: 'Lato',
     letterSpacing: '0.005em',
     color: '#274FA5',
@@ -195,6 +199,8 @@ const styles = (theme) => ({
     fontSize: '14px',
     lineHeight: '22px',
     fontFamily: 'Nunito',
+    paddingTop: '10px',
+    fontWeight: 'bold',
   },
   tabIndicator: {
     backgroundColor: '#20C1AA',
@@ -202,6 +208,10 @@ const styles = (theme) => ({
   },
   checkbox: {
     color: '#20C1AA !important',
+    fontWeight: 'bold',
+  },
+  label: {
+    fontWeight: 'bold',
   },
   hide: {
     display: 'none',
