@@ -105,7 +105,7 @@ const ReviewRequestView = ({ classes, data }) => {
       options: {
         sort: false,
         customBodyRender: (value) => (
-          <div>
+          <div className={classes.actionColumn}>
             <Button
               variant="contained"
               className={cn(classes.actionButton, classes.approveButton)}
@@ -244,6 +244,7 @@ const ReviewRequestView = ({ classes, data }) => {
                 data={filteredArms}
                 columns={columns}
                 options={options}
+                className={classes.customDataTable}
               />
             </Grid>
           </Grid>
@@ -295,7 +296,7 @@ const styles = (theme) => ({
   },
   userInfoHeader: {
     minWidth: 'fit-content',
-    margin: '42px 0 48px 0',
+    margin: '32px 0 38px 0',
     padding: '0 0 0 36px',
     display: 'flex',
     gap: '12px',
@@ -323,32 +324,30 @@ const styles = (theme) => ({
   infoKey: {
     whiteSpace: 'nowrap',
     fontFamily: 'Nunito',
-    fontStyle: 'italic',
-    fontWeight: '400', // regular
+    fontWeight: '300', // light
     fontSize: '12px',
     color: '#708292',
     letterSpacing: 0,
-    lineHeight: '34px',
+    lineHeight: '30px',
   },
   infoValue: {
-    lineHeight: '34px',
+    lineHeight: '30px',
     fontFamily: 'Nunito',
     fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
     letterSpacing: 0,
-    minHeight: '32px',
     whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
   },
   container: {
     margin: 'auto',
-    maxWidth: '1440px',
+    maxWidth: '1000px',
     paddingLeft: '36px',
     paddingRight: '36px',
-    paddingBottom: '50px',
+    paddingBottom: '80px',
   },
   header: {
     paddingLeft: '20px',
@@ -386,6 +385,10 @@ const styles = (theme) => ({
     marginLeft: '-17px',
     width: '100px',
   },
+  actionColumn: {
+    textAlign: 'center',
+    minWidth: '170px',
+  },
   actionButton: {
     height: '28px',
     width: '80px',
@@ -399,6 +402,24 @@ const styles = (theme) => ({
   },
   rejectButton: {
     backgroundColor: '#BA2810',
+  },
+  customDataTable: {
+    '& .MuiTableFooter-root': {
+      borderBottom: '3px solid #42779A',
+    },
+    '& .MuiTableCell-head:first-child, .MuiTableCell-body:first-child': {
+      paddingLeft: '37px',
+    },
+    '& .MuiTableCell-head:last-child': {
+      paddingRight: '37px',
+      textAlign: 'center',
+    },
+    '& .MuiTableCell-body:last-child': {
+      paddingRight: '37px',
+    },
+    '& .MuiTableRow-root': {
+      height: '54px',
+    },
   },
 });
 
