@@ -365,6 +365,7 @@ const styles = (theme) => ({
     fontSize: '17px',
     color: '#4F5D69',
     letterSpacing: 0,
+    minHeight: '32px',
     whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
