@@ -13,6 +13,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     fontSize: '16px',
     fontFamily: 'Nunito',
+    borderRadius: '0px',
   },
 }));
 
