@@ -108,8 +108,8 @@ function SysInfoView() {
   ];
 
   const dependenciesData = [
-    createThreeColumnRow('Node Version', dependencyRequirements.node, packageJson.engines.node),
-    createThreeColumnRow('NPM Version', dependencyRequirements.npm, packageJson.engines.npm),
+    createThreeColumnRow('Node Version', dependencyRequirements.node, ''),
+    createThreeColumnRow('NPM Version', dependencyRequirements.npm, ''),
     createThreeColumnRow('MUI Core Version', packageJson.dependencies['@material-ui/core'], materialUICorePackageJson.version),
     // createThreeColumnRow('JBrowse Version', packageJson.dependencies['@jbrowse/react-linear-genome-view'], jbrowsePackageJson.version),
   ];

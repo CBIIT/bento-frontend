@@ -11,6 +11,6 @@ export const microServiceRequirements = {
 };
 
 export const dependencyRequirements = {
-  node: '15.13.0',
-  npm: '7.7.6',
+  node: '16.17.1',
+  npm: '8.15.0',
 };

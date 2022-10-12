@@ -2,7 +2,7 @@ export const navBarstyling = {
   global: {
     backgroundColor: '#142D64',
     height: '39px',
-    padding: '6px 20px 0px 5px',
+    padding: '9px 20px 0px 20px',
   },
   dropDownIcon: {
     displayIcon: false,
@@ -38,6 +38,7 @@ export const navBarstyling = {
   },
   cart: {
     iconSize: '30px',
+    padding: '6px 20px 0px 5px',
   },
 };
 
