@@ -8,8 +8,8 @@ import { storeInLocalStorage, deleteFromLocalStorage } from '../../utils/localSt
 import GET_USER_DETAILS from '../../bento/authProviderData';
 
 const AUTH_API = env.REACT_APP_AUTH_SERVICE_API;
-const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID;
-const NIH_CLIENT_ID = env.REACT_APP_NIH_CLIENT_ID;
+const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID || 'Sample Id';
+const NIH_CLIENT_ID = env.REACT_APP_NIH_CLIENT_ID || 'Sample Id';
 const NIH_AUTH_URL = env.REACT_APP_NIH_AUTH_URL || 'https://stsstg.nih.gov/auth/oauth/v2/authorize';
 
 const createContext = () => {
