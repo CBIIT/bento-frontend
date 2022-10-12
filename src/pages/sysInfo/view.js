@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import {
   Grid,
@@ -7,7 +8,7 @@ import { CustomDataTable, getColumns } from 'bento-components';
 import env from '../../utils/env';
 import bentoComponentsPackageJson from '../../../node_modules/bento-components/package.json';
 import materialUICorePackageJson from '../../../node_modules/@material-ui/core/package.json';
-import jbrowsePackageJson from '../../../node_modules/@jbrowse/core/package.json';
+// import jbrowsePackageJson from '../../../node_modules/@jbrowse/core/package.json';
 import packageJson from '../../../package.json';
 import { coreRequirements, microServiceRequirements, dependencyRequirements } from '../../bento/sysinfoData';
 
@@ -110,7 +111,7 @@ function SysInfoView() {
     createThreeColumnRow('Node Version', dependencyRequirements.node, packageJson.engines.node),
     createThreeColumnRow('NPM Version', dependencyRequirements.npm, packageJson.engines.npm),
     createThreeColumnRow('MUI Core Version', packageJson.dependencies['@material-ui/core'], materialUICorePackageJson.version),
-    createThreeColumnRow('JBrowse Version', packageJson.dependencies['@jbrowse/react-linear-genome-view'], jbrowsePackageJson.version),
+    // createThreeColumnRow('JBrowse Version', packageJson.dependencies['@jbrowse/react-linear-genome-view'], jbrowsePackageJson.version),
   ];
 
   const coreServiceOptions = {

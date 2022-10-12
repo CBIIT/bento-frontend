@@ -2,7 +2,7 @@ export const navBarstyling = {
   global: {
     backgroundColor: '#142D64',
     height: '39px',
-    padding: '9px 20px 0px 20px',
+    padding: '6px 20px 0px 5px',
   },
   dropDownIcon: {
     displayIcon: false,
@@ -35,6 +35,9 @@ export const navBarstyling = {
         color: 'white',
       },
     },
+  },
+  cart: {
+    iconSize: '30px',
   },
 };
 
@@ -77,8 +80,9 @@ export const navBarData = [
 ];
 
 export const navBarCartData = {
-  cartLabel: 'MY Files',
+  cartLabel: '',
   cartLink: '/fileCentricCart',
   cartIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Navbar.svg',
   cartIconAlt: 'cart_logo',
+  cartLabelType: 'labelUnderCount',
 };

@@ -18,8 +18,8 @@ import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import fileCentricCart from '../../pages/fileCentricCart/cartController';
-import JBrowse from '../JBrowse/JBrowseView';
-import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
+// import JBrowse from '../JBrowse/JBrowseView';
+// import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
 import GlobalSearch from '../../pages/search/searchView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import adminController from '../../pages/admin/adminController';
@@ -72,7 +72,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             <PrivateRoute path="/case/:id" access={['admin', 'member']} component={CaseDetail} />
             <PrivateRoute path="/arm/:id" access={['admin', 'member']} component={ArmDetail} />
-            <PrivateRoute path="/fileViewer/:id" access={['admin', 'member']} component={JBrowseDetail} />
+            {/* <PrivateRoute path="/fileViewer/:id"
+            access={['admin', 'member']} component={JBrowseDetail} /> */}
             {/* END SECTION */}
 
             {/* SECTION: Admin only Path */}
@@ -84,7 +85,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* END SECTION */}
 
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
-            <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
+            {/* <PrivateRoute path="/JBrowse"
+            access={['admin', 'member']} component={JBrowse} /> */}
             <PrivateRoute path="/table" component={table} />
             {/* END NOTE */}
 
