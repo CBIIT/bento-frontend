@@ -9,7 +9,6 @@ import Stats from '../../../components/Stats/AllStatsController';
 
 // Custodian data imports
 import {
-  pageTitle,
   loginProvidersData,
 } from '../../../bento/userLoginData';
 import globalData from '../../../bento/siteWideConfig';
@@ -122,9 +121,16 @@ function loginView({ classes }) {
 
             <Grid container item sm={4} justifyContent="center">
               {/* Page Title */}
-              <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.pageTitle}>
+              {/* <Grid
+                container
+                xs={12}
+                alignItems="center"
+                justify="center"
+                direction="column"
+                className={classes.pageTitle}
+              >
                 {pageTitle}
-              </Grid>
+              </Grid> */}
 
               {/* Login Box */}
               <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.Box}>
@@ -205,12 +211,13 @@ const styles = () => ({
     textAlign: 'center',
     marginTop: '35px',
     marginBottom: '25px',
+    fontWeight: 600,
   },
   LoginButtonGroup: {
 
   },
   LoginButton: {
-    width: '350px',
+    width: '257px',
     height: '35px',
     background: '#FFFFFF',
     boxShadow: 'none',
@@ -270,7 +277,7 @@ const styles = () => ({
     height: '50px',
   },
   extraSpaceInBorrom: {
-    height: '150px',
+    height: '50px',
   },
   Color_092E50: {
     color: '#092E50 !important',
