@@ -324,10 +324,10 @@ const TabView = ({
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
 
   link: {
-    color: '#7747ff',
+    color: theme.palette.text.link,
     textDecoration: 'none',
 
     '&:hover': {

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import _ from 'lodash';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
@@ -58,6 +57,7 @@ function requestAccessView({ data, classes }) {
   const redirectdType = getRedirectedType(query);
   const [disableSubmit, setDisableSubmit] = useState(true);
   const [changeDetected, setChangeDetected] = useState(false);
+  const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
 
@@ -229,57 +229,72 @@ function requestAccessView({ data, classes }) {
 
             <Grid container item sm={8} justifyContent="center">
               {/* Page Title */}
-              <Grid container item xs={12} justifyContent="center">
+              <Grid container item sm={4} />
+              <Grid container item xs={4} justifyContent="center">
                 <div className={classes.pageTitle}>
                   {pageTitle}
                   <hr className={classes.pageTitleUnderline} />
                 </div>
               </Grid>
+              <Grid container item sm={4} />
 
-              <div className={classes.container}>
-                <div className={classes.brace} />
-                <div className={classes.segment}>
+              {/* START: Summary Section  */}
+              <Grid container item sm={4} />
+              <Grid
+                container
+                item
+                xs={4}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <div>
+                  <div className={classes.brace} />
+                  <div className={classes.SummaryBox}>
 
-                  {/* User's Account type */}
-                  <div className={classes.row}>
-                    <div className={classes.column}>
-                      <div className={classes.itemTitles}>Account Type:</div>
+                    {/* User's Account type */}
+                    <div className={classes.row}>
+                      <div className={classes.column}>
+                        <div className={classes.itemTitles}>Account Type:</div>
+                      </div>
+                      <div className={classes.column}>
+                        <div className={classes.itemValue}>{getAuthenticatorName(IDP || '')}</div>
+                      </div>
                     </div>
-                    <div className={classes.column}>
-                      <div className={classes.emailAddressValue}>{custodianUtils.getAuthenticatorName(IDP || '')}</div>
-                    </div>
-                  </div>
 
-                  {/* User's Email Address */}
-                  <div className={classes.row}>
-                    <div className={classes.column}>
-                      <div className={classes.itemTitles}>Email Address:</div>
+                    {/* User's Email Address */}
+                    <div className={classes.row}>
+                      <div className={classes.column}>
+                        <div className={classes.itemTitles}>Email Address:</div>
+                      </div>
+                      <div className={classes.column}>
+                        <div className={classes.itemValue}>
+                          {' '}
+                          {userEmail}
+                          {' '}
+                        </div>
+                      </div>
                     </div>
-                    <div className={classes.column}>
-                      <div className={classes.emailAddressValue}>
-                        {' '}
-                        {userEmail}
-                        {' '}
+
+                    {/* User's Membership Status */}
+                    <div className={classes.row}>
+                      <div className={classes.column}>
+                        <div className={classes.itemTitles}> Membership Status: </div>
+                      </div>
+                      <div className={classes.column}>
+                        <div className={classes.itemValue}>
+                          {' '}
+                          {userStatus === '' ? 'N/A' : capitalizeFirstLetter(userStatus)}
+                          {' '}
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* User's Membership Status */}
-                  <div className={classes.row}>
-                    <div className={classes.column}>
-                      <div className={classes.itemTitles}> Membership Status: </div>
-                    </div>
-                    <div className={classes.column}>
-                      <div className={classes.emailAddressValue}>
-                        {' '}
-                        {_.startCase(userStatus || 'N/A')}
-                        {' '}
-                      </div>
-                    </div>
-                  </div>
+                  <div className={classes.brace} />
                 </div>
-                <div className={classes.brace} />
-              </div>
+              </Grid>
+              <Grid container item sm={4} />
+              {/* END: Summery Section  */}
 
               {/* Box Grid */}
               <div className={classes.Box}>
@@ -310,7 +325,7 @@ function requestAccessView({ data, classes }) {
                       {isFormSubmitted ? (
                         <Button
                           variant="contained"
-                          className={classes.submitButtton}
+                          className={classes.submitButton}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                           onClick={() => redirectUser('/')}
                         >
@@ -320,7 +335,7 @@ function requestAccessView({ data, classes }) {
                         <Button
                           variant="contained"
                           type="submit"
-                          className={classes.submitButtton}
+                          className={classes.submitButton}
                           disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                         >
@@ -371,7 +386,7 @@ const styles = () => ({
   pageTitleUnderline: {
     boxSizing: 'border-box',
     height: '2px',
-    width: '35vw',
+    width: '474px',
     minWidth: '200px',
     border: '1px solid #88B4DA',
     backgroundColor: '#F2F6FA',
@@ -386,16 +401,16 @@ const styles = () => ({
   brace: {
     flex: 1,
   },
-  segment: {
+  SummaryBox: {
     boxSizing: 'border-box',
     flexDirection: 'column',
-    width: '65%',
     minWidth: '500px',
     justifyContent: 'center',
     fontFamily: 'Nunito',
-    margin: '25px 0',
-    padding: '0 20px',
+    padding: '0 0 0 110px',
     flex: '1.5',
+    marginBottom: '20px',
+    marginTop: '10px',
   },
   row: {
     display: 'flex',
@@ -405,35 +420,39 @@ const styles = () => ({
   },
   column: {
     '&:first-child': {
-      flex: '.5',
+      flex: '.60',
     },
     flex: 1,
   },
   itemTitles: {
-    color: '#9EAAB5',
+    color: '#708292',
     textTransform: 'uppercase',
-    fontSize: '9pt',
+    fontFamily: 'Nunito',
+    fontWeight: 300,
+    fontSize: '12px',
     fontStyle: 'italic',
-    lineHeight: '20px',
+    letterSpacing: '0',
+    lineHeight: '34px',
     flex: 1,
     textAlign: 'left',
-    padding: '0 10px 0 10px',
+    padding: '0 0px 0 0px',
   },
-  emailAddressValue: {
-    color: '#6C7882',
+  itemValue: {
+    color: '#4F5D69',
     fontFamily: 'Nunito',
-    fontSize: '14pt',
+    fontSize: '17px',
     fontWeight: '500',
-    lineHeight: '20px',
+    letterSpacing: '0',
+    lineHeight: '34px',
     flex: 1,
   },
   Box: {
-    width: '600px',
+    width: '535px',
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09);',
     border: '#A9C8E3 2px solid',
     borderRadius: '10px',
     margin: '10px 0px',
-    padding: '20px 5px 5px 5px !important',
+    padding: '30px 10px 0px 10px !important',
     backgroundColor: '#F2F6FA',
   },
   helperMessage: {
@@ -452,12 +471,17 @@ const styles = () => ({
     marginTop: '4px',
     marginBottom: '18px',
   },
-  submitButtton: {
-    height: '40px',
+  submitButton: {
+    width: '139px',
+    height: '45px',
     color: '#FFFFFF',
     backgroundColor: '#5D53F6',
     marginTop: '23px',
     marginBottom: '50px',
+    '&:disabled': {
+      backgroundColor: '#A7A4F8',
+      color: '#FFFFFF',
+    },
     '&:hover': {
       backgroundColor: '#5D53F6',
     },
@@ -507,13 +531,13 @@ const styles = () => ({
   formLabel: {
     height: '18px',
     color: '#0467BD',
-    fontFamily: 'Nunito',
+    fontFamily: 'Lato',
     fontSize: '18px',
-    fontWeight: 'bold',
+    fontWeight: 500,
     letterSpacing: '0',
     lineHeight: '22px',
     marginBottom: '10px',
-    marginTop: '10px',
+    marginTop: '15px',
   },
   requiredFieldMessage: {
     color: '#BC3900',

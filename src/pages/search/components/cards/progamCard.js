@@ -53,7 +53,7 @@ const ProgamCard = ({ data, classes, index }) => {
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   indexContainer: {
     padding: '18px 0px 18px 18px',
     color: '#747474',
@@ -65,7 +65,7 @@ const styles = () => ({
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#7747FF',
+    color: theme.palette.text.link,
     textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',
