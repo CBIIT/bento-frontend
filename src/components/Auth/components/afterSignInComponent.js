@@ -97,11 +97,13 @@ const AfterSignIn = ({
 const styles = () => ({
   logotype: {
     whiteSpace: 'nowrap',
-    color: '#FFFFFF',
-    fontFamily: 'Nunito',
-    fontSize: '13px',
+    color: '#24E4BE',
+    fontFamily: 'Raleway',
+    fontSize: '15px',
     fontWeight: '600',
-    letterSpacing: '0.9px',
+    letterSpacing: '1px',
+    lineHeight: '13px',
+    textTransform: 'capitalize',
     // [theme.breakpoints.down('xs')]: {
     //   display: 'none',
     // },
@@ -110,7 +112,7 @@ const styles = () => ({
     },
   },
   buttonRootNoRightPadding: {
-    padding: '9px 0px 0px 20px',
+    padding: '6px 0px 0px 20px',
   },
   buttonRootClicked: {
     borderBottom: '2px solid #FFFFFF',
@@ -127,20 +129,24 @@ const styles = () => ({
     height: '39px',
   },
   textColor: {
-    color: '#ffffff',
-    fontSize: '16px',
-    textTrasform: 'normal',
+    color: '#FFFFFF',
+    fontFamily: 'Raleway',
+    fontSize: '15px',
     textTransform: 'capitalize',
+    fontWeight: '500',
+    lineHeight: '30px',
+    letterSpacing: '0',
   },
   paper: {
     background: '#465F96',
     // width: '120px',
-    paddingLeft: '20px',
+    paddingLeft: '15px',
+    paddingRight: '15px',
     position: 'absolute',
     fontFamily: 'Nunito',
     fontWeight: 600,
     borderRadius: '0',
-    marginTop: '6px',
+    marginTop: '11px',
   },
   badge: {
     textTransform: 'capitalize',

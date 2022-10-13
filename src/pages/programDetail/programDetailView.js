@@ -355,7 +355,7 @@ const styles = (theme) => ({
   link: {
     textDecoration: 'none',
     fontWeight: 'bold',
-    color: '#7747FF',
+    color: theme.palette.text.link,
     '&:hover': {
       textDecoration: 'underline',
     },
@@ -476,7 +476,7 @@ const styles = (theme) => ({
   },
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamily,
-    color: '#7747FF',
+    color: theme.palette.text.link,
     fontSize: '8pt',
     textTransform: 'uppercase',
   },

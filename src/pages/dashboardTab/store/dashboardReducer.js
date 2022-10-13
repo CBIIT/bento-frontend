@@ -106,6 +106,23 @@ const initialState = {
 // HELPERS
 const getState = () => store.getState()[storeKey];
 
+const SUNBURST_COLORS_LEVEL_1 = [
+  '#10a075',
+  '#274fa5',
+  '#79287c',
+  '#f78f48',
+  '#a593cd',
+];
+
+const SUNBURST_COLORS_LEVEL_2 = [
+  '#a593cd',
+  '#f78f48',
+  '#79287c',
+  '#0e3151',
+  '#057ebd',
+  '#7dc242',
+];
+
 function shouldFetchDataForDashboardTabDataTable(state) {
   return !(state.isFetched);
 }
@@ -206,7 +223,7 @@ const removeEmptySubjectsFromDonutData = (data) => data.filter((item) => item.su
  */
 function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
   const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName]) : removeEmptySubjectsFromDonutData(data[widget.dataName]);
+    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName], widget.datatable_level1_field, widget.datatable_level2_field, 'children', SUNBURST_COLORS_LEVEL_1, SUNBURST_COLORS_LEVEL_2) : removeEmptySubjectsFromDonutData(data[widget.dataName]);
     const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});
@@ -237,7 +254,7 @@ function allFilters() {
 
 function getSearchWidgetsData(data, widgetsInfoFromCustConfig) {
   const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.mapWithDashboardWidget]) : removeEmptySubjectsFromDonutData(data[widget.mapWithDashboardWidget]);
+    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName], widget.datatable_level1_field, widget.datatable_level2_field, 'children', SUNBURST_COLORS_LEVEL_1, SUNBURST_COLORS_LEVEL_2) : removeEmptySubjectsFromDonutData(data[widget.mapWithDashboardWidget]);
     const label = widget.dataName;
     return { ...acc, [label]: Data };
   }, {});

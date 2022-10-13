@@ -80,7 +80,7 @@ const FileCard = ({ data, classes, index }) => {
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   cartIcon: {
     height: '22px',
     margin: '0px 0px 0px 6px',
@@ -96,7 +96,7 @@ const styles = () => ({
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#7747FF',
+    color: theme.palette.text.link,
     textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',

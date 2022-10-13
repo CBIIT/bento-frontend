@@ -44,14 +44,14 @@ const AboutCard = ({
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   cartIcon: {
     height: '22px',
     margin: '0px 0px 0px 6px',
   },
   linkText: {
     fontFamily: 'Nunito',
-    color: '#7747ff',
+    color: theme.palette.text.link,
     textDecoration: 'none',
   },
   indexContainer: {
@@ -65,7 +65,7 @@ const styles = () => ({
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#7747FF',
+    color: theme.palette.text.link,
     textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',

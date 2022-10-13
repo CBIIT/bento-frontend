@@ -130,7 +130,7 @@ const styles = (theme) => ({
   link: {
     textDecoration: 'none',
     fontWeight: 'bold',
-    color: '#7747FF',
+    color: theme.palette.text.link,
     '&:hover': {
       textDecoration: 'underline',
     },
