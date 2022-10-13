@@ -159,7 +159,7 @@ export const widgetsData = [
     label: 'Programs and Arms',
     dataName: 'armsByPrograms',
     datatable_level1_field: 'program',
-    datatable_level2_field: 'study_acronym',
+    datatable_level2_field: 'arm',
     titleText: 'Cases',
     show: true,
   },
