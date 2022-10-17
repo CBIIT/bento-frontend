@@ -41,10 +41,11 @@ function errorhandler(error, type) {
   };
 }
 
-function fetchStats(statQuery) {
+function fetchStats(statQuery, state) {
   return (dispatch) => client
     .query({
       query: statQuery,
+      context: { clientName: state && state.login.isSignedIn ? '' : 'publicService' },
     })
     .then((result) => dispatch(receiveStats(result)))
     .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
@@ -53,7 +54,7 @@ function fetchStats(statQuery) {
 export function fetchDataForStats() {
   return (dispatch, getState) => {
     if (shouldFetchDataForAllStats(getState())) {
-      return dispatch(fetchStats(STATS_QUERY));
+      return dispatch(fetchStats(STATS_QUERY, getState()));
     }
     return dispatch(readyStats());
   };

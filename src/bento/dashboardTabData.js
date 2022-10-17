@@ -306,7 +306,7 @@ export const tabContainers = [
         formatBytes: true,
       },
       {
-        dataField: '', // This need to left empty if no data need to be displayed before file download icon
+        dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon
         header: 'Access',
         sort: 'asc',
         display: true,
@@ -315,7 +315,7 @@ export const tabContainers = [
           // Max file size needs to bin Bytes to seperate two support file preview and download
           maxFileSize: 315,
           // Tool top text for Unauthenticated users
-          toolTipTextUnauthenticated: 'Login to access this file',
+          toolTipTextUnauthenticated: 'Controlled access file',
           // Tool top text for file download
           toolTipTextFileDownload: 'Download a copy of this file',
           // Tool top text for file preview
@@ -1081,6 +1081,7 @@ query fileOverview(
         file_size,
         program,
         arm,
+        acl,
         subject_id,
         sample_id,
         diagnosis,

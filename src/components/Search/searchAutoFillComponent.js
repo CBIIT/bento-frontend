@@ -5,10 +5,21 @@ import {
 import { Search as SearchIcon } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { getSearch } from '../../pages/dashboardTab/store/dashboardReducer';
+import { useSelector } from 'react-redux';
+import { getSearch, getSearchPublic } from '../../pages/dashboardTab/store/dashboardReducer';
+import { SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
+import { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
+import accessLevelTypes from '../../utils/enums';
 
 function searchComponent({ classes }) {
   const history = useHistory();
+  const { isSignedIn } = useSelector((state) => state && state.login.isSignedIn);
+  const isAdmin = useSelector((state) => state.login && state.login.role && state.login.role === 'admin');
+  const hasApprovedArms = useSelector(
+    (state) => state.login.acl && state.login.acl.some((arm) => arm.accessStatus === 'approved'),
+  );
+  const isAuthorized = isSignedIn && (hasApprovedArms || isAdmin);
+  const checkAuth = () => isAuthorized || PUBLIC_ACCESS === accessLevelTypes.METADATA_ONLY;
 
   const [open] = React.useState(false);
   const [inputValue, setInputValue] = React.useState('');
@@ -28,27 +39,38 @@ function searchComponent({ classes }) {
     }
   }
 
+  function getSearchQuery() {
+    if (checkAuth()) {
+      return getSearch;
+    }
+
+    return getSearchPublic;
+  }
+
   async function getAutoCompleteRes(newValue = []) {
     setInputValue(newValue);
-    const searchResp = await getSearch(newValue);
-    const keys = ['programs', 'studies', 'subjects', 'samples', 'files'];
-    const datafields = ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'];
+    const searchResp = await getSearchQuery()(newValue);
+    const keys = checkAuth() ? SEARCH_KEYS.private : SEARCH_KEYS.public;
+    const datafields = checkAuth() ? SEARCH_DATAFIELDS.private : SEARCH_DATAFIELDS.public;
 
     const mapOption = keys.map((key, ind) => searchResp[key].map((id) => (id[datafields[ind]])));
-    const option = mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]);
+    const option = mapOption.length
+      ? mapOption.reduce((acc = [], iterator) => [...acc, ...iterator]) : [];
 
-    setOptions(option.length === 0 ? [] : [...option.slice(0, 6),
-      <div onClick={() => {}}>
-        Press ENTER for more search results
-        {' '}
-        <span>
-          <img
-            className={classes.enterIcon}
-            src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/EnterIcon.svg"
-            alt="enter icon"
-          />
-        </span>
-      </div>]);
+    if (checkAuth()) {
+      setOptions(option.length === 0 ? [] : [...option.slice(0, 6),
+        <div onClick={() => {}}>
+          Press ENTER for more search results
+          {' '}
+          <span>
+            <img
+              className={classes.enterIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/EnterIcon.svg"
+              alt="enter icon"
+            />
+          </span>
+        </div>]);
+    }
   }
   const CustomPopper = (props) => (
     <Popper
