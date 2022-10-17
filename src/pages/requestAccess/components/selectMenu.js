@@ -22,21 +22,34 @@ const SelectMenu = (field, formValues, handleInputChange,
 
   const selectOptions = getOptions();
 
-  const getMultiSelectView = (selectedKey) => {
-    const firstOptionObject = selectOptions.find(
-      (optionObject) => optionObject.id === selectedKey[0],
-    );
-    const firstOption = firstOptionObject.name;
+  const getShortLabel = (orignalLabel) => orignalLabel.split(',')[0];
+
+  const getSelectView = (selectedKey) => {
+    const sortedOptions = Object.keys(selectOptions).reduce((previouslySortedOptions, key) => {
+      const newSortedOptions = previouslySortedOptions;
+      if (selectedKey.includes(selectOptions[key].id)) newSortedOptions.push(selectOptions[key]);
+      return newSortedOptions;
+    }, []);
+
+    const firstOption = getShortLabel(sortedOptions[0].name);
     if (selectedKey.length <= 1) return firstOption;
 
     return (
       <div>
         {firstOption}
         {' and '}
-        {selectedKey.length}
-        {' more'}
+        {selectedKey.length - 1}
+        {' others'}
       </div>
     );
+  };
+
+  const getLabel = (selectedKeys) => {
+    if (selectedKeys.length === 0) return label;
+
+    if (multiple) return getSelectView(selectedKeys);
+
+    return getSelectView([selectedKeys]);
   };
 
   return (
@@ -73,11 +86,7 @@ const SelectMenu = (field, formValues, handleInputChange,
             getContentAnchorEl: null,
           }}
             // error={!checkIsValid(field, formValues)}
-          renderValue={(selectedKey) => (
-            (selectedKey.length === 0) ? label
-              : multiple
-                ? (getMultiSelectView(selectedKey)) : selectOptions[selectedKey].title
-          )}
+          renderValue={(selectedKeys) => getLabel(selectedKeys)}
         >
           {selectOptions.map(({ id: key, name }) => (
             <MenuItem dense key={key} value={key} className={classes.selectMenuItem}>

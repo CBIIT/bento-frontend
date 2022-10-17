@@ -325,7 +325,7 @@ function requestAccessView({ data, classes }) {
                       {isFormSubmitted ? (
                         <Button
                           variant="contained"
-                          className={classes.submitButton}
+                          className={[classes.formButton, classes.goToHomeButton]}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                           onClick={() => redirectUser('/')}
                         >
@@ -335,7 +335,7 @@ function requestAccessView({ data, classes }) {
                         <Button
                           variant="contained"
                           type="submit"
-                          className={classes.submitButton}
+                          className={[classes.formButton, classes.submitButton]}
                           disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                         >
@@ -471,8 +471,7 @@ const styles = () => ({
     marginTop: '4px',
     marginBottom: '18px',
   },
-  submitButton: {
-    width: '139px',
+  formButton: {
     height: '45px',
     color: '#FFFFFF',
     backgroundColor: '#5D53F6',
@@ -485,6 +484,11 @@ const styles = () => ({
     '&:hover': {
       backgroundColor: '#5D53F6',
     },
+  },
+  goToHomeButton: {
+  },
+  submitButton: {
+    width: '139px',
   },
   emptySpace: {
     height: '50px',
