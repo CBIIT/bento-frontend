@@ -24,7 +24,7 @@ import {
 import getDateInFormat from '../../../utils/date';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
 import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
-import TableThemeProvider from './tableThemeConfig';
+// import TableThemeProvider from './tableThemeConfig';
 
 // acl is array of object.
 function getApprovedArms(acl) {
@@ -263,13 +263,13 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
           <Grid container>
             {userInfo.role !== 'admin' ? (
               <Grid item xs={12}>
-                <TableThemeProvider>
-                  <CustomDataTable
-                    data={approvedArms}
-                    columns={columns}
-                    options={options}
-                  />
-                </TableThemeProvider>
+                {/* <TableThemeProvider> */}
+                <CustomDataTable
+                  data={approvedArms}
+                  columns={columns}
+                  options={options}
+                />
+                {/* </TableThemeProvider> */}
               </Grid>
             )
               : (
@@ -348,10 +348,10 @@ const styles = (theme) => ({
   },
   infoKey: {
     whiteSpace: 'nowrap',
-    fontFamily: 'Nunito Sans Regular',
+    fontFamily: 'Nunito',
     letter: '50px',
     // fontStyle: 'italic',
-    // fontWeight: '400', // regular
+    fontWeight: '400', // regular
     fontSize: '11px',
     color: '#708292',
     letterSpacing: 0,
@@ -359,9 +359,9 @@ const styles = (theme) => ({
   },
   infoValue: {
     lineHeight: '34px',
-    fontFamily: 'Nunito Sans Light Italic',
+    fontFamily: 'Nunito',
     // fontStyle: 'italic',
-    // fontWeight: '300', // light
+    fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
     letterSpacing: 0,
@@ -372,9 +372,9 @@ const styles = (theme) => ({
   },
   selectRole: {
     width: '140px',
-    fontFamily: 'Nunito Sans Light Italic',
+    fontFamily: 'Nunito',
     // fontStyle: 'italic',
-    // fontWeight: '300', // light
+    fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
     minHeight: '20px',
@@ -486,7 +486,7 @@ const styles = (theme) => ({
   adminMessage: {
     color: '#000000',
     height: '121px',
-    fontFamily: 'Nunito Sans Regular',
+    fontFamily: 'Nunito',
     fontSize: '18px',
     letterSpacing: '0',
     lineHeight: '74px',

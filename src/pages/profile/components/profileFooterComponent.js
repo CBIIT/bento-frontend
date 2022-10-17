@@ -99,7 +99,7 @@ const ProfileViewFooter = ({ classes, data }) => {
     </>
   );
 
-  if (userStatus === 'inactive' || (userStatus === 'non-member' && data.getMyUser.acl.length === 0)) {
+  if (userStatus === 'non-member' && data.getMyUser.acl.length === 0) {
     return renderInactive();
   }
 
