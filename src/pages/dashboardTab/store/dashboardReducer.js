@@ -107,15 +107,15 @@ const initialState = {
 const getState = () => store.getState()[storeKey];
 
 const SUNBURST_COLORS_LEVEL_1 = [
-  '#10a075',
+  '#7dc242',
   '#274fa5',
   '#79287c',
   '#f78f48',
-  '#a593cd',
+  '#057ebd',
 ];
 
 const SUNBURST_COLORS_LEVEL_2 = [
-  '#a593cd',
+  '#057ebd',
   '#f78f48',
   '#79287c',
   '#0e3151',
