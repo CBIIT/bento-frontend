@@ -5,16 +5,18 @@ import {
   navBarData, navBarCartData, navBarstyling,
 } from '../../bento/navigationBarData';
 import Login from '../Auth/loginComponent';
-import globalData from '../../bento/siteWideConfig';
+import globalData, { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
+import accessLevelTypes from '../../utils/enums';
 
 const BentoNavBar = ({ cartFieldIds = [] }) => {
   const { enableAuthentication } = globalData;
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
+  const { METADATA_ONLY } = accessLevelTypes;
 
   const getNumberOfCase = () => {
     const { length: numberOfCases } = cartFieldIds;
 
-    if (!enableAuthentication) return numberOfCases;
+    if (!enableAuthentication || PUBLIC_ACCESS === METADATA_ONLY) return numberOfCases;
 
     return isSignedIn ? numberOfCases : 0;
   };

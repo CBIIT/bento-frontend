@@ -10,6 +10,7 @@ import { deleteFromLocalStorage } from '../../utils/localStorage';
 import accessLevelTypes from '../../utils/enums';
 
 /*
+  NOTE: This detail is old Now.
   Notes For Developer: We have 3 roles in Bento System for Access Level METADATA_ONLY.
     1. non-member:
                   a. One who can NOT access any meta data,
