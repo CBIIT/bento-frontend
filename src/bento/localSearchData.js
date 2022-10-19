@@ -468,10 +468,10 @@ export const widgetsSearchData = [
   {
     type: 'sunburst',
     label: 'Programs and Arms',
-    dataName: 'armsByProgramsFromLists',
+    dataName: 'armsByPrograms',
     mapWithDashboardWidget: 'armsByPrograms',
     datatable_level1_field: 'program',
-    datatable_level2_field: 'study_acronym',
+    datatable_level2_field: 'arm',
     titleText: 'Cases',
     show: true,
   },
