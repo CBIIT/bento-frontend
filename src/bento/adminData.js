@@ -55,6 +55,8 @@ export const tabPendingRequest = {
     // 'asc' or 'desc'
     defaultSortDirection: 'asc',
 
+    search: false,
+
     columns: [
       {
         dataField: 'displayName',
@@ -108,6 +110,7 @@ export const tabManageAccess = {
   table: {
     // Set 'display' to false to hide the table entirely
     display: true,
+    search: false,
 
     columns: [
       {

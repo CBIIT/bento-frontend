@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
@@ -5,8 +6,6 @@ import {
 } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import { cn, CustomDataTable } from 'bento-components';
 import AlertMessage from '../../../components/alertMessage';
 
@@ -64,9 +63,20 @@ function getColumnInfo(accessType, approvedRenderer, removeRenderer) {
   }]);
 }
 
+const CustomCheckbox = withStyles({
+  root: {
+    color: '#375FAC',
+    '&$checked': {
+      color: '#375FAC',
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+
 const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userInfo, setUserInfo] = useState(data.getUser);
   const [userRole, setUserRole] = useState(userInfo.role);
+  const [userStatus, setUserStatus] = useState(userInfo.userStatus);
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
   const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
@@ -137,6 +147,40 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     );
   };
 
+  const getPastMembershipStatus = (acl) => {
+    if (acl.length <= 0) return { role: 'non-member', userStatus: '' };
+
+    const { approved, revoked } = acl.reduce((results, node) => {
+      const { accessStatus } = node;
+      if (!results[accessStatus]) {
+        results[accessStatus] = 0;
+      }
+
+      results[accessStatus] += 1;
+
+      return results;
+    }, {});
+
+    if (approved) return { role: 'member', userStatus: 'active' };
+    if (!approved && revoked) return { role: 'member', userStatus: 'inactive' };
+    return { role: 'non-member', userStatus: '' };
+  };
+
+  const toggleAdminRole = (event) => {
+    if (userRole !== 'admin') {
+      if (event.target.checked) {
+        setUserRole('admin');
+      }
+    } else if (userRole.toLowerCase() === 'admin') {
+      if (!event.target.checked) {
+        const { acl } = userInfo;
+        const { role, userStatus: status } = getPastMembershipStatus(acl);
+        setUserRole(role);
+        setUserStatus(status);
+      }
+    }
+  };
+
   const columns = getColumnInfo(accessType, approvedRender, checkBoxRenderFunc);
 
   const approvedArms = getApprovedArms(userInfo.acl);
@@ -147,6 +191,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
       role: userRole,
       armIDs: seletedArms,
       comment: '',
+      userStatus,
     };
 
     if (userRole === 'admin') updatedUserDetails.userStatus = 'active';
@@ -160,11 +205,6 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
       showAlert('error');
     });
   }
-
-  const handleRoleChange = (e) => {
-    const { value } = e.target;
-    setUserRole(value);
-  };
 
   return (
     <>
@@ -228,6 +268,9 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                   <span className={classes.infoKey}>ORGANIZATION: </span>
                   <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
                   <span className={classes.infoKey}>ROLE: </span>
+                  <span className={cn(classes.infoKey, classes.toggleAdmin)}>
+                    ADMIN PERMISSIONS:
+                  </span>
                 </Typography>
               </div>
               <div>
@@ -238,24 +281,15 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                   <span className={classes.infoValue}>
                     {userInfo.userStatus === '' ? 'N/A' : capitalizeFirstLetter(userInfo.userStatus)}
                   </span>
-                  {accessType === EDIT ? (
-                    <Select
-                      value={userRole}
-                      onChange={handleRoleChange}
-                      inputProps={{ 'aria-label': 'Without label' }}
-                      className={classes.selectRole}
-                      MenuProps={{
-                        anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
-                        transformOrigin: { vertical: 'top', horizontal: 'left' },
-                        getContentAnchorEl: null,
-                        classes: { paper: classes.menuPaperStyle },
-                      }}
-                    >
-                      <MenuItem value="admin" className={classes.menuItem}> Admin </MenuItem>
-                      <MenuItem value="member" className={classes.menuItem}> Member </MenuItem>
-                    </Select>
-                  )
-                    : <span className={`${classes.infoValue}`}>{capitalizeFirstLetter(userRole)}</span> }
+                  <span className={classes.infoValue}>{capitalizeFirstLetter(userInfo.role)}</span>
+                  <span className={classes.infoValue}>
+                    <CustomCheckbox
+                      checked={userRole.toLowerCase() === 'admin'}
+                      onChange={toggleAdminRole}
+                      color="primary"
+                      inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    />
+                  </span>
                 </Typography>
               </div>
             </div>
@@ -302,6 +336,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     </>
   );
 };
+
 const styles = (theme) => ({
   adminTitle: {
     borderBottom: '1px solid #274FA5',
@@ -356,6 +391,12 @@ const styles = (theme) => ({
     color: '#708292',
     letterSpacing: 0,
     lineHeight: '34px',
+  },
+  toggleAdmin: {
+    color: '#375FAC',
+    fontFamily: 'Nunito',
+    fontSize: '11px',
+    fontWeight: 'bold',
   },
   infoValue: {
     lineHeight: '34px',
