@@ -66,6 +66,8 @@ export const AuthProvider = ({ children }) => {
         const {
           data: { getMyUser: userDetails },
         } = response;
+        userDetails.role = userDetails.role.toLowerCase();
+        userDetails.userStatus = userDetails.userStatus.toLowerCase();
         signInRed(userDetails);
         storeInLocalStorage('userDetails', userDetails);
         signInSuccess(userDetails);
