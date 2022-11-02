@@ -7,6 +7,12 @@ import style from './styles';
 import Stats from '../../components/Stats/AllStatsController';
 
 function ProfileView({ classes, data }) {
+  if (data && data.getMyUser) {
+    const { getMyUser } = data;
+    getMyUser.role = getMyUser.role.toLowerCase();
+    getMyUser.userStatus = getMyUser.userStatus.toLowerCase();
+  }
+
   return (
     <>
       <Stats />
