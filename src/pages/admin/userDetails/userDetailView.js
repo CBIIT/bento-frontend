@@ -7,7 +7,7 @@ import {
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import { cn, CustomDataTable } from 'bento-components';
-import AlertMessage from '../../../components/alertMessage';
+import AlertMessage from '../../../components/AlertMessage';
 
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';

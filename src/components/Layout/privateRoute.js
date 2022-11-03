@@ -26,7 +26,7 @@ import accessLevelTypes, { userRoles, status } from '../../utils/enums';
                   c. One who can approve or reject requests for Arm level data access.
 */
 
-export function afterLoginRedirect(historyObject, path) {
+export function redirect(historyObject, path) {
   historyObject.push(path);
 }
 
@@ -126,8 +126,8 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
     userStatus: capitalizedUserStatus,
   } = useSelector((state) => state.login);
 
-  const role = capitalizedRole.toLowerCase();
-  const userStatus = capitalizedUserStatus.toLowerCase();
+  const role = (capitalizedRole || '').toLowerCase();
+  const userStatus = (capitalizedUserStatus || '').toLowerCase();
 
   const { pathname } = useLocation();
   const { access, path, requiuredSignIn } = rest;

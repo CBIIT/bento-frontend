@@ -4,7 +4,7 @@ import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { useAuth } from '../../../components/Auth/AuthProvider';
-import AlertMessage from '../../../components/alertMessage';
+import AlertMessage from '../../../components/AlertMessage';
 import Stats from '../../../components/Stats/AllStatsController';
 
 // Custodian data imports
@@ -12,7 +12,7 @@ import {
   loginProvidersData,
 } from '../../../bento/userLoginData';
 import globalData from '../../../bento/siteWideConfig';
-import { afterLoginRedirect } from '../../../components/Layout/privateRoute';
+import { redirect } from '../../../components/Layout/privateRoute';
 
 function useQuery() {
   const { search } = useLocation();
@@ -32,7 +32,7 @@ function loginView({ classes }) {
   const internalRedirectPath = getRedirectPath(query);
   const [error, setError] = React.useState('');
 
-  const onSuccess = () => afterLoginRedirect(history, internalRedirectPath);
+  const onSuccess = () => redirect(history, internalRedirectPath);
   const onError = () => {};
 
   const defaultIdP = {
