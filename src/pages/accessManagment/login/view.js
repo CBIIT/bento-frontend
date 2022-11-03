@@ -4,7 +4,7 @@ import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { useAuth } from '../../../components/Auth/AuthProvider';
-import AlertMessage from '../../../components/AlertMessage';
+import AlertMessage from '../../../components/AlertMessage/AlertMessageView';
 import Stats from '../../../components/Stats/AllStatsController';
 
 // Custodian data imports
