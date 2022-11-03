@@ -3,10 +3,11 @@ import {
   Button,
   withStyles,
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useAuth } from './AuthProvider';
 import AfterSignInComponent from './components/afterSignInComponent';
-import globalData, { loginRoute } from '../../bento/siteWideConfig';
+import globalData, { loginRoute, REDIRECT_AFTER_SIGN_OUT } from '../../bento/siteWideConfig';
 
 // styles
 const styles = () => ({
@@ -35,6 +36,8 @@ const IndexPage = ({ classes }) => {
   const {
     isSignedIn, email, firstName,
   } = useSelector((state) => state.login);
+  const history = useHistory();
+  const redirectAfterSignOut = REDIRECT_AFTER_SIGN_OUT;
 
   const userName = firstName || (email && email.substring(0, email.lastIndexOf('@')));
 
@@ -42,13 +45,17 @@ const IndexPage = ({ classes }) => {
 
   globalData.authProviders = globalData.authProviders.concat(['google']);
 
+  const signOutLink = () => {
+    signOut(history, redirectAfterSignOut);
+  };
+
   return (
     <>
       {globalData.enableAuthentication && (typeof globalData.authProviders === 'undefined' || globalData.authProviders.includes('google') || globalData.authProviders.includes('Google') || globalData.authProviders === []) && (
       <>
         { (isSignedIn) ? (
           <>
-            <AfterSignInComponent userName={userName} signoutLink={signOut} />
+            <AfterSignInComponent userName={userName} signoutLink={signOutLink} />
           </>
         ) : (
           <>

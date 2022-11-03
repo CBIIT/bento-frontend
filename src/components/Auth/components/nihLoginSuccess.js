@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { afterLoginRedirect } from '../../Layout/privateRoute';
+import { redirect } from '../../Layout/privateRoute';
 import { useAuth } from '../AuthProvider';
 
 function useQuery() {
@@ -23,7 +23,7 @@ function nihLoginSuccess() {
   const nihCode = query.get('code');
   const originDomain = window.location.origin;
 
-  const onSuccess = () => afterLoginRedirect(history, redirectPath);
+  const onSuccess = () => redirect(history, redirectPath);
   const onError = (error) => {};
 
   useEffect(() => {
