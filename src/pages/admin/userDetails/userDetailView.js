@@ -28,7 +28,7 @@ import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
 function getApprovedArms(acl) {
   const approvedArms = [];
   acl.forEach((arm) => {
-    if (arm.accessStatus === 'approved') {
+    if (arm.accessStatus.toLowerCase() === 'approved') {
       approvedArms.push(
         [
           arm.armName,
