@@ -146,6 +146,7 @@ const InActivityDialog = ({ classes }) => {
       if (ttl <= 0) {
         // If user did not select any option and timed out in BE.
         signOut();
+        handleClose();
         Notification.show(afterForcedSignOutMessage, 100000);
       } else if (ttl > 0 && ttl <= thresholdTime) {
         setTimeLeft(ttl);
