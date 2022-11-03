@@ -75,8 +75,8 @@ const CustomCheckbox = withStyles({
 
 const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userInfo, setUserInfo] = useState(data.getUser);
-  const [userRole, setUserRole] = useState(userInfo.role);
-  const [userStatus, setUserStatus] = useState(userInfo.userStatus);
+  const [userRole, setUserRole] = useState(userInfo.role.toLowerCase());
+  const [userStatus, setUserStatus] = useState(userInfo.userStatus.toLowerCase());
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
   const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
@@ -295,7 +295,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
             </div>
           </div>
           <Grid container>
-            {userInfo.role !== 'admin' ? (
+            {userInfo.role.toLowerCase() !== 'admin' ? (
               <Grid item xs={12}>
                 {/* <TableThemeProvider> */}
                 <CustomDataTable
