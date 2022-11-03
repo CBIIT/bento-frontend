@@ -42,7 +42,9 @@ const getAvailableArms = (currentACL, listOfArms) => {
   const unavailableArms = Object.keys(currentACL).reduce((previousArms, key) => {
     const armObject = currentACL[key];
     const resultArray = previousArms;
-    if (unavailableArmsStatus.includes(armObject.accessStatus)) resultArray.push(armObject.armID);
+    if (unavailableArmsStatus.includes(
+      armObject.accessStatus.toLowerCase(),
+    )) resultArray.push(armObject.armID);
     return resultArray;
   }, []);
   const availableArms = listOfArms.filter((arm) => !unavailableArms.includes(arm.id));
@@ -60,7 +62,6 @@ function requestAccessView({ data, classes }) {
   const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
-
   const getDefaultACL = () => (availableArms[0] || []).id;
 
   // Initial State and Reset functions
@@ -85,6 +86,8 @@ function requestAccessView({ data, classes }) {
   const [isFormSubmitted, setSubmitted] = useState(false);
   // USED TO TEST IF A CHANGE HAS OCCURRED INORDER TO SUBMIT A DAR
   const initialFormValues = JSON.parse(JSON.stringify(setDefaultValues()));
+
+  const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0);
 
   // GraphQL Operations
   const [mutate, response] = useMutation(SUBMIT_REQUEST_ACCESS, {
@@ -305,13 +308,13 @@ function requestAccessView({ data, classes }) {
                       switch (field.type) {
                         case 'aclDropdown':
                           return SelectMenu(field, formValues, handleInputChange,
-                            data, classes, availableArms, isFormSubmitted);
+                            data, classes, availableArms, isInputDisabled());
                         case 'dropdown':
                           return SelectMenu(field, formValues, handleInputChange,
-                            data, classes, availableArms, isFormSubmitted);
+                            data, classes, availableArms, isInputDisabled());
                         case 'textBox':
                           return TextBox(field, formValues, handleInputChange,
-                            classes, isFormSubmitted);
+                            classes, isInputDisabled());
                         default:
                           return null;
                       }
