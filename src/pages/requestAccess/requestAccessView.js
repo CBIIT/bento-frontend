@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -156,15 +159,20 @@ function requestAccessView({ data, classes }) {
   };
 
   const validateFields = () => {
-    const armsAvailable = availableArms.length > 0;
-    const checkFieldValues = fieldsToChk.map((field) => validateNames(field)).indexOf(false) === -1;
-
-    if (!armsAvailable) {
+    // First check if any arms available for selection?
+    // This function is useful when page is loaded and no arms are available.
+    if (availableArms.length <= 0) {
       setDisableSubmit(true);
       return;
     }
 
-    if (changeDetected && checkFieldValues) {
+    // if not cehck form values are corrct or not.
+    const validInputValues = fieldsToChk.reduce((status, field) => {
+      const fieldValue = formValues[field];
+      return (fieldValue.length >= 1) && status;
+    }, true);
+
+    if (validInputValues) {
       setDisableSubmit(false);
     } else {
       setDisableSubmit(true);
