@@ -134,6 +134,7 @@ const InActivityDialog = ({ classes }) => {
   const handleSignOut = () => {
     signOut(history, redirectAfterSignOut);
     handleClose();
+    Notification.show(afterForcedSignOutMessage, 100000);
   };
 
   const loadData = async () => {
@@ -145,9 +146,7 @@ const InActivityDialog = ({ classes }) => {
 
       if (ttl <= 0) {
         // If user did not select any option and timed out in BE.
-        signOut();
-        handleClose();
-        Notification.show(afterForcedSignOutMessage, 100000);
+        handleSignOut();
       } else if (ttl > 0 && ttl <= thresholdTime) {
         setTimeLeft(ttl);
         handleOpen();

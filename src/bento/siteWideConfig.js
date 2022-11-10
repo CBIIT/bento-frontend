@@ -23,7 +23,7 @@ export const NODE_LABEL = 'Study Arm(s)';
 export const REDIRECT_AFTER_SIGN_OUT = '/';
 
 // Inactivity Configs (Numbers are in "Seconds" for this section)
-export const PING_INTERVAL = 5; // DEFAULT is 5 Seconds.
+export const PING_INTERVAL = 10; // DEFAULT is 5 Seconds.
 
 // SHOW_WARNING_BEFORE is used to configure when to show Inactivity pop-up.
 // Value is required to be in Seconds format. DEFAULT is 300 Seconds (5 Minutes).
