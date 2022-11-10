@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -16,18 +13,6 @@ import Stats from '../../components/Stats/AllStatsController';
 import custodianUtils from '../../utils/custodianUtilFuncs';
 // Custodian data imports
 import { formFields, pageTitle, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
-
-// eslint-disable-next-line no-unused-vars
-const checkIsValid = (field, formValues) => {
-  const { type, id } = field;
-  const value = formValues[id];
-
-  if (type === 'email') {
-    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
-  }
-
-  return value !== '';
-};
 
 function useQuery() {
   const { search } = useLocation();
@@ -61,7 +46,6 @@ function requestAccessView({ data, classes }) {
   const query = useQuery();
   const redirectdType = getRedirectedType(query);
   const [disableSubmit, setDisableSubmit] = useState(true);
-  const [changeDetected, setChangeDetected] = useState(false);
   const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
@@ -87,8 +71,6 @@ function requestAccessView({ data, classes }) {
   // Init state for inputs.
   const [formValues, setFormValues] = useState(setDefaultValues());
   const [isFormSubmitted, setSubmitted] = useState(false);
-  // USED TO TEST IF A CHANGE HAS OCCURRED INORDER TO SUBMIT A DAR
-  const initialFormValues = JSON.parse(JSON.stringify(setDefaultValues()));
 
   const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0);
 
@@ -98,7 +80,6 @@ function requestAccessView({ data, classes }) {
     onCompleted() {
       // INPUT parm can be 'responseData'
       setSubmitted(true);
-      setChangeDetected(false);
     },
     onError() {
       // INPUT parm can be 'ApolloError'
@@ -145,17 +126,6 @@ function requestAccessView({ data, classes }) {
       default:
         return null;
     }
-  };
-
-  const validateNames = (key) => {
-    const iniValue = initialFormValues[key];
-    const currentVal = formValues[key] || [];
-
-    if (iniValue !== currentVal && !changeDetected) {
-      setChangeDetected(true);
-    }
-
-    return currentVal.length > 0;
   };
 
   const validateFields = () => {
@@ -566,9 +536,3 @@ const styles = () => ({
 });
 
 export default withStyles(styles, { withTheme: true })(requestAccessView);
-
-/* TODO:
-1. Dropdown is not generalized.
-2. After Submit it's not clreaing and referashing updated arms.
-3. Need reset button.
-*/
