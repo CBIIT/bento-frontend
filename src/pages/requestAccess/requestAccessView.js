@@ -14,18 +14,6 @@ import custodianUtils from '../../utils/custodianUtilFuncs';
 // Custodian data imports
 import { formFields, pageTitle, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
 
-// eslint-disable-next-line no-unused-vars
-const checkIsValid = (field, formValues) => {
-  const { type, id } = field;
-  const value = formValues[id];
-
-  if (type === 'email') {
-    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
-  }
-
-  return value !== '';
-};
-
 function useQuery() {
   const { search } = useLocation();
   return React.useMemo(() => new URLSearchParams(search), [search]);
@@ -58,7 +46,6 @@ function requestAccessView({ data, classes }) {
   const query = useQuery();
   const redirectdType = getRedirectedType(query);
   const [disableSubmit, setDisableSubmit] = useState(true);
-  const [changeDetected, setChangeDetected] = useState(false);
   const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
@@ -84,8 +71,6 @@ function requestAccessView({ data, classes }) {
   // Init state for inputs.
   const [formValues, setFormValues] = useState(setDefaultValues());
   const [isFormSubmitted, setSubmitted] = useState(false);
-  // USED TO TEST IF A CHANGE HAS OCCURRED INORDER TO SUBMIT A DAR
-  const initialFormValues = JSON.parse(JSON.stringify(setDefaultValues()));
 
   const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0);
 
@@ -95,7 +80,6 @@ function requestAccessView({ data, classes }) {
     onCompleted() {
       // INPUT parm can be 'responseData'
       setSubmitted(true);
-      setChangeDetected(false);
     },
     onError() {
       // INPUT parm can be 'ApolloError'
@@ -144,27 +128,21 @@ function requestAccessView({ data, classes }) {
     }
   };
 
-  const validateNames = (key) => {
-    const iniValue = initialFormValues[key];
-    const currentVal = formValues[key] || [];
-
-    if (iniValue !== currentVal && !changeDetected) {
-      setChangeDetected(true);
-    }
-
-    return currentVal.length > 0;
-  };
-
   const validateFields = () => {
-    const armsAvailable = availableArms.length > 0;
-    const checkFieldValues = fieldsToChk.map((field) => validateNames(field)).indexOf(false) === -1;
-
-    if (!armsAvailable) {
+    // First check if any arms available for selection?
+    // This function is useful when page is loaded and no arms are available.
+    if (availableArms.length <= 0) {
       setDisableSubmit(true);
       return;
     }
 
-    if (changeDetected && checkFieldValues) {
+    // if not cehck form values are corrct or not.
+    const validInputValues = fieldsToChk.reduce((status, field) => {
+      const fieldValue = formValues[field];
+      return (fieldValue.length >= 1) && status;
+    }, true);
+
+    if (validInputValues) {
       setDisableSubmit(false);
     } else {
       setDisableSubmit(true);
@@ -558,9 +536,3 @@ const styles = () => ({
 });
 
 export default withStyles(styles, { withTheme: true })(requestAccessView);
-
-/* TODO:
-1. Dropdown is not generalized.
-2. After Submit it's not clreaing and referashing updated arms.
-3. Need reset button.
-*/
