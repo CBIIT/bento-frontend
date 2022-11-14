@@ -12,7 +12,31 @@ import getDateInFormat from '../../../utils/date';
 
 const ProfileViewFooter = ({ classes, data }) => {
   const { role, userStatus } = data.getMyUser;
-  const canAccessButton = ['member', 'non-member'].indexOf(role) !== -1 && userStatus !== 'inactive';
+
+  /**
+   * Determines whether a given role can access the DAR button
+   * @param {string} userRole The user's role
+   * @param {string} roleStatus The user's status of their role
+   * @returns boolean
+   */
+  const canAccessButton = (userRole, roleStatus) => {
+    const roles = [
+      'member',
+      'non-member',
+    ];
+
+    // User must be one of the roles above
+    if (!roles.includes(userRole)) {
+      return false;
+    }
+
+    // Inactive is not allowed, unless user is member
+    if (roleStatus === 'inactive' && userRole !== 'member') {
+      return false;
+    }
+
+    return true;
+  };
 
   const renderAdmin = () => (
     <Box sx={{
@@ -34,7 +58,7 @@ const ProfileViewFooter = ({ classes, data }) => {
     </Box>
   );
 
-  const renderRequestButton = () => (canAccessButton ? (
+  const renderRequestButton = () => (canAccessButton(role, userStatus) ? (
     <Box textAlign="center" sx={{ width: '100%' }}>
       <Button className={classes.btnRequest}>
         <Link to="/request" className={classes.btnRequestLink}>Request Access</Link>
