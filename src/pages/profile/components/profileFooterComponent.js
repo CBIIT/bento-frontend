@@ -16,10 +16,9 @@ const ProfileViewFooter = ({ classes, data }) => {
   /**
    * Determines whether a given role can access the DAR button
    * @param {string} userRole The user's role
-   * @param {string} roleStatus The user's status of their role
    * @returns boolean
    */
-  const canAccessButton = (userRole, roleStatus) => {
+  const canAccessButton = (userRole) => {
     const roles = [
       'member',
       'non-member',
@@ -27,11 +26,6 @@ const ProfileViewFooter = ({ classes, data }) => {
 
     // User must be one of the roles above
     if (!roles.includes(userRole)) {
-      return false;
-    }
-
-    // Inactive is not allowed, unless user is member
-    if (roleStatus === 'inactive' && userRole !== 'member') {
       return false;
     }
 
@@ -58,7 +52,7 @@ const ProfileViewFooter = ({ classes, data }) => {
     </Box>
   );
 
-  const renderRequestButton = () => (canAccessButton(role, userStatus) ? (
+  const renderRequestButton = () => (canAccessButton(role) ? (
     <Box textAlign="center" sx={{ width: '100%' }}>
       <Button className={classes.btnRequest}>
         <Link to="/request" className={classes.btnRequestLink}>Request Access</Link>
