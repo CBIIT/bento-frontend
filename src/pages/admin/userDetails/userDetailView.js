@@ -75,7 +75,6 @@ const CustomCheckbox = withStyles({
 const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userInfo, setUserInfo] = useState(data.getUser);
   const [userRole, setUserRole] = useState(userInfo.role.toLowerCase());
-  const [userStatus, setUserStatus] = useState(userInfo.userStatus.toLowerCase());
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
   const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
@@ -146,6 +145,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     );
   };
 
+  // TODO: Remove this function
   const getPastMembershipStatus = (acl) => {
     if (acl.length <= 0) return { role: 'non-member', userStatus: '' };
 
@@ -173,9 +173,8 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     } else if (userRole.toLowerCase() === 'admin') {
       if (!event.target.checked) {
         const { acl } = userInfo;
-        const { role, userStatus: status } = getPastMembershipStatus(acl);
+        const { role } = getPastMembershipStatus(acl);
         setUserRole(role);
-        setUserStatus(status);
       }
     }
   };
@@ -190,7 +189,6 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
       role: userRole,
       armIDs: seletedArms,
       comment: '',
-      userStatus,
     };
 
     if (userRole === 'admin') updatedUserDetails.userStatus = 'active';
