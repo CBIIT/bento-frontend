@@ -81,7 +81,9 @@ const ProfileViewFooter = ({ classes, data }) => {
   );
 
   const formatDate = () => {
-    const removeRevokedStatus = (dataItem) => ignoredArms.indexOf(dataItem.accessStatus) === -1;
+    const removeRevokedStatus = (dataItem) => ignoredArms.indexOf(
+      dataItem.accessStatus.toLowerCase(),
+    ) === -1;
     const newData = JSON.parse(JSON.stringify({ ...data }));
     newData.getMyUser.acl = newData.getMyUser.acl.filter(removeRevokedStatus);
     /* eslint no-param-reassign: ["error", { "props": false }] */
