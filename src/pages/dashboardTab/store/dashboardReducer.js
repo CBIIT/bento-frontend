@@ -1173,6 +1173,10 @@ export function clearTableSelections() {
   store.dispatch({ type: 'CLEAR_TABLE_SELECTION' });
 }
 
+export function setOverLayWindow(item) {
+  store.dispatch({ type: 'SET_OVERLAY_WINDOW', payload: item });
+}
+
 export const getDashboard = () => getState();
 
 export function setSearchCriteria(payload) {

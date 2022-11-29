@@ -31,6 +31,7 @@ import ProfileController from '../../pages/profile/profileController';
 import editUserController from '../../pages/admin/userDetails/editUserController';
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
 import InActivityDialog from '../InActivityDialog';
+import OverlayWindow from '../OverlayWindow/OverlayWindow';
 
 import fakeAdminView from '../../pages/fakeAdmin';
 
@@ -52,6 +53,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
         <Notifactions />
         <InActivityDialog />
         <Header />
+        <OverlayWindow />
         <NavBar />
         {/* Reminder: Ajay need to replace the ICDC with env variable and
           change build npm to read env variable */}
