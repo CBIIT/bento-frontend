@@ -40,6 +40,7 @@ export default {
 
     {
       title: 'System Info',
+      systemInfoInLinkSection: true,
       items: [
         {
           text: 'Release Notes',
@@ -47,11 +48,9 @@ export default {
         },
         {
           text: `FE Version: ${env.REACT_APP_FE_VERSION || '0.0.0'}`,
-          link: '',
         },
         {
           text: `BE Version: ${env.REACT_APP_BE_VERSION || '0.0.0'}`,
-          link: '',
         },
         {
           text: 'System Info Page',
