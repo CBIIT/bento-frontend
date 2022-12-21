@@ -36,6 +36,10 @@ export const navBarstyling = {
       },
     },
   },
+  cart: {
+    iconSize: '30px',
+    padding: '6px 20px 0px 5px',
+  },
 };
 
 export const navBarData = [
@@ -77,8 +81,9 @@ export const navBarData = [
 ];
 
 export const navBarCartData = {
-  cartLabel: 'MY Files',
+  cartLabel: '',
   cartLink: '/fileCentricCart',
   cartIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Navbar.svg',
   cartIconAlt: 'cart_logo',
+  cartLabelType: 'labelUnderCount',
 };

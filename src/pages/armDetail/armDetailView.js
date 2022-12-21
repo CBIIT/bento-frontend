@@ -276,7 +276,7 @@ const styles = (theme) => ({
   },
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamily,
-    color: '#7747FF',
+    color: theme.palette.text.link,
     fontSize: '10px',
     textTransform: 'uppercase',
     paddingRight: '2px',

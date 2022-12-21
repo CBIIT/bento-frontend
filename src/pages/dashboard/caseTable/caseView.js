@@ -257,7 +257,7 @@ const styles = (theme) => ({
     textAlign: 'center',
   },
   link: {
-    color: '#7747ff ',
+    color: theme.palette.text.link,
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'underline',

@@ -221,7 +221,7 @@ export default {
       primary: '#4A4A4A',
       secondary: '#6E6E6E',
       hint: '#B9B9B9',
-      link: '#1669aa',
+      link: '#0083c6',
       footerText: 'white',
     },
     background: {

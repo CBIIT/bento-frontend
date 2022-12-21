@@ -4,16 +4,15 @@ import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { useAuth } from '../../../components/Auth/AuthProvider';
-import AlertMessage from '../../../components/alertMessage';
+import AlertMessage from '../../../components/alertMessage/AlertMessageView';
 import Stats from '../../../components/Stats/AllStatsController';
 
 // Custodian data imports
 import {
-  pageTitle,
   loginProvidersData,
 } from '../../../bento/userLoginData';
 import globalData from '../../../bento/siteWideConfig';
-import { afterLoginRedirect } from '../../../components/Layout/privateRoute';
+import { redirect } from '../../../components/Layout/privateRoute';
 
 function useQuery() {
   const { search } = useLocation();
@@ -33,7 +32,7 @@ function loginView({ classes }) {
   const internalRedirectPath = getRedirectPath(query);
   const [error, setError] = React.useState('');
 
-  const onSuccess = () => afterLoginRedirect(history, internalRedirectPath);
+  const onSuccess = () => redirect(history, internalRedirectPath);
   const onError = () => {};
 
   const defaultIdP = {
@@ -122,9 +121,16 @@ function loginView({ classes }) {
 
             <Grid container item sm={4} justifyContent="center">
               {/* Page Title */}
-              <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.pageTitle}>
+              {/* <Grid
+                container
+                xs={12}
+                alignItems="center"
+                justify="center"
+                direction="column"
+                className={classes.pageTitle}
+              >
                 {pageTitle}
-              </Grid>
+              </Grid> */}
 
               {/* Login Box */}
               <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.Box}>
@@ -205,12 +211,13 @@ const styles = () => ({
     textAlign: 'center',
     marginTop: '35px',
     marginBottom: '25px',
+    fontWeight: 600,
   },
   LoginButtonGroup: {
 
   },
   LoginButton: {
-    width: '350px',
+    width: '257px',
     height: '35px',
     background: '#FFFFFF',
     boxShadow: 'none',
@@ -270,7 +277,7 @@ const styles = () => ({
     height: '50px',
   },
   extraSpaceInBorrom: {
-    height: '150px',
+    height: '50px',
   },
   Color_092E50: {
     color: '#092E50 !important',

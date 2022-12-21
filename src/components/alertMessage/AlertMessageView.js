@@ -3,13 +3,16 @@ import { makeStyles } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(() => ({
+  root: {
+    borderRadius: 'none',
+  },
   myAlert: {
     color: '#ffffff',
     backgroundColor: (props) => props.backgroundColor || '#5D53F6',
     width: '535px',
     boxSizing: 'border-box',
     minHeight: '50px',
-    border: '1.5px solid',
+    // border: '1.5px solid',
     borderColor: (props) => props.backgroundColor || 'none',
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09)',
     justifyContent: 'center',

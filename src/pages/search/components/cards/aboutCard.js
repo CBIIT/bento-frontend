@@ -5,11 +5,20 @@ import { Anchor } from 'bento-components';
 const AboutCard = ({
   searchText, data, classes, index,
 }) => {
-  const results = data.text.replaceAll('$', '');
+  const results = data.text.map((result) => result.replaceAll('$', ''));
 
   function getHighlightedText(text, highlight) {
     // Split on highlight term and include term into parts, ignore case
-    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    const textString = text.reduce((searchResults, currentString, currentIndex) => {
+      let newResults = searchResults;
+      if (currentString.endsWith('.') || currentIndex >= text.length - 1) {
+        newResults = `${`${newResults} ${currentString}`}`;
+      } else {
+        newResults = `${`${newResults} ${currentString}`} ... `;
+      }
+      return newResults;
+    }, '');
+    const parts = textString.split(new RegExp(`(${highlight})`, 'gi'));
     return (
       <span>
         {' '}
@@ -44,14 +53,14 @@ const AboutCard = ({
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   cartIcon: {
     height: '22px',
     margin: '0px 0px 0px 6px',
   },
   linkText: {
     fontFamily: 'Nunito',
-    color: '#7747ff',
+    color: theme.palette.text.link,
     textDecoration: 'none',
   },
   indexContainer: {
@@ -65,7 +74,7 @@ const styles = () => ({
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#7747FF',
+    color: theme.palette.text.link,
     textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',

@@ -1,25 +1,23 @@
 const COLORS_EVEN = [
-  '#D4D4D4',
-  '#057EBD',
-  '#0C3151',
-  '#F78F49',
-  '#79287C',
-  '#7CC242',
-  '#61479D',
+  '#057ebd',
+  '#f78f48',
+  '#CBDEEE',
+  '#79287c',
+  '#0e3151',
+  '#7dc242',
 ];
 
-const COLORS_ODD = [
-  '#057EBD',
-  '#0C3151',
-  '#F78F49',
-  '#79287C',
-  '#7CC242',
-  '#61479D',
-  '#D4D4D4',
-];
+// const COLORS_ODD = [
+//   '#a593cd',
+//   '#f78f48',
+//   '#79287c',
+//   '#0e3151',
+//   '#057ebd',
+//   '#7dc242',
+// ];
 
 const colors = {
-  odd: COLORS_ODD,
+  odd: COLORS_EVEN,
   even: COLORS_EVEN,
 };
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import React, { useState, useEffect } from 'react';
 import {
-  withStyles, Button, Grid,
+  withStyles, Button, Grid, CircularProgress,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import Components from './component';
@@ -26,6 +26,7 @@ function SearchPagination({
 
   const pageSize = 10;
   const [data, setdata] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   async function getAll(newPage, calcOffset) {
     // const calcOffset = (newPage - 1) * pageSize;
@@ -155,7 +156,9 @@ function SearchPagination({
   }
 
   async function onChange(newValue = [], newPage = 1) {
+    setLoading(true);
     const searchResp = await getPageResults(newValue, newPage);
+    setLoading(false);
     setdata(searchResp);
   }
 
@@ -192,6 +195,24 @@ function SearchPagination({
     scrollToTop();
   };
 
+  const renderCards = () => {
+    if (loading) {
+      return (
+        <div className={classes.loadingMessageWrapper}>
+          <CircularProgress />
+          {/* <div className={classes.loadingMessage}>Loading...</div> */}
+        </div>
+      );
+    }
+
+    if (data && data.length <= 0) return <div>No data</div>;
+
+    return data.map(
+      // eslint-disable-next-line max-len
+      (block, index) => <Components searchText={searchText} data={block} classes index={(page - 1) * pageSize + index} />,
+    );
+  };
+
   return (
     <>
       {Math.ceil(count / pageSize) !== 0 && (
@@ -203,12 +224,7 @@ function SearchPagination({
       ) }
       <Grid className={classes.subsection}>
         <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
-
-          { data !== undefined ? data.length !== 0 ? data.map(
-          // eslint-disable-next-line max-len
-            (block, index) => <Components searchText={searchText} data={block} classes index={(page - 1) * pageSize + index} />,
-          )
-            : <div>No data</div> : <div>No data</div>}
+          {renderCards()}
         </Grid>
       </Grid>
       {Math.ceil(count / pageSize) > 1 && (
@@ -353,6 +369,13 @@ const styles = {
   },
   totalCount: {
     fontFamily: 'Inter',
+  },
+  loadingMessageWrapper: {
+    textAlign: 'center',
+  },
+  loadingMessage: {
+    paddingLeft: '10px',
+    fontSize: '18px',
   },
 };
 

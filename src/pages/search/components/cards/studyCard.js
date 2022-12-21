@@ -57,7 +57,7 @@ const StudyCard = ({ data, classes, index }) => {
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   content: {
     fontSize: '12px',
   },
@@ -72,7 +72,7 @@ const styles = () => ({
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#7747FF',
+    color: theme.palette.text.link,
     textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',

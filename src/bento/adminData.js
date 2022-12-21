@@ -3,7 +3,7 @@ import { NODE_LEVEL_ACCESS } from './siteWideConfig';
 import custodianUtils from '../utils/custodianUtilFuncs';
 
 export const icon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/programIcon.svg',
+  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/AdminPortal.Icon.svg',
   alt: 'Bento program logo',
 };
 
@@ -21,7 +21,7 @@ export const EDIT = 'edit';
 export const VIEW = 'view';
 
 export const editViewPageTitle = 'Edit User';
-export const viewPageTitle = 'Approved Arm(s)';
+export const viewPageTitle = `Approved ${custodianUtils.getNodeLevelLabel()}`;
 
 export const useMock = false;
 
@@ -54,6 +54,8 @@ export const tabPendingRequest = {
     defaultSortField: 'name',
     // 'asc' or 'desc'
     defaultSortDirection: 'asc',
+
+    search: false,
 
     columns: [
       {
@@ -108,6 +110,7 @@ export const tabManageAccess = {
   table: {
     // Set 'display' to false to hide the table entirely
     display: true,
+    search: false,
 
     columns: [
       {

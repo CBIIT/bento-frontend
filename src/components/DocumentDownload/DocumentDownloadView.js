@@ -77,7 +77,7 @@ const DocumentDownload = ({
 
   const approvedACLs = currentUserACL.reduce(
     (results, acl) => {
-      if (acl.accessStatus === 'approved') results.push(acl.armID);
+      if (acl.accessStatus.toLowerCase() === 'approved') results.push(acl.armID);
       return results;
     },
     [],

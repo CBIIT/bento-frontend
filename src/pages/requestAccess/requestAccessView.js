@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import _ from 'lodash';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
@@ -7,25 +6,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { bentoHelpEmail } from '../../bento/userLoginData';
-import AlertMessage from '../../components/alertMessage';
+import AlertMessage from '../../components/alertMessage/AlertMessageView';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 import Stats from '../../components/Stats/AllStatsController';
 import custodianUtils from '../../utils/custodianUtilFuncs';
 // Custodian data imports
 import { formFields, pageTitle, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
-
-// eslint-disable-next-line no-unused-vars
-const checkIsValid = (field, formValues) => {
-  const { type, id } = field;
-  const value = formValues[id];
-
-  if (type === 'email') {
-    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
-  }
-
-  return value !== '';
-};
 
 function useQuery() {
   const { search } = useLocation();
@@ -43,7 +30,9 @@ const getAvailableArms = (currentACL, listOfArms) => {
   const unavailableArms = Object.keys(currentACL).reduce((previousArms, key) => {
     const armObject = currentACL[key];
     const resultArray = previousArms;
-    if (unavailableArmsStatus.includes(armObject.accessStatus)) resultArray.push(armObject.armID);
+    if (unavailableArmsStatus.includes(
+      armObject.accessStatus.toLowerCase(),
+    )) resultArray.push(armObject.armID);
     return resultArray;
   }, []);
   const availableArms = listOfArms.filter((arm) => !unavailableArms.includes(arm.id));
@@ -57,10 +46,9 @@ function requestAccessView({ data, classes }) {
   const query = useQuery();
   const redirectdType = getRedirectedType(query);
   const [disableSubmit, setDisableSubmit] = useState(true);
-  const [changeDetected, setChangeDetected] = useState(false);
+  const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   const availableArms = getAvailableArms(getMyUser.acl, listArms);
-
   const getDefaultACL = () => (availableArms[0] || []).id;
 
   // Initial State and Reset functions
@@ -83,8 +71,8 @@ function requestAccessView({ data, classes }) {
   // Init state for inputs.
   const [formValues, setFormValues] = useState(setDefaultValues());
   const [isFormSubmitted, setSubmitted] = useState(false);
-  // USED TO TEST IF A CHANGE HAS OCCURRED INORDER TO SUBMIT A DAR
-  const initialFormValues = JSON.parse(JSON.stringify(setDefaultValues()));
+
+  const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0);
 
   // GraphQL Operations
   const [mutate, response] = useMutation(SUBMIT_REQUEST_ACCESS, {
@@ -92,7 +80,6 @@ function requestAccessView({ data, classes }) {
     onCompleted() {
       // INPUT parm can be 'responseData'
       setSubmitted(true);
-      setChangeDetected(false);
     },
     onError() {
       // INPUT parm can be 'ApolloError'
@@ -141,27 +128,21 @@ function requestAccessView({ data, classes }) {
     }
   };
 
-  const validateNames = (key) => {
-    const iniValue = initialFormValues[key];
-    const currentVal = formValues[key] || [];
-
-    if (iniValue !== currentVal && !changeDetected) {
-      setChangeDetected(true);
-    }
-
-    return currentVal.length > 0;
-  };
-
   const validateFields = () => {
-    const armsAvailable = availableArms.length > 0;
-    const checkFieldValues = fieldsToChk.map((field) => validateNames(field)).indexOf(false) === -1;
-
-    if (!armsAvailable) {
+    // First check if any arms available for selection?
+    // This function is useful when page is loaded and no arms are available.
+    if (availableArms.length <= 0) {
       setDisableSubmit(true);
       return;
     }
 
-    if (changeDetected && checkFieldValues) {
+    // if not cehck form values are corrct or not.
+    const validInputValues = fieldsToChk.reduce((status, field) => {
+      const fieldValue = formValues[field];
+      return (fieldValue.length >= 1) && status;
+    }, true);
+
+    if (validInputValues) {
       setDisableSubmit(false);
     } else {
       setDisableSubmit(true);
@@ -229,57 +210,72 @@ function requestAccessView({ data, classes }) {
 
             <Grid container item sm={8} justifyContent="center">
               {/* Page Title */}
-              <Grid container item xs={12} justifyContent="center">
+              <Grid container item sm={4} />
+              <Grid container item xs={4} justifyContent="center">
                 <div className={classes.pageTitle}>
                   {pageTitle}
                   <hr className={classes.pageTitleUnderline} />
                 </div>
               </Grid>
+              <Grid container item sm={4} />
 
-              <div className={classes.container}>
-                <div className={classes.brace} />
-                <div className={classes.segment}>
+              {/* START: Summary Section  */}
+              <Grid container item sm={4} />
+              <Grid
+                container
+                item
+                xs={4}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <div>
+                  <div className={classes.brace} />
+                  <div className={classes.SummaryBox}>
 
-                  {/* User's Account type */}
-                  <div className={classes.row}>
-                    <div className={classes.column}>
-                      <div className={classes.itemTitles}>Account Type:</div>
+                    {/* User's Account type */}
+                    <div className={classes.row}>
+                      <div className={classes.column}>
+                        <div className={classes.itemTitles}>Account Type:</div>
+                      </div>
+                      <div className={classes.column}>
+                        <div className={classes.itemValue}>{getAuthenticatorName(IDP || '')}</div>
+                      </div>
                     </div>
-                    <div className={classes.column}>
-                      <div className={classes.emailAddressValue}>{custodianUtils.getAuthenticatorName(IDP || '')}</div>
-                    </div>
-                  </div>
 
-                  {/* User's Email Address */}
-                  <div className={classes.row}>
-                    <div className={classes.column}>
-                      <div className={classes.itemTitles}>Email Address:</div>
+                    {/* User's Email Address */}
+                    <div className={classes.row}>
+                      <div className={classes.column}>
+                        <div className={classes.itemTitles}>Email Address:</div>
+                      </div>
+                      <div className={classes.column}>
+                        <div className={classes.itemValue}>
+                          {' '}
+                          {userEmail}
+                          {' '}
+                        </div>
+                      </div>
                     </div>
-                    <div className={classes.column}>
-                      <div className={classes.emailAddressValue}>
-                        {' '}
-                        {userEmail}
-                        {' '}
+
+                    {/* User's Membership Status */}
+                    <div className={classes.row}>
+                      <div className={classes.column}>
+                        <div className={classes.itemTitles}> Membership Status: </div>
+                      </div>
+                      <div className={classes.column}>
+                        <div className={classes.itemValue}>
+                          {' '}
+                          {userStatus === '' ? 'N/A' : capitalizeFirstLetter(userStatus)}
+                          {' '}
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* User's Membership Status */}
-                  <div className={classes.row}>
-                    <div className={classes.column}>
-                      <div className={classes.itemTitles}> Membership Status: </div>
-                    </div>
-                    <div className={classes.column}>
-                      <div className={classes.emailAddressValue}>
-                        {' '}
-                        {_.startCase(userStatus || 'N/A')}
-                        {' '}
-                      </div>
-                    </div>
-                  </div>
+                  <div className={classes.brace} />
                 </div>
-                <div className={classes.brace} />
-              </div>
+              </Grid>
+              <Grid container item sm={4} />
+              {/* END: Summery Section  */}
 
               {/* Box Grid */}
               <div className={classes.Box}>
@@ -290,13 +286,13 @@ function requestAccessView({ data, classes }) {
                       switch (field.type) {
                         case 'aclDropdown':
                           return SelectMenu(field, formValues, handleInputChange,
-                            data, classes, availableArms, isFormSubmitted);
+                            data, classes, availableArms, isInputDisabled());
                         case 'dropdown':
                           return SelectMenu(field, formValues, handleInputChange,
-                            data, classes, availableArms, isFormSubmitted);
+                            data, classes, availableArms, isInputDisabled());
                         case 'textBox':
                           return TextBox(field, formValues, handleInputChange,
-                            classes, isFormSubmitted);
+                            classes, isInputDisabled());
                         default:
                           return null;
                       }
@@ -310,7 +306,7 @@ function requestAccessView({ data, classes }) {
                       {isFormSubmitted ? (
                         <Button
                           variant="contained"
-                          className={classes.submitButtton}
+                          className={[classes.formButton, classes.goToHomeButton]}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                           onClick={() => redirectUser('/')}
                         >
@@ -320,7 +316,7 @@ function requestAccessView({ data, classes }) {
                         <Button
                           variant="contained"
                           type="submit"
-                          className={classes.submitButtton}
+                          className={[classes.formButton, classes.submitButton]}
                           disabled={disableSubmit}
                           endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
                         >
@@ -371,7 +367,7 @@ const styles = () => ({
   pageTitleUnderline: {
     boxSizing: 'border-box',
     height: '2px',
-    width: '35vw',
+    width: '474px',
     minWidth: '200px',
     border: '1px solid #88B4DA',
     backgroundColor: '#F2F6FA',
@@ -386,16 +382,16 @@ const styles = () => ({
   brace: {
     flex: 1,
   },
-  segment: {
+  SummaryBox: {
     boxSizing: 'border-box',
     flexDirection: 'column',
-    width: '65%',
     minWidth: '500px',
     justifyContent: 'center',
     fontFamily: 'Nunito',
-    margin: '25px 0',
-    padding: '0 20px',
+    padding: '0 0 0 110px',
     flex: '1.5',
+    marginBottom: '20px',
+    marginTop: '10px',
   },
   row: {
     display: 'flex',
@@ -405,35 +401,39 @@ const styles = () => ({
   },
   column: {
     '&:first-child': {
-      flex: '.5',
+      flex: '.60',
     },
     flex: 1,
   },
   itemTitles: {
-    color: '#9EAAB5',
+    color: '#708292',
     textTransform: 'uppercase',
-    fontSize: '9pt',
+    fontFamily: 'Nunito',
+    fontWeight: 300,
+    fontSize: '12px',
     fontStyle: 'italic',
-    lineHeight: '20px',
+    letterSpacing: '0',
+    lineHeight: '34px',
     flex: 1,
     textAlign: 'left',
-    padding: '0 10px 0 10px',
+    padding: '0 0px 0 0px',
   },
-  emailAddressValue: {
-    color: '#6C7882',
+  itemValue: {
+    color: '#4F5D69',
     fontFamily: 'Nunito',
-    fontSize: '14pt',
+    fontSize: '17px',
     fontWeight: '500',
-    lineHeight: '20px',
+    letterSpacing: '0',
+    lineHeight: '34px',
     flex: 1,
   },
   Box: {
-    width: '600px',
+    width: '535px',
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09);',
     border: '#A9C8E3 2px solid',
     borderRadius: '10px',
     margin: '10px 0px',
-    padding: '20px 5px 5px 5px !important',
+    padding: '30px 10px 0px 10px !important',
     backgroundColor: '#F2F6FA',
   },
   helperMessage: {
@@ -452,15 +452,24 @@ const styles = () => ({
     marginTop: '4px',
     marginBottom: '18px',
   },
-  submitButtton: {
-    height: '40px',
+  formButton: {
+    height: '45px',
     color: '#FFFFFF',
     backgroundColor: '#5D53F6',
     marginTop: '23px',
     marginBottom: '50px',
+    '&:disabled': {
+      backgroundColor: '#A7A4F8',
+      color: '#FFFFFF',
+    },
     '&:hover': {
       backgroundColor: '#5D53F6',
     },
+  },
+  goToHomeButton: {
+  },
+  submitButton: {
+    width: '139px',
   },
   emptySpace: {
     height: '50px',
@@ -507,13 +516,13 @@ const styles = () => ({
   formLabel: {
     height: '18px',
     color: '#0467BD',
-    fontFamily: 'Nunito',
+    fontFamily: 'Lato',
     fontSize: '18px',
-    fontWeight: 'bold',
+    fontWeight: 500,
     letterSpacing: '0',
     lineHeight: '22px',
     marginBottom: '10px',
-    marginTop: '10px',
+    marginTop: '15px',
   },
   requiredFieldMessage: {
     color: '#BC3900',
@@ -527,9 +536,3 @@ const styles = () => ({
 });
 
 export default withStyles(styles, { withTheme: true })(requestAccessView);
-
-/* TODO:
-1. Dropdown is not generalized.
-2. After Submit it's not clreaing and referashing updated arms.
-3. Need reset button.
-*/

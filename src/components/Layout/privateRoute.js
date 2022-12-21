@@ -7,9 +7,10 @@ import GET_USER_DETAILS from '../../bento/authProviderData';
 import globalData, { loginRoute, requestAccessRoute, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
 import { signInRed, signOutRed } from '../Auth/state/loginReducer';
 import { deleteFromLocalStorage } from '../../utils/localStorage';
-import accessLevelTypes from '../../utils/enums';
+import accessLevelTypes, { userRoles, status } from '../../utils/enums';
 
 /*
+  NOTE: This detail is old Now.
   Notes For Developer: We have 3 roles in Bento System for Access Level METADATA_ONLY.
     1. non-member:
                   a. One who can NOT access any meta data,
@@ -25,7 +26,7 @@ import accessLevelTypes from '../../utils/enums';
                   c. One who can approve or reject requests for Arm level data access.
 */
 
-export function afterLoginRedirect(historyObject, path) {
+export function redirect(historyObject, path) {
   historyObject.push(path);
 }
 
@@ -50,7 +51,10 @@ export function FetchUserDetails(props) {
     context: { clientName: 'userService' },
     fetchPolicy: 'no-cache',
     onCompleted: (data) => {
-      signInRed(data.getMyUser);
+      const { getMyUser: userDetails } = data;
+      userDetails.role = userDetails.role.toLowerCase();
+      userDetails.userStatus = userDetails.userStatus.toLowerCase();
+      signInRed(userDetails);
       setLocalLoading(false);
     },
     onError: ({
@@ -111,11 +115,23 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
     );
   }
 
-  const { isSignedIn, role, userStatus } = useSelector((state) => state.login);
-  const { pathname } = useLocation();
+  // Enums
   const { NONE, METADATA_ONLY } = accessLevelTypes;
+  const { ADMIN, NONMEMBER } = userRoles;
+  const { ACTIVE } = status;
+
+  const {
+    isSignedIn,
+    role: capitalizedRole,
+    userStatus: capitalizedUserStatus,
+  } = useSelector((state) => state.login);
+
+  const role = (capitalizedRole || '').toLowerCase();
+  const userStatus = (capitalizedUserStatus || '').toLowerCase();
+
+  const { pathname } = useLocation();
   const { access, path, requiuredSignIn } = rest;
-  const updatedRole = (userStatus !== 'active' && role !== 'admin') ? 'non-member' : role;
+  const updatedRole = (userStatus !== ACTIVE && role !== ADMIN) ? NONMEMBER : role;
   const hasAccess = (isSignedIn && access.includes(updatedRole));
 
   return (
@@ -129,12 +145,12 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
           }
 
           if (!hasAccess) {
-            const redirectPath = (role !== 'admin') ? `${requestAccessRoute}?type=noAccess` : '/';
+            const redirectPath = (role.toLowerCase() !== ADMIN) ? `${requestAccessRoute}?type=noAccess` : '/';
             return <Redirect to={redirectPath} />;
           }
 
           // Condition for admins who are inactive & skipping it for profile route.
-          if (path !== '/profile' && role === 'admin' && userStatus !== 'active') {
+          if (path !== '/profile' && role === ADMIN && userStatus !== ACTIVE) {
             return (
               <div><h2 style={{ textAlign: 'center' }}>Inactive Admin Account!</h2></div>
             );
@@ -148,7 +164,7 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
 
           // Condition for admins who are inactive & skipping it for profile route.
           if (requiuredSignIn && path !== '/profile'
-             && role === 'admin' && userStatus !== 'active') {
+             && role === ADMIN && userStatus !== ACTIVE) {
             return (
               <div><h2 style={{ textAlign: 'center' }}>Inactive Account!</h2></div>
             );
@@ -164,6 +180,7 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
 
 export function AdminRoute({ component: ChildComponent, ...rest }) {
   const { enableAuthentication } = globalData;
+  const { ADMIN } = userRoles;
   if (!enableAuthentication) {
     return (
       <Route render={
@@ -174,7 +191,7 @@ export function AdminRoute({ component: ChildComponent, ...rest }) {
 
   // Check if this one is not Admin, Send them back to Home.
   const { role } = useSelector((state) => state.login);
-  if (role !== 'admin') {
+  if (role !== ADMIN) {
     return (
       <Route render={() => <Redirect to="/" />} />
     );

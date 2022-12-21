@@ -18,7 +18,7 @@ import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import fileCentricCart from '../../pages/fileCentricCart/cartController';
-import JBrowse from '../JBrowse/JBrowseView';
+// import JBrowse from '../JBrowse/JBrowseView';
 import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
 import GlobalSearch from '../../pages/search/searchView';
 import GlobalSearchController from '../../pages/search/searchViewController';
@@ -30,11 +30,14 @@ import SysInfoView from '../../pages/sysInfo/view';
 import ProfileController from '../../pages/profile/profileController';
 import editUserController from '../../pages/admin/userDetails/editUserController';
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
+import InActivityDialog from '../InActivityDialog';
 
 import fakeAdminView from '../../pages/fakeAdmin';
 
 // Access control imports
 import PrivateRoute, { LoginRoute, AdminRoute, MixedRoute } from './privateRoute';
+
+import Notifactions from '../Notifications/NotifactionView';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -46,6 +49,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
     <CssBaseline />
     <HashRouter>
       <>
+        <Notifactions />
+        <InActivityDialog />
         <Header />
         <NavBar />
         {/* Reminder: Ajay need to replace the ICDC with env variable and
@@ -72,7 +77,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             <PrivateRoute path="/case/:id" access={['admin', 'member']} component={CaseDetail} />
             <PrivateRoute path="/arm/:id" access={['admin', 'member']} component={ArmDetail} />
-            <PrivateRoute path="/fileViewer/:id" access={['admin', 'member']} component={JBrowseDetail} />
+            <PrivateRoute path="/fileViewer/:id" requiuredSignIn access={['admin', 'member']} component={JBrowseDetail} />
             {/* END SECTION */}
 
             {/* SECTION: Admin only Path */}
@@ -84,7 +89,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* END SECTION */}
 
             {/* NOTE: Please check these below paths. if no longer needed please remove it */}
-            <PrivateRoute path="/JBrowse" access={['admin', 'member']} component={JBrowse} />
+            {/* <PrivateRoute path="/JBrowse"
+            access={['admin', 'member']} component={JBrowse} /> */}
             <PrivateRoute path="/table" component={table} />
             {/* END NOTE */}
 

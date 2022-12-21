@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
@@ -5,14 +6,11 @@ import {
 } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import { cn, CustomDataTable } from 'bento-components';
-import AlertMessage from '../../../components/alertMessage';
 
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
-
+import AlertMessage from '../../../components/alertMessage/AlertMessageView';
 import {
   adminPortalIcon,
   viewPageTitle,
@@ -24,12 +22,13 @@ import {
 import getDateInFormat from '../../../utils/date';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
 import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
+// import TableThemeProvider from './tableThemeConfig';
 
 // acl is array of object.
 function getApprovedArms(acl) {
   const approvedArms = [];
   acl.forEach((arm) => {
-    if (arm.accessStatus === 'approved') {
+    if (arm.accessStatus.toLowerCase() === 'approved') {
       approvedArms.push(
         [
           arm.armName,
@@ -63,9 +62,19 @@ function getColumnInfo(accessType, approvedRenderer, removeRenderer) {
   }]);
 }
 
+const CustomCheckbox = withStyles({
+  root: {
+    color: '#375FAC',
+    '&$checked': {
+      color: '#375FAC',
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+
 const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userInfo, setUserInfo] = useState(data.getUser);
-  const [userRole, setUserRole] = useState(userInfo.role);
+  const [userRole, setUserRole] = useState(userInfo.role.toLowerCase());
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
   const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
@@ -87,7 +96,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     const key = Math.random();
     if (alertType === 'error') {
       setNotification(
-        <AlertMessage key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000}>
+        <AlertMessage classNames={classes.alertMsg} key={key} severity="error" borderColor="#f44336" backgroundColor="#f44336" timeout={5000}>
           {errorMsg}
         </AlertMessage>,
       );
@@ -95,7 +104,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
 
     if (alertType === 'success') {
       setNotification(
-        <AlertMessage key={key} severity="error" timeout={5000}>
+        <AlertMessage classNames={classes.alertMsg} key={key} severity="error" timeout={5000}>
           All changes have been saved
         </AlertMessage>,
       );
@@ -136,6 +145,40 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     );
   };
 
+  // TODO: Remove this function
+  const getPastMembershipStatus = (acl) => {
+    if (acl.length <= 0) return { role: 'non-member', userStatus: '' };
+
+    const { approved, revoked } = acl.reduce((results, node) => {
+      const { accessStatus } = node;
+      if (!results[accessStatus]) {
+        results[accessStatus] = 0;
+      }
+
+      results[accessStatus] += 1;
+
+      return results;
+    }, {});
+
+    if (approved) return { role: 'member', userStatus: 'active' };
+    if (!approved && revoked) return { role: 'member', userStatus: 'inactive' };
+    return { role: 'non-member', userStatus: '' };
+  };
+
+  const toggleAdminRole = (event) => {
+    if (userRole !== 'admin') {
+      if (event.target.checked) {
+        setUserRole('admin');
+      }
+    } else if (userRole.toLowerCase() === 'admin') {
+      if (!event.target.checked) {
+        const { acl } = userInfo;
+        const { role } = getPastMembershipStatus(acl);
+        setUserRole(role);
+      }
+    }
+  };
+
   const columns = getColumnInfo(accessType, approvedRender, checkBoxRenderFunc);
 
   const approvedArms = getApprovedArms(userInfo.acl);
@@ -159,11 +202,6 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
       showAlert('error');
     });
   }
-
-  const handleRoleChange = (e) => {
-    const { value } = e.target;
-    setUserRole(value);
-  };
 
   return (
     <>
@@ -227,6 +265,9 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                   <span className={classes.infoKey}>ORGANIZATION: </span>
                   <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
                   <span className={classes.infoKey}>ROLE: </span>
+                  <span className={cn(classes.infoKey, classes.toggleAdmin)}>
+                    ADMIN PERMISSIONS:
+                  </span>
                 </Typography>
               </div>
               <div>
@@ -237,45 +278,39 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
                   <span className={classes.infoValue}>
                     {userInfo.userStatus === '' ? 'N/A' : capitalizeFirstLetter(userInfo.userStatus)}
                   </span>
-                  {accessType === EDIT ? (
-                    <Select
-                      disableUnderline
-                      value={userRole}
-                      onChange={handleRoleChange}
-                      inputProps={{ 'aria-label': 'Without label' }}
-                      className={classes.selectRole}
-                      MenuProps={{
-                        anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
-                        transformOrigin: { vertical: 'top', horizontal: 'left' },
-                        getContentAnchorEl: null,
-                        classes: { paper: classes.menuPaperStyle },
-                      }}
-                    >
-                      <MenuItem value="admin" className={classes.menuItem}> Admin </MenuItem>
-                      <MenuItem value="member" className={classes.menuItem}> Member </MenuItem>
-                    </Select>
-                  )
-                    : <span className={classes.infoValue}>{capitalizeFirstLetter(userRole)}</span> }
+                  <span className={classes.infoValue}>{capitalizeFirstLetter(userInfo.role)}</span>
+                  <span className={classes.infoValue}>
+                    <CustomCheckbox
+                      checked={userRole.toLowerCase() === 'admin'}
+                      onChange={toggleAdminRole}
+                      color="primary"
+                      inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    />
+                  </span>
                 </Typography>
               </div>
             </div>
           </div>
           <Grid container>
-            {userInfo.role !== 'admin' ? (
+            {userInfo.role.toLowerCase() !== 'admin' ? (
               <Grid item xs={12}>
+                {/* <TableThemeProvider> */}
                 <CustomDataTable
                   data={approvedArms}
                   columns={columns}
                   options={options}
                 />
+                {/* </TableThemeProvider> */}
               </Grid>
             )
               : (
                 <Grid item xs={12} className={classes.adminMessageGrid}>
                   <div className={classes.adminMessage}>
-                    You have access to all
-                    {' '}
-                    {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+                    <span className={classes.adminTxtMessage}>
+                      You have access to all
+                      {' '}
+                      {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+                    </span>
                   </div>
                 </Grid>
               )}
@@ -298,9 +333,13 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
     </>
   );
 };
+
 const styles = (theme) => ({
   adminTitle: {
     borderBottom: '1px solid #274FA5',
+  },
+  alertMsg: {
+    borderRadius: '0',
   },
   reviewTitle: {
     fontWeight: 'bold',
@@ -320,7 +359,7 @@ const styles = (theme) => ({
     },
   },
   editUserInfoHeader: {
-    margin: '42px 0 78px 0',
+    margin: '30px 0 48px 0',
   },
   firstInfoSection: {
     display: 'flex',
@@ -328,7 +367,7 @@ const styles = (theme) => ({
   },
   secondInfoSection: {
     display: 'flex',
-    flexGrow: 1,
+    flexGrow: 2,
   },
   infoKeyWrapper: {
     [theme.breakpoints.down('xs')]: {
@@ -342,17 +381,24 @@ const styles = (theme) => ({
   infoKey: {
     whiteSpace: 'nowrap',
     fontFamily: 'Nunito',
-    fontStyle: 'italic',
+    letter: '50px',
+    // fontStyle: 'italic',
     fontWeight: '400', // regular
-    fontSize: '12px',
+    fontSize: '11px',
     color: '#708292',
     letterSpacing: 0,
     lineHeight: '34px',
   },
+  toggleAdmin: {
+    color: '#375FAC',
+    fontFamily: 'Nunito',
+    fontSize: '11px',
+    fontWeight: 'bold',
+  },
   infoValue: {
     lineHeight: '34px',
     fontFamily: 'Nunito',
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
@@ -365,11 +411,11 @@ const styles = (theme) => ({
   selectRole: {
     width: '140px',
     fontFamily: 'Nunito',
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
-    minHeight: '32px',
+    minHeight: '20px',
     whiteSpace: 'nowrap',
     marginLeft: '7px',
     float: 'left',
@@ -409,9 +455,9 @@ const styles = (theme) => ({
     margin: 'auto',
     maxWidth: '1440px',
     marginTop: '-50px',
-    paddingLeft: '36px',
-    paddingRight: '36px',
-    paddingBottom: '50px',
+    paddingLeft: '60px',
+    paddingRight: '60px',
+    paddingBottom: '80px',
   },
   header: {
     paddingLeft: '20px',
@@ -433,6 +479,10 @@ const styles = (theme) => ({
     [theme.breakpoints.down('xs')]: {
       paddingTop: '0',
     },
+  },
+  underlined: {
+    // borderBottom: '1px solid black',
+    textDecoration: 'underline',
   },
   headerMainTitle: {
     fontFamily: 'Lato',
@@ -467,17 +517,23 @@ const styles = (theme) => ({
   adminMessageGrid: {
     boxSizing: 'border-box',
     height: '143px',
-    border: '1px solid #000000',
-    backgroundColor: '#F6F6F6',
+    borderTop: '1px solid #88B4DA',
+    borderBottom: '1px solid #88B4DA',
+    backgroundColor: '#fff',
   },
   adminMessage: {
     color: '#000000',
+    height: '121px',
     fontFamily: 'Nunito',
     fontSize: '18px',
     letterSpacing: '0',
-    lineHeight: '35px',
+    lineHeight: '74px',
     textAlign: 'center',
-    margin: '0 auto',
+    margin: '10px auto',
+    backgroundColor: '#F6F6F6',
+  },
+  adminTxtMessage: {
+    paddingTop: '20px',
   },
   emptySpace: {
     height: '50px',

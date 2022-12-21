@@ -6,10 +6,11 @@ import { signInRed, signOutRed } from './state/loginReducer';
 import { storeInLocalStorage, deleteFromLocalStorage } from '../../utils/localStorage';
 
 import GET_USER_DETAILS from '../../bento/authProviderData';
+import { redirect } from '../Layout/privateRoute';
 
 const AUTH_API = env.REACT_APP_AUTH_SERVICE_API;
-const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID;
-const NIH_CLIENT_ID = env.REACT_APP_NIH_CLIENT_ID;
+const GOOGLE_CLIENT_ID = env.REACT_APP_GOOGLE_CLIENT_ID || 'Sample Id';
+const NIH_CLIENT_ID = env.REACT_APP_NIH_CLIENT_ID || 'Sample Id';
 const NIH_AUTH_URL = env.REACT_APP_NIH_AUTH_URL || 'https://stsstg.nih.gov/auth/oauth/v2/authorize';
 
 const createContext = () => {
@@ -66,6 +67,8 @@ export const AuthProvider = ({ children }) => {
         const {
           data: { getMyUser: userDetails },
         } = response;
+        userDetails.role = userDetails.role.toLowerCase();
+        userDetails.userStatus = userDetails.userStatus.toLowerCase();
         signInRed(userDetails);
         storeInLocalStorage('userDetails', userDetails);
         signInSuccess(userDetails);
@@ -100,10 +103,8 @@ export const AuthProvider = ({ children }) => {
     window.location.href = `${NIH_AUTH_URL}?${params}`;
   };
 
-  const onSignOut = () => {
+  const onSignOut = (history, redirectPath) => {
     (async () => {
-      deleteFromLocalStorage('userDetails');
-      signOutRed();
       await fetch(`${AUTH_API}logout`, {
         method: 'POST',
         headers: {
@@ -111,7 +112,10 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json',
         },
       }).then(() => {
+        deleteFromLocalStorage('userDetails');
+        signOutRed();
         signOut();
+        redirect(history, redirectPath);
       })
         .catch(() => {
         });
