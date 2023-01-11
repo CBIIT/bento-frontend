@@ -18,6 +18,13 @@ window.injectedEnv = {
   // IDP Auth url
   REACT_APP_NIH_AUTH_URL: 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
   // Client IDs for IDP
-  REACT_APP_GOOGLE_CLIENT_ID: 'Sample id',
-  REACT_APP_NIH_CLIENT_ID: 'Sample id',
+  REACT_APP_GOOGLE_CLIENT_ID: '196014713877-0d926jpdd691roubuc0kpu6r6ha9b9t5.apps.googleusercontent.com',
+  REACT_APP_NIH_CLIENT_ID: 'dd27cb95-1010-4fa8-8b3c-f75a8bf4010e',
+
+  // Public Level Access
+  PUBLIC_ACCESS: 'Metadata Only',
+
+  // Node level access
+  NODE_LEVEL_ACCESS: true,
+  NODE_LABEL: 'Study Arm(s)',
 };
