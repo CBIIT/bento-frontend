@@ -6,41 +6,35 @@ import CustomThemeProvider from './FooterThemeConfig';
 
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
+const fetchVersion = (url) => fetch(`${url}version`)
+  .then((resp) => resp.text())
+  .then((text) => {
+    const json = JSON.parse(text);
+    return json.version;
+  })
+  .catch(() => '0.0.0');
+
 const ICDCFooter = () => {
   const [footerUpdatedData, setFooterUpdatedData] = useState(FooterData);
 
   useEffect(() => {
     const getSystems = async () => {
-      const url = window.location.href;
-      const { hash } = window.location;
-      const hashIndex = url.indexOf(hash) || url.length;
-      const hashlessUrl = url.substring(0, hashIndex);
+      const { href, hash } = window.location;
+      const hashIndex = href.indexOf(hash) || href.length;
+      const hashlessUrl = href.substring(0, hashIndex);
+      const [BEversion, FileServiceVersion] = await Promise.all([
+        fetchVersion(hashlessUrl),
+        fetchVersion(FILE_SERVICE_API),
+      ]);
 
-      const BEversion = await fetch(`${hashlessUrl}version`)
-        .then((resp) => resp.text())
-        .then((text) => {
-          const json = JSON.parse(text);
-          return json.version;
-        })
-        .catch(() => '0.0.0');
-
-      const FileServiceVersion = await fetch(`${FILE_SERVICE_API}version`)
-        .then((resp) => (resp).text())
-        .then((text) => {
-          const json = JSON.parse(text);
-          return json.version;
-        })
-        .catch(() => '0.0.0');
-
-      // eslint-disable-next-line camelcase
-      const link_sections = [...FooterData.link_sections];
-      link_sections[2].items[2].text = `BE Version: ${BEversion}`;
+      const linkSections = FooterData.link_sections;
+      linkSections[2].items[2].text = `BE Version: ${BEversion}`;
 
       setFooterUpdatedData({
         ...FooterData,
-        ...{ link_sections },
         ...{ FileServiceVersion },
         ...{ BEversion },
+        ...{ link_sections: linkSections },
       });
     };
     getSystems();
