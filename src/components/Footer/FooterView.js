@@ -21,11 +21,11 @@ const ICDCFooter = () => {
     const getSystems = async () => {
       const { href, hash } = window.location;
       const hashIndex = href.indexOf(hash) || href.length;
-      const hashlessUrl = href.substring(0, hashIndex);
-      const [BEversion, FileServiceVersion] = await Promise.all([
-        fetchVersion(hashlessUrl),
+      const frontendUrl = href.substring(0, hashIndex);
+      const [BEversion, FileServiceVersion] = (await Promise.allSettled([
+        fetchVersion(frontendUrl),
         fetchVersion(FILE_SERVICE_API),
-      ]);
+      ])).map((res) => (res.status === 'fulfilled' ? res.value : '0.0.0'));
 
       const linkSections = FooterData.link_sections;
       linkSections[2].items[2].text = `BE Version: ${BEversion}`;
@@ -34,7 +34,7 @@ const ICDCFooter = () => {
         ...FooterData,
         ...{ FileServiceVersion },
         ...{ BEversion },
-        ...{ link_sections: linkSections },
+        link_sections: linkSections,
       });
     };
     getSystems();
