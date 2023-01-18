@@ -27,6 +27,5 @@ window.injectedEnv = {
   // Node level access
   NODE_LEVEL_ACCESS: true,
 
-  // REACT_APP_NODE_LABEL="Study Arm(s)"
-  NODE_LABEL: 'Foo',
+  NODE_LABEL: 'Study Arm(s)',
 };
