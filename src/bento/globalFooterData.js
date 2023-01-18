@@ -50,7 +50,7 @@ export default {
           text: `FE Version: ${env.REACT_APP_FE_VERSION || '0.0.0'}`,
         },
         {
-          text: `BE Version: ${env.REACT_APP_BE_VERSION || '0.0.0'}`,
+          text: 'BE Version: 0.0.0',
         },
         {
           text: 'System Info Page',
