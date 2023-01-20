@@ -20,4 +20,9 @@ window.injectedEnv = {
   // Client IDs for IDP
   REACT_APP_GOOGLE_CLIENT_ID: 'Sample id',
   REACT_APP_NIH_CLIENT_ID: 'Sample id',
+
+  // Access control settings
+  PUBLIC_ACCESS: 'Metadata Only',
+  NODE_LEVEL_ACCESS: true,
+  NODE_LABEL: 'Study Arm(s)',
 };
