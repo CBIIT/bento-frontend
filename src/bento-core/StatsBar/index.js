@@ -1,3 +1,3 @@
-import StatsBar from './StatsView';
+import StatsBar from './StatsBarView';
 
 export default StatsBar;
