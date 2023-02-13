@@ -6,7 +6,7 @@ import { statsStyling, globalStatsData } from '../../bento/globalStatsData';
 const StatsView = ({ data }) => {
   // Incorporate data into the stats array
   const stats = globalStatsData.map((e) => ({
-    ...e,
+    name: e.statTitle,
     val: data[e.statAPI],
   }));
 

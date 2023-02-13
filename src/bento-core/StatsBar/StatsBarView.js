@@ -104,7 +104,7 @@ const StatsBar = ({
         <StatsBarTitleAndCount
           countId={countId}
           isTitleFirst={isTitleFirst}
-          title={stat.statTitle}
+          title={stat.name}
           titleId={titleId}
           val={stat.val}
         />
