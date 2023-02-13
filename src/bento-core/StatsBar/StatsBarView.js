@@ -7,14 +7,13 @@ const MAX_STATS_ALLOWED = 7; // Maximum number of stats allowed
  * The StatsBar component is a horizontal bar that shows some quick stats
  *
  * @param {object} classes Classes
- * @param {object} data Statistics to show
- * @param {object} stat Names of statistics to show
+ * @param {object} stats Statistics to show
  * @param {object} styles Customized configurations
  *
  * @returns {object} A React subcomponent
  */
 const StatsBar = ({
-  classes, data, stats, styles,
+  classes, stats, styles,
 }) => {
   const countClasses = classes.statCount;
   const iconClasses = classes.statsIcon;
@@ -42,8 +41,9 @@ const StatsBar = ({
    *
    * @param {number} countId DOM id for the count
    * @param {boolean} isTitleFirst Whether to show the title before the count
-   * @param {number} stat The value to show
    * @param {string} title Name of the stat
+   * @param {string} titleId DOM id for the title
+   * @param {number} val The value to show
    *
    * @param {number} titleId DOM id for the title
    * @returns {object} A React subcomponent
@@ -51,9 +51,9 @@ const StatsBar = ({
   const StatsBarTitleAndCount = ({
     countId,
     isTitleFirst,
-    stat,
     title,
     titleId,
+    val,
   }) => {
     if (isTitleFirst) {
       return (
@@ -62,7 +62,7 @@ const StatsBar = ({
             {title}
           </div>
           <div className={countClasses} id={countId}>
-            {stat}
+            {val}
           </div>
         </div>
       );
@@ -71,7 +71,7 @@ const StatsBar = ({
     return (
       <div>
         <div className={countClasses} id={countId}>
-          {stat}
+          {val}
         </div>
         <div className={titleClasses} id={titleId}>
           {title || 0}
@@ -84,13 +84,12 @@ const StatsBar = ({
    * A group of things to show for a single stat
    *
    * @param {number} index Numbering assigned to this stats group
-   * @param {object} stat Names of statistics to show
-   * @param {number} val The value to show
+   * @param {object} stat Statistic to show
    *
    * @returns {object} A React subcomponent
    */
   const StatsBarGroup = ({
-    index, stat, val,
+    index, stat,
   }) => {
     const countId = `statsbar_count_${index + 1}`;
     const isTitleFirst = styles.global.statTitleFirst;
@@ -105,9 +104,9 @@ const StatsBar = ({
         <StatsBarTitleAndCount
           countId={countId}
           isTitleFirst={isTitleFirst}
-          stat={val}
           title={stat.statTitle}
           titleId={titleId}
+          val={stat.val}
         />
       </div>
     );
@@ -121,7 +120,6 @@ const StatsBar = ({
             <StatsBarGroup
               index={index}
               stat={stat}
-              val={data[stat.statAPI]}
             />
           ))}
         </div>
