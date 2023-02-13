@@ -4,130 +4,131 @@ import { withStyles } from '@material-ui/core';
 const MAX_STATS_ALLOWED = 7; // Maximum number of stats allowed
 
 /**
- * An icon for a stat
- *
- * @param {string} alt The alt text
- * @param {classes} classes Classes
- * @param {string} src The image's source media
- * @returns {object} A React subcomponent
- */
-const StatsBarIcon = ({
-  alt, iconClasses, src,
-}) => (
-  <div className={iconClasses}>
-    <img src={src} alt={alt} />
-  </div>
-);
-
-/**
- * The title and count for a single stat
- * @param {object} countClasses Classes for the count
- * @param {number} countId DOM id for the count
- * @param {boolean} isTitleFirst Whether to show the title before the count
- * @param {number} stat The value to show
- * @param {string} title Name of the stat
- * @param {object} titleClasses Classes for the title
- * @param {number} titleId DOM id for the title
- * @returns {object} A React subcomponent
- */
-const StatsBarTitleAndCount = ({
-  countClasses,
-  countId,
-  isTitleFirst,
-  stat,
-  title,
-  titleClasses,
-  titleId,
-}) => {
-  if (isTitleFirst) {
-    return (
-      <div>
-        <div className={titleClasses} id={titleId}>
-          {title}
-        </div>
-        <div className={countClasses} id={countId}>
-          {stat}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <div className={countClasses} id={countId}>
-        {stat}
-      </div>
-      <div className={titleClasses} id={titleId}>
-        {title || 0}
-      </div>
-    </div>
-  );
-};
-
-/**
- * A group of things to show for a single stat
- *
- * @param {object} classes Classes
- * @param {object} data Statistics to show
- * @param {number} index Numbering assigned to this stats group
- * @param {object} stat Names of statistics to show
- * @param {object} styles Customized configurations
- * @returns {object} A React subcomponent
- */
-const StatsBarGroup = ({
-  classes, data, index, stat, styles,
-}) => {
-  const countId = `statsbar_count_${index + 1}`;
-  const isTitleFirst = styles.global.statTitleFirst;
-  const titleId = `statsbar_title_${index + 1}`;
-
-  return (
-    <div className={classes.statsGroup}>
-      <StatsBarIcon
-        alt={stat.statIconAlt}
-        iconClasses={classes.statsIcon}
-        src={stat.statIconSrc}
-      />
-      <StatsBarTitleAndCount
-        countClasses={classes.statCount}
-        countId={countId}
-        isTitleFirst={isTitleFirst}
-        stat={data[stat.statAPI]}
-        title={stat.statTitle}
-        titleClasses={classes.statTitle}
-        titleId={titleId}
-      />
-    </div>
-  );
-};
-
-/** The StatsBar component is a horizontal bar that shows some quick stats
+ * The StatsBar component is a horizontal bar that shows some quick stats
  *
  * @param {object} classes Classes
  * @param {object} data Statistics to show
  * @param {object} stat Names of statistics to show
  * @param {object} styles Customized configurations
+ *
  * @returns {object} A React subcomponent
  */
 const StatsBar = ({
   classes, data, stats, styles,
-}) => (
-  <>
-    <div className={classes.statsSection}>
-      <div className={classes.box}>
-        {stats.slice(0, MAX_STATS_ALLOWED).map((stat, index) => (
-          <StatsBarGroup
-            classes={classes}
-            data={data}
-            index={index}
-            stat={stat}
-            styles={styles}
-          />
-        ))}
-      </div>
+}) => {
+  const countClasses = classes.statCount;
+  const iconClasses = classes.statsIcon;
+  const titleClasses = classes.statTitle;
+  const truncatedListOfStats = stats.slice(0, MAX_STATS_ALLOWED);
+
+  /**
+   * An icon for a stat
+   *
+   * @param {string} alt The alt text
+   * @param {string} src The image's source media
+   *
+   * @returns {object} A React subcomponent
+   */
+  const StatsBarIcon = ({
+    alt, src,
+  }) => (
+    <div className={iconClasses}>
+      <img src={src} alt={alt} />
     </div>
-  </>
-);
+  );
+
+  /**
+   * The title and count for a single stat
+   *
+   * @param {number} countId DOM id for the count
+   * @param {boolean} isTitleFirst Whether to show the title before the count
+   * @param {number} stat The value to show
+   * @param {string} title Name of the stat
+   *
+   * @param {number} titleId DOM id for the title
+   * @returns {object} A React subcomponent
+   */
+  const StatsBarTitleAndCount = ({
+    countId,
+    isTitleFirst,
+    stat,
+    title,
+    titleId,
+  }) => {
+    if (isTitleFirst) {
+      return (
+        <div>
+          <div className={titleClasses} id={titleId}>
+            {title}
+          </div>
+          <div className={countClasses} id={countId}>
+            {stat}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <div className={countClasses} id={countId}>
+          {stat}
+        </div>
+        <div className={titleClasses} id={titleId}>
+          {title || 0}
+        </div>
+      </div>
+    );
+  };
+
+  /**
+   * A group of things to show for a single stat
+   *
+   * @param {number} index Numbering assigned to this stats group
+   * @param {object} stat Names of statistics to show
+   * @param {number} val The value to show
+   *
+   * @returns {object} A React subcomponent
+   */
+  const StatsBarGroup = ({
+    index, stat, val,
+  }) => {
+    const countId = `statsbar_count_${index + 1}`;
+    const isTitleFirst = styles.global.statTitleFirst;
+    const titleId = `statsbar_title_${index + 1}`;
+
+    return (
+      <div className={classes.statsGroup}>
+        <StatsBarIcon
+          alt={stat.statIconAlt}
+          src={stat.statIconSrc}
+        />
+        <StatsBarTitleAndCount
+          countId={countId}
+          isTitleFirst={isTitleFirst}
+          stat={val}
+          title={stat.statTitle}
+          titleId={titleId}
+        />
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <div className={classes.statsSection}>
+        <div className={classes.box}>
+          {truncatedListOfStats.map((stat, index) => (
+            <StatsBarGroup
+              index={index}
+              stat={stat}
+              val={data[stat.statAPI]}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
 
 const styles = () => ({
   statsSection: (props) => ({
