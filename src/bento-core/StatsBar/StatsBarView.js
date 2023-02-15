@@ -128,6 +128,9 @@ const StatsBar = ({
   );
 };
 
+/**
+ * Used by withStyles(), below
+ */
 const styles = () => ({
   statsSection: (props) => ({
     top: props.styles.global.top ? props.styles.global.top : '139px',
