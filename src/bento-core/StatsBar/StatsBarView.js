@@ -8,7 +8,7 @@ const MAX_STATS_ALLOWED = 7; // Maximum number of stats allowed
  *
  * @param {object} classes Classes
  * @param {object} stats Statistics to show
- * @param {object} styles Customized configurations used by both`styles` and withStyles(), below
+ * @param {object} styles Customized configurations used by both `styles` and withStyles(), below
  *
  * @returns {object} A React subcomponent
  */
