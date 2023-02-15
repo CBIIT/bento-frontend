@@ -10,7 +10,6 @@ import {
   manipulateLinks,
   getOptions,
   getColumns,
-  CustomActiveDonut,
 } from 'bento-components';
 import globalData from '../../bento/siteWideConfig';
 import {
@@ -24,11 +23,24 @@ import {
   singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
 } from '../dashboardTab/store/dashboardReducer';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
-import Widget from '../../components/Widgets/WidgetView';
 import colors from '../../utils/colors';
+import { WidgetGenerator } from '../../bento-core/Widgets';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
+
+  const widgetGeneratorConfig = {
+    theme,
+    DonutConfig: {
+      colors,
+      styles: {
+        cellPadding: 0,
+        textOverflowLength: 20,
+      },
+    },
+  };
+
+  const { Widget } = WidgetGenerator(widgetGeneratorConfig);
 
   const redirectTo = () => {
     setSideBarToLoading();
@@ -247,28 +259,27 @@ const ProgramView = ({ classes, data, theme }) => {
                     className={classes.marginTopN37}
                   >
                     <Widget
-                      title={rightPanel.widget[0].label}
-                      upperTitle
+                      header={(
+                        <Typography
+                          colorBrightness="main"
+                          size="md"
+                          weight="normal"
+                          family="Nunito"
+                          color={theme.palette.dodgeBlue.main}
+                          className={classes.widgetTitle}
+                        >
+                          {rightPanel.widget[0].label}
+                        </Typography>
+                      )}
                       bodyClass={classes.fullHeightBody}
                       className={classes.card}
-                      color={theme.palette.dodgeBlue.main}
-                      titleClass={classes.widgetTitle}
+                      customBackGround
                       noPaddedTitle
-                    >
-                      <CustomActiveDonut
-                        data={programData[rightPanel.widget[0].dataField] || []}
-                        width={400}
-                        height={225}
-                        innerRadius={50}
-                        outerRadius={75}
-                        cx="50%"
-                        cy="50%"
-                        fontSize="12px"
-                        colors={colors}
-                        titleLocation="bottom"
-                        titleAlignment="center"
-                      />
-                    </Widget>
+                      data={programData[rightPanel.widget[0].dataField] || []}
+                      chartType="donut"
+                      chartTitleLocation="bottom"
+                      chartTitleAlignment="center"
+                    />
                   </Grid>
                 ) : ''}
 
