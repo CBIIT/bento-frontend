@@ -14,15 +14,14 @@ function InputMinMaxView({
   onInputChange,
   type,
 }) {
-
   const handleInputChange = (e) => {
     const minMaxRange = [lowerBoundVal, upperBoundVal];
     if (type === silderTypes.INPUT_MIN) {
-      minMaxRange[0] = Number(e?.target?.value);
+      minMaxRange[0] = Number(e.target.value);
     } else {
-      minMaxRange[1] = Number(e?.target?.value);
+      minMaxRange[1] = Number(e.target.value);
     }
-    onInputChange(minMaxRange)
+    onInputChange(minMaxRange);
   };
 
   const vlaue = (type === silderTypes.INPUT_MIN) ? lowerBoundVal : upperBoundVal;

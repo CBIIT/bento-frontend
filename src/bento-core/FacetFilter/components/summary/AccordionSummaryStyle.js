@@ -7,5 +7,5 @@ export default () => ({
   },
   expansionPanelDetailsRoot: {
     display: 'block',
-  }
+  },
 });

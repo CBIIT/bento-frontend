@@ -11,6 +11,7 @@ import Cases from './caseTable/caseController';
 import SideBar from '../../components/SideBar/SideBarView';
 import { widgetsData } from '../../bento/dashboardData';
 import colors from '../../utils/colors';
+import BentoFacetFilter from '../../components/BentoFacetFilter/BentoFacetFilter';
 
 const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
 
@@ -22,7 +23,6 @@ const Dashboard = ({
   const handleChange = () => {
     setCollapse((prev) => !prev);
   };
-
   return (
     <>
       <div className={classes.dashboardContainer}>

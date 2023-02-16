@@ -1,4 +1,6 @@
-import { stateActionTypes } from "../state/ActionTypes";
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable no-case-declarations */
+import { stateActionTypes } from './ActionTypes';
 
 export const facetFilterStateReducer = (currentState, action) => {
   const { payload, type } = action;
@@ -10,4 +12,4 @@ export const facetFilterStateReducer = (currentState, action) => {
     default:
       return currentState;
   }
-}
+};

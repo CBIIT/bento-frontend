@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable react/jsx-indent */
+/* eslint-disable object-curly-newline */
 import React, { useEffect, useState } from 'react';
-import { withStyles, Input, Slider, ListItem } from '@material-ui/core';
+import { withStyles, Slider, ListItem } from '@material-ui/core';
 import styles from './SliderStyle';
 import { silderTypes } from '../Types';
 import InputMinMaxView from './InputMinMaxView';
@@ -9,16 +12,15 @@ const SliderView = ({
   classes,
   facet,
   onSliderToggle,
-  filterState
+  filterState,
 }) => {
-  
   const { minLowerBound, maxUpperBound, quantifier, datafield, facetValues } = facet;
   const lowerBoundValue = facetValues[0];
   const upperBoundValue = facetValues[1];
 
   const handleChangeCommittedSlider = (value) => {
     if (!value.includes('')) {
-      onSliderToggle({sliderValue: value, ...facet});
+      onSliderToggle({ sliderValue: value, ...facet });
     }
   };
   const [sliderValue, setSliderValue] = useState([lowerBoundValue, upperBoundValue]);
@@ -32,8 +34,8 @@ const SliderView = ({
   }, [filterState]);
 
   const handleChangeSlider = (index, value) => {
-    if (!value?.includes('')) {
-      setSliderValue([...value])
+    if (!value.includes('')) {
+      setSliderValue([...value]);
     }
   };
 
@@ -128,6 +130,6 @@ const SliderView = ({
       </div>
     </>
   );
-}
+};
 
 export default withStyles(styles)(SliderView);

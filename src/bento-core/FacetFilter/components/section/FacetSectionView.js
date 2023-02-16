@@ -1,8 +1,7 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
-  AccordionSummary,
   withStyles,
 } from '@material-ui/core';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
@@ -11,9 +10,8 @@ import styles from './FacetSectionStyle';
 const FacetSectionView = ({
   children,
   classes,
-  section
+  section,
 }) => {
-
   const [expand, setExpand] = useState(true);
   const onExpandSection = () => setExpand(!expand);
   return (
@@ -27,7 +25,7 @@ const FacetSectionView = ({
       >
         <CustomAccordionSummary>
           <div className={classes.sectionSummaryText}>
-            {section.sectionName} 
+            {section.sectionName}
           </div>
         </CustomAccordionSummary>
         <AccordionDetails classes={{ root: classes.expansionPanelDetailsRoot }}>

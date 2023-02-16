@@ -33,7 +33,7 @@ const ClearAllFiltersBtn = ({
 }
 
 const mapStateToProps = (state) => ({
-  filterState: state.statusReducer?.filterState,
+  filterState: state.statusReducer.filterState,
 });
 
 const mapDispatchToProps = (dispatch) => ({

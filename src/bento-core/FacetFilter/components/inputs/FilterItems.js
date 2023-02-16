@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { sortBySection } from '../../utils/Sort';
 import ReduxCheckbox from './checkbox/ReduxCheckbox';
 import ReduxSlider from './slider/ReduxSlider';
 import { InputTypes } from './Types';
 
 const FilterItems = ({
-  facet
+  facet,
 }) => {
-  
-  const { type, facetValues, datafield } = facet;
+  const { type, datafield } = facet;
   const sortFilters = sortBySection(facet);
-  
+
   const filterItems = () => {
     switch (type) {
       case InputTypes.CHECKBOX:
@@ -21,7 +20,9 @@ const FilterItems = ({
           />
         ));
       case InputTypes.SLIDER:
-        return (<ReduxSlider facet={facet} />)
+        return (<ReduxSlider facet={facet} />);
+      default:
+        return (<></>);
     }
   };
 
@@ -29,7 +30,7 @@ const FilterItems = ({
     <>
       {filterItems()}
     </>
-  )
-}
+  );
+};
 
 export default FilterItems;

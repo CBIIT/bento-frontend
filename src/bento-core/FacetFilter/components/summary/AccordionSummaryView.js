@@ -1,11 +1,11 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React from 'react';
 import {
   AccordionSummary,
   withStyles,
 } from '@material-ui/core';
 import {
-    ArrowDropDown as ArrowDropDownIcon, ExpandMore as ExpandMoreIcon,
-  } from '@material-ui/icons';
+  ExpandMore as ExpandMoreIcon,
+} from '@material-ui/icons';
 import style from './AccordionSummaryStyle';
 
 const Summary = withStyles({
@@ -30,23 +30,20 @@ const Summary = withStyles({
 const CustomAccordionSummary = ({
   children,
   classes,
-  expandIcon,
-}) => {
-  return (
-    <Summary
-      expandIcon={(
-        <ExpandMoreIcon
-          classes={{ root: classes.dropDownIconSubSection }}
-          style={{ fontSize: 26 }}
-        />
-      )}
-      classes={{
-        expandIcon: classes.ExpansionPaneldropDownIcon,
-      }}
-    >
-      {children}
-    </Summary>
-  );
-}
+}) => (
+  <Summary
+    expandIcon={(
+      <ExpandMoreIcon
+        classes={{ root: classes.dropDownIconSubSection }}
+        style={{ fontSize: 26 }}
+      />
+    )}
+    classes={{
+      expandIcon: classes.ExpansionPaneldropDownIcon,
+    }}
+  >
+    {children}
+  </Summary>
+);
 
 export default withStyles(style)(CustomAccordionSummary);

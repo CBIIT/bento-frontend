@@ -1,5 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable react/jsx-indent */
+/* eslint-disable object-curly-newline */
+/* eslint-disable object-shorthand */
+/* eslint-disable react/jsx-one-expression-per-line */
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Checkbox,
@@ -11,26 +17,25 @@ import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
 import styles from './CheckboxStyle';
+
 const alignment = 'flex-start';
 
-const CheckBoxView = ({ 
+const CheckBoxView = ({
   classes,
   checkboxItem,
   datafield,
   onToggle,
-  filterState,
 }) => {
-
-  const {name, subjects, isChecked} = checkboxItem;
+  const { name, subjects, isChecked } = checkboxItem;
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
       name: name,
       datafield: datafield,
-      isChecked: isChecked ? false: true,
+      isChecked: !isChecked,
     };
     onToggle(toggleCheckBoxItem);
-  }
+  };
 
   return (
     <>
@@ -66,6 +71,6 @@ const CheckBoxView = ({
       </ListItem>
     </>
   );
-}
+};
 
 export default withStyles(styles)(CheckBoxView);

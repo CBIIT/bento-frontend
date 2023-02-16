@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   List,
@@ -10,11 +10,10 @@ import styles from './FacetStyle';
 import FilterItems from '../inputs/FilterItems';
 
 const FacetView = ({
-    children,
-    classes,
-    facet
-  }) => {
-
+  children,
+  classes,
+  facet,
+}) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
 
@@ -23,41 +22,41 @@ const FacetView = ({
    */
   const { type, facetValues } = facet;
   const selectedItems = facetValues && facetValues.filter((item) => item.isChecked);
-  const displayFacet = {...facet};
+  const displayFacet = { ...facet };
   displayFacet.facetValues = selectedItems;
 
   return (
-  <>
-    <Accordion
-      square
-      expanded={expand}
-      onChange={onExpandFacet}
-      classes={{
-        root: classes.expansionPanelsideBarItem,
-      }}
-    >
-      <CustomAccordionSummary>
-        <div
-          id={`filterGroup_${facet.datafield}`}
-          className={classes.subSectionSummaryText}
-        >
-          {facet?.label}
-        </div>
-      </CustomAccordionSummary>
-      {children}
-    </Accordion>
-    {
-      (!expand && type === InputTypes.CHECKBOX) && (
-        <>
-          <List>
-            <FilterItems
-              facet={displayFacet}
-            />
-          </List>
-        </>
-      )
-    }
-  </>
+    <>
+      <Accordion
+        square
+        expanded={expand}
+        onChange={onExpandFacet}
+        classes={{
+          root: classes.expansionPanelsideBarItem,
+        }}
+      >
+        <CustomAccordionSummary>
+          <div
+            id={`filterGroup_${facet.datafield}`}
+            className={classes.subSectionSummaryText}
+          >
+            {facet.label}
+          </div>
+        </CustomAccordionSummary>
+        {children}
+      </Accordion>
+      {
+        (!expand && type === InputTypes.CHECKBOX) && (
+          <>
+            <List>
+              <FilterItems
+                facet={displayFacet}
+              />
+            </List>
+          </>
+        )
+      }
+    </>
   );
 };
 

@@ -1,6 +1,17 @@
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
+/* eslint-disable block-scoped-var */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-unused-vars */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-param-reassign */
+/* eslint-disable space-infix-ops */
+/* eslint-disable prefer-template */
+
 import { facetSearchData, facetSectionVariables, facetActionsConfig } from './bento/filterCofig';
 import { InputTypes } from './components/inputs/Types';
 import { clearFacetSection, clearSliderSection } from './store/actions/SideBar';
@@ -12,15 +23,16 @@ const FacetFilterController = (props) => {
    * 1. checkbox state
    * 2. subject state
    */
-  const { filterState } = props;
+  const { filterState, data, facetsConfig } = props;
+
   const updateSibarState = (filterSections) => {
     const updateSections = [...filterSections];
-    if(!_.isEmpty(filterState)) {
-      for (const[key, value] of Object.entries(filterState)) {
+    if (!_.isEmpty(filterState)) {
+      for (const [key, value] of Object.entries(filterState)) {
         updateSections.forEach((sideBar) => {
-          if (sideBar.type === InputTypes.CHECKBOX && sideBar.datafield == key) {
+          if (sideBar.type === InputTypes.CHECKBOX && sideBar.datafield === key) {
             sideBar.facetValues.forEach((item) => {
-              item.isChecked = value[item.name] ? true : false;
+              item.isChecked = value[item.name] ? value[item.name] : false;
             });
           }
           if (sideBar.type === InputTypes.SLIDER && sideBar.datafield === key) {
@@ -36,7 +48,7 @@ const FacetFilterController = (props) => {
           });
         }
         /**
-         * set default value for slider - on clear all filter 
+         * set default value for slider - on clear all filter
          */
         if (sideBar.type === InputTypes.SLIDER) {
           const { minLowerBound, maxUpperBound } = sideBar;
@@ -45,12 +57,8 @@ const FacetFilterController = (props) => {
       });
     }
     return updateSections;
-  }
+  };
 
-  /**
-   * Generate facet sections state
-   * 
-   */ 
   const sideBarDisplay = facetSearchData.filter((sideBar) => sideBar.show).slice(0, 16);
   const updateSections = updateSibarState(sideBarDisplay);
 
@@ -65,25 +73,55 @@ const FacetFilterController = (props) => {
     return Object.values(sideBar);
   };
   const sideBarSections = arrangeBySections(updateSections);
-  return (  
+
+  /* generate filter section state */
+  const updateFacetStates = (facets) => {
+    const updateFacets = [];
+    if (facets) {
+      facets.forEach((facet) => {
+        const updateFacet = { ...facet, facetValues: [] };
+        const { apiPath, field } = updateFacet;
+        if (data[apiPath]) {
+          const updateField = data[apiPath].map((item) => {
+            const addField = { ...item };
+            addField.name = item[field];
+            return addField;
+          });
+          updateFacet.facetValues = updateField;
+        }
+        updateFacets.push(updateFacet);
+      });
+    }
+    return updateFacets;
+  };
+
+  /**
+   * Generate facet sections state
+   *
+   */
+  const displayFacets = facetsConfig.filter((facet) => facet.show).slice(0, 16);
+  const facetStates = updateFacetStates(displayFacets);
+  const facetSections = arrangeBySections(facetStates);
+
+  return (
     <>
       <BentoFacetFilter
         {...props}
-        sideBarSections={sideBarSections}
+        sideBarSections={facetSections}
         facetSectionVariables={facetSectionVariables}
         facetActionsConfig={facetActionsConfig}
       />
     </>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state) => ({
-  filterState: state.statusReducer?.filterState,
+  filterState: state.statusReducer.filterState,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onClearFacetSection: (section) => {dispatch(clearFacetSection(section))},
-  onClearSliderSection: (section) => {dispatch(clearSliderSection(section))}
+  onClearFacetSection: (section) => { dispatch(clearFacetSection(section)); },
+  onClearSliderSection: (section) => { dispatch(clearSliderSection(section)); },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FacetFilterController);

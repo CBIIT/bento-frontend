@@ -1,3 +1,10 @@
+/* eslint-disable quotes */
+/* eslint-disable comma-dangle */
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable quote-props */
+/* eslint-disable semi */
+
 import { InputTypes } from "../components/inputs/Types";
 
 export const facetSearchData = [

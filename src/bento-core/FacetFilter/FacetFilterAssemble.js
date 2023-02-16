@@ -4,8 +4,8 @@ import { generateClearAllFilterBtn } from './generator/component';
 import FacetFilterController from './FacetFilterController';
 
 const FacetFilterAssemble = ({
+  data,
 }) => {
-
   /**
   * generate clear all btn
   */
@@ -37,6 +37,7 @@ const FacetFilterAssemble = ({
   return (
     <>
       <FacetFilterController
+        data={data}
         ClearAllFiltersButton={ClearAllFiltersButton}
         FacetSectionDivider={FacetSectionDivider}
       >

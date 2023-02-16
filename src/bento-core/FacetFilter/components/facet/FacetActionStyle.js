@@ -26,5 +26,5 @@ export default () => ({
     float: 'right',
     marginRight: '10px',
     marginTop: '5px',
-  }
+  },
 });

@@ -10,5 +10,5 @@ export const sortSection = (facet, sortBy) => ({
 
 export const updateState = (sections) => ({
   type: stateActionTypes.UPDATE_STATE,
-  payload: sections
+  payload: sections,
 });

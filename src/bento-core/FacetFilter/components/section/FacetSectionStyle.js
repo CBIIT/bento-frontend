@@ -4,7 +4,6 @@ export default () => ({
     background: '#EAEAEA',
     margin: 'auto',
     position: 'initial',
-    boxShadow: 'inset -10px -1px 10px -7px rgb(50 50 50 / 25%)',
     '&:before': {
       position: 'initial',
     },
@@ -26,5 +25,5 @@ export default () => ({
   },
   expansionPanelDetailsRoot: {
     display: 'block',
-  }
+  },
 });

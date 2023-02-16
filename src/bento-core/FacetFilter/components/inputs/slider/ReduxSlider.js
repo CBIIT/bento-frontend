@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { toggleSilder } from '../../../store/actions/SideBar';
 import SliderView from './SliderView';
 
-const ReduxSlider =  ((props) => <SliderView {...props}/>);
+const ReduxSlider = ((props) => <SliderView {...props} />);
 
 const mapStateToProps = (state) => ({
-  filterState: state?.statusReducer?.filterState,
+  filterState: state.statusReducer.filterState,
 });
 
 const mapDispatchToProps = (dispatch) => ({
