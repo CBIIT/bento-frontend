@@ -1,5 +1,5 @@
-import { InputTypes } from '../../bento-core/FacetFilter/components/inputs/Types';
-import { sortType } from '../../bento-core/FacetFilter/utils/Sort';
+import { InputTypes } from '../FacetFilter/components/inputs/Types';
+import { sortType } from '../FacetFilter/utils/Sort';
 
 const CASES = 'Cases';
 const SAMPLES = 'Samples';
@@ -60,7 +60,7 @@ export const facetsConfig = [
   {
     section: CASES,
     label: 'Diagnosis',
-    apiPath: 'subjectCountByStudy',
+    apiPath: 'subjectCountByDiagnoses',
     apiForFiltering: 'filterSubjectCountByDiagnoses',
     datafield: 'diagnoses',
     field: GROUP,

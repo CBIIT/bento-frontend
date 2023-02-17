@@ -1,13 +1,21 @@
+/* eslint-disable block-scoped-var */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
+/* eslint-disable block-spacing */
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { clearAllFilters } from '../../store/actions/SideBar';
 
 const ClearAllFiltersBtn = ({
   CustomClearAllBtn,
-  clearAllFilters,
-  filterState
+  onClearAllFilters,
+  filterState,
 }) => {
-  const dispatchClearAllFilters = () => clearAllFilters();
+  const dispatchClearAllFilters = () => onClearAllFilters();
 
   const [disable, setDisable] = useState(false);
   useEffect(() => {
@@ -18,6 +26,8 @@ const ClearAllFiltersBtn = ({
       }, 0);
       if (!disable && filters === 0) {
         setDisable(true);
+      } else {
+        setDisable(false);
       }
     }
   }, [filterState]);
@@ -30,14 +40,14 @@ const ClearAllFiltersBtn = ({
       />
     </>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  clearAllFilters : () => {dispatch(clearAllFilters())},
+  onClearAllFilters: () => {dispatch(clearAllFilters());},
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClearAllFiltersBtn);

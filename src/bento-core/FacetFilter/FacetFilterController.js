@@ -1,6 +1,3 @@
-import _ from 'lodash';
-import React from 'react';
-import { connect } from 'react-redux';
 /* eslint-disable block-scoped-var */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
@@ -11,10 +8,10 @@ import { connect } from 'react-redux';
 /* eslint-disable no-param-reassign */
 /* eslint-disable space-infix-ops */
 /* eslint-disable prefer-template */
-
-import { facetSearchData, facetSectionVariables, facetActionsConfig } from './bento/filterCofig';
+import _ from 'lodash';
+import React from 'react';
+import { connect } from 'react-redux';
 import { InputTypes } from './components/inputs/Types';
-import { clearFacetSection, clearSliderSection } from './store/actions/SideBar';
 import BentoFacetFilter from './FacetFilterView';
 
 const FacetFilterController = (props) => {
@@ -25,7 +22,7 @@ const FacetFilterController = (props) => {
    */
   const { filterState, data, facetsConfig } = props;
 
-  const updateSibarState = (filterSections) => {
+  const updateFacetState = (filterSections) => {
     const updateSections = [...filterSections];
     if (!_.isEmpty(filterState)) {
       for (const [key, value] of Object.entries(filterState)) {
@@ -59,23 +56,28 @@ const FacetFilterController = (props) => {
     return updateSections;
   };
 
-  const sideBarDisplay = facetSearchData.filter((sideBar) => sideBar.show).slice(0, 16);
-  const updateSections = updateSibarState(sideBarDisplay);
-
   const arrangeBySections = (arr) => {
     const sideBar = {};
     arr.forEach(({ section, ...item }) => {
       if (!sideBar[section]) {
-        sideBar[section] = { sectionName: section, expandSection: true, items: [] };
+        sideBar[section] = {
+          name: section,
+          sectionName: section,
+          expandSection: true,
+          items: [],
+        };
       }
       sideBar[section].items.push({ section, ...item });
     });
     return Object.values(sideBar);
   };
-  const sideBarSections = arrangeBySections(updateSections);
 
-  /* generate filter section state */
-  const updateFacetStates = (facets) => {
+  /**
+   * Construct filter object
+   * 1. add facet values to facets
+   * 2. add 'name' key to each facet value
+   */
+  const addFacetValues = (facets) => {
     const updateFacets = [];
     if (facets) {
       facets.forEach((facet) => {
@@ -100,16 +102,15 @@ const FacetFilterController = (props) => {
    *
    */
   const displayFacets = facetsConfig.filter((facet) => facet.show).slice(0, 16);
-  const facetStates = updateFacetStates(displayFacets);
-  const facetSections = arrangeBySections(facetStates);
+  const facetStates = addFacetValues(displayFacets);
+  const updateState = updateFacetState(facetStates);
+  const facetSections = arrangeBySections(updateState);
 
   return (
     <>
       <BentoFacetFilter
         {...props}
         sideBarSections={facetSections}
-        facetSectionVariables={facetSectionVariables}
-        facetActionsConfig={facetActionsConfig}
       />
     </>
   );
@@ -119,9 +120,4 @@ const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onClearFacetSection: (section) => { dispatch(clearFacetSection(section)); },
-  onClearSliderSection: (section) => { dispatch(clearSliderSection(section)); },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(FacetFilterController);
+export default connect(mapStateToProps, null)(FacetFilterController);

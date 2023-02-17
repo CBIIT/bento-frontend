@@ -12,7 +12,7 @@ import { widgetsData, displayActiveFiltersQuery } from '../../bento/dashboardDat
 import Tab from './components/tabController';
 import colors from '../../utils/colors';
 import styles from './dashboardStyles';
-import BentoFacetFilter from '../../components/BentoFacetFilter/BentoFacetFilter';
+import BentoFacetFilter from '../../bento-core/Template/BentoFacetFilter';
 
 const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
 

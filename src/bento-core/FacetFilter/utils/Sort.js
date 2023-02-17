@@ -22,9 +22,9 @@ const sortByCheckedItem = (sortfacetValues) => sortfacetValues
  * @param {array} checkboxData
  * @return {array}
  */
-export const sortBySection = ({ facetValues, sort_type }) => {
+export const sortBySection = ({ facetValues, sortBy }) => {
   const sortfacetValues = [...facetValues];
-  if (sort_type === sortType.ALPHABET) {
+  if (sortBy === sortType.ALPHABET) {
     sortfacetValues.sort(((a, b) => (a.name > b.name || -(a.name < b.name))));
   } else {
     sortfacetValues.sort((a, b) => b.subjects - a.subjects);

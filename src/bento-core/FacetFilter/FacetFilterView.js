@@ -1,58 +1,48 @@
-import React, { useReducer } from 'react';
+/* eslint-disable arrow-body-style */
+/* eslint-disable padded-blocks */
+import React from 'react';
 import {
   List,
   withStyles,
 } from '@material-ui/core';
 import styles from './FacetFilterStyle';
-import { facetFilterStateReducer } from './state/StateReducer';
 import FacetSectionView from './components/section/FacetSectionView';
-import FacetView from './components/facet/FacetView';
-import FacetActionView from './components/facet/FacetActionView';
+import FacetView from './components/facet/ReduxFacetView';
 import FilterItems from './components/inputs/FilterItems';
-import { InputTypes } from './components/inputs/Types';
 
 const BentoFacetFilter = ({
   sideBarSections,
-  facetActionsConfig,
-  onClearFacetSection,
-  onClearSliderSection,
-  ClearAllFiltersButton,
   FacetSectionDivider,
+  CustomFacetSection,
+  CustomFacetView,
 }) => {
-  const [facetSections, dispatch] = useReducer(facetFilterStateReducer, sideBarSections);
-
   return (
     <>
-      {ClearAllFiltersButton && (<ClearAllFiltersButton />)}
       {
-        facetSections.map((currentSection, index) => (
+        sideBarSections.map((section, index) => (
           <>
             {FacetSectionDivider && (
-              <FacetSectionDivider
-                id={`divider_${currentSection.sectionName}_${index}`}
-              />
+              <FacetSectionDivider id={index} name={section.name} />
             )}
-            <FacetSectionView section={currentSection}>
-              {currentSection.items.map((facet) => (
-                <FacetView facet={facet}>
-                  <FacetActionView
-                    facetActionsConfig={facetActionsConfig}
+            {CustomFacetSection && (
+              <FacetSectionView
+                section={section}
+                CustomSection={CustomFacetSection}
+              >
+                {section.items.map((facet) => (
+                  <FacetView
                     facet={facet}
-                    datafield={facet.datafield}
-                    dispatchFacetAction={dispatch}
-                    onClearFacetSection={facet.type === InputTypes.CHECKBOX
-                      ? onClearFacetSection
-                      : onClearSliderSection}
-                  />
-                  <br />
-                  <List>
-                    <FilterItems
-                      facet={facet}
-                    />
-                  </List>
-                </FacetView>
-              ))}
-            </FacetSectionView>
+                    CustomView={CustomFacetView}
+                  >
+                    <List>
+                      <FilterItems
+                        facet={facet}
+                      />
+                    </List>
+                  </FacetView>
+                ))}
+              </FacetSectionView>
+            )}
           </>
         ))
       }

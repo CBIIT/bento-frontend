@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable react/jsx-indent */
 import React from 'react';
 import { sortBySection } from '../../utils/Sort';
 import ReduxCheckbox from './checkbox/ReduxCheckbox';
@@ -6,9 +8,10 @@ import { InputTypes } from './Types';
 
 const FilterItems = ({
   facet,
+  sortBy,
 }) => {
   const { type, datafield } = facet;
-  const sortFilters = sortBySection(facet);
+  const sortFilters = sortBySection({ ...facet, sortBy });
 
   const filterItems = () => {
     switch (type) {

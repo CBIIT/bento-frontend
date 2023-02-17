@@ -39,7 +39,7 @@ import fakeAdminView from '../../pages/fakeAdmin';
 import PrivateRoute, { LoginRoute, AdminRoute, MixedRoute } from './privateRoute';
 
 import Notifactions from '../Notifications/NotifactionView';
-import DashTemplate from '../BentoFacetFilter/DashTemplate';
+import DashTemplate from '../../bento-core/Template/DashTemplate';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);

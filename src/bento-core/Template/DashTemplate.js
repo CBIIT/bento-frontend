@@ -6,22 +6,6 @@ import styles from './DashStyle';
 import BentoFacetFilter from './BentoFacetFilter';
 
 const filters = {
-  age_at_index: [],
-  association: [],
-  chemo_regimen: [],
-  composition: [],
-  diagnoses: [],
-  endo_therapies: [],
-  er_status: [],
-  file_type: [],
-  meno_status: [],
-  pr_status: [],
-  programs: [],
-  rc_scores: [],
-  studies: [],
-  tissue_type: [],
-  tumor_grades: [],
-  tumor_sizes: [],
 };
 
 const DashTemplate = ({

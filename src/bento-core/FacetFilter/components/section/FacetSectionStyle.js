@@ -26,4 +26,10 @@ export default () => ({
   expansionPanelDetailsRoot: {
     display: 'block',
   },
+  expansionPanelsideBarItem: {
+    margin: '0',
+    position: 'initial',
+    boxShadow: 'none',
+    backgroundColor: '#f4f4f4',
+  },
 });
