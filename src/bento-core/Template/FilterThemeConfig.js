@@ -7,6 +7,9 @@ const theme = {
       '&$expanded': {
         margin: '0px 0px',
       },
+      checked: {
+        color: 'red',
+      },
     },
     MuiAccordionDetails: {
       root: {
@@ -34,7 +37,82 @@ const theme = {
     MuiCheckbox: {
       colorSecondary: {
         '&:first-child': {
-          color: 'inherit',
+          color: '#000000',
+        },
+      },
+    },
+    MuiListItem: {
+      root: {
+        '&.casesCheckedEven': {
+          backgroundColor: '#e8f7dc',
+        },
+        '&.casesCheckedOdd': {
+          backgroundColor: '#f5FDEE',
+        },
+        '&.samplesCheckedEven': {
+          backgroundColor: '#C9EBF7',
+        },
+        '&.samplesCheckedOdd': {
+          backgroundColor: '#E8F8FE',
+        },
+        '&.filesCheckedEven': {
+          backgroundColor: '#FBE3FB',
+        },
+        '&.filesCheckedOdd': {
+          backgroundColor: '#FFF2FF',
+        },
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        '&.casesCheckedIcon': {
+          color: '#10a075',
+        },
+        '&.samplesCheckedIcon': {
+          color: '#10beff',
+        },
+        '&.filesCheckedIcon': {
+          color: '#e636e4',
+        },
+      },
+    },
+    MuiTypography: {
+      root: {
+        '&.casesSubjects': {
+          color: '#10a075',
+          fontSize: '12px',
+          fontFamily: 'Nunito',
+          marginRight: '0px',
+        },
+        '&.samplesSubjects': {
+          color: '#10beff',
+          fontSize: '12px',
+          fontFamily: 'Nunito',
+          marginRight: '0px',
+        },
+        '&.filesSubjects': {
+          color: '#e636e4',
+          fontSize: '12px',
+          fontFamily: 'Nunito',
+          marginRight: '0px',
+        },
+      },
+    },
+    MuiDivider: {
+      middle: {
+        marginLeft: '0px',
+        marginRight: '0px',
+      },
+      root: {
+        height: '5px',
+        '&.divider0': {
+          backgroundColor: '#0d8461',
+        },
+        '&.divider1': {
+          backgroundColor: '#10beff',
+        },
+        '&.divider2': {
+          backgroundColor: '#e636e4',
         },
       },
     },

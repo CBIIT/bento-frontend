@@ -12,7 +12,11 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Tooltip,
+  Box,
+  Typography,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
@@ -25,9 +29,17 @@ const CheckBoxView = ({
   checkboxItem,
   datafield,
   onToggle,
-  CustomInput,
 }) => {
-  const { name, subjects, isChecked } = checkboxItem;
+  const {
+    name,
+    subjects,
+    isChecked,
+    index,
+    section,
+    tooltip,
+  } = checkboxItem;
+  const indexType = index % 2 === 0 ? 'Even' : 'Odd';
+  const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
@@ -38,45 +50,68 @@ const CheckBoxView = ({
     onToggle(toggleCheckBoxItem);
   };
 
+  const LabelComponent = () => (
+    <Box
+      component="div"
+      className={clsx(classes.panelDetailText, {
+        [`${checkedSection}NameUnChecked`]: !isChecked,
+        [`${checkedSection}NameChecked`]: isChecked,
+      })}
+    >
+      <span>{name}</span>
+    </Box>
+  );
+
   return (
     <>
-      {CustomInput ? (
-        <CustomInput
-          toggleCheckbox={handleToggle}
-          facetValue={checkboxItem}
-          datafield={datafield}
-        />) : (
-        <ListItem
-          width={1}
-          button
+      <ListItem
+        width={1}
+        button
+        alignItems="flex-start"
+        onClick={handleToggle}
+        classes={{ gutters: classes.listItemGutters }}
+        className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
+      >
+        <Checkbox
+          icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
           onClick={handleToggle}
-          alignItems={alignment}
-          classes={{ gutters: classes.listItemGutters }}
+          checked={isChecked}
+          checkedIcon={(
+            <CheckBoxIcon
+              style={{
+                fontSize: 18,
+              }}
+              className={`${checkedSection}CheckedIcon`}
+            />
+          )}
+          disableRipple
+          color="secondary"
+          classes={{ root: classes.checkboxRoot }}
+        />
+        { tooltip ? (
+          <Tooltip title={tooltip}>
+            <LabelComponent />
+          </Tooltip>
+        ) : (
+          <LabelComponent />
+        )}
+        <ListItemText />
+        <Typography
+          className={clsx(`${checkedSection}Subjects`, {
+            [`${checkedSection}SubjectUnChecked`]: !isChecked,
+            [`${checkedSection}SubjectChecked`]: isChecked,
+          })}
         >
-          <Checkbox
-            icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
-            onClick={handleToggle}
-            checked={isChecked}
-            checkedIcon={(
-              <CheckBoxIcon
-                style={{
-                  fontSize: 18,
-                }}
-              />
-            )}
-            disableRipple
-            color="secondary"
-            classes={{ root: classes.checkboxRoot }}
-          />
-          <div className={classes.panelDetailText}>
-            <span>{name}</span>
-          </div>
-          <ListItemText />
-          <div className={classes.panelSubjectText}>
-            <span>({subjects})</span>
-          </div>
-        </ListItem>
-      )}
+          {`(${subjects})`}
+        </Typography>
+      </ListItem>
+      <Divider
+        style={{
+          backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
+          margin: '0px',
+          height: isChecked ? '2px' : '1px',
+        }}
+      />
     </>
   );
 };

@@ -2,6 +2,7 @@
 /* eslint-disable padded-blocks */
 import React from 'react';
 import {
+  Divider,
   List,
   withStyles,
 } from '@material-ui/core';
@@ -12,19 +13,18 @@ import FilterItems from './components/inputs/FilterItems';
 
 const BentoFacetFilter = ({
   sideBarSections,
-  FacetSectionDivider,
   CustomFacetSection,
   CustomFacetView,
-  CustomCheckboxItem,
 }) => {
   return (
     <>
       {
         sideBarSections.map((section, index) => (
           <>
-            {FacetSectionDivider && (
-              <FacetSectionDivider id={index} name={section.name} />
-            )}
+            <Divider
+              variant="middle"
+              className={`divider${index}`}
+            />
             {CustomFacetSection && (
               <FacetSectionView
                 section={section}
@@ -34,12 +34,10 @@ const BentoFacetFilter = ({
                   <FacetView
                     facet={facet}
                     CustomView={CustomFacetView}
-                    CustomInput={CustomCheckboxItem}
                   >
                     <List>
                       <FilterItems
                         facet={facet}
-                        CustomInput={CustomCheckboxItem}
                       />
                     </List>
                   </FacetView>

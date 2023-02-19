@@ -86,14 +86,12 @@ export default () => ({
   CasesCheckedIcon: {
     color: '#10A075',
   },
-  CasesCheckedOdd: {
-    backgroundColor: '#f5fdee',
-    color: '#10A075',
-  },
-  CasesCheckedEven: {
-    backgroundColor: '#e8f7dc',
-    color: '#10A075',
-  },
+  // CasesCheckedOdd: {
+  // backgroundColor: '#f5FDEE',
+  // },
+  // CasesCheckedEven: {
+  // backgroundColor: '#e8f7dc',
+  // },
   listItemGutters: {
     padding: '10px 20px 10px 0px',
   },

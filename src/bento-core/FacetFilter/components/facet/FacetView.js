@@ -22,7 +22,6 @@ const FacetView = ({
   onClearFacetSection,
   onClearSliderSection,
   CustomView,
-  CustomInput,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
@@ -115,7 +114,6 @@ const FacetView = ({
         <FilterItems
           facet={facet}
           sortBy={sortBy}
-          CustomInput={CustomInput}
         />
       </Accordion>
       {
@@ -124,7 +122,6 @@ const FacetView = ({
             <List>
               <FilterItems
                 facet={displayFacet}
-                CustomInput={CustomInput}
               />
             </List>
           </>

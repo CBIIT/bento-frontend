@@ -10,17 +10,11 @@ import React from 'react';
 import {
   AccordionSummary,
   Button,
-  Checkbox,
   Divider,
-  ListItem,
-  ListItemText,
   withStyles,
 } from '@material-ui/core';
-import clsx from 'clsx';
 import {
   ArrowDropDown as ArrowDropDownIcon,
-  CheckBox as CheckBoxIcon,
-  CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
 import styles from './BentoFacetFilterStyle';
 import FacetFilter from '../FacetFilter/FacetFilterController';
@@ -88,17 +82,6 @@ const BentoFacetFilter = ({
   };
   const ClearAllFiltersButton = () => generateClearAllFilterBtn(CustomClearAllFiltersBtn);
 
-  /**
-  * Custom Facet Section Divider Component
-  * Bento core param id/name to apply style
-  */
-  const SectionDivider = ({ id, name }) => (
-    <Divider
-      variant="middle"
-      className={classes[name]}
-    />
-  );
-
   /** Note:
   * Generate Custom facet Section Component
   * 1. Config local search input for Case
@@ -141,66 +124,6 @@ const BentoFacetFilter = ({
     );
   };
 
-  /**
-  * Custom Checkbox Item
-  */
-  const CustomCheckboxItem = ({
-    toggleCheckbox,
-    facetValue,
-  }) => {
-    const {
-      name,
-      subjects,
-      isChecked,
-      index,
-      section,
-    } = facetValue;
-    const indexType = index % 2 === 0 ? 'Even' : 'Odd';
-    return (
-      <>
-        <ListItem
-          width={1}
-          button
-          alignItems="flex-start"
-          onClick={toggleCheckbox}
-          classes={{ gutters: classes.listItemGutters }}
-          className={clsx({ [classes[`${section}Checked${indexType}`]]: isChecked })}
-        >
-          <Checkbox
-            icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
-            onClick={toggleCheckbox}
-            checked={isChecked}
-            checkedIcon={(
-              <CheckBoxIcon
-                style={{
-                  fontSize: 18,
-                }}
-              />
-            )}
-            disableRipple
-            color="secondary"
-            classes={{ root: classes.checkboxRoot }}
-            className={clsx({ [classes[`${section}CheckedIcon`]]: isChecked })}
-          />
-          <div className={classes.panelDetailText}>
-            <span>{name}</span>
-          </div>
-          <ListItemText />
-          <div className={classes.panelSubjectText}>
-            <span>{`(${subjects})`}</span>
-          </div>
-        </ListItem>
-        <Divider
-          style={{
-            backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
-            margin: '0px',
-            height: isChecked ? '2px' : '1px',
-          }}
-        />
-      </>
-    );
-  };
-
   return (
     <div>
       <FacetFilterThemeProvider>
@@ -208,10 +131,8 @@ const BentoFacetFilter = ({
         <FacetFilter
           data={searchData}
           facetsConfig={facetsConfig}
-          FacetSectionDivider={SectionDivider}
           CustomFacetSection={CustomFacetSection}
           CustomFacetView={CustomFacetView}
-          CustomCheckboxItem={CustomCheckboxItem}
         />
       </FacetFilterThemeProvider>
     </div>
