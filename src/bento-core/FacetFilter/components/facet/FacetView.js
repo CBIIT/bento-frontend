@@ -8,6 +8,7 @@ import {
   withStyles,
   Icon,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
 import { InputTypes } from '../inputs/Types';
 import styles from './FacetStyle';
@@ -21,16 +22,18 @@ const FacetView = ({
   onClearFacetSection,
   onClearSliderSection,
   CustomView,
+  CustomInput,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
 
-  const [sortBy, setSortBy] = useState(sortType.ALPHABET);
+  const [sortBy, setSortBy] = useState(null);
   const onSortFacet = (type) => {
     setSortBy(type);
   };
 
   const onClearSection = () => {
+    setSortBy(null);
     if (facet.type === InputTypes.SLIDER) {
       onClearSliderSection(facet);
     } else {
@@ -84,7 +87,11 @@ const FacetView = ({
           { facet.type === InputTypes.CHECKBOX
             && (<>
                   <span
-                    className={classes.sortGroupItem}
+                    className={
+                      clsx(classes.sortGroupItem, {
+                        [classes.highlight]: sortBy === sortType.ALPHABET,
+                      })
+                    }
                     onClick={() => {
                       onSortFacet(sortType.ALPHABET);
                     }}
@@ -92,7 +99,11 @@ const FacetView = ({
                     Sort alphabetically
                   </span>
                   <span
-                    className={classes.sortGroupItemCounts}
+                    className={
+                      clsx(classes.sortGroupItemCounts, {
+                        [classes.highlight]: sortBy === sortType.NUMERIC,
+                      })
+                    }
                     onClick={() => {
                       onSortFacet(sortType.NUMERIC);
                     }}
@@ -104,6 +115,7 @@ const FacetView = ({
         <FilterItems
           facet={facet}
           sortBy={sortBy}
+          CustomInput={CustomInput}
         />
       </Accordion>
       {
@@ -112,6 +124,7 @@ const FacetView = ({
             <List>
               <FilterItems
                 facet={displayFacet}
+                CustomInput={CustomInput}
               />
             </List>
           </>

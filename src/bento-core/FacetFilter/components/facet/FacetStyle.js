@@ -51,4 +51,7 @@ export default () => ({
     marginRight: '10px',
     marginTop: '5px',
   },
+  highlight: {
+    color: '#b2c6d6',
+  },
 });

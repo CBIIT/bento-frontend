@@ -15,6 +15,7 @@ const BentoFacetFilter = ({
   FacetSectionDivider,
   CustomFacetSection,
   CustomFacetView,
+  CustomCheckboxItem,
 }) => {
   return (
     <>
@@ -33,10 +34,12 @@ const BentoFacetFilter = ({
                   <FacetView
                     facet={facet}
                     CustomView={CustomFacetView}
+                    CustomInput={CustomCheckboxItem}
                   >
                     <List>
                       <FilterItems
                         facet={facet}
+                        CustomInput={CustomCheckboxItem}
                       />
                     </List>
                   </FacetView>

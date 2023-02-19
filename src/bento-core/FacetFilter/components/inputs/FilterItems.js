@@ -9,17 +9,19 @@ import { InputTypes } from './Types';
 const FilterItems = ({
   facet,
   sortBy,
+  CustomInput,
 }) => {
-  const { type, datafield } = facet;
+  const { type, datafield, section } = facet;
   const sortFilters = sortBySection({ ...facet, sortBy });
 
   const filterItems = () => {
     switch (type) {
       case InputTypes.CHECKBOX:
-        return sortFilters.map((item) => (
+        return sortFilters.map((item, index) => (
           <ReduxCheckbox
-            checkboxItem={item}
+            checkboxItem={{ ...item, index, section }}
             datafield={datafield}
+            CustomInput={CustomInput}
           />
         ));
       case InputTypes.SLIDER:

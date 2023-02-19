@@ -80,4 +80,37 @@ export default () => ({
     marginLeft: 10,
     color: '#000000',
   },
+  CasesCheckbox: {
+    color: '#10A075',
+  },
+  CasesCheckedIcon: {
+    color: '#10A075',
+  },
+  CasesCheckedOdd: {
+    backgroundColor: '#f5fdee',
+    color: '#10A075',
+  },
+  CasesCheckedEven: {
+    backgroundColor: '#e8f7dc',
+    color: '#10A075',
+  },
+  listItemGutters: {
+    padding: '10px 20px 10px 0px',
+  },
+  checkboxRoot: {
+    marginLeft: '5px',
+    height: 12,
+  },
+  panelDetailText: {
+    color: '#323232',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    fontWeight: '200',
+  },
+  panelSubjectText: {
+    color: '#323232',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    marginRight: '0px',
+  },
 });

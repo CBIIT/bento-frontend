@@ -31,6 +31,19 @@ const theme = {
         paddingBottom: '0',
       },
     },
+    MuiCheckbox: {
+      colorSecondary: {
+        '&:first-child': {
+          color: 'inherit',
+        },
+      },
+    },
+    checkboxRoot: {
+      color: 'inherit',
+      '&$checked': {
+        color: '#8DCAFF',
+      },
+    },
   },
 };
 

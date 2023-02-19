@@ -24,10 +24,10 @@ const sortByCheckedItem = (sortfacetValues) => sortfacetValues
  */
 export const sortBySection = ({ facetValues, sortBy }) => {
   const sortfacetValues = [...facetValues];
-  if (sortBy === sortType.ALPHABET) {
-    sortfacetValues.sort(((a, b) => (a.name > b.name || -(a.name < b.name))));
-  } else {
+  if (sortBy === sortType.NUMERIC) {
     sortfacetValues.sort((a, b) => b.subjects - a.subjects);
+  } else {
+    sortfacetValues.sort(((a, b) => (a.name > b.name || -(a.name < b.name))));
   }
   /**
    * Display checked item always on top

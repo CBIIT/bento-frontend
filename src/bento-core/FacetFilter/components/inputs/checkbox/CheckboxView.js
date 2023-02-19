@@ -25,6 +25,7 @@ const CheckBoxView = ({
   checkboxItem,
   datafield,
   onToggle,
+  CustomInput,
 }) => {
   const { name, subjects, isChecked } = checkboxItem;
 
@@ -39,36 +40,43 @@ const CheckBoxView = ({
 
   return (
     <>
-      <ListItem
-        width={1}
-        button
-        onClick={handleToggle}
-        alignItems={alignment}
-        classes={{ gutters: classes.listItemGutters }}
-      >
-        <Checkbox
-          icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+      {CustomInput ? (
+        <CustomInput
+          toggleCheckbox={handleToggle}
+          facetValue={checkboxItem}
+          datafield={datafield}
+        />) : (
+        <ListItem
+          width={1}
+          button
           onClick={handleToggle}
-          checked={isChecked}
-          checkedIcon={(
-            <CheckBoxIcon
-              style={{
-                fontSize: 18,
-              }}
-            />
-          )}
-          disableRipple
-          color="secondary"
-          classes={{ root: classes.checkboxRoot }}
-        />
-        <div className={classes.panelDetailText}>
-          <span>{name}</span>
-        </div>
-        <ListItemText />
-        <div className={classes.panelSubjectText}>
-          <span>({subjects})</span>
-        </div>
-      </ListItem>
+          alignItems={alignment}
+          classes={{ gutters: classes.listItemGutters }}
+        >
+          <Checkbox
+            icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+            onClick={handleToggle}
+            checked={isChecked}
+            checkedIcon={(
+              <CheckBoxIcon
+                style={{
+                  fontSize: 18,
+                }}
+              />
+            )}
+            disableRipple
+            color="secondary"
+            classes={{ root: classes.checkboxRoot }}
+          />
+          <div className={classes.panelDetailText}>
+            <span>{name}</span>
+          </div>
+          <ListItemText />
+          <div className={classes.panelSubjectText}>
+            <span>({subjects})</span>
+          </div>
+        </ListItem>
+      )}
     </>
   );
 };
