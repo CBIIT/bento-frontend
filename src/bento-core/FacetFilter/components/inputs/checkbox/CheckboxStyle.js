@@ -18,4 +18,15 @@ export default () => ({
     fontSize: '14px',
     marginRight: '0px',
   },
+  checkboxLabel: {
+    margin: '0',
+  },
+  checkboxName: {
+    margin: '0',
+    color: '#000000',
+    fontSize: '14px',
+    marginTop: '1.5px',
+    fontFamily: 'Nunito',
+    lineHeight: '120%',
+  },
 });

@@ -37,6 +37,7 @@ const CheckBoxView = ({
     index,
     section,
     tooltip,
+    label,
   } = checkboxItem;
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
   const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
@@ -58,7 +59,9 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      <span>{name}</span>
+      {label ? (
+        <Typography className={classes.checkboxLabel}>{label}</Typography>
+      ) : (<Typography className={classes.checkboxName}>{name}</Typography>)}
     </Box>
   );
 

@@ -203,8 +203,8 @@ export const facetsConfig = [
   {
     section: CASES,
     label: 'Age',
-    apiPath: 'subjectCountByAge',
-    apiForFiltering: 'filterSubjectCountByFileType',
+    apiPath: 'filterSubjectCountByAge',
+    apiForFiltering: 'filterSubjectCountByAge',
     datafield: 'age_at_index',
     ApiLowerBoundName: 'lowerBound',
     ApiUpperBoundName: 'upperBound',

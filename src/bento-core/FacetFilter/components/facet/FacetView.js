@@ -119,7 +119,7 @@ const FacetView = ({
       {
         (!expand && type === InputTypes.CHECKBOX) && (
           <>
-            <List>
+            <List id="filter_Items">
               <FilterItems
                 facet={displayFacet}
               />

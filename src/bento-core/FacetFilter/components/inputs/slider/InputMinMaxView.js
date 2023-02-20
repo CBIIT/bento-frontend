@@ -9,8 +9,8 @@ import { silderTypes } from '../Types';
 function InputMinMaxView({
   lowerBoundVal,
   upperBoundVal,
-  lowerBound,
-  upperBound,
+  minLowerBound,
+  maxUpperBound,
   onInputChange,
   type,
 }) {
@@ -25,16 +25,16 @@ function InputMinMaxView({
   };
 
   const vlaue = (type === silderTypes.INPUT_MIN) ? lowerBoundVal : upperBoundVal;
-
   return (
     <Input
       value={vlaue}
+      class={type}
       style={{ width: '40px' }}
       onChange={(event) => handleInputChange(event)}
       inputProps={{
         step: 1,
-        min: lowerBound,
-        max: upperBound,
+        min: minLowerBound,
+        max: maxUpperBound,
         type: 'number',
       }}
     />

@@ -24,7 +24,6 @@ const SliderView = ({
     }
   };
   const [sliderValue, setSliderValue] = useState([lowerBoundValue, upperBoundValue]);
-
   useEffect(() => {
     if (filterState && datafield && filterState[datafield]) {
       setSliderValue([...filterState[datafield]]);
@@ -47,7 +46,6 @@ const SliderView = ({
         <div className={classes.minValue}>
             <span>
               Min:
-              &nbsp;
             </span>
             <InputMinMaxView
               lowerBoundVal={sliderValue[0]}
@@ -61,7 +59,6 @@ const SliderView = ({
         <div className={classes.maxValue}>
           <span>
             Max:
-            &nbsp;
           </span>
           <InputMinMaxView
             lowerBoundVal={sliderValue[0]}
