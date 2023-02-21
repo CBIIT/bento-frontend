@@ -88,14 +88,14 @@ const FacetFilterController = (props) => {
       facets.forEach((facet) => {
         const updateFacet = { ...facet, facetValues: [] };
         const {
-          apiPath,
           field,
           ApiLowerBoundName,
           ApiUpperBoundName,
+          apiForFiltering,
         } = updateFacet;
-        if (data[apiPath]) {
-          if (Array.isArray(data[apiPath])) {
-            const updateField = data[apiPath].map((item) => {
+        if (data[apiForFiltering]) {
+          if (Array.isArray(data[apiForFiltering])) {
+            const updateField = data[apiForFiltering].map((item) => {
               const addField = { ...item };
               addField.name = item[field];
               return addField;
@@ -106,8 +106,8 @@ const FacetFilterController = (props) => {
           * add object to facet values
           */
           if (facet.type === InputTypes.SLIDER) {
-            const lowerBound = data[apiPath][ApiLowerBoundName];
-            const upperBound = data[apiPath][ApiUpperBoundName];
+            const lowerBound = data[apiForFiltering][ApiLowerBoundName];
+            const upperBound = data[apiForFiltering][ApiUpperBoundName];
             updateFacet.minLowerBound = lowerBound;
             updateFacet.maxUpperBound = upperBound;
             updateFacet.facetValues = [lowerBound, upperBound];

@@ -25,25 +25,23 @@ const BentoFacetFilter = ({
               variant="middle"
               className={`divider${index}`}
             />
-            {CustomFacetSection && (
-              <FacetSectionView
-                section={section}
-                CustomSection={CustomFacetSection}
-              >
-                {section.items.map((facet) => (
-                  <FacetView
-                    facet={facet}
-                    CustomView={CustomFacetView}
-                  >
-                    <List>
-                      <FilterItems
-                        facet={facet}
-                      />
-                    </List>
-                  </FacetView>
-                ))}
-              </FacetSectionView>
-            )}
+            <FacetSectionView
+              section={section}
+              CustomSection={CustomFacetSection}
+            >
+              {section.items.map((facet) => (
+                <FacetView
+                  facet={facet}
+                  CustomView={CustomFacetView}
+                >
+                  <List>
+                    <FilterItems
+                      facet={facet}
+                    />
+                  </List>
+                </FacetView>
+              ))}
+            </FacetSectionView>
           </>
         ))
       }

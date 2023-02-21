@@ -30,7 +30,7 @@ const SliderView = ({
     } else {
       setSliderValue([minLowerBound, maxUpperBound]);
     }
-  }, [filterState]);
+  }, [facet]);
 
   const handleChangeSlider = (index, value) => {
     if (!value.includes('')) {

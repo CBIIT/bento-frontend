@@ -1,5 +1,5 @@
-import { InputTypes } from '../../FacetFilter/components/inputs/Types';
-import { sortType } from '../../FacetFilter/utils/Sort';
+import { sortType } from '../../../bento-core/FacetFilter/utils/Sort';
+import { InputTypes } from '../../../bento-core/FacetFilter/components/inputs/Types';
 
 const CASES = 'Cases';
 const SAMPLES = 'Samples';
