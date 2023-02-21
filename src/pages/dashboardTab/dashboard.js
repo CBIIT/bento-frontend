@@ -21,6 +21,7 @@ const Dashboard = ({
   const [collapse, setCollapse] = React.useState(true);
   const themeChanger = useTheme();
   const handleChange = () => setCollapse((prev) => !prev);
+
   return (
     <>
       <div className={classes.dashboardContainer}>
