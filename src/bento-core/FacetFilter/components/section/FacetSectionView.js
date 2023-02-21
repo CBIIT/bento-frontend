@@ -13,9 +13,9 @@ const FacetSectionView = ({
   section,
   CustomSection,
 }) => {
-  const [expand, setExpand] = useState(true);
+  const { expandSection } = section;
+  const [expand, setExpand] = useState(expandSection);
   const onExpandSection = () => {
-    console.log('expand on click');
     setExpand(!expand);
   };
   return (

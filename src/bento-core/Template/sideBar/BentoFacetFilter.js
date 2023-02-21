@@ -18,7 +18,7 @@ import {
 } from '@material-ui/icons';
 import styles from './BentoFacetFilterStyle';
 import FacetFilter from '../../FacetFilter/FacetFilterController';
-import { facetsConfig } from './FacetConfig';
+import { facetsConfig, facetSectionVariables } from './FacetConfig';
 import { generateClearAllFilterBtn } from '../../FacetFilter/generator/component';
 import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
@@ -130,6 +130,7 @@ const BentoFacetFilter = ({
         <ClearAllFiltersButton />
         <FacetFilter
           data={searchData}
+          facetSectionConfig={facetSectionVariables}
           facetsConfig={facetsConfig}
           CustomFacetSection={CustomFacetSection}
           CustomFacetView={CustomFacetView}

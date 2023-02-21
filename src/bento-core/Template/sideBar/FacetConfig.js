@@ -9,27 +9,12 @@ const GROUP = 'group';
 // --------------- Dashboard Sidebar Sections styling --------------
 export const facetSectionVariables = {
   Cases: {
-    color: '#10A075',
-    backgroundColor: '#C0E9D7',
-    checkBoxColorsOne: '#E8F7DC',
-    checkBoxColorsTwo: '#F5FDEE',
-    height: '5px',
     isExpanded: true,
   },
   Samples: {
-    color: '#10BEFF',
-    backgroundColor: '#C3EAF5',
-    checkBoxColorsOne: '#C9EBF7',
-    checkBoxColorsTwo: '#E8F8FE',
-    height: '5px',
     isExpanded: true,
   },
   Files: {
-    color: '#E636E4',
-    backgroundColor: '#F5C3F1',
-    checkBoxColorsOne: '#FBE3FB',
-    checkBoxColorsTwo: '#FFF2FF',
-    height: '5px',
     isExpanded: true,
   },
 };

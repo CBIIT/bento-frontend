@@ -20,7 +20,12 @@ const FacetFilterController = (props) => {
    * 1. checkbox state
    * 2. subject state
    */
-  const { filterState, data, facetsConfig } = props;
+  const {
+    filterState,
+    data,
+    facetsConfig,
+    facetSectionConfig,
+  } = props;
 
   const updateFacetState = (filterSections) => {
     const updateSections = [...filterSections];
@@ -63,7 +68,7 @@ const FacetFilterController = (props) => {
         sideBar[section] = {
           name: section,
           sectionName: section,
-          expandSection: true,
+          expandSection: facetSectionConfig[section].isExpanded,
           items: [],
         };
       }
@@ -96,11 +101,11 @@ const FacetFilterController = (props) => {
               return addField;
             });
             updateFacet.facetValues = updateField;
-          } else {
-            /**
-            * add object to facet values
-            */
-            // const addFacetValue = [{ ...data[apiPath] }];
+          }
+          /**
+          * add object to facet values
+          */
+          if (facet.type === InputTypes.SLIDER) {
             const lowerBound = data[apiPath][ApiLowerBoundName];
             const upperBound = data[apiPath][ApiUpperBoundName];
             updateFacet.minLowerBound = lowerBound;
