@@ -1,5 +1,5 @@
-import { InputTypes } from '../FacetFilter/components/inputs/Types';
-import { sortType } from '../FacetFilter/utils/Sort';
+import { InputTypes } from '../../FacetFilter/components/inputs/Types';
+import { sortType } from '../../FacetFilter/utils/Sort';
 
 const CASES = 'Cases';
 const SAMPLES = 'Samples';

@@ -69,6 +69,16 @@ const FacetView = ({
             </div>
           </CustomAccordionSummary>
         )}
+        {
+          facet.type === InputTypes.SLIDER
+          && (<div className={classes.NonSortGroup}>
+              <span
+                className={classes.NonSortGroupItem}
+              >
+                No data for this field
+              </span>
+          </div>)
+        }
         <div className={classes.sortGroup}>
           <span className={classes.sortGroupIcon}>
             <Icon

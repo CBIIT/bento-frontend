@@ -17,10 +17,10 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
 } from '@material-ui/icons';
 import styles from './BentoFacetFilterStyle';
-import FacetFilter from '../FacetFilter/FacetFilterController';
+import FacetFilter from '../../FacetFilter/FacetFilterController';
 import { facetsConfig } from './FacetConfig';
-import { generateClearAllFilterBtn } from '../FacetFilter/generator/component';
-import { resetIcon } from '../../bento/dashboardData';
+import { generateClearAllFilterBtn } from '../../FacetFilter/generator/component';
+import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
 import FacetFilterThemeProvider from './FilterThemeConfig';
 

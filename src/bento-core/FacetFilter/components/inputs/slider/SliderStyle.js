@@ -3,30 +3,37 @@ export default () => ({
     marginTop: '10px',
     marginLeft: '20px',
     marginRight: 'Auto',
-    width: '80%',
+    paddingRight: '20px',
   },
   minValue: {
     fontFamily: 'Nunito',
     fontSize: '15px',
     color: '#000000',
-    float: 'left',
-    marginLeft: 'Auto',
-    marginRight: 'Auto',
     marginBottom: '0px',
+    float: 'left',
+    width: '75px',
   },
   maxValue: {
     fontFamily: 'Nunito',
     fontSize: '15px',
     color: '#000000',
     float: 'right',
-    marginLeft: 'Auto',
-    marginRight: 'Auto',
     marginBottom: '0px',
   },
   rail: {
     borderRadius: 4,
     height: 6,
-    background: '#A6A6A6',
+    background: '#142D64',
+  },
+  minInputLabel: {
+    float: 'left',
+    lineHeight: '34px',
+    marginRight: '5px',
+  },
+  maxInputLabel: {
+    float: 'left',
+    lineHeight: '34px',
+    marginRight: '5px',
   },
   thumb: {
     height: 16,
@@ -38,7 +45,7 @@ export default () => ({
     height: 6,
     background: '#10A075',
     '&~&': {
-      background: '#10A075',
+      background: '#142D64',
     },
   },
   upperBound: {
@@ -60,19 +67,25 @@ export default () => ({
     marginBottom: '15px',
   },
   sliderText: {
-    marginTop: '1.5px',
     color: '#10a075',
     lineHeight: '120%',
     fontFamily: 'Nunito',
     fontSize: '14px',
-    float: 'right',
+    padding: '5px 15px 5px 0px',
+    width: '100%',
+    textAlign: 'right',
+    background: '#f5fdee',
+    marginTop: '10px',
   },
   sliderListItem: {
-    marginRight: '12px',
+    height: '15px',
   },
   listItemGutters: {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '2px 5px 2px 8px',
+  },
+  lowerUpperBound: {
+    height: '15px',
   },
 });

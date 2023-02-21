@@ -7,6 +7,7 @@ import styles from './InputMinMaxStyle';
 import { silderTypes } from '../Types';
 
 function InputMinMaxView({
+  classes,
   lowerBoundVal,
   upperBoundVal,
   minLowerBound,
@@ -28,8 +29,8 @@ function InputMinMaxView({
   return (
     <Input
       value={vlaue}
-      class={type}
-      style={{ width: '40px' }}
+      id={`slider_${type}`}
+      className={classes[`slider_${type}`]}
       onChange={(event) => handleInputChange(event)}
       inputProps={{
         step: 1,

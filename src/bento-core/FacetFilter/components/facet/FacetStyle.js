@@ -43,6 +43,17 @@ export default () => ({
     fontSize: '10px',
     marginRight: '32px',
   },
+  NonSortGroup: {
+    marginBottom: '5px',
+    borderTop: '1px solid #B1B1B1',
+    textAlign: 'left',
+    paddingLeft: '10px',
+  },
+  NonSortGroupItem: {
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    marginRight: '32px',
+  },
   sortGroupItemCounts: {
     cursor: 'pointer',
     fontFamily: 'Nunito',

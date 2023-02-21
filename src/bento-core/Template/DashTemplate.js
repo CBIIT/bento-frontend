@@ -3,7 +3,7 @@ import { CircularProgress, withStyles } from '@material-ui/core';
 import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
 import client from '../../utils/graphqlClient';
 import styles from './DashStyle';
-import BentoFacetFilter from './BentoFacetFilter';
+import BentoFacetFilter from './sideBar/BentoFacetFilter';
 
 const filters = {
 };

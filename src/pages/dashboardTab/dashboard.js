@@ -12,7 +12,6 @@ import { widgetsData, displayActiveFiltersQuery } from '../../bento/dashboardDat
 import Tab from './components/tabController';
 import colors from '../../utils/colors';
 import styles from './dashboardStyles';
-import BentoFacetFilter from '../../bento-core/Template/BentoFacetFilter';
 
 const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
 
@@ -29,7 +28,6 @@ const Dashboard = ({
         <div>
           <div className={classes.content}>
             <div className={classes.sideBar}>
-              <BentoFacetFilter data={data} />
               <SideBar />
             </div>
             <div className={classes.rightContent}>

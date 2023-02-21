@@ -39,7 +39,6 @@ const onClearSliderSection = ({
 }) => {
   const updatedState = { ...filterState };
   const { datafield } = facetSection;
-  // const range = [minLowerBound, maxUpperBound];
   if (updatedState[datafield]) {
     delete updatedState[datafield];
   }
