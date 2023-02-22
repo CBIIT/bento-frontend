@@ -34,7 +34,7 @@ const BentoFacetFilter = ({
                   facet={facet}
                   CustomView={CustomFacetView}
                 >
-                  <List>
+                  <List className={`List_${facet.label}`}>
                     <FilterItems
                       facet={facet}
                     />
