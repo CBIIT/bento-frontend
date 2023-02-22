@@ -9,6 +9,9 @@ export const statsStyling = {
   },
 };
 
+/**
+ * @property {statAPI} numberOfPrograms Used to index a stat value
+ */
 export const globalStatsData = [
   // A maximum of 6 stats are allowed
   {
