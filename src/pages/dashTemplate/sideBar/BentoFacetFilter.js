@@ -18,7 +18,7 @@ import {
 } from '@material-ui/icons';
 import styles from './BentoFacetFilterStyle';
 import FacetFilter from '../../../bento-core/FacetFilter/FacetFilterController';
-import { facetsConfig, facetSectionVariables } from './FacetConfig';
+import { facetsConfig, facetSectionVariables } from '../../../bento/dashTemplate';
 import { generateClearAllFilterBtn } from '../../../bento-core/FacetFilter/generator/component';
 import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';

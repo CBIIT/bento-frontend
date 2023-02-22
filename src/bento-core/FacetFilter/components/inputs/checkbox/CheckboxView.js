@@ -33,7 +33,7 @@ const CheckBoxView = ({
   const {
     name,
     subjects,
-    isChecked,
+    isChecked = false,
     index,
     section,
     tooltip,

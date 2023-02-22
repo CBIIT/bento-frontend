@@ -1,5 +1,5 @@
-import { sortType } from '../../../bento-core/FacetFilter/utils/Sort';
-import { InputTypes } from '../../../bento-core/FacetFilter/components/inputs/Types';
+import { sortType } from '../bento-core/FacetFilter/utils/Sort';
+import { InputTypes } from '../bento-core/FacetFilter/components/inputs/Types';
 
 const CASES = 'Cases';
 const SAMPLES = 'Samples';
@@ -61,7 +61,7 @@ export const facetsConfig = [
     datafield: 'rc_scores',
     field: GROUP,
     type: InputTypes.CHECKBOX,
-    sort_type: sortType.ALPHABET,
+    sort_type: sortType.RANGE,
     show: true,
   },
   {
