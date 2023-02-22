@@ -11,7 +11,6 @@ import Cases from './caseTable/caseController';
 import SideBar from '../../components/SideBar/SideBarView';
 import { widgetsData } from '../../bento/dashboardData';
 import colors from '../../utils/colors';
-import BentoFacetFilter from '../../components/BentoFacetFilter/BentoFacetFilter';
 
 const Dashboard = ({
   classes, data, theme,
