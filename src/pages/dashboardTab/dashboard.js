@@ -32,6 +32,19 @@ const Dashboard = ({
   };
   const { Widget } = WidgetGenerator(widgetGeneratorConfig);
 
+  const widgetGeneratorConfig = {
+    theme,
+    DonutConfig: {
+      colors,
+      styles: {
+        cellPadding: 2,
+        textOverflowLength: 20,
+      },
+    },
+    SunburstConfig: {},
+  };
+  const { Widget } = WidgetGenerator(widgetGeneratorConfig);
+
   return (
     <>
       <div className={classes.dashboardContainer}>
