@@ -464,56 +464,51 @@ query subjectOverview(
 }
 `;
 
+// type: 'sunburst' | 'donut'
+// title: string
+// dataName: string
+// datatable_level1_field: string
+// datatable_level2_field: string
+// datatable_field: string
+// sliceTitle: string (optional)
 export const widgetsSearchData = [
   {
     type: 'sunburst',
-    label: 'Programs and Arms',
+    title: 'Programs and Arms',
     dataName: 'armsByPrograms',
     mapWithDashboardWidget: 'armsByPrograms',
     datatable_level1_field: 'program',
     datatable_level2_field: 'arm',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Diagnosis',
+    title: 'Diagnosis',
     dataName: 'subjectCountByDiagnosesFromLists',
     mapWithDashboardWidget: 'subjectCountByDiagnoses',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Recurrence Score',
+    title: 'Recurrence Score',
     dataName: 'subjectCountByRecurrenceScoreFromLists',
     mapWithDashboardWidget: 'subjectCountByRecurrenceScore',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Tumor Size',
+    title: 'Tumor Size',
     dataName: 'subjectCountByTumorSizeFromLists',
     mapWithDashboardWidget: 'subjectCountByTumorSize',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Chemotherapy',
+    title: 'Chemotherapy',
     dataName: 'subjectCountByChemotherapyRegimenFromLists',
     mapWithDashboardWidget: 'subjectCountByChemotherapyRegimen',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Endocrine Therapy',
+    title: 'Endocrine Therapy',
     dataName: 'subjectCountByEndocrineTherapyFromLists',
     mapWithDashboardWidget: 'subjectCountByEndocrineTherapy',
-    titleText: 'Cases',
-    show: true,
   },
 ];
 

@@ -12,8 +12,6 @@ import SideBar from '../../components/SideBar/SideBarView';
 import { widgetsData } from '../../bento/dashboardData';
 import colors from '../../utils/colors';
 
-const displaywidgets = widgetsData.filter((widget) => widget.show === true).slice(0, 6);
-
 const Dashboard = ({
   classes, data, theme,
 }) => {
@@ -62,8 +60,8 @@ const Dashboard = ({
                 </div>
                 <Collapse in={collapse} className={classes.backgroundWidgets}>
                   <Grid container>
-                    {displaywidgets.map((widget, index) => {
-                      if (widget.type === 'sunburst' && widget.show) {
+                    {widgetsData.slice(0, 6).map((widget, index) => {
+                      if (widget.type === 'sunburst') {
                         return (
                           <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
                             <Widget
@@ -91,7 +89,7 @@ const Dashboard = ({
                           </Grid>
                         );
                       }
-                      if (widget.type === 'donut' && widget.show) {
+                      if (widget.type === 'donut') {
                         return (
                           <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
                             <Widget

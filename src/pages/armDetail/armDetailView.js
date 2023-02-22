@@ -5,7 +5,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { getOptions, getColumns, CustomActiveDonut } from 'bento-components';
+import { getOptions, getColumns } from 'bento-components';
 import GridWithFooter from '../../components/GridWithFooter/GridView';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
@@ -21,11 +21,11 @@ import {
 import {
   singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
 } from '../dashboardTab/store/dashboardReducer';
-import Widget from '../../components/Widgets/WidgetView';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 import NumberOfThings from '../../components/NumberOfThings';
 import Snackbar from '../../components/Snackbar';
 import colors from '../../utils/colors';
+import { WidgetGenerator } from '../../bento-core/Widgets';
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
@@ -41,6 +41,18 @@ const ArmDetail = ({ data, classes }) => {
   function closeSnack() {
     setsnackbarState({ open: false });
   }
+
+  const widgetGeneratorConfig = {
+    DonutConfig: {
+      colors,
+      styles: {
+        cellPadding: 0,
+        textOverflowLength: 20,
+      },
+    },
+  };
+
+  const { Widget } = WidgetGenerator(widgetGeneratorConfig);
 
   const redirectTo = () => {
     setSideBarToLoading();
@@ -135,27 +147,28 @@ const ArmDetail = ({ data, classes }) => {
                 {/* Diagnosis donut */}
                 <div className={classes.widgetContainer}>
                   <Widget
-                    title="Diagnosis"
-                    color="#0296C9"
+                    header={(
+                      <Typography
+                        colorBrightness="main"
+                        size="md"
+                        weight="normal"
+                        family="Nunito"
+                        color="#0296C9"
+                        className={classes.widgetTitle}
+                      >
+                        Diagnosis
+                      </Typography>
+                    )}
                     bodyClass={classes.fullHeightBody}
                     className={classes.card}
-                    titleClass={classes.widgetTitle}
+                    bottomDivider
+                    customBackGround
                     noPaddedTitle
-                  >
-                    <CustomActiveDonut
-                      data={data.diagnoses}
-                      width={208}
-                      height={210}
-                      innerRadius={50}
-                      outerRadius={75}
-                      cx="50%"
-                      cy="50%"
-                      fontSize="12px"
-                      colors={colors}
-                      titleLocation="bottom"
-                      titleAlignment="center"
-                    />
-                  </Widget>
+                    data={data.diagnoses}
+                    chartType="donut"
+                    chartTitleLocation="bottom"
+                    chartTitleAlignment="center"
+                  />
                 </div>
                 {/* File count */}
                 <NumberOfThings classes={classes} number={data.num_files} icon={fileCountIcon} title="NUMBER OF FILES" alt="Bento file count icon" />

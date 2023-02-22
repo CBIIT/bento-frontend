@@ -153,55 +153,51 @@ export const displayActiveFiltersQuery = true;
 
 // --------------- Dashboard Widgets configuration --------------
 // A maximum of 6 widgets are allowed
+//
+// type: 'sunburst' | 'donut'
+// title: string
+// dataName: string
+// datatable_level1_field: string
+// datatable_level2_field: string
+// datatable_field: string
+// sliceTitle: string (optional)
 export const widgetsData = [
   {
     type: 'sunburst',
-    label: 'Programs and Arms',
+    title: 'Programs and Arms',
     dataName: 'armsByPrograms',
     datatable_level1_field: 'program',
     datatable_level2_field: 'arm',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Diagnosis',
+    title: 'Diagnosis',
     dataName: 'subjectCountByDiagnoses',
     datatable_field: 'diagnosis',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Recurrence Score',
+    title: 'Recurrence Score',
     dataName: 'subjectCountByRecurrenceScore',
     datatable_field: 'recurrence_score',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Tumor Size',
+    title: 'Tumor Size',
     dataName: 'subjectCountByTumorSize',
     datatable_field: 'tumor_size',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Chemotherapy',
+    title: 'Chemotherapy',
     dataName: 'subjectCountByChemotherapyRegimen',
     datatable_field: 'chemotherapy',
-    titleText: 'Cases',
-    show: true,
   },
   {
     type: 'donut',
-    label: 'Endocrine Therapy',
+    title: 'Endocrine Therapy',
     dataName: 'subjectCountByEndocrineTherapy',
     datatable_field: 'endocrine_therapy',
-    titleText: 'Cases',
-    show: true,
   },
 ];
 
