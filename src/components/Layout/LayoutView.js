@@ -39,6 +39,7 @@ import fakeAdminView from '../../pages/fakeAdmin';
 import PrivateRoute, { LoginRoute, AdminRoute, MixedRoute } from './privateRoute';
 
 import Notifactions from '../Notifications/NotifactionView';
+import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -72,7 +73,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* END SECTION */}
 
             {/* SECTION: Member & Admin only Path */}
-            <PrivateRoute path="/explore" access={['admin', 'member']} component={Dashboard} />
+            <PrivateRoute path="/explore_old" access={['admin', 'member']} component={Dashboard} />
             <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
             <PrivateRoute path="/model" access={['admin', 'member']} component={modelPage} />
             <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={fileCentricCart} />
@@ -80,6 +81,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/case/:id" access={['admin', 'member']} component={CaseDetail} />
             <PrivateRoute path="/arm/:id" access={['admin', 'member']} component={ArmDetail} />
             <PrivateRoute path="/fileViewer/:id" requiuredSignIn access={['admin', 'member']} component={JBrowseDetail} />
+            {/* bento 4.0 template */}
+            <PrivateRoute path="/explore" access={['admin', 'member']} component={DashTemplate} />
             {/* END SECTION */}
 
             {/* SECTION: Admin only Path */}
@@ -117,6 +120,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <LoginRoute path="/login" component={Login} />
             <Route path="/sysinfo" component={SysInfoView} />
             <Route component={Error} />
+
           </Switch>
           <Footer data={{ isSidebarOpened }} />
         </div>

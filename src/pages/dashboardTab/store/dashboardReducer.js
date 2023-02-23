@@ -221,7 +221,7 @@ const removeEmptySubjectsFromDonutData = (data) => data.filter((item) => item.su
  * @param {json} widgetsInfoFromCustConfig
  * @return {json}r
  */
-function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
+export function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
   const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName], widget.datatable_level1_field, widget.datatable_level2_field, 'children', SUNBURST_COLORS_LEVEL_1, SUNBURST_COLORS_LEVEL_2) : removeEmptySubjectsFromDonutData(data[widget.dataName]);
     const label = widget.dataName;

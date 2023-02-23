@@ -5,8 +5,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import layout from '../components/Layout/LayoutState';
 import dashboard from '../pages/dashboard/dashboardState';
 import stats from '../components/Stats/StatsState';
+import { sideBarReducerGenerator } from '../bento-core/FacetFilter/store/reducers/SideBarReducer';
+
+const { statusReducer } = sideBarReducerGenerator();
 
 const reducers = {
+  statusReducer,
   layout,
   dashboard,
   stats,
