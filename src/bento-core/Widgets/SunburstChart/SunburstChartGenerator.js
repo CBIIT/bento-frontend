@@ -4,6 +4,17 @@ import { makeStyles } from '@material-ui/core';
 import { Sunburst, LabelSeries } from 'react-vis';
 
 const DEFAULT_CLASSES = makeStyles({
+  label: {
+    fontSize: '12px',
+    textAnchor: 'middle',
+    textAlign: 'center',
+    fill: (props) => (props && props.textColor ? props.textColor : 'black'),
+    fontFamily: (props) => (props && props.fontFamily ? props.fontFamily : 'Nunito'),
+    '& text': {
+      fill: (props) => (props && props.textColor ? props.textColor : 'black'),
+      textAnchor: 'middle',
+    },
+  },
   widgetContainer: {
     marginTop: (props) => (props && props.titleLocation === 'top' ? '0px' : '18px'),
     marginBottom: (props) => (props.titleLocation === 'top' ? '18px' : '0px'),
@@ -23,12 +34,6 @@ export const DEFAULT_CONFIG_SUNBURST = {
   // Styles used by the component and its children
   styles: {
     textColor: 'black',
-    label: {
-      fontSize: '12px',
-      textAnchor: 'middle',
-      fill: 'black',
-      fontFamily: '"Nunito","Open Sans", sans-serif',
-    },
     sunburst: {
       stroke: '#ddd',
       strokeOpacity: 0.3,
@@ -192,24 +197,20 @@ export const SunburstChartGenerator = (uiConfig = DEFAULT_CONFIG_SUNBURST) => {
             {/* This cannot be it's own component */}
             {/* https://github.com/uber/react-vis/issues/1095 */}
             {state.caseSize > 0 && (
-              <LabelSeries data={[
-                {
-                  x: 0,
-                  y: 0,
-                  label: state.caseSize,
-                  style: styles && styles.label
-                    ? styles.label
-                    : DEFAULT_CONFIG_SUNBURST.styles.label,
-                },
-                {
-                  x: 0,
-                  y: 1,
-                  label: sliceTitle,
-                  style: styles && styles.label
-                    ? styles.label
-                    : DEFAULT_CONFIG_SUNBURST.styles.label,
-                },
-              ]}
+              <LabelSeries
+                className={classes.label}
+                data={[
+                  {
+                    x: 0,
+                    y: 0,
+                    label: state.caseSize,
+                  },
+                  {
+                    x: 0,
+                    y: 1,
+                    label: sliceTitle,
+                  },
+                ]}
               />
             )}
           </Sunburst>
