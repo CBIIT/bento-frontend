@@ -32,7 +32,7 @@ export const sortBySection = ({ facetValues, sort_type, sortBy }) => {
     sortfacetValues.sort(((a, b) => (a.name > b.name || -(a.name < b.name))));
   }
 
-  if (sort_type === sortType.RANGE) {
+  if (sort_type === sortType.RANGE && sortBy !== sortType.NUMERIC) {
     sortfacetValues.sort(((a, b) => (startIndex(a.name) > startIndex(b.name)
       || -(startIndex(a.name) < startIndex(b.name)))));
   }
