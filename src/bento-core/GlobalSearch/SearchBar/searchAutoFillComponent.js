@@ -6,10 +6,10 @@ import { Search as SearchIcon } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useSelector } from 'react-redux';
-import { getSearch, getSearchPublic } from '../../pages/dashboardTab/store/dashboardReducer';
-import { SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
-import { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
-import accessLevelTypes from '../../utils/enums';
+import { getSearch, getSearchPublic } from '../../../pages/dashboardTab/store/dashboardReducer';
+import { SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../../bento/search';
+import { PUBLIC_ACCESS } from '../../../bento/siteWideConfig';
+import accessLevelTypes from '../../../utils/enums';
 
 function searchComponent({ classes }) {
   const history = useHistory();
