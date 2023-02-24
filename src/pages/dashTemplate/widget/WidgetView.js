@@ -5,7 +5,6 @@ import {
   FormControlLabel,
   Grid,
   Switch,
-  Typography,
   withStyles,
 } from '@material-ui/core';
 import { useTheme } from '../../../components/ThemeContext';
@@ -14,6 +13,7 @@ import { WidgetGenerator } from '../../../bento-core/Widgets';
 import { widgetsData } from '../../../bento/dashboardData';
 import colors from '../../../utils/colors';
 import { getWidgetsInitData } from '../../dashboardTab/store/dashboardReducer';
+import { Typography } from '../../../components/Wrappers/Wrappers';
 
 const WidgetView = ({
   classes,
@@ -32,9 +32,14 @@ const WidgetView = ({
       styles: {
         cellPadding: 2,
         textOverflowLength: 20,
+        textColor: theme.palette.widgetBackground.contrastText,
       },
     },
-    SunburstConfig: {},
+    SunburstConfig: {
+      styles: {
+        textColor: theme.palette.widgetBackground.contrastText,
+      },
+    },
   };
   const { Widget } = WidgetGenerator(widgetGeneratorConfig);
 
@@ -80,14 +85,7 @@ const WidgetView = ({
               <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
                 <Widget
                   header={(
-                    <Typography
-                      colorBrightness={theme.palette.lochmara.contrastText}
-                      size="md"
-                      weight="normal"
-                      family="Nunito"
-                      color={theme.palette.lochmara.contrastText}
-                      className={classes.widgetTitle}
-                    >
+                    <Typography size="md" weight="normal" family="Nunito" color="lochmara">
                       {widget.title}
                     </Typography>
                   )}
