@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import Components from './component';
-import client from '../../../utils/graphqlClient';
+import client from '../../../../utils/graphqlClient';
 import {
   SEARCH_PAGE_RESULT_PROGRAM,
   SEARCH_PAGE_RESULT_STUDIES,
@@ -16,8 +16,8 @@ import {
   SEARCH_PAGE_RESULT_ABOUT,
   SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
   SEARCH_PUBLIC,
-} from '../../../bento/search';
-import { getSearchPageResults, getPublicSearchPageResults } from '../../dashboardTab/store/dashboardReducer';
+} from '../../../../bento/search';
+import { getSearchPageResults, getPublicSearchPageResults } from '../../../../pages/dashboardTab/store/dashboardReducer';
 
 function SearchPagination({
   datafield, classes, searchText, count, isPublic,

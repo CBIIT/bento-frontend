@@ -12,7 +12,7 @@ import {
   getSearch,
   getSearchPageResults,
   getSearchPublic,
-} from '../dashboardTab/store/dashboardReducer';
+} from '../../../pages/dashboardTab/store/dashboardReducer';
 
 import PrivateTabView from './components/tabs/privateTabView';
 import PublicTabView from './components/tabs/publicTabView';

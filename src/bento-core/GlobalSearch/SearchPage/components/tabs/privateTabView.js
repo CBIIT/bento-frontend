@@ -1,15 +1,18 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
 import {
-  SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
-  SEARCH_PAGE_RESULT_FILES, SEARCH_PAGE_RESULT_MODEL, SEARCH_PAGE_RESULT_PROGRAM_PUBLIC,
+  SEARCH_PAGE_RESULT_ABOUT, SEARCH_PAGE_RESULT_FILES,
+  SEARCH_PAGE_RESULT_MODEL, SEARCH_PAGE_RESULT_PROGRAM,
   SEARCH_PAGE_RESULT_SAMPLES, SEARCH_PAGE_RESULT_STUDIES,
-  SEARCH_PAGE_RESULT_SUBJECTS, SEARCH_PUBLIC,
-} from '../../../../bento/search';
+  SEARCH_PAGE_RESULT_SUBJECTS,
+} from '../../../../../bento/search';
 import styles from '../../styles';
 import SearchViewTabs from './searchViewTabs';
 
-const allCount = (searchResults) => (searchResults.about_count || 0);
+const allCount = (searchResults) => (searchResults.subject_count
+  + searchResults.sample_count + searchResults.program_count
+  + searchResults.study_count + searchResults.file_count
+  + searchResults.model_count + searchResults.about_count);
 
 const getTabProperties = (classes, searchResults, allLabel) => [
   {
@@ -19,7 +22,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
       root: classes.buttonRoot,
       wrapper: classes.allTab,
     },
-    queryForApi: SEARCH_PUBLIC,
+    queryForApi: SEARCH_PAGE_RESULT_SUBJECTS,
     count: allCount(searchResults) || 0,
     value: '1',
   },
@@ -32,7 +35,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_SUBJECTS,
     count: searchResults.subject_count || 0,
-    value: 'inactive-2',
+    value: '2',
   },
   {
     name: 'Samples',
@@ -43,7 +46,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_SAMPLES,
     count: searchResults.sample_count || 0,
-    value: 'inactive-3',
+    value: '3',
   },
   {
     name: 'Files',
@@ -54,7 +57,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_FILES,
     count: searchResults.file_count || 0,
-    value: 'inactive-4',
+    value: '4',
   },
   {
     name: 'Programs',
@@ -63,9 +66,9 @@ const getTabProperties = (classes, searchResults, allLabel) => [
       root: classes.buttonRoot,
       wrapper: classes.programTab,
     },
-    queryForApi: SEARCH_PAGE_RESULT_PROGRAM_PUBLIC,
+    queryForApi: SEARCH_PAGE_RESULT_PROGRAM,
     count: searchResults.program_count || 0,
-    value: 'inactive-5',
+    value: '5',
   },
   {
     name: 'Studies',
@@ -76,7 +79,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_STUDIES,
     count: searchResults.study_count || 0,
-    value: 'inactive-6',
+    value: '6',
   },
   {
     name: 'Data Model',
@@ -87,7 +90,7 @@ const getTabProperties = (classes, searchResults, allLabel) => [
     },
     queryForApi: SEARCH_PAGE_RESULT_MODEL,
     count: searchResults.model_count || 0,
-    value: 'inactive-7',
+    value: '7',
   },
   {
     name: 'About',
@@ -96,18 +99,17 @@ const getTabProperties = (classes, searchResults, allLabel) => [
       root: classes.buttonRoot,
       wrapper: classes.aboutTab,
     },
-    queryForApi: SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
+    queryForApi: SEARCH_PAGE_RESULT_ABOUT,
     count: searchResults.about_count || 0,
     value: '8',
   },
 ];
 
-const PublicTabView = ({
+const PrivateTabView = ({
   classes, options, tab, searchText,
 }) => {
   const { searchResults } = options;
   const tabProperties = getTabProperties(classes, searchResults);
-
   const AllLabel = () => (
     <div>
       <img
@@ -123,12 +125,12 @@ const PublicTabView = ({
     <SearchViewTabs
       AllLabel={AllLabel}
       classes={classes}
-      isPublic
-      options={{ ...options, properties: tabProperties }}
       tab={tab}
+      isPublic={false}
       searchText={searchText}
+      options={{ ...options, properties: tabProperties }}
     />
   );
 };
 
-export default withStyles(styles, { withTheme: true })(PublicTabView);
+export default withStyles(styles, { withTheme: true })(PrivateTabView);
