@@ -4,6 +4,7 @@ export const actionTypes = {
   ON_SORT_ORDER_CHANGE: 'ON_SORT_ORDER_CHANGE',
   ON_ROWS_PER_PAGE_CHANGE: 'ON_ROWS_PER_PAGE_CHANGE',
   ON_PAGE_CHANGE: 'ON_PAGE_CHANGE',
+  ON_ROW_SELECT: 'ON_ROW_SELECT',
 };
 
 export const onClumnViewChange = (columns) => ({
@@ -26,7 +27,12 @@ export const onNumberOfRowsPerPageChange = (rowPerPage) => ({
   payload: rowPerPage,
 });
 
-export const onNextPage = (pageNumb) => ({
+export const onPageChange = (pageNumb) => ({
   type: actionTypes.ON_PAGE_CHANGE,
   payload: pageNumb,
+});
+
+export const onRowSeclect = (row) => ({
+  type: actionTypes.ON_ROW_SELECT,
+  payload: row,
 });

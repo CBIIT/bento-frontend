@@ -18,7 +18,7 @@ const reducer = (state, action) => {
     case actionTypes.ON_ROWS_PER_PAGE_CHANGE:
       return {
         ...state,
-        rowPerPage: payload.rowPerPage,
+        rowsPerPage: payload.rowsPerPage,
       };
     case actionTypes.VIEW_COLUMN_CHANGE:
       return state;

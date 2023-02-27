@@ -11,6 +11,7 @@ const Tabs = (props) => {
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
   };
+
   return (
     <>
       <TabViewGenerator
