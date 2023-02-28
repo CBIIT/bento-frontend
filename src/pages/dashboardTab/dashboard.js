@@ -19,7 +19,6 @@ const Dashboard = ({
   const [collapse, setCollapse] = React.useState(true);
   const themeChanger = useTheme();
   const handleChange = () => setCollapse((prev) => !prev);
-
   const widgetGeneratorConfig = {
     theme,
     DonutConfig: {
@@ -27,9 +26,14 @@ const Dashboard = ({
       styles: {
         cellPadding: 2,
         textOverflowLength: 20,
+        textColor: theme.palette.widgetBackground.contrastText,
       },
     },
-    SunburstConfig: {},
+    SunburstConfig: {
+      styles: {
+        textColor: theme.palette.widgetBackground.contrastText,
+      },
+    },
   };
   const { Widget } = WidgetGenerator(widgetGeneratorConfig);
 
@@ -86,14 +90,7 @@ const Dashboard = ({
                         <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
                           <Widget
                             header={(
-                              <Typography
-                                colorBrightness={theme.palette.lochmara.contrastText}
-                                size="md"
-                                weight="normal"
-                                family="Nunito"
-                                color={theme.palette.lochmara.contrastText}
-                                className={classes.widgetTitle}
-                              >
+                              <Typography size="md" weight="normal" family="Nunito" color="lochmara">
                                 {widget.title}
                               </Typography>
                             )}

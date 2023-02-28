@@ -99,7 +99,7 @@ function fetchAllDataForDashboardTable(json) {
   };
 }
 
-function getWidgetsData(input) {
+export function getWidgetsData(input) {
   const donut = widgetsData.reduce((acc, widget) => {
     const Data = widget.type === 'sunburst' ? getSunburstDataFromDashboardData(input, widget.datatable_level1_field, widget.datatable_level2_field) : getDonutDataFromDashboardData(input, widget.datatable_field);
     const label = widget.dataName;

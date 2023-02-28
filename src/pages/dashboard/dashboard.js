@@ -20,7 +20,6 @@ const Dashboard = ({
   const handleChange = () => {
     setCollapse((prev) => !prev);
   };
-
   return (
     <>
       <div className={classes.dashboardContainer}>

@@ -49,7 +49,6 @@ function mapStateToProps(state) {
   const {
     isLoading, isFetched, hasError, error, widgets,
   } = state.dashboardTab;
-
   const { isSidebarOpened } = state.layout;
   return {
     isLoading,
