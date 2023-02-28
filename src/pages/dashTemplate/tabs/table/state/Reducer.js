@@ -22,6 +22,16 @@ const reducer = (state, action) => {
       };
     case actionTypes.VIEW_COLUMN_CHANGE:
       return state;
+    case actionTypes.ON_ROW_SELECT:
+      return {
+        ...state,
+        selectedRows: payload,
+      };
+    case actionTypes.SET_TOTAL_ROW_COUNT:
+      return {
+        ...state,
+        totalRowCount: payload,
+      };
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import {
   Checkbox,
   Paper,
@@ -12,47 +12,19 @@ import {
   withStyles,
 } from '@material-ui/core';
 import styles from './TableStyle';
-import reducer from './state/Reducer';
-import { onNumberOfRowsPerPageChange, onPageChange } from './state/Actions';
+import { updateRowState } from './service/TableService';
 
 const TableView = ({
   tableRows,
-  tab,
+  table,
+  onRowsPerPageChange,
+  onPageChange,
+  onRowSelectChange,
 }) => {
-  const { columns } = tab;
-
   /**
-  * initialize state for useReducer
-  * @param {*} initailState
-  * @returns reducer state
+  * Update selected rows
   */
-  const initState = (initailState) => ({
-    ...initailState,
-    title: tab.name,
-    rowsPerPage: 10,
-    page: 0,
-    sortBy: tab.defaultSortField,
-    sortOrder: tab.defaultSortDirection,
-    columns: tab.columns,
-    rows: tableRows,
-    // selectedRows: [],
-  });
-
-  const [table, dispatch] = useReducer(reducer, {}, initState);
-  const handleChangeRowsPerPage = (event) => {
-    const noOfRows = parseInt(event.target.value, 10);
-    dispatch(onNumberOfRowsPerPageChange({ rowsPerPage: noOfRows }));
-  };
-
-  const handleChangePage = (event, newPage) => {
-    dispatch(onPageChange({ pageNumb: newPage }));
-  };
-
-  const onRowSelectHandler = (event, row) => {
-    event.stopPropagation();
-    console.log(row);
-  };
-
+  const updateRows = updateRowState(tableRows, table);
   return (
     <>
       <TableContainer component={Paper}>
@@ -61,7 +33,7 @@ const TableView = ({
             <TableCell padding="checkbox">
               <Checkbox />
             </TableCell>
-            {columns.map((column) => (
+            {table.columns.map((column) => (
               <>
                 <TableCell>
                   {column.header}
@@ -70,17 +42,17 @@ const TableView = ({
             ))}
           </TableHead>
           <TableBody>
-            {tableRows.slice(table.page * table.rowsPerPage,
+            {updateRows.slice(table.page * table.rowsPerPage,
               table.page * table.rowsPerPage + table.rowsPerPage)
               .map((row) => (
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
-                      onChange={(event) => onRowSelectHandler(event, row)}
+                      onClick={(event) => onRowSelectChange(event, row)}
                       checked={row.isChecked}
                     />
                   </TableCell>
-                  {columns.map((column) => (
+                  {table.columns.map((column) => (
                     <TableCell>
                       { row[column.dataField] }
                     </TableCell>
@@ -93,11 +65,11 @@ const TableView = ({
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, 50, 100]}
         component="div"
-        count={table.rows.length}
+        count={table.totalRowCount}
         rowsPerPage={table.rowsPerPage}
         page={table.page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
       />
     </>
   );

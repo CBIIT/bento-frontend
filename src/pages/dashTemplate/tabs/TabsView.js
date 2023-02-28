@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core';
-import styles from './DashTabsStyle';
-import { tabContainers } from './TableConfig';
-import TableView from './table/TableController';
+import styles from './TabsStyle';
 import TabViewGenerator from '../../../bento-core/Tab/TabViewGenerator';
 import TabPanelGenrator from '../../../bento-core/Tab/TabPanelGenrator';
+import TabView from './TabView';
+import { tabContainers } from '../../../bento/dashboardTabData';
 
 const Tabs = (props) => {
   const [currentTab, setCurrentTab] = useState(0);
@@ -21,14 +21,12 @@ const Tabs = (props) => {
       />
       {
         tabContainers.map((tab, index) => (
-          <>
-            <TabPanelGenrator value={currentTab} index={index}>
-              <TableView
-                {...props}
-                tab={tab}
-              />
-            </TabPanelGenrator>
-          </>
+          <TabPanelGenrator value={currentTab} index={index}>
+            <TabView
+              {...props}
+              tab={tab}
+            />
+          </TabPanelGenrator>
         ))
       }
     </>

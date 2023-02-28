@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
+import {
+  GET_CASES_OVERVIEW_QUERY,
+  GET_SAMPLES_OVERVIEW_QUERY,
+  GET_FILES_OVERVIEW_QUERY,
+} from '../../../../../bento/dashboardTabData';
 import client from '../../../../../utils/graphqlClient';
-import { GET_CASES_OVERVIEW_QUERY, GET_FILES_OVERVIEW_QUERY, GET_SAMPLES_OVERVIEW_QUERY } from '../../TableConfig';
 
 const getQuery = (tab) => {
   switch (tab) {
@@ -34,4 +38,20 @@ export const getTableData = (activeFilters, tab) => {
   return { tableData };
 };
 
-export const addServie = '';
+/**
+* set true to checked items
+* @param {*} rows
+* @param {*} table
+* @returns
+*/
+export const updateRowState = (rows, table) => {
+  const { selectedRows, dataKey } = table;
+  const updateRows = [...rows].map((row) => {
+    let isChecked = false;
+    if (selectedRows.indexOf(row[dataKey]) !== -1) {
+      isChecked = true;
+    }
+    return { ...row, isChecked };
+  }, []);
+  return updateRows;
+};

@@ -5,8 +5,8 @@ import TableView from './TableView';
 import { getTableData } from './service/TableService';
 
 const TableController = ((props) => {
-  const { activeFilters, tab } = props;
-  const { tableData } = getTableData(activeFilters, tab);
+  const { activeFilters, tab, table } = props;
+  const { tableData } = getTableData(activeFilters, tab, table.selectedRows);
   if (!tableData) {
     return <CircularProgress />;
   }
