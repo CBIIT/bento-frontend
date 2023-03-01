@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
+import { withStyles } from '@material-ui/core';
 import Actions from './table/Actions';
 import TableView from './table/TableController';
 import reducer from './table/state/Reducer';
@@ -7,7 +8,9 @@ import {
   onPageChange,
   onRowSeclect,
   setTotalRowCount,
+  onColumnSort,
 } from './table/state/Actions';
+import styles from './TabStyle';
 
 const TabView = (props) => {
   /**
@@ -15,7 +18,11 @@ const TabView = (props) => {
   * @param {*} initailState
   * @returns reducer state
   */
-  const { tab, dashboardStats, activeFilters } = props;
+  const {
+    tab,
+    dashboardStats,
+    activeFilters,
+  } = props;
   const initState = (initailState) => ({
     ...initailState,
     title: tab.name,
@@ -70,6 +77,21 @@ const TabView = (props) => {
     dispatch(onRowSeclect(selectedIds));
   };
 
+  const handleToggleSelectAll = (event, Ids) => {
+    if (event.target.checked) {
+      const selecedIds = Ids.concat(table.selectedRows);
+      dispatch(onRowSeclect(selecedIds));
+    } else {
+      const filterIds = table.selectedRows.filter((id) => !Ids.includes(id));
+      dispatch(onRowSeclect(filterIds));
+    }
+  };
+
+  const handleSortByColumn = (column, order) => {
+    const sort = order === 'asc' ? 'desc' : 'asc';
+    dispatch(onColumnSort({ sort, column }));
+  };
+
   return (
     <>
       <Actions
@@ -82,9 +104,11 @@ const TabView = (props) => {
         onRowsPerPageChange={handleChangeRowsPerPage}
         onPageChange={handleChangePage}
         onRowSelectChange={onRowSelectHandler}
+        onToggleSelectAll={handleToggleSelectAll}
+        onSortByColumn={handleSortByColumn}
       />
     </>
   );
 };
 
-export default TabView;
+export default withStyles(styles)(TabView);

@@ -13,9 +13,9 @@ export const onClumnViewChange = (columns) => ({
   payload: columns,
 });
 
-export const onColumnSort = (column) => ({
+export const onColumnSort = (value) => ({
   type: actionTypes.ON_COLUMN_SORT,
-  payload: column,
+  payload: value,
 });
 
 export const onChangeSortDirection = (sortOrder) => ({

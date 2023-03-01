@@ -2,19 +2,25 @@ import React from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
 import TableView from './TableView';
-import { getTableData } from './service/TableService';
+import { getTableData, setSelectedRows } from './service/TableService';
 
 const TableController = ((props) => {
-  const { activeFilters, tab, table } = props;
-  const { tableData } = getTableData(activeFilters, tab, table.selectedRows);
+  const { tableData } = getTableData(props);
   if (!tableData) {
     return <CircularProgress />;
   }
+  /**
+  *
+  */
+  const { table } = props;
+  const updateRows = setSelectedRows(tableData, table);
   return (
-    <TableView
-      {...props}
-      tableRows={tableData}
-    />
+    <>
+      <TableView
+        {...props}
+        tableRows={updateRows}
+      />
+    </>
   );
 });
 

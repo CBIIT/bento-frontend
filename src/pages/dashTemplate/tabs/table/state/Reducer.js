@@ -4,11 +4,10 @@ const reducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
     case actionTypes.ON_COLUMN_SORT:
-      return state;
-    case actionTypes.ON_SORT_ORDER_CHANGE:
       return {
         ...state,
-        sortOrder: payload.sortOrder,
+        sortOrder: payload.sort,
+        sortBy: payload.column,
       };
     case actionTypes.ON_PAGE_CHANGE:
       return {

@@ -17,12 +17,54 @@ const getQuery = (tab) => {
   }
 };
 
-export const getTableData = (activeFilters, tab) => {
+/**
+* set true to checked items
+* @param {*} rows
+* @param {*} table
+* @returns
+*/
+export const setSelectedRows = (rows = [], table) => {
+  const { selectedRows, dataKey } = table;
+  const updateRows = [...rows].map((row) => {
+    const isChecked = (selectedRows.indexOf(row[dataKey]) !== -1);
+    return { ...row, isChecked };
+  }, []);
+  return updateRows;
+};
+
+/**
+* update table data based on
+* 1. paginated table value
+* 2. active filters
+*/
+const getQueryVariables = (activeFilters, table) => {
+  const variables = { ...activeFilters };
+  const {
+    page,
+    rowsPerPage,
+    sortBy,
+    sortOrder,
+  } = table;
+  const offset = page * rowsPerPage;
+  variables.offset = offset;
+  variables.order_by = sortBy;
+  variables.first = rowsPerPage;
+  variables.sort_direction = sortOrder;
+  return variables;
+};
+
+export const getTableData = ({ activeFilters, table, tab }) => {
   const query = getQuery(tab.name);
+  const {
+    page,
+    rowsPerPage,
+    sortOrder,
+  } = table;
   async function getData() {
+    const queryVariable = getQueryVariables(activeFilters, table);
     const result = await client.query({
       query,
-      variables: activeFilters,
+      variables: queryVariable,
     })
       .then((response) => response.data);
     return result;
@@ -34,24 +76,6 @@ export const getTableData = (activeFilters, tab) => {
         setTableData(result[tab.paginationAPIField]);
       }
     });
-  }, [activeFilters]);
+  }, [activeFilters, page, rowsPerPage, sortOrder]);
   return { tableData };
-};
-
-/**
-* set true to checked items
-* @param {*} rows
-* @param {*} table
-* @returns
-*/
-export const updateRowState = (rows, table) => {
-  const { selectedRows, dataKey } = table;
-  const updateRows = [...rows].map((row) => {
-    let isChecked = false;
-    if (selectedRows.indexOf(row[dataKey]) !== -1) {
-      isChecked = true;
-    }
-    return { ...row, isChecked };
-  }, []);
-  return updateRows;
 };

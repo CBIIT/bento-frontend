@@ -325,11 +325,9 @@ const TabView = ({
 };
 
 const styles = (theme) => ({
-
   link: {
     color: theme.palette.text.link,
     textDecoration: 'none',
-
     '&:hover': {
       textDecoration: 'underline',
     },
