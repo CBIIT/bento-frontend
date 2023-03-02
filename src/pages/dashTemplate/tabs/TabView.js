@@ -1,15 +1,8 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import { withStyles } from '@material-ui/core';
-import Actions from './table/Actions';
-import TableView from './table/TableController';
-import reducer from './table/state/Reducer';
-import {
-  onRowsPerPageChange,
-  onPageChange,
-  onRowSeclect,
-  setTotalRowCount,
-  onColumnSort,
-} from './table/state/Actions';
+import Actions from './Actions';
+import TableView from '../../../components/PaginatedTable/PaginatedTable';
+import reducer from '../../../components/PaginatedTable/table/state/Reducer';
 import styles from './TabStyle';
 
 const TabView = (props) => {
@@ -26,6 +19,7 @@ const TabView = (props) => {
   const initState = (initailState) => ({
     ...initailState,
     title: tab.name,
+    query: tab.api,
     rowsPerPage: 10,
     page: 0,
     dataKey: tab.dataKey,
@@ -38,60 +32,6 @@ const TabView = (props) => {
 
   const [table, dispatch] = useReducer(reducer, {}, initState);
 
-  /**
-  * update state to props change
-  *
-  */
-  useEffect(() => {
-    dispatch(setTotalRowCount(dashboardStats[tab.count]));
-  }, [activeFilters, dashboardStats]);
-
-  const handleChangeRowsPerPage = (event) => {
-    const noOfRows = parseInt(event.target.value, 10);
-    dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows }));
-  };
-
-  const handleChangePage = (event, newPage) => {
-    dispatch(onPageChange({ pageNumb: newPage }));
-  };
-
-  /**
-  * update selected Ids
-  * @param {*} event
-  * @param {*} row
-  */
-  const onRowSelectHandler = (event, row) => {
-    event.stopPropagation();
-    let selectedIds = [...table.selectedRows];
-    const selectedId = row[tab.dataKey];
-    if (!row.isChecked) {
-      selectedIds.push(selectedId);
-    } else {
-      selectedIds = selectedIds.reduce((acc, id) => {
-        if (selectedId !== id) {
-          acc.push(id);
-        }
-        return acc;
-      }, []);
-    }
-    dispatch(onRowSeclect(selectedIds));
-  };
-
-  const handleToggleSelectAll = (event, Ids) => {
-    if (event.target.checked) {
-      const selecedIds = Ids.concat(table.selectedRows);
-      dispatch(onRowSeclect(selecedIds));
-    } else {
-      const filterIds = table.selectedRows.filter((id) => !Ids.includes(id));
-      dispatch(onRowSeclect(filterIds));
-    }
-  };
-
-  const handleSortByColumn = (column, order) => {
-    const sort = order === 'asc' ? 'desc' : 'asc';
-    dispatch(onColumnSort({ sort, column }));
-  };
-
   return (
     <>
       <Actions
@@ -101,11 +41,8 @@ const TabView = (props) => {
       <TableView
         {...props}
         table={table}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        onPageChange={handleChangePage}
-        onRowSelectChange={onRowSelectHandler}
-        onToggleSelectAll={handleToggleSelectAll}
-        onSortByColumn={handleSortByColumn}
+        dispatch={dispatch}
+        activeFilters={activeFilters}
       />
     </>
   );

@@ -23,7 +23,8 @@ const TableHeader = ({
     sortOrder,
   } = table;
   const Ids = rows.map((row) => row[table.dataKey]);
-  const includeIds = Ids.some((id) => selectedRows.includes(id));
+  const includeSelectedIds = Ids.some((id) => selectedRows.includes(id));
+
   return (
     <>
       <TableHead>
@@ -33,8 +34,9 @@ const TableHeader = ({
               control={(
                 <Checkbox
                   color="primary"
-                  indeterminate={includeIds}
-                  onChange={(event) => toggleSelectAll(event, Ids)}
+                  indeterminate={includeSelectedIds}
+                  checked={includeSelectedIds}
+                  onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
                 />
               )}
             />

@@ -6,12 +6,12 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TablePagination,
   TableRow,
   withStyles,
 } from '@material-ui/core';
 import styles from './TableStyle';
-import TableHeader from './HeaderView';
+import TableHeader from './CustomHeader';
+import CustomPagination from './CustomPagination';
 
 const TableView = ({
   tableRows,
@@ -23,6 +23,15 @@ const TableView = ({
   onSortByColumn,
 }) => (
   <>
+    <CustomPagination
+      rowsPerPageOptions={[10, 25, 50, 100]}
+      component="div"
+      count={table.totalRowCount}
+      rowsPerPage={table.rowsPerPage}
+      page={table.page}
+      onPageChange={onPageChange}
+      onRowsPerPageChange={onRowsPerPageChange}
+    />
     <TableContainer component={Paper}>
       <Table>
         <TableHeader
@@ -51,7 +60,7 @@ const TableView = ({
         </TableBody>
       </Table>
     </TableContainer>
-    <TablePagination
+    <CustomPagination
       rowsPerPageOptions={[10, 25, 50, 100]}
       component="div"
       count={table.totalRowCount}

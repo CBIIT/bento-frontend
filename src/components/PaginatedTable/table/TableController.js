@@ -1,7 +1,7 @@
 import React from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import TableView from './TableView';
+import TableView from './components/TableView';
 import { getTableData, setSelectedRows } from './service/TableService';
 
 const TableController = ((props) => {
@@ -10,7 +10,7 @@ const TableController = ((props) => {
     return <CircularProgress />;
   }
   /**
-  *
+  * set selected row
   */
   const { table } = props;
   const updateRows = setSelectedRows(tableData, table);

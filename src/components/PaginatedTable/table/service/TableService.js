@@ -1,21 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  GET_CASES_OVERVIEW_QUERY,
-  GET_SAMPLES_OVERVIEW_QUERY,
-  GET_FILES_OVERVIEW_QUERY,
-} from '../../../../../bento/dashboardTabData';
-import client from '../../../../../utils/graphqlClient';
-
-const getQuery = (tab) => {
-  switch (tab) {
-    case 'Cases':
-      return GET_CASES_OVERVIEW_QUERY;
-    case 'Samples':
-      return GET_SAMPLES_OVERVIEW_QUERY;
-    default:
-      return GET_FILES_OVERVIEW_QUERY;
-  }
-};
+import client from '../../../../utils/graphqlClient';
 
 /**
 * set true to checked items
@@ -54,11 +38,11 @@ const getQueryVariables = (activeFilters, table) => {
 };
 
 export const getTableData = ({ activeFilters, table, tab }) => {
-  const query = getQuery(tab.name);
   const {
     page,
     rowsPerPage,
     sortOrder,
+    query,
   } = table;
   async function getData() {
     const queryVariable = getQueryVariables(activeFilters, table);
