@@ -1,6 +1,6 @@
 import React from 'react';
 import { CircularProgress, TextField } from '@material-ui/core';
-import { Search as SearchIcon } from '@material-ui/icons';
+import { CustomSearchIcon } from './CustomSearchIcon';
 
 /**
  * Component that renders a custom input text field
@@ -11,7 +11,7 @@ import { Search as SearchIcon } from '@material-ui/icons';
 export const CustomTextField = ({ ...params }) => {
   const {
     classes, placeholder, loading,
-    onClick, onEnter,
+    onClick, onEnter, iconType,
   } = params;
 
   const InputProps = {
@@ -25,9 +25,10 @@ export const CustomTextField = ({ ...params }) => {
       <>
         {loading ? <CircularProgress color="inherit" size={20} /> : null}
         {params.InputProps.endAdornment}
-        <SearchIcon
-          className={classes.searchIconSpan}
+        <CustomSearchIcon
+          classes={classes}
           onClick={onClick ? () => onClick(params.inputProps.value) : undefined}
+          type={iconType}
         />
       </>
     ),

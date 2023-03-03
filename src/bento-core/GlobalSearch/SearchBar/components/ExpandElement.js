@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Creates a component that displays the adornment
+ * Creates a component that displays the expand/adornment
  * for the search bar results
  *
  * @param {object} props
