@@ -15,8 +15,12 @@ import { CustomPopper } from './components/CustomPopper';
  */
 export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
   const {
-    classes: uiClasses, functions, config,
+    classes: uiClasses, functions, config: uiConfigOpts,
   } = uiConfig;
+
+  const config = uiConfigOpts && typeof uiConfigOpts === 'object'
+    ? uiConfigOpts
+    : DEFAULT_CONFIG_SEARCHBAR.config;
 
   const classes = uiClasses && typeof uiClasses === 'object'
     ? uiClasses
@@ -42,22 +46,25 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
     ? config.searchRoute
     : DEFAULT_CONFIG_SEARCHBAR.config.searchRoute;
 
-  const minimumInputLength = config && config.minimumInputLength && typeof config.minimumInputLength === 'number'
+  const minimumInputLength = config && typeof config.minimumInputLength === 'number'
     ? config.minimumInputLength
     : DEFAULT_CONFIG_SEARCHBAR.config.minimumInputLength;
 
-  const maximumSuggestions = config && config.maxSuggestions && typeof config.maxSuggestions === 'number'
+  const maximumSuggestions = config && typeof config.maxSuggestions === 'number'
     ? config.maxSuggestions
     : DEFAULT_CONFIG_SEARCHBAR.config.maxSuggestions;
 
   return {
     SearchBar: ({ ...props }) => {
       const {
-        clearable = false, showLoading = false,
+        clearable = false,
+        showLoading = false,
+        style = {},
+        value = '',
       } = props;
 
       const history = useHistory();
-      const [inputValue, setInputValue] = useState('');
+      const [inputValue, setInputValue] = useState(value);
       const [results, setResults] = useState([]);
       const [loading, setLoading] = useState(false);
 
@@ -85,17 +92,20 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
         setLoading(true);
         const result = await suggestionFunction(config, newValue);
 
-        const resultOpts = !result || !(result instanceof Array) || result.length === 0
-          ? []
-          : [
-            ...(maximumSuggestions > 0 && result.length > maximumSuggestions
-              ? result.slice(0, maximumSuggestions)
-              : result),
+        const resultOpts = !result || !(result instanceof Array) || result.length === 0 ? [] : [
+          ...(maximumSuggestions > 0 && result.length > maximumSuggestions
+            ? result.slice(0, maximumSuggestions)
+            : result),
+        ];
+
+        if (maximumSuggestions > 0 && resultOpts.length > maximumSuggestions) {
+          resultOpts.push(
             <ExpandElement
               classes={classes}
               text={config.expandText || DEFAULT_CONFIG_SEARCHBAR.config.expandText}
             />,
-          ];
+          );
+        }
 
         setLoading(false);
         setResults(resultOpts);
@@ -108,19 +118,29 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
           options={results}
           loading={showLoading ? loading : false}
           disableClearable={!clearable}
+          closeIcon={(
+            <img
+              className={classes.clearIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchDelete.svg"
+              alt="clear icon"
+            />
+          )}
+          style={style}
           className={classes.autocomplete}
+          value={value}
           inputValue={inputValue}
           onInputChange={fetchAutocomplete}
           filterOptions={filterFunction}
           getOptionLabel={labelFunction}
-          onChange={(event, value) => onChange(value, searchRoute, history, event)}
+          onChange={(event, val) => onChange(val, searchRoute, history, event)}
           PopperComponent={(params) => (<CustomPopper {...params} classes={classes} />)}
           renderInput={(params) => (
             <CustomTextField
               {...params}
               loading={showLoading ? loading : false}
               classes={classes}
-              placeholder={config.placeholder || DEFAULT_CONFIG_SEARCHBAR.config.placeholder}
+              iconType={config.iconType}
+              placeholder={typeof config.placeholder === 'string' ? config.placeholder : DEFAULT_CONFIG_SEARCHBAR.config.placeholder}
               onClick={(val) => onChange(val, searchRoute, history)}
               onEnter={(val) => onChange(val, searchRoute, history)}
             />
