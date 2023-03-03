@@ -76,10 +76,23 @@ const PaginatedTable = (props) => {
     dispatch(onColumnSort({ sort, column }));
   };
 
+  /*
+  * Configure column options
+  */
+  const columnOptions = {
+    textLabels: {
+      body: {
+        noMatch: 'No Matching Records Found',
+      },
+    },
+    fixedHeader: '',
+  };
+
   return (
     <>
       <TableView
         {...props}
+        columnOptions={columnOptions}
         table={table}
         onRowsPerPageChange={handleChangeRowsPerPage}
         onPageChange={handleChangePage}

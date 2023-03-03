@@ -1,27 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  createTheme,
   TablePagination,
+  ThemeProvider,
   withStyles,
 } from '@material-ui/core';
 
 const CustomPagination = ({
+  customStyles = {},
   rowsPerPageOptions,
   count,
   rowsPerPage,
   page,
   onPageChange,
   onRowsPerPageChange,
+  themeConfig = {},
 }) => (
-  <TablePagination
-    rowsPerPageOptions={rowsPerPageOptions}
-    component="div"
-    count={count}
-    rowsPerPage={rowsPerPage}
-    page={page}
-    onPageChange={onPageChange}
-    onRowsPerPageChange={onRowsPerPageChange}
-  />
+  <ThemeProvider theme={createTheme(themeConfig)}>
+    <TablePagination
+      style={customStyles.pagination}
+      rowsPerPageOptions={rowsPerPageOptions}
+      component="div"
+      count={count}
+      rowsPerPage={rowsPerPage}
+      page={page}
+      onPageChange={onPageChange}
+      onRowsPerPageChange={onRowsPerPageChange}
+    />
+  </ThemeProvider>
 );
 
 CustomPagination.propTypes = {
