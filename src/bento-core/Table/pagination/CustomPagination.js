@@ -4,11 +4,9 @@ import {
   createTheme,
   TablePagination,
   ThemeProvider,
-  withStyles,
 } from '@material-ui/core';
 
 const CustomPagination = ({
-  customStyles = {},
   rowsPerPageOptions,
   count,
   rowsPerPage,
@@ -19,7 +17,6 @@ const CustomPagination = ({
 }) => (
   <ThemeProvider theme={createTheme(themeConfig)}>
     <TablePagination
-      style={customStyles.pagination}
       rowsPerPageOptions={rowsPerPageOptions}
       component="div"
       count={count}
@@ -40,7 +37,4 @@ CustomPagination.propTypes = {
   onRowsPerPageChange: PropTypes.func.isRequired,
 };
 
-const styles = () => ({
-});
-
-export default withStyles(styles)(CustomPagination);
+export default CustomPagination;

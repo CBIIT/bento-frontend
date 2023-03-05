@@ -1,8 +1,8 @@
 import React from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import TableView from './components/TableView';
-import { getTableData, setSelectedRows } from './service/TableService';
+import TableView from './TableView';
+import { getTableData, setSelectedRows } from './TableService';
 
 const TableController = ((props) => {
   const { tableData } = getTableData(props);

@@ -1,5 +1,6 @@
 /* eslint-disable */
 import gql from 'graphql-tag';
+import { cellTypes } from '../bento-core/Table/CellTypes';
 import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 
 // --------------- Tooltip configuration --------------
@@ -1232,6 +1233,11 @@ export const tabContainers = [
         header: 'Case ID',
         sort: 'asc',
         link: '/case/{subject_id}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/case',
+          pathParamAttrs: ['subject_id'],
+        },
         primary: true,
         display: true,
         tooltipText: 'sort',
@@ -1241,6 +1247,11 @@ export const tabContainers = [
         header: 'Program Code',
         sort: 'asc',
         link: '/program/{program_id}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/program',
+          pathParamAttrs: ['program_id'],
+        },
         display: true,
         tooltipText: 'sort',
       },
@@ -1256,6 +1267,11 @@ export const tabContainers = [
         header: 'Arm',
         sort: 'asc',
         link: '/arm/{study_acronym}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/arm',
+          pathParamAttrs: ['study_acronym'],
+        },
         display: true,
         tooltipText: 'sort',
       },
@@ -1360,6 +1376,11 @@ export const tabContainers = [
         header: 'Case ID',
         sort: 'asc',
         link: '/case/{subject_id}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/case',
+          pathParamAttrs: ['subject_id'],
+        },
         display: true,
         tooltipText: 'sort',
       },
@@ -1368,6 +1389,11 @@ export const tabContainers = [
         header: 'Program Code',
         sort: 'asc',
         link: '/program/{program_id}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/program',
+          pathParamAttrs: ['program_id'],
+        },
         display: true,
       },
       {
@@ -1382,6 +1408,11 @@ export const tabContainers = [
         header: 'Arm',
         sort: 'asc',
         link: '/arm/{arm}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/arm',
+          pathParamAttrs: ['study_acronym'],
+        },
         display: true,
         tooltipText: 'sort',
       },
@@ -1550,6 +1581,11 @@ export const tabContainers = [
         header: 'Program Code',
         sort: 'asc',
         link: '/program/{program_id}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/program',
+          pathParamAttrs: ['program_id'],
+        },
         display: true,
         tooltipText: 'sort',
       },
@@ -1565,6 +1601,11 @@ export const tabContainers = [
         header: 'Arm',
         sort: 'asc',
         link: '/arm/{arm}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/arm',
+          pathParamAttrs: ['study_acronym'],
+        },
         display: true,
         tooltipText: 'sort',
       },
@@ -1573,6 +1614,11 @@ export const tabContainers = [
         header: 'Case ID',
         sort: 'asc',
         link: '/case/{subject_id}',
+        type: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/case',
+          pathParamAttrs: ['subject_id'],
+        },
         display: true,
         tooltipText: 'sort',
       },

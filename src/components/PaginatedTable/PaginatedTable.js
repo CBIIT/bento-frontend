@@ -6,7 +6,7 @@ import {
   onRowSeclect,
   setTotalRowCount,
   onColumnSort,
-} from './table/state/Actions';
+} from './state/Actions';
 
 const PaginatedTable = (props) => {
   /**

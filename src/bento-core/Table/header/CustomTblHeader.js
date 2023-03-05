@@ -11,8 +11,8 @@ import {
   createTheme,
   ThemeProvider,
 } from '@material-ui/core';
-import HeaderCell from './CustomHeaderCell';
-import { tableCls } from '../CustomClassNames';
+import HeaderCell from './CustomCell';
+import { getClsName, tableCls } from '../ClassNames';
 
 const CustomTableHeader = ({
   classes,
@@ -33,25 +33,22 @@ const CustomTableHeader = ({
   const includeSelectedIds = Ids.some((id) => selectedRows.includes(id));
 
   /**
-  * generate root id based on table info
-  * uses themeprovider to customize style
+  * generate root class name based on table info
+  * themeprovider to customize style
   */
-  const rootId = `${table.title}`
-    .replace(' ', '_')
-    .toLowerCase()
-    .concat(`_${tableCls.HEADER}`);
+  const rootClsName = getClsName(table.title, tableCls.HEADER);
 
   return (
     <ThemeProvider theme={createTheme(themeConfig)}>
-      <TableHead id={rootId}>
-        <TableRow id={`${rootId}${tableCls.ROW}`}>
+      <TableHead className={rootClsName}>
+        <TableRow className={`${rootClsName}${tableCls.ROW}`}>
           <TableCell padding="checkbox">
             <FormControlLabel
               control={(
                 <Checkbox
-                  className={clsx(`${rootId}${tableCls.CHECKBOX}`, {
-                    [`${rootId}${tableCls.CHECKBOX_ACTIVE}`]: includeSelectedIds,
-                    [`${rootId}${tableCls.CHECKBOX_INACTIVE}`]: !includeSelectedIds,
+                  className={clsx(`${rootClsName}${tableCls.CHECKBOX}`, {
+                    [`${rootClsName}${tableCls.CHECKBOX_ACTIVE}`]: includeSelectedIds,
+                    [`${rootClsName}${tableCls.CHECKBOX_INACTIVE}`]: !includeSelectedIds,
                   })}
                   classes={{
                     root: classes.checkboxRoot,
@@ -69,7 +66,7 @@ const CustomTableHeader = ({
           {
             columns.map((column) => (
               <HeaderCell
-                id={rootId}
+                rootClsName={rootClsName}
                 options={columnOptions}
                 column={column}
                 sortBy={sortBy}
