@@ -6,6 +6,29 @@ import {
   ThemeProvider,
 } from '@material-ui/core';
 
+const defaultTheme = {
+  MuiTablePagination: {
+    root: {
+      paddingRight: '20px !important',
+      borderTop: '3px solid #42779a',
+    },
+  },
+  MuiTypography: {
+    body2: {
+      fontSize: '14px',
+      textTransform: 'uppercase',
+    },
+    root: {
+      fontSize: '14px',
+    },
+  },
+  MuiIconButton: {
+    root: {
+      padding: '2px',
+    },
+  },
+};
+
 const CustomPagination = ({
   rowsPerPageOptions,
   count,
@@ -13,9 +36,9 @@ const CustomPagination = ({
   page,
   onPageChange,
   onRowsPerPageChange,
-  themeConfig = {},
+  customTheme = {},
 }) => (
-  <ThemeProvider theme={createTheme(themeConfig)}>
+  <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
     <TablePagination
       rowsPerPageOptions={rowsPerPageOptions}
       component="div"

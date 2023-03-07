@@ -55,11 +55,16 @@ export const getTableData = ({ activeFilters, table, tab }) => {
   }
   const [tableData, setTableData] = useState(null);
   useEffect(() => {
+    const controller = new AbortController();
     getData().then((result) => {
       if (result[tab.paginationAPIField]) {
         setTableData(result[tab.paginationAPIField]);
       }
     });
+    return () => {
+      // cancel the request before component unmounts
+      controller.abort();
+    };
   }, [activeFilters, page, rowsPerPage, sortOrder]);
   return { tableData };
 };

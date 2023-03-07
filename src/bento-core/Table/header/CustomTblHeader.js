@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import HeaderCell from './CustomCell';
 import { getClsName, tableCls } from '../ClassNames';
+import defaultTheme from './DefaultThemConfig';
 
 const CustomTableHeader = ({
   classes,
@@ -21,7 +22,7 @@ const CustomTableHeader = ({
   toggleSelectAll,
   sortByColumn,
   columnOptions,
-  themeConfig = {},
+  customTheme = {},
 }) => {
   const {
     columns,
@@ -33,13 +34,13 @@ const CustomTableHeader = ({
   const includeSelectedIds = Ids.some((id) => selectedRows.includes(id));
 
   /**
-  * generate root class name based on table info
+  * create root class name based on table info
   * themeprovider to customize style
   */
   const rootClsName = getClsName(table.title, tableCls.HEADER);
 
   return (
-    <ThemeProvider theme={createTheme(themeConfig)}>
+    <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme(), ...customTheme } })}>
       <TableHead className={rootClsName}>
         <TableRow className={`${rootClsName}${tableCls.ROW}`}>
           <TableCell padding="checkbox">

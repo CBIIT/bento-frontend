@@ -257,7 +257,6 @@ const TabView = ({
             )}
           </IconButton>
         </ToolTip>
-
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>

@@ -8,26 +8,32 @@ import {
   createTheme,
   TableCell,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import CustomBodyCell from './CustomCell';
 import { getClsName, tableCls } from '../ClassNames';
+import defaultTheme from './DefaultThemConfig';
 
 const CustomTableBody = ({
   rows,
   table,
   onRowSelectChange,
-  themeConfig = {},
+  customTheme = {},
 }) => {
   const { columns } = table;
   const rootClsName = getClsName(table.title, `${tableCls.BODY}${tableCls.ROW}`);
 
   return (
-    <ThemeProvider theme={createTheme(themeConfig)}>
+    <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme(), ...customTheme } })}>
       <TableBody>
         {rows
           .map((row) => (
             <TableRow className={rootClsName}>
               <TableCell padding="checkbox">
                 <Checkbox
+                  className={clsx({
+                    [`${rootClsName}${tableCls.CHECKBOX_ACTIVE}`]: row.isChecked,
+                  })}
+                  disableRipple
                   onClick={(event) => onRowSelectChange(event, row)}
                   checked={row.isChecked}
                 />

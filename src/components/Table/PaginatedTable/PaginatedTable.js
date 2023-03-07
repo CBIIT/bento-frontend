@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import TableView from './table/TableController';
+import TableView from './TableController';
 import {
   onRowsPerPageChange,
   onPageChange,

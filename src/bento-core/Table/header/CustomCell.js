@@ -2,6 +2,7 @@ import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import MuiTooltip from '@material-ui/core/Tooltip';
+import clsx from 'clsx';
 import { tableCls } from '../ClassNames';
 
 const CustomHeaderCell = ({
@@ -24,7 +25,9 @@ const CustomHeaderCell = ({
       scope="col"
       active={sortBy === dataField}
       direction={sortOrder}
-      className={`${rootClsName}${tableCls.COL}_${dataField}_cell`}
+      className={clsx(
+        `${rootClsName}${tableCls.COL}_${dataField}_cell`,
+      )}
     >
       <Tooltip
         title={tooltipText}
@@ -34,7 +37,9 @@ const CustomHeaderCell = ({
           active={sortBy === dataField}
           direction={sortBy === dataField ? sortOrder : 'asc'}
           onClick={toggleSort}
-          className={`${rootClsName}${tableCls.COL}_${dataField}`}
+          className={clsx(
+            `${rootClsName}${tableCls.COL}_${dataField}`,
+          )}
         >
           {header}
         </TableSortLabel>

@@ -8,11 +8,9 @@ import TableHeader from '../../../bento-core/Table/header/CustomTblHeader';
 import CustomPagination from '../../../bento-core/Table/pagination/CustomPagination';
 import CustomTableBody from '../../../bento-core/Table/body/CustomTblBody';
 import {
-  pgBottomThemeConfig,
-  pgTopThemeConfig,
-  tblBodyThemeConfig,
   tblHeaderThemeConfig,
 } from './TableThemeConfig';
+import CustomToolbar from '../../../bento-core/Table/toolbar/CustomToolbar';
 
 const TableView = ({
   tableRows,
@@ -26,7 +24,6 @@ const TableView = ({
 }) => (
   <>
     <CustomPagination
-      themeConfig={pgTopThemeConfig}
       rowsPerPageOptions={[10, 25, 50, 100]}
       component="div"
       count={table.totalRowCount}
@@ -35,10 +32,11 @@ const TableView = ({
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
     />
+    <CustomToolbar numSelected={table.selectedRows.length} />
     <TableContainer component={Paper}>
       <Table>
         <TableHeader
-          themeConfig={tblHeaderThemeConfig}
+          customTheme={tblHeaderThemeConfig}
           table={table}
           rows={tableRows}
           columnOptions={columnOptions}
@@ -46,7 +44,6 @@ const TableView = ({
           sortByColumn={onSortByColumn}
         />
         <CustomTableBody
-          themeConfig={tblBodyThemeConfig}
           rows={tableRows}
           table={table}
           onRowSelectChange={onRowSelectChange}
@@ -54,7 +51,6 @@ const TableView = ({
       </Table>
     </TableContainer>
     <CustomPagination
-      themeConfig={pgBottomThemeConfig}
       rowsPerPageOptions={[10, 25, 50, 100]}
       component="div"
       count={table.totalRowCount}

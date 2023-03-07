@@ -6,13 +6,31 @@ import {
 } from '@material-ui/core';
 import { cellTypes } from '../CellTypes';
 
+/**
+* Custom Column reneder
+*/
+const CustomComponent = ({
+  row,
+  column,
+}) => {
+  const { dataField, customRender } = column;
+  return (
+    <>
+      {customRender({ ...row, ...column, label: row[dataField] })}
+    </>
+  );
+};
+
+/**
+* Custom Link component
+*/
 const CustomLink = ({
   children,
-  linkAttr,
+  column,
   row,
   rootClsName,
 }) => {
-  const { rootPath, pathParamAttrs } = linkAttr;
+  const { rootPath, pathParamAttrs } = column.linkAttr;
   const url = pathParamAttrs.map((attr) => `#${rootPath}/`.concat(row[attr]));
   return (
     <Link href={url} className={`${rootClsName}_${cellTypes.LINK}`}>
@@ -23,21 +41,19 @@ const CustomLink = ({
 
 /**
 *
-* @param {*} column
-* @param {*} data
 * @returns default/Link/Custom view
 */
-const ViewCustomCell = ({
+const ViewCell = ({
   column,
   row,
   rootClsName,
 }) => {
-  const { type, linkAttr } = column;
+  const { type } = column;
   switch (type) {
     case cellTypes.LINK:
       return (
         <CustomLink
-          linkAttr={linkAttr}
+          column={column}
           row={row}
           rootClsName={rootClsName}
         >
@@ -45,6 +61,13 @@ const ViewCustomCell = ({
             {row[column.dataField]}
           </Typography>
         </CustomLink>
+      );
+    case cellTypes.CUSTOM_ELEM:
+      return (
+        <CustomComponent
+          row={row}
+          column={column}
+        />
       );
     default:
       return (
@@ -61,7 +84,7 @@ const CustomBodyCell = ({
   column,
 }) => (
   <TableCell className={`${rootClsName}_${column.dataField}`}>
-    <ViewCustomCell
+    <ViewCell
       rootClsName={rootClsName}
       row={row}
       column={column}

@@ -1,6 +1,9 @@
 /* eslint-disable */
+import React from 'react';
+import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import { cellTypes } from '../bento-core/Table/CellTypes';
+import { CustomLinkView } from '../components/Table/PaginatedTable/components/CustomCell';
 import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 
 // --------------- Tooltip configuration --------------
@@ -1238,6 +1241,7 @@ export const tabContainers = [
           rootPath: '/case',
           pathParamAttrs: ['subject_id'],
         },
+        // customRender: (props) => (<CustomLinkView {...props} />),
         primary: true,
         display: true,
         tooltipText: 'sort',
