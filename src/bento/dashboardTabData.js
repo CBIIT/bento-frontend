@@ -1510,13 +1510,13 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
       },
-      {
-        dataField: 'file_id',
-        header: 'File ID',
-        sort: 'asc',
-        display: false,
-        tooltipText: 'sort',
-      },
+      // {
+      //   dataField: 'file_id',
+      //   header: 'File ID',
+      //   sort: 'asc',
+      //   display: false,
+      //   tooltipText: 'sort',
+      // },
       {
         dataField: 'association',
         header: 'Association',
@@ -1595,13 +1595,13 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
       },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        sort: 'asc',
-        display: false,
-        tooltipText: 'sort',
-      },
+      // {
+      //   dataField: 'program_id',
+      //   header: 'Program ID',
+      //   sort: 'asc',
+      //   display: false,
+      //   tooltipText: 'sort',
+      // },
       {
         dataField: 'arm',
         header: 'Arm',
