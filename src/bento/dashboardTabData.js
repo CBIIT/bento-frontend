@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
 import { cellTypes } from '../bento-core/Table/CellTypes';
-import { CustomLinkView } from '../components/Table/PaginatedTable/components/CustomCell';
+import { CustomCellView } from '../components/Table/PaginatedTable/CustomCells/CustomCell';
 import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 
 // --------------- Tooltip configuration --------------
@@ -1551,7 +1551,9 @@ export const tabContainers = [
         header: 'Access',
         sort: 'asc',
         display: true,
+        type: cellTypes.CUSTOM_ELEM,
         downloadDocument: true, // To indicate that column is document donwload
+        customRender: (props) => <CustomCellView {...props} />,
         documentDownloadProps: {
           // Max file size needs to bin Bytes to seperate two support file preview and download
           maxFileSize: 315,
