@@ -1,8 +1,8 @@
 import React, { useReducer } from 'react';
 import { withStyles } from '@material-ui/core';
 import Actions from './Actions';
-import TableView from '../../../components/Table/PaginatedTable/PaginatedTable';
-import reducer from '../../../components/Table/PaginatedTable/state/Reducer';
+import TableView from '../../../components/PaginatedTable/PaginatedTable';
+import reducer from '../../../components/PaginatedTable/state/Reducer';
 import styles from './TabStyle';
 
 const TabView = (props) => {

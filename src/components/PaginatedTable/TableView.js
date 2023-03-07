@@ -4,13 +4,13 @@ import {
   Table,
   TableContainer,
 } from '@material-ui/core';
-import TableHeader from '../../../bento-core/Table/header/CustomTblHeader';
-import CustomPagination from '../../../bento-core/Table/pagination/CustomPagination';
-import CustomTableBody from '../../../bento-core/Table/body/CustomTblBody';
+import TableHeader from '../../bento-core/Table/header/CustomTblHeader';
+import CustomPagination from '../../bento-core/Table/pagination/CustomPagination';
+import CustomTableBody from '../../bento-core/Table/body/CustomTblBody';
 import {
   tblHeaderThemeConfig,
 } from './TableThemeConfig';
-import CustomToolbar from '../../../bento-core/Table/toolbar/CustomToolbar';
+import CustomToolbar from '../../bento-core/Table/toolbar/CustomToolbar';
 
 const TableView = ({
   tableRows,

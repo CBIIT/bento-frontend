@@ -18,6 +18,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         rowsPerPage: payload.rowsPerPage,
+        page: payload.page,
       };
     case actionTypes.VIEW_COLUMN_CHANGE:
       return state;

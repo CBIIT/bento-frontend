@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import client from '../../../utils/graphqlClient';
+import client from '../../utils/graphqlClient';
 
 /**
 * set true to checked items

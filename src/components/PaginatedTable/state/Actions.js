@@ -23,9 +23,9 @@ export const onChangeSortDirection = (sortOrder) => ({
   payload: sortOrder,
 });
 
-export const onRowsPerPageChange = (rowPerPage) => ({
+export const onRowsPerPageChange = (value) => ({
   type: actionTypes.ON_ROWS_PER_PAGE_CHANGE,
-  payload: rowPerPage,
+  payload: value,
 });
 
 export const onPageChange = (pageNumb) => ({
