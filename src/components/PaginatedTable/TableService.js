@@ -37,6 +37,12 @@ const getQueryVariables = (activeFilters, table) => {
   return variables;
 };
 
+/**
+ * @param {*} activefilters
+ * @param {*} table (table state)
+ * @param {*} tab (tab)
+ * @returns table data
+ */
 export const getTableData = ({ activeFilters, table, tab }) => {
   const {
     page,

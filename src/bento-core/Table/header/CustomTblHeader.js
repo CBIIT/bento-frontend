@@ -22,6 +22,7 @@ const CustomTableHeader = ({
   toggleSelectAll,
   sortByColumn,
   columnOptions,
+  components = {},
   customTheme = {},
 }) => {
   const {
@@ -38,9 +39,9 @@ const CustomTableHeader = ({
   * themeprovider to customize style
   */
   const rootClsName = getClsName(table.title, tableCls.HEADER);
-
+  const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
-    <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme(), ...customTheme } })}>
+    <ThemeProvider theme={themeConfig}>
       <TableHead className={rootClsName}>
         <TableRow className={`${rootClsName}${tableCls.ROW}`}>
           <TableCell padding="checkbox">
@@ -69,6 +70,7 @@ const CustomTableHeader = ({
               <HeaderCell
                 rootClsName={rootClsName}
                 options={columnOptions}
+                components={components}
                 column={column}
                 sortBy={sortBy}
                 sortOrder={sortOrder}
@@ -97,14 +99,6 @@ const styles = () => ({
     '&$checked': {
       color: '#8DCAFF',
     },
-  },
-  fixedHeader: {
-    position: 'relative',
-  },
-  headerCell: {
-    borderTop: '3px solid #42779A',
-    color: '#13344A',
-    backgroundColor: '#ffffff',
   },
 });
 

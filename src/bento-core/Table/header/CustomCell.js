@@ -4,7 +4,12 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import { tableCls } from '../ClassNames';
+import { headerTypes } from '../Types';
 
+/**
+*
+* @returns default/Link/Custom view
+*/
 const CustomHeaderCell = ({
   rootClsName,
   sortOrder,
@@ -17,9 +22,12 @@ const CustomHeaderCell = ({
     dataField,
     tooltipText,
     header,
+    headerType,
+    customColHeaderRender,
   } = column;
 
   const Tooltip = components.Tooltip || MuiTooltip;
+
   return (
     <TableCell
       scope="col"
@@ -41,7 +49,8 @@ const CustomHeaderCell = ({
             `${rootClsName}${tableCls.COL}_${dataField}`,
           )}
         >
-          {header}
+          {(headerType === headerTypes.CUSTOM_ELEM && customColHeaderRender)
+            ? customColHeaderRender(column) : header}
         </TableSortLabel>
       </Tooltip>
     </TableCell>

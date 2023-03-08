@@ -4,7 +4,7 @@ import {
   Link,
   Typography,
 } from '@material-ui/core';
-import { cellTypes } from '../CellTypes';
+import { cellTypes } from '../Types';
 
 /**
 * Custom Column reneder
@@ -13,10 +13,10 @@ const CustomComponent = ({
   row,
   column,
 }) => {
-  const { dataField, customRender } = column;
+  const { dataField, customCellRender } = column;
   return (
     <>
-      {customRender({ ...row, ...column, label: row[dataField] })}
+      {customCellRender({ ...row, ...column, label: row[dataField] })}
     </>
   );
 };
@@ -48,8 +48,8 @@ const ViewCell = ({
   row,
   rootClsName,
 }) => {
-  const { type } = column;
-  switch (type) {
+  const { cellType } = column;
+  switch (cellType) {
     case cellTypes.LINK:
       return (
         <CustomLink

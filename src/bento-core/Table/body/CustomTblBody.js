@@ -21,9 +21,10 @@ const CustomTableBody = ({
 }) => {
   const { columns } = table;
   const rootClsName = getClsName(table.title, `${tableCls.BODY}${tableCls.ROW}`);
+  const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
 
   return (
-    <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme(), ...customTheme } })}>
+    <ThemeProvider theme={themeConfig}>
       <TableBody>
         {rows
           .map((row) => (

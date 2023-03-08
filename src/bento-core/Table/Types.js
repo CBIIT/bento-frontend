@@ -4,4 +4,7 @@ export const cellTypes = {
   DEFAULT: 'DEFAULT',
 };
 
-export const types = {};
+export const headerTypes = {
+  CUSTOM_ELEM: 'CUSTOM_ELEM',
+  DEFAULT: 'DEFAULT',
+};

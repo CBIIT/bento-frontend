@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
-import { cellTypes } from '../bento-core/Table/CellTypes';
+import { cellTypes, headerTypes } from '../bento-core/Table/Types';
 import { CustomCellView } from '../components/PaginatedTable/CustomCell';
 import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 
@@ -1241,7 +1241,6 @@ export const tabContainers = [
           rootPath: '/case',
           pathParamAttrs: ['subject_id'],
         },
-        // customRender: (props) => (<CustomLinkView {...props} />),
         primary: true,
         display: true,
         tooltipText: 'sort',
@@ -1505,18 +1504,19 @@ export const tabContainers = [
       {
         dataField: 'file_name',
         header: 'File Name',
+        headerType: headerTypes.CUSTOM_ELEM,
         sort: 'asc',
         primary: true,
         display: true,
         tooltipText: 'sort',
       },
-      // {
-      //   dataField: 'file_id',
-      //   header: 'File ID',
-      //   sort: 'asc',
-      //   display: false,
-      //   tooltipText: 'sort',
-      // },
+      {
+        dataField: 'file_id',
+        header: 'File ID',
+        sort: 'asc',
+        display: false,
+        tooltipText: 'sort',
+      },
       {
         dataField: 'association',
         header: 'Association',
@@ -1551,9 +1551,8 @@ export const tabContainers = [
         header: 'Access',
         sort: 'asc',
         display: true,
-        type: cellTypes.CUSTOM_ELEM,
+        cellType: cellTypes.CUSTOM_ELEM,
         downloadDocument: true, // To indicate that column is document donwload
-        customRender: (props) => <CustomCellView {...props} />,
         documentDownloadProps: {
           // Max file size needs to bin Bytes to seperate two support file preview and download
           maxFileSize: 315,
@@ -1595,13 +1594,13 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
       },
-      // {
-      //   dataField: 'program_id',
-      //   header: 'Program ID',
-      //   sort: 'asc',
-      //   display: false,
-      //   tooltipText: 'sort',
-      // },
+      {
+        dataField: 'program_id',
+        header: 'Program ID',
+        sort: 'asc',
+        display: false,
+        tooltipText: 'sort',
+      },
       {
         dataField: 'arm',
         header: 'Arm',
@@ -1639,7 +1638,7 @@ export const tabContainers = [
         dataField: 'diagnosis',
         header: 'Diagnosis',
         sort: 'asc',
-        display: true,
+        display: false,
         tooltipText: 'sort',
       },
     ],
