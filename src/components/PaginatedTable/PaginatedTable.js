@@ -6,6 +6,7 @@ import {
   onRowSeclect,
   setTotalRowCount,
   onColumnSort,
+  onPageAndTotalCountChange,
 } from './state/Actions';
 import { themeConfig } from './TableThemeConfig';
 
@@ -25,10 +26,19 @@ const PaginatedTable = (props) => {
 
   /**
   * update state to props change
-  *
   */
   useEffect(() => {
-    dispatch(setTotalRowCount(dashboardStats[tab.count]));
+    const { page, rowsPerPage } = table;
+    if (dashboardStats[tab.count] < page * rowsPerPage) {
+      const currentRows = page * rowsPerPage;
+      const newPage = Math.floor(dashboardStats[tab.count] / currentRows);
+      dispatch(onPageAndTotalCountChange({
+        page: newPage,
+        totalRowCount: dashboardStats[tab.count],
+      }));
+    } else {
+      dispatch(setTotalRowCount(dashboardStats[tab.count]));
+    }
   }, [activeFilters, dashboardStats]);
 
   const handleChangeRowsPerPage = (event) => {

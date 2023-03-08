@@ -22,10 +22,12 @@ const Tabs = (props) => {
       {
         tabContainers.map((tab, index) => (
           <TabPanelGenrator value={currentTab} index={index}>
-            <TabView
-              {...props}
-              tab={tab}
-            />
+            {(index === currentTab) && (
+              <TabView
+                {...props}
+                tab={tab}
+              />
+            )}
           </TabPanelGenrator>
         ))
       }

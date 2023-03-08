@@ -27,6 +27,12 @@ const reducer = (state, action) => {
         ...state,
         selectedRows: payload,
       };
+    case actionTypes.ON_PAGE_AND_TOTAL_COUNT_CHANGE:
+      return {
+        ...state,
+        totalRowCount: payload.totalRowCount,
+        page: payload.page,
+      };
     case actionTypes.SET_TOTAL_ROW_COUNT:
       return {
         ...state,
