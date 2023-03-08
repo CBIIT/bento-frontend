@@ -5,8 +5,7 @@ import TableView from '../../../components/PaginatedTable/PaginatedTable';
 import reducer from '../../../components/PaginatedTable/state/Reducer';
 import styles from './TabStyle';
 import { configColumn } from '../../../components/PaginatedTable/TableUtil';
-// import { cellTypes } from '../../../bento-core/Table/Types';
-// import { CustomCellView } from '../../../components/PaginatedTable/CustomCell';
+import { tableViewConfig } from '../../../bento/dashboardTabData';
 
 const TabView = (props) => {
   /**
@@ -23,7 +22,6 @@ const TabView = (props) => {
   * useReducer table state
   * paginated table update data when state change
   */
-  console.log(configColumn(tab.columns));
   const initState = (initailState) => ({
     ...initailState,
     title: tab.name,
@@ -36,6 +34,7 @@ const TabView = (props) => {
     columns: configColumn(tab.columns),
     totalRowCount: dashboardStats[tab.count],
     selectedRows: [],
+    tableMsg: tab.tableMsg,
   });
 
   const [table, dispatch] = useReducer(reducer, {}, initState);
@@ -48,6 +47,7 @@ const TabView = (props) => {
       />
       <TableView
         {...props}
+        viewConfig={tableViewConfig}
         table={table}
         dispatch={dispatch}
         activeFilters={activeFilters}

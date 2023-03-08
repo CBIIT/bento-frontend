@@ -1,4 +1,4 @@
-export const tblHeaderThemeConfig = {
+export const tblHeader = {
   MuiTableSortLabel: {
     root: {
       color: '#13344A',
@@ -24,5 +24,6 @@ export const tblHeaderThemeConfig = {
   },
 };
 
-export const tblBodyThemeConfig = {
+export const themeConfig = {
+  tblHeader,
 };

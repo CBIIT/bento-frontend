@@ -4,7 +4,7 @@ import {
   Link,
   Typography,
 } from '@material-ui/core';
-import { cellTypes } from '../Types';
+import { cellTypes } from '../util/Types';
 
 /**
 * Custom Column reneder
@@ -30,8 +30,8 @@ const CustomLink = ({
   row,
   rootClsName,
 }) => {
-  const { rootPath, pathParamAttrs } = column.linkAttr;
-  const url = pathParamAttrs.map((attr) => `#${rootPath}/`.concat(row[attr]));
+  const { rootPath, pathParams } = column.linkAttr;
+  const url = pathParams.map((attr) => `#${rootPath}/`.concat(row[attr]));
   return (
     <Link href={url} className={`${rootClsName}_${cellTypes.LINK}`}>
       {children}

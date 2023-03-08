@@ -1,6 +1,25 @@
 import React from 'react';
-import { cellTypes, headerTypes } from '../../bento-core/Table/Types';
-import { CustomCellView } from './CustomCell';
+import { cellTypes, headerTypes } from '../../bento-core/Table/util/Types';
+import DocumentDownloadView from '../DocumentDownload/DocumentDownloadView';
+
+export const CustomCellView = (props) => {
+  const { downloadDocument, documentDownloadProps } = props;
+  if (downloadDocument) {
+    return (
+      <DocumentDownloadView
+        fileSize={props.file_size}
+        caseId={props[documentDownloadProps.caseIdColumn]}
+        fileFormat={props[documentDownloadProps.fileFormatColumn]}
+        fileLocation={props[documentDownloadProps.fileLocationColumn]}
+        {...documentDownloadProps}
+      />
+    );
+  }
+  // other custom elem
+  return (<></>);
+};
+
+export const CustomHeaderCellView = () => (<></>);
 
 /**
 * set column configuration
@@ -30,7 +49,7 @@ export const configColumn = (columns) => {
     if (column.headerType === headerTypes.CUSTOM_ELEM) {
       return {
         ...column,
-        customColHeaderRender: (props) => <CustomCellView {...props} />,
+        customColHeaderRender: (props) => <CustomHeaderCellView {...props} />,
       };
     }
     return column;

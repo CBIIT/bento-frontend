@@ -27,6 +27,10 @@ const defaultTheme = () => ({
       color: '#004C73',
       cursor: 'pointer',
     },
+    paddingCheckbox: {
+      width: '48px',
+      padding: '0 0 0 5px',
+    },
     body: {
       color: '#004C73',
     },

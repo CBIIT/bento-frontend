@@ -12,7 +12,7 @@ import {
   ThemeProvider,
 } from '@material-ui/core';
 import HeaderCell from './CustomCell';
-import { getClsName, tableCls } from '../ClassNames';
+import { getClsName, tableCls } from '../util/ClassNames';
 import defaultTheme from './DefaultThemConfig';
 
 const CustomTableHeader = ({
@@ -21,7 +21,6 @@ const CustomTableHeader = ({
   rows,
   toggleSelectAll,
   sortByColumn,
-  columnOptions,
   components = {},
   customTheme = {},
 }) => {
@@ -69,7 +68,6 @@ const CustomTableHeader = ({
             columns.map((column) => (
               <HeaderCell
                 rootClsName={rootClsName}
-                options={columnOptions}
                 components={components}
                 column={column}
                 sortBy={sortBy}

@@ -1,9 +1,6 @@
 /* eslint-disable */
-import React from 'react';
-import { Button } from '@material-ui/core';
 import gql from 'graphql-tag';
-import { cellTypes, headerTypes } from '../bento-core/Table/Types';
-import { CustomCellView } from '../components/PaginatedTable/CustomCell';
+import { cellTypes, headerTypes } from '../bento-core/Table/util/Types';
 import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 
 // --------------- Tooltip configuration --------------
@@ -1236,10 +1233,10 @@ export const tabContainers = [
         header: 'Case ID',
         sort: 'asc',
         link: '/case/{subject_id}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/case',
-          pathParamAttrs: ['subject_id'],
+          pathParams: ['subject_id'],
         },
         primary: true,
         display: true,
@@ -1250,10 +1247,10 @@ export const tabContainers = [
         header: 'Program Code',
         sort: 'asc',
         link: '/program/{program_id}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/program',
-          pathParamAttrs: ['program_id'],
+          pathParams: ['program_id'],
         },
         display: true,
         tooltipText: 'sort',
@@ -1270,10 +1267,10 @@ export const tabContainers = [
         header: 'Arm',
         sort: 'asc',
         link: '/arm/{study_acronym}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/arm',
-          pathParamAttrs: ['study_acronym'],
+          pathParams: ['study_acronym'],
         },
         display: true,
         tooltipText: 'sort',
@@ -1338,6 +1335,9 @@ export const tabContainers = [
     downloadFileName: 'Bento_Dashboard_cases_download',
     headerPagination: true,
     footerPagination: true,
+    tableMsg: {
+      noMatch: 'No Matching Records Found',
+    }
   },
   {
     name: 'Samples',
@@ -1379,10 +1379,10 @@ export const tabContainers = [
         header: 'Case ID',
         sort: 'asc',
         link: '/case/{subject_id}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/case',
-          pathParamAttrs: ['subject_id'],
+          pathParams: ['subject_id'],
         },
         display: true,
         tooltipText: 'sort',
@@ -1392,10 +1392,10 @@ export const tabContainers = [
         header: 'Program Code',
         sort: 'asc',
         link: '/program/{program_id}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/program',
-          pathParamAttrs: ['program_id'],
+          pathParams: ['program_id'],
         },
         display: true,
       },
@@ -1411,10 +1411,10 @@ export const tabContainers = [
         header: 'Arm',
         sort: 'asc',
         link: '/arm/{arm}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/arm',
-          pathParamAttrs: ['study_acronym'],
+          pathParams: ['study_acronym'],
         },
         display: true,
         tooltipText: 'sort',
@@ -1473,6 +1473,9 @@ export const tabContainers = [
     downloadFileName: 'Bento_Dashboard_cases_download',
     headerPagination: true,
     footerPagination: true,
+    tableMsg: {
+      noMatch: 'No Matching Records Found',
+    }
   },
   {
     name: 'Files',
@@ -1504,7 +1507,6 @@ export const tabContainers = [
       {
         dataField: 'file_name',
         header: 'File Name',
-        headerType: headerTypes.CUSTOM_ELEM,
         sort: 'asc',
         primary: true,
         display: true,
@@ -1586,10 +1588,10 @@ export const tabContainers = [
         header: 'Program Code',
         sort: 'asc',
         link: '/program/{program_id}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/program',
-          pathParamAttrs: ['program_id'],
+          pathParams: ['program_id'],
         },
         display: true,
         tooltipText: 'sort',
@@ -1606,10 +1608,10 @@ export const tabContainers = [
         header: 'Arm',
         sort: 'asc',
         link: '/arm/{arm}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/arm',
-          pathParamAttrs: ['study_acronym'],
+          pathParams: ['study_acronym'],
         },
         display: true,
         tooltipText: 'sort',
@@ -1619,10 +1621,10 @@ export const tabContainers = [
         header: 'Case ID',
         sort: 'asc',
         link: '/case/{subject_id}',
-        type: cellTypes.LINK,
+        cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/case',
-          pathParamAttrs: ['subject_id'],
+          pathParams: ['subject_id'],
         },
         display: true,
         tooltipText: 'sort',
@@ -1652,6 +1654,17 @@ export const tabContainers = [
     downloadFileName: 'Bento_Dashboard_cases_download',
     headerPagination: true,
     footerPagination: true,
+    tableMsg: {
+      noMatch: 'No Matching Records Found',
+    }
   },
 ];
+
+/**
+* table view config
+* hide or display pagination on header
+*/
+export const tableViewConfig = {
+  displayHeaderPg: true,
+};
   

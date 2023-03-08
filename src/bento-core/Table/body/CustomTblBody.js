@@ -10,11 +10,11 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import CustomBodyCell from './CustomCell';
-import { getClsName, tableCls } from '../ClassNames';
+import { getClsName, tableCls } from '../util/ClassNames';
 import defaultTheme from './DefaultThemConfig';
 
 const CustomTableBody = ({
-  rows,
+  rows = [],
   table,
   onRowSelectChange,
   customTheme = {},

@@ -3,8 +3,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
-import { tableCls } from '../ClassNames';
-import { headerTypes } from '../Types';
+import { tableCls } from '../util/ClassNames';
+import { headerTypes } from '../util/Types';
 
 /**
 *
