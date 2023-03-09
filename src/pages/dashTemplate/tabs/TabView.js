@@ -1,11 +1,12 @@
 import React, { useReducer } from 'react';
 import { withStyles } from '@material-ui/core';
 import Actions from './Actions';
-import TableView from '../../../components/PaginatedTable/PaginatedTable';
-import reducer from '../../../components/PaginatedTable/state/Reducer';
+import TableView from '../../../bento-core/PaginationTable/PaginatedTable';
+import reducer from '../../../bento-core/PaginationTable/state/Reducer';
 import styles from './TabStyle';
-import { configColumn } from '../../../components/PaginatedTable/TableUtil';
 import { tableViewConfig } from '../../../bento/dashboardTabData';
+import { themeConfig } from './table/TableThemeConfig';
+import { configColumn } from './table/CustomColumnConfig';
 
 const TabView = (props) => {
   /**
@@ -50,6 +51,7 @@ const TabView = (props) => {
         viewConfig={tableViewConfig}
         table={table}
         dispatch={dispatch}
+        themeConfig={themeConfig}
         activeFilters={activeFilters}
       />
     </>

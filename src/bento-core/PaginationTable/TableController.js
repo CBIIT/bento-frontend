@@ -1,13 +1,17 @@
 import React from 'react';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Container } from '@material-ui/core';
 import { connect } from 'react-redux';
-import TableView from '../../bento-core/Table/TableView';
+import TableView from '../Table/TableView';
 import { getTableData, setSelectedRows } from './TableService';
 
 const TableController = ((props) => {
   const { tableData } = getTableData(props);
   if (!tableData) {
-    return <CircularProgress />;
+    return (
+      <Container maxWidth="xl">
+        <CircularProgress />
+      </Container>
+    );
   }
   /**
   * set selected row

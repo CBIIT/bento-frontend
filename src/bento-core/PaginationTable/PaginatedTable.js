@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { CircularProgress } from '@material-ui/core';
 import TableView from './TableController';
 import {
   onRowsPerPageChange,
@@ -9,7 +8,6 @@ import {
   onColumnSort,
   onPageAndTotalCountChange,
 } from './state/Actions';
-import { themeConfig } from './TableThemeConfig';
 
 const PaginatedTable = (props) => {
   /**
@@ -23,6 +21,7 @@ const PaginatedTable = (props) => {
     activeFilters,
     dispatch,
     table,
+    themeConfig,
   } = props;
 
   /**
@@ -99,7 +98,7 @@ const PaginatedTable = (props) => {
   */
   const { tabIndex, currTabIndex } = props;
   if (tabIndex !== currTabIndex) {
-    return <CircularProgress />;
+    return null;
   }
 
   return (
