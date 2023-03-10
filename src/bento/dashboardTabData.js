@@ -10,6 +10,13 @@ export const tooltipContent = {
   0: 'Click button to add selected files associated with the selected case(s).',
   1: 'Click button to add selected files associated with the selected sample(s).',
   2: 'Click button to add selected files.',
+  Cases: 'Click button to add selected files associated with the selected case(s).',
+  Samples: 'Click button to add selected files associated with the selected sample(s).',
+  Files: 'Click button to add selected files.',
+  arrow: true,
+  styles: {
+    border: '#03A383 1px solid',
+  }
 };
 
 // --------------- Dahboard Table external link configuration --------------

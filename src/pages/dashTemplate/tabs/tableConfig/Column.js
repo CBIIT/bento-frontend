@@ -56,5 +56,3 @@ export const configColumn = (columns) => {
   });
   return displayCustomHeader;
 };
-
-export const cofig = {};

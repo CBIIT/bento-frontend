@@ -1,12 +1,12 @@
 import React, { useReducer } from 'react';
 import { withStyles } from '@material-ui/core';
-import Actions from './Actions';
 import TableView from '../../../bento-core/PaginationTable/PaginatedTable';
 import reducer from '../../../bento-core/PaginationTable/state/Reducer';
 import styles from './TabStyle';
 import { tableViewConfig } from '../../../bento/dashboardTabData';
-import { themeConfig } from './table/TableThemeConfig';
-import { configColumn } from './table/CustomColumnConfig';
+import { themeConfig } from './tableConfig/Theme';
+import { configColumn } from './tableConfig/Column';
+import Wrapper from './wrapperConfig/Wrapper';
 
 const TabView = (props) => {
   /**
@@ -15,7 +15,7 @@ const TabView = (props) => {
   * @returns reducer state
   */
   const {
-    tab,
+    config,
     dashboardStats,
     activeFilters,
   } = props;
@@ -25,35 +25,36 @@ const TabView = (props) => {
   */
   const initState = (initailState) => ({
     ...initailState,
-    title: tab.name,
-    query: tab.api,
+    title: config.name,
+    query: config.api,
     rowsPerPage: 10,
     page: 0,
-    dataKey: tab.dataKey,
-    sortBy: tab.defaultSortField,
-    sortOrder: tab.defaultSortDirection,
-    columns: configColumn(tab.columns),
-    totalRowCount: dashboardStats[tab.count],
+    dataKey: config.dataKey,
+    sortBy: config.defaultSortField,
+    sortOrder: config.defaultSortDirection,
+    columns: configColumn(config.columns),
+    totalRowCount: dashboardStats[config.count],
     selectedRows: [],
-    tableMsg: tab.tableMsg,
+    tableMsg: config.tableMsg,
   });
 
   const [table, dispatch] = useReducer(reducer, {}, initState);
 
   return (
     <>
-      <Actions
-        {...props}
+      <Wrapper
+        parent={config.name}
         selectedRows={table.selectedRows}
-      />
-      <TableView
-        {...props}
-        viewConfig={tableViewConfig}
-        table={table}
-        dispatch={dispatch}
-        themeConfig={themeConfig}
-        activeFilters={activeFilters}
-      />
+      >
+        <TableView
+          {...props}
+          viewConfig={tableViewConfig}
+          table={table}
+          dispatch={dispatch}
+          themeConfig={themeConfig}
+          activeFilters={activeFilters}
+        />
+      </Wrapper>
     </>
   );
 };

@@ -25,6 +25,7 @@ const Tabs = (props) => {
             <TabView
               {...props}
               tab={tab}
+              config={tab}
               tabIndex={index}
               currTabIndex={currentTab}
             />

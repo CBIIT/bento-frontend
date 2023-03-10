@@ -16,12 +16,12 @@ const PaginatedTable = (props) => {
   * @returns reducer state
   */
   const {
-    tab,
-    dashboardStats,
-    activeFilters,
+    config = {},
+    dashboardStats = {},
+    activeFilters = {},
     dispatch,
-    table,
-    themeConfig,
+    table = {},
+    themeConfig = {},
   } = props;
 
   /**
@@ -29,15 +29,16 @@ const PaginatedTable = (props) => {
   */
   useEffect(() => {
     const { page, rowsPerPage } = table;
-    if (dashboardStats[tab.count] < page * rowsPerPage) {
+
+    if (dashboardStats[config.count] < page * rowsPerPage) {
       const currentRows = page * rowsPerPage;
-      const newPage = Math.floor(dashboardStats[tab.count] / currentRows);
+      const newPage = Math.floor(dashboardStats[config.count] / currentRows);
       dispatch(onPageAndTotalCountChange({
         page: newPage,
-        totalRowCount: dashboardStats[tab.count],
+        totalRowCount: dashboardStats[config.count],
       }));
     } else {
-      dispatch(setTotalRowCount(dashboardStats[tab.count]));
+      dispatch(setTotalRowCount(dashboardStats[config.count]));
     }
   }, [activeFilters, dashboardStats]);
 
@@ -65,7 +66,7 @@ const PaginatedTable = (props) => {
   const onRowSelectHandler = (event, row) => {
     event.stopPropagation();
     let selectedIds = [...table.selectedRows];
-    const selectedId = row[tab.dataKey];
+    const selectedId = row[config.dataKey];
     if (!row.isChecked) {
       selectedIds.push(selectedId);
     } else {
@@ -96,7 +97,7 @@ const PaginatedTable = (props) => {
   /**
   * prevent loading data except for active tab
   */
-  const { tabIndex, currTabIndex } = props;
+  const { tabIndex = 0, currTabIndex = 0 } = props;
   if (tabIndex !== currTabIndex) {
     return null;
   }

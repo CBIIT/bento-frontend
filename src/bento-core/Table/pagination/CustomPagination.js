@@ -9,8 +9,11 @@ import {
 const defaultTheme = {
   MuiTablePagination: {
     root: {
-      paddingRight: '20px !important',
+      paddingRight: '50px',
       borderTop: '3px solid #42779a',
+    },
+    toolbar: {
+      minHeight: '45px',
     },
   },
   MuiTypography: {
