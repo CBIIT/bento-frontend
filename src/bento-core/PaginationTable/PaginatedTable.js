@@ -16,12 +16,11 @@ const PaginatedTable = (props) => {
   * @returns reducer state
   */
   const {
-    config = {},
-    dashboardStats = {},
     activeFilters = {},
     dispatch,
     table = {},
     themeConfig = {},
+    totalRowCount,
   } = props;
 
   /**
@@ -29,22 +28,21 @@ const PaginatedTable = (props) => {
   */
   useEffect(() => {
     const { page, rowsPerPage } = table;
-
-    if (dashboardStats[config.count] < page * rowsPerPage) {
+    if (totalRowCount < page * rowsPerPage) {
       const currentRows = page * rowsPerPage;
-      const newPage = Math.floor(dashboardStats[config.count] / currentRows);
+      const newPage = Math.floor(totalRowCount / currentRows);
       dispatch(onPageAndTotalCountChange({
         page: newPage,
-        totalRowCount: dashboardStats[config.count],
+        totalRowCount,
       }));
     } else {
-      dispatch(setTotalRowCount(dashboardStats[config.count]));
+      dispatch(setTotalRowCount(totalRowCount));
     }
-  }, [activeFilters, dashboardStats]);
+  }, [activeFilters, totalRowCount]);
 
   const handleChangeRowsPerPage = (event) => {
     const noOfRows = parseInt(event.target.value, 10);
-    const { totalRowCount, page } = table;
+    const { page } = table;
     let newPage = page;
     // row per page is greater than total row count
     // set page to last page number
@@ -66,7 +64,7 @@ const PaginatedTable = (props) => {
   const onRowSelectHandler = (event, row) => {
     event.stopPropagation();
     let selectedIds = [...table.selectedRows];
-    const selectedId = row[config.dataKey];
+    const selectedId = row[table.dataKey];
     if (!row.isChecked) {
       selectedIds.push(selectedId);
     } else {

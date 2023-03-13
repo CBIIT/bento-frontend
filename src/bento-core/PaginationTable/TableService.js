@@ -43,7 +43,7 @@ const getQueryVariables = (activeFilters, table) => {
  * @param {*} tab (tab)
  * @returns table data
  */
-export const getTableData = ({ activeFilters, table, tab }) => {
+export const getTableData = ({ activeFilters, table }) => {
   const {
     page,
     rowsPerPage,
@@ -63,8 +63,8 @@ export const getTableData = ({ activeFilters, table, tab }) => {
   useEffect(() => {
     const controller = new AbortController();
     getData().then((result) => {
-      if (result[tab.paginationAPIField]) {
-        setTableData(result[tab.paginationAPIField]);
+      if (result[table.paginationAPIField]) {
+        setTableData(result[table.paginationAPIField]);
       }
     });
     return () => {

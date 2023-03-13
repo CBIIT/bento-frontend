@@ -71,7 +71,6 @@ const ButtonComponent = ({ view }) => {
 };
 
 const LinkComponent = ({ view }) => {
-  console.log(view);
   const { url, clsName, title } = view;
   return (
     <>

@@ -1,8 +1,5 @@
-import { withStyles } from '@material-ui/core';
-import React from 'react';
-import CustomWrapper, { types } from '../../../../bento-core/PaginationTable/Wrapper';
+import { types } from '../../../../bento-core/PaginationTable/Wrapper';
 import { tooltipContent } from '../../../../bento/dashboardTabData';
-import { customTheme } from './Theme';
 
 export const headerConfig = [{
   container: 'buttons',
@@ -53,30 +50,3 @@ export const footerConfig = [{
       type: types.LINK,
     }],
 }];
-
-const Wrapper = (props) => {
-  const { children } = props;
-  return (
-    <CustomWrapper
-      {...props}
-      headerConfig={headerConfig}
-      footerConfig={footerConfig}
-      customTheme={customTheme}
-    >
-      {children}
-    </CustomWrapper>
-  );
-};
-
-const styles = () => ({
-  customTooltip: {
-    border: '#03A383 1px solid',
-  },
-  customArrow: {
-    '&::before': {
-      border: '#03A383 1px solid',
-    },
-  },
-});
-
-export default withStyles(styles)(Wrapper);
