@@ -28,36 +28,30 @@ const AboutCard = ({
           </span>
         ))}
         {' '}
-
       </span>
     );
   }
 
   return (
-    <>
-      <Grid item container className={classes.card}>
-        <Grid item xs={1} className={classes.indexContainer}>
-          {index + 1 }
-        </Grid>
-        <Grid item xs={11} className={classes.propertyContainer}>
-          <div>
-            <span className={classes.detailContainerHeader}>ABOUT</span>
-            <span className={classes.cardTitle}>{data.title}</span>
-          </div>
-          <div className={classes.text}>{getHighlightedText(results, searchText)}</div>
-          <div className={classes.linkText}><Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes} /></div>
-        </Grid>
+    <Grid item container className={classes.card}>
+      <Grid item xs={1} className={classes.indexContainer}>
+        {index + 1 }
       </Grid>
-
-    </>
+      <Grid item xs={11} className={classes.propertyContainer}>
+        <div>
+          <span className={classes.detailContainerHeader}>ABOUT</span>
+          <span className={classes.cardTitle}>{data.title}</span>
+        </div>
+        <div className={classes.text}>{getHighlightedText(results, searchText)}</div>
+        <div className={classes.linkText}>
+          <Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes} />
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 
 const styles = (theme) => ({
-  cartIcon: {
-    height: '22px',
-    margin: '0px 0px 0px 6px',
-  },
   linkText: {
     fontFamily: 'Nunito',
     color: theme.palette.text.link,
@@ -80,9 +74,6 @@ const styles = (theme) => ({
     fontFamily: 'Nunito',
     paddingLeft: '9px',
     verticalAlign: 'middle',
-  },
-  content: {
-    fontSize: '12px',
   },
   detailContainerHeader: {
     textTransform: 'uppercase',

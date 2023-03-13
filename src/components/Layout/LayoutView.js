@@ -20,8 +20,7 @@ import GraphqlClient from '../GraphqlClient/GraphqlView';
 import fileCentricCart from '../../pages/fileCentricCart/cartController';
 // import JBrowse from '../JBrowse/JBrowseView';
 import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
-import GlobalSearch from '../../bento-core/GlobalSearch/SearchPage/searchView';
-import GlobalSearchController from '../../bento-core/GlobalSearch/SearchPage/searchViewController';
+import GlobalSearchController from '../../pages/search/searchViewController';
 import adminController from '../../pages/admin/adminController';
 import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRequestController';
 import Login from '../../pages/accessManagment/login';
@@ -101,7 +100,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
 
             {/* Psuedo Private routes where minor
             functionality can be accessed my unauthorized users */}
-            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearch} />
+            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
             <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
 
             {/* END: Private Routes */}

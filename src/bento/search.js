@@ -9,6 +9,7 @@ export const programListingIcon = {
 };
 
 /** certain search data items */
+/** used by the Global Search header autocomplete */
 export const SEARCH_KEYS = {
   public: [],
   private: ['programs', 'studies', 'subjects', 'samples', 'files'],
@@ -17,6 +18,17 @@ export const SEARCH_KEYS = {
 export const SEARCH_DATAFIELDS = {
   public: [],
   private: ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'],
+};
+
+/** used by the Global Search page results */
+export const SEARCH_PAGE_KEYS = {
+  private: [...SEARCH_KEYS.private, 'model'],
+  public: [],
+};
+
+export const SEARCH_PAGE_DATAFIELDS = {
+  public: [],
+  private: [...SEARCH_DATAFIELDS.private, 'node_name'],
 };
 
 /** Public search queries */

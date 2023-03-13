@@ -77,9 +77,10 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
        * @async
        * @param {object} event source of the event
        * @param {string} newValue new value of the input
+       * @param {string} reason reason for the event
        * @returns void
        */
-      async function fetchAutocomplete(event, newValue) {
+      async function fetchAutocomplete(event, newValue, reason) {
         setInputValue(newValue);
 
         if (!event) {
@@ -90,7 +91,7 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
         }
 
         setLoading(true);
-        const result = await suggestionFunction(config, newValue);
+        const result = await suggestionFunction(config, newValue, reason).catch(() => []);
 
         const resultOpts = !result || !(result instanceof Array) || result.length === 0 ? [] : [
           ...(maximumSuggestions > 0 && result.length > maximumSuggestions
@@ -98,7 +99,7 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
             : result),
         ];
 
-        if (maximumSuggestions > 0 && resultOpts.length > maximumSuggestions) {
+        if (maximumSuggestions > 0 && result.length > maximumSuggestions) {
           resultOpts.push(
             <ExpandElement
               classes={classes}
