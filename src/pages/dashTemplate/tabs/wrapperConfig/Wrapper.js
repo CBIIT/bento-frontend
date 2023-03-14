@@ -34,6 +34,7 @@ export const footerConfig = [{
       title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
+      btnType: btnTypes.ADD_SELECTED_FILES,
       tooltipCofig: tooltipContent,
       conditional: true,
     }],

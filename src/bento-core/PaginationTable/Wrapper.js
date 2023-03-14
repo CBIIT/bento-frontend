@@ -102,7 +102,6 @@ export const ButtonComponent = (props) => {
         onClick={() => eventHandler(activeFilters, addFileAPI)}
         className={clsx(clsName, `${clsName}_${section}`)}
         disableRipple
-        disabled={false}
       >
         {title}
       </Button>

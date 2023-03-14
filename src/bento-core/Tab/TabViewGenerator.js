@@ -1,8 +1,38 @@
 import React from 'react';
 import {
-  Tabs, Tab, withStyles,
+  Tabs,
+  Tab,
+  createTheme,
+  ThemeProvider,
 } from '@material-ui/core';
 import TabLabel from './TabLable';
+
+const defaultTheme = {
+  defaultStyle: {
+    fontFamily: 'Open Sans',
+    textTransform: 'none',
+    fontSize: '17px',
+  },
+  flexContainer: {
+    flexDirection: 'column',
+  },
+  indicator: {
+    display: 'none',
+  },
+  tabHighlightColor: {
+    color: '#6d9eba',
+  },
+  tabs: {
+    paddingLeft: '10px',
+  },
+  MuiTab: {
+    root: {
+      fontFamily: 'Open Sans',
+      textTransform: 'none',
+      fontSize: '17px',
+    },
+  },
+};
 
 const TabItems = ({
   tabItems,
@@ -10,6 +40,7 @@ const TabItems = ({
   handleTabChange,
   currentTab,
   orientation,
+  customTheme = {},
 }) => {
   function getTabLalbel(title, image, index) {
     return (
@@ -29,43 +60,24 @@ const TabItems = ({
         getTabLalbel(tab.name, tab.icon, index)
       }
       key={index}
+      className={tab.clsName}
       disableRipple
     />
   ));
 
+  const themeConfig = createTheme({ overrides: { ...defaultTheme, ...customTheme } });
   return (
-    <>
+    <ThemeProvider theme={themeConfig}>
       <Tabs
         onChange={(event, value) => handleTabChange(event, value)}
         value={currentTab}
         TabIndicatorProps={{ style: { background: 'none' } }}
         orientation={orientation}
-        className={styleClasses.tabs}
       >
         {TABs}
       </Tabs>
-    </>
+    </ThemeProvider>
   );
 };
 
-const styles = () => ({
-  defaultStyle: {
-    fontFamily: 'Open Sans',
-    textTransform: 'none',
-    fontSize: '17px',
-  },
-  flexContainer: {
-    flexDirection: 'column',
-  },
-  indicator: {
-    display: 'none',
-  },
-  tabHighlightColor: {
-    color: '#6d9eba',
-  },
-  tabs: {
-    paddingLeft: '10px',
-  },
-});
-
-export default withStyles(styles)(TabItems);
+export default TabItems;
