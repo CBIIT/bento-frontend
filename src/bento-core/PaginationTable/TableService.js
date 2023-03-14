@@ -63,8 +63,10 @@ export const getTableData = ({ activeFilters, table }) => {
   useEffect(() => {
     const controller = new AbortController();
     getData().then((result) => {
-      if (result[table.paginationAPIField]) {
+      if (table.paginationAPIField && result[table.paginationAPIField]) {
         setTableData(result[table.paginationAPIField]);
+      } else {
+        setTableData(result);
       }
     });
     return () => {

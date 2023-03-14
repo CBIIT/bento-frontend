@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import TableView from './TableController';
 import {
   onRowsPerPageChange,
@@ -8,6 +8,7 @@ import {
   onColumnSort,
   onPageAndTotalCountChange,
 } from './state/Actions';
+import reducer from './state/Reducer';
 
 const PaginatedTable = (props) => {
   /**
@@ -17,11 +18,17 @@ const PaginatedTable = (props) => {
   */
   const {
     activeFilters = {},
-    dispatch,
-    table = {},
     themeConfig = {},
     totalRowCount,
+    initState,
   } = props;
+
+  /**
+  * Initailize useReducer state
+  * 1. table: state (Note: table includes cofiguration in addition to pagination state)
+  * 2. dispatch: dispatch action (as redux action) to update pagination state
+  */
+  const [table, dispatch] = useReducer(reducer, {}, initState);
 
   /**
   * update state to props change

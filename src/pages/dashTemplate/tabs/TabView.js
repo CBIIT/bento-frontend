@@ -1,7 +1,6 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core';
 import TableView from '../../../bento-core/PaginationTable/PaginatedTable';
-import reducer from '../../../bento-core/PaginationTable/state/Reducer';
 import styles from './TabStyle';
 import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
@@ -42,43 +41,35 @@ const TabView = (props) => {
   * eg. case tab paginationAPIField: 'subjectOverview' - {subjectOverview: [data]}
   * 9. viewConfig - (Optional) table view config, set hide/diaply pagination above table header
   */
-  const initState = (initailState) => ({
+  const initTblState = (initailState) => ({
     ...initailState,
     title: config.name,
     query: config.api,
-    rowsPerPage: 10,
-    page: 0,
     dataKey: config.dataKey,
-    sortBy: config.defaultSortField,
-    sortOrder: config.defaultSortDirection,
     columns: configColumn(config.columns),
     count: dashboardStats[config.count],
     selectedRows: [],
     tableMsg: config.tableMsg,
     paginationAPIField: config.paginationAPIField,
+    sortBy: config.defaultSortField,
+    sortOrder: config.defaultSortDirection,
+    rowsPerPage: 10,
+    page: 0,
   });
-
-  /**
-  * Initailize useReducer state
-  * 1. table: state (Note: table includes cofiguration in addition to pagination state)
-  * 2. dispatch: dispatch action (as redux action) to update pagination state
-  */
-  const [table, dispatch] = useReducer(reducer, {}, initState);
 
   return (
     <>
       <Wrapper
-        parent={config.name}
-        selectedRows={table.selectedRows}
+        // selectedRows={table.selectedRows}
         headerConfig={headerConfig}
         footerConfig={footerConfig}
         customTheme={customTheme}
         classes={classes}
+        section={config.name}
       >
         <TableView
+          initState={initTblState}
           viewConfig={tableViewConfig}
-          table={table}
-          dispatch={dispatch}
           themeConfig={themeConfig}
           activeFilters={activeFilters}
           totalRowCount={dashboardStats[config.count]}

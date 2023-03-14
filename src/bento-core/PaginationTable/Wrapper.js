@@ -18,9 +18,13 @@ export const types = {
   LINK: 'LINK',
 };
 
-const ToolTipView = (props) => {
+/**
+* customize tooltips based on tooltipContent
+* defined on dashboardTabData (tooltipContent)
+*/
+export const ToolTipView = (props) => {
   const {
-    parent,
+    section,
     tooltipCofig,
     classes,
   } = props;
@@ -33,7 +37,7 @@ const ToolTipView = (props) => {
 
   return (
     <ToolTip
-      title={tooltipCofig[parent]}
+      title={tooltipCofig[section]}
       arrow={arrow}
       classes={{
         tooltip: classes.customTooltip,
@@ -45,7 +49,11 @@ const ToolTipView = (props) => {
   );
 };
 
-const ButtonComponent = ({ view }) => {
+/**
+* customize button based on configuration
+* refer config table (wrapper component config)
+*/
+export const ButtonComponent = (props) => {
   const {
     title,
     eventHandler,
@@ -53,25 +61,30 @@ const ButtonComponent = ({ view }) => {
     tooltipCofig,
     conditional = false,
     selectedRows = [],
-    parent,
-  } = view;
+    section,
+  } = props;
+
   return (
     <>
       <Button
         onClick={eventHandler}
-        className={clsx(clsName, `${clsName}_${parent}`)}
+        className={clsx(clsName, `${clsName}_${section}`)}
         disableRipple
         disabled={conditional && selectedRows.length === 0}
       >
         {title}
       </Button>
-      {tooltipCofig && (<ToolTipView {...view} />)}
+      {tooltipCofig && (<ToolTipView {...props} />)}
     </>
   );
 };
 
-const LinkComponent = ({ view }) => {
-  const { url, clsName, title } = view;
+/**
+* configure Link based on configuration
+* refer config table (wrapper component config)
+*/
+export const LinkComponent = (props) => {
+  const { url, clsName, title } = props;
   return (
     <>
       <Link href={url} className={clsName}>
@@ -81,39 +94,68 @@ const LinkComponent = ({ view }) => {
   );
 };
 
-const ViewComponent = (view) => {
-  const { type } = view;
+/**
+*
+* @param {*}
+* @returns custom component based on configuration
+*/
+export const ViewComponent = (props) => {
+  const { type } = props;
   switch (type) {
     case types.BUTTON:
-      return (<ButtonComponent view={view} />);
+      return (<ButtonComponent {...props} />);
     case types.LINK:
-      return (<LinkComponent view={view} />);
+      return (<LinkComponent {...props} />);
     case types.CUSTOM_ELEM:
-      return view.customViewElem();
+      return props.customViewElem();
     default:
       return <></>;
   }
 };
 
-const defaultTheme = {
+export const defaultTheme = {
   override: {
   },
 };
 
+/**
+* creates header and footer components of table
+*/
 const CustomLayout = (props) => {
-  const { config } = props;
+  const {
+    configs,
+    customTheme = {},
+  } = props;
+  /**
+  * return when configuration is empty
+  */
+  if (configs.length < 1) {
+    return null;
+  }
+  /**
+  * override default style configuration (please refer to class name table to override styles)
+  * 1. props -> {configs, customTheme, section, classes, selectedRows}
+  * 2. item -> Component cofiguration defined on cofiguration (refer config table)
+  * (attrs - title, eventHandler, clsName, tooltipCofig, conditional)
+  */
+  const themeConfig = createTheme({ overrides: { ...defaultTheme, ...customTheme } });
   return (
     <>
       {
-        config.map((container) => (
-          <Container maxWidth={container.size} className={container.clsName}>
-            {container.items.map((item) => (
-              <ViewComponent
-                {...item}
-                {...props}
-              />
-            ))}
-          </Container>
+        configs.map((container) => (
+          <ThemeProvider theme={themeConfig}>
+            <Container
+              maxWidth={container.size}
+              className={container.clsName}
+            >
+              {container.items.map((item) => (
+                <ViewComponent
+                  {...item}
+                  {...props}
+                />
+              ))}
+            </Container>
+          </ThemeProvider>
         ))
       }
     </>
@@ -125,19 +167,26 @@ const CustomWrapper = (props) => {
     children,
     headerConfig = [],
     footerConfig = [],
-    customTheme = {},
+    customTheme,
+    section,
+    classes,
   } = props;
-  const themeConfig = createTheme({ overrides: { ...defaultTheme, ...customTheme } });
   return (
-    <ThemeProvider theme={themeConfig}>
-      {headerConfig.length > 0 && (
-        <CustomLayout config={headerConfig} {...props} />
-      )}
+    <>
+      <CustomLayout
+        configs={headerConfig}
+        customTheme={customTheme}
+        section={section}
+        classes={classes}
+      />
       {children}
-      {footerConfig.length > 0 && (
-        <CustomLayout config={footerConfig} {...props} />
-      )}
-    </ThemeProvider>
+      <CustomLayout
+        configs={footerConfig}
+        customTheme={customTheme}
+        section={section}
+        classes={classes}
+      />
+    </>
   );
 };
 
