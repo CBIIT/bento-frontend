@@ -5,6 +5,11 @@
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^6.5.1"
+    "lerna": "^6.5.1",
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-transform-react-jsx": "^7.21.0",
+    "@babel/preset-env": "^7.20.2"
   }
 }
