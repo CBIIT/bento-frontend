@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Container,
@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { ToolTip } from 'bento-components';
 import clsx from 'clsx';
+import { TableContext } from './ContextProvider';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -16,6 +17,11 @@ export const types = {
   TEXT_INPUT: 'TEXT_INPUT',
   CUSTOM_ELEM: 'CUSTEM_ELEM',
   LINK: 'LINK',
+};
+
+export const funcType = {
+  ADD_ALL_FILES: 'ADD_ALL_FILES',
+  ADD_SELECTED_FILES: 'ADD_SELECTED_FILES',
 };
 
 /**
@@ -60,9 +66,13 @@ export const ButtonComponent = (props) => {
     clsName,
     tooltipCofig,
     conditional = false,
-    selectedRows = [],
     section,
   } = props;
+
+  const tableContext = useContext(TableContext);
+  const {
+    selectedRows = [],
+  } = tableContext.tblState;
 
   return (
     <>

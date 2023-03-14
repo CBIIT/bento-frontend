@@ -8,6 +8,7 @@ import { configColumn } from './tableConfig/Column';
 import Wrapper from '../../../bento-core/PaginationTable/Wrapper';
 import { footerConfig, headerConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
+import TableContextProvider from '../../../bento-core/PaginationTable/ContextProvider';
 
 const TabView = (props) => {
   /**
@@ -58,9 +59,8 @@ const TabView = (props) => {
   });
 
   return (
-    <>
+    <TableContextProvider>
       <Wrapper
-        // selectedRows={table.selectedRows}
         headerConfig={headerConfig}
         footerConfig={footerConfig}
         customTheme={customTheme}
@@ -75,7 +75,7 @@ const TabView = (props) => {
           totalRowCount={dashboardStats[config.count]}
         />
       </Wrapper>
-    </>
+    </TableContextProvider>
   );
 };
 
