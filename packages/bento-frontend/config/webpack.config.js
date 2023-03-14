@@ -1,4 +1,4 @@
-'use strict';
+
 
 const fs = require('fs');
 const path = require('path');
@@ -264,8 +264,8 @@ module.exports = function(webpackEnv) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
-        react: path.resolve('./node_modules/react'),
-        '@material-ui/core': path.resolve('./node_modules/@material-ui/core'),
+        // react: path.resolve('./node_modules/react'),
+        // '@material-ui/core': path.resolve('./node_modules/@material-ui/core'),
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
