@@ -26,8 +26,7 @@ const Tabs = (props) => {
               {...props}
               tab={tab}
               config={tab}
-              tabIndex={index}
-              currTabIndex={currentTab}
+              activeTab={index === currentTab}
             />
           </TabPanelGenrator>
         ))

@@ -112,8 +112,8 @@ const PaginatedTable = (props) => {
   /**
   * prevent loading data except for active tab
   */
-  const { tabIndex = 0, currTabIndex = 0 } = props;
-  if (tabIndex !== currTabIndex) {
+  const { activeTab } = props;
+  if (!activeTab) {
     return null;
   }
 

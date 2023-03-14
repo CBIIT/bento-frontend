@@ -1344,7 +1344,9 @@ export const tabContainers = [
     footerPagination: true,
     tableMsg: {
       noMatch: 'No Matching Records Found',
-    }
+    },
+    addAddFileAPI: GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
+    addSelectedIdAPI: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
   },
   {
     name: 'Samples',
@@ -1482,7 +1484,9 @@ export const tabContainers = [
     footerPagination: true,
     tableMsg: {
       noMatch: 'No Matching Records Found',
-    }
+    },
+    addAddFileAPI: GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
+    addSelectedIdAPI: GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
   },
   {
     name: 'Files',
@@ -1663,7 +1667,9 @@ export const tabContainers = [
     footerPagination: true,
     tableMsg: {
       noMatch: 'No Matching Records Found',
-    }
+    },
+    addAddFileAPI: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
+    addSelectedIdAPI: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   },
 ];
 

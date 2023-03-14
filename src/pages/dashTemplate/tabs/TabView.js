@@ -6,7 +6,7 @@ import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
 import { configColumn } from './tableConfig/Column';
 import Wrapper from '../../../bento-core/PaginationTable/Wrapper';
-import { footerConfig, headerConfig } from './wrapperConfig/Wrapper';
+import { configWrapper, footerConfig, headerConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
 import TableContextProvider from '../../../bento-core/PaginationTable/ContextProvider';
 
@@ -21,6 +21,7 @@ const TabView = (props) => {
     dashboardStats,
     activeFilters,
     classes,
+    activeTab,
   } = props;
   /*
   * useReducer table state
@@ -61,11 +62,14 @@ const TabView = (props) => {
   return (
     <TableContextProvider>
       <Wrapper
-        headerConfig={headerConfig}
+        headerConfig={configWrapper(config, headerConfig)}
         footerConfig={footerConfig}
         customTheme={customTheme}
         classes={classes}
         section={config.name}
+        activeFilters={activeFilters}
+        addAllFileAPI={config.addAddFileAPI}
+        addSelectedIdAPI={config.addSelectedIdAPI}
       >
         <TableView
           initState={initTblState}
@@ -73,6 +77,7 @@ const TabView = (props) => {
           themeConfig={themeConfig}
           activeFilters={activeFilters}
           totalRowCount={dashboardStats[config.count]}
+          activeTab={activeTab}
         />
       </Wrapper>
     </TableContextProvider>

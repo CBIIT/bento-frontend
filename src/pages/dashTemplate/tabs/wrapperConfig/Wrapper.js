@@ -1,5 +1,7 @@
-import { types } from '../../../../bento-core/PaginationTable/Wrapper';
-import { tooltipContent } from '../../../../bento/dashboardTabData';
+import { btnTypes, types } from '../../../../bento-core/PaginationTable/Wrapper';
+import {
+  tooltipContent,
+} from '../../../../bento/dashboardTabData';
 
 export const headerConfig = [{
   container: 'buttons',
@@ -8,16 +10,16 @@ export const headerConfig = [{
   items: [
     {
       title: 'ADD ALL FILES',
-      eventHandler: () => console.log('add all files'),
       clsName: 'add_all_button',
       type: types.BUTTON,
+      btnType: btnTypes.ADD_ALL_FILES,
       conditional: false,
     },
     {
       title: 'ADD SELECTED FILES',
-      eventHandler: () => console.log('add selected files'),
       clsName: 'add_selected_button',
       type: types.BUTTON,
+      btnType: btnTypes.ADD_SELECTED_FILES,
       tooltipCofig: tooltipContent,
       conditional: true,
     }],
@@ -30,7 +32,6 @@ export const footerConfig = [{
   items: [
     {
       title: 'ADD SELECTED FILES',
-      eventHandler: () => console.log('add selected files'),
       clsName: 'add_selected_button',
       type: types.BUTTON,
       tooltipCofig: tooltipContent,
@@ -44,9 +45,30 @@ export const footerConfig = [{
   items: [
     {
       title: 'Go to Cart >',
-      eventHandler: () => console.log('go to my cart'),
       clsName: 'go_to_cart',
       url: '#/fileCentricCart',
       type: types.LINK,
     }],
 }];
+
+/**
+* holder function to add files on cart
+*/
+const addFilesHandler = (query, variables) => {
+  console.log(query);
+  console.log(variables);
+};
+
+export const configWrapper = (tab, configs) => {
+  const wrpConfig = configs.map((container) => ({
+    ...container,
+    items: container.items.map((item) => ({
+      ...item,
+      addFileAPI: tab.addAddFileAPI,
+      addSelectedIdAPI: tab.addSelectedIdAPI,
+      dataKey: tab.dataKey,
+      eventHandler: addFilesHandler,
+    })),
+  }));
+  return wrpConfig;
+};

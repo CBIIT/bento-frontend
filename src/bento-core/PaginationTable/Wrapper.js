@@ -9,6 +9,7 @@ import {
 import { ToolTip } from 'bento-components';
 import clsx from 'clsx';
 import { TableContext } from './ContextProvider';
+// import { addAllFiles, addSelectedFiles } from './TableService';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -19,7 +20,7 @@ export const types = {
   LINK: 'LINK',
 };
 
-export const funcType = {
+export const btnTypes = {
   ADD_ALL_FILES: 'ADD_ALL_FILES',
   ADD_SELECTED_FILES: 'ADD_SELECTED_FILES',
 };
@@ -65,22 +66,43 @@ export const ButtonComponent = (props) => {
     eventHandler,
     clsName,
     tooltipCofig,
-    conditional = false,
     section,
+    addFileAPI,
+    activeFilters,
+    addSelectedIdAPI,
+    btnType,
+    dataKey,
   } = props;
 
   const tableContext = useContext(TableContext);
-  const {
-    selectedRows = [],
-  } = tableContext.tblState;
+  if (btnTypes.ADD_SELECTED_FILES === btnType) {
+    const {
+      selectedRows = [],
+    } = tableContext.tblState;
+    const variables = {};
+    variables[dataKey] = selectedRows;
+    return (
+      <>
+        <Button
+          onClick={() => eventHandler(variables, addSelectedIdAPI)}
+          className={clsx(clsName, `${clsName}_${section}`)}
+          disableRipple
+          disabled={selectedRows.length === 0}
+        >
+          {title}
+        </Button>
+        {tooltipCofig && (<ToolTipView {...props} />)}
+      </>
+    );
+  }
 
   return (
     <>
       <Button
-        onClick={eventHandler}
+        onClick={() => eventHandler(activeFilters, addFileAPI)}
         className={clsx(clsName, `${clsName}_${section}`)}
         disableRipple
-        disabled={conditional && selectedRows.length === 0}
+        disabled={false}
       >
         {title}
       </Button>
@@ -180,6 +202,7 @@ const CustomWrapper = (props) => {
     customTheme,
     section,
     classes,
+    activeFilters,
   } = props;
   return (
     <>
@@ -188,6 +211,7 @@ const CustomWrapper = (props) => {
         customTheme={customTheme}
         section={section}
         classes={classes}
+        activeFilters={activeFilters}
       />
       {children}
       <CustomLayout

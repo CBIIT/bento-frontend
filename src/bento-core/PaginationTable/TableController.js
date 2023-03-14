@@ -1,6 +1,5 @@
 import React from 'react';
 import { CircularProgress, Container } from '@material-ui/core';
-import { connect } from 'react-redux';
 import TableView from '../Table/TableView';
 import { getTableData, setSelectedRows } from './TableService';
 
@@ -28,8 +27,4 @@ const TableController = ((props) => {
   );
 });
 
-const mapStateToProps = (state) => ({
-  filterState: state.statusReducer.filterState,
-});
-
-export default connect(mapStateToProps, null)(TableController);
+export default TableController;
