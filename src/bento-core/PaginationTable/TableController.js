@@ -3,8 +3,12 @@ import { CircularProgress, Container } from '@material-ui/core';
 import TableView from '../Table/TableView';
 import { getTableData, setSelectedRows } from './TableService';
 
+/**
+* Updates table row when table state is changed 1. (paginated action) and 2. filter action
+*/
 const TableController = ((props) => {
-  const { tableData } = getTableData(props);
+  const { activeFilters, table } = props;
+  const { tableData } = getTableData({ activeFilters, table });
   if (!tableData) {
     return (
       <Container maxWidth="xl">
@@ -13,9 +17,9 @@ const TableController = ((props) => {
     );
   }
   /**
-  * set selected row
+  * update rows
+  * set selected rows isChecked to TRUE
   */
-  const { table } = props;
   const updateRows = setSelectedRows(tableData, table);
   return (
     <>
