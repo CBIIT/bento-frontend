@@ -1,6 +1,7 @@
 export const customTheme = {
   MuiContainer: {
     root: {
+      paddingTop: '5px',
       '&.container_header': {
         textAlign: 'right',
       },

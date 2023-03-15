@@ -5,7 +5,6 @@ import {
   createTheme,
   ThemeProvider,
 } from '@material-ui/core';
-import TabLabel from './TabLable';
 
 const defaultTheme = {
   defaultStyle: {
@@ -36,28 +35,27 @@ const defaultTheme = {
 
 const TabItems = ({
   tabItems,
-  styleClasses = {},
   handleTabChange,
   currentTab,
   orientation,
   customTheme = {},
 }) => {
-  function getTabLalbel(title, image, index) {
-    return (
-      <TabLabel
-        title={title}
-        icon={image}
-        style={(currentTab === index)
-          ? styleClasses.tabHighlightStyle : styleClasses.tabDefaultStyle}
-      />
-    );
-  }
+  const getTabLalbel = ({ name, count, clsName }) => (
+    <>
+      <span>
+        {name}
+        {count && (
+          <span className={`${clsName}_count`}>{count}</span>
+        )}
+      </span>
+    </>
+  );
 
   const TABs = tabItems.map((tab, index) => (
     <Tab
       index={index}
       label={
-        getTabLalbel(tab.name, tab.icon, index)
+        getTabLalbel(tab)
       }
       key={index}
       className={tab.clsName}

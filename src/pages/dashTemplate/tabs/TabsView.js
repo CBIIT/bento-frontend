@@ -25,12 +25,13 @@ const customTheme = {
       fontWeight: '400',
       lineHeight: '18px',
       letterSpacing: '0.25px',
-      textTransform: 'uppercase',
       marginRight: '10px',
       fontSize: '21px',
       width: '250px',
+      textTransform: 'none',
+      fontFamily: 'Lato',
       '&.Mui-selected': {
-        fontWeight: '900',
+        fontWeight: 'bolder',
         '&.cases': {
           background: '#d6f2ea',
           color: '#10a075',
@@ -43,6 +44,21 @@ const customTheme = {
           background: '#f7d7f7',
           color: '#c92ec7',
         },
+        '&.MuiTypography-body1': {
+          color: 'red',
+        },
+      },
+      '& span.cases_count': {
+        marginLeft: '5px',
+        fontSize: '17px',
+      },
+      '& span.samples_count': {
+        marginLeft: '5px',
+        fontSize: '17px',
+      },
+      '& span.files_count': {
+        marginLeft: '5px',
+        fontSize: '17px',
       },
     },
   },
@@ -56,7 +72,8 @@ const Tabs = (props) => {
 
   const getTabs = (tabs) => tabs.map((tab) => ({
     ...tab,
-    name: `${tab.name} (${props.dashboardStats[tab.count]})`,
+    name: tab.name,
+    count: `(${props.dashboardStats[tab.count]})`,
     clsName: `${tab.name}`.toLowerCase().replace(' ', '_'),
   }));
 
