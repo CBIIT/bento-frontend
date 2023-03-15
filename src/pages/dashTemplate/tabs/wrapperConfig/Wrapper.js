@@ -2,6 +2,7 @@ import { btnTypes, types } from '../../../../bento-core/PaginationTable/Wrapper'
 import {
   tooltipContent,
 } from '../../../../bento/dashboardTabData';
+import { alertMessage } from '../../../../bento/fileCentricCartWorkflowData';
 
 export const headerConfig = [{
   container: 'buttons',
@@ -14,6 +15,7 @@ export const headerConfig = [{
       type: types.BUTTON,
       btnType: btnTypes.ADD_ALL_FILES,
       conditional: false,
+      alertMessage,
     },
     {
       title: 'ADD SELECTED FILES',
@@ -54,6 +56,8 @@ export const footerConfig = [{
 
 /**
 * holder function to add files on cart
+* console log will be remove when myCart page is integrated
+* with bento core paginated table
 */
 const addFilesHandler = (query, variables) => {
   console.log(query);

@@ -1,15 +1,14 @@
 import React, { useContext } from 'react';
 import {
-  Button,
   Container,
   createTheme,
   Link,
   ThemeProvider,
 } from '@material-ui/core';
-import { ToolTip } from 'bento-components';
 import clsx from 'clsx';
 import { TableContext } from './ContextProvider';
-// import { addAllFiles, addSelectedFiles } from './TableService';
+import AddAllFileComponent from './AddToCartDialog/AddAllView';
+import AddSelectedFileComponent from './AddToCartDialog/AddSelectedView';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -26,37 +25,6 @@ export const btnTypes = {
 };
 
 /**
-* customize tooltips based on tooltipContent
-* defined on dashboardTabData (tooltipContent)
-*/
-export const ToolTipView = (props) => {
-  const {
-    section,
-    tooltipCofig,
-    classes,
-  } = props;
-
-  const {
-    icon,
-    alt,
-    arrow = false,
-  } = tooltipCofig;
-
-  return (
-    <ToolTip
-      title={tooltipCofig[section]}
-      arrow={arrow}
-      classes={{
-        tooltip: classes.customTooltip,
-        arrow: classes.customArrow,
-      }}
-    >
-      {icon && (<img src={icon} alt={alt} />)}
-    </ToolTip>
-  );
-};
-
-/**
 * customize button based on configuration
 * refer config table (wrapper component config)
 */
@@ -65,13 +33,13 @@ export const ButtonComponent = (props) => {
     title,
     eventHandler,
     clsName,
-    tooltipCofig,
     section,
     addFileAPI,
     activeFilters,
     addSelectedIdAPI,
     btnType,
     dataKey,
+    alertMessage,
   } = props;
 
   const tableContext = useContext(TableContext);
@@ -83,31 +51,31 @@ export const ButtonComponent = (props) => {
     variables[dataKey] = selectedRows;
     return (
       <>
-        <Button
-          onClick={() => eventHandler(variables, addSelectedIdAPI)}
-          className={clsx(clsName, `${clsName}_${section}`)}
-          disableRipple
+        <AddSelectedFileComponent
+          {...props}
+          eventHandler={() => eventHandler(variables, addSelectedIdAPI)}
+          clsName={clsx(clsName, `${clsName}_${section}`)}
           disabled={selectedRows.length === 0}
-        >
-          {title}
-        </Button>
-        {tooltipCofig && (<ToolTipView {...props} />)}
+        />
       </>
     );
   }
 
-  return (
-    <>
-      <Button
-        onClick={() => eventHandler(activeFilters, addFileAPI)}
-        className={clsx(clsName, `${clsName}_${section}`)}
-        disableRipple
-      >
-        {title}
-      </Button>
-      {tooltipCofig && (<ToolTipView {...props} />)}
-    </>
-  );
+  if (btnTypes.ADD_ALL_FILES === btnType) {
+    return (
+      <>
+        <AddAllFileComponent
+          eventHandler={() => eventHandler(activeFilters, addFileAPI)}
+          clsName={clsx(clsName, `${clsName}_${section}`)}
+          title={title}
+          table={tableContext.tblState}
+          alertMessage={alertMessage}
+        />
+      </>
+    );
+  }
+
+  return <></>;
 };
 
 /**
@@ -160,7 +128,7 @@ const CustomLayout = (props) => {
   /**
   * return when configuration is empty
   */
-  if (configs.length < 1) {
+  if (configs.length === 0) {
     return null;
   }
   /**
