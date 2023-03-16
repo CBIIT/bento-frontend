@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import { cn, CustomDataTable } from 'bento-components';
 
+import UserDetails from '../../../bento-core/Admin';
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
 import AlertMessage from '../../../components/alertMessage/AlertMessageView';
@@ -62,22 +63,11 @@ function getColumnInfo(accessType, approvedRenderer, removeRenderer) {
   }]);
 }
 
-const CustomCheckbox = withStyles({
-  root: {
-    color: '#375FAC',
-    '&$checked': {
-      color: '#375FAC',
-    },
-  },
-  checked: {},
-})((props) => <Checkbox color="default" {...props} />);
-
 const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userInfo, setUserInfo] = useState(data.getUser);
   const [userRole, setUserRole] = useState(userInfo.role.toLowerCase());
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
-  const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   // GraphQL Operations
   // eslint-disable-next-line no-unused-vars
@@ -234,62 +224,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
               : classes.userInfoHeader
           }
           >
-            <div className={classes.firstInfoSection}>
-              <div className={classes.infoKeyWrapper}>
-                <Typography className={classes.userInfo}>
-                  <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span>
-                  <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span>
-                  <span className={classes.infoKey}>NAME: </span>
-                </Typography>
-              </div>
-              <div>
-                <Typography className={classes.userInfo}>
-                  <span className={classes.infoValue}>
-                    {getAuthenticatorName(userInfo.IDP)}
-                  </span>
-                  <span className={classes.infoValue}>
-                    {userInfo.email}
-                  </span>
-                  <span className={classes.infoValue}>
-                    {capitalizeFirstLetter(userInfo.lastName)}
-                    ,
-                    &nbsp;
-                    {capitalizeFirstLetter(userInfo.firstName)}
-                  </span>
-                </Typography>
-              </div>
-            </div>
-            <div className={classes.secondInfoSection}>
-              <div className={classes.infoKeyWrapper}>
-                <Typography className={classes.userInfo}>
-                  <span className={classes.infoKey}>ORGANIZATION: </span>
-                  <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
-                  <span className={classes.infoKey}>ROLE: </span>
-                  <span className={cn(classes.infoKey, classes.toggleAdmin)}>
-                    ADMIN PERMISSIONS:
-                  </span>
-                </Typography>
-              </div>
-              <div>
-                <Typography component="div" className={classes.userInfo}>
-                  <span className={classes.infoValue}>
-                    {capitalizeFirstLetter(userInfo.organization)}
-                  </span>
-                  <span className={classes.infoValue}>
-                    {userInfo.userStatus === '' ? 'N/A' : capitalizeFirstLetter(userInfo.userStatus)}
-                  </span>
-                  <span className={classes.infoValue}>{capitalizeFirstLetter(userInfo.role)}</span>
-                  <span className={classes.infoValue}>
-                    <CustomCheckbox
-                      checked={userRole.toLowerCase() === 'admin'}
-                      onChange={toggleAdminRole}
-                      color="primary"
-                      inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    />
-                  </span>
-                </Typography>
-              </div>
-            </div>
+            <UserDetails handleCheckbox={toggleAdminRole} userInfo={userInfo} userRole={userRole} />
           </div>
           <Grid container>
             {userInfo.role.toLowerCase() !== 'admin' ? (
