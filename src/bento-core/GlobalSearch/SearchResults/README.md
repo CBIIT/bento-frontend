@@ -13,43 +13,70 @@ For the component's technical details, please see [DESIGN.md](./DESIGN.md).
 
   ```javascript
   // Import the component
-  import { SearchResults } from '...'; // Note: update the path
+  import { SearchResultsGenerator } from '...'; // Note: update the path
+
+  // Generate the component with the default options
+  const { SearchResults } = SearchResultsGenerator();
 
   // Use the component
   const results = (
-    <SearchResults
-      classes={{}}
-      searchText={"search text"}
-      tabs={[ /* see below for definition */ ]}
-    />
+    <SearchResults searchText={"search text"} />
   );
   ```
 
 </details>
 
-# Exports
+# Generator Configuration
 
-The SearchResults component exports the following components and objects by default. You may use them as necessary.
+```JAVASCRIPT
+const DEFAULT_CONFIG_SEARCHRESULTS = {
+  // Classes to apply to the search results page
+  classes: {},
 
-- `SearchResults`
+  // Misc. Configuration Options
+  config: {
+    // Number of results to display per page
+    pageSize: 10,
 
-# Props
+    // The default tab to display
+    defaultTab: null,
 
-This SearchResults component accepts the following props directly. The default value is specified, along with the possible values.
+    // The mapping of search result types to JSX components
+    // See below for more details
+    resultCardMap: {},
+  },
 
-```javascript
-<SearchResults
-  classes={undefined}          // object – The classes to apply to the component
-  searchText={""}              // string – The search query string used to fetch the results
-  tabs={undefined}             // array – An array of tab configuration...See Below
-  activeTab={undefined}        // *optional* number|string – The selected tab. If not provided, the first tab will be used.
-  onTabChange={undefined}      // *optional* function – The function to call when the tab changes
-  pageSize={10}                // *optional* number – The number of results to display per page
-  resultCardMap={undefined}    // *optional* object – A map of result types to their corresponding card components...See Below
-/>
+  // Helper functions used by the component
+  functions: {
+    /**
+     * Handler for tab change event
+     *
+     * OPTIONAL
+     *
+     * @param {object} event change event
+     * @param {*} newTab new tab value
+     */
+    // eslint-disable-next-line no-unused-vars
+    onTabChange: (event, newTab) => {},
+
+    /**
+     * Helper function to fetch data for a given tab
+     * This function should return a promise that resolves to an array of objects
+     *
+     * The result structure is dependent on the cardMap and how
+     * the card uses the data it.
+     *
+     * The array should be no larger than `pageSize` (defined by the `pageSize` SearchResults prop). The `currentPage` parameter is used to determine the offset for the API call.
+     *
+     * @param {string} field the field to search on
+     * @param {number} pageSize the number of results to fetch per page
+     * @param {number} currentPage the current page number
+     */
+    // eslint-disable-next-line no-unused-vars
+    getTabData: async (field, pageSize, currentPage) => {},
+  },
+}
 ```
-
-**NOTE:** To prevent unnecessary re-renders, the `tab` prop should not be tracked as a state in the parent component. It should only be used to set the initial tab.
 
 ## resultCardMap
 
@@ -80,10 +107,10 @@ The tab configuration (defined via the `tabs` prop) is critical to this componen
 [
   {
     name: 'Cases',                                         // string|function – The name of the tab to display
+    field: 'subject',                                      // string – The field to search on. Passed to the `getTabData` function
     classes: {},                                           // object – Specific classes to apply TO ONLY THIS TAB
     count: 0,                                              // number – The total number of results for this tab
     value: '2',                                            // number|string – The value of the tab. Used to determine which tab is active
-    getData: async (search, pageSize, currentPage) => {},  // function – The function used to fetch the data for this tab. Should return an array of results.
   },
 
   // ... repeating
@@ -95,5 +122,22 @@ Some notes about the tab configuration options:
 | Property |  Description |
 |:-|:-|
 |`name`|The name of the tab to display and is used as the tab label. If you would like to provide a custom component instead of just plain text, you can pass a function which returns a JSX component. This can be used to add icons, etc. to the tab label.|
-|`classes`|The classes option can be used to override default styling for the specific tab. This styling is passed down to any children cards, and can be used on them as well (e.g. CaseCard, StudyCard, etc.).
-|`getData`|The function signature is `async (searchText, pageSize, currentPage)`.<br><br>It should return a promise which resolves to an array of result objects returned by the Bento backend API. The array should be no larger than `pageSize` (defined by the `pageSize` SearchResults prop). The `currentPage` parameter is used to determine the offset for the API call.|
+|`classes`|The classes option can be used to override default styling for the specific tab. This styling is passed down to any children cards, and can be used on them as well (e.g. CaseCard, StudyCard, etc.).|
+
+# Exports
+
+The SearchResults component exports the following components, objects, and functions by default. You may use them as necessary.
+
+- `SearchResultsGenerator(options)`
+- `DEFAULT_CONFIG_SEARCHRESULTS`
+- `countValues(obj)`
+
+# Props
+
+This SearchResults component accepts the following props directly. The default value is specified, along with the possible values.
+
+```javascript
+<SearchResults
+  searchText={""} // string – The search query string used to fetch the results
+/>
+```

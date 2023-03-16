@@ -16,7 +16,7 @@ No global/redux states are implemented by this component.
 
 ## Retrieval
 
-The main component, `<SearchResults>` is exported as a standard JSX component. See the main [README.md](./README.md) for more information. The sub-components found in [components](./components/) are not designed to be used outside of this component, but are retrieved via importing them directly. No documentation on using them directly is provided.
+The main component, `<SearchResults>` is generated through the `SearchResultsGenerator()` function. See the main [README.md](./README.md) for more information. The sub-components found in [components](./components/) are not designed to be used outside of this component, but are retrieved via importing them directly. No documentation on using them directly is provided.
 
 Sub components include:
 
@@ -26,4 +26,4 @@ Sub components include:
 
 ## Configuration
 
-N/A – This component does not use a generator and does not have any traditional configuration options.
+The default configuration object is defined in [config.js](./config.js). To override and customize the component, you must provide the new configuration object to the `SearchResultsGenerator` function. **You do not need to override every option** only overriden options will be used.

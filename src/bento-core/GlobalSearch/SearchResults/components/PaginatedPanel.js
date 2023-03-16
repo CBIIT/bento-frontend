@@ -15,17 +15,19 @@ import { ResultCard } from './ResultCard';
  * @param {object} props.classes - Material UI styles
  * @param {string} props.searchText - The search text used for the search query
  * @param {number} props.count - The total number of results for this tab
- * @param {function} props.getData - The function to fetch paginated data
+ * @param {function} props.getTabData - The function to fetch paginated data
  * @param {number} props.pageSize - The number of results to fetch per page
+ * @param {string} props.field - The field to search on
  * @param {object} [props.resultCardMap] - The mapping of search result types to JSX components
  */
 const PaginatedPanel = (props) => {
   const {
     classes, searchText, count,
-    getData, pageSize, resultCardMap,
+    getTabData, pageSize, resultCardMap,
+    field,
   } = props;
 
-  if (!getData || typeof getData !== 'function') {
+  if (!getTabData || typeof getTabData !== 'function') {
     return (
       <Typography variant="h5" color="error">
         No handler found to fetch paginated data.
@@ -37,15 +39,15 @@ const PaginatedPanel = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  async function onChange(newValue, newPage = 1) {
+  async function onChange(newPage = 1) {
     // Reset data if search text is empty or there are no results
-    if (!count || !newValue || newValue.length <= 0) {
+    if (!count || !searchText || searchText.length <= 0) {
       setData([]);
       return;
     }
 
     setLoading(true);
-    const searchResp = await getData(newValue, pageSize, newPage).catch(() => []);
+    const searchResp = await getTabData(field, pageSize, newPage).catch(() => []);
     setLoading(false);
     setData(searchResp);
   }
@@ -55,7 +57,7 @@ const PaginatedPanel = (props) => {
       return;
     }
 
-    onChange(searchText, page + 1);
+    onChange(page + 1);
     setPage(page + 1);
   };
 
@@ -64,7 +66,7 @@ const PaginatedPanel = (props) => {
       return;
     }
 
-    onChange(searchText, page - 1);
+    onChange(page - 1);
     setPage(page - 1);
   };
 
@@ -76,7 +78,7 @@ const PaginatedPanel = (props) => {
   };
 
   const handleChangePage = (event, newPage) => {
-    onChange(searchText, newPage);
+    onChange(newPage);
     setPage(newPage);
     scrollToTop();
   };
@@ -104,7 +106,7 @@ const PaginatedPanel = (props) => {
   };
 
   useEffect(() => {
-    onChange(searchText);
+    onChange();
   }, [searchText, count]);
 
   return (
