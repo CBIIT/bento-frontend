@@ -1,105 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { withStyles, Box } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-
 import {
   SearchBarGenerator, SearchResultsGenerator, countValues,
 } from '../../bento-core/GlobalSearch';
 import styles from './styles';
-
-import client from '../../utils/graphqlClient';
-import {
-  getSearch, getSearchPublic,
-  getSearchPageResults, getPublicSearchPageResults,
-} from '../dashboardTab/store/dashboardReducer';
 import {
   SEARCH_PAGE_DATAFIELDS, SEARCH_PAGE_KEYS,
-  SEARCH_PAGE_RESULT_FILES, SEARCH_PAGE_RESULT_MODEL,
-  SEARCH_PAGE_RESULT_SAMPLES, SEARCH_PAGE_RESULT_STUDIES,
-  SEARCH_PAGE_RESULT_ABOUT, SEARCH_PAGE_RESULT_PROGRAM, SEARCH_PAGE_RESULT_SUBJECTS,
-  SEARCH_PUBLIC, SEARCH_PAGE_RESULT_PROGRAM_PUBLIC, SEARCH_PAGE_RESULT_ABOUT_PUBLIC,
+  queryCountAPI, queryResultAPI, queryAutocompleteAPI,
 } from '../../bento/search';
 
 /**
- * Maps a private datafield to the correct search query
- *
- * @param {string} field datatable field name
- */
-function getPrivateQuery(field) {
-  switch (field) {
-    case 'all':
-      return SEARCH_PAGE_RESULT_SUBJECTS;
-    case 'subjects':
-      return SEARCH_PAGE_RESULT_SUBJECTS;
-    case 'samples':
-      return SEARCH_PAGE_RESULT_SAMPLES;
-    case 'files':
-      return SEARCH_PAGE_RESULT_FILES;
-    case 'programs':
-      return SEARCH_PAGE_RESULT_PROGRAM;
-    case 'studies':
-      return SEARCH_PAGE_RESULT_STUDIES;
-    case 'model':
-      return SEARCH_PAGE_RESULT_MODEL;
-    case 'about_page':
-      return SEARCH_PAGE_RESULT_ABOUT;
-    default:
-      return SEARCH_PAGE_RESULT_SUBJECTS;
-  }
-}
-
-/**
- * Maps a public datafield to the correct search query
- *
- * @param {string} field datatable field name
- */
-function getPublicQuery(field) {
-  switch (field) {
-    case 'all':
-      return SEARCH_PUBLIC; // Starting point for ALL tab
-    case 'subjects':
-      return SEARCH_PAGE_RESULT_SUBJECTS;
-    case 'samples':
-      return SEARCH_PAGE_RESULT_SAMPLES;
-    case 'files':
-      return SEARCH_PAGE_RESULT_FILES;
-    case 'programs':
-      return SEARCH_PAGE_RESULT_PROGRAM_PUBLIC;
-    case 'studies':
-      return SEARCH_PAGE_RESULT_STUDIES;
-    case 'model':
-      return SEARCH_PAGE_RESULT_MODEL;
-    case 'about_page':
-      return SEARCH_PAGE_RESULT_ABOUT_PUBLIC;
-    default:
-      return SEARCH_PAGE_RESULT_SUBJECTS;
-  }
-}
-
-/**
- * Helper function to perform a GraphQL API query
- *
- * @param {string} datafield
- * @param {object} input search query variable input
- * @param {boolean} isPublic is the search public or private
- */
-async function queryAPI(datafield, input, isPublic) {
-  const data = await client.query({
-    query: isPublic ? getPublicQuery(datafield) : getPrivateQuery(datafield),
-    variables: input,
-    context: {
-      clientName: isPublic ? 'publicService' : '',
-    },
-  })
-    .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch))
-    .catch(() => []);
-
-  return data[datafield];
-}
-
-/**
- * Helper function to determine the correct datafield and offset for the All tab
- * based off of the current offset and the number of results for each datafield
+ * Determine the correct datafield and offset for the All tab based
+ * off of the current offset and the number of results for each datafield
  *
  * @param {string} searchText
  * @param {number} calcOffset
@@ -107,9 +20,7 @@ async function queryAPI(datafield, input, isPublic) {
  * @param {boolean} isPublic
  */
 async function getAllQueryField(searchText, calcOffset, pageSize, isPublic) {
-  const searchResp = isPublic ? await getPublicSearchPageResults(searchText)
-    : await getSearchPageResults(searchText);
-
+  const searchResp = await queryCountAPI(searchText, isPublic);
   const custodianConfigForTabData = isPublic ? [{ countField: 'about_count', nameField: 'about_page' }]
     : [{ countField: 'subject_count', nameField: 'subjects' },
       { countField: 'sample_count', nameField: 'samples' },
@@ -139,11 +50,11 @@ async function getAllQueryField(searchText, calcOffset, pageSize, isPublic) {
     };
   }
 
-  return { datafieldValue: isPublic ? 'about_page' : 'subject', offsetValue: 0 };
+  return { datafieldValue: isPublic ? 'about_page' : 'subjects', offsetValue: 0 };
 }
 
 /**
- * Wrapper for the queryAPI function to get the All tab's data
+ * Wrapper for the queryResultAPI function to get the All tab's data
  *
  * @param {string} search the search input value
  * @param {number} offset the offset value
@@ -161,7 +72,7 @@ async function queryAllAPI(search, offset, pageSize, isPublic) {
     offset: offsetValue,
   };
 
-  return queryAPI(datafieldValue, input, isPublic);
+  return queryResultAPI(datafieldValue, input, isPublic);
 }
 
 function searchView(props) {
@@ -197,34 +108,6 @@ function searchView(props) {
   };
 
   /**
-   * Returns the correct GraphQL search results count query based on the user's
-   * authorization status.
-   *
-   * @param {string} search the search string query
-   */
-  const getAuthorizedResultQuery = (search) => {
-    if (authCheck()) {
-      return getSearchPageResults(search);
-    }
-
-    return getPublicSearchPageResults(search);
-  };
-
-  /**
-   * Returns the correct GraphQL autocomplete search query based on the user's
-   * authorization status.
-   *
-   * @param {string} search the search string query
-   */
-  function getAuthorizedSearchQuery(search) {
-    if ((authCheck())) {
-      return getSearch(search);
-    }
-
-    return getSearchPublic(search);
-  }
-
-  /**
    * Handle the search box input change event
    *
    * @param {string} value
@@ -235,7 +118,7 @@ function searchView(props) {
     if (value === searchText) { return; }
     if (value.trim() === '') { return; }
 
-    getAuthorizedResultQuery(value).then((d) => {
+    queryCountAPI(value, !authCheck()).then((d) => {
       setSearchText(value);
       setSearchCounts(d);
       history.push(`/search/${value}`);
@@ -261,7 +144,7 @@ function searchView(props) {
     if (value.trim() === '') { return []; }
 
     const authed = authCheck();
-    const res = await getAuthorizedSearchQuery(value);
+    const res = await queryAutocompleteAPI(value, !authed);
     const mapOption = (authed ? SEARCH_PAGE_KEYS.private : SEARCH_PAGE_KEYS.public).map(
       (key, index) => res[key].map(
         (id) => (id[authed
@@ -315,7 +198,7 @@ function searchView(props) {
       first: pageSize,
       offset: (currentPage - 1) * pageSize,
     };
-    const data = await queryAPI(field, input, isPublic);
+    const data = await queryResultAPI(field, input, isPublic);
     return (data || []).slice(0, pageSize);
   };
 
@@ -346,7 +229,7 @@ function searchView(props) {
         root: classes.buttonRoot,
         wrapper: classes.tabColor,
       },
-      count: !authCheck() ? searchCounts.about_count : countValues(searchCounts) || 0,
+      count: (!authCheck() ? searchCounts.about_count : countValues(searchCounts)) || 0,
       value: '1',
     },
     {
@@ -426,7 +309,7 @@ function searchView(props) {
       return;
     }
 
-    getAuthorizedResultQuery(searchparam).then((d) => {
+    queryCountAPI(searchparam, !authCheck()).then((d) => {
       setSearchCounts(d);
     });
   }, []);
