@@ -67,9 +67,6 @@ const TabView = (props) => {
         customTheme={customTheme}
         classes={classes}
         section={config.name}
-        activeFilters={activeFilters}
-        addAllFileAPI={config.addAddFileAPI}
-        addSelectedIdAPI={config.addSelectedIdAPI}
       >
         <TableView
           initState={initTblState}

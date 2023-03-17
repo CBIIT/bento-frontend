@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core';
 import styles from './TabsStyle';
-import TabViewGenerator from '../../../bento-core/Tab/TabViewGenerator';
+import TabGenerator from '../../../bento-core/Tab/TabGenerator';
 import TabPanelGenrator from '../../../bento-core/Tab/TabPanelGenrator';
-import TabView from './TabView';
+import TabPanel from './TabPanel';
 import { tabContainers } from '../../../bento/dashboardTabData';
 
 const customTheme = {
@@ -79,7 +79,7 @@ const Tabs = (props) => {
 
   return (
     <>
-      <TabViewGenerator
+      <TabGenerator
         tabItems={getTabs(tabContainers)}
         currentTab={currentTab}
         handleTabChange={handleTabChange}
@@ -87,14 +87,16 @@ const Tabs = (props) => {
       />
       {
         tabContainers.map((tab, index) => (
-          <TabPanelGenrator value={currentTab} index={index}>
-            <TabView
-              {...props}
-              tab={tab}
-              config={tab}
-              activeTab={index === currentTab}
-            />
-          </TabPanelGenrator>
+          <>
+            <TabPanelGenrator value={currentTab} index={index}>
+              <TabPanel
+                {...props}
+                tab={tab}
+                config={tab}
+                activeTab={index === currentTab}
+              />
+            </TabPanelGenrator>
+          </>
         ))
       }
     </>
