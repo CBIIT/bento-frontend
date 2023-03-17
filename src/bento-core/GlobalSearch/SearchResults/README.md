@@ -51,57 +51,85 @@ const DEFAULT_CONFIG_SEARCHRESULTS = {
     /**
      * Handler for tab change event
      *
-     * OPTIONAL
-     *
      * @param {object} event change event
      * @param {*} newTab new tab value
      */
-    // eslint-disable-next-line no-unused-vars
     onTabChange: (event, newTab) => {},
 
     /**
      * Helper function to fetch data for a given tab
      * This function should return a promise that resolves to an array of objects
      *
-     * The result structure is dependent on the cardMap and how
-     * the card uses the data it.
-     *
-     * The array should be no larger than `pageSize` (defined by the `pageSize` SearchResults prop). The `currentPage` parameter is used to determine the offset for the API call.
+     * NOTES:
+     * - The result structure is dependent on the cardMap and how
+     *   the card uses the data.
+     * - The result should be no larger than `pageSize` (defined
+     *   by the `pageSize` config option).
+     * - The `currentPage` parameter is used to determine the offset for the API call.
      *
      * @param {string} field the field to search on
      * @param {number} pageSize the number of results to fetch per page
      * @param {number} currentPage the current page number
      */
-    // eslint-disable-next-line no-unused-vars
-    getTabData: async (field, pageSize, currentPage) => {},
+    getTabData: async (field, pageSize, currentPage) => [],
   },
 }
 ```
 
 ## resultCardMap
 
-The `resultCardMap` prop is used to map the result type to the corresponding card component. This property is optional, and will use the default card map (See `DEFAULT_CARD_MAP` in [ResultCard.js](components/ResultCard.js)) if not provided. Additionally, if you only provide/override certain properties, the default map will be used for the remaining types.
+The `resultCardMap` option is used to map the tab datafield to the corresponding card component. **This property is optional**, and will use the default card map (See `DEFAULT_CARD_MAP` in [ResultCard.js](components/ResultCard.js)) if not provided.
 
-- What is a Result Card? See an example card in [Cards/CaseCard.js](components/Cards/CaseCard.js).
+> Note: The purpose of this option is if you need to completely restructure a card. If you only need to restyle it, see the `classes` option for `tabs` below.
+
+Additionally, if you only provide/override certain properties, the default map will be used for the remaining types.
+
+> Note: See an example Result Card in [Cards/CaseCard.js](components/Cards/CaseCard.js).
 
 The expected property structure is `datatype`:`JSX.Component`. For example:
 
 ```javascript
-import CaseCard from 'Cards/CaseCard.js';
-import AboutCard from 'Cards/AboutCard.js';
+// Define a new card component
+const NewCardExample = ({ data, index }) => {
+  return (
+    <div id={index}>
+      <h1>{data.title}</h1>
+      <p>{data.description}</p>
+    </div>
+  );
+};
 
-const cardMap = {
-  subject: CaseCard,
-  about: AboutCard,
+// Create a new card map
+const customCardMap = {
+  // Override the subject card with NewCardExample
+  subject: NewCardExample,
+
   // ... and so on
 };
+
+// Then generate the component with the new card map
+const { SearchResults } = SearchResultsGenerator({
+  config: {
+    resultCardMap: customCardMap,
+  },
+});
+
+// Use the SearchResults component
+// ...
 ```
 
-**Note for future developers:** The cardMap cannot be tied to the individual tab configuration, because of mixed card situations such as the All tab.
+> Developer Note: The cardMap cannot be tied to the individual tab configuration because of mixed card situations such as the All tab.
+
+If you provide a custom card type, each time the card is rendered, it will be passed the following props:
+
+- `data` - The array/object of data for the card. e.g. An instance of a Case, Study, etc.
+- `classes` - The classes prop defined in the Configuration Tab `classes` object (See below)
+- `index` - The current index offset (e.g. 291)
+- `searchText` - The text used to search for the results. Useful for highlighting the search text in the card.
 
 ## tabs
 
-The tab configuration (defined via the `tabs` prop) is critical to this component. See below for the definition of the tab configuration object. Each object in the array represents a single tab and tab panel that will be created (created as a set together).
+The tab configuration (defined via the `tabs` option) is critical to this component. See below for the definition of the tab configuration object. Each object in the array represents a single tab and tab panel that will be created (created as a set together).
 
 ```javascript
 [
@@ -121,8 +149,9 @@ Some notes about the tab configuration options:
 
 | Property |  Description |
 |:-|:-|
-|`name`|The name of the tab to display and is used as the tab label. If you would like to provide a custom component instead of just plain text, you can pass a function which returns a JSX component. This can be used to add icons, etc. to the tab label.|
+|`name`|The name of the tab to display and is used as the tab label. If you would like to provide a custom component instead of just plain text, you can pass a function which returns a JSX component. This can be used to add icons, etc. to the tab label. e.g. `name: () => <div>Cases</div>,`|
 |`classes`|The classes option can be used to override default styling for the specific tab. This styling is passed down to any children cards, and can be used on them as well (e.g. CaseCard, StudyCard, etc.).|
+|`count`|By default, this property is used for two things:<br>(1) The label of the tab (e.g. `Cases 23`)<br>(2) Whether to fetch the data for the tab when loading results. If the count is 0, no data will be fetched.|
 
 # Exports
 

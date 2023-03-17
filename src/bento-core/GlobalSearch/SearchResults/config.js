@@ -32,15 +32,19 @@ export const DEFAULT_CONFIG_SEARCHRESULTS = {
      * Helper function to fetch data for a given tab
      * This function should return a promise that resolves to an array of objects
      *
-     * The result structure is dependent on the cardMap and how
-     * the card uses the data it.
+     * NOTES:
+     * - The result structure is dependent on the cardMap and how
+     *   the card uses the data.
+     * - The result should be no larger than `pageSize` (defined
+     *   by the `pageSize` config option).
+     * - The `currentPage` parameter is used to determine the offset for the API call.
      *
      * @param {string} field the field to search on
      * @param {number} pageSize the number of results to fetch per page
      * @param {number} currentPage the current page number
      */
     // eslint-disable-next-line no-unused-vars
-    getTabData: async (field, pageSize, currentPage) => {},
+    getTabData: async (field, pageSize, currentPage) => [],
   },
 };
 
