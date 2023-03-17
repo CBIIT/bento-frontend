@@ -26,6 +26,25 @@ function getRedirectedType(query) {
 
 const unavailableArmsStatus = ['approved', 'pending'];
 
+/**
+ * Determines whether a user is a disabled member
+ *
+ * @param {string} role The name of the user's role
+ * @param {string} status The user's membership status
+ */
+const isDisabledMember = (role, status) => {
+  const roles = [
+    'admin',
+    'member',
+  ];
+
+  if (roles.includes(role.toLowerCase()) && status.toLowerCase === 'disabled') {
+    return false;
+  }
+
+  return true;
+};
+
 const getAvailableArms = (currentACL, listOfArms) => {
   const unavailableArms = Object.keys(currentACL).reduce((previousArms, key) => {
     const armObject = currentACL[key];
@@ -41,7 +60,12 @@ const getAvailableArms = (currentACL, listOfArms) => {
 
 function requestAccessView({ data, classes }) {
   const { getMyUser, listArms } = data;
-  const { email: userEmail, IDP, userStatus } = getMyUser;
+  const {
+    email: userEmail,
+    IDP,
+    role,
+    userStatus,
+  } = getMyUser;
   const history = useHistory();
   const query = useQuery();
   const redirectdType = getRedirectedType(query);
@@ -90,11 +114,24 @@ function requestAccessView({ data, classes }) {
   const getErrorDetails = () => {
     const {
       networkError: {
+        result: {
+          errors,
+        },
         statusCode,
       },
     } = error;
 
-    return statusCode === 409 ? 'The request arm does not exist or attempting to request an invalid ARM' : 'Server Error';
+    if (statusCode !== 409) {
+      return 'Server Error';
+    }
+
+    // Return API error message for disabled members
+    if (isDisabledMember(role, userStatus)) {
+      return errors[0].error;
+    }
+
+    // Default error message
+    return 'The request arm does not exist or attempting to request an invalid ARM';
   };
 
   const showAlert = (alertType) => {
