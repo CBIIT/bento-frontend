@@ -1,3 +1,4 @@
+// Page no longer used.
 import React from 'react';
 import {
   IconButton, Menu, MenuItem, Tooltip,

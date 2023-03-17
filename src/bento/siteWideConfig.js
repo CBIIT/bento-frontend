@@ -1,3 +1,5 @@
+import env from '../utils/env';
+
 export default {
   // Suggested for replaceEmptyValueWith: 'N/A' or '-' or ''
   replaceEmptyValueWith: '',
@@ -13,11 +15,11 @@ export const adminPortal = '/admin';
 export const userProfileRoute = '/profile';
 
 // Public Level Access
-export const PUBLIC_ACCESS = 'Metadata Only';
+export const PUBLIC_ACCESS = env.PUBLIC_ACCESS || 'Metadata Only';
 
 // Node level access
-export const NODE_LEVEL_ACCESS = true;
-export const NODE_LABEL = 'Study Arm(s)';
+export const NODE_LEVEL_ACCESS = env.NODE_LEVEL_ACCESS || true;
+export const NODE_LABEL = env.NODE_LABEL || 'Study Arm(s)';
 
 // Redirect configs.
 export const REDIRECT_AFTER_SIGN_OUT = '/';
