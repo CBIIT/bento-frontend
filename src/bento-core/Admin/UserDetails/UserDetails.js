@@ -17,12 +17,33 @@ const CustomCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />);
 
 const UserDetails = ({
-  handleCheckbox = () => {},
+  handleCheckbox,
   classes,
   userInfo,
   userRole,
 }) => {
   const { capitalizeFirstLetter, getAuthenticatorName } = custodianUtils;
+  let checkbox = null;
+  let checkboxLabel = null;
+
+  // Determine whether to create a checkbox
+  if (handleCheckbox) {
+    checkbox = (
+      <span className={classes.infoValue}>
+        <CustomCheckbox
+          checked={userRole === 'admin'}
+          onChange={handleCheckbox}
+          color="primary"
+          inputProps={{ 'aria-label': 'secondary checkbox' }}
+        />
+      </span>
+    );
+    checkboxLabel = (
+      <span className={cn(classes.infoKey, classes.toggleAdmin)}>
+        ADMIN PERMISSIONS:
+      </span>
+    );
+  }
 
   return (
     <>
@@ -57,9 +78,7 @@ const UserDetails = ({
             <span className={classes.infoKey}>ORGANIZATION: </span>
             <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
             <span className={classes.infoKey}>ROLE: </span>
-            <span className={cn(classes.infoKey, classes.toggleAdmin)}>
-              ADMIN PERMISSIONS:
-            </span>
+            {checkboxLabel}
           </Typography>
         </div>
         <div>
@@ -71,14 +90,7 @@ const UserDetails = ({
               {userInfo.userStatus === '' ? 'N/A' : capitalizeFirstLetter(userInfo.userStatus)}
             </span>
             <span className={classes.infoValue}>{capitalizeFirstLetter(userInfo.role)}</span>
-            <span className={classes.infoValue}>
-              <CustomCheckbox
-                checked={userRole === 'admin'}
-                onChange={handleCheckbox}
-                color="primary"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </span>
+            {checkbox}
           </Typography>
         </div>
       </div>

@@ -9,7 +9,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { cn, CustomDataTable } from 'bento-components';
 
 import UserDetails from '../../../bento-core/Admin';
-// import UserDetails, { userRoleReducer } from '../../../bento-core/Admin';
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
 import AlertMessage from '../../../components/alertMessage/AlertMessageView';
@@ -67,7 +66,6 @@ function getColumnInfo(accessType, approvedRenderer, removeRenderer) {
 const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userInfo, setUserInfo] = useState(data.getUser);
   const [userRole, setUserRole] = useState(userInfo.role.toLowerCase());
-  // const [userRole, dispatchUserRole] = userRoleReducer(userInfo.role.toLowerCase());
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
 
@@ -227,7 +225,6 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
           }
           >
             <UserDetails
-              // handleCheckbox={dispatchUserRole}
               handleCheckbox={toggleAdminRole}
               userInfo={userInfo}
               userRole={userRole}
