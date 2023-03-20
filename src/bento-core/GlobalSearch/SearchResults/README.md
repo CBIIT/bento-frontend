@@ -80,11 +80,11 @@ const DEFAULT_CONFIG_SEARCHRESULTS = {
 
 The `resultCardMap` option is used to map the tab datafield to the corresponding card component. **This property is optional**, and will use the default card map (See `DEFAULT_CARD_MAP` in [ResultCard.js](components/ResultCard.js)) if not provided.
 
-> Note: The purpose of this option is if you need to completely restructure a card. If you only need to restyle it, see the `classes` option for `tabs` below.
+> **Note**: The purpose of this option is if you need to completely restructure a card. If you only need to restyle it, see the `classes` option for `tabs` below.
 
 Additionally, if you only provide/override certain properties, the default map will be used for the remaining types.
 
-> Note: See an example Result Card in [Cards/CaseCard.js](components/Cards/CaseCard.js).
+> **Note**: See an example Result Card in [Cards/CaseCard.js](components/Cards/CaseCard.js).
 
 The expected property structure is `datatype`:`JSX.Component`. For example:
 
@@ -118,7 +118,7 @@ const { SearchResults } = SearchResultsGenerator({
 // ...
 ```
 
-> Developer Note: The cardMap cannot be tied to the individual tab configuration because of mixed card situations such as the All tab.
+> **Warning**: The cardMap cannot be tied to the individual tab configuration because of mixed card situations such as the All tab.
 
 If you provide a custom card type, each time the card is rendered, it will be passed the following props:
 
