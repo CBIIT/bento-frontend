@@ -18,6 +18,7 @@ const getDashData = (filterState) => {
 
   const [dashData, setDashData] = useState(null);
 
+  const activeFilters = getFilters(filterState);
   useEffect(() => {
     const controller = new AbortController();
     const activeFilters = getFilters(filterState);
@@ -28,12 +29,12 @@ const getDashData = (filterState) => {
     });
     return () => controller.abort();
   }, [filterState]);
-  return { dashData };
+  return { dashData, activeFilters };
 };
 
 const DashTemplateController = ((props) => {
   const { filterState } = props;
-  const { dashData } = getDashData(filterState);
+  const { dashData, activeFilters } = getDashData(filterState);
 
   if (!dashData) {
     return (<CircularProgress />);
@@ -43,6 +44,7 @@ const DashTemplateController = ((props) => {
     <DashTemplateView
       {...props}
       dashData={dashData}
+      activeFilters={activeFilters}
     />
   );
 });

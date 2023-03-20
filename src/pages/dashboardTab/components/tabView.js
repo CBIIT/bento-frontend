@@ -257,7 +257,6 @@ const TabView = ({
             )}
           </IconButton>
         </ToolTip>
-
       </Grid>
       <Grid container>
         <Grid item xs={12} id={tableID}>
@@ -325,11 +324,9 @@ const TabView = ({
 };
 
 const styles = (theme) => ({
-
   link: {
     color: theme.palette.text.link,
     textDecoration: 'none',
-
     '&:hover': {
       textDecoration: 'underline',
     },

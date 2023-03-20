@@ -13,18 +13,7 @@ const styles = () => ({
     maxWidth: '840px',
     margin: '0 auto',
   },
-  sampleTab: { color: '#142D64' },
-  fileTab: { color: '#142D64' },
-  programTab: { color: '#142D64' },
-  studyTab: { color: '#142D64' },
-  dataTab: { color: '#142D64' },
-  aboutTab: { color: '#142D64' },
-  allTab: { color: '#142D64' },
-  searchText: {
-    color: '#1479D3',
-    fontFamily: 'Lato',
-    fontSize: '25px',
-  },
+  tabColor: { color: '#142D64' },
   buttonRoot: {
     minWidth: '100px',
     padding: '6px, 28px',
@@ -39,7 +28,6 @@ const styles = () => ({
     color: '#747474',
     fontFamily: 'Lato',
     fontSize: '25px',
-
   },
   heroArea: {
     width: '100%',
@@ -58,6 +46,10 @@ const styles = () => ({
     '& > *': {
       margin: '10px',
     },
+  },
+  enterIcon: {
+    height: '12px',
+    margin: '0px 18px 0px 6px',
   },
   button: {
     borderRadius: '30px',
@@ -88,22 +80,26 @@ const styles = () => ({
     minHeight: '100px',
     padding: '16px',
   },
-
   backdrop: {
     // position: 'absolute',
     zIndex: 99999,
     background: 'rgba(0, 0, 0, 0.1)',
   },
-
   filterIcon: {
     height: '0.86rem',
     margin: '0px 16px 0px 6px',
     display: 'inline-flex',
     verticalAlign: 'middle',
   },
-  inputRoot: {
+  textFieldRoot: {
     '& .MuiOutlinedInput-root': {
       background: '#fff',
+      paddingLeft: '20px',
+      paddingTop: '2px',
+      paddingBottom: '3px',
+      color: '#1479D3',
+      fontFamily: 'Lato',
+      fontSize: '25px',
       '& fieldset': {
         border: '2px solid #747474',
       },

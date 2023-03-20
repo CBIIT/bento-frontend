@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import client from '../utils/graphqlClient';
 
 // --------------- Icons configuration --------------
 // Ideal size for programListingIcon is 100x100 px
@@ -9,6 +10,7 @@ export const programListingIcon = {
 };
 
 /** certain search data items */
+/** used by the Global Search header autocomplete */
 export const SEARCH_KEYS = {
   public: [],
   private: ['programs', 'studies', 'subjects', 'samples', 'files'],
@@ -17,6 +19,17 @@ export const SEARCH_KEYS = {
 export const SEARCH_DATAFIELDS = {
   public: [],
   private: ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'],
+};
+
+/** used by the Global Search page results */
+export const SEARCH_PAGE_KEYS = {
+  private: [...SEARCH_KEYS.private, 'model'],
+  public: [],
+};
+
+export const SEARCH_PAGE_DATAFIELDS = {
+  public: [],
+  private: [...SEARCH_DATAFIELDS.private, 'node_name'],
 };
 
 /** Public search queries */
@@ -288,3 +301,97 @@ export const SEARCH_PAGE_RESULTS = gql`
         }
     }
 `;
+
+/**
+ * Maps a datafield to the correct search query
+ *
+ * @param {string} field datatable field name
+ * @param {boolean} isPublic whether the search is public or not
+ */
+export function getResultQueryByField(field, isPublic) {
+  switch (field) {
+    case 'all':
+      return isPublic ? SEARCH_PUBLIC : SEARCH_PAGE_RESULT_SUBJECTS;
+    case 'subjects':
+      return SEARCH_PAGE_RESULT_SUBJECTS;
+    case 'samples':
+      return SEARCH_PAGE_RESULT_SAMPLES;
+    case 'files':
+      return SEARCH_PAGE_RESULT_FILES;
+    case 'programs':
+      return isPublic ? SEARCH_PAGE_RESULT_PROGRAM_PUBLIC : SEARCH_PAGE_RESULT_PROGRAM;
+    case 'studies':
+      return SEARCH_PAGE_RESULT_STUDIES;
+    case 'model':
+      return SEARCH_PAGE_RESULT_MODEL;
+    case 'about_page':
+      return isPublic ? SEARCH_PAGE_RESULT_ABOUT_PUBLIC : SEARCH_PAGE_RESULT_ABOUT;
+    default:
+      return SEARCH_PAGE_RESULT_SUBJECTS;
+  }
+}
+
+/**
+ * Query the backend API for autocomplete results
+ *
+ * @param {object} inputValue search text
+ * @param {boolean} isPublic is the search public or private
+ */
+export async function queryAutocompleteAPI(inputValue, isPublic) {
+  const data = await client.query({
+    query: isPublic ? SEARCH_PUBLIC : SEARCH,
+    variables: {
+      input: inputValue,
+    },
+    context: {
+      clientName: isPublic ? 'publicService' : '',
+    },
+  })
+    .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch))
+    .catch(() => []);
+
+  return data;
+}
+
+/**
+ * Query the backend API for the search result counts by search string
+ *
+ * @param {string} inputValue search text
+ * @param {boolean} isPublic whether to use the public service or not
+ */
+export async function queryCountAPI(inputValue, isPublic) {
+  const data = await client.query({
+    query: isPublic ? SEARCH_PAGE_RESULTS_PUBLIC : SEARCH_PAGE_RESULTS,
+    variables: {
+      input: inputValue,
+    },
+    context: {
+      clientName: isPublic ? 'publicService' : '',
+    },
+  })
+    .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch))
+    .catch(() => {});
+
+  return data;
+}
+
+/**
+ * Query the backend API for the search results by datafield
+ *
+ * @param {string} datafield
+ * @param {object} input search query variable input
+ * @param {boolean} isPublic is the search public or private
+ */
+export async function queryResultAPI(datafield, input, isPublic) {
+  const data = await client.query({
+    query: getResultQueryByField(datafield, isPublic),
+    variables: input,
+    context: {
+      clientName: isPublic ? 'publicService' : '',
+    },
+  })
+    .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch))
+    .catch(() => []);
+
+  return data[datafield] || [];
+}

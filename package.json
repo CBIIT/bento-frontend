@@ -8,7 +8,7 @@
     "@babel/core": "7.2.2",
     "@jbrowse/react-linear-genome-view": "^2.1.5",
     "@librpc/web": "^1.1.1",
-    "@material-ui/core": "^4.10.0",
+    "@material-ui/core": "^4.12.4",
     "@material-ui/data-grid": "*",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "*",
