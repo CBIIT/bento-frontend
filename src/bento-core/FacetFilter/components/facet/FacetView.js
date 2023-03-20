@@ -46,6 +46,7 @@ const FacetView = ({
   const selectedItems = facetValues && facetValues.filter((item) => item.isChecked);
   const displayFacet = { ...facet };
   displayFacet.facetValues = selectedItems;
+  const isActiveFacet = [...selectedItems].length > 0;
 
   return (
     <>
@@ -58,12 +59,20 @@ const FacetView = ({
         }}
       >
         { CustomView ? (
-          <CustomView facet={facet} />
+          <CustomView
+            facet={facet}
+            facetClasses={
+            isActiveFacet ? `activeFacet${facet.section}`
+              : `inactiveFacet${facet.section}`
+            }
+          />
         ) : (
           <CustomAccordionSummary>
             <div
               id={`filterGroup_${facet.datafield}`}
-              className={classes.subSectionSummaryText}
+              className={clsx(classes.subSectionSummaryText, {
+                [`activeFacet${facet.section}`]: isActiveFacet,
+              })}
             >
               {facet.label}
             </div>

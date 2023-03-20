@@ -57,7 +57,7 @@ export default () => ({
     fontFamily: 'Open Sans',
     fontWeight: '600',
     lineHeight: '0',
-    marginLeft: '10px',
+    marginLeft: '5px',
     letterSpacing: '0',
     textTransform: 'uppercase',
   },
@@ -86,12 +86,6 @@ export default () => ({
   CasesCheckedIcon: {
     color: '#10A075',
   },
-  // CasesCheckedOdd: {
-  // backgroundColor: '#f5FDEE',
-  // },
-  // CasesCheckedEven: {
-  // backgroundColor: '#e8f7dc',
-  // },
   listItemGutters: {
     padding: '10px 20px 10px 0px',
   },
@@ -110,5 +104,14 @@ export default () => ({
     fontFamily: 'Nunito',
     fontSize: '14px',
     marginRight: '0px',
+  },
+  activeFacetCases: {
+    color: '#10a075',
+  },
+  activeFacetSamples: {
+    color: '#10beff',
+  },
+  activeFacetFiles: {
+    color: '#e636e4',
   },
 });
