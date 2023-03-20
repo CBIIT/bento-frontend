@@ -1,11 +1,26 @@
-import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
+import { Grid, withStyles } from '@material-ui/core';
 import { Anchor } from 'bento-components';
 
-const PropertyItem = ({
-  label, value, link, labelLink, classes, index,
-}) => {
+/**
+ * Property Item component generates the result card key:value element
+ * e.g. "Program ID: NCT00000000" or "Age: 33"
+ *
+ * @param {object} props
+ * @param {string} props.label - the label of the property
+ * @param {string} props.value - the value of the property
+ * @param {string} props.link - the relative link of the value (e.g. a local link)
+ * @param {string} props.labelLink - the hyperlink of the label (e.g. to an external site)
+ * @param {object} props.classes - the classes object used to style the component
+ * @param {number} props.index
+ * @returns {JSX.Element}
+ */
+const PropertyItem = ({ ...props }) => {
+  const {
+    label, value, link, labelLink, classes, index,
+  } = props;
   const defaultValue = '';
+
   return (
     <Grid item container className={classes.propertyContainer}>
       {value ? (
@@ -58,7 +73,6 @@ const styles = () => ({
       color: '#9F3D26',
     },
   },
-
 });
 
 export default withStyles(styles, { withTheme: true })(PropertyItem);

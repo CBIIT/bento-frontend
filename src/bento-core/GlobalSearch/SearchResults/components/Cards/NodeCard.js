@@ -1,35 +1,55 @@
 import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
+import { prepareLinks } from 'bento-components';
+import PropertyItem from './PropertyItem';
 
-const NoAccessCard = ({
-  classes, index, tab,
-}) => (
-  <>
+const CARD_PROPERTIES = [
+  {
+    label: 'Node Name',
+    dataField: 'node_name',
+    link: '/case/{subject_id}',
+  },
+  {
+    label: 'Property Name',
+    dataField: 'property_name',
+  },
+  {
+    label: 'File Name',
+    dataField: 'file_name',
+  },
+  {
+    label: 'File Id',
+    dataField: 'file_id',
+  },
+];
+
+const NodeCard = ({ data, classes, index }) => {
+  const propertiesWithLinks = prepareLinks(CARD_PROPERTIES, data);
+
+  return (
     <Grid item container className={classes.card}>
       <Grid item xs={1} className={classes.indexContainer}>
         {index + 1 }
       </Grid>
       <Grid item xs={11} className={classes.propertyContainer}>
         <div>
-          <span className={classes.detailContainerHeader}>Access Denied</span>
-          <span className={classes.cardTitle}>
-            Please login to view search results for
-            {tab}
-            {' '}
-            tab.
-          </span>
+          <span className={classes.detailContainerHeader}>Node</span>
+          <span className={classes.cardTitle}>{data.file_id}</span>
         </div>
+        {propertiesWithLinks.map((prop, idx) => (
+          <PropertyItem
+            index={idx}
+            label={prop.label}
+            value={data[prop.dataField]}
+            link={prop.link}
+          />
+        ))}
       </Grid>
     </Grid>
-
-  </>
-);
+  );
+};
 
 const styles = (theme) => ({
-  cartIcon: {
-    height: '22px',
-    margin: '0px 0px 0px 6px',
-  },
   indexContainer: {
     padding: '18px 0px 18px 18px',
     color: '#747474',
@@ -47,9 +67,6 @@ const styles = (theme) => ({
     paddingLeft: '9px',
     verticalAlign: 'middle',
   },
-  content: {
-    fontSize: '12px',
-  },
   detailContainerHeader: {
     textTransform: 'uppercase',
     padding: '2px 8px',
@@ -64,4 +81,4 @@ const styles = (theme) => ({
   },
 });
 
-export default withStyles(styles, { withTheme: true })(NoAccessCard);
+export default withStyles(styles, { withTheme: true })(NodeCard);

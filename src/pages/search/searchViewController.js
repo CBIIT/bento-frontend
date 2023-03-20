@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
+import accessLevelTypes from '../../utils/enums';
 import SearchView from './searchView';
-import { PUBLIC_ACCESS } from '../../../bento/siteWideConfig';
-import accessLevelTypes from '../../../utils/enums';
 
-const SearchViewContainer = ({ match }) => {
+const SearchViewController = ({ match }) => {
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
   const isAdmin = useSelector((state) => state.login && state.login.role && state.login.role === 'admin');
   const hasApprovedArms = useSelector(
@@ -17,10 +17,9 @@ const SearchViewContainer = ({ match }) => {
       publicAccessEnabled={PUBLIC_ACCESS === accessLevelTypes.METADATA_ONLY}
       isAuthorized={isAuthorized}
       isSignedIn={isSignedIn}
-      loggedIn
       searchparam={match.params.id}
     />
   );
 };
 
-export default SearchViewContainer;
+export default SearchViewController;

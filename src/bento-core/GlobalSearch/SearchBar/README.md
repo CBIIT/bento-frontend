@@ -97,9 +97,10 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
      * @async
      * @param {object} config this configuration object
      * @param {string} search search input typed into the search bar
+     * @param {string} reason the reason for the search (e.g. 'clear')
      * @returns {Promise} Promise object represents the search results
      */
-    getSuggestions: async (config, search) => {},
+    getSuggestions: async (config, search, reason) => {},
   },
 };
 ```

@@ -4,8 +4,7 @@ import { Header } from 'bento-components';
 import { withRouter } from 'react-router-dom';
 import headerData from '../../bento/globalHeaderData';
 import { SearchBarGenerator } from '../../bento-core/GlobalSearch';
-import { getSearch, getSearchPublic } from '../../pages/dashboardTab/store/dashboardReducer';
-import { SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
+import { queryAutocompleteAPI, SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
 import { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
 import accessLevelTypes from '../../utils/enums';
 
@@ -21,7 +20,7 @@ const ICDCHeader = (props) => {
 
   const SearchBarConfig = {
     config: {
-      query: authenticated ? getSearch : getSearchPublic,
+      query: async (search) => queryAutocompleteAPI(search, !authenticated),
       searchKeys: authenticated ? SEARCH_KEYS.private : SEARCH_KEYS.public,
       searchFields: authenticated ? SEARCH_DATAFIELDS.private : SEARCH_DATAFIELDS.public,
     },
