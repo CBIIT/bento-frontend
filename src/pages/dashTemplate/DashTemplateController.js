@@ -21,7 +21,6 @@ const getDashData = (filterState) => {
   const activeFilters = getFilters(filterState);
   useEffect(() => {
     const controller = new AbortController();
-    const activeFilters = getFilters(filterState);
     getData(activeFilters).then((result) => {
       if (result.searchSubjects) {
         setDashData(result.searchSubjects);
