@@ -7,8 +7,8 @@ import { getTableData, setSelectedRows } from './TableService';
 * Updates table row when table state is changed 1. (paginated action) and 2. filter action
 */
 const TableController = ((props) => {
-  const { activeFilters, table } = props;
-  const { tableData } = getTableData({ activeFilters, table });
+  const { queryVariables, table } = props;
+  const { tableData } = getTableData({ queryVariables, table });
   if (!tableData) {
     return (
       <Container maxWidth="xl">

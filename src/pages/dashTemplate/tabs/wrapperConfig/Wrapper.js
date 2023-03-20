@@ -4,6 +4,14 @@ import {
 } from '../../../../bento/dashboardTabData';
 import { alertMessage } from '../../../../bento/fileCentricCartWorkflowData';
 
+export const layoutConfig = [{
+  container: 'buttons',
+  size: 'xl',
+  clsName: 'container_header',
+  items: [
+  ],
+}];
+
 export const headerConfig = [{
   container: 'buttons',
   size: 'xl',

@@ -29,6 +29,7 @@ import SysInfoView from '../../pages/sysInfo/view';
 import ProfileController from '../../pages/profile/profileController';
 import editUserController from '../../pages/admin/userDetails/editUserController';
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
+import MyCarView from '../../pages/myFiles/cartController';
 import InActivityDialog from '../InActivityDialog';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 
@@ -75,7 +76,8 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/explore_old" access={['admin', 'member']} component={Dashboard} />
             <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
             <PrivateRoute path="/model" access={['admin', 'member']} component={modelPage} />
-            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={fileCentricCart} />
+            <PrivateRoute path="/fileCentricCart_old" access={['admin', 'member']} component={fileCentricCart} />
+            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={MyCarView} />
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             <PrivateRoute path="/case/:id" access={['admin', 'member']} component={CaseDetail} />
             <PrivateRoute path="/arm/:id" access={['admin', 'member']} component={ArmDetail} />

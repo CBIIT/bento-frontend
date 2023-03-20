@@ -1236,6 +1236,10 @@ export const tabContainers = [
     },
     columns: [
       {
+        cellType: cellTypes.CHECKBOX,
+        display: true,
+      },
+      {
         dataField: 'subject_id',
         header: 'Case ID',
         sort: 'asc',
@@ -1376,6 +1380,10 @@ export const tabContainers = [
 
     columns: [
       {
+        cellType: cellTypes.CHECKBOX,
+        display: true,
+      },
+      {
         dataField: 'sample_id',
         header: 'Sample ID',
         sort: 'asc',
@@ -1515,6 +1523,10 @@ export const tabContainers = [
       border: 'unset',
     },
     columns: [
+      {
+        cellType: cellTypes.CHECKBOX,
+        display: true,
+      },
       {
         dataField: 'file_name',
         header: 'File Name',

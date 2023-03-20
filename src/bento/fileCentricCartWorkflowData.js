@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { cellTypes } from '../bento-core/Table/util/Types';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
 
 export const navBarCartData = {
@@ -40,65 +41,6 @@ export const manifestData = {
   header: ['Study Code', 'Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments'],
 };
 
-// --------------- File table configuration --------------
-
-export const table = {
-  dataField: 'filesInList',
-  // Value must be one of the 'dataField's in "columns"
-  defaultSortField: 'file_name',
-  // 'asc' or 'desc'
-  defaultSortDirection: 'asc',
-  paginationAPIField: 'filesInList',
-  tableDownloadCSV: customMyFilesTabDownloadCSV,
-
-  columns: [
-    {
-      dataField: 'file_name',
-      header: 'File Name',
-    },
-    {
-      dataField: 'file_type',
-      header: 'File Type',
-    },
-    {
-      dataField: 'association',
-      header: 'Association',
-    },
-    {
-      dataField: 'file_description',
-      header: 'Description',
-    },
-    {
-      dataField: 'file_format',
-      header: 'Format',
-    },
-    {
-      dataField: 'file_size',
-      header: 'Size',
-      // set formatBytes to true to display file size (in bytes) in a more human readable format
-      formatBytes: true,
-    },
-    {
-      dataField: 'subject_id',
-      header: 'Case ID',
-    },
-    {
-      dataField: 'study_code',
-      header: 'Study Code',
-    },
-    {
-      dataField: 'file_id',
-      header: 'UUID',
-      display: false,
-    },
-    {
-      dataField: 'md5sum',
-      header: 'Md5Sum',
-      display: false,
-    },
-  ],
-};
-
 // --------------- GraphQL query - Retrieve selected cases info --------------
 export const GET_MY_CART_DATA_QUERY = gql`
 query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name", $sort_direction:String="asc") {
@@ -115,3 +57,76 @@ query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $orde
         md5sum
     }
 }`;
+
+// --------------- File table configuration --------------
+
+export const table = {
+  dataField: 'filesInList',
+  // Value must be one of the 'dataField's in "columns"
+  defaultSortField: 'file_name',
+  // 'asc' or 'desc'
+  api: GET_MY_CART_DATA_QUERY,
+  defaultSortDirection: 'asc',
+  paginationAPIField: 'filesInList',
+  tableDownloadCSV: customMyFilesTabDownloadCSV,
+  columns: [
+    {
+      dataField: 'file_name',
+      header: 'File Name',
+      display: true,
+    },
+    {
+      dataField: 'file_type',
+      header: 'File Type',
+      display: true,
+    },
+    {
+      dataField: 'association',
+      header: 'Association',
+      display: true,
+    },
+    {
+      dataField: 'file_description',
+      header: 'Description',
+      display: true,
+    },
+    {
+      dataField: 'file_format',
+      header: 'Format',
+    },
+    {
+      dataField: 'file_size',
+      header: 'Size',
+      // set formatBytes to true to display file size (in bytes) in a more human readable format
+      formatBytes: true,
+      display: true,
+    },
+    {
+      dataField: 'subject_id',
+      header: 'Case ID',
+      display: true,
+    },
+    {
+      dataField: 'study_code',
+      header: 'Study Code',
+      display: true,
+    },
+    {
+      dataField: 'file_id',
+      header: 'UUID',
+      display: false,
+    },
+    {
+      dataField: 'md5sum',
+      header: 'Md5Sum',
+      display: false,
+    },
+    {
+      cellType: cellTypes.DELETE,
+      display: true,
+    },
+  ],
+  tableMsg: {
+    noMatch: 'No Matching Records Found',
+  },
+};

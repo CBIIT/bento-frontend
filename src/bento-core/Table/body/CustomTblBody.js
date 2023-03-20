@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import {
   TableBody,
   TableRow,
-  Checkbox,
   ThemeProvider,
   createTheme,
-  TableCell,
 } from '@material-ui/core';
-import clsx from 'clsx';
 import CustomBodyCell from './CustomCell';
 import { getClsName, tableCls } from '../util/ClassNames';
 import defaultTheme from './DefaultThemConfig';
+import { cellTypes } from '../util/Types';
+import CheckboxView from './CheckBoxView';
+import DeleteCellView from './DeleteCellView';
 
 const CustomTableBody = ({
   rows = [],
@@ -29,23 +29,36 @@ const CustomTableBody = ({
         {rows
           .map((row) => (
             <TableRow className={rootClsName}>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  className={clsx({
-                    [`${rootClsName}${tableCls.CHECKBOX_ACTIVE}`]: row.isChecked,
-                  })}
-                  disableRipple
-                  onClick={(event) => onRowSelectChange(event, row)}
-                  checked={row.isChecked}
-                />
-              </TableCell>
-              {columns.map((column) => (
-                <CustomBodyCell
-                  column={column}
-                  row={row}
-                  rootClsName={rootClsName}
-                />
-              ))}
+              {
+                columns.map((column) => {
+                  const { cellType } = column;
+                  switch (cellType) {
+                    case cellTypes.CHECKBOX:
+                      return (
+                        <CheckboxView
+                          rootClsName={rootClsName}
+                          row={row}
+                          onRowSelectChange={onRowSelectChange}
+                        />
+                      );
+                    case cellTypes.DELETE:
+                      return (
+                        <DeleteCellView
+                          row={row}
+                          column={column}
+                        />
+                      );
+                    default:
+                      return (
+                        <CustomBodyCell
+                          column={column}
+                          row={row}
+                          rootClsName={rootClsName}
+                        />
+                      );
+                  }
+                })
+              }
             </TableRow>
           ))}
       </TableBody>

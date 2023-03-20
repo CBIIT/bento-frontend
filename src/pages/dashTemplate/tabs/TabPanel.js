@@ -51,6 +51,7 @@ const TabView = (props) => {
     columns: configColumn(config.columns),
     count: dashboardStats[config.count],
     selectedRows: [],
+    enableRowSelection: config.enableRowSelection,
     tableMsg: config.tableMsg,
     paginationAPIField: config.paginationAPIField,
     sortBy: config.defaultSortField,
@@ -62,21 +63,25 @@ const TabView = (props) => {
   return (
     <TableContextProvider>
       <Wrapper
-        headerConfig={configWrapper(config, headerConfig)}
-        footerConfig={footerConfig}
+        wrapConfig={configWrapper(config, headerConfig)}
         customTheme={customTheme}
         classes={classes}
         section={config.name}
-      >
-        <TableView
-          initState={initTblState}
-          viewConfig={tableViewConfig}
-          themeConfig={themeConfig}
-          activeFilters={activeFilters}
-          totalRowCount={dashboardStats[config.count]}
-          activeTab={activeTab}
-        />
-      </Wrapper>
+      />
+      <TableView
+        initState={initTblState}
+        viewConfig={tableViewConfig}
+        themeConfig={themeConfig}
+        queryVariables={activeFilters}
+        totalRowCount={dashboardStats[config.count]}
+        activeTab={activeTab}
+      />
+      <Wrapper
+        wrapConfig={footerConfig}
+        customTheme={customTheme}
+        classes={classes}
+        section={config.name}
+      />
     </TableContextProvider>
   );
 };

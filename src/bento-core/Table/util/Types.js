@@ -1,6 +1,9 @@
 export const cellTypes = {
   CUSTOM_ELEM: 'CUSTOM_ELEM',
   LINK: 'LINK',
+  DISPLAY: 'DISPLAY',
+  CHECKBOX: 'CHECKBOX',
+  DELETE: 'DELETE',
   DEFAULT: 'DEFAULT',
 };
 

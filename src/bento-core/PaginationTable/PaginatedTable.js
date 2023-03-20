@@ -11,19 +11,15 @@ import {
 import reducer from './state/Reducer';
 import { TableContext } from './ContextProvider';
 
-const PaginatedTable = (props) => {
-  /**
-  * initialize state for useReducer
-  * @param {*} initailState
-  * @returns reducer state
-  */
-  const {
-    activeFilters = {},
-    themeConfig = {},
-    totalRowCount,
-    initState,
-  } = props;
-
+const PaginatedTable = ({
+  queryVariables = {},
+  viewConfig,
+  themeConfig = {},
+  totalRowCount = 0,
+  initState,
+  activeTab = true,
+}) => {
+  console.log(queryVariables);
   /**
   * use context to provide table state to wrapper component
   */
@@ -45,6 +41,8 @@ const PaginatedTable = (props) => {
   */
   useEffect(() => {
     const { page, rowsPerPage } = table;
+
+    // validate table state - curr rowCount should be less than total row count after filter
     if (totalRowCount < page * rowsPerPage) {
       const currentRows = page * rowsPerPage;
       const newPage = Math.floor(totalRowCount / currentRows);
@@ -55,7 +53,7 @@ const PaginatedTable = (props) => {
     } else {
       dispatch(setTotalRowCount(totalRowCount));
     }
-  }, [activeFilters, totalRowCount]);
+  }, [totalRowCount]);
 
   const handleChangeRowsPerPage = (event) => {
     const noOfRows = parseInt(event.target.value, 10);
@@ -112,15 +110,15 @@ const PaginatedTable = (props) => {
   /**
   * prevent loading data except for active tab
   */
-  const { activeTab } = props;
   if (!activeTab) {
     return null;
   }
-
   return (
     <>
       <TableView
-        {...props}
+        queryVariables={queryVariables}
+        totalRowCount={totalRowCount}
+        viewConfig={viewConfig}
         table={table}
         onRowsPerPageChange={handleChangeRowsPerPage}
         onPageChange={handleChangePage}

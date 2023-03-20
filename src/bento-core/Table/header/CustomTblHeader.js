@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import {
-  TableCell,
   TableHead,
   TableRow,
   withStyles,
-  Checkbox,
-  FormControlLabel,
   createTheme,
   ThemeProvider,
 } from '@material-ui/core';
 import HeaderCell from './CustomCell';
 import { getClsName, tableCls } from '../util/ClassNames';
 import defaultTheme from './DefaultThemConfig';
+import { cellTypes } from '../util/Types';
+import CheckboxView from './CheckBoxView';
+import DeleteCellView from './DeleteCellView';
 
 const CustomTableHeader = ({
   classes,
@@ -32,7 +31,6 @@ const CustomTableHeader = ({
   } = table;
   const Ids = rows.map((row) => row[table.dataKey]);
   const includeSelectedIds = Ids.some((id) => selectedRows.includes(id));
-
   /**
   * create root class name based on table info
   * themeprovider to customize style
@@ -43,38 +41,39 @@ const CustomTableHeader = ({
     <ThemeProvider theme={themeConfig}>
       <TableHead className={rootClsName}>
         <TableRow className={`${rootClsName}${tableCls.ROW}`}>
-          <TableCell padding="checkbox">
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  className={clsx(`${rootClsName}${tableCls.CHECKBOX}`, {
-                    [`${rootClsName}${tableCls.CHECKBOX_ACTIVE}`]: includeSelectedIds,
-                    [`${rootClsName}${tableCls.CHECKBOX_INACTIVE}`]: !includeSelectedIds,
-                  })}
-                  classes={{
-                    root: classes.checkboxRoot,
-                    checked: classes.checked,
-                    disabled: classes.disabled,
-                  }}
-                  color="primary"
-                  indeterminate={includeSelectedIds}
-                  checked={includeSelectedIds}
-                  onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
-                />
-              )}
-            />
-          </TableCell>
           {
-            columns.map((column) => (
-              <HeaderCell
-                rootClsName={rootClsName}
-                components={components}
-                column={column}
-                sortBy={sortBy}
-                sortOrder={sortOrder}
-                toggleSort={() => sortByColumn(column.dataField, sortOrder)}
-              />
-            ))
+            columns.map((column) => {
+              const { cellType } = column;
+              switch (cellType) {
+                case cellTypes.CHECKBOX:
+                  return (
+                    <CheckboxView
+                      classes={classes}
+                      rootClsName={rootClsName}
+                      includeSelectedIds={includeSelectedIds}
+                      toggleSelectAll={toggleSelectAll}
+                      Ids={Ids}
+                    />
+                  );
+                case cellTypes.DELETE:
+                  return (
+                    <DeleteCellView
+                      openDialogBox={() => console.log('delete')}
+                    />
+                  );
+                default:
+                  return (
+                    <HeaderCell
+                      rootClsName={rootClsName}
+                      components={components}
+                      column={column}
+                      sortBy={sortBy}
+                      sortOrder={sortOrder}
+                      toggleSort={() => sortByColumn(column.dataField, sortOrder)}
+                    />
+                  );
+              }
+            })
           }
         </TableRow>
       </TableHead>

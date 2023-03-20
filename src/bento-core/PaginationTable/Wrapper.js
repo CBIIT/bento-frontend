@@ -17,6 +17,7 @@ export const types = {
   TEXT_INPUT: 'TEXT_INPUT',
   CUSTOM_ELEM: 'CUSTEM_ELEM',
   LINK: 'LINK',
+  ICON: 'ICON',
 };
 
 export const btnTypes = {
@@ -164,8 +165,7 @@ const CustomLayout = (props) => {
 const CustomWrapper = (props) => {
   const {
     children,
-    headerConfig = [],
-    footerConfig = [],
+    wrapConfig = [],
     customTheme,
     section,
     classes,
@@ -174,19 +174,14 @@ const CustomWrapper = (props) => {
   return (
     <>
       <CustomLayout
-        configs={headerConfig}
+        configs={wrapConfig}
         customTheme={customTheme}
         section={section}
         classes={classes}
         activeFilters={activeFilters}
-      />
-      {children}
-      <CustomLayout
-        configs={footerConfig}
-        customTheme={customTheme}
-        section={section}
-        classes={classes}
-      />
+      >
+        {children}
+      </CustomLayout>
     </>
   );
 };

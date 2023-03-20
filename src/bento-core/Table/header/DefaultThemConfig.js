@@ -40,6 +40,25 @@ const defaultTheme = () => ({
       borderTop: '3px solid #42779a',
     },
   },
+  MuiTypography: {
+    root: {
+      '&.del_all_row_text': {
+        lineHeight: '37px',
+        float: 'left',
+        color: '#A61401',
+        fontSize: '11pt',
+        textAlign: 'center',
+        fontFamily: 'Lato Regular, Raleway, sans-serif',
+      },
+    },
+  },
+  MuiSvgIcon: {
+    root: {
+      '&.del_all_row_btn_icon': {
+        color: '#A61401',
+      },
+    },
+  },
 });
 
 export default defaultTheme;
