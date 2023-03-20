@@ -17,7 +17,7 @@ const CustomCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />);
 
 const UserDetails = ({
-  handleCheckbox,
+  handleCheckbox = () => {},
   classes,
   userInfo,
   userRole,
