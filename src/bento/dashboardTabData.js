@@ -1,5 +1,6 @@
 /* eslint-disable */
 import gql from 'graphql-tag';
+import { cellTypes, headerTypes } from '../bento-core/Table/util/Types';
 import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 
 // --------------- Tooltip configuration --------------
@@ -9,6 +10,13 @@ export const tooltipContent = {
   0: 'Click button to add selected files associated with the selected case(s).',
   1: 'Click button to add selected files associated with the selected sample(s).',
   2: 'Click button to add selected files.',
+  Cases: 'Click button to add selected files associated with the selected case(s).',
+  Samples: 'Click button to add selected files associated with the selected sample(s).',
+  Files: 'Click button to add selected files.',
+  arrow: true,
+  styles: {
+    border: '#03A383 1px solid',
+  }
 };
 
 // --------------- Dahboard Table external link configuration --------------
@@ -18,378 +26,6 @@ export const externalLinkIcon = {
   alt: 'External link icon',
 };
 
-// --------------- Tabs Table configuration --------------
-export const tabContainers = [
-  {
-
-    name: 'Cases',
-    dataField: 'dataCase',
-    api: 'GET_CASES_OVERVIEW_QUERY',
-    paginationAPIField: 'subjectOverview',
-    count: 'numberOfSubjects',
-    dataKey: 'subject_id',
-    defaultSortField: 'subject_id',
-    defaultSortDirection: 'asc',
-    buttonText: 'Add Selected Files',
-    saveButtonDefaultStyle: {
-      color: '#fff',
-      backgroundColor: '#09A175',
-      opacity: '1',
-      border: '0px',
-      cursor: 'pointer',
-    },
-    ActiveSaveButtonDefaultStyle: {
-      cursor: 'pointer',
-      opacity: 'unset',
-      border: 'unset',
-    },
-    DeactiveSaveButtonDefaultStyle: {
-      opacity: '0.3',
-      cursor: 'auto',
-    },
-    columns: [
-      {
-        dataField: 'subject_id',
-        header: 'Case ID',
-        sort: 'asc',
-        link: '/case/{subject_id}',
-        primary: true,
-        display: true,
-      },
-      {
-        dataField: 'program',
-        header: 'Program Code',
-        sort: 'asc',
-        link: '/program/{program_id}',
-        display: true,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'study_acronym',
-        header: 'Arm',
-        sort: 'asc',
-        link: '/arm/{study_acronym}',
-        display: true,
-      },
-      {
-        dataField: 'diagnosis',
-        header: 'Diagnosis',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'recurrence_score',
-        header: 'Recurrence Score',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'tumor_size',
-        header: 'Tumor Size (cm)',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'er_status',
-        header: 'ER Status',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'pr_status',
-        header: 'PR Status',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'age_at_index',
-        header: 'Age (years)',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'survival_time',
-        header: 'Survival (days)',
-        sort: 'asc',
-        display: true,
-      },
-    ],
-    id: 'case_tab',
-    onRowsSelect: 'type1',
-    disableRowSelection: 'type1',
-    tableID: 'case_tab_table',
-    selectableRows: true,
-    tableDownloadCSV: customCasesTabDownloadCSV,
-    tabIndex: '0',
-    downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
-  },
-  {
-    name: 'Samples',
-    dataField: 'dataSample',
-    api: 'GET_SAMPLES_OVERVIEW_QUERY',
-    count: 'numberOfSamples',
-    paginationAPIField: 'sampleOverview',
-    dataKey: 'sample_id',
-    defaultSortField: 'sample_id',
-    defaultSortDirection: 'asc',
-    saveButtonDefaultStyle: {
-      color: '#fff',
-      backgroundColor: '#00AEEF',
-      opacity: '1',
-      border: '0px',
-      cursor: 'pointer',
-    },
-    DeactiveSaveButtonDefaultStyle: {
-      opacity: '0.3',
-      cursor: 'auto',
-    },
-    ActiveSaveButtonDefaultStyle: {
-      cursor: 'pointer',
-      opacity: 'unset',
-      border: 'unset',
-    },
-
-    columns: [
-      {
-        dataField: 'sample_id',
-        header: 'Sample ID',
-        sort: 'asc',
-        primary: true,
-        display: true,
-      },
-      {
-        dataField: 'subject_id',
-        header: 'Case ID',
-        sort: 'asc',
-        link: '/case/{subject_id}',
-        display: true,
-      },
-      {
-        dataField: 'program',
-        header: 'Program Code',
-        sort: 'asc',
-        link: '/program/{program_id}',
-        display: true,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        sort: 'asc',
-        display: false,
-      },
-      {
-        dataField: 'arm',
-        header: 'Arm',
-        sort: 'asc',
-        link: '/arm/{arm}',
-        display: true,
-      },
-      {
-        dataField: 'diagnosis',
-        header: 'Diagnosis',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'tissue_type',
-        header: 'Tissue Type',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'tissue_composition',
-        header: 'Tissue Composition',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'sample_anatomic_site',
-        header: 'Sample Anatomic Site',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'sample_procurement_method',
-        header: 'Sample Procurement Method',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'platform',
-        header: 'platform',
-        sort: 'asc',
-        display: true,
-      },
-    ],
-    id: 'sample_tab',
-    onRowsSelect: 'type3',
-    disableRowSelection: 'type2',
-    buttonText: 'Add Selected Files',
-    tableID: 'sample_tab_table',
-    selectableRows: true,
-    tabIndex: '1',
-    tableDownloadCSV: customSamplesTabDownloadCSV,
-    downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
-  },
-  {
-    name: 'Files',
-    dataField: 'dataFile',
-    api: 'GET_FILES_OVERVIEW_QUERY',
-    paginationAPIField: 'fileOverview',
-    defaultSortField: 'file_name',
-    defaultSortDirection: 'asc',
-    count: 'numberOfFiles',
-    buttonText: 'Add Selected Files',
-    dataKey: 'file_name',
-    saveButtonDefaultStyle: {
-      color: '#fff',
-      backgroundColor: '#DC2FDA',
-      opacity: '1',
-      border: '0px',
-      cursor: 'pointer',
-    },
-    DeactiveSaveButtonDefaultStyle: {
-      opacity: '0.3',
-      cursor: 'auto',
-    },
-    ActiveSaveButtonDefaultStyle: {
-      cursor: 'pointer',
-      opacity: 'unset',
-      border: 'unset',
-    },
-    columns: [
-      {
-        dataField: 'file_name',
-        header: 'File Name',
-        sort: 'asc',
-        primary: true,
-        display: true,
-      },
-      {
-        dataField: 'file_id',
-        header: 'File ID',
-        sort: 'asc',
-        display: false,
-      },
-      {
-        dataField: 'association',
-        header: 'Association',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'file_description',
-        header: 'Description',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'file_format',
-        header: 'File Format',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'file_size',
-        header: 'Size',
-        sort: 'asc',
-        display: true,
-        formatBytes: true,
-      },
-      {
-        dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon
-        header: 'Access',
-        sort: 'asc',
-        display: true,
-        downloadDocument: true, // To indicate that column is document donwload
-        documentDownloadProps: {
-          // Max file size needs to bin Bytes to seperate two support file preview and download
-          maxFileSize: 315,
-          // Tool top text for Unauthenticated users
-          toolTipTextUnauthenticated: 'Controlled access file',
-          // Tool top text for file download
-          toolTipTextFileDownload: 'Download a copy of this file',
-          // Tool top text for file preview
-          toolTipTextFilePreview: 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
-          // datafield where file file column exists in the table
-          fileSizeColumn: 'file_size',
-          // datafield where file file id exists in the table which is used to get file location
-          fileLocationColumn: 'file_id',
-          // datafield where file format exists in the table
-          fileFormatColumn: 'file_format',
-          // datafield where file case id exists in the table which is used to get file information
-          caseIdColumn: 'subject_id',
-          // Unauthenticated lock icon
-          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Access_Lock.svg',
-          // file download icon
-          iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
-          // file preview icon
-          iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
-          // file viewer icon JBrowse
-          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
-        },
-      },
-      {
-        dataField: 'program',
-        header: 'Program Code',
-        sort: 'asc',
-        link: '/program/{program_id}',
-        display: true,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        sort: 'asc',
-        display: false,
-      },
-      {
-        dataField: 'arm',
-        header: 'Arm',
-        sort: 'asc',
-        link: '/arm/{arm}',
-        display: true,
-      },
-      {
-        dataField: 'subject_id',
-        header: 'Case ID',
-        sort: 'asc',
-        link: '/case/{subject_id}',
-        display: true,
-      },
-      {
-        dataField: 'sample_id',
-        header: 'Sample ID',
-        sort: 'asc',
-        display: true,
-      },
-      {
-        dataField: 'diagnosis',
-        header: 'Diagnosis',
-        sort: 'asc',
-        display: true,
-      },
-    ],
-    id: 'file_tab',
-    onRowsSelect: 'type2',
-    disableRowSelection: 'type3',
-    tableID: 'file_tab_table',
-    selectableRows: true,
-    tabIndex: '2',
-    tableDownloadCSV: customFilesTabDownloadCSV,
-    downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
-  },
-];
 
 // --------------- Tabs Header Data configuration --------------
 export const tabs = [
@@ -1089,7 +725,136 @@ query fileOverview(
 }
 `;
 
+export const GET_FILES_OVERVIEW_STRING_QUERY =`
+query fileOverview(
+    $subject_ids: [String],
+    $file_ids: [String],
+    $programs: [String] ,
+    $studies: [String] ,
+    $diagnoses: [String] ,
+    $rc_scores: [String] ,
+    $tumor_sizes: [String] ,
+    $chemo_regimen: [String] ,
+    $tumor_grades: [String] ,
+    $er_status: [String] ,
+    $pr_status: [String] ,
+    $endo_therapies: [String] ,
+    $meno_status: [String] ,
+    $tissue_type: [String],
+    $composition: [String],
+    $association: [String],
+    $file_type: [String],
+    $age_at_index: [Float],
+    $first: Int, 
+    $offset: Int, 
+    $order_by:  String
+    $sort_direction: String ){
+    fileOverview(
+        subject_ids: $subject_ids,
+        file_ids: $file_ids,
+        programs: $programs,
+        studies: $studies,
+        diagnoses: $diagnoses,
+        rc_scores: $rc_scores,
+        tumor_sizes: $tumor_sizes,
+        chemo_regimen: $chemo_regimen,
+        tumor_grades: $tumor_grades,
+        er_status: $er_status,
+        pr_status: $pr_status,
+        endo_therapies: $endo_therapies,
+        meno_status: $meno_status,
+        tissue_type: $tissue_type,
+        composition: $composition,
+        association: $association,       
+        file_type: $file_type,
+        age_at_index: $age_at_index,
+        first: $first, 
+        offset: $offset, 
+        order_by: $order_by,
+        sort_direction: $sort_direction
+    ){
+        file_id,
+        program_id,
+        file_name,
+        association,
+        file_description,
+        file_format,
+        file_size,
+        program,
+        arm,
+        acl,
+        subject_id,
+        sample_id,
+        diagnosis,
+    }
+}
+`;
+
 export const GET_SAMPLES_OVERVIEW_QUERY = gql`
+query sampleOverview(
+    $subject_ids: [String],
+    $sample_ids: [String],
+    $programs: [String] ,
+    $studies: [String] ,
+    $diagnoses: [String] ,
+    $rc_scores: [String] ,
+    $tumor_sizes: [String] ,
+    $chemo_regimen: [String] ,
+    $tumor_grades: [String] ,
+    $er_status: [String] ,
+    $pr_status: [String] ,
+    $endo_therapies: [String] ,
+    $meno_status: [String] ,
+    $tissue_type: [String],
+    $composition: [String],
+    $association: [String],
+    $file_type: [String],
+    $age_at_index: [Float],
+    $first: Int, 
+    $offset: Int, 
+    $order_by:  String
+    $sort_direction: String ){
+    sampleOverview(
+        subject_ids: $subject_ids,
+        sample_ids: $sample_ids,
+        programs: $programs,
+        studies: $studies,
+        diagnoses: $diagnoses,
+        rc_scores: $rc_scores,
+        tumor_sizes: $tumor_sizes,
+        chemo_regimen: $chemo_regimen,
+        tumor_grades: $tumor_grades,
+        er_status: $er_status,
+        pr_status: $pr_status,
+        endo_therapies: $endo_therapies,
+        meno_status: $meno_status,
+        tissue_type: $tissue_type,
+        composition: $composition,
+        association: $association,       
+        file_type: $file_type,
+        age_at_index: $age_at_index,
+        first: $first, 
+        offset: $offset, 
+        order_by: $order_by,
+        sort_direction: $sort_direction
+    ){
+        sample_id,
+        subject_id,
+        program,
+        program_id,
+        arm,
+        diagnosis,
+        tissue_type,
+        tissue_composition,
+        sample_anatomic_site,
+        sample_procurement_method,
+        platform,
+        files 
+    }
+}
+`;
+
+export const GET_SAMPLES_OVERVIEW_STRING_QUERY =`
 query sampleOverview(
     $subject_ids: [String],
     $sample_ids: [String],
@@ -1439,4 +1204,480 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
           file_id
       }
   }`;
+
+// --------------- Tabs Table configuration --------------
+export const tabContainers = [
+  {
+
+    name: 'Cases',
+    dataField: 'dataCase',
+    api: GET_CASES_OVERVIEW_QUERY,
+    paginationAPIField: 'subjectOverview',
+    count: 'numberOfSubjects',
+    dataKey: 'subject_id',
+    defaultSortField: 'subject_id',
+    defaultSortDirection: 'asc',
+    buttonText: 'Add Selected Files',
+    saveButtonDefaultStyle: {
+      color: '#fff',
+      backgroundColor: '#09A175',
+      opacity: '1',
+      border: '0px',
+      cursor: 'pointer',
+    },
+    ActiveSaveButtonDefaultStyle: {
+      cursor: 'pointer',
+      opacity: 'unset',
+      border: 'unset',
+    },
+    DeactiveSaveButtonDefaultStyle: {
+      opacity: '0.3',
+      cursor: 'auto',
+    },
+    columns: [
+      {
+        dataField: 'subject_id',
+        header: 'Case ID',
+        sort: 'asc',
+        link: '/case/{subject_id}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/case',
+          pathParams: ['subject_id'],
+        },
+        primary: true,
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'program',
+        header: 'Program Code',
+        sort: 'asc',
+        link: '/program/{program_id}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/program',
+          pathParams: ['program_id'],
+        },
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'program_id',
+        header: 'Program ID',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'study_acronym',
+        header: 'Arm',
+        sort: 'asc',
+        link: '/arm/{study_acronym}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/arm',
+          pathParams: ['study_acronym'],
+        },
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'diagnosis',
+        header: 'Diagnosis',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'recurrence_score',
+        header: 'Recurrence Score',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'tumor_size',
+        header: 'Tumor Size (cm)',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'er_status',
+        header: 'ER Status',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'pr_status',
+        header: 'PR Status',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'age_at_index',
+        header: 'Age (years)',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'survival_time',
+        header: 'Survival (days)',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+    ],
+    id: 'case_tab',
+    onRowsSelect: 'type1',
+    disableRowSelection: 'type1',
+    tableID: 'case_tab_table',
+    selectableRows: true,
+    tableDownloadCSV: customCasesTabDownloadCSV,
+    tabIndex: '0',
+    downloadFileName: 'Bento_Dashboard_cases_download',
+    headerPagination: true,
+    footerPagination: true,
+    tableMsg: {
+      noMatch: 'No Matching Records Found',
+    },
+    addAddFileAPI: GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
+    addSelectedIdAPI: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
+  },
+  {
+    name: 'Samples',
+    dataField: 'dataSample',
+    api: GET_SAMPLES_OVERVIEW_QUERY,
+    count: 'numberOfSamples',
+    paginationAPIField: 'sampleOverview',
+    dataKey: 'sample_id',
+    defaultSortField: 'sample_id',
+    defaultSortDirection: 'asc',
+    saveButtonDefaultStyle: {
+      color: '#fff',
+      backgroundColor: '#00AEEF',
+      opacity: '1',
+      border: '0px',
+      cursor: 'pointer',
+    },
+    DeactiveSaveButtonDefaultStyle: {
+      opacity: '0.3',
+      cursor: 'auto',
+    },
+    ActiveSaveButtonDefaultStyle: {
+      cursor: 'pointer',
+      opacity: 'unset',
+      border: 'unset',
+    },
+
+    columns: [
+      {
+        dataField: 'sample_id',
+        header: 'Sample ID',
+        sort: 'asc',
+        primary: true,
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'subject_id',
+        header: 'Case ID',
+        sort: 'asc',
+        link: '/case/{subject_id}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/case',
+          pathParams: ['subject_id'],
+        },
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'program',
+        header: 'Program Code',
+        sort: 'asc',
+        link: '/program/{program_id}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/program',
+          pathParams: ['program_id'],
+        },
+        display: true,
+      },
+      {
+        dataField: 'program_id',
+        header: 'Program ID',
+        sort: 'asc',
+        display: false,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'arm',
+        header: 'Arm',
+        sort: 'asc',
+        link: '/arm/{arm}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/arm',
+          pathParams: ['study_acronym'],
+        },
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'diagnosis',
+        header: 'Diagnosis',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'tissue_type',
+        header: 'Tissue Type',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'tissue_composition',
+        header: 'Tissue Composition',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'sample_anatomic_site',
+        header: 'Sample Anatomic Site',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'sample_procurement_method',
+        header: 'Sample Procurement Method',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'platform',
+        header: 'platform',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+    ],
+    id: 'sample_tab',
+    onRowsSelect: 'type3',
+    disableRowSelection: 'type2',
+    buttonText: 'Add Selected Files',
+    tableID: 'sample_tab_table',
+    selectableRows: true,
+    tabIndex: '1',
+    tableDownloadCSV: customSamplesTabDownloadCSV,
+    downloadFileName: 'Bento_Dashboard_cases_download',
+    headerPagination: true,
+    footerPagination: true,
+    tableMsg: {
+      noMatch: 'No Matching Records Found',
+    },
+    addAddFileAPI: GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
+    addSelectedIdAPI: GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
+  },
+  {
+    name: 'Files',
+    dataField: 'dataFile',
+    api: GET_FILES_OVERVIEW_QUERY,
+    paginationAPIField: 'fileOverview',
+    defaultSortField: 'file_name',
+    defaultSortDirection: 'asc',
+    count: 'numberOfFiles',
+    buttonText: 'Add Selected Files',
+    dataKey: 'file_name',
+    saveButtonDefaultStyle: {
+      color: '#fff',
+      backgroundColor: '#DC2FDA',
+      opacity: '1',
+      border: '0px',
+      cursor: 'pointer',
+    },
+    DeactiveSaveButtonDefaultStyle: {
+      opacity: '0.3',
+      cursor: 'auto',
+    },
+    ActiveSaveButtonDefaultStyle: {
+      cursor: 'pointer',
+      opacity: 'unset',
+      border: 'unset',
+    },
+    columns: [
+      {
+        dataField: 'file_name',
+        header: 'File Name',
+        sort: 'asc',
+        primary: true,
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'file_id',
+        header: 'File ID',
+        sort: 'asc',
+        display: false,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'association',
+        header: 'Association',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'file_description',
+        header: 'Description',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'file_format',
+        header: 'File Format',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'file_size',
+        header: 'Size',
+        sort: 'asc',
+        display: true,
+        formatBytes: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon
+        header: 'Access',
+        sort: 'asc',
+        display: true,
+        cellType: cellTypes.CUSTOM_ELEM,
+        downloadDocument: true, // To indicate that column is document donwload
+        documentDownloadProps: {
+          // Max file size needs to bin Bytes to seperate two support file preview and download
+          maxFileSize: 315,
+          // Tool top text for Unauthenticated users
+          toolTipTextUnauthenticated: 'Controlled access file',
+          // Tool top text for file download
+          toolTipTextFileDownload: 'Download a copy of this file',
+          // Tool top text for file preview
+          toolTipTextFilePreview: 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
+          // datafield where file file column exists in the table
+          fileSizeColumn: 'file_size',
+          // datafield where file file id exists in the table which is used to get file location
+          fileLocationColumn: 'file_id',
+          // datafield where file format exists in the table
+          fileFormatColumn: 'file_format',
+          // datafield where file case id exists in the table which is used to get file information
+          caseIdColumn: 'subject_id',
+          // Unauthenticated lock icon
+          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Access_Lock.svg',
+          // file download icon
+          iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
+          // file preview icon
+          iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
+          // file viewer icon JBrowse
+          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
+        },
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'program',
+        header: 'Program Code',
+        sort: 'asc',
+        link: '/program/{program_id}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/program',
+          pathParams: ['program_id'],
+        },
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'program_id',
+        header: 'Program ID',
+        sort: 'asc',
+        display: false,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'arm',
+        header: 'Arm',
+        sort: 'asc',
+        link: '/arm/{arm}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/arm',
+          pathParams: ['study_acronym'],
+        },
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'subject_id',
+        header: 'Case ID',
+        sort: 'asc',
+        link: '/case/{subject_id}',
+        cellType: cellTypes.LINK,
+        linkAttr : {
+          rootPath: '/case',
+          pathParams: ['subject_id'],
+        },
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'sample_id',
+        header: 'Sample ID',
+        sort: 'asc',
+        display: true,
+        tooltipText: 'sort',
+      },
+      {
+        dataField: 'diagnosis',
+        header: 'Diagnosis',
+        sort: 'asc',
+        display: false,
+        tooltipText: 'sort',
+      },
+    ],
+    id: 'file_tab',
+    onRowsSelect: 'type2',
+    disableRowSelection: 'type3',
+    tableID: 'file_tab_table',
+    selectableRows: true,
+    tabIndex: '2',
+    tableDownloadCSV: customFilesTabDownloadCSV,
+    downloadFileName: 'Bento_Dashboard_cases_download',
+    headerPagination: true,
+    footerPagination: true,
+    tableMsg: {
+      noMatch: 'No Matching Records Found',
+    },
+    addAddFileAPI: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
+    addSelectedIdAPI: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
+  },
+];
+
+/**
+* table view config
+* hide or display pagination on header
+*/
+export const tableViewConfig = {
+  displayHeaderPg: true,
+};
   

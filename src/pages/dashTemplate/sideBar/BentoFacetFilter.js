@@ -16,6 +16,7 @@ import {
 import {
   ArrowDropDown as ArrowDropDownIcon,
 } from '@material-ui/icons';
+import clsx from 'clsx';
 import styles from './BentoFacetFilterStyle';
 import FacetFilter from '../../../bento-core/FacetFilter/FacetFilterController';
 import { facetsConfig, facetSectionVariables } from '../../../bento/dashTemplate';
@@ -28,9 +29,9 @@ const CustomExpansionPanelSummary = withStyles({
   root: {
     marginBottom: -1,
     minHeight: 48,
-    paddingLeft: 14,
+    paddingLeft: 4,
     paddingRight: 14,
-    paddingTop: 6,
+    paddingTop: 0,
     '&$expanded': {
       minHeight: 48,
     },
@@ -104,7 +105,7 @@ const BentoFacetFilter = ({
   * 1. Config local search input for Case
   * 2. Facet Section Name
   */
-  const CustomFacetView = ({ facet }) => {
+  const CustomFacetView = ({ facet, facetClasses }) => {
     return (
       <>
         <CustomExpansionPanelSummary
@@ -116,7 +117,10 @@ const BentoFacetFilter = ({
           )}
           className={classes.customExpansionPanelSummaryRoot}
         >
-          <div className={classes.sectionSummaryText}>
+          <div className={
+            clsx(classes.sectionSummaryText, classes[facetClasses])
+            }
+          >
             {facet.label}
           </div>
         </CustomExpansionPanelSummary>
