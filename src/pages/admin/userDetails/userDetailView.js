@@ -64,6 +64,7 @@ function getColumnInfo(accessType, approvedRenderer, removeRenderer) {
 }
 
 const UserDetailView = ({ classes, data, accessType = VIEW }) => {
+  // Separate userRole state so that access doesn't change until user changes are submitted
   const [userInfo, setUserInfo] = useState(data.getUser);
   const [userRole, setUserRole] = useState(userInfo.role.toLowerCase());
   const [seletedArms, setSeletedArms] = useState([]);
