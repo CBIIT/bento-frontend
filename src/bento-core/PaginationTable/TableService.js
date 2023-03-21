@@ -87,7 +87,7 @@ export const addAllFiles = (activeFilters, query) => {
       .then((response) => response.data);
     return result;
   }
-  getData().then((result) => console.log(result));
+  getData(); // .then((result) => console.log(result));
 };
 
 export const addSelectedFiles = (selectedIds, query) => {
@@ -99,5 +99,5 @@ export const addSelectedFiles = (selectedIds, query) => {
       .then((response) => response.data);
     return result;
   }
-  getData().then((result) => console.log(result));
+  getData(); // .then((result) => console.log(result));
 };
