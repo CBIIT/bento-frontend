@@ -121,6 +121,75 @@ export const table = {
       header: 'Md5Sum',
       display: false,
     },
+  ],
+  tableMsg: {
+    noMatch: 'No Matching Records Found',
+  },
+};
+
+// --------------- File table configuration --------------
+
+export const tableConfig = {
+  dataField: 'filesInList',
+  // Value must be one of the 'dataField's in "columns"
+  defaultSortField: 'file_name',
+  // 'asc' or 'desc'
+  api: GET_MY_CART_DATA_QUERY,
+  defaultSortDirection: 'asc',
+  paginationAPIField: 'filesInList',
+  tableDownloadCSV: customMyFilesTabDownloadCSV,
+  columns: [
+    {
+      dataField: 'file_name',
+      header: 'File Name',
+      display: true,
+    },
+    {
+      dataField: 'file_type',
+      header: 'File Type',
+      display: true,
+    },
+    {
+      dataField: 'association',
+      header: 'Association',
+      display: true,
+    },
+    {
+      dataField: 'file_description',
+      header: 'Description',
+      display: true,
+    },
+    {
+      dataField: 'file_format',
+      header: 'Format',
+    },
+    {
+      dataField: 'file_size',
+      header: 'Size',
+      // set formatBytes to true to display file size (in bytes) in a more human readable format
+      formatBytes: true,
+      display: true,
+    },
+    {
+      dataField: 'subject_id',
+      header: 'Case ID',
+      display: true,
+    },
+    {
+      dataField: 'study_code',
+      header: 'Study Code',
+      display: true,
+    },
+    {
+      dataField: 'file_id',
+      header: 'UUID',
+      display: false,
+    },
+    {
+      dataField: 'md5sum',
+      header: 'Md5Sum',
+      display: false,
+    },
     {
       cellType: cellTypes.DELETE,
       display: true,

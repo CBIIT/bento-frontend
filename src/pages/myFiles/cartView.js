@@ -23,7 +23,7 @@ const CartView = ({
     page: 0,
   });
 
-  const myFileIds = JSON.parse(localStorage.getItem('CartFileIds'));
+  const myFileIds = JSON.parse(localStorage.getItem('CartFileIds')) || [];
   const variables = {};
   variables.file_ids = myFileIds;
   return (

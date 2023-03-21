@@ -7,11 +7,10 @@ import {
   createTheme,
 } from '@material-ui/core';
 import CustomBodyCell from './CustomCell';
-import { getClsName, tableCls } from '../util/ClassNames';
 import defaultTheme from './DefaultThemConfig';
 import { cellTypes } from '../util/Types';
-import CheckboxView from './CheckBoxView';
-import DeleteCellView from './DeleteCellView';
+import CheckboxView from './components/CheckBoxView';
+import DeleteCellView from './components/DeleteCellView';
 
 const CustomTableBody = ({
   rows = [],
@@ -20,7 +19,6 @@ const CustomTableBody = ({
   customTheme = {},
 }) => {
   const { columns } = table;
-  const rootClsName = getClsName(table.title, `${tableCls.BODY}${tableCls.ROW}`);
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
 
   return (
@@ -28,7 +26,7 @@ const CustomTableBody = ({
       <TableBody>
         {rows
           .map((row) => (
-            <TableRow className={rootClsName}>
+            <TableRow>
               {
                 columns.map((column) => {
                   const { cellType } = column;
@@ -36,7 +34,6 @@ const CustomTableBody = ({
                     case cellTypes.CHECKBOX:
                       return (
                         <CheckboxView
-                          rootClsName={rootClsName}
                           row={row}
                           onRowSelectChange={onRowSelectChange}
                         />
@@ -53,7 +50,6 @@ const CustomTableBody = ({
                         <CustomBodyCell
                           column={column}
                           row={row}
-                          rootClsName={rootClsName}
                         />
                       );
                   }

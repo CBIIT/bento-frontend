@@ -1,5 +1,5 @@
 import React from 'react';
-import { table } from '../../bento/fileCentricCartWorkflowData';
+import { tableConfig } from '../../bento/fileCentricCartWorkflowData';
 import CartView from './cartView';
 
 const CartController = () => {
@@ -7,7 +7,7 @@ const CartController = () => {
   return (
     <>
       <CartView
-        config={table}
+        config={tableConfig}
       />
     </>
   );

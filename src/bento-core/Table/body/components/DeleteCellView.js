@@ -12,12 +12,16 @@ const DeleteCellView = () => {
   return (
     <TableCell
       scope="col"
-      className="delete_all_row"
+      className="delete_row"
     >
       <IconButton
         disableRipple
+        className="del_row_btn"
       >
-        <DeleteOutlineIcon fontSize="small" />
+        <DeleteOutlineIcon
+          className="del_row_btn_icon"
+          fontSize="small"
+        />
       </IconButton>
     </TableCell>
   );

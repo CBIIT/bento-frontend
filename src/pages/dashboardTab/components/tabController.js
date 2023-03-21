@@ -12,7 +12,7 @@ import SuccessOutlinedIcon from '../../../utils/SuccessOutlined';
 import TabThemeProvider from './tabThemeConfig';
 import TabLabel from './tabLabel';
 import {
-  tabs, tooltipContent, tabContainers, tabIndex, externalLinkIcon,
+  tabs, tooltipContent, tabIndex, externalLinkIcon, tabContainersOld,
 } from '../../../bento/dashboardTabData';
 import {
   fetchDataForDashboardTab,
@@ -201,7 +201,7 @@ const tabController = (classes) => {
   ));
 
   // Tab table Generator
-  const TABContainers = tabContainers.map((container) => (
+  const TABContainers = tabContainersOld.map((container) => (
     <TabContainer id={container.id}>
       <TabView
         options={getOptions(container, classes)}
