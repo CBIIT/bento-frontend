@@ -67,9 +67,10 @@ export const footerConfig = [{
 * console log will be remove when myCart page is integrated
 * with bento core paginated table
 */
+// eslint-disable-next-line no-unused-vars
 const addFilesHandler = (query, variables) => {
-  console.log(query);
-  console.log(variables);
+  // console.log(query);
+  // console.log(variables);
 };
 
 export const configWrapper = (tab, configs) => {
