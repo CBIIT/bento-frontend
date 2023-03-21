@@ -6,7 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { bentoHelpEmail } from '../../bento/userLoginData';
-import AlertMessage from '../../components/alertMessage/AlertMessageView';
+import AlertMessage from '../../bento-core/AlertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 import Stats from '../../components/Stats/AllStatsController';
