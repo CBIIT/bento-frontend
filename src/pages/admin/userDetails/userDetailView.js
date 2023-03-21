@@ -11,7 +11,7 @@ import { cn, CustomDataTable } from 'bento-components';
 import UserDetails from '../../../bento-core/Admin';
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
-import AlertMessage from '../../../components/alertMessage/AlertMessageView';
+import AlertMessage from '../../../bento-core/AlertMessage';
 import {
   adminPortalIcon,
   viewPageTitle,
