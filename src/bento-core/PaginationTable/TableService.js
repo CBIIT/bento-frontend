@@ -75,28 +75,3 @@ export const getTableData = ({ queryVariables, table }) => {
   }, [queryVariables, page, rowsPerPage, sortOrder]);
   return { tableData };
 };
-
-export const addAllFiles = (queryVariables, query) => {
-  async function getData() {
-    const queryVariable = { ...queryVariables };
-    const result = await client.query({
-      query,
-      variables: queryVariable,
-    })
-      .then((response) => response.data);
-    return result;
-  }
-  getData(); // .then((result) => console.log(result));
-};
-
-export const addSelectedFiles = (selectedIds, query) => {
-  async function getData() {
-    const result = await client.query({
-      query,
-      variables: selectedIds,
-    })
-      .then((response) => response.data);
-    return result;
-  }
-  getData(); // .then((result) => console.log(result));
-};

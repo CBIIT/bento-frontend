@@ -1667,11 +1667,10 @@ export const tabContainersOld = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addAddFileAPI: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
+    addAllFileAPI: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
     addSelectedIdAPI: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   },
 ];
-
 
 // --------------- Tabs Table configuration --------------
 export const tabContainers = [
@@ -1686,22 +1685,6 @@ export const tabContainers = [
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
     buttonText: 'Add Selected Files',
-    saveButtonDefaultStyle: {
-      color: '#fff',
-      backgroundColor: '#09A175',
-      opacity: '1',
-      border: '0px',
-      cursor: 'pointer',
-    },
-    ActiveSaveButtonDefaultStyle: {
-      cursor: 'pointer',
-      opacity: 'unset',
-      border: 'unset',
-    },
-    DeactiveSaveButtonDefaultStyle: {
-      opacity: '0.3',
-      cursor: 'auto',
-    },
     columns: [
       {
         cellType: cellTypes.CHECKBOX,
@@ -1711,7 +1694,6 @@ export const tabContainers = [
         dataField: 'subject_id',
         header: 'Case ID',
         sort: 'asc',
-        link: '/case/{subject_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/case',
@@ -1725,7 +1707,6 @@ export const tabContainers = [
         dataField: 'program',
         header: 'Program Code',
         sort: 'asc',
-        link: '/program/{program_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/program',
@@ -1745,7 +1726,6 @@ export const tabContainers = [
         dataField: 'study_acronym',
         header: 'Arm',
         sort: 'asc',
-        link: '/arm/{study_acronym}',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/arm',
@@ -1805,20 +1785,18 @@ export const tabContainers = [
       },
     ],
     id: 'case_tab',
-    onRowsSelect: 'type1',
-    disableRowSelection: 'type1',
     tableID: 'case_tab_table',
-    selectableRows: true,
     tableDownloadCSV: customCasesTabDownloadCSV,
     tabIndex: '0',
     downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addAddFileAPI: GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
-    addSelectedIdAPI: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
+    addFilesRequestVariableKey: 'subject_ids',
+    addFilesResponseKeys: ['fileIDsFromList'],
+    addAllFilesResponseKeys: ['subjectOverview', 'files'],
+    addAllFileQuery: GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
+    addSelectedFilesQuery: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
   },
   {
     name: 'Samples',
@@ -1948,21 +1926,18 @@ export const tabContainers = [
       },
     ],
     id: 'sample_tab',
-    onRowsSelect: 'type3',
-    disableRowSelection: 'type2',
-    buttonText: 'Add Selected Files',
     tableID: 'sample_tab_table',
-    selectableRows: true,
     tabIndex: '1',
     tableDownloadCSV: customSamplesTabDownloadCSV,
     downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addAddFileAPI: GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
-    addSelectedIdAPI: GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
+    addFilesRequestVariableKey: 'sample_ids',
+    addFilesResponseKeys: ['fileIDsFromList'],
+    addAllFilesResponseKeys: ['sampleOverview', 'files'],
+    addAllFileQuery: GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
+    addSelectedFilesQuery: GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
   },
   {
     name: 'Files',
@@ -1972,24 +1947,7 @@ export const tabContainers = [
     defaultSortField: 'file_name',
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
-    buttonText: 'Add Selected Files',
     dataKey: 'file_name',
-    saveButtonDefaultStyle: {
-      color: '#fff',
-      backgroundColor: '#DC2FDA',
-      opacity: '1',
-      border: '0px',
-      cursor: 'pointer',
-    },
-    DeactiveSaveButtonDefaultStyle: {
-      opacity: '0.3',
-      cursor: 'auto',
-    },
-    ActiveSaveButtonDefaultStyle: {
-      cursor: 'pointer',
-      opacity: 'unset',
-      border: 'unset',
-    },
     columns: [
       {
         cellType: cellTypes.CHECKBOX,
@@ -2136,20 +2094,18 @@ export const tabContainers = [
       },
     ],
     id: 'file_tab',
-    onRowsSelect: 'type2',
-    disableRowSelection: 'type3',
     tableID: 'file_tab_table',
     selectableRows: true,
-    tabIndex: '2',
     tableDownloadCSV: customFilesTabDownloadCSV,
     downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addAddFileAPI: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
-    addSelectedIdAPI: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
+    addFilesRequestVariableKey: 'file_names',
+    addFilesResponseKeys: ['fileIDsFromList'],
+    addAllFilesResponseKeys: ['fileOverview', 'files'],
+    addAllFileQuery: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
+    addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   },
 ];
 

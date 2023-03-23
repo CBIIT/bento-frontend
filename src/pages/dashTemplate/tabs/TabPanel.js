@@ -5,7 +5,7 @@ import styles from './TabStyle';
 import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
 import { configColumn } from './tableConfig/Column';
-import Wrapper from '../../../bento-core/PaginationTable/Wrapper';
+import Wrapper from '../../../bento-core/Wrapper/Wrapper';
 import { configWrapper, footerConfig, headerConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
 import TableContextProvider from '../../../bento-core/PaginationTable/ContextProvider';
@@ -47,13 +47,13 @@ const TabView = (props) => {
     ...initailState,
     title: config.name,
     query: config.api,
+    paginationAPIField: config.paginationAPIField,
     dataKey: config.dataKey,
     columns: configColumn(config.columns),
     count: dashboardStats[config.count],
     selectedRows: [],
     enableRowSelection: config.enableRowSelection,
     tableMsg: config.tableMsg,
-    paginationAPIField: config.paginationAPIField,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
     rowsPerPage: 10,
@@ -77,7 +77,7 @@ const TabView = (props) => {
         activeTab={activeTab}
       />
       <Wrapper
-        wrapConfig={footerConfig}
+        wrapConfig={configWrapper(config, footerConfig)}
         customTheme={customTheme}
         classes={classes}
         section={config.name}

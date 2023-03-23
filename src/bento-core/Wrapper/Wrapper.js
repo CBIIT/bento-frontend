@@ -1,14 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Container,
   createTheme,
   Link,
   ThemeProvider,
 } from '@material-ui/core';
-import clsx from 'clsx';
-import { TableContext } from './ContextProvider';
-import AddAllFileComponent from './AddToCartDialog/AddAllView';
-import AddSelectedFileComponent from './AddToCartDialog/AddSelectedView';
+import ButtonComponent from './components/AddFileRedux';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -18,65 +15,6 @@ export const types = {
   CUSTOM_ELEM: 'CUSTEM_ELEM',
   LINK: 'LINK',
   ICON: 'ICON',
-};
-
-export const btnTypes = {
-  ADD_ALL_FILES: 'ADD_ALL_FILES',
-  ADD_SELECTED_FILES: 'ADD_SELECTED_FILES',
-};
-
-/**
-* customize button based on configuration
-* refer config table (wrapper component config)
-*/
-export const ButtonComponent = (props) => {
-  const {
-    title,
-    eventHandler,
-    clsName,
-    section,
-    addFileAPI,
-    activeFilters,
-    addSelectedIdAPI,
-    btnType,
-    dataKey,
-    alertMessage,
-  } = props;
-
-  const tableContext = useContext(TableContext);
-  if (btnTypes.ADD_SELECTED_FILES === btnType) {
-    const {
-      selectedRows = [],
-    } = tableContext.tblState;
-    const variables = {};
-    variables[dataKey] = selectedRows;
-    return (
-      <>
-        <AddSelectedFileComponent
-          {...props}
-          eventHandler={() => eventHandler(variables, addSelectedIdAPI)}
-          clsName={clsx(clsName, `${clsName}_${section}`)}
-          disabled={selectedRows.length === 0}
-        />
-      </>
-    );
-  }
-
-  if (btnTypes.ADD_ALL_FILES === btnType) {
-    return (
-      <>
-        <AddAllFileComponent
-          eventHandler={() => eventHandler(activeFilters, addFileAPI)}
-          clsName={clsx(clsName, `${clsName}_${section}`)}
-          title={title}
-          table={tableContext.tblState}
-          alertMessage={alertMessage}
-        />
-      </>
-    );
-  }
-
-  return <></>;
 };
 
 /**

@@ -6,7 +6,7 @@ import DialogThemeProvider from './dialogThemeConfig';
 import { alertMessage } from '../../bento/fileCentricCartWorkflowData';
 
 function AddToCartDialogAlertView(props) {
-  const { open, classes, onClose } = props;
+  const { open, onClose } = props;
   const closeAlertModelTimer = 4000;
 
   const AlertDialog = (
@@ -15,9 +15,8 @@ function AddToCartDialogAlertView(props) {
         open={open}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        className={classes.popUpWindow}
       >
-        <DialogContent className={classes.popUpWindowContent}>
+        <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {alertMessage}
           </DialogContentText>

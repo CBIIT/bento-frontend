@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ToolTip } from 'bento-components';
-import { Button, Snackbar } from '@material-ui/core';
-import SuccessOutlinedIcon from './SuccessOutlined';
+import { Button } from '@material-ui/core';
 
 /**
 * customize tooltips based on tooltipContent
@@ -39,22 +38,14 @@ const AddSelectedFileComponent = (props) => {
     eventHandler,
     title,
     clsName,
-    value = 0,
     disabled,
     tooltipCofig,
   } = props;
 
-  const [open, setOpen] = useState(false);
   const addFiles = () => {
-    setOpen(true);
     eventHandler();
-    setTimeout(() => {
-      setOpen(false);
-    }, 3000);
   };
-  function closeSnack() {
-    setOpen(false);
-  }
+
   return (
     <>
       <Button
@@ -66,26 +57,6 @@ const AddSelectedFileComponent = (props) => {
         {title}
       </Button>
       {tooltipCofig && (<ToolTipView {...props} />)}
-      <Snackbar
-        className="snackBar"
-        open={open}
-        closeSnack={closeSnack}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        message={(
-          <div className="snackBarMessage">
-            <span className="snackBarMessageIcon">
-              <SuccessOutlinedIcon />
-              {' '}
-            </span>
-            <span className="snackBarText">
-              {value}
-              {' '}
-              File(s) successfully added to your cart
-            </span>
-          </div>
-        )}
-      />
     </>
   );
 };

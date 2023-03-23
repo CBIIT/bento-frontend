@@ -19,7 +19,6 @@ const PaginatedTable = ({
   initState,
   activeTab = true,
 }) => {
-  console.log(queryVariables);
   /**
   * use context to provide table state to wrapper component
   */

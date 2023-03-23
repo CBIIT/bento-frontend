@@ -13,7 +13,6 @@ const CartView = ({
     query: config.api,
     dataKey: config.dataKey,
     columns: config.columns,
-    count: 11,
     selectedRows: [],
     tableMsg: config.tableMsg,
     paginationAPIField: config.paginationAPIField,

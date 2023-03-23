@@ -1,4 +1,5 @@
-import { btnTypes, types } from '../../../../bento-core/PaginationTable/Wrapper';
+import { btnTypes } from '../../../../bento-core/Wrapper/components/AddFiles';
+import { types } from '../../../../bento-core/Wrapper/Wrapper';
 import {
   tooltipContent,
 } from '../../../../bento/dashboardTabData';
@@ -21,6 +22,7 @@ export const headerConfig = [{
       title: 'ADD ALL FILES',
       clsName: 'add_all_button',
       type: types.BUTTON,
+      role: btnTypes.ADD_ALL_FILES,
       btnType: btnTypes.ADD_ALL_FILES,
       conditional: false,
       alertMessage,
@@ -29,6 +31,7 @@ export const headerConfig = [{
       title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
+      role: btnTypes.ADD_SELECTED_FILES,
       btnType: btnTypes.ADD_SELECTED_FILES,
       tooltipCofig: tooltipContent,
       conditional: true,
@@ -44,6 +47,7 @@ export const footerConfig = [{
       title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
+      role: btnTypes.ADD_SELECTED_FILES,
       btnType: btnTypes.ADD_SELECTED_FILES,
       tooltipCofig: tooltipContent,
       conditional: true,
@@ -67,10 +71,9 @@ export const footerConfig = [{
 * console log will be remove when myCart page is integrated
 * with bento core paginated table
 */
-// eslint-disable-next-line no-unused-vars
 const addFilesHandler = (query, variables) => {
-  // console.log(query);
-  // console.log(variables);
+  console.log(query);
+  console.log(variables);
 };
 
 export const configWrapper = (tab, configs) => {
@@ -78,9 +81,11 @@ export const configWrapper = (tab, configs) => {
     ...container,
     items: container.items.map((item) => ({
       ...item,
-      addFileAPI: tab.addAddFileAPI,
-      addSelectedIdAPI: tab.addSelectedIdAPI,
-      dataKey: tab.dataKey,
+      addFileQuery: (item.role === btnTypes.ADD_ALL_FILES)
+        ? tab.addAllFileQuery : tab.addSelectedFilesQuery,
+      dataKey: tab.addFilesRequestVariableKey,
+      responseKeys: (item.role === btnTypes.ADD_ALL_FILES)
+        ? tab.addAllFilesResponseKeys : tab.addFilesResponseKeys,
       eventHandler: addFilesHandler,
     })),
   }));

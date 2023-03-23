@@ -12,6 +12,7 @@ export const CustomCellView = (props) => {
         fileFormat={props[documentDownloadProps.fileFormatColumn]}
         fileLocation={props[documentDownloadProps.fileLocationColumn]}
         {...documentDownloadProps}
+        {...props}
       />
     );
   }
