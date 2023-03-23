@@ -8,6 +8,9 @@ const tabsStyle = {
       borderBottom: '10px solid #40789C',
       overflow: 'visible !important',
     },
+    indicator: {
+      display: 'none',
+    },
   },
   muiTab: {
     root: {

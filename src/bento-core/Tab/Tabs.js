@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tab, Tabs, Typography } from '@material-ui/core';
+import { Tab as MuiTab, Tabs as MuiTabs, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import generateStyle from './utils/generateStyle';
 import TabThemeProvider from './TabThemeProvider';
@@ -15,13 +15,33 @@ function Tabs({
   const useStyles = makeStyles(generatedStyle);
   const classes = useStyles();
 
-  /* tab headers */
-  const TabHeader = tabData.map((tab, index) => (
-    <Tab className={classes.tabsLabel} key={index} label={tab.label} />
-  ));
-
   /* Component states */
   const [currentTab, setCurrentTab] = useState(0);
+
+  /* tab headers and specific style generator */
+  const getSpecificTabStyle = (currentSelectedTab, index, tabHeaderStyle = undefined) => {
+    let style = {};
+    if (tabHeaderStyle) {
+      style = tabHeaderStyle.root ? { ...tabHeaderStyle.root } : {};
+      if (currentSelectedTab === index && tabHeaderStyle.selected) {
+        style = { ...style, ...tabHeaderStyle.selected };
+      }
+    }
+    return style;
+  };
+
+  const TabHeader = tabData.map((tab, index) => {
+    const specificTabStyle = getSpecificTabStyle(currentTab, index, tab.label.style);
+    return (
+      <MuiTab
+        key={index}
+        className={classes.tabsLabel}
+        label={tab.label.content}
+        style={specificTabStyle}
+        disableRipple
+      />
+    );
+  });
 
   /* event handlers */
   const handleChange = (event, newValue) => {
@@ -38,12 +58,16 @@ function Tabs({
         muiTabTheme={generatedStyle.muiTab}
         muiTabsTheme={generatedStyle.muiTabs}
       >
-        <Tabs value={currentTab} onChange={handleChange}>
+        <MuiTabs value={currentTab} onChange={handleChange}>
           {TabHeader}
-        </Tabs>
-        <Typography component="div" className={classes.tabsPanel}>
-          {tabData[currentTab].panel}
-        </Typography>
+        </MuiTabs>
+
+        {tabData.map((tab, index) => (
+          <Typography key={index} component="div" className={classes.tabsPanel} hidden={currentTab !== index}>
+            {tab.panel}
+          </Typography>
+        ))}
+
       </TabThemeProvider>
     </div>
   );

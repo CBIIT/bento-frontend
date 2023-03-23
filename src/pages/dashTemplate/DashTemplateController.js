@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import DashTemplateView from './DashTemplateView';
-import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
+import { DASHBOARD_QUERY_NEW, tabContainers } from '../../bento/dashboardTabData';
 import client from '../../utils/graphqlClient';
 import { getFilters } from '../../bento-core/FacetFilter/utils/filter';
+import useGenerateTabData from './tabs/hooks/useGenerateTabData';
 
 const getDashData = (filterState) => {
   async function getData(activeFilters) {
@@ -34,6 +35,11 @@ const getDashData = (filterState) => {
 const DashTemplateController = ((props) => {
   const { filterState } = props;
   const { dashData, activeFilters } = getDashData(filterState);
+  const [activeTab, setActiveTab] = useState(0);
+
+  const { generatedTabData } = useGenerateTabData({
+    tabContainers, dashboardStats: dashData, activeFilters, activeTab,
+  });
 
   if (!dashData) {
     return (<CircularProgress />);
@@ -44,6 +50,8 @@ const DashTemplateController = ((props) => {
       {...props}
       dashData={dashData}
       activeFilters={activeFilters}
+      onTabChange={setActiveTab}
+      tabData={generatedTabData}
     />
   );
 });
