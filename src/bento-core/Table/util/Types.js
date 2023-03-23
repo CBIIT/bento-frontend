@@ -9,5 +9,6 @@ export const cellTypes = {
 
 export const headerTypes = {
   CUSTOM_ELEM: 'CUSTOM_ELEM',
+  DELETE: 'DELETE',
   DEFAULT: 'DEFAULT',
 };

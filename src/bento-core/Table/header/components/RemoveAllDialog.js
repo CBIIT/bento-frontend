@@ -14,6 +14,10 @@ function RemoveAllDialogView(props) {
     numberOfFilesSelected = 0,
     removeAllFiles,
   } = props;
+  const deleteAllFiles = () => {
+    removeAllFiles();
+    toggleDisplay();
+  };
   return (
     <>
       <Dialog
@@ -35,7 +39,7 @@ function RemoveAllDialogView(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button className="okBtn" onClick={removeAllFiles}>
+          <Button className="okBtn" onClick={deleteAllFiles}>
             Ok
           </Button>
           <Button className="cancelBtn" onClick={() => toggleDisplay()}>

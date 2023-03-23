@@ -192,6 +192,7 @@ export const tableConfig = {
     },
     {
       cellType: cellTypes.DELETE,
+      headerType: cellTypes.DELETE,
       display: true,
     },
   ],

@@ -8,8 +8,8 @@ import {
   onColumnSort,
   onPageAndTotalCountChange,
 } from './state/Actions';
-import reducer from './state/Reducer';
 import { TableContext } from './ContextProvider';
+import reducer from './state/Reducer';
 
 const PaginatedTable = ({
   queryVariables = {},
@@ -20,19 +20,22 @@ const PaginatedTable = ({
   activeTab = true,
 }) => {
   /**
+  * Initailize useReducer state
+  * 1. table: state (Note: table includes cofiguration in addition to pagination state)
+  * 2. dispatch: dispatch action (as redux action) to update pagination state
+  * 3. Add all btn / Add file button also dispatch action to update table state
+  */
+  const [table, dispatch] = useReducer(reducer, {}, initState);
+
+  /**
   * use context to provide table state to wrapper component
   */
   const tableContext = useContext(TableContext);
 
-  /**
-  * Initailize useReducer state
-  * 1. table: state (Note: table includes cofiguration in addition to pagination state)
-  * 2. dispatch: dispatch action (as redux action) to update pagination state
-  */
-  const [table, dispatch] = useReducer(reducer, {}, initState);
-
   useEffect(() => {
-    tableContext.setTblState(table);
+    // const tableState = { ...table };
+    // tableState.dispatch = dispatch;
+    tableContext.setTblState({ ...table, dispatch });
   }, [table]);
 
   /**

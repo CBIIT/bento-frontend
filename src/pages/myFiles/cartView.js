@@ -1,18 +1,20 @@
 import React from 'react';
 import TableView from '../../bento-core/PaginationTable/PaginatedTable';
-// import { configColumn } from './tableConfig/Column';
+import { configColumn } from './tableConfig/Column';
 import { themeConfig } from './tableConfig/Theme';
 
 const CartView = ({
-  // classes,
   config,
+  deleteAllFiles,
+  deleteCartFile,
+  filesId = [],
 }) => {
   const initTblState = (initailState) => ({
     ...initailState,
     title: 'myFiles',
     query: config.api,
     dataKey: config.dataKey,
-    columns: config.columns,
+    columns: configColumn(config.columns, deleteAllFiles, deleteCartFile),
     selectedRows: [],
     tableMsg: config.tableMsg,
     paginationAPIField: config.paginationAPIField,
@@ -22,16 +24,16 @@ const CartView = ({
     page: 0,
   });
 
-  const myFileIds = JSON.parse(localStorage.getItem('CartFileIds')) || [];
+  // const myFileIds = JSON.parse(localStorage.getItem('CartFileIds')) || [];
   const variables = {};
-  variables.file_ids = myFileIds;
+  variables.file_ids = filesId;
   return (
     <>
       <TableView
         initState={initTblState}
         themeConfig={themeConfig}
         queryVariables={variables}
-        totalRowCount={myFileIds.length}
+        totalRowCount={filesId.length}
       />
     </>
   );

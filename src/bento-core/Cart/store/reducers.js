@@ -2,24 +2,46 @@ import { actionTypes } from './actions';
 
 /**
 * initialize cart state
+* 1. files ids in cart are stored on localstore
+* 2. clear cache will remove all the files from cart
 */
 const initCartState = () => {
-  const initState = {};
-  initState.filesId = JSON.parse(localStorage.getItem('CartFileIds')) || [];
-  return initState;
+  if (localStorage.getItem('CartFileIds')) {
+    const initState = {};
+    initState.filesId = JSON.parse(localStorage.getItem('CartFileIds')) || [];
+    return initState;
+  }
+  return {
+    filesId: [],
+  };
 };
 
-export const filterOutIDs = (targetIds, existingIds) => {
+export const filterOutIDs = (targetIds = [], existingIds = []) => {
   if (!targetIds || targetIds.length === 0) return existingIds;
   return existingIds.filter((id) => !targetIds.includes(id));
 };
 
-const addFilesToCart = (state, payload) => {
+const addFilesToCart = (state, payload = []) => {
   const distinctIds = filterOutIDs(state.filesId, payload) || [];
+  // remove duplicated subject's id
+  const uniqueFileIds = payload.length > 0
+    ? Array.from(
+      new Set(
+        state.filesId.concat(payload),
+      ),
+    ) : state.filesId;
+  localStorage.setItem('CartFileIds', JSON.stringify(uniqueFileIds) || []);
   return {
-    filesId: [...state.filesId, ...distinctIds],
+    filesId: [...uniqueFileIds],
     count: distinctIds.length,
   };
+};
+
+const deleteFile = (state, payload) => {
+  const { filesId } = state;
+  const fileIdsAfterDeletion = filesId.filter((file) => file !== payload);
+  localStorage.setItem('CartFileIds', JSON.stringify(fileIdsAfterDeletion));
+  return fileIdsAfterDeletion;
 };
 
 export const cartReducer = (state = initCartState(), action) => {
@@ -30,10 +52,17 @@ export const cartReducer = (state = initCartState(), action) => {
         ...state,
         ...addFilesToCart(state, payload),
       };
-    case actionTypes.DELETE_CART_FILES:
+    case actionTypes.DELETE_CART_FILE:
       return {
         ...state,
-        deleteFileIds: payload || [],
+        filesId: deleteFile(state, payload),
+      };
+    case actionTypes.DELETE_ALL_CART_FILES:
+      // clear all local storage if we remove all record
+      localStorage.clear();
+      return {
+        ...state,
+        filesId: [],
       };
     default:
       return state;

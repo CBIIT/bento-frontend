@@ -14,7 +14,7 @@ export const CustomHeaderCellView = () => (<></>);
 * @param {*} columns
 * @returns config columns
 */
-export const configColumn = (columns) => {
+export const configColumn = (columns, deleteAllFiles, deleteCartFile) => {
   /**
   * display columns as configuration
   * set custom cell render for column
@@ -25,6 +25,12 @@ export const configColumn = (columns) => {
       return {
         ...column,
         customCellRender: (props) => <CustomCellView {...props} />,
+      };
+    }
+    if (column.cellType === cellTypes.DELETE) {
+      return {
+        ...column,
+        cellEventHandler: deleteCartFile,
       };
     }
     return column;
@@ -38,6 +44,16 @@ export const configColumn = (columns) => {
       return {
         ...column,
         customColHeaderRender: (props) => <CustomHeaderCellView {...props} />,
+      };
+    }
+
+    /*
+    * props deleteAllFiles
+    */
+    if (column.headerType === headerTypes.DELETE) {
+      return {
+        ...column,
+        headerEventHandler: deleteAllFiles,
       };
     }
     return column;

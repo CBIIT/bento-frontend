@@ -14,7 +14,10 @@ const TableContextProvider = ({
   };
   return (
     <TableContext.Provider
-      value={{ tblState: table, setTblState: setStateHandler }}
+      value={{
+        tblState: table,
+        setTblState: setStateHandler,
+      }}
     >
       {children}
     </TableContext.Provider>

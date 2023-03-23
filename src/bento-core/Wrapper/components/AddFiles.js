@@ -12,7 +12,7 @@ export const btnTypes = {
 * customize button based on configuration
 * refer config table (wrapper component config)
 */
-const AddFilesBtn = (props) => {
+const AddFilesView = (props) => {
   const {
     btnType,
     count,
@@ -64,4 +64,4 @@ const AddFilesBtn = (props) => {
   );
 };
 
-export default AddFilesBtn;
+export default AddFilesView;

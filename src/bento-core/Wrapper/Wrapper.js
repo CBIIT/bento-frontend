@@ -5,7 +5,7 @@ import {
   Link,
   ThemeProvider,
 } from '@material-ui/core';
-import ButtonComponent from './components/AddFileRedux';
+import ButtonComponent from './components/ReduxAddFile';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -108,6 +108,7 @@ const CustomWrapper = (props) => {
     section,
     classes,
     activeFilters,
+    tblDispatch,
   } = props;
   return (
     <>
@@ -117,6 +118,7 @@ const CustomWrapper = (props) => {
         section={section}
         classes={classes}
         activeFilters={activeFilters}
+        tblDispatch={tblDispatch}
       >
         {children}
       </CustomLayout>

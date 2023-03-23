@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
 import { TableContext } from '../../../PaginationTable/ContextProvider';
 import AddSelectedFileComponent from './AddSelectedFilesView';
-import AlertView from '../AddToCartDialog/AddToCartDialogAlertView';
 import { getFilesID } from '../../WrapperService';
 import { onAddCartFiles } from '../../../Cart/store/actions';
+import { onRowSeclect } from '../../../PaginationTable/state/Actions';
 
 const AddSelectedFilesController = (props) => {
   const {
@@ -14,14 +14,15 @@ const AddSelectedFilesController = (props) => {
     addFileQuery,
     responseKeys,
     dataKey,
-    alertMessage,
     addFiles,
     setOpenSnackbar,
+    setAlterDisplay,
   } = props;
 
   const tableContext = useContext(TableContext);
   const {
     selectedRows = [],
+    dispatch,
   } = tableContext.tblState;
   const variables = {};
   variables[dataKey] = selectedRows;
@@ -32,20 +33,18 @@ const AddSelectedFilesController = (props) => {
       fileIds: selectedRows,
       query: addFileQuery,
     });
+
     fileIds().then((response) => {
       const ids = response[responseKeys[0]] || [];
-      addFiles(ids);
-      setOpenSnackbar(true);
-      /**
-      *
-      */
       if (ids.length >= 1000) {
-        console.log('exceed 1000 files');
+        setAlterDisplay(true);
+      } else {
+        addFiles(ids);
+        setOpenSnackbar(true);
+        dispatch(onRowSeclect([]));
       }
     });
   };
-
-  const [displayAlter, setAlterDisplay] = useState(false);
 
   return (
     <>
@@ -55,13 +54,6 @@ const AddSelectedFilesController = (props) => {
         clsName={clsx(clsName, `${clsName}_${section}`)}
         disabled={selectedRows.length === 0}
       />
-      {(displayAlter) && (
-        <AlertView
-          alertMessage={alertMessage}
-          open={displayAlter}
-          onClose={() => setAlterDisplay(false)}
-        />
-      )}
     </>
   );
 };

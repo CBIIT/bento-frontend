@@ -27,7 +27,6 @@ const AddAllFilesComponent = (props) => {
   * verify and set file ids
   */
   const addAllFiles = () => {
-    console.log(activeFilters);
     const fileIds = getFilesID({
       variables: activeFilters,
       query: addFileQuery,

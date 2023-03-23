@@ -54,6 +54,7 @@ const CustomTableHeader = ({
                 case cellTypes.DELETE:
                   return (
                     <DeleteCellView
+                      column={column}
                       openDialogBox={() => console.log('delete')}
                     />
                   );

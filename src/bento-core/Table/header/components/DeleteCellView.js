@@ -22,10 +22,11 @@ const TooltipContent = () => (
   </Typography>
 );
 
-const DeleteCellView = () => {
+const DeleteCellView = ({
+  column,
+}) => {
   const [displayDialog, setDisplay] = useState(false);
   const toggleDialogDisplay = () => setDisplay(!displayDialog);
-
   return (
     <TableCell
       scope="col"
@@ -48,6 +49,7 @@ const DeleteCellView = () => {
       </Tooltip>
       <RemoveAllDialogView
         open={displayDialog}
+        removeAllFiles={column.headerEventHandler}
         toggleDisplay={toggleDialogDisplay}
       />
     </TableCell>
