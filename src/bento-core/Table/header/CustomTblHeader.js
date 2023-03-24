@@ -55,7 +55,6 @@ const CustomTableHeader = ({
                   return (
                     <DeleteCellView
                       column={column}
-                      openDialogBox={() => console.log('delete')}
                     />
                   );
                 default:

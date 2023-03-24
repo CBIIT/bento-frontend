@@ -10,7 +10,12 @@ export const CustomHeaderCellView = () => (<></>);
 * @param {*} columns
 * @returns config columns
 */
-export const configColumn = (columns, deleteAllFiles, deleteCartFile) => {
+export const configColumn = ({
+  columns,
+  deleteAllFiles,
+  deleteCartFile,
+  filesId = [],
+}) => {
   /**
   * display columns as configuration
   * set custom cell render for column
@@ -50,6 +55,7 @@ export const configColumn = (columns, deleteAllFiles, deleteCartFile) => {
       return {
         ...column,
         headerEventHandler: deleteAllFiles,
+        removeAllFileCount: filesId.length,
       };
     }
     return column;

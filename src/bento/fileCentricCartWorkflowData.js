@@ -174,6 +174,7 @@ export const tableConfig = {
     {
       dataField: 'file_format',
       header: 'Format',
+      display: true,
     },
     {
       dataField: 'file_size',

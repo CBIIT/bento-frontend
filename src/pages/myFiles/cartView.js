@@ -8,13 +8,12 @@ import { headerConfig, outerLayoutConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
 import styles from './cartView.style';
 
-const CartView = ({
-  classes,
-  config,
-  deleteAllFiles,
-  deleteCartFile,
-  filesId = [],
-}) => {
+const CartView = (props) => {
+  const {
+    classes,
+    config,
+    filesId = [],
+  } = props;
   /**
   * configure table state
   */
@@ -23,7 +22,7 @@ const CartView = ({
     title: 'myFiles',
     query: config.api,
     dataKey: config.dataKey,
-    columns: configColumn(config.columns, deleteAllFiles, deleteCartFile),
+    columns: configColumn({ columns: config.columns, ...props }),
     selectedRows: [],
     tableMsg: config.tableMsg,
     paginationAPIField: config.paginationAPIField,

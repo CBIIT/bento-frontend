@@ -50,6 +50,7 @@ const DeleteCellView = ({
       <RemoveAllDialogView
         open={displayDialog}
         removeAllFiles={column.headerEventHandler}
+        numberOfFilesSelected={column.removeAllFileCount}
         toggleDisplay={toggleDialogDisplay}
       />
     </TableCell>
