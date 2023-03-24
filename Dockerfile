@@ -4,9 +4,9 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN NODE_OPTIONS=--max-old-space-size=2048 npm install
+RUN NODE_OPTIONS="--max-old-space-size=4096" npm install
 
-RUN npx lerna run build
+RUN NODE_OPTIONS="--max-old-space-size=4096" npx lerna run build
 
 FROM nginx:1.23.3-alpine-slim
 
