@@ -13,6 +13,18 @@ export const navBarCartData = {
 export const alertMessage = 'The cart is limited to 1000 files. Please narrow the search criteria or remove some files from the cart to add more.';
 export const maximumNumberOfFilesAllowedInTheCart = 1000;
 
+// --------------- Tooltip configuration --------------
+export const tooltipContent = {
+  icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
+  alt: 'tooltipIcon',
+  clsName: 'tooltip_icon',
+  myFiles: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
+  arrow: true,
+  styles: {
+    border: '#03A383 1px solid',
+  },
+};
+
 export const myFilesPageData = {
   mainTitle: 'Cart >',
   subTitle: 'Selected Files',

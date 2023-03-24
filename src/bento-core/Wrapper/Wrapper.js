@@ -5,7 +5,7 @@ import {
   Link,
   ThemeProvider,
 } from '@material-ui/core';
-import ButtonComponent from './components/ReduxAddFile';
+import ButtonView from './components/ButtonView';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -15,6 +15,8 @@ export const types = {
   CUSTOM_ELEM: 'CUSTEM_ELEM',
   LINK: 'LINK',
   ICON: 'ICON',
+  TEXT: 'TEXT',
+  CONTRAINER: 'CONTRAINER',
 };
 
 /**
@@ -32,20 +34,38 @@ export const LinkComponent = (props) => {
   );
 };
 
+const Img = ({ src, alt, clsName }) => <img src={src} alt={alt} className={clsName} />;
+
+const Text = ({
+  text,
+  clsName,
+  tag,
+  Component,
+}) => (
+  <span className={clsName} type={tag}>
+    {text}
+    { Component && <Component /> }
+  </span>
+);
+
 /**
 *
 * @param {*}
 * @returns custom component based on configuration
 */
 export const ViewComponent = (props) => {
-  const { type } = props;
+  const { type, customViewElem } = props;
   switch (type) {
     case types.BUTTON:
-      return (<ButtonComponent {...props} />);
+      return (<ButtonView {...props} />);
     case types.LINK:
       return (<LinkComponent {...props} />);
+    case types.ICON:
+      return <Img {...props} />;
+    case types.TEXT:
+      return <Text {...props} />;
     case types.CUSTOM_ELEM:
-      return props.customViewElem();
+      return customViewElem();
     default:
       return <></>;
   }
@@ -119,9 +139,8 @@ const CustomWrapper = (props) => {
         classes={classes}
         activeFilters={activeFilters}
         tblDispatch={tblDispatch}
-      >
-        {children}
-      </CustomLayout>
+      />
+      {children}
     </>
   );
 };

@@ -4,7 +4,7 @@ import client from '../../utils/graphqlClient';
 /**
 * query varibales to fetch all the selected files id
 */
-const getQueryVariables = (variables) => {
+export const getQueryVariables = (variables) => {
   const queryVariables = { ...variables };
   queryVariables.first = 100000;
   return queryVariables;
@@ -24,12 +24,4 @@ export const getFilesID = ({
       .then((response) => response.data);
     return fetchResult;
   };
-};
-
-export const addAFiles = (files) => {
-  console.log('add files');
-  // store ids in the localstorage.
-  const cartFilesId = JSON.parse(localStorage.getItem('CartFileIds')) || [];
-  console.log(cartFilesId);
-  console.log(files);
 };

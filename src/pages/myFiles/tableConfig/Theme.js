@@ -8,18 +8,18 @@ export const tblHeader = {
       fontWeight: 'bold',
       letterSpacing: '0.06em',
       textDecoration: 'underline',
-      '&.samples_header_col_sample_procurement_method': {
-        minWidth: '180px',
+    },
+  },
+  MuiTooltip: {
+    tooltipPlacementBottom: {
+      marginTop: '-10px',
+      '@media (min-width: 600px)': {
+        marginTop: '-10px',
+        marginLeft: '-20px',
       },
-      '&.samples_header_col_sample_anatomic_site': {
-        minWidth: '140px',
-      },
-      '&.samples_header_col_subject_id': {
-        minWidth: '100px',
-      },
-      '&.samples_header_col_sample_id': {
-        minWidth: '100px',
-      },
+    },
+    tooltip: {
+      backgroundColor: 'none',
     },
   },
 };
@@ -37,7 +37,17 @@ export const tblPgn = {
   },
 };
 
+export const tblBody = {
+  MuiTableBody: {
+    root: {
+      margin: 'auto 3% auto 3%',
+      maxWidth: '100%',
+    },
+  },
+};
+
 export const themeConfig = {
   tblHeader,
   tblPgn,
+  tblBody,
 };

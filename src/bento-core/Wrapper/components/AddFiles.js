@@ -7,6 +7,7 @@ import AlertView from './AddToCartDialog/AddToCartDialogAlertView';
 export const btnTypes = {
   ADD_ALL_FILES: 'ADD_ALL_FILES',
   ADD_SELECTED_FILES: 'ADD_SELECTED_FILES',
+  DOWNLOAD_MANIFEST: 'DOWNLOAD_MANIFEST',
 };
 /**
 * customize button based on configuration

@@ -71,11 +71,6 @@ export const footerConfig = [{
 * console log will be remove when myCart page is integrated
 * with bento core paginated table
 */
-const addFilesHandler = (query, variables) => {
-  console.log(query);
-  console.log(variables);
-};
-
 export const configWrapper = (tab, configs) => {
   const wrpConfig = configs.map((container) => ({
     ...container,
@@ -86,7 +81,6 @@ export const configWrapper = (tab, configs) => {
       dataKey: tab.addFilesRequestVariableKey,
       responseKeys: (item.role === btnTypes.ADD_ALL_FILES)
         ? tab.addAllFilesResponseKeys : tab.addFilesResponseKeys,
-      eventHandler: addFilesHandler,
     })),
   }));
   return wrpConfig;

@@ -1,11 +1,7 @@
 import React from 'react';
 import { cellTypes, headerTypes } from '../../../bento-core/Table/util/Types';
 
-export const CustomCellView = () => {
-  // other custom elem
-  console.log('test');
-  return (<></>);
-};
+export const CustomCellView = () => (<></>);
 
 export const CustomHeaderCellView = () => (<></>);
 

@@ -33,8 +33,11 @@ const PaginatedTable = ({
   const tableContext = useContext(TableContext);
 
   useEffect(() => {
-    // const tableState = { ...table };
-    // tableState.dispatch = dispatch;
+    /**
+    * set table context
+    * 1. provide table state to other component (wrapper comp -> Add file button)
+    * 2. provide table dispatch action to other component (wrapper comp)
+    */
     tableContext.setTblState({ ...table, dispatch });
   }, [table]);
 
@@ -43,7 +46,6 @@ const PaginatedTable = ({
   */
   useEffect(() => {
     const { page, rowsPerPage } = table;
-
     // validate table state - curr rowCount should be less than total row count after filter
     if (totalRowCount < page * rowsPerPage) {
       const currentRows = page * rowsPerPage;
