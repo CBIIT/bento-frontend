@@ -1,12 +1,10 @@
-FROM node:16-stretch-slim  as build
+FROM node:16-bullseye  as build
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-
-RUN npm install
-
 COPY . .
+
+RUN NODE_OPTIONS=--max-old-space-size=2048 npm install
 
 RUN npx lerna run build
 
