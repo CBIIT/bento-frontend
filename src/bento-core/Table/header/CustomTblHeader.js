@@ -15,11 +15,12 @@ import DeleteCellView from './components/DeleteCellView';
 
 const CustomTableHeader = ({
   table,
-  rows,
+  rows = [],
   toggleSelectAll,
   sortByColumn,
   components = {},
   customTheme = {},
+  count,
 }) => {
   const {
     columns,
@@ -54,6 +55,8 @@ const CustomTableHeader = ({
                 case cellTypes.DELETE:
                   return (
                     <DeleteCellView
+                      rows={rows}
+                      count={count}
                       column={column}
                     />
                   );

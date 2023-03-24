@@ -37,11 +37,14 @@ const addFilesToCart = (state, payload = []) => {
   };
 };
 
-const deleteFile = (state, payload) => {
+const getFilesAfterDel = (state, payload) => {
   const { filesId } = state;
   const fileIdsAfterDeletion = filesId.filter((file) => file !== payload);
   localStorage.setItem('CartFileIds', JSON.stringify(fileIdsAfterDeletion));
-  return fileIdsAfterDeletion;
+  return {
+    filesId: fileIdsAfterDeletion,
+    count: fileIdsAfterDeletion.length,
+  };
 };
 
 export const cartReducer = (state = initCartState(), action) => {
@@ -55,7 +58,7 @@ export const cartReducer = (state = initCartState(), action) => {
     case actionTypes.DELETE_CART_FILE:
       return {
         ...state,
-        filesId: deleteFile(state, payload),
+        ...getFilesAfterDel(state, payload),
       };
     case actionTypes.DELETE_ALL_CART_FILES:
       // clear all local storage if we remove all record

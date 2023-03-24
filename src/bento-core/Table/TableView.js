@@ -17,6 +17,7 @@ const TableView = ({
   onPageChange,
   onRowSelectChange,
   onToggleSelectAll,
+  totalRowCount,
   onSortByColumn,
   viewConfig = {},
   themeConfig = {},
@@ -44,6 +45,7 @@ const TableView = ({
           customTheme={themeConfig.tblHeader}
           table={table}
           rows={tableRows}
+          count={totalRowCount}
           toggleSelectAll={onToggleSelectAll}
           sortByColumn={onSortByColumn}
         />

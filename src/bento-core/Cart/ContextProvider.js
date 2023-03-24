@@ -1,23 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
+import cartReducer from './state/reducers';
 
 /**
 * cart state provider
 */
 export const CartContext = React.createContext({
-  cartState: {},
-  setCartState: () => {},
+  context: {},
+  setContext: () => {},
 });
 
 const CartContextProvider = ({
   children,
 }) => {
-  const [cart, setCartState] = useState({});
-  const cartStateHandler = (state) => {
-    setCartState(state);
+  /**
+  * configure cart state
+  */
+  const initCartState = (initailState) => ({
+    ...initailState,
+    comment: '',
+  });
+  /**
+  * Initailize useReducer state/dispatch for cart component
+  */
+  const [cart, dispatch] = useReducer(cartReducer, {}, initCartState);
+  /**
+  * set dispatch action on the context provider
+  */
+  const [context, setContext] = useState({ cart, dispatch });
+
+  useEffect(() => {
+    setContext({ cart, dispatch });
+  }, [cart]);
+
+  const cartContextHandler = (value) => {
+    setContext(value);
   };
+
   return (
     <CartContext.Provider
-      value={{ cartState: cart, setCartState: cartStateHandler }}
+      value={{
+        context,
+        setContext: cartContextHandler,
+      }}
     >
       {children}
     </CartContext.Provider>

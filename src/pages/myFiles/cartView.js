@@ -4,9 +4,10 @@ import TableView from '../../bento-core/PaginationTable/PaginatedTable';
 import { configColumn } from './tableConfig/Column';
 import { themeConfig } from './tableConfig/Theme';
 import Wrapper from '../../bento-core/Wrapper/Wrapper';
-import { headerConfig, outerLayoutConfig } from './wrapperConfig/Wrapper';
+import { footerConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
 import styles from './cartView.style';
+import Header from './cartHeader';
 
 const CartView = (props) => {
   const {
@@ -14,6 +15,18 @@ const CartView = (props) => {
     config,
     filesId = [],
   } = props;
+
+  const Footer = () => (
+    <>
+      <Wrapper
+        wrapConfig={footerConfig}
+        customTheme={customTheme}
+        classes={classes}
+        section="myFiles"
+      />
+    </>
+  );
+
   /**
   * configure table state
   */
@@ -34,34 +47,21 @@ const CartView = (props) => {
 
   const variables = {};
   variables.file_ids = filesId;
-
-  const Header = () => (
-    <>
-      <Wrapper
-        wrapConfig={outerLayoutConfig}
-        customTheme={customTheme}
-        classes={classes}
-      />
-      <Wrapper
-        wrapConfig={headerConfig}
-        customTheme={customTheme}
-        classes={classes}
-        section="myFiles"
-      />
-    </>
-  );
-
   return (
     <Grid>
       <Grid item xs={12}>
         <div className={classes.myFilesWrapper}>
-          <Header />
+          <Header
+            classes={classes}
+            queryVariables={variables}
+          />
           <TableView
             initState={initTblState}
             themeConfig={themeConfig}
             queryVariables={variables}
             totalRowCount={filesId.length}
           />
+          <Footer />
         </div>
       </Grid>
     </Grid>

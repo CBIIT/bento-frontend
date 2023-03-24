@@ -45,6 +45,24 @@ export const customTheme = {
       '&.tooltip_icon': {
         width: '25px',
       },
+      '&.container_footer': {
+        maxWidth: '100%',
+        textAlign: 'left',
+        paddingLeft: '0px',
+        '& textarea.manifest_comments': {
+          color: '#000',
+          border: '1.5px solid #707070',
+          height: '170px',
+          resize: 'none',
+          padding: '15px',
+          fontSize: '10px',
+          minWidth: '412px',
+          background: '#ebebeb',
+          fontFamily: 'Open Sans',
+          marginRight: '10px',
+          borderRadius: '10px',
+        },
+      },
     },
   },
   MuiButton: {

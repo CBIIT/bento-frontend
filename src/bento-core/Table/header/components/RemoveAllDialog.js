@@ -11,7 +11,7 @@ function RemoveAllDialogView(props) {
   const {
     open,
     toggleDisplay,
-    numberOfFilesSelected = 0,
+    count,
     removeAllFiles,
   } = props;
   const deleteAllFiles = () => {
@@ -32,7 +32,7 @@ function RemoveAllDialogView(props) {
             <b>
               All files
               {' ('}
-              {numberOfFilesSelected}
+              {count}
               {') '}
             </b>
             From Cart

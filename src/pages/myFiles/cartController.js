@@ -3,14 +3,18 @@ import { connect } from 'react-redux';
 import { onDeleteAllCartFile, onDeleteCartFile } from '../../bento-core/Cart/store/actions';
 import { tableConfig } from '../../bento/fileCentricCartWorkflowData';
 import CartView from './cartView';
+import CartContextProvider from '../../bento-core/Cart/ContextProvider';
+import TableContextProvider from '../../bento-core/PaginationTable/ContextProvider';
 
 const CartController = (props) => (
-  <>
-    <CartView
-      {...props}
-      config={tableConfig}
-    />
-  </>
+  <CartContextProvider>
+    <TableContextProvider>
+      <CartView
+        {...props}
+        config={tableConfig}
+      />
+    </TableContextProvider>
+  </CartContextProvider>
 );
 
 const mapStateToProps = (state) => ({

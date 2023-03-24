@@ -46,14 +46,11 @@ export const headerConfig = [{
 export const footerConfig = [{
   container: 'buttons',
   size: 'xl',
-  clsName: 'container_header',
+  clsName: 'container_footer',
   items: [
     {
-      title: 'DOWNLOAD MANIFEST',
-      clsName: 'download_manifest',
-      type: types.BUTTON,
-      role: btnTypes.DOWNLOAD_MANIFEST,
-      btnType: btnTypes.DOWNLOAD_MANIFEST,
-      tooltipCofig: tooltipContent,
+      clsName: 'manifest_comments',
+      type: types.TEXT_INPUT,
+      placeholder: myFilesPageData.textareaPlaceholder,
     }],
 }];

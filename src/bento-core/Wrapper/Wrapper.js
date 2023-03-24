@@ -6,6 +6,7 @@ import {
   ThemeProvider,
 } from '@material-ui/core';
 import ButtonView from './components/ButtonView';
+import TextFieldView from './components/TextFieldView';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -64,6 +65,8 @@ export const ViewComponent = (props) => {
       return <Img {...props} />;
     case types.TEXT:
       return <Text {...props} />;
+    case types.TEXT_INPUT:
+      return <TextFieldView {...props} />;
     case types.CUSTOM_ELEM:
       return customViewElem();
     default:

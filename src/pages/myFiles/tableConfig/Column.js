@@ -14,7 +14,6 @@ export const configColumn = ({
   columns,
   deleteAllFiles,
   deleteCartFile,
-  filesId = [],
 }) => {
   /**
   * display columns as configuration
@@ -55,7 +54,6 @@ export const configColumn = ({
       return {
         ...column,
         headerEventHandler: deleteAllFiles,
-        removeAllFileCount: filesId.length,
       };
     }
     return column;
