@@ -11,7 +11,7 @@ import Tab from './components/tabController';
 import colors from '../../utils/colors';
 import styles from './dashboardStyles';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { WidgetGenerator } from '../../bento-core/Widgets';
+import { WidgetGenerator } from '@bento-core/widgets';
 
 const Dashboard = ({
   classes, data, theme,

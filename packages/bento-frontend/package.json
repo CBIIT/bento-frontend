@@ -39,7 +39,7 @@
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.1",
     "graphiql": "^1.0.3",
-    "graphql": "^14.7.0",
+    "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "identity-obj-proxy": "3.0.0",

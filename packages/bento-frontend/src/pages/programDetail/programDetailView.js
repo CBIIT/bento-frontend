@@ -24,7 +24,7 @@ import {
 } from '../dashboardTab/store/dashboardReducer';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import colors from '../../utils/colors';
-import { WidgetGenerator } from '../../bento-core/Widgets';
+import { WidgetGenerator } from '@bento-core/widgets';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;

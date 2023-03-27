@@ -25,7 +25,7 @@ import PropertySubsection from '../../components/PropertySubsection/armDetailSub
 import NumberOfThings from '../../components/NumberOfThings';
 import Snackbar from '../../components/Snackbar';
 import colors from '../../utils/colors';
-import { WidgetGenerator } from '../../bento-core/Widgets';
+import { WidgetGenerator } from '@bento-core/widgets';
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
