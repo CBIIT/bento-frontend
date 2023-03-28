@@ -6,11 +6,10 @@
 /* eslint-disable vars-on-top */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AccordionSummary,
   Button,
-  Divider,
   withStyles,
 } from '@material-ui/core';
 import {
@@ -24,19 +23,21 @@ import { generateClearAllFilterBtn } from '../../../bento-core/FacetFilter/gener
 import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
 import FacetFilterThemeProvider from './FilterThemeConfig';
+import BentoCaseSearch from './BentoCaseSearch';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
     marginBottom: -1,
-    minHeight: 48,
-    paddingLeft: 4,
+    paddingTop: 6,
+    paddingLeft: 14,
     paddingRight: 14,
-    paddingTop: 0,
+    minHeight: 48,
     '&$expanded': {
       minHeight: 48,
     },
   },
   content: {
+    display: 'block',
     '&$expanded': {
       margin: '4px 0px 15px 0px',
     },
@@ -89,12 +90,38 @@ const BentoFacetFilter = ({
   * 2. Facet Section Name
   */
   const CustomFacetSection = ({ section }) => {
+    const { name, expandSection } = section;
+    const { hasSearch = false } = facetSectionVariables[name];
+
+    const [expanded, setExpanded] = useState(expandSection);
+    const [showSearch, setShowSearch] = useState(true);
+
+    const toggleSearch = (e) => {
+      e.stopPropagation();
+      setShowSearch(!showSearch);
+    };
+
+    const collapseHandler = () => {
+      setExpanded(!expanded);
+    };
+
     return (
       <>
-        <CustomExpansionPanelSummary>
+        <CustomExpansionPanelSummary onClick={collapseHandler}>
           <div className={classes.sectionSummaryTextContainer}>
-            {section.name}
+            {name}
+            {hasSearch && (
+              <div className={classes.findCaseButton} onClick={toggleSearch}>
+                <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/FacetLocalFindSearchIcon.svg" className={classes.findCaseIcon} alt="search" />
+              </div>
+            )}
           </div>
+          {hasSearch && (
+            <BentoCaseSearch
+              classes={classes}
+              hidden={!expanded || !showSearch}
+            />
+          )}
         </CustomExpansionPanelSummary>
       </>
     );

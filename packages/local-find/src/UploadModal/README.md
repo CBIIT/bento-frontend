@@ -2,7 +2,7 @@
 
 This component provides a Bento-oriented implementation of the Material-UI Modal component to be used on the Dashboard/Explore page for uploading a text/csv files (by default).
 
-For the component's technical details, please see [DESIGN.md](./DESIGN.md).
+For the component's technical details, please see [DESIGN.md](./DESIGN.md). For details about the Redux usage, please see [README.md](../README.md) in the parent folder.
 
 # Usage
 
@@ -13,7 +13,7 @@ For the component's technical details, please see [DESIGN.md](./DESIGN.md).
 
   ```javascript
   // Import the component
-  import { UploadModalGenerator } from '...'; // Note: update the path
+  import { UploadModalGenerator } from '@bento-core/local-find';
 
   // Generate the component with the default options
   const { UploadModal } = UploadModalGenerator();
@@ -53,16 +53,6 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
      * @return void
      */
     modalClosed: () => {},
-
-    /**
-     * Callback function to apply the search to the dashboard page
-     *
-     * Note: After applying the search, you should close the modal
-     *
-     * @param {array} matchedArray array of matched search results (returned from searchMatches)
-     * @return void
-     */
-    applySearch: (matchedArray) => {},
 
     /**
      * Perform a API search on the array of input terms

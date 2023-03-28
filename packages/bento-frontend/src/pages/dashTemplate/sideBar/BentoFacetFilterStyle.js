@@ -74,10 +74,10 @@ export default () => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 2,
-    fontFamily: 'Lato',
+    fontFamily: 'Open Sans, Lato',
     fontSize: 20,
     fontWeight: 300,
-    marginLeft: 10,
+    marginLeft: 3,
     color: '#000000',
   },
   CasesCheckbox: {
@@ -85,9 +85,6 @@ export default () => ({
   },
   CasesCheckedIcon: {
     color: '#10A075',
-  },
-  listItemGutters: {
-    padding: '10px 20px 10px 0px',
   },
   checkboxRoot: {
     marginLeft: '5px',
@@ -113,5 +110,65 @@ export default () => ({
   },
   activeFacetFiles: {
     color: '#e636e4',
+  },
+  searchContainer: {
+    paddingTop: '15px',
+    margin: '0 2px',
+    marginRight: 6,
+  },
+  findCaseButton: {
+    marginLeft: '105px',
+    backgroundColor: '#10A075',
+    boxSizing: 'border-box',
+    height: 30,
+    width: 40,
+    border: '1.25px solid #0D8461',
+    cursor: 'pointer',
+    borderRadius: 11,
+    display: 'flex',
+    marginRight: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  findCaseIcon: {
+    width: 17,
+    height: 17,
+  },
+  uploadButton: {
+    boxSizing: 'border-box',
+    fontWeight: '400',
+    height: 32,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: '#10A075',
+    color: '#fff',
+    border: '1px solid #0D8461',
+    borderRadius: 10,
+    fontFamily: 'Lato',
+    fontSize: 11,
+    boxShadow: 'none',
+    paddingLeft: 16,
+    paddingRight: 12,
+    '&:hover': {
+      backgroundColor: '#10A075',
+    },
+  },
+  iconSpan: {
+    marginTop: '5.2px',
+  },
+  uploadIcon: {
+    height: 19,
+    width: 19,
+  },
+  customListPadding: {
+    paddingTop: 8,
+  },
+  customDivider: {
+    backgroundColor: '#B1B1B1',
+    height: '2px',
+    marginLeft: 0,
+    marginRight: 0,
+    marginBottom: 6,
   },
 });

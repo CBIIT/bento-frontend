@@ -127,7 +127,7 @@ export default (theme) => ({
     fontSize: 16,
   },
   customTooltip: {
-    border: '#03A383 1px solid',
+    padding: 5,
   },
   customArrow: {
     '&::before': {

@@ -13,7 +13,12 @@ This component uses **local** states for things such as:
 - The current upload summary tab
 - Etc
 
-No global/redux states are implemented by this component.
+This component uses the **redux** state `localFind` for:
+
+- The current file upload metadata (Matched IDs, name, content, etc)
+- Tracking the current search set of IDs
+
+For specifics on the redux state, please see the [README.md](../README.md) in the parent folder.
 
 ## Retrieval
 
