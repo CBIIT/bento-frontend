@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { useTheme } from '../../../components/ThemeContext';
 import styles from './WidgetStyle';
-import { WidgetGenerator } from '../../../bento-core/Widgets';
+import { WidgetGenerator } from '@bento-core/widgets';
 import { widgetsData } from '../../../bento/dashboardData';
 import colors from '../../../utils/colors';
 import { getWidgetsInitData } from '../../dashboardTab/store/dashboardReducer';

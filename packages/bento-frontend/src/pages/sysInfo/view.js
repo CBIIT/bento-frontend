@@ -6,9 +6,9 @@ import {
 } from '@material-ui/core';
 import { CustomDataTable, getColumns } from 'bento-components';
 import env from '../../utils/env';
-import bentoComponentsPackageJson from '../../../node_modules/bento-components/package.json';
-import materialUICorePackageJson from '../../../node_modules/@material-ui/core/package.json';
-// import jbrowsePackageJson from '../../../node_modules/@jbrowse/core/package.json';
+import bentoComponentsPackageJson from 'bento-components/package.json';
+import materialUICorePackageJson from '@material-ui/core/package.json';
+// import jbrowsePackageJson from '@jbrowse/core/package.json';
 import packageJson from '../../../package.json';
 import { coreRequirements, microServiceRequirements, dependencyRequirements } from '../../bento/sysinfoData';
 
