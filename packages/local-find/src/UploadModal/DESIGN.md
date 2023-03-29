@@ -18,7 +18,7 @@ This component uses the **redux** state `localFind` for:
 - The current file upload metadata (Matched IDs, name, content, etc)
 - Tracking the current search set of IDs
 
-For specifics on the redux state, please see the [README.md](../README.md) in the parent folder.
+For specifics on the redux state, please see the [README.md](../../README.md) in the parent folder.
 
 ## Retrieval
 

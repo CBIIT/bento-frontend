@@ -15,7 +15,7 @@ This component uses the **redux** state `localFind` for:
 
 - The list of currently "selected" case IDs
 
-For specifics on the redux state, please see the [README.md](../README.md) in the parent folder.
+For specifics on the redux state, please see the [README.md](../../README.md) in the parent folder.
 
 ## Retrieval
 

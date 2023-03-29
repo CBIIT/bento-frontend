@@ -15,14 +15,14 @@ import { SearchBoxGenerator, UploadModalGenerator } from '@bento-core/local-find
 
 Each of the components has their own respective README.md files. Please see the following links for detailed instructions on how to use them:
 
-* [SearchBox README](./SearchBox/README.md) or [SearchBox DESIGN](./SearchBox/DESIGN.md)
-* [UploadModal README](./UploadModal/README.md) or [UploadModal DESIGN](./UploadModal/DESIGN.md)
+* [SearchBox README](./src/SearchBox/README.md) or [SearchBox DESIGN](./src/SearchBox/DESIGN.md)
+* [UploadModal README](./src/UploadModal/README.md) or [UploadModal DESIGN](./src/UploadModal/DESIGN.md)
 
 # Redux
 
 ## Basic Usage
 
-Local Find provides a Redux reducer generator for implementing within the Bento global state. To add the reducer to the global state, add the following code to the `reducers` object in the Redux Store [store/index.js](../../store/index.js):
+Local Find provides a Redux reducer generator for implementing within the Bento global state. To add the reducer to the global state, add the following code to the `reducers` object in the Redux Store (usually found in `store/index.js`):
 
 ```javascript
 import { LocalFindReducerGenerator } from '@bento-core/local-find';
@@ -47,7 +47,7 @@ The localFind state can then be accessed from the global state using the `localF
     upload: [
       // Upload selection
       // e.g. [ "BENTO-CASE-3405467", ... ]
-    ]
+    ],
     uploadMetadata: {
       // Current upload modal metadata
       // e.g.

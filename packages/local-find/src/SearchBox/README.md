@@ -2,7 +2,7 @@
 
 This component provides a Bento-oriented implementation of the Material-UI Modal component to be used on the Dashboard/Explore page for uploading a text/csv files (by default).
 
-For the component's technical details, please see [DESIGN.md](./DESIGN.md). For details about the Redux usage, please see [README.md](../README.md) in the parent folder.
+For the component's technical details, please see [DESIGN.md](./DESIGN.md). For details about the Redux usage, please see [README.md](../../README.md) in the parent folder.
 
 # Usage
 
