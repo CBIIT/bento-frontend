@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button } from '@material-ui/core';
@@ -80,7 +78,7 @@ const BentoCaseSearch = (props) => {
           classes={{ divider: classes.customDivider, listPadding: classes.customListPadding }}
           items={['INPUT SET']}
           id="localFindCaseUploadSet"
-          onDelete={() => store.dispatch(resetUploadData([]))}
+          onDelete={() => store.dispatch(resetUploadData())}
         />
       ) : null}
       <SearchBox classes={classes} />

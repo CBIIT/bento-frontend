@@ -15,7 +15,10 @@ export const updateUploadMetadata = (data) => ({
   payload: data,
 });
 
-export const resetUploadData = (data) => ({
+export const resetUploadData = () => ({
   type: ActionTypes.RESET_LOCALFIND_UPLOAD_DATA,
-  payload: data,
+});
+
+export const resetAllData = () => ({
+  type: ActionTypes.RESET_LOCALFIND_ALL_DATA,
 });

@@ -4,4 +4,10 @@ export { SearchBoxGenerator } from './SearchBox/SearchBoxGenerator';
 export { default as SearchList } from './SearchBox/components/SearchList';
 export { DEFAULT_CONFIG_SEARCHBAR } from './SearchBox/config';
 export { default as LocalFindReducerGenerator } from './store/reducers/LocalFindReducerGenerator';
-export * from './store/actions/Actions';
+export {
+  updateAutocompleteData,
+  updateUploadData,
+  updateUploadMetadata,
+  resetUploadData,
+  resetAllData,
+} from './store/actions/Actions';

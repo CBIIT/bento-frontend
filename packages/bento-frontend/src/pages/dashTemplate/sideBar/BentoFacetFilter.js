@@ -16,6 +16,8 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
 } from '@material-ui/icons';
 import clsx from 'clsx';
+import { resetAllData } from '@bento-core/local-find';
+import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
 import FacetFilter from '../../../bento-core/FacetFilter/FacetFilterController';
 import { facetsConfig, facetSectionVariables } from '../../../bento/dashTemplate';
@@ -63,7 +65,10 @@ const BentoFacetFilter = ({
           id="button_sidebar_clear_all_filters"
           variant="outlined"
           disabled={disable}
-          onClick={onClearAllFilters}
+          onClick={() => {
+            onClearAllFilters();
+            store.dispatch(resetAllData());
+          }}
           className={classes.customButton}
           classes={{ root: classes.clearAllButtonRoot }}
         >

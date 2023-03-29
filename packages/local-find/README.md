@@ -76,9 +76,12 @@ If you need to programatically dispatch a Local Find redux event, the internal e
 ```javascript
 import {
   resetUploadData
-} from 'LocalFind';
+} from '@bento-core/local-find';
+import {
+  store
+} from 'store/index';
 
 store.dispatch(resetUploadData([]))
 ```
 
-> **Note**: You can find the full list of action creators in the [Actions.js](./store/actions/Actions.js) file.
+> **Note**: You can find the full list of action creators in the [Actions.js](./src/store/actions/Actions.js) file.

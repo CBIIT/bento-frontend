@@ -60,6 +60,15 @@ export default function () {
           };
         case ActionTypes.RESET_LOCALFIND_UPLOAD_DATA:
           updatedState = updateUploadData([], state);
+          updatedState = updateUploadMetadata({}, updatedState);
+          return {
+            ...state,
+            ...updatedState,
+          };
+        case ActionTypes.RESET_LOCALFIND_ALL_DATA:
+          updatedState = updateUploadData([], state);
+          updatedState = updateAutocompleteData([], updatedState);
+          updatedState = updateUploadMetadata({}, updatedState);
           return {
             ...state,
             ...updatedState,
