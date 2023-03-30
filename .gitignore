@@ -10,6 +10,8 @@ node_modules
 
 # production
 dist
+build
+.cache
 
 # vscode
 /.vscode
