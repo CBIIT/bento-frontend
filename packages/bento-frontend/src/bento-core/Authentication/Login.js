@@ -119,7 +119,7 @@ function Login({
                     <Grid container item xs={12} justifyContent="center">
                       <Button
                         variant="outlined"
-                        className={[classes.LoginButton, classes.Color_092E50]}
+                        className={[classes.LoginButton]}
                         disableRipple
                         onClick={() => signInCall(provider)}
                       >

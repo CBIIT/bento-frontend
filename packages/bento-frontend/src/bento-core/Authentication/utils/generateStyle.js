@@ -27,7 +27,7 @@ const generateStyle = (customStyle = {}) => {
     style.LoginBoxTitle = { ...style.LoginBoxTitle, ...customStyle.LoginBoxTitle };
   }
 
-  if (customStyle.helperMessage) {
+  if (customStyle.LoginButton) {
     style.LoginButton = { ...style.LoginButton, ...customStyle.LoginButton };
   }
 

@@ -40,6 +40,7 @@ const loginStyle = {
 
   },
   LoginButton: {
+    color: '#092E50',
     width: '257px',
     height: '35px',
     background: '#FFFFFF',
@@ -101,10 +102,7 @@ const loginStyle = {
   },
   extraSpaceInBorrom: {
     height: '50px',
-  },
-  Color_092E50: {
-    color: '#092E50 !important',
-  },
+  }
 };
 
 export default loginStyle;
