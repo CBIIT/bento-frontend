@@ -14,7 +14,9 @@ if (process.argv.length < 3) {
 const projectName = process.argv[2];
 const currentPath = process.cwd();
 const projectPath = path.join(currentPath, projectName);
+const dummyDirectoryPath = path.join(currentPath, projectName);
 const git_repo = 'git@github.com:CBIIT/bento-frontend.git';
+const git_branch = 'test_4.0';
 
 try {
     fs.mkdirSync(projectPath);
@@ -30,12 +32,21 @@ try {
   async function main() {
     try {
       console.log('Downloading files...');
-      execSync(`git clone --depth 1 ${git_repo} ${projectPath}`);
+      // execSync(`git clone --depth 1 -b ${git_branch} ${git_repo} ${projectPath}`);
+      // execSync(`mkdir ${dummyDirectoryPath}`);
+      // execSync(`cd ${dummyDirectoryPath}`);
 
       process.chdir(projectPath);
+      execSync(`git init`);
+      execSync(`git remote add -f origin ${git_repo}`);
+      execSync(`git config core.sparseCheckout true`);
+      execSync(`echo "packages/bento-frontend" >> .git/info/sparse-checkout`);
+      execSync(`git pull origin ${git_branch}`);
+      execSync(`mv packages/bento-frontend/* ${projectPath}`);
+      execSync(`rm -rf packages`);
 
       console.log('Installing dependencies...');
-      execSync('npm install');
+      execSync('npm install --legacy-peer-deps');
 
       console.log('Removing useless files');
       execSync('npx rimraf ./.git');
