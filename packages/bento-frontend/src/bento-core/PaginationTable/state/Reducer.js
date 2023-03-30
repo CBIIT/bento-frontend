@@ -21,7 +21,10 @@ const reducer = (state, action) => {
         page: payload.page,
       };
     case actionTypes.VIEW_COLUMN_CHANGE:
-      return state;
+      return {
+        ...state,
+        ...payload,
+      };
     case actionTypes.ON_ROW_SELECT:
       return {
         ...state,

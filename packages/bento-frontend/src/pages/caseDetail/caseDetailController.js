@@ -21,7 +21,13 @@ const CaseDetailContainer = ({ match }) => {
     );
   }
 
-  return <CaseDetailView data={data[dataRoot]} filesOfSamples={data[filesOfSamples]} />;
+  return (
+    <CaseDetailView
+      data={data[dataRoot]}
+      filesOfSamples={data[filesOfSamples]}
+      subjectId={match.params.id}
+    />
+  );
 };
 
 export default CaseDetailContainer;

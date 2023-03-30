@@ -5,18 +5,15 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { getOptions, getColumns } from 'bento-components';
-import GridWithFooter from '../../components/GridWithFooter/GridView';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
-import globalData from '../../bento/siteWideConfig';
+// import globalData from '../../bento/siteWideConfig';
 import {
+  filesTable,
   header,
   subsections,
-  table,
-  tooltipContent,
 } from '../../bento/armDetailData';
 import {
   singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
@@ -26,6 +23,8 @@ import NumberOfThings from '../../components/NumberOfThings';
 import Snackbar from '../../components/Snackbar';
 import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
+import { TableContextProvider } from '../../bento-core/PaginationTable/';
+import FilesTableView from './FilesView/FilesTableView';
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
@@ -35,9 +34,9 @@ const ArmDetail = ({ data, classes }) => {
     open: false,
     value: 0,
   });
-  function openSnack(value1) {
-    setsnackbarState({ open: true, value: value1 });
-  }
+  // function openSnack(value1) {
+  //   setsnackbarState({ open: true, value: value1 });
+  // }
   function closeSnack() {
     setsnackbarState({ open: false });
   }
@@ -178,6 +177,16 @@ const ArmDetail = ({ data, classes }) => {
           </Grid>
           <div id="arm_detail_table" className={classes.tableContainer}>
             <div className={classes.tableDiv}>
+              <TableContextProvider>
+                <FilesTableView
+                  subjectId={filesTable.dataKey}
+                  data={data[filesTable.filesField]}
+                />
+              </TableContextProvider>
+            </div>
+          </div>
+          {/* <div id="arm_detail_table" className={classes.tableContainer}>
+            <div className={classes.tableDiv}>
               { table.display
                 ? (
                   <>
@@ -190,7 +199,8 @@ const ArmDetail = ({ data, classes }) => {
                           <GridWithFooter
                             tableConfig={table}
                             data={data[table.filesField]}
-                            columns={getColumns(table, classes, data, '', '', () => {}, '', globalData.replaceEmptyValueWith)}
+                            columns={getColumns(table, classes, data, '', '', ()
+                            => {}, '', globalData.replaceEmptyValueWith)}
                             options={getOptions(table, classes)}
                             customOnRowsSelect={table.customOnRowsSelect}
                             openSnack={openSnack}
@@ -212,7 +222,7 @@ const ArmDetail = ({ data, classes }) => {
                   </>
                 ) : null}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

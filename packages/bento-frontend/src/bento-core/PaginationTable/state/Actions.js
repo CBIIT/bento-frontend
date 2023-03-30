@@ -9,7 +9,7 @@ export const actionTypes = {
   ON_PAGE_AND_TOTAL_COUNT_CHANGE: 'ON_PAGE_AND_TOTAL_COUNT_CHANGE',
 };
 
-export const onClumnViewChange = (columns) => ({
+export const onColumnViewChange = (columns) => ({
   type: actionTypes.VIEW_COLUMN_CHANGE,
   payload: columns,
 });

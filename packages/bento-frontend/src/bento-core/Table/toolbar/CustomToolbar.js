@@ -4,8 +4,10 @@ import {
   createTheme,
   ThemeProvider,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
+import ManageColumnView from './ManageColumnView';
 
 const defaultTheme = {
   MuiToolbar: {
@@ -30,21 +32,29 @@ const defaultTheme = {
 
 const CustomToolbar = ({
   numSelected,
+  onColumnViewChange,
   customTheme = {},
+  table,
 }) => (
-  <>
+  <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
     {numSelected > 0 && (
-      <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
-        <Toolbar>
-          <Typography
-            component="div"
-          >
-            {`${numSelected} row(s) selected`}
-          </Typography>
-        </Toolbar>
-      </ThemeProvider>
+      <Toolbar>
+        <Typography
+          component="div"
+        >
+          {`${numSelected} row(s) selected`}
+        </Typography>
+      </Toolbar>
     )}
-  </>
+    {(numSelected === 0 && table.manageViewColumns) && (
+      <Tooltip title="View Columns">
+        <ManageColumnView
+          table={table}
+          onColumnViewChange={onColumnViewChange}
+        />
+      </Tooltip>
+    )}
+  </ThemeProvider>
 );
 
 CustomToolbar.propTypes = {

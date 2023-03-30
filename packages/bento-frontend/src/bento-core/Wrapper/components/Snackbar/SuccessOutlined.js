@@ -1,5 +1,5 @@
 import * as React from 'react';
-import createSvgIcon from '../../util/createSvgIcon';
+import createSvgIcon from '../../../util/createSvgIcon';
 
 /**
  * @ignore - internal component.

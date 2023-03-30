@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 
 export const TableContext = React.createContext({
-  tblState: {},
-  setTblState: () => {},
+  context: {},
+  setContext: () => {},
 });
 
 const TableContextProvider = ({
   children,
 }) => {
-  const [table, setState] = useState({});
-  const setStateHandler = (state) => {
-    setState(state);
+  const [context, setContext] = useState({});
+  const setContextHandler = (tblContext) => {
+    setContext(tblContext);
   };
   return (
     <TableContext.Provider
-      value={{ tblState: table, setTblState: setStateHandler }}
+      value={{
+        context,
+        setContext: setContextHandler,
+      }}
     >
       {children}
     </TableContext.Provider>

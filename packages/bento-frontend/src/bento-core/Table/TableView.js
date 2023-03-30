@@ -8,7 +8,7 @@ import TableHeader from './header/CustomTblHeader';
 import CustomPagination from './pagination/CustomPagination';
 import CustomTableBody from './body/CustomTblBody';
 import CustomToolbar from './toolbar/CustomToolbar';
-import DisplayErrMsg from './util/DisplayErrMsg';
+import DisplayErrMsg from './errMsg/DisplayErrMsg';
 
 const TableView = ({
   tableRows = [],
@@ -17,7 +17,9 @@ const TableView = ({
   onPageChange,
   onRowSelectChange,
   onToggleSelectAll,
+  totalRowCount,
   onSortByColumn,
+  onColumnViewChange,
   viewConfig = {},
   themeConfig = {},
 }) => (
@@ -36,6 +38,8 @@ const TableView = ({
     )}
     <CustomToolbar
       numSelected={table.selectedRows.length}
+      table={table}
+      onColumnViewChange={onColumnViewChange}
       customTheme={themeConfig.toolbar}
     />
     <TableContainer component={Paper}>
@@ -44,6 +48,7 @@ const TableView = ({
           customTheme={themeConfig.tblHeader}
           table={table}
           rows={tableRows}
+          count={totalRowCount}
           toggleSelectAll={onToggleSelectAll}
           sortByColumn={onSortByColumn}
         />
@@ -57,6 +62,7 @@ const TableView = ({
     </TableContainer>
     {tableRows.length === 0 && (
       <DisplayErrMsg
+        customTheme={themeConfig.displayErr}
         table={table}
       />
     )}

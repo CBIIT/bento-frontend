@@ -6,11 +6,14 @@ import layout from '../components/Layout/LayoutState';
 import dashboard from '../pages/dashboard/dashboardState';
 import stats from '../components/Stats/StatsState';
 import { sideBarReducerGenerator } from '../bento-core/FacetFilter/store/reducers/SideBarReducer';
+import { cartReducerGenerator } from '../bento-core/Cart/store/reducers';
 
 const { statusReducer } = sideBarReducerGenerator();
+const { cartReducer } = cartReducerGenerator();
 
 const reducers = {
   statusReducer,
+  cartReducer,
   layout,
   dashboard,
   stats,
