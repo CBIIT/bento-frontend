@@ -1,10 +1,10 @@
 import React from 'react';
-import LoginView from './view';
+import Login from '../../../bento-core/Authentication/Login';
 
 function loginController(props) {
   return (
     <div>
-      <LoginView {...props} />
+      <Login {...props} />
     </div>
   );
 }
