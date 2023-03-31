@@ -23,16 +23,6 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     modalClosed: () => {},
 
     /**
-     * Callback function to apply the search to the dashboard page
-     *
-     * Note: After applying the search, you should close the modal
-     *
-     * @param {array} matchedArray array of matched search results (returned from searchMatches)
-     * @return void
-     */
-    applySearch: (matchedArray) => {},
-
-    /**
      * Perform a API search on the array of input terms
      *
      * Note: You can assert that inputArray will ALWAYS be an

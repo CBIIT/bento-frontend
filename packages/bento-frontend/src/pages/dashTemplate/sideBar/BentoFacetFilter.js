@@ -6,17 +6,21 @@
 /* eslint-disable vars-on-top */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable arrow-body-style */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AccordionSummary,
   Button,
-  Divider,
   withStyles,
 } from '@material-ui/core';
 import {
   ArrowDropDown as ArrowDropDownIcon,
 } from '@material-ui/icons';
 import clsx from 'clsx';
+import {
+  resetAllData,
+  SearchView, SearchBoxGenerator, UploadModalGenerator,
+} from '@bento-core/local-find';
+import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
 import FacetFilter from '../../../bento-core/FacetFilter/FacetFilterController';
 import { facetsConfig, facetSectionVariables } from '../../../bento/dashTemplate';
@@ -24,25 +28,61 @@ import { generateClearAllFilterBtn } from '../../../bento-core/FacetFilter/gener
 import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
 import FacetFilterThemeProvider from './FilterThemeConfig';
+import {
+  getAllSubjectIds, getAllIds,
+} from '../../dashboardTab/store/dashboardReducer';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
     marginBottom: -1,
-    minHeight: 48,
-    paddingLeft: 4,
+    paddingTop: 6,
+    paddingLeft: 14,
     paddingRight: 14,
-    paddingTop: 0,
+    minHeight: 48,
     '&$expanded': {
       minHeight: 48,
     },
   },
   content: {
+    display: 'block',
     '&$expanded': {
       margin: '4px 0px 15px 0px',
     },
   },
   expanded: {},
 })(AccordionSummary);
+
+// Generate SearchBox Component
+const { SearchBox } = SearchBoxGenerator({
+  functions: {
+    getSuggestions: async (searchType) => {
+      try {
+        const response = await getAllIds(searchType).catch(() => []);
+        return response && response[searchType] instanceof Array
+          ? response[searchType].map((id) => ({ type: searchType, title: id }))
+          : [];
+      } catch (e) {
+        return [];
+      }
+    },
+  },
+});
+
+// Generate UploadModal Component
+const { UploadModal } = UploadModalGenerator({
+  functions: {
+    searchMatches: async (inputArray) => {
+      try {
+        const matched = await getAllSubjectIds(inputArray).catch(() => []);
+        const unmatched = new Set(inputArray);
+        matched.forEach((obj) => unmatched.delete(obj.subject_id));
+        return { matched, unmatched: [...unmatched] };
+      } catch (e) {
+        return { matched: [], unmatched: [] };
+      }
+    },
+  },
+});
 
 const BentoFacetFilter = ({
   classes,
@@ -62,7 +102,10 @@ const BentoFacetFilter = ({
           id="button_sidebar_clear_all_filters"
           variant="outlined"
           disabled={disable}
-          onClick={onClearAllFilters}
+          onClick={() => {
+            onClearAllFilters();
+            store.dispatch(resetAllData());
+          }}
           className={classes.customButton}
           classes={{ root: classes.clearAllButtonRoot }}
         >
@@ -89,12 +132,40 @@ const BentoFacetFilter = ({
   * 2. Facet Section Name
   */
   const CustomFacetSection = ({ section }) => {
+    const { name, expandSection } = section;
+    const { hasSearch = false } = facetSectionVariables[name];
+
+    const [expanded, setExpanded] = useState(expandSection);
+    const [showSearch, setShowSearch] = useState(true);
+
+    const toggleSearch = (e) => {
+      e.stopPropagation();
+      setShowSearch(!showSearch);
+    };
+
+    const collapseHandler = () => {
+      setExpanded(!expanded);
+    };
+
     return (
       <>
-        <CustomExpansionPanelSummary>
+        <CustomExpansionPanelSummary onClick={collapseHandler}>
           <div className={classes.sectionSummaryTextContainer}>
-            {section.name}
+            {name}
+            {hasSearch && (
+              <div className={classes.findCaseButton} onClick={toggleSearch}>
+                <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/FacetLocalFindSearchIcon.svg" className={classes.findCaseIcon} alt="search" />
+              </div>
+            )}
           </div>
+          {hasSearch && (
+            <SearchView
+              classes={classes}
+              SearchBox={SearchBox}
+              UploadModal={UploadModal}
+              hidden={!expanded || !showSearch}
+            />
+          )}
         </CustomExpansionPanelSummary>
       </>
     );
