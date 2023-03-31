@@ -16,7 +16,10 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
 } from '@material-ui/icons';
 import clsx from 'clsx';
-import { resetAllData } from '@bento-core/local-find';
+import {
+  resetAllData,
+  SearchView, SearchBoxGenerator, UploadModalGenerator,
+} from '@bento-core/local-find';
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
 import FacetFilter from '../../../bento-core/FacetFilter/FacetFilterController';
@@ -25,7 +28,9 @@ import { generateClearAllFilterBtn } from '../../../bento-core/FacetFilter/gener
 import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
 import FacetFilterThemeProvider from './FilterThemeConfig';
-import BentoCaseSearch from './BentoCaseSearch';
+import {
+  getAllSubjectIds, getAllIds,
+} from '../../dashboardTab/store/dashboardReducer';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
@@ -46,6 +51,38 @@ const CustomExpansionPanelSummary = withStyles({
   },
   expanded: {},
 })(AccordionSummary);
+
+// Generate SearchBox Component
+const { SearchBox } = SearchBoxGenerator({
+  functions: {
+    getSuggestions: async (searchType) => {
+      try {
+        const response = await getAllIds(searchType).catch(() => []);
+        return response && response[searchType] instanceof Array
+          ? response[searchType].map((id) => ({ type: searchType, title: id }))
+          : [];
+      } catch (e) {
+        return [];
+      }
+    },
+  },
+});
+
+// Generate UploadModal Component
+const { UploadModal } = UploadModalGenerator({
+  functions: {
+    searchMatches: async (inputArray) => {
+      try {
+        const matched = await getAllSubjectIds(inputArray).catch(() => []);
+        const unmatched = new Set(inputArray);
+        matched.forEach((obj) => unmatched.delete(obj.subject_id));
+        return { matched, unmatched: [...unmatched] };
+      } catch (e) {
+        return { matched: [], unmatched: [] };
+      }
+    },
+  },
+});
 
 const BentoFacetFilter = ({
   classes,
@@ -122,8 +159,10 @@ const BentoFacetFilter = ({
             )}
           </div>
           {hasSearch && (
-            <BentoCaseSearch
+            <SearchView
               classes={classes}
+              SearchBox={SearchBox}
+              UploadModal={UploadModal}
               hidden={!expanded || !showSearch}
             />
           )}

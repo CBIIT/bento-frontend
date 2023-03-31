@@ -15,6 +15,7 @@
   ],
   "plugins": [
     "@babel/plugin-transform-react-jsx",
+    "@babel/plugin-syntax-jsx",
     "@babel/plugin-proposal-class-properties"
   ]
 }
