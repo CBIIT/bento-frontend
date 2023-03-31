@@ -126,7 +126,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
           </div>
           <div className={classes.searchBoxRoot}>
             <Autocomplete
-              id="localSearch"
+              id="local_find_input"
               multiple
               disableClearable
               className={classes.autocomplete}

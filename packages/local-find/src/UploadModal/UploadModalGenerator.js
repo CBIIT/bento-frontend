@@ -176,6 +176,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   onChange={handleChange}
                   placeholder={inputPlaceholder}
                   className={classes.textArea}
+                  id="local_find_upload_textarea"
                 />
               </div>
               <div className={classes.uploadFile}>
@@ -205,7 +206,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 onClick={closeModalWrapper}
                 style={{ backgroundColor: '#566672' }}
                 className={classes.button}
-                id="uploadCaseSetCancel"
+                id="local_find_upload_cancel"
               >
                 Cancel
               </Button>
@@ -215,7 +216,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 onClick={clearData}
                 style={{ backgroundColor: '#437BBE' }}
                 className={classes.button}
-                id="uploadCaseSetClear"
+                id="local_find_upload_clear"
               >
                 Clear
               </Button>
@@ -225,7 +226,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 onClick={applySearchWrapper}
                 style={{ backgroundColor: '#03A383' }}
                 className={classes.button}
-                id="uploadCaseSetSubmit"
+                id="local_find_upload_submit"
               >
                 Submit
               </Button>

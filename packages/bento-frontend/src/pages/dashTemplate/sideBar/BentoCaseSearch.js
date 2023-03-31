@@ -87,7 +87,7 @@ const BentoCaseSearch = (props) => {
         disableElevation
         onClick={() => setShowCasesModal(true)}
         className={classes.uploadButton}
-        id="localFindUploadCaseSetButton"
+        id="local_find_upload_open"
       >
         { matchedFiles.length !== 0 ? 'View Case Set' : 'Upload Case Set' }
         <span className={classes.iconSpan}>
