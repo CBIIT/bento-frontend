@@ -7,12 +7,11 @@ import dashboard from '../pages/dashboard/dashboardState';
 import stats from '../components/Stats/StatsState';
 import { sideBarReducerGenerator } from '../bento-core/FacetFilter/store/reducers/SideBarReducer';
 import { cartReducerGenerator } from '../bento-core/Cart/store/reducers';
+import { LocalFindReducerGenerator } from '@bento-core/local-find';
+
+const { localFind } = LocalFindReducerGenerator();
 const { statusReducer } = sideBarReducerGenerator();
 const { cartReducer } = cartReducerGenerator();
-import { LocalFindReducerGenerator } from '@bento-core/local-find';
-const { statusReducer } = sideBarReducerGenerator();
-const { localFind } = LocalFindReducerGenerator();
-
 
 const reducers = {
   localFind,
