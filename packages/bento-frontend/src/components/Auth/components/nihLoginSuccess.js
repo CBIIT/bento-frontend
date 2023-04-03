@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { redirect } from '../../Layout/privateRoute';
-import { useAuth } from '../AuthProvider';
+import {useLogin} from '@bento-core/authentication';
 
 function useQuery() {
   const { search } = useLocation();
@@ -24,7 +24,7 @@ function getErrorData(query) {
 function nihLoginSuccess() {
   const history = useHistory();
   const query = useQuery();
-  const { authServiceLogin } = useAuth();
+  const { authServiceLogin } = useLogin();
   const redirectPath = getRedirectPath(query);
   const nihCode = query.get('code');
   const originDomain = window.location.origin;

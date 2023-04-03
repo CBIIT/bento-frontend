@@ -1,7 +1,6 @@
-import globalData from '../../../bento/siteWideConfig';
-import { loginProvidersData } from '../../../bento/userLoginData';
+import authProviders from '../data/authProviders';
+import loginProvidersData from '../data/loginProvidersData';
 
-const { authProviders } = globalData;
 
 const getIdps = (authenticationProviders = loginProvidersData) => {
   const defaultIdP = {

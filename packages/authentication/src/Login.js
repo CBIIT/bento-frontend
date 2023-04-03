@@ -4,13 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { Grid, Button } from '@material-ui/core';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import generateStyle from './utils/generateStyle';
-import { useAuth } from '../../components/Auth/AuthProvider';
-import AlertMessage from '../AlertMessage/AlertMessageView';
-import Stats from '../../components/Stats/AllStatsController';
+import useLogin from './hooks/useLogin';
+import AlertMessage from '../../bento-frontend/src/bento-core/AlertMessage';
 import useQuery from './hooks/useQuery';
 import getRedirectPath from './utils/getRedirectPath';
 import getIdps from './utils/getIdps';
-import { redirect } from '../../components/Layout/privateRoute';
+import redirect from './utils/redirect';
 
 /* Login componenent */
 function Login({
@@ -28,7 +27,7 @@ function Login({
   const [error, setError] = useState('');
 
   /* hooks */
-  const { signInWithGoogle, signInWithNIH } = useAuth();
+  const { signInWithGoogle, signInWithNIH } = useLogin();
   const history = useHistory();
   const query = useQuery();
 
@@ -90,7 +89,6 @@ function Login({
 
   return (
     <div className={classes.Container}>
-      <Stats />
       {/* ROW 1 */}
       <Grid
         container
