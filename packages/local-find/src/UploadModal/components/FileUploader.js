@@ -44,18 +44,18 @@ const FileUploader = (props) => {
     <div className={classes.fileUploader}>
       <div className={classes.uploaderComponent}>
         <input
-          id="uploadFileInput"
+          id="local_find_upload_input"
           type="file"
           accept={accept || '.csv,.txt'}
           onChange={handleChange}
           className={classes.uploadInput}
           value=""
         />
-        <Button id="uploadCaseSetBrowse" variant="contained" className={classes.uploadButton}>
+        <Button id="local_find_upload_browse" variant="contained" className={classes.uploadButton}>
           Browse
         </Button>
       </div>
-      <div className={classes.filesection} id="localFindPopUpFileName">
+      <div className={classes.filesection}>
         {
           filename ? (
             <div className={classes.fileNameContainer}>

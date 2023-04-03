@@ -114,7 +114,7 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
 
       return (
         <Autocomplete
-          id="search"
+          id="global_search_input"
           freeSolo
           options={results}
           loading={showLoading ? loading : false}

@@ -59,9 +59,13 @@ export const SearchResultsGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHRESULTS) 
                   key={`result_tab_${idx}`}
                   classes={prop.classes}
                   label={
-                    typeof prop.name === 'function'
-                      ? prop.name()
-                      : `${prop.name} ${prop.count}`
+                    <span>
+                      <span id={`global_search_tab_label_${idx}`}>
+                        {typeof prop.name === 'function' ? prop.name() : prop.name}
+                      </span>
+                      {' '}
+                      <span id={`global_search_tab_count_${idx}`}>{prop.count}</span>
+                    </span>
                   }
                   value={prop.value}
                 />

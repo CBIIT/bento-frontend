@@ -10,6 +10,7 @@ const GROUP = 'group';
 export const facetSectionVariables = {
   Cases: {
     isExpanded: true,
+    hasSearch: true,
   },
   Samples: {
     isExpanded: true,

@@ -33,7 +33,7 @@ const AboutCard = ({
   }
 
   return (
-    <Grid item container className={classes.card}>
+    <Grid item container className={classes.card} id={`global_search_card_${index}`}>
       <Grid item xs={1} className={classes.indexContainer}>
         {index + 1 }
       </Grid>

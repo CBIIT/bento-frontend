@@ -7,7 +7,12 @@ import client from '../../utils/graphqlClient';
 import { getFilters } from '../../bento-core/FacetFilter/utils/filter';
 import useGenerateTabData from './tabs/hooks/useGenerateTabData';
 
-const getDashData = (filterState) => {
+const getDashData = (states) => {
+  const {
+    filterState,
+    localFindUpload, localFindAutocomplete,
+  } = states;
+
   async function getData(activeFilters) {
     const result = await client.query({
       query: DASHBOARD_QUERY_NEW,
@@ -19,7 +24,14 @@ const getDashData = (filterState) => {
 
   const [dashData, setDashData] = useState(null);
 
-  const activeFilters = getFilters(filterState);
+  const activeFilters = {
+    ...getFilters(filterState),
+    subject_ids: [
+      ...(localFindUpload || []).map((obj) => obj.subject_id),
+      ...(localFindAutocomplete || []).map((obj) => obj.title),
+    ],
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     getData(activeFilters).then((result) => {
@@ -28,13 +40,12 @@ const getDashData = (filterState) => {
       }
     });
     return () => controller.abort();
-  }, [filterState]);
+  }, [filterState, localFindUpload, localFindAutocomplete]);
   return { dashData, activeFilters };
 };
 
 const DashTemplateController = ((props) => {
-  const { filterState } = props;
-  const { dashData, activeFilters } = getDashData(filterState);
+  const { dashData, activeFilters } = getDashData(props);
   const [activeTab, setActiveTab] = useState(0);
 
   const { generatedTabData } = useGenerateTabData({
@@ -58,6 +69,8 @@ const DashTemplateController = ((props) => {
 
 const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,
+  localFindUpload: state.localFind.upload,
+  localFindAutocomplete: state.localFind.autocomplete,
 });
 
 export default connect(mapStateToProps, null)(DashTemplateController);
