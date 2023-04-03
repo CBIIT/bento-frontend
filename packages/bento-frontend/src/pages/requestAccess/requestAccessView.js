@@ -160,6 +160,12 @@ function requestAccessView({ data, classes }) {
             Please submit a Data Access Request (DAR) to access protected pages
           </AlertMessage>
         );
+      case 'disabled':
+      return (
+        <AlertMessage severity="success" timeout={5000000}>
+          Request failed, disabled users are not allowed to submit data access reqeusts.
+        </AlertMessage>
+      );
       default:
         return null;
     }
@@ -172,14 +178,14 @@ function requestAccessView({ data, classes }) {
       setDisableSubmit(true);
       return;
     }
-
+   
     // if not cehck form values are corrct or not.
     const validInputValues = fieldsToChk.reduce((status, field) => {
       const fieldValue = formValues[field];
       return (fieldValue.length >= 1) && status;
     }, true);
 
-    if (validInputValues) {
+    if (validInputValues && userStatus!=="Disabled") {
       setDisableSubmit(false);
     } else {
       setDisableSubmit(true);
@@ -221,9 +227,11 @@ function requestAccessView({ data, classes }) {
 
     if (redirectdType && redirectdType === 'noAccess') { return showAlert(redirectdType); }
 
+    if (userStatus==='Disabled') { return showAlert('disabled'); }
+
     return null;
   }
-
+  
   return (
     <div className={classes.Container}>
       <Stats />
