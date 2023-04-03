@@ -113,7 +113,7 @@ const PaginatedPanel = (props) => {
     <>
       {Math.ceil(count / pageSize) !== 0 && (
       <div className={classes.totalResults}>
-        <span className={classes.totalCount}>{count}</span>
+        <span id='global_search_results_count' className={classes.totalCount}>{count}</span>
         {' '}
         Results
       </div>
@@ -125,7 +125,7 @@ const PaginatedPanel = (props) => {
       </Grid>
       {Math.ceil(count / pageSize) > 1 && (
       <div className={classes.paginationContainer}>
-        <Button sx={{ borderRadius: 100 }} onClick={onPrevious} className={classes.prevButton}>
+        <Button id='global_search_paginate_prev' onClick={onPrevious} className={classes.prevButton}>
           <span>
             <img
               className={classes.prevIcon}
@@ -149,7 +149,7 @@ const PaginatedPanel = (props) => {
           onChange={handleChangePage}
         />
 
-        <Button sx={{ borderRadius: 100 }} onClick={onNext} className={classes.nextButton}>
+        <Button id='global_search_paginate_next' onClick={onNext} className={classes.nextButton}>
           next
           <span>
             <img

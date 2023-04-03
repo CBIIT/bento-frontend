@@ -11,11 +11,16 @@ import { Search as SearchIcon } from '@material-ui/icons';
  * @returns
  */
 export const CustomSearchIcon = ({ ...props }) => {
-  const { classes, onClick, type } = props;
+  const {
+    id = 'global_search_input_find',
+    classes,
+    onClick,
+    type
+  } = props;
 
   if (type === 'image') {
     return (
-      <span className={classes.searchIconSpan} onClick={onClick}>
+      <span id={id} className={classes.searchIconSpan} onClick={onClick}>
         <img
           className={classes.searchIcon}
           src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchSearch.svg"
@@ -27,6 +32,7 @@ export const CustomSearchIcon = ({ ...props }) => {
 
   return (
     <SearchIcon
+      id={id}
       className={classes.searchIconSpan}
       onClick={onClick}
     />

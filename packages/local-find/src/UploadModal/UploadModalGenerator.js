@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import {
   Modal, Button, Typography,
   TextareaAutosize, IconButton, withStyles,
@@ -9,6 +10,7 @@ import FileUploader from './components/FileUploader';
 import SummaryTable from './components/SummaryTable';
 import DEFAULT_STYLES from './styles';
 import DEFAULT_CONFIG from './config';
+import { updateUploadData, updateUploadMetadata } from '../store/actions/Actions';
 
 /**
  * Generator function to create UploadModal component with custom configuration
@@ -25,10 +27,6 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const modalClosed = functions && typeof functions.modalClosed === 'function'
     ? functions.modalClosed
     : DEFAULT_CONFIG.functions.modalClosed;
-
-  const applySearch = functions && typeof functions.applySearch === 'function'
-    ? functions.applySearch
-    : DEFAULT_CONFIG.functions.applySearch;
 
   const searchMatches = functions && typeof functions.searchMatches === 'function'
     ? functions.searchMatches
@@ -54,25 +52,40 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.accept
     : DEFAULT_CONFIG.config.accept;
 
+  const stateProps = (state) => ({
+    metadata: state.localFind.uploadMetadata,
+  });
+
+  const dispatchProps = (dispatch) => ({
+    onApplySearch: (data) => dispatch(updateUploadData(data)),
+    updateMetadata: (data) => dispatch(updateUploadMetadata(data)),
+  });
+
   return {
-    UploadModal: withStyles(DEFAULT_STYLES, { withTheme: true })((({
-      classes, theme, open, ...props
-    }) => {
+    // @ts-ignore
+    // eslint-disable-next-line max-len
+    UploadModal: withStyles(DEFAULT_STYLES, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
+      const {
+        classes, open, metadata = {},
+        onApplySearch, updateMetadata,
+      } = props;
+
       const {
         FileUploader: uploaderClasses,
         SummaryTable: summaryClasses,
       } = classes;
 
-      const [filename, setUploadedFileName] = useState('');
-      const [fileContent, setFileContent] = useState('');
-      const [matchIds, setMatchIds] = useState([]);
-      const [unmatchedIds, setUnmatchedIds] = useState([]);
+      const [filename, setUploadedFileName] = useState(metadata.filename || '');
+      const [fileContent, setFileContent] = useState(metadata.fileContent || '');
+      const [matchIds, setMatchIds] = useState(metadata.matched || []);
+      const [unmatchedIds, setUnmatchedIds] = useState(metadata.unmatched || []);
 
       const clearData = () => {
         setFileContent('');
         setMatchIds([]);
         setUnmatchedIds([]);
         setUploadedFileName('');
+        updateMetadata({});
       };
 
       const closeModalWrapper = () => {
@@ -83,12 +96,18 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       };
 
       const applySearchWrapper = () => {
-        applySearch(matchIds);
+        onApplySearch(matchIds);
+        updateMetadata({
+          filename,
+          fileContent,
+          matched: matchIds,
+          unmatched: unmatchedIds,
+        });
         closeModalWrapper();
       };
 
       const generateToolTip = (message) => (
-        <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={message} arrow placement="bottom">
+        <ToolTip className={classes.customTooltip} classes={{ arrow: classes.customArrow }} title={message} arrow placement="bottom">
           <IconButton aria-label="help" className={classes.helpIconButton}>
             <HelpIcon className={classes.helpIcon} fontSize="small" />
           </IconButton>
@@ -121,8 +140,8 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
       const handleFileUpload = (fileName, content) => {
         setFileContent(content);
-        handleContent(content);
         setUploadedFileName(fileName);
+        handleContent(content);
       };
 
       return (
@@ -157,6 +176,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   onChange={handleChange}
                   placeholder={inputPlaceholder}
                   className={classes.textArea}
+                  id="local_find_upload_textarea"
                 />
               </div>
               <div className={classes.uploadFile}>
@@ -186,7 +206,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 onClick={closeModalWrapper}
                 style={{ backgroundColor: '#566672' }}
                 className={classes.button}
-                id="uploadCaseSetCancel"
+                id="local_find_upload_cancel"
               >
                 Cancel
               </Button>
@@ -196,7 +216,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 onClick={clearData}
                 style={{ backgroundColor: '#437BBE' }}
                 className={classes.button}
-                id="uploadCaseSetClear"
+                id="local_find_upload_clear"
               >
                 Clear
               </Button>
@@ -206,7 +226,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 onClick={applySearchWrapper}
                 style={{ backgroundColor: '#03A383' }}
                 className={classes.button}
-                id="uploadCaseSetSubmit"
+                id="local_find_upload_submit"
               >
                 Submit
               </Button>
