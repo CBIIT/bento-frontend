@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { Button } from '@material-ui/core';
+import {
+  downloadJson,
+  CartContext,
+} from '@bento-core/cart';
 import ToolTipView from './TooltipView';
-import { CartContext } from '../../Cart/ContextProvider';
-// import { getTableData } from '../../PaginationTable/TableService';
 import client from '../../../utils/graphqlClient';
-import { downloadJson } from '../../Cart/utils';
 
 const DownloadManifestView = (props) => {
   const {

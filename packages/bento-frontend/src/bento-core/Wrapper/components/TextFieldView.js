@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../../Cart/ContextProvider';
-import { onCommentChange } from '../../Cart/state/actions';
+import {
+  CartContext,
+  onCommentChange,
+} from '@bento-core/cart';
 
 const TextFieldView = ({
   clsName,

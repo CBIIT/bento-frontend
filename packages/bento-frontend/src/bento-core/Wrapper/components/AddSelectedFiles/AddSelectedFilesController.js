@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
+import { onAddCartFiles } from '@bento-core/cart';
 import { TableContext } from '../../../PaginationTable/ContextProvider';
 import AddSelectedFileComponent from './AddSelectedFilesView';
 import { getFilesID } from '../../WrapperService';
-import { onAddCartFiles } from '../../../Cart/store/actions';
 import { onRowSeclect } from '../../../PaginationTable/state/Actions';
 
 const AddSelectedFilesController = (props) => {

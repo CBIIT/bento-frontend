@@ -10,3 +10,8 @@ export {
   setCartConfig,
   onCommentChange,
 } from './state/actions';
+export {
+  createFileName,
+  convertToCSV,
+  downloadJson,
+} from './utils';

@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { onDeleteAllCartFile, onDeleteCartFile } from '../../bento-core/Cart';
+import {
+  onDeleteAllCartFile,
+  onDeleteCartFile,
+  CartContextProvider,
+} from '@bento-core/Cart';
 import { tableConfig } from '../../bento/fileCentricCartWorkflowData';
 import CartView from './cartView';
-import { CartContextProvider } from '../../bento-core/Cart';
 import { TableContextProvider } from '../../bento-core/PaginationTable';
 
 const CartController = (props) => (

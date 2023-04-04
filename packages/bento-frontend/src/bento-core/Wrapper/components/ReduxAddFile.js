@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { onAddCartFiles } from '@bento-core/cart';
 import { getFilters } from '../../FacetFilter/utils/filter';
-import { onAddCartFiles } from '../../Cart/store/actions';
 import AddFiles from './AddFiles';
 
 const AddFilesRedux = (props) => <AddFiles {...props} />;
