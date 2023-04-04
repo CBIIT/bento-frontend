@@ -15,6 +15,8 @@ const { cartReducer } = cartReducerGenerator();
 
 const reducers = {
   localFind,
+  cartReducer,
+  statusReducer,
   layout,
   dashboard,
   stats,
@@ -30,8 +32,5 @@ store.injectReducer = (key, reducer) => {
   reducers[key] = reducer;
   store.replaceReducer(combineReducers(reducers));
 };
-
-store.injectReducer('statusReducer', statusReducer);
-store.injectReducer('cartReducer', cartReducer);
 
 export default store;
