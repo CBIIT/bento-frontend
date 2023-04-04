@@ -36,9 +36,11 @@ const AddAllFilesComponent = (props) => {
       if (data && data.length > 0) {
         const isArray = Array.isArray(data[0][responseKeys[1]]);
         const ids = data.reduce((acc, id) => {
-          // if object convert to array
-          const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
-          acc.push(...items);
+          if (id && id[responseKeys[1]]) {
+            // if object convert to array
+            const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
+            acc.push(...items);
+          }
           return acc;
         }, []);
         if (ids.length > 1000) {
