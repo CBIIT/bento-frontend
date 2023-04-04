@@ -51,8 +51,8 @@ const PaginatedTable = ({
   useEffect(() => {
     const { page, rowsPerPage } = table;
     // validate table state - curr rowCount should be less than total row count after filter
-    if (totalRowCount < page * rowsPerPage) {
-      const currentRows = page * rowsPerPage;
+    if (totalRowCount <= page * rowsPerPage) {
+      const currentRows = (page * rowsPerPage) + 1;
       const newPage = Math.floor(totalRowCount / currentRows);
       dispatch(onPageAndTotalCountChange({
         page: newPage,
@@ -69,7 +69,7 @@ const PaginatedTable = ({
     let newPage = page;
     // row per page is greater than total row count
     // set page to last page number
-    if (page * noOfRows > totalRowCount) {
+    if (page * noOfRows >= totalRowCount) {
       newPage = Math.floor(totalRowCount / noOfRows);
     }
     dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows, page: newPage }));
