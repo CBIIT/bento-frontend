@@ -1,9 +1,8 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
-import themes, { overrides } from '../../bento-frontend/src/themes';
 
 export default ({
-  children, extraStyles, muiTabsTheme, muiTabTheme,
+  children, extraStyles, muiTabsTheme, muiTabTheme,themes, overrides
 }) => {
   const style = [];
   const overridesObj = themes.light.overrides;

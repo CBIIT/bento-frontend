@@ -9,6 +9,8 @@ function Tabs({
   tabData,
   onChange,
   styles,
+  themes,
+  overrides
 }) {
   /* styles */
   const generatedStyle = generateStyle(styles);
@@ -57,6 +59,8 @@ function Tabs({
       <TabThemeProvider
         muiTabTheme={generatedStyle.muiTab}
         muiTabsTheme={generatedStyle.muiTabs}
+        themes={themes}
+        overrides={overrides}
       >
         <MuiTabs value={currentTab} onChange={handleChange}>
           {TabHeader}

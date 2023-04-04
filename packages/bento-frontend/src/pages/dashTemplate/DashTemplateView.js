@@ -5,6 +5,7 @@ import BentoFacetFilter from './sideBar/BentoFacetFilter';
 import WidgetView from './widget/WidgetView';
 import StatsView from '../../components/Stats/StatsView';
 import {Tabs} from '@bento-core/tab';
+import themes, {overrides} from '../../themes';
 
 const DashTemplate = ({
   classes,
@@ -27,6 +28,8 @@ const DashTemplate = ({
             <Tabs
               tabData={tabData}
               onChange={onTabChange}
+              themes={themes}
+              overrides={overrides}
               styles={{
                 tabsLabel:
                   {
