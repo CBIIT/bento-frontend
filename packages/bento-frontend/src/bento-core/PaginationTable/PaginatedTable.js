@@ -52,7 +52,8 @@ const PaginatedTable = ({
     const { page, rowsPerPage } = table;
     // validate table state - curr rowCount should be less than total row count after filter
     if (totalRowCount <= page * rowsPerPage) {
-      const currentRows = (page * rowsPerPage) + 1;
+      const adjustRow = (page === 1) ? 1 : 0;
+      const currentRows = (page * rowsPerPage) + adjustRow;
       const newPage = Math.floor(totalRowCount / currentRows);
       dispatch(onPageAndTotalCountChange({
         page: newPage,
