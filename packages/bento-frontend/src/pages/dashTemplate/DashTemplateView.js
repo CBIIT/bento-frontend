@@ -4,7 +4,7 @@ import styles from './DashTemplateStyle';
 import BentoFacetFilter from './sideBar/BentoFacetFilter';
 import WidgetView from './widget/WidgetView';
 import StatsView from '../../components/Stats/StatsView';
-import {Tabs} from '@bento-core/tab' 
+import {Tabs} from '@bento-core/tab';
 
 const DashTemplate = ({
   classes,

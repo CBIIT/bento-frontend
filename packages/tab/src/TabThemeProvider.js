@@ -1,6 +1,6 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
-import themes, { overrides } from '../../themes';
+import themes, { overrides } from '../../bento-frontend/src/themes';
 
 export default ({
   children, extraStyles, muiTabsTheme, muiTabTheme,
