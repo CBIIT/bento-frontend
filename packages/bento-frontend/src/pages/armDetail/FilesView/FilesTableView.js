@@ -8,7 +8,7 @@ import {
   wrapperThemConfig,
 } from './Theme';
 import { TableView, TableContext } from '../../../bento-core/PaginationTable';
-import { footerConfig } from './Wrapper';
+import { footerConfig } from './ThemeConfigWrapper';
 import {
   filesTable,
 } from '../../../bento/armDetailData';
