@@ -69,7 +69,10 @@ const FacetView = ({
         ) : (
           <CustomAccordionSummary>
             <div
-              id={`filterGroup_${facet.datafield}`}
+              id={
+                `filterGroup_ ${facet.datafield}
+                ${facet.label}`
+              }
               className={clsx(classes.subSectionSummaryText, {
                 [`activeFacet${facet.section}`]: isActiveFacet,
               })}
