@@ -1685,6 +1685,7 @@ export const tabContainers = [
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
     buttonText: 'Add Selected Files',
+    tableID: 'case_tab_table',
     columns: [
       {
         cellType: cellTypes.CHECKBOX,
@@ -1819,6 +1820,7 @@ export const tabContainers = [
     dataKey: 'sample_id',
     defaultSortField: 'sample_id',
     defaultSortDirection: 'asc',
+    tableID: 'sample_tab_table',
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',
@@ -1972,6 +1974,7 @@ export const tabContainers = [
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
     dataKey: 'file_name',
+    tableID: 'file_tab_table',
     columns: [
       {
         cellType: cellTypes.CHECKBOX,

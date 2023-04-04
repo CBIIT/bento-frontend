@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
+import { Grid, withStyles } from '@material-ui/core';
 import styles from './TabStyle';
 import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
@@ -67,14 +67,18 @@ const TabView = (props) => {
         classes={classes}
         section={config.name}
       />
-      <TableView
-        initState={initTblState}
-        viewConfig={tableViewConfig}
-        themeConfig={themeConfig}
-        queryVariables={activeFilters}
-        totalRowCount={dashboardStats[config.count]}
-        activeTab={activeTab}
-      />
+      <Grid container>
+        <Grid item xs={12} id={config.tableID}>
+          <TableView
+            initState={initTblState}
+            viewConfig={tableViewConfig}
+            themeConfig={themeConfig}
+            queryVariables={activeFilters}
+            totalRowCount={dashboardStats[config.count]}
+            activeTab={activeTab}
+          />
+        </Grid>
+      </Grid>
       <Wrapper
         wrapConfig={configWrapper(config, footerConfig)}
         customTheme={customTheme}
