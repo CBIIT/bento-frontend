@@ -6,7 +6,7 @@ import {
 import { useSelector } from 'react-redux';
 import { useGoogleAuth } from './GoogleAuthProvider';
 import AfterSignInComponent from './components/afterSignInComponent';
-import globalData from '../../bento/siteWideConfig';
+import globalData, {enableAuthentication} from '../../bento/siteWideConfig';
 
 // styles
 const styles = () => ({
@@ -37,7 +37,7 @@ const IndexPage = ({ classes }) => {
 
   return (
     <>
-      {globalData.enableAuthentication && (typeof globalData.authEndPoint === 'undefined' || globalData.authEndPoint.includes('google') || globalData.authEndPoint.includes('Google') || globalData.authEndPoint === []) && (
+      {enableAuthentication && (typeof globalData.authEndPoint === 'undefined' || globalData.authEndPoint.includes('google') || globalData.authEndPoint.includes('Google') || globalData.authEndPoint === []) && (
       <>
         { (isSignedIn && userName !== undefined && typeof userName !== 'undefined') ? (
           <>

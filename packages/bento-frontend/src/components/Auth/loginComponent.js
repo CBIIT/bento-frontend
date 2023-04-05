@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useAuth } from '@bento-core/authentication';
 import AfterSignInComponent from './components/afterSignInComponent';
-import globalData, { loginPath, REDIRECT_AFTER_SIGN_OUT } from '../../bento/siteWideConfig';
+import globalData, {enableAuthentication, loginPath, REDIRECT_AFTER_SIGN_OUT } from '../../bento/siteWideConfig';
 
 // styles
 const styles = () => ({
@@ -51,7 +51,7 @@ const IndexPage = ({ classes }) => {
 
   return (
     <>
-      {globalData.enableAuthentication && (typeof globalData.authProviders === 'undefined' || globalData.authProviders.includes('google') || globalData.authProviders.includes('Google') || globalData.authProviders === []) && (
+      {enableAuthentication && (typeof globalData.authProviders === 'undefined' || globalData.authProviders.includes('google') || globalData.authProviders.includes('Google') || globalData.authProviders === []) && (
       <>
         { (isSignedIn) ? (
           <>

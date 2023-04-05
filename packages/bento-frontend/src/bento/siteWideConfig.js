@@ -3,7 +3,6 @@ import env from '../utils/env';
 export default {
   // Suggested for replaceEmptyValueWith: 'N/A' or '-' or ''
   replaceEmptyValueWith: '',
-  enableAuthentication: env.AUTH,
   // List for options for authentication empty array defaults to google
   authProviders: ['google', 'nih', 'loginGov'], // authEndPoint: []
 };

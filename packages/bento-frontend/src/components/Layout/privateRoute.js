@@ -4,7 +4,7 @@ import { CircularProgress } from '@material-ui/core';
 import { useLazyQuery } from '@apollo/client';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import GET_USER_DETAILS from '../../bento/authProviderData';
-import globalData, { loginPath, requestAccessPath, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
+import {enableAuthentication, loginPath, requestAccessPath, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
 import { signInRed, signOutRed } from '@bento-core/authentication';
 import { deleteFromLocalStorage } from '../../utils/localStorage';
 import accessLevelTypes, { userRoles, membershipStatus } from '../../utils/enums';
@@ -32,7 +32,6 @@ export function redirect(historyObject, path) {
 }
 
 export function LoginRoute({ component: ChildComponent, ...rest }) {
-  const { enableAuthentication } = globalData;
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
   return (
     <Route render={(props) => {
@@ -87,7 +86,6 @@ export function FetchUserDetails(props) {
 }
 
 export function MixedRoute({ component: ChildComponent, ...rest }) {
-  const { enableAuthentication } = globalData;
   if (!enableAuthentication) {
     return (
       <Route render={
@@ -107,7 +105,6 @@ export function MixedRoute({ component: ChildComponent, ...rest }) {
 }
 
 function PrivateRoute({ component: ChildComponent, ...rest }) {
-  const { enableAuthentication } = globalData;
   if (!enableAuthentication) {
     return (
       <Route render={
@@ -180,7 +177,6 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
 }
 
 export function AdminRoute({ component: ChildComponent, ...rest }) {
-  const { enableAuthentication } = globalData;
   const { ADMIN } = userRoles;
   if (!enableAuthentication) {
     return (
