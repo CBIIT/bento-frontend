@@ -48,7 +48,12 @@ const ViewCell = ({
   row,
   rootClsName,
 }) => {
-  const { cellType } = column;
+  const {
+    cellType,
+    showEmpty = true,
+    dataField,
+  } = column;
+  const value = !row[dataField] && !showEmpty ? '' : row[dataField];
   switch (cellType) {
     case cellTypes.LINK:
       return (
@@ -58,7 +63,7 @@ const ViewCell = ({
           rootClsName={rootClsName}
         >
           <Typography className={`${rootClsName}_${cellTypes.LINK}_label`}>
-            {row[column.dataField]}
+            {value}
           </Typography>
         </CustomLink>
       );
@@ -72,7 +77,7 @@ const ViewCell = ({
     default:
       return (
         <Typography className={`${rootClsName}_${cellTypes.DEFAULT}`}>
-          {row[column.dataField]}
+          {value}
         </Typography>
       );
   }

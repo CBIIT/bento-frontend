@@ -1330,6 +1330,7 @@ export const tabContainers = [
         sort: 'asc',
         display: true,
         tooltipText: 'sort',
+        showEmpty: false,
       },
     ],
     id: 'case_tab',
