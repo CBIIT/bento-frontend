@@ -102,51 +102,6 @@ export const tabPendingRequest = {
 
 };
 
-// --------------- tab Pending Request --------------
-export const tabManageAccess = {
-
-  tabTitle: 'MANAGE ACCESS',
-
-  table: {
-    // Set 'display' to false to hide the table entirely
-    display: true,
-    search: false,
-
-    columns: [
-      {
-        dataField: 'displayName',
-        header: 'Name',
-        isCapital: true,
-      },
-      {
-        dataField: 'IDP',
-        header: 'Account Type',
-        isCapital: true,
-      },
-      {
-        dataField: 'email',
-        header: 'Email',
-      },
-      {
-        dataField: 'organization',
-        header: 'Organization',
-        isCapital: true,
-      },
-      {
-        dataField: 'userStatus',
-        header: 'Membership Status',
-        isCapital: true,
-      },
-      {
-        dataField: 'role',
-        header: 'Role',
-        isCapital: true,
-      },
-    ],
-  },
-
-};
-
 // --------------- Columns Configuration for Review DAR Table --------------
 export const getReviewDARConfig = () => ({
   // Set 'display' to false to hide the table entirely
