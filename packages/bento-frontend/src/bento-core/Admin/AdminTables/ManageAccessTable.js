@@ -6,10 +6,12 @@ import {
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import {
-  getOptions,
-  getDefaultCustomFooter,
   CustomDataTable,
 } from 'bento-components';
+import {
+  getOptions,
+  getDefaultCustomFooter,
+} from '../../util';
 import utils from '../utils';
 
 const ManageAccessTable = ({
