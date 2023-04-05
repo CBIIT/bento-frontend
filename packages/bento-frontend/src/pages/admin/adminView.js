@@ -1,14 +1,31 @@
 import React from 'react';
+import { useQuery } from '@apollo/client';
 import { withStyles } from '@material-ui/core';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Link from '@material-ui/core/Link';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import {
+  getColumns,
+} from 'bento-components';
+import { ManageAccessTableGenerator } from '@bento-core/admin';
+import MANAGE_ACCESS_TABLE_CONFIG from './manageAccessTableConfig';
 import Stats from '../../components/Stats/AllStatsController';
-import { icon, tabManageAccess, tabPendingRequest } from '../../bento/adminData';
-import TableManageAccess from './components/tableManageAccess';
+import {
+  icon,
+  nodeField,
+  nodeLevelAccess,
+  nodeName,
+  tabPendingRequest,
+  tabManageAccess,
+} from '../../bento/adminData';
 import TablePendingRequest from './components/tablePendingRequest';
+import queries from './queries';
+
+const useMock = false;
 
 function TabPanel(props) {
   const {
@@ -48,6 +65,67 @@ const adminView = ({ classes }) => {
     setPageState({ ...pageState, includeNonMember: event.target.checked });
   };
 
+  const usersList = useQuery(queries.GET_LIST_USERS, {
+    fetchPolicy: 'no-cache',
+    context: {
+      clientName: useMock ? 'mockService' : 'userService',
+    },
+    variables: {
+      role: pageState.includeNonMember ? ['member', 'non-member', 'admin'] : ['member', 'admin'],
+      accessStatus: ['approved'],
+    },
+  });
+
+  const nodeLevelColumn = [{
+    name: nodeField,
+    label: nodeName,
+    options: {
+      customBodyRender: (value, tableMeta) => {
+        const href = `/#/admin/view/${tableMeta.rowData[7]}`;
+        return (
+          <Link
+            href={href}
+            classes={{
+              root: classes.link,
+            }}
+          >
+            {' '}
+            {value}
+          </Link>
+        );
+      },
+    },
+  }];
+
+  const actionColumn = [{
+    name: 'userID',
+    label: 'Action',
+    options: {
+      sort: false,
+      customBodyRender: (value) => {
+        const href = `/#/admin/edit/${value}`;
+        return (
+          <Button
+            variant="contained"
+            component={Link}
+            href={href}
+            classes={{
+              root: classes.btn,
+            }}
+          >
+            Edit
+          </Button>
+        );
+      },
+    },
+  }];
+
+  const manageAccessColumns = nodeLevelAccess
+    ? getColumns(tabManageAccess.table, classes).concat(nodeLevelColumn).concat(actionColumn)
+    : getColumns(tabManageAccess.table, classes).concat(actionColumn);
+
+  const { ManageAccessTable } = ManageAccessTableGenerator(MANAGE_ACCESS_TABLE_CONFIG);
+
   return (
     <div className={classes.pageContainer}>
       <Stats />
@@ -58,7 +136,6 @@ const adminView = ({ classes }) => {
               src={icon.src}
               alt={icon.alt}
             />
-
           </div>
           <div className={classes.headerTitle}>
             <div className={classes.headerMainTitle}>
@@ -108,18 +185,20 @@ const adminView = ({ classes }) => {
               root: classes.tab,
             }}
           />
-
         </Tabs>
-
         <TabPanel value={pageState.tabValue} index={0}>
-          <TableManageAccess includeNonMember={pageState.includeNonMember} />
+          <ManageAccessTable
+            columns={manageAccessColumns}
+            content={usersList}
+            includeNonMember={pageState.includeNonMember}
+            tableSpec={tabManageAccess.table}
+          />
         </TabPanel>
         <TabPanel value={pageState.tabValue} index={1}>
           <TablePendingRequest />
         </TabPanel>
       </div>
     </div>
-
   );
 };
 
@@ -134,6 +213,12 @@ const styles = (theme) => ({
     '&:hover': {
       textDecoration: 'underline',
     },
+  },
+  btn: {
+    backgroundColor: '#437BBE',
+    color: '#fff',
+    borderRadius: '10px',
+    marginLeft: '-6px',
   },
   card: {
     minHeight: '100%',
@@ -168,7 +253,6 @@ const styles = (theme) => ({
     paddingTop: '35px',
   },
   headerMainTitle: {
-
     fontFamily: 'Lato',
     letterSpacing: '0.005em',
     color: '#274FA5',
@@ -179,7 +263,6 @@ const styles = (theme) => ({
     marginLeft: '-3px',
     width: '200px',
   },
-
   headerTitle: {
     maxWidth: '1440px',
     margin: 'auto',
@@ -193,7 +276,6 @@ const styles = (theme) => ({
     width: '100px',
     filter: 'drop-shadow(-3px 2px 6px rgba(27,28,28,0.29))',
   },
-
   tab: {
     color: '#465F96',
     fontSize: '14px',
