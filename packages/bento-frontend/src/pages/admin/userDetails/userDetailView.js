@@ -9,7 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { cn, CustomDataTable } from 'bento-components';
 
 import AlertMessage from '../../../bento-core/AlertMessage';
-import UserDetails from '../../../bento-core/Admin';
+import { UserDetails } from '../../../bento-core/Admin';
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
 import {

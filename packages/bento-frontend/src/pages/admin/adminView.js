@@ -10,62 +10,24 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import {
   getColumns,
-} from 'bento-components';
-import ManageAccessTable from '../../bento-core/Admin/AdminTables/ManageAccessTable';
+} from '../../bento-core/util';
+import {
+  ManageAccessTable,
+  PendingRequestsTable,
+} from '../../bento-core/Admin';
 import Stats from '../../components/Stats/AllStatsController';
 import {
+  GET_LIST_REQUESTS,
+  GET_LIST_USERS,
   icon,
   nodeField,
   nodeLevelAccess,
   nodeName,
+  tabManageAccess,
   tabPendingRequest,
 } from '../../bento/adminData';
-import TablePendingRequest from './components/tablePendingRequest';
-import queries from './queries';
 
 const useMock = false;
-
-const tabManageAccess = {
-  tabTitle: 'MANAGE ACCESS',
-
-  table: {
-    // Set 'display' to false to hide the table entirely
-    display: true,
-    search: false,
-
-    columns: [
-      {
-        dataField: 'displayName',
-        header: 'Name',
-        isCapital: true,
-      },
-      {
-        dataField: 'IDP',
-        header: 'Account Type',
-        isCapital: true,
-      },
-      {
-        dataField: 'email',
-        header: 'Email',
-      },
-      {
-        dataField: 'organization',
-        header: 'Organization',
-        isCapital: true,
-      },
-      {
-        dataField: 'userStatus',
-        header: 'Membership Status',
-        isCapital: true,
-      },
-      {
-        dataField: 'role',
-        header: 'Role',
-        isCapital: true,
-      },
-    ],
-  },
-};
 
 function TabPanel(props) {
   const {
@@ -105,7 +67,7 @@ const adminView = ({ classes }) => {
     setPageState({ ...pageState, includeNonMember: event.target.checked });
   };
 
-  const usersList = useQuery(queries.GET_LIST_USERS, {
+  const usersList = useQuery(GET_LIST_USERS, {
     fetchPolicy: 'no-cache',
     context: {
       clientName: useMock ? 'mockService' : 'userService',
@@ -113,6 +75,16 @@ const adminView = ({ classes }) => {
     variables: {
       role: pageState.includeNonMember ? ['member', 'non-member', 'admin'] : ['member', 'admin'],
       accessStatus: ['approved'],
+    },
+  });
+
+  const requestsList = useQuery(GET_LIST_REQUESTS, {
+    fetchPolicy: 'no-cache',
+    context: {
+      clientName: useMock ? 'mockService' : 'userService',
+    },
+    variables: {
+      accessStatus: ['pending'],
     },
   });
 
@@ -233,7 +205,10 @@ const adminView = ({ classes }) => {
           />
         </TabPanel>
         <TabPanel value={pageState.tabValue} index={1}>
-          <TablePendingRequest />
+          <PendingRequestsTable
+            content={requestsList}
+            tableSpec={tabPendingRequest.table}
+          />
         </TabPanel>
       </div>
     </div>
