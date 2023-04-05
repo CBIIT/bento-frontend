@@ -1,14 +1,13 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
-import TableView from '../../../bento-core/PaginationTable/PaginatedTable';
+import { Grid, withStyles } from '@material-ui/core';
 import styles from './TabStyle';
 import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
 import { configColumn } from './tableConfig/Column';
-import Wrapper from '../../../bento-core/PaginationTable/Wrapper';
 import { configWrapper, footerConfig, headerConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
-import TableContextProvider from '../../../bento-core/PaginationTable/ContextProvider';
+import { TableContextProvider, TableView } from '../../../bento-core/PaginationTable';
+import { Wrapper } from '../../../bento-core/Wrapper';
 
 const TabView = (props) => {
   /**
@@ -47,12 +46,13 @@ const TabView = (props) => {
     ...initailState,
     title: config.name,
     query: config.api,
+    paginationAPIField: config.paginationAPIField,
     dataKey: config.dataKey,
     columns: configColumn(config.columns),
     count: dashboardStats[config.count],
     selectedRows: [],
+    enableRowSelection: config.enableRowSelection,
     tableMsg: config.tableMsg,
-    paginationAPIField: config.paginationAPIField,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
     rowsPerPage: 10,
@@ -62,21 +62,29 @@ const TabView = (props) => {
   return (
     <TableContextProvider>
       <Wrapper
-        headerConfig={configWrapper(config, headerConfig)}
-        footerConfig={footerConfig}
+        wrapConfig={configWrapper(config, headerConfig)}
         customTheme={customTheme}
         classes={classes}
         section={config.name}
-      >
-        <TableView
-          initState={initTblState}
-          viewConfig={tableViewConfig}
-          themeConfig={themeConfig}
-          activeFilters={activeFilters}
-          totalRowCount={dashboardStats[config.count]}
-          activeTab={activeTab}
-        />
-      </Wrapper>
+      />
+      <Grid container>
+        <Grid item xs={12} id={config.tableID}>
+          <TableView
+            initState={initTblState}
+            viewConfig={tableViewConfig}
+            themeConfig={themeConfig}
+            queryVariables={activeFilters}
+            totalRowCount={dashboardStats[config.count]}
+            activeTab={activeTab}
+          />
+        </Grid>
+      </Grid>
+      <Wrapper
+        wrapConfig={configWrapper(config, footerConfig)}
+        customTheme={customTheme}
+        classes={classes}
+        section={config.name}
+      />
     </TableContextProvider>
   );
 };

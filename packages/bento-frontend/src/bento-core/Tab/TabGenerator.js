@@ -59,6 +59,7 @@ const TabItems = ({
       }
       key={index}
       className={tab.clsName}
+      id={tab.id}
       disableRipple
     />
   ));
