@@ -1,5 +1,5 @@
 /**
- * SearchBox styles
+ * User Details View Styles
  */
 export default (theme) => ({
   firstInfoSection: {

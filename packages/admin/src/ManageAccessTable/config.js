@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /**
- * Default configuration for Local Find Upload Modal
+ * Default configuration for Manage Access Table
  */
 export const DEFAULT_CONFIG_MANAGE_ACCESS_TABLE = {
   // Misc. Configuration Options
@@ -12,27 +12,18 @@ export const DEFAULT_CONFIG_MANAGE_ACCESS_TABLE = {
     /**
      * Details will be added soon.
      *
-     * @param {array} newValue New array of selected items from the autocomplete
-     * @param {string} reason reason for the change event
-     * @param {boolean} deleted was an item deleted
      */
     getOptions: () => {},
 
     /**
      * Details will be added soon.
      *
-     * @param {array} newValue New array of selected items from the autocomplete
-     * @param {string} reason reason for the change event
-     * @param {boolean} deleted was an item deleted
      */
     getDefaultCustomFooter: () => {},
 
     /**
      * Details will be added soon.
      *
-     * @param {array} newValue New array of selected items from the autocomplete
-     * @param {string} reason reason for the change event
-     * @param {boolean} deleted was an item deleted
      */
     CustomDataTable: () => {},
   },

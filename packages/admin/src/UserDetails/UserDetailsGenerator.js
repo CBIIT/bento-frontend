@@ -19,7 +19,7 @@ const CustomCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />);
 
 /**
- * Generate a SearchBox component with the custom configuration
+ * Generate User Details component with the custom configuration
  * applied
  *
  * @param {object} [uiConfig]
