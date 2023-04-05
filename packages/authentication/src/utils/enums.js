@@ -1,4 +1,4 @@
-const accessLevelTypes = {
+export const accessLevelTypes = {
   METADATA_ONLY: 'Metadata Only',
   NONE: 'None',
 };
@@ -13,5 +13,3 @@ export const membershipStatus = {
   ACTIVE: 'active',
   INACTIVE: 'inactive',
 };
-
-export default accessLevelTypes;

@@ -4,10 +4,11 @@ import { CircularProgress } from '@material-ui/core';
 import { useLazyQuery } from '@apollo/client';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import GET_USER_DETAILS from '../../bento/authProviderData';
-import globalData, { loginRoute, requestAccessRoute, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
-import { signInRed, signOutRed } from '../Auth/state/loginReducer';
+import globalData, { loginPath, requestAccessPath, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
+import { signInRed, signOutRed } from '@bento-core/authentication';
 import { deleteFromLocalStorage } from '../../utils/localStorage';
-import accessLevelTypes, { userRoles, status } from '../../utils/enums';
+import accessLevelTypes, { userRoles, membershipStatus } from '../../utils/enums';
+import store from '../../store/index';
 
 /*
   NOTE: This detail is old Now.
@@ -54,14 +55,14 @@ export function FetchUserDetails(props) {
       const { getMyUser: userDetails } = data;
       userDetails.role = userDetails.role.toLowerCase();
       userDetails.userStatus = userDetails.userStatus.toLowerCase();
-      signInRed(userDetails);
+      store.dispatch(signInRed(userDetails));
       setLocalLoading(false);
     },
     onError: ({
       graphQLErrors,
     }) => {
       if (graphQLErrors) {
-        signOutRed();
+        store.dispatch(signOutRed());
         deleteFromLocalStorage('userDetails');
       }
 
@@ -118,7 +119,7 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
   // Enums
   const { NONE, METADATA_ONLY } = accessLevelTypes;
   const { ADMIN, NONMEMBER } = userRoles;
-  const { ACTIVE } = status;
+  const { ACTIVE } = membershipStatus;
 
   const {
     isSignedIn,
@@ -139,13 +140,13 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
       <Route render={(props) => {
         if (PUBLIC_ACCESS === NONE) {
           if (!isSignedIn) {
-            const base = loginRoute;
+            const base = loginPath;
             const redirectPath = `${base}?redirect=${pathname}`;
             return <Redirect to={redirectPath} />;
           }
 
           if (!hasAccess) {
-            const redirectPath = (role.toLowerCase() !== ADMIN) ? `${requestAccessRoute}?type=noAccess` : '/';
+            const redirectPath = (role.toLowerCase() !== ADMIN) ? `${requestAccessPath}?type=noAccess` : '/';
             return <Redirect to={redirectPath} />;
           }
 

@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { useAuth } from '../../../components/Auth/AuthProvider';
+import { useAuth } from '@bento-core/authentication';
 import AlertMessage from '../../../bento-core/AlertMessage';
 import Stats from '../../../components/Stats/AllStatsController';
 

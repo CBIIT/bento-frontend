@@ -7,12 +7,16 @@ import dashboard from '../pages/dashboard/dashboardState';
 import stats from '../components/Stats/StatsState';
 import { sideBarReducerGenerator } from '../bento-core/FacetFilter/store/reducers/SideBarReducer';
 import { LocalFindReducerGenerator } from '@bento-core/local-find';
+import { LoginReducerGenerator } from '@bento-core/authentication';
+import { getFromLocalStorage } from '../utils/localStorage';
 
 const { statusReducer } = sideBarReducerGenerator();
 const { localFind } = LocalFindReducerGenerator();
+const { login } = LoginReducerGenerator(getFromLocalStorage);
 
 const reducers = {
   localFind,
+  login,
   statusReducer,
   layout,
   dashboard,

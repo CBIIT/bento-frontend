@@ -3,16 +3,20 @@ import env from '../utils/env';
 export default {
   // Suggested for replaceEmptyValueWith: 'N/A' or '-' or ''
   replaceEmptyValueWith: '',
-  // Enable authenication
-  enableAuthentication: true,
+  enableAuthentication: env.AUTH,
   // List for options for authentication empty array defaults to google
   authProviders: ['google', 'nih', 'loginGov'], // authEndPoint: []
 };
 
-export const loginRoute = '/login';
-export const requestAccessRoute = '/request';
-export const adminPortal = '/admin';
-export const userProfileRoute = '/profile';
+
+
+export const loginPath = '/login';
+export const requestAccessPath = '/request';
+export const adminPortalPath = '/admin';
+export const userProfilePath = '/profile';
+
+// Authentication: Enabled (True) or Disabled (False)
+export const enableAuthentication = env.AUTH || true;
 
 // Public Level Access
 export const PUBLIC_ACCESS = env.PUBLIC_ACCESS || 'Metadata Only';

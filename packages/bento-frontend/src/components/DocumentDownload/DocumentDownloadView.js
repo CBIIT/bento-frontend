@@ -8,7 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 import { jBrowseOptions } from '../../bento/jbrowseDetailData';
-import { useAuth } from '../Auth/AuthProvider';
+import { useAuth } from '@bento-core/authentication';
 import globalData from '../../bento/siteWideConfig';
 import SessionTimeOutModal from '../sessionTimeOutModal';
 

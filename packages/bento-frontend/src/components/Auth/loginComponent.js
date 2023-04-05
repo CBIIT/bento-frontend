@@ -5,9 +5,9 @@ import {
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useAuth } from './AuthProvider';
+import { useAuth } from '@bento-core/authentication';
 import AfterSignInComponent from './components/afterSignInComponent';
-import globalData, { loginRoute, REDIRECT_AFTER_SIGN_OUT } from '../../bento/siteWideConfig';
+import globalData, { loginPath, REDIRECT_AFTER_SIGN_OUT } from '../../bento/siteWideConfig';
 
 // styles
 const styles = () => ({
@@ -41,7 +41,7 @@ const IndexPage = ({ classes }) => {
 
   const userName = firstName || (email && email.substring(0, email.lastIndexOf('@')));
 
-  const redirectToLogin = () => window.location.replace(`/#${loginRoute}`);
+  const redirectToLogin = () => window.location.replace(`/#${loginPath}`);
 
   globalData.authProviders = globalData.authProviders.concat(['google']);
 

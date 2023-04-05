@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { redirect } from '../../Layout/privateRoute';
-import { useAuth } from '../AuthProvider';
+import { useAuth } from '@bento-core/authentication';
 
 function useQuery() {
   const { search } = useLocation();
