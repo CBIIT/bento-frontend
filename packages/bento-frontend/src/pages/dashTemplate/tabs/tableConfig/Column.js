@@ -1,9 +1,13 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 import { cellTypes, headerTypes } from '../../../../bento-core/Table/util/Types';
 import DocumentDownloadView from '../../../../components/DocumentDownload/DocumentDownloadView';
 
 export const CustomCellView = (props) => {
-  const { downloadDocument, documentDownloadProps } = props;
+  const {
+    downloadDocument, documentDownloadProps,
+    displayEmpty, dataField,
+  } = props;
   if (downloadDocument) {
     return (
       <DocumentDownloadView
@@ -15,7 +19,10 @@ export const CustomCellView = (props) => {
         {...props}
       />
     );
+  } else if (typeof displayEmpty === "boolean") {
+    return (<Typography>{displayEmpty || props[dataField] ? props[dataField] : ""}</Typography>);
   }
+
   // other custom elem
   return (<></>);
 };
