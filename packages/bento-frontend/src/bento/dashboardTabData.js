@@ -1896,7 +1896,7 @@ export const tabContainers = [
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/arm',
-          pathParams: ['study_acronym'],
+          pathParams: ['arm'],
         },
         display: true,
         tooltipText: 'sort',
@@ -2097,7 +2097,7 @@ export const tabContainers = [
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/arm',
-          pathParams: ['study_acronym'],
+          pathParams: ['arm'],
         },
         display: true,
         tooltipText: 'sort',

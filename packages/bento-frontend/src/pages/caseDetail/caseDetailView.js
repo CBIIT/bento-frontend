@@ -68,8 +68,10 @@ const CaseDetail = ({
   const datFieldsFromRoot = [];
   table1.columns.forEach((e) => (e.dataFromRoot ? datFieldsFromRoot.push(e.dataField) : null));
 
-  const samplesData = data.samples.map((sample) => {
-    const files = filesOfSamplesObj[sample.sample_id];
+  const samplesData = data.samples.map((s) => {
+    const files = filesOfSamplesObj[s.sample_id];
+    //reverted back to prevent undefined (s) value
+    const sample = { ...s };
     sample.files = files;
     if (datFieldsFromRoot.length > 0) {
       datFieldsFromRoot.forEach((e) => {

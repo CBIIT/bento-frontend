@@ -15,9 +15,6 @@ import {
   header,
   subsections,
 } from '../../bento/armDetailData';
-import {
-  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
-} from '../dashboardTab/store/dashboardReducer';
 import PropertySubsection from '../../components/PropertySubsection/armDetailSubsection';
 import NumberOfThings from '../../components/NumberOfThings';
 import Snackbar from '../../components/Snackbar';
@@ -25,6 +22,7 @@ import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
 import { TableContextProvider } from '../../bento-core/PaginationTable/';
 import FilesTableView from './FilesView/FilesTableView';
+import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
@@ -52,18 +50,6 @@ const ArmDetail = ({ data, classes }) => {
   };
 
   const { Widget } = WidgetGenerator(widgetGeneratorConfig);
-
-  const redirectTo = () => {
-    setSideBarToLoading();
-    setDashboardTableLoading();
-    singleCheckBox([{
-      datafield: 'studies',
-      groupName: 'Arm',
-      isChecked: true,
-      name: data.study_info,
-      section: 'Filter By Cases',
-    }]);
-  };
 
   const stat = {
     numberOfPrograms: 1,
@@ -117,8 +103,11 @@ const ArmDetail = ({ data, classes }) => {
                 <span className={classes.headerButtonLinkText}>Number of cases:</span>
                 <Link
                   className={classes.headerButtonLink}
-                  to={(location) => ({ ...location, pathname: '/explore' })}
-                  onClick={() => redirectTo()}
+                  to={(location) => ({
+                    ...location,
+                    pathname: `/explore`
+                  })}
+                  onClick={onClearAllAndSelectFacetValue('studies', data.study_info)}
                 >
                   <span className={classes.headerButtonLinkNumber} id="arm_detail_header_file_count">
                     {data.num_subjects}
