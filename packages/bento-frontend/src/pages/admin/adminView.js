@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import {
   getColumns,
 } from 'bento-components';
-import ManageAccessTable from '../../bento-core/Admin/AdminTables/ManageAccessTable';
+import { ManageAccessTableGenerator } from '@bento-core/admin';
+import MANAGE_ACCESS_TABLE_CONFIG from './manageAccessTableConfig';
 import Stats from '../../components/Stats/AllStatsController';
 import {
   icon,
@@ -19,53 +20,12 @@ import {
   nodeLevelAccess,
   nodeName,
   tabPendingRequest,
+  tabManageAccess,
 } from '../../bento/adminData';
 import TablePendingRequest from './components/tablePendingRequest';
 import queries from './queries';
 
 const useMock = false;
-
-const tabManageAccess = {
-  tabTitle: 'MANAGE ACCESS',
-
-  table: {
-    // Set 'display' to false to hide the table entirely
-    display: true,
-    search: false,
-
-    columns: [
-      {
-        dataField: 'displayName',
-        header: 'Name',
-        isCapital: true,
-      },
-      {
-        dataField: 'IDP',
-        header: 'Account Type',
-        isCapital: true,
-      },
-      {
-        dataField: 'email',
-        header: 'Email',
-      },
-      {
-        dataField: 'organization',
-        header: 'Organization',
-        isCapital: true,
-      },
-      {
-        dataField: 'userStatus',
-        header: 'Membership Status',
-        isCapital: true,
-      },
-      {
-        dataField: 'role',
-        header: 'Role',
-        isCapital: true,
-      },
-    ],
-  },
-};
 
 function TabPanel(props) {
   const {
@@ -164,6 +124,8 @@ const adminView = ({ classes }) => {
     ? getColumns(tabManageAccess.table, classes).concat(nodeLevelColumn).concat(actionColumn)
     : getColumns(tabManageAccess.table, classes).concat(actionColumn);
 
+  const { ManageAccessTable } = ManageAccessTableGenerator(MANAGE_ACCESS_TABLE_CONFIG);
+
   return (
     <div className={classes.pageContainer}>
       <Stats />
@@ -251,6 +213,12 @@ const styles = (theme) => ({
     '&:hover': {
       textDecoration: 'underline',
     },
+  },
+  btn: {
+    backgroundColor: '#437BBE',
+    color: '#fff',
+    borderRadius: '10px',
+    marginLeft: '-6px',
   },
   card: {
     minHeight: '100%',
