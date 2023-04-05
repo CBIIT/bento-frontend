@@ -42,12 +42,12 @@ const PendingRequestsTable = ({
 
   let dateColumn = [];
 
-  const draftCloumns = getColumns(tableSpec, classes);
+  const draftColumns = getColumns(tableSpec, classes);
 
   // transform the datetime
   const customizedCloumns = [];
-  for (let i = 0; i < draftCloumns.length; i += 1) {
-    if (draftCloumns[i].name === 'requestDate') {
+  for (let i = 0; i < draftColumns.length; i += 1) {
+    if (draftColumns[i].name === 'requestDate') {
       dateColumn = [
         {
           name: 'requestDate',
@@ -59,7 +59,7 @@ const PendingRequestsTable = ({
           },
         }];
     } else {
-      customizedCloumns.push(draftCloumns[i]);
+      customizedCloumns.push(draftColumns[i]);
     }
   }
 
