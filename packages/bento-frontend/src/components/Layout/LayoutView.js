@@ -30,12 +30,10 @@ import editUserController from '../../pages/admin/userDetails/editUserController
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
 import InActivityDialog from '../InActivityDialog';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
+import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
 import CarView from '../../pages/cart/cartController';
 
-import fakeAdminView from '../../pages/fakeAdmin';
-
-// Access control imports
-import PrivateRoute, { LoginRoute, AdminRoute, MixedRoute } from './privateRoute';
+import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
@@ -45,7 +43,12 @@ const ScrollToTop = () => {
   return null;
 };
 
-const Layout = ({ classes, isSidebarOpened }) => (
+const Layout = ({ classes, isSidebarOpened }) => {
+
+  // Access control imports
+  const { LoginRoute, MixedRoute, PrivateRoute, AdminRoute} = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
+  
+  return (
   <>
     <CssBaseline />
     <HashRouter>
@@ -85,7 +88,6 @@ const Layout = ({ classes, isSidebarOpened }) => (
             {/* END SECTION */}
 
             {/* SECTION: Admin only Path */}
-            <AdminRoute path="/adminportal" requiuredSignIn access={['admin']} component={fakeAdminView} />
             <AdminRoute path="/admin/edit/:id" requiuredSignIn access={['admin']} component={editUserController} />
             <AdminRoute path="/admin/view/:id" requiuredSignIn access={['admin']} component={viewUserController} />
             <AdminRoute path="/admin/review/:id" requiuredSignIn access={['admin']} component={reviewRequestController} />
@@ -126,7 +128,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
       </>
     </HashRouter>
   </>
-);
+)};
 
 const styles = (theme) => ({
   root: {

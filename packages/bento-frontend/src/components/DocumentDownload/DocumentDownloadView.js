@@ -8,8 +8,8 @@ import { Link, useHistory } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 import { jBrowseOptions } from '../../bento/jbrowseDetailData';
-import { useAuth } from '../Auth/AuthProvider';
-import globalData from '../../bento/siteWideConfig';
+import { useAuth } from '@bento-core/authentication';
+import { enableAuthentication } from '../../bento/siteWideConfig';
 import SessionTimeOutModal from '../sessionTimeOutModal';
 
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
@@ -98,7 +98,7 @@ const DocumentDownload = ({
   return (
     <>
       <div>
-        { (globalData.enableAuthentication && !isSignedIn) ? (
+        { (enableAuthentication && !isSignedIn) ? (
           <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} arrow placement="bottom">
             <div
               style={{ textAlign: 'center' }}
@@ -107,7 +107,7 @@ const DocumentDownload = ({
               <CustomIcon imgSrc={iconUnauthenticated} />
             </div>
           </ToolTip>
-        ) : (globalData.enableAuthentication && isSignedIn && !hasAccess()) ? (
+        ) : (enableAuthentication && isSignedIn && !hasAccess()) ? (
           <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} arrow placement="bottom">
             <div
               style={{ textAlign: 'center' }}
