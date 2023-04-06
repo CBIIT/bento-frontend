@@ -28,12 +28,11 @@ const CustomLink = ({
   children,
   column,
   row,
-  rootClsName,
 }) => {
   const { rootPath, pathParams } = column.linkAttr;
   const url = pathParams.map((attr) => `#${rootPath}/`.concat(row[attr]));
   return (
-    <Link href={url} className={`${rootClsName}_${cellTypes.LINK}`}>
+    <Link href={url} className={cellTypes.LINK}>
       {children}
     </Link>
   );
@@ -46,7 +45,6 @@ const CustomLink = ({
 const ViewCell = ({
   column,
   row,
-  rootClsName,
 }) => {
   const { cellType } = column;
   switch (cellType) {
@@ -55,9 +53,8 @@ const ViewCell = ({
         <CustomLink
           column={column}
           row={row}
-          rootClsName={rootClsName}
         >
-          <Typography className={`${rootClsName}_${cellTypes.LINK}_label`}>
+          <Typography>
             {row[column.dataField]}
           </Typography>
         </CustomLink>
@@ -71,7 +68,7 @@ const ViewCell = ({
       );
     default:
       return (
-        <Typography className={`${rootClsName}_${cellTypes.DEFAULT}`}>
+        <Typography>
           {row[column.dataField]}
         </Typography>
       );
@@ -79,13 +76,11 @@ const ViewCell = ({
 };
 
 const CustomBodyCell = ({
-  rootClsName,
   row,
   column,
 }) => (
-  <TableCell className={`${rootClsName}_${column.dataField}`}>
+  <TableCell className={column.dataField}>
     <ViewCell
-      rootClsName={rootClsName}
       row={row}
       column={column}
     />

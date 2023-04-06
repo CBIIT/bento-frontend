@@ -27,7 +27,7 @@ function AddToCartDialogAlertView(props) {
     </>
   );
 
-  if (open === true) {
+  if (open) {
     //  close the Dialog after 3 seconds.
     setTimeout(() => { onClose(); }, closeAlertModelTimer);
   }
