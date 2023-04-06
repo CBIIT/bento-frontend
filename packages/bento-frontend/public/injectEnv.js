@@ -20,7 +20,7 @@ window.injectedEnv = {
 
   // Access control settings
   PUBLIC_ACCESS: 'Metadata Only',
-  NODE_LEVEL_ACCESS: false,
+  NODE_LEVEL_ACCESS: true,
   NODE_LABEL: 'Study Arm(s)',
 
   // No Longer Used.

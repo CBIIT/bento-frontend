@@ -6,7 +6,7 @@ import {
 } from '../../bento/navigationBarData';
 import Login from '../Auth/loginComponent';
 import { enableAuthentication, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
-import accessLevelTypes from '../../utils/enums';
+import { accessLevelTypes } from '@bento-core/authentication';
 
 const BentoNavBar = ({ cartFieldIds = [] }) => {
   const isSignedIn = useSelector((state) => state.login.isSignedIn);

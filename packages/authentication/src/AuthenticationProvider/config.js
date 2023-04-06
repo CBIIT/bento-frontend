@@ -29,7 +29,7 @@ query getMyUser {
 `;
 
 /**
- * Default configuration for Local Find Upload Modal
+ * Default configuration for Auth Provider
  */
 export const DEFAULT_CONFIG_AUTHPROVIDER = {
   // Misc. Configuration Options
@@ -66,25 +66,6 @@ export const DEFAULT_CONFIG_AUTHPROVIDER = {
      * @param {Object} value Object or String that needes to be store in Local Storage.
      */
     deleteFromLocalStorage: (key) => {},
-
-    /**
-     * Perform autocomplete search on the API
-     *
-     * NOTE:
-     * - This function is not designed to query the API
-     *   for results matching the search term. It is
-     *   designed to query the API for ALL autocomplete options
-     * - This function does not need to be async if
-     *   you have the search results already available. It,
-     *   however, must resolve to an 1-D array of results.
-     * - The return value of this function is CACHED if
-     *   it returns a valid array.
-     *
-     * @async
-     * @param {string} searchType search type defined in the config
-     * @returns {Promise} Promise object represents the search results
-     */
-    getSuggestions: async (searchType) => [],
   },
 };
 

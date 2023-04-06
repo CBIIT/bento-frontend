@@ -4,7 +4,7 @@ import {
   onDeleteAllCartFile,
   onDeleteCartFile,
   CartContextProvider,
-} from '@bento-core/Cart';
+} from '@bento-core/cart';
 import { tableConfig } from '../../bento/fileCentricCartWorkflowData';
 import CartView from './cartView';
 import { TableContextProvider } from '../../bento-core/PaginationTable';

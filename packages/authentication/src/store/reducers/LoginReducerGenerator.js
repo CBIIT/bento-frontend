@@ -44,7 +44,7 @@ export const loadStateFromLocal = (getFromLocalStorage) => {
 };
 
 /**
- * Generate reducer for LocalFind
+ * Generate reducer for Login
  *
  * @returns {object} reducer object
  */
