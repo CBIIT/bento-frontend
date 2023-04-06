@@ -6,13 +6,16 @@ import layout from '../components/Layout/LayoutState';
 import dashboard from '../pages/dashboard/dashboardState';
 import stats from '../components/Stats/StatsState';
 import { sideBarReducerGenerator } from '../bento-core/FacetFilter/store/reducers/SideBarReducer';
+import { cartReducerGenerator } from '@bento-core/cart';
 import { LocalFindReducerGenerator } from '@bento-core/local-find';
 
-const { statusReducer } = sideBarReducerGenerator();
 const { localFind } = LocalFindReducerGenerator();
+const { statusReducer } = sideBarReducerGenerator();
+const { cartReducer } = cartReducerGenerator();
 
 const reducers = {
   localFind,
+  cartReducer,
   statusReducer,
   layout,
   dashboard,

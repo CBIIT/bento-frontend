@@ -8,7 +8,7 @@ import TableHeader from './header/CustomTblHeader';
 import CustomPagination from './pagination/CustomPagination';
 import CustomTableBody from './body/CustomTblBody';
 import CustomToolbar from './toolbar/CustomToolbar';
-import DisplayErrMsg from './util/DisplayErrMsg';
+import DisplayErrMsg from './errMsg/DisplayErrMsg';
 
 const TableView = ({
   tableRows = [],
@@ -17,7 +17,9 @@ const TableView = ({
   onPageChange,
   onRowSelectChange,
   onToggleSelectAll,
+  totalRowCount,
   onSortByColumn,
+  onColumnViewChange,
   viewConfig = {},
   themeConfig = {},
 }) => (
@@ -27,15 +29,17 @@ const TableView = ({
         customTheme={themeConfig.tblTopPgn}
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
-        count={table.totalRowCount}
-        rowsPerPage={table.rowsPerPage}
-        page={table.page}
+        count={table.totalRowCount || 0}
+        rowsPerPage={table.rowsPerPage || 10}
+        page={table.page || 0}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
       />
     )}
     <CustomToolbar
       numSelected={table.selectedRows.length}
+      table={table}
+      onColumnViewChange={onColumnViewChange}
       customTheme={themeConfig.toolbar}
     />
     <TableContainer component={Paper}>
@@ -44,6 +48,7 @@ const TableView = ({
           customTheme={themeConfig.tblHeader}
           table={table}
           rows={tableRows}
+          count={totalRowCount}
           toggleSelectAll={onToggleSelectAll}
           sortByColumn={onSortByColumn}
         />
@@ -57,6 +62,7 @@ const TableView = ({
     </TableContainer>
     {tableRows.length === 0 && (
       <DisplayErrMsg
+        customTheme={themeConfig.displayErr}
         table={table}
       />
     )}
@@ -64,9 +70,9 @@ const TableView = ({
       customTheme={themeConfig.tblPgn}
       rowsPerPageOptions={[10, 25, 50, 100]}
       component="div"
-      count={table.totalRowCount}
-      rowsPerPage={table.rowsPerPage}
-      page={table.page}
+      count={table.totalRowCount || 0}
+      rowsPerPage={table.rowsPerPage || 10}
+      page={table.page || 0}
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
     />

@@ -17,7 +17,6 @@ import DataDictonary from '../../pages/dataDictionary/dataDictonaryController';
 import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
-import fileCentricCart from '../../pages/fileCentricCart/cartController';
 // import JBrowse from '../JBrowse/JBrowseView';
 import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
 import GlobalSearchController from '../../pages/search/searchViewController';
@@ -31,6 +30,7 @@ import editUserController from '../../pages/admin/userDetails/editUserController
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
 import InActivityDialog from '../InActivityDialog';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
+import CarView from '../../pages/cart/cartController';
 
 import fakeAdminView from '../../pages/fakeAdmin';
 
@@ -75,7 +75,7 @@ const Layout = ({ classes, isSidebarOpened }) => (
             <PrivateRoute path="/explore_old" access={['admin', 'member']} component={Dashboard} />
             <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
             <PrivateRoute path="/model" access={['admin', 'member']} component={modelPage} />
-            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={fileCentricCart} />
+            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CarView} />
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             <PrivateRoute path="/case/:id" access={['admin', 'member']} component={CaseDetail} />
             <PrivateRoute path="/arm/:id" access={['admin', 'member']} component={ArmDetail} />

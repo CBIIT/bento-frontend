@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Container,
   createTheme,
   Link,
   ThemeProvider,
 } from '@material-ui/core';
-import clsx from 'clsx';
-import { TableContext } from './ContextProvider';
-import AddAllFileComponent from './AddToCartDialog/AddAllView';
-import AddSelectedFileComponent from './AddToCartDialog/AddSelectedView';
+import ButtonView from './components/ButtonView';
+import TextFieldView from './components/TextFieldView';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -17,65 +15,9 @@ export const types = {
   TEXT_INPUT: 'TEXT_INPUT',
   CUSTOM_ELEM: 'CUSTEM_ELEM',
   LINK: 'LINK',
-};
-
-export const btnTypes = {
-  ADD_ALL_FILES: 'ADD_ALL_FILES',
-  ADD_SELECTED_FILES: 'ADD_SELECTED_FILES',
-};
-
-/**
-* customize button based on configuration
-* refer config table (wrapper component config)
-*/
-export const ButtonComponent = (props) => {
-  const {
-    title,
-    eventHandler,
-    clsName,
-    section,
-    addFileAPI,
-    activeFilters,
-    addSelectedIdAPI,
-    btnType,
-    dataKey,
-    alertMessage,
-  } = props;
-
-  const tableContext = useContext(TableContext);
-  if (btnTypes.ADD_SELECTED_FILES === btnType) {
-    const {
-      selectedRows = [],
-    } = tableContext.tblState;
-    const variables = {};
-    variables[dataKey] = selectedRows;
-    return (
-      <>
-        <AddSelectedFileComponent
-          {...props}
-          eventHandler={() => eventHandler(variables, addSelectedIdAPI)}
-          clsName={clsx(clsName, `${clsName}_${section}`)}
-          disabled={selectedRows.length === 0}
-        />
-      </>
-    );
-  }
-
-  if (btnTypes.ADD_ALL_FILES === btnType) {
-    return (
-      <>
-        <AddAllFileComponent
-          eventHandler={() => eventHandler(activeFilters, addFileAPI)}
-          clsName={clsx(clsName, `${clsName}_${section}`)}
-          title={title}
-          table={tableContext.tblState}
-          alertMessage={alertMessage}
-        />
-      </>
-    );
-  }
-
-  return <></>;
+  ICON: 'ICON',
+  TEXT: 'TEXT',
+  CONTRAINER: 'CONTRAINER',
 };
 
 /**
@@ -93,20 +35,40 @@ export const LinkComponent = (props) => {
   );
 };
 
+const Img = ({ src, alt, clsName }) => <img src={src} alt={alt} className={clsName} />;
+
+const Text = ({
+  text,
+  clsName,
+  tag,
+  Component,
+}) => (
+  <span className={clsName} type={tag}>
+    {text}
+    { Component && <Component /> }
+  </span>
+);
+
 /**
 *
 * @param {*}
 * @returns custom component based on configuration
 */
 export const ViewComponent = (props) => {
-  const { type } = props;
+  const { type, customViewElem } = props;
   switch (type) {
     case types.BUTTON:
-      return (<ButtonComponent {...props} />);
+      return (<ButtonView {...props} />);
     case types.LINK:
       return (<LinkComponent {...props} />);
+    case types.ICON:
+      return <Img {...props} />;
+    case types.TEXT:
+      return <Text {...props} />;
+    case types.TEXT_INPUT:
+      return <TextFieldView {...props} />;
     case types.CUSTOM_ELEM:
-      return props.customViewElem();
+      return customViewElem();
     default:
       return <></>;
   }
@@ -164,29 +126,24 @@ const CustomLayout = (props) => {
 const CustomWrapper = (props) => {
   const {
     children,
-    headerConfig = [],
-    footerConfig = [],
+    wrapConfig = [],
     customTheme,
     section,
     classes,
     activeFilters,
+    tblDispatch,
   } = props;
   return (
     <>
       <CustomLayout
-        configs={headerConfig}
+        configs={wrapConfig}
         customTheme={customTheme}
         section={section}
         classes={classes}
         activeFilters={activeFilters}
+        tblDispatch={tblDispatch}
       />
       {children}
-      <CustomLayout
-        configs={footerConfig}
-        customTheme={customTheme}
-        section={section}
-        classes={classes}
-      />
     </>
   );
 };
