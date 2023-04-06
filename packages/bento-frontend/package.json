@@ -8,6 +8,7 @@
     "@bento-core/widgets": "*",
     "@bento-core/local-find": "*",
     "@bento-core/cart": "*",
+    "@bento-core/tab": "*",
     "@apollo/client": "^3.6.9",
     "@apollo/react-components": "^4.0.0",
     "@babel/core": "7.2.2",
