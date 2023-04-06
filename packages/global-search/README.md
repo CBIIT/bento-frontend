@@ -10,10 +10,10 @@ Global Search is a component that provides a implementation of a site-wide searc
 To import the components from GlobalSearch, use the following:
 
 ```javascript
-import { SearchBarGenerator, SearchResults } from './GlobalSearch'; // Update path as needed
+import { SearchBarGenerator, SearchResults } from '@bento-core/global-search';
 ```
 
 Each of the components has their own respective README.md files. Please see the following links for detailed instructions on how to use them:
 
-* [SearchBar README](./SearchBar/README.md) or [SearchBar DESIGN](./SearchBar/DESIGN.md)
-* [SearchResults README](./SearchResults/README.md) or [SearchResults DESIGN](./SearchResults/DESIGN.md)
+* [SearchBar README](./src/SearchBar/README.md) or [SearchBar DESIGN](./src/SearchBar/DESIGN.md)
+* [SearchResults README](./src/SearchResults/README.md) or [SearchResults DESIGN](./src/SearchResults/DESIGN.md)
