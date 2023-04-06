@@ -13,7 +13,7 @@ For the component's technical details, please see [DESIGN.md](./DESIGN.md).
 
   ```javascript
   // Import the generator
-  import { SearchBarGenerator } from '...'; // Note: update the path
+  import { SearchBarGenerator } from '@bento-core/global-search'; // Note: update the path
 
   // Initialize the component with the default options
   // See config.js for the default options

@@ -13,7 +13,7 @@ For the component's technical details, please see [DESIGN.md](./DESIGN.md).
 
   ```javascript
   // Import the component
-  import { SearchResultsGenerator } from '...'; // Note: update the path
+  import { SearchResultsGenerator } from '@bento-core/global-search'; // Note: update the path
 
   // Generate the component with the default options
   const { SearchResults } = SearchResultsGenerator();
