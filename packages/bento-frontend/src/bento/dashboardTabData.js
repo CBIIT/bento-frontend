@@ -1218,6 +1218,10 @@ export const tabContainersOld = [
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
     buttonText: 'Add Selected Files',
+    tabHeaderStyle:{selected:{
+      background: '#d6f2ea',
+      color: '#10a075',
+    }},
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#09A175',
@@ -1357,6 +1361,10 @@ export const tabContainersOld = [
     dataKey: 'sample_id',
     defaultSortField: 'sample_id',
     defaultSortDirection: 'asc',
+    tabHeaderStyle:{selected:{
+      background: '#cfedf9',
+      color: '#0dafec',
+    }},
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',
@@ -1497,6 +1505,10 @@ export const tabContainersOld = [
     count: 'numberOfFiles',
     buttonText: 'Add Selected Files',
     dataKey: 'file_name',
+    tabHeaderStyle:{selected:{
+      background: '#f7d7f7',
+      color: '#c92ec7',
+    }},
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#DC2FDA',
