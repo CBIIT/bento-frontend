@@ -12,7 +12,7 @@ import {
   loginProvidersData,
 } from '../../../bento/userLoginData';
 import globalData from '../../../bento/siteWideConfig';
-import { redirect } from '../../../components/Layout/privateRoute';
+import { redirect } from '@bento-core/authentication';
 
 function useQuery() {
   const { search } = useLocation();

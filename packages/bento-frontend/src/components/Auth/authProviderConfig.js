@@ -2,7 +2,7 @@
 import gql from 'graphql-tag';
 import GET_USER_DETAILS from '../../bento/authProviderData';
 import env from '../../utils/env';
-import { redirect } from '../Layout/privateRoute';
+import { redirect } from '@bento-core/authentication';
 import { storeInLocalStorage, deleteFromLocalStorage } from '../../utils/localStorage';
 
 /**

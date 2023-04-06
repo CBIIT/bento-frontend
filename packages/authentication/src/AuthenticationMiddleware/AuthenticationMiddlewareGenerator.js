@@ -107,7 +107,8 @@ export const AuthenticationMiddlewareGenerator = (uiConfig = DEFAULT_CONFIG) => 
   };
 
   const LoginRoute = (props) => {
-    const { component: ChildComponent, isSignedIn, ...rest } = props;
+    const { component: ChildComponent, loginState, ...rest } = props;
+    const { isSignedIn } = loginState;
     return (
       <Route render={(routeProps) => {
         if ((enableAuthentication && isSignedIn) || !enableAuthentication) {
@@ -141,10 +142,9 @@ export const AuthenticationMiddlewareGenerator = (uiConfig = DEFAULT_CONFIG) => 
 
   const PrivateRoute = (props) => {
     const {
-      component: ChildComponent,
-      isSignedIn, role = '', userStatus = '',
-      ...rest
+      component: ChildComponent, loginState, ...rest
     } = props;
+    const { isSignedIn, role = '', userStatus = '' } = loginState;
 
     if (!enableAuthentication) {
       return (
@@ -211,9 +211,10 @@ export const AuthenticationMiddlewareGenerator = (uiConfig = DEFAULT_CONFIG) => 
   const AdminRoute = (props) => {
     const {
       component: ChildComponent,
-      role,
+      loginState,
       ...rest
     } = props;
+    const { role = '' } = loginState;
 
     const { ADMIN } = userRoles;
 

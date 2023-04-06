@@ -19,9 +19,8 @@ window.injectedEnv = {
   REACT_APP_NIH_CLIENT_ID: 'Sample id',
 
   // Access control settings
-  AUTH: false,
   PUBLIC_ACCESS: 'Metadata Only',
-  NODE_LEVEL_ACCESS: true,
+  NODE_LEVEL_ACCESS: false,
   NODE_LABEL: 'Study Arm(s)',
 
   // No Longer Used.
