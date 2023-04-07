@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
 import React from 'react';
-// import { sortBySection } from '../../utils/Sort';
 import ReduxCheckbox from './checkbox/ReduxCheckbox';
 import ReduxSlider from './slider/ReduxSlider';
 import { InputTypes } from './Types';
