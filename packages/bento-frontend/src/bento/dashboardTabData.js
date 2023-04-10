@@ -1698,6 +1698,9 @@ export const tabContainers = [
     defaultSortDirection: 'asc',
     buttonText: 'Add Selected Files',
     tableID: 'case_tab_table',
+    extendedViewConfig: {
+      pagination: true,
+    },
     columns: [
       {
         cellType: cellTypes.CHECKBOX,

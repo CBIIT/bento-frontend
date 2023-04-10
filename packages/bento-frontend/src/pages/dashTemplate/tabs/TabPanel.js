@@ -55,6 +55,7 @@ const TabView = (props) => {
     tableMsg: config.tableMsg,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
+    extendedViewConfig: config.extendedViewConfig,
     rowsPerPage: 10,
     page: 0,
   });
