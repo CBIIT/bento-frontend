@@ -1,5 +1,5 @@
+import { useApolloClient } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import client from '../../utils/graphqlClient';
 
 /**
 * set true to checked items
@@ -43,6 +43,7 @@ const getPaginatedQueryVariables = (queryVariables, table) => {
  * @returns table data
  */
 export const getTableData = ({ queryVariables, table }) => {
+  const client = useApolloClient();
   const {
     page,
     rowsPerPage,

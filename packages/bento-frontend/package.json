@@ -10,6 +10,8 @@
     "@bento-core/local-find": "*",
     "@bento-core/cart": "*",
     "@bento-core/tab": "*",
+    "@bento-core/table": "*",
+    "@bento-core/paginated-table": "*",
     "@bento-core/authentication": "*",
     "@apollo/client": "^3.6.9",
     "@apollo/react-components": "^4.0.0",

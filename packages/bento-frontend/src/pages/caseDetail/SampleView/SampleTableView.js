@@ -5,7 +5,7 @@ import {
 } from '../../../bento/caseDetailData';
 import { Wrapper } from '../../../bento-core/Wrapper';
 import { themeConfig, wrapperThemConfig } from './Theme';
-import { TableView, TableContext } from '../../../bento-core/PaginationTable';
+import { TableContext, TableView } from '@bento-core/paginated-table';
 import { footerConfig } from './Wrapper';
 
 const SampleTableView = ({

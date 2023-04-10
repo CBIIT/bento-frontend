@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import { TableView } from '../../bento-core/PaginationTable';
+import { TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
 import { themeConfig } from './tableConfig/Theme';
 import { Wrapper } from '../../bento-core/Wrapper';
@@ -8,6 +8,7 @@ import { footerConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
 import styles from './cartView.style';
 import Header from './cartHeader';
+import client from '../../utils/graphqlClient';
 
 const CartView = (props) => {
   const {
@@ -56,6 +57,7 @@ const CartView = (props) => {
             queryVariables={variables}
           />
           <TableView
+            client={client}
             initState={initTblState}
             themeConfig={themeConfig}
             queryVariables={variables}

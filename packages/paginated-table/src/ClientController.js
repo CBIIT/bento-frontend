@@ -1,6 +1,6 @@
 import React from 'react';
 import { CircularProgress, Container } from '@material-ui/core';
-import TableView from '../Table/TableView';
+import { TableView } from '@bento-core/table';
 import { setSelectedRows } from './TableService';
 
 /**
