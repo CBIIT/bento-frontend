@@ -27,7 +27,31 @@ export const outerLayoutConfig = [{
   ],
 }];
 
-export const headerConfig = [{
+export const wrapperConfig = [
+  {
+    container: 'outer_layout',
+    size: 'xl',
+    clsName: 'container_outer_layout',
+    items: [
+      {
+        clsName: 'cart_icon',
+        type: types.ICON,
+        src: myFilesPageData.headerIconSrc,
+        alt: myFilesPageData.headerIconAlt,
+      },
+      {
+        clsName: 'cart_header_text',
+        text: 'Cart >',
+        type: types.TEXT,
+      },
+      {
+        clsName: 'cart_sel_files_text',
+        text: 'Selected Files',
+        type: types.TEXT,
+      },
+    ],
+  },
+  {
   container: 'buttons',
   size: 'xl',
   clsName: 'container_header',
@@ -40,9 +64,12 @@ export const headerConfig = [{
       btnType: btnTypes.DOWNLOAD_MANIFEST,
       tooltipCofig: tooltipContent,
     }],
-}];
-
-export const footerConfig = [{
+},
+{
+  container: 'paginatedTable',
+  paginatedTable: true,
+},
+{
   container: 'buttons',
   size: 'xl',
   clsName: 'container_footer',
