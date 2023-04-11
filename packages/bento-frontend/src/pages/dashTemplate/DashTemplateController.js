@@ -7,31 +7,11 @@ import { DASHBOARD_QUERY_NEW, tabContainers } from '../../bento/dashboardTabData
 import client from '../../utils/graphqlClient';
 import useGenerateTabData from './tabs/hooks/useGenerateTabData';
 
-const mockLogin = () => ({
-  login: {
-    ObjectIDP: "Google",
-    __typename: "User",
-    acl: [],
-    creationDate: "Tue Apr 11 2023 15:18:56 GMT+0000 (Coordinated Universal Time)",
-    editDate: "",
-    email: "developer.bento@gmail.com",
-    firstName: "Dev",
-    isSignedIn: true,
-    truelastName: "Bento",
-    organization: "",
-    role: "non-member",
-    userID: "3dd73f75-5381-4582-b348-b9ea7e44d995",
-    userStatus: "",
-  }
-});
-
 const getDashData = (states) => {
   const {
     filterState,
     localFindUpload, localFindAutocomplete,
   } = states;
-
-  localStorage.setItem('userDetails', mockLogin());
 
   async function getData(activeFilters) {
     const result = await client.query({
