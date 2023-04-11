@@ -6,16 +6,19 @@ import {
   Tooltip,
   createTheme,
 } from '@material-ui/core';
-import { CloudDownload } from '@material-ui/icons'
+import {
+  CloudDownload,
+} from '@material-ui/icons';
 import CustomPagination from './pagination/CustomPagination';
 import ManageColumnView from './toolbar/ManageColumnView';
+import defaultTheme from './DefaultThemConfig';
+import DownloadButton from './toolbar/DownloadButtonView';
 
 const ExtendedView = ({
   table,
   onColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
-  themeConfig = {},
   numSelected = 0,
   customTheme,
 }) => {
@@ -28,25 +31,23 @@ const ExtendedView = ({
       manageViewColumns = false,
       pagination = false,
     } = extendedViewConfig;
+
+    const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
     return (
-      <ThemeProvider theme={createTheme(customTheme)}>
+      <ThemeProvider theme={themeConfig}>
         {(numSelected === 0 && (download || manageViewColumns)) && (
           <Toolbar className="downloadColumnView">
-            {download && (
-              <Tooltip title={download.downloadCsv}>
-                <IconButton
-                >
-                  <CloudDownload />
-                </IconButton>
-              </Tooltip>
-            )}
+            <DownloadButton
+              download={download}
+            />
             {(manageViewColumns) && (
-              <Tooltip title={manageViewColumns.title}>
-                <ManageColumnView
-                  table={table}
-                  onColumnViewChange={onColumnViewChange}
-                />
-              </Tooltip>
+              // <Tooltip title={manageViewColumns.title}>
+              <ManageColumnView
+                table={table}
+                manageViewColumns={manageViewColumns}
+                onColumnViewChange={onColumnViewChange}
+              />
+              // </Tooltip>
             )}
           </Toolbar>
         )}
