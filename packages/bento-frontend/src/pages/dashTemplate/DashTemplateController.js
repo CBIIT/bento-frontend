@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
+import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
 import { DASHBOARD_QUERY_NEW, tabContainers } from '../../bento/dashboardTabData';
 import client from '../../utils/graphqlClient';
-import { getFilters } from '../../bento-core/FacetFilter/utils/filter';
 import useGenerateTabData from './tabs/hooks/useGenerateTabData';
 
 const getDashData = (states) => {

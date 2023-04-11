@@ -10,6 +10,7 @@
     "@bento-core/local-find": "*",
     "@bento-core/cart": "*",
     "@bento-core/tab": "*",
+    "@bento-core/facet-filter": "*", 
     "@bento-core/table": "*",
     "@bento-core/paginated-table": "*",
     "@bento-core/authentication": "*",
