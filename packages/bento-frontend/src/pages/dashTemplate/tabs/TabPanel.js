@@ -9,7 +9,7 @@ import styles from './TabStyle';
 import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
 import { configColumn } from './tableConfig/Column';
-import { configWrapper, footerConfig, headerConfig } from './wrapperConfig/Wrapper';
+import { configWrapper, wrapperConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
 
 const TabView = (props) => {
@@ -66,29 +66,24 @@ const TabView = (props) => {
   return (
     <TableContextProvider>
       <Wrapper
-        wrapConfig={configWrapper(config, headerConfig)}
+        wrapConfig={configWrapper(config, wrapperConfig)}
         customTheme={customTheme}
         classes={classes}
         section={config.name}
-      />
-      <Grid container>
-        <Grid item xs={12} id={config.tableID}>
-          <TableView
-            initState={initTblState}
-            viewConfig={tableViewConfig}
-            themeConfig={themeConfig}
-            queryVariables={activeFilters}
-            totalRowCount={dashboardStats[config.count]}
-            activeTab={activeTab}
-          />
+      >
+        <Grid container>
+          <Grid item xs={12} id={config.tableID}>
+            <TableView
+              initState={initTblState}
+              viewConfig={tableViewConfig}
+              themeConfig={themeConfig}
+              queryVariables={activeFilters}
+              totalRowCount={dashboardStats[config.count]}
+              activeTab={activeTab}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-      <Wrapper
-        wrapConfig={configWrapper(config, footerConfig)}
-        customTheme={customTheme}
-        classes={classes}
-        section={config.name}
-      />
+      </Wrapper>
     </TableContextProvider>
   );
 };

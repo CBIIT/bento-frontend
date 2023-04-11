@@ -15,6 +15,7 @@ const AddAllFilesComponent = (props) => {
     addFiles,
     setAlterDisplay,
     setOpenSnackbar,
+    client,
   } = props;
   /**
   * conditionally display dialog view
@@ -28,6 +29,7 @@ const AddAllFilesComponent = (props) => {
   */
   const addAllFiles = () => {
     const fileIds = getFilesID({
+      client,
       variables: activeFilters,
       query: addFileQuery,
     });

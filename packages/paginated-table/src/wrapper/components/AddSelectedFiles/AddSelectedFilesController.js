@@ -19,6 +19,7 @@ const AddSelectedFilesController = (props) => {
     addFiles,
     setOpenSnackbar,
     setAlterDisplay,
+    client,
   } = props;
 
   const tableContext = useContext(TableContext);
@@ -31,6 +32,7 @@ const AddSelectedFilesController = (props) => {
   // add selected files id
   const addSelectedFiles = () => {
     const fileIds = getFilesID({
+      client,
       variables,
       fileIds: selectedRows,
       query: addFileQuery,

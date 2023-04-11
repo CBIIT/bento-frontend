@@ -1,4 +1,3 @@
-import { useApolloClient } from '@apollo/client';
 /**
 * query varibales to fetch all the selected files id
 */
@@ -9,11 +8,11 @@ export const getQueryVariables = (variables) => {
 };
 
 export const getFilesID = ({
+  client,
   variables,
   query,
 }) => {
   const queryVariables = getQueryVariables(variables);
-  const client = useApolloClient();
   return async function getFileIDs() {
     const fetchResult = await client
       .query({

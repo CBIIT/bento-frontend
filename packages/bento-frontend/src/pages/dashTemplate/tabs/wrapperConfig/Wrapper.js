@@ -15,7 +15,7 @@ export const layoutConfig = [{
   ],
 }];
 
-export const headerConfig = [{
+export const wrapperConfig = [{
   container: 'buttons',
   size: 'xl',
   clsName: 'container_header',
@@ -38,9 +38,12 @@ export const headerConfig = [{
       tooltipCofig: tooltipContent,
       conditional: true,
     }],
-}];
-
-export const footerConfig = [{
+},
+{
+  container: 'paginatedTable',
+  paginatedTable: true,
+},
+{
   container: 'buttons',
   size: 'xl',
   clsName: 'container_footer',
@@ -66,7 +69,9 @@ export const footerConfig = [{
       url: '#/fileCentricCart',
       type: types.LINK,
     }],
-}];
+},
+];
+
 
 /**
 * holder function to add files on cart
@@ -76,14 +81,14 @@ export const footerConfig = [{
 export const configWrapper = (tab, configs) => {
   const wrpConfig = configs.map((container) => ({
     ...container,
-    items: container.items.map((item) => ({
+    items: (!container.paginatedTable) ? container.items.map((item) => ({
       ...item,
       addFileQuery: (item.role === btnTypes.ADD_ALL_FILES)
         ? tab.addAllFileQuery : tab.addSelectedFilesQuery,
       dataKey: tab.addFilesRequestVariableKey,
       responseKeys: (item.role === btnTypes.ADD_ALL_FILES)
         ? tab.addAllFilesResponseKeys : tab.addFilesResponseKeys,
-    })),
+    })) : [],
   }));
   return wrpConfig;
 };
