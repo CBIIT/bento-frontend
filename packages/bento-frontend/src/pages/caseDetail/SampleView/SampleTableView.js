@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 import { Container, withStyles } from '@material-ui/core';
+import { TableContext, TableView, Wrapper } from '@bento-core/paginated-table';
 import {
   sampleTable,
 } from '../../../bento/caseDetailData';
-import { Wrapper } from '../../../bento-core/Wrapper';
 import { themeConfig, wrapperThemConfig } from './Theme';
-import { TableContext, TableView } from '@bento-core/paginated-table';
 import { footerConfig } from './Wrapper';
 
 const SampleTableView = ({

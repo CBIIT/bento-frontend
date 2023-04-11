@@ -46,7 +46,7 @@ const reducers = {
     (state) => (
       {
         ...state,
-        isSignedIn: false,
+        isSignedIn: true,
         userId: null,
       }
     ),

@@ -1,5 +1,7 @@
-import { btnTypes } from '../../../../bento-core/Wrapper/components/AddFiles';
-import { types } from '../../../../bento-core/Wrapper/Wrapper';
+import {
+  btnTypes,
+  types,
+} from '@bento-core/paginated-table';
 import {
   tooltipContent,
 } from '../../../../bento/dashboardTabData';

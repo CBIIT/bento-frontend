@@ -1,8 +1,8 @@
-export { default as TableView } from './PaginatedTable';
+export { default as TableView } from './table/PaginatedTable';
 export {
   default as TableContextProvider,
   TableContext,
-} from './ContextProvider';
+} from './table/ContextProvider';
 export {
   onColumnViewChange,
   onColumnSort,
@@ -12,4 +12,7 @@ export {
   onPageChange,
   onRowSeclect,
   setTotalRowCount,
-} from './state/Actions';
+} from './table/state/Actions';
+export { default as Wrapper, types } from './wrapper/Wrapper';
+export { btnTypes } from './wrapper/components/AddFiles';
+export { getQueryVariables } from './wrapper/WrapperService';

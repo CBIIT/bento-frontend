@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { CartContext, setCartConfig } from '@bento-core/cart';
-import { Wrapper } from '../../bento-core/Wrapper';
+import { Wrapper } from '@bento-core/paginated-table';
 import { customTheme } from './wrapperConfig/Theme';
 import { headerConfig, outerLayoutConfig } from './wrapperConfig/Wrapper';
 import {

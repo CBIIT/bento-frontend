@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { withStyles } from '@material-ui/core';
-import { TableContext, TableView } from '@bento-core/paginated-table';
-import Wrapper from '../../../bento-core/Wrapper/Wrapper';
+import { TableContext, TableView, Wrapper } from '@bento-core/paginated-table';
 import {
   displayPgn,
   hidePgn,

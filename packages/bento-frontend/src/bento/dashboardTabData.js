@@ -1699,10 +1699,6 @@ export const tabContainers = [
     buttonText: 'Add Selected Files',
     tableID: 'case_tab_table',
     extendedViewConfig: {
-      // download: true,
-      // manageViewColumns: {
-      //   title: 'View Columns'
-      // },
       pagination: true,
     },
     columns: [

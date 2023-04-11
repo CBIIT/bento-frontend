@@ -1,6 +1,4 @@
-// import { useEffect, useState } from 'react';
-import client from '../../utils/graphqlClient';
-
+import { useApolloClient } from '@apollo/client';
 /**
 * query varibales to fetch all the selected files id
 */
@@ -15,6 +13,7 @@ export const getFilesID = ({
   query,
 }) => {
   const queryVariables = getQueryVariables(variables);
+  const client = useApolloClient();
   return async function getFileIDs() {
     const fetchResult = await client
       .query({

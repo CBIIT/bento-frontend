@@ -3,7 +3,7 @@ import { Grid, withStyles } from '@material-ui/core';
 import { TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
 import { themeConfig } from './tableConfig/Theme';
-import { Wrapper } from '../../bento-core/Wrapper';
+import { Wrapper } from '@bento-core/paginated-table';
 import { footerConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
 import styles from './cartView.style';

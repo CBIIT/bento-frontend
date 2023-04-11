@@ -9,7 +9,7 @@ export const CustomCellView = (props) => {
     displayEmpty, dataField,
   } = props;
   if (downloadDocument) {
-    console.log(props);
+    console.log(props[dataField]);
     return (
       <DocumentDownloadView
         fileSize={props.file_size}
@@ -18,6 +18,7 @@ export const CustomCellView = (props) => {
         fileLocation={props[documentDownloadProps.fileLocationColumn]}
         {...documentDownloadProps}
         {...props}
+        requiredACLs={props[dataField]}
       />
     );
   } else if (typeof displayEmpty === "boolean") {

@@ -1,4 +1,4 @@
-import { types, btnTypes } from '../../../bento-core/Wrapper';
+import { types, btnTypes } from '@bento-core/paginated-table';
 import { myFilesPageData, tooltipContent } from '../../../bento/fileCentricCartWorkflowData';
 /**
 * configure outer layout
