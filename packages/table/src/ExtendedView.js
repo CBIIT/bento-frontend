@@ -1,14 +1,9 @@
 import React from 'react';
 import {
-  IconButton,
   ThemeProvider,
   Toolbar,
-  Tooltip,
   createTheme,
 } from '@material-ui/core';
-import {
-  CloudDownload,
-} from '@material-ui/icons';
 import CustomPagination from './pagination/CustomPagination';
 import ManageColumnView from './toolbar/ManageColumnView';
 import defaultTheme from './DefaultThemConfig';
@@ -40,15 +35,11 @@ const ExtendedView = ({
             <DownloadButton
               download={download}
             />
-            {(manageViewColumns) && (
-              // <Tooltip title={manageViewColumns.title}>
-              <ManageColumnView
-                table={table}
-                manageViewColumns={manageViewColumns}
-                onColumnViewChange={onColumnViewChange}
-              />
-              // </Tooltip>
-            )}
+            <ManageColumnView
+              table={table}
+              manageViewColumns={manageViewColumns}
+              onColumnViewChange={onColumnViewChange}
+            />
           </Toolbar>
         )}
         {

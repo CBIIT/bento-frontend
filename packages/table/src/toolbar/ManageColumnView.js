@@ -23,6 +23,9 @@ const ManageColumnView = ({
   onColumnViewChange,
   manageViewColumns,
 }) => {
+  if (!manageViewColumns) {
+    return null;
+  }
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
