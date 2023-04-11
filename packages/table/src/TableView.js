@@ -9,6 +9,7 @@ import CustomPagination from './pagination/CustomPagination';
 import CustomTableBody from './body/CustomTblBody';
 import CustomToolbar from './toolbar/CustomToolbar';
 import DisplayErrMsg from './errMsg/DisplayErrMsg';
+import ExtendedView from './ExtendedView';
 
 const TableView = ({
   tableRows = [],
@@ -20,24 +21,19 @@ const TableView = ({
   totalRowCount,
   onSortByColumn,
   onColumnViewChange,
-  viewConfig = {},
   themeConfig = {},
 }) => (
   <>
-    {viewConfig.displayHeaderPg && (
-      <CustomPagination
-        customTheme={themeConfig.tblTopPgn}
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={table.totalRowCount || 0}
-        rowsPerPage={table.rowsPerPage || 10}
-        page={table.page || 0}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-      />
-    )}
-    <CustomToolbar
+    <ExtendedView
+      table={table}
+      onColumnViewChange={onColumnViewChange}
+      onRowsPerPageChange={onRowsPerPageChange}
+      onPageChange={onPageChange}
       numSelected={table.selectedRows.length}
+      customTheme={themeConfig.extendedView}
+    />
+    <CustomToolbar
+      numSelected={table.selectedRows.length || 0}
       table={table}
       onColumnViewChange={onColumnViewChange}
       customTheme={themeConfig.toolbar}

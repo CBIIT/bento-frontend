@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
-import { cellTypes, headerTypes } from '../../../../bento-core/Table/util/Types';
+import { cellTypes, headerTypes } from '@bento-core/Table';
 import DocumentDownloadView from '../../../../components/DocumentDownload/DocumentDownloadView';
 
 export const CustomCellView = (props) => {
@@ -9,6 +9,7 @@ export const CustomCellView = (props) => {
     displayEmpty, dataField,
   } = props;
   if (downloadDocument) {
+    console.log(props);
     return (
       <DocumentDownloadView
         fileSize={props.file_size}

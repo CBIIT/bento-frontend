@@ -1,7 +1,13 @@
 import React from 'react';
-import { CircularProgress, Container } from '@material-ui/core';
-import TableView from '../Table/TableView';
-import { getTableData, setSelectedRows } from './TableService';
+import {
+  CircularProgress,
+  Container,
+} from '@material-ui/core';
+import { TableView } from '@bento-core/table';
+import {
+  getTableData,
+  setSelectedRows,
+} from './TableService';
 
 /**
 * Updates table row when table state is changed 1. (paginated action) and 2. filter action

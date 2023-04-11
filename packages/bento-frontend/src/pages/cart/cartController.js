@@ -5,9 +5,9 @@ import {
   onDeleteCartFile,
   CartContextProvider,
 } from '@bento-core/cart';
+import { TableContextProvider } from '@bento-core/paginated-table';
 import { tableConfig } from '../../bento/fileCentricCartWorkflowData';
 import CartView from './cartView';
-import { TableContextProvider } from '../../bento-core/PaginationTable';
 
 const CartController = (props) => (
   <CartContextProvider>

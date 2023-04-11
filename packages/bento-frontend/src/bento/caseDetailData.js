@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { cellTypes } from '../bento-core/Table/util/Types';
+import { cellTypes } from '@bento-core/table';
 import { FileOnRowsSelect } from '../utils/fileTable';
 import { SampleOnRowsSelect } from '../utils/sampleFileTable';
 

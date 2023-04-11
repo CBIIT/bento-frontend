@@ -7,34 +7,39 @@ import {
   Popover,
   Tooltip,
   Typography,
+  withStyles,
 } from '@material-ui/core';
 import {
   ViewColumn,
   CheckBox as CheckBoxIcon,
   CheckBoxOutlineBlank as CheckBoxBlankIcon,
+  Close,
 } from '@material-ui/icons';
 import { cellTypes } from '../util/Types';
 
 const ManageColumnView = ({
+  classes,
   table,
   onColumnViewChange,
+  manageViewColumns,
 }) => {
+  if (!manageViewColumns) {
+    return null;
+  }
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
 
   const open = Boolean(anchorEl);
   const { columns } = table;
   const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY);
 
   return (
-    <div>
-      <Tooltip title="View Columns">
+    <>
+      <Tooltip title={manageViewColumns.title}>
         <IconButton variant="contained" onClick={handleClick}>
           <ViewColumn />
         </IconButton>
@@ -48,13 +53,28 @@ const ManageColumnView = ({
           horizontal: 'left',
         }}
       >
-        <List>
+        <Typography variant="caption" className="viewColumnText">
+          {manageViewColumns.title}
+        </Typography>
+        <IconButton
+          onClick={handleClose}
+          className="closeIcon"
+        >
+          <Close />
+        </IconButton>
+        <List className="viewColumnList">
           {viewColumns.map((column) => (
             <ListItem
               width={1}
+              className="viewColumnListItem"
             >
               <Checkbox
-                icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+                icon={
+                  <CheckBoxBlankIcon
+                    style={{ fontSize: 18 }}
+                    className="checkBoxIcon"
+                  />
+                }
                 onClick={() => onColumnViewChange(column)}
                 checked={column.display}
                 checkedIcon={(
@@ -62,18 +82,53 @@ const ManageColumnView = ({
                     style={{
                       fontSize: 18,
                     }}
+                    className="checkBoxIcon"
                   />
                 )}
                 disableRipple
                 color="secondary"
+                className="checkBox"
               />
               <Typography>{column.header}</Typography>
             </ListItem>
           ))}
         </List>
       </Popover>
-    </div>
+    </>
   );
 };
 
-export default ManageColumnView;
+const styles = () => ({
+  root: {
+    padding: '16px 24px 16px 24px',
+    fontFamily: 'Roboto',
+  },
+  title: {
+    marginRight: '24px',
+    fontSize: '14px',
+    color: '#0B3556',
+    textAlign: 'left',
+    fontWeight: 500,
+  },
+  formGroup: {
+    marginTop: '8px',
+  },
+  formControl: {},
+  checkbox: {
+    padding: '0px',
+    width: '32px',
+    height: '32px',
+  },
+  checkboxRoot: {
+    '&$checked': {
+      color: '#0B3556',
+    },
+  },
+  checked: {},
+  label: {
+    fontSize: '15px',
+    marginLeft: '8px',
+  },
+});
+
+export default withStyles(styles)(ManageColumnView);

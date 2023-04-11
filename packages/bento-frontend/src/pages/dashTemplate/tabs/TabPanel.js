@@ -1,12 +1,12 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
+import { TableContextProvider, TableView } from '@bento-core/paginated-table';
 import styles from './TabStyle';
 import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
 import { configColumn } from './tableConfig/Column';
 import { configWrapper, footerConfig, headerConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
-import { TableContextProvider, TableView } from '../../../bento-core/PaginationTable';
 import { Wrapper } from '../../../bento-core/Wrapper';
 
 const TabView = (props) => {
@@ -55,6 +55,7 @@ const TabView = (props) => {
     tableMsg: config.tableMsg,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
+    extendedViewConfig: config.extendedViewConfig,
     rowsPerPage: 10,
     page: 0,
   });
