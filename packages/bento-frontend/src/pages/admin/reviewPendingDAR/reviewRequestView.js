@@ -4,6 +4,8 @@ import {
 } from '@material-ui/core';
 import { cn, CustomDataTable, getColumns } from 'bento-components';
 import { useMutation } from '@apollo/client';
+import { UserDetailsGenerator } from '@bento-core/admin';
+import USER_DETAILS_CONFIG from '../userDetails/userDetailsViewConfig';
 import { Redirect } from 'react-router-dom';
 import Stats from '../../../components/Stats/AllStatsController';
 import CustomizedDialogs from './components/Dialog';
@@ -21,6 +23,7 @@ import { adminPortal } from '../../../bento/siteWideConfig';
 
 const ReviewRequestView = ({ classes, data }) => {
   const { listRequest } = data;
+  const { UserDetails } = UserDetailsGenerator(USER_DETAILS_CONFIG);
   // Redirect to Admin page once all individual DAR has been given an Access
   if (listRequest.length === 0) return <Redirect to={adminPortal} />;
 
@@ -190,54 +193,10 @@ const ReviewRequestView = ({ classes, data }) => {
               </Typography>
             </div>
           </div>
-          <div className={classes.userInfoHeader}>
-            <div className={classes.firstInfoSection}>
-              <div className={classes.infoKeyWrapper}>
-                <Typography className={classes.userInfo}>
-                  <span className={classes.infoKey}>ACCOUNT&nbsp;TYPE: </span>
-                  <span className={classes.infoKey}>EMAIL&nbsp;ADDRESS: </span>
-                  <span className={classes.infoKey}>NAME: </span>
-                </Typography>
-              </div>
-              <div>
-                <Typography className={classes.userInfo}>
-                  <span className={classes.infoValue}>
-                    {getAuthenticatorName(userInfo.IDP)}
-                  </span>
-                  <span className={classes.infoValue}>
-                    {userInfo.email}
-                  </span>
-                  <span className={classes.infoValue}>
-                    {capitalizeFirstLetter(userInfo.firstName)}
-                    ,&nbsp;
-                    {capitalizeFirstLetter(userInfo.lastName)}
-                  </span>
-                </Typography>
-              </div>
-            </div>
-            <div className={classes.secondInfoSection}>
-              <div className={classes.infoKeyWrapper}>
-                <Typography className={classes.userInfo}>
-                  <span className={classes.infoKey}>ORGANIZATION: </span>
-                  <span className={classes.infoKey}>MEMBERSHIP&nbsp;STATUS: </span>
-                  <span className={classes.infoKey}>ROLE: </span>
-                </Typography>
-              </div>
-              <div>
-                <Typography className={classes.userInfo}>
-                  <span className={classes.infoValue}>
-                    {capitalizeFirstLetter(userInfo.organization)}
-                  </span>
-                  <span className={classes.infoValue}>
-                    {capitalizeFirstLetter(userInfo.userStatus)}
-                  </span>
-                  <span className={classes.infoValue}>
-                    {capitalizeFirstLetter(userInfo.role)}
-                  </span>
-                </Typography>
-              </div>
-            </div>
-          </div>
+          <UserDetails
+            userInfo={userInfo}
+            userRole={userInfo.role}
+          />
           <Grid container>
             <Grid item xs={12}>
               <CustomDataTable
@@ -293,54 +252,6 @@ const styles = (theme) => ({
   },
   pageContainer: {
     background: '#fff',
-  },
-  userInfoHeader: {
-    minWidth: 'fit-content',
-    margin: '32px 0 38px 0',
-    padding: '0 0 0 36px',
-    display: 'flex',
-    gap: '12px',
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
-    },
-  },
-  firstInfoSection: {
-    display: 'flex',
-    flexGrow: 1,
-  },
-  secondInfoSection: {
-    display: 'flex',
-    flexGrow: 1,
-  },
-  infoKeyWrapper: {
-    [theme.breakpoints.down('xs')]: {
-      width: '120px',
-    },
-  },
-  userInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  infoKey: {
-    whiteSpace: 'nowrap',
-    fontFamily: 'Nunito',
-    fontWeight: '300', // light
-    fontSize: '12px',
-    color: '#708292',
-    letterSpacing: 0,
-    lineHeight: '30px',
-  },
-  infoValue: {
-    lineHeight: '30px',
-    fontFamily: 'Nunito',
-    fontStyle: 'italic',
-    fontWeight: '300', // light
-    fontSize: '17px',
-    color: '#4F5D69',
-    letterSpacing: 0,
-    whiteSpace: 'nowrap',
-    marginLeft: '21px',
-    float: 'left',
   },
   container: {
     margin: 'auto',
