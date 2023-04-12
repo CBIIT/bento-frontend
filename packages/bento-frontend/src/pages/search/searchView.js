@@ -3,7 +3,7 @@ import { withStyles, Box } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import {
   SearchBarGenerator, SearchResultsGenerator, countValues,
-} from '../../bento-core/GlobalSearch';
+} from '@bento-core/global-search';
 import styles from './styles';
 import {
   SEARCH_PAGE_DATAFIELDS, SEARCH_PAGE_KEYS,

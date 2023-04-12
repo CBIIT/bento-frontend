@@ -2,11 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Header } from 'bento-components';
 import { withRouter } from 'react-router-dom';
+import { SearchBarGenerator } from '@bento-core/global-search';
 import headerData from '../../bento/globalHeaderData';
-import { SearchBarGenerator } from '../../bento-core/GlobalSearch';
 import { queryAutocompleteAPI, SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
 import { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
-import accessLevelTypes from '../../utils/enums';
+import { accessLevelTypes } from '@bento-core/authentication';
 
 const ICDCHeader = (props) => {
   const { location } = props;

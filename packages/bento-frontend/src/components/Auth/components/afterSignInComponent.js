@@ -4,7 +4,7 @@ import {
   Button, withStyles, Paper,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { requestAccessRoute, adminPortal, userProfileRoute } from '../../../bento/siteWideConfig';
+import { requestAccessPath, adminPortalPath, userProfilePath } from '../../../bento/siteWideConfig';
 // import DropdownItemsMenu from './DropdownItemsMenu';
 
 const AfterSignIn = ({
@@ -50,7 +50,7 @@ const AfterSignIn = ({
           <Paper className={classes.paper}>
             <div>
               <Button
-                onClick={() => redirectUser(userProfileRoute)}
+                onClick={() => redirectUser(userProfilePath)}
                 classes={{ label: classes.textColor, text: classes.paddding0 }}
                 disableRipple
               >
@@ -61,7 +61,7 @@ const AfterSignIn = ({
             {role === 'admin' ? (
               <div>
                 <Button
-                  onClick={() => redirectUser(adminPortal)}
+                  onClick={() => redirectUser(adminPortalPath)}
                   classes={{ label: classes.textColor, text: classes.paddding0 }}
                   disableRipple
                 >
@@ -72,7 +72,7 @@ const AfterSignIn = ({
               : (
                 <div>
                   <Button
-                    onClick={() => redirectUser(requestAccessRoute)}
+                    onClick={() => redirectUser(requestAccessPath)}
                     classes={{ label: classes.textColor, text: classes.paddding0 }}
                     disableRipple
                   >

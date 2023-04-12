@@ -1,28 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import {
-  TableCell,
   TableHead,
   TableRow,
-  withStyles,
-  Checkbox,
-  FormControlLabel,
   createTheme,
   ThemeProvider,
 } from '@material-ui/core';
 import HeaderCell from './CustomCell';
-import { getClsName, tableCls } from '../util/ClassNames';
+// import { getClsName, tableCls } from '../util/ClassNames';
 import defaultTheme from './DefaultThemConfig';
+import { cellTypes } from '../util/Types';
+import CheckboxView from './components/CheckBoxView';
+import DeleteCellView from './components/DeleteCellView';
 
 const CustomTableHeader = ({
-  classes,
   table,
-  rows,
+  rows = [],
   toggleSelectAll,
   sortByColumn,
   components = {},
   customTheme = {},
+  count,
 }) => {
   const {
     columns,
@@ -32,49 +30,49 @@ const CustomTableHeader = ({
   } = table;
   const Ids = rows.map((row) => row[table.dataKey]);
   const includeSelectedIds = Ids.some((id) => selectedRows.includes(id));
-
+  const displayColunms = columns.filter((col) => col.display);
   /**
   * create root class name based on table info
   * themeprovider to customize style
   */
-  const rootClsName = getClsName(table.title, tableCls.HEADER);
+  // const rootClsName = getClsName(table.title, tableCls.HEADER);
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
-      <TableHead className={rootClsName}>
-        <TableRow className={`${rootClsName}${tableCls.ROW}`}>
-          <TableCell padding="checkbox">
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  className={clsx(`${rootClsName}${tableCls.CHECKBOX}`, {
-                    [`${rootClsName}${tableCls.CHECKBOX_ACTIVE}`]: includeSelectedIds,
-                    [`${rootClsName}${tableCls.CHECKBOX_INACTIVE}`]: !includeSelectedIds,
-                  })}
-                  classes={{
-                    root: classes.checkboxRoot,
-                    checked: classes.checked,
-                    disabled: classes.disabled,
-                  }}
-                  color="primary"
-                  indeterminate={includeSelectedIds}
-                  checked={includeSelectedIds}
-                  onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
-                />
-              )}
-            />
-          </TableCell>
+      <TableHead>
+        <TableRow>
           {
-            columns.map((column) => (
-              <HeaderCell
-                rootClsName={rootClsName}
-                components={components}
-                column={column}
-                sortBy={sortBy}
-                sortOrder={sortOrder}
-                toggleSort={() => sortByColumn(column.dataField, sortOrder)}
-              />
-            ))
+            displayColunms.map((column) => {
+              const { cellType } = column;
+              switch (cellType) {
+                case cellTypes.CHECKBOX:
+                  return (
+                    <CheckboxView
+                      includeSelectedIds={includeSelectedIds}
+                      toggleSelectAll={toggleSelectAll}
+                      Ids={Ids}
+                    />
+                  );
+                case cellTypes.DELETE:
+                  return (
+                    <DeleteCellView
+                      rows={rows}
+                      count={count}
+                      column={column}
+                    />
+                  );
+                default:
+                  return (
+                    <HeaderCell
+                      components={components}
+                      column={column}
+                      sortBy={sortBy}
+                      sortOrder={sortOrder}
+                      toggleSort={() => sortByColumn(column.dataField, sortOrder)}
+                    />
+                  );
+              }
+            })
           }
         </TableRow>
       </TableHead>
@@ -89,15 +87,4 @@ CustomTableHeader.propTypes = {
   sortByColumn: PropTypes.string.isRequired,
 };
 
-const styles = () => ({
-  checkboxRoot: {
-    marginLeft: '12px',
-    height: 12,
-    color: 'inherit',
-    '&$checked': {
-      color: '#8DCAFF',
-    },
-  },
-});
-
-export default withStyles(styles)(CustomTableHeader);
+export default CustomTableHeader;

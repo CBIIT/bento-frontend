@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Slide from '@material-ui/core/Slide';
 
 import env from '../../utils/env';
-import { useAuth } from '../Auth/AuthProvider';
+import { useAuth } from '@bento-core/authentication';
 import { useGlobal } from '../Global/GlobalProvider';
 import { PING_INTERVAL, REDIRECT_AFTER_SIGN_OUT, SHOW_WARNING_BEFORE } from '../../bento/siteWideConfig';
 
