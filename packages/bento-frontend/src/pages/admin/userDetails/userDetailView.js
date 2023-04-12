@@ -9,7 +9,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { cn, CustomDataTable } from 'bento-components';
 
 import AlertMessage from '../../../bento-core/AlertMessage';
-import UserDetails from '../../../bento-core/Admin';
+import { UserDetailsGenerator } from '@bento-core/admin';
+import USER_DETAILS_CONFIG from './userDetailsViewConfig';
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
 import {
@@ -69,6 +70,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userRole, setUserRole] = useState(userInfo.role.toLowerCase());
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
+  const { UserDetails } = UserDetailsGenerator(USER_DETAILS_CONFIG);
 
   // GraphQL Operations
   // eslint-disable-next-line no-unused-vars

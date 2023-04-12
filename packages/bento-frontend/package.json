@@ -8,6 +8,7 @@
     "@bento-core/stats-bar": "*",
     "@bento-core/widgets": "*",
     "@bento-core/local-find": "*",
+    "@bento-core/admin": "*",
     "@bento-core/cart": "*",
     "@bento-core/tab": "*",
     "@bento-core/authentication": "*",

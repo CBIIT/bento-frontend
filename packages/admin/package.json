@@ -1,5 +1,5 @@
 {
-  "name": "@bento-core/widgets",
+  "name": "@bento-core/admin",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
@@ -13,14 +13,14 @@
   },
   "peerDependencies": {
     "@material-ui/core": "^4.10.0",
+    "@material-ui/icons": "*",
+    "@material-ui/lab": "*",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "lodash": "^4.17.20",
-    "react-vis": "^1.11.7"
+    "lodash": "^4.17.20"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"
