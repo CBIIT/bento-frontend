@@ -95,7 +95,6 @@ function requestAccessView({ data, classes }) {
   // Init state for inputs.
   const [formValues, setFormValues] = useState(setDefaultValues());
   const [isFormSubmitted, setSubmitted] = useState(false);
-
   const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0) || userStatus === "Disabled";
 
   // GraphQL Operations
