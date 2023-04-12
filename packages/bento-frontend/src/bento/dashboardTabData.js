@@ -2167,11 +2167,4 @@ export const tabContainers = [
   },
 ];
 
-/**
-* table view config
-* hide or display pagination on header
-*/
-export const tableViewConfig = {
-  displayHeaderPg: true,
-};
   

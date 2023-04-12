@@ -6,7 +6,6 @@ import {
   Wrapper,
 } from '@bento-core/paginated-table';
 import styles from './TabStyle';
-import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
 import { configColumn } from './tableConfig/Column';
 import { configWrapper, wrapperConfig } from './wrapperConfig/Wrapper';
@@ -75,7 +74,6 @@ const TabView = (props) => {
           <Grid item xs={12} id={config.tableID}>
             <TableView
               initState={initTblState}
-              viewConfig={tableViewConfig}
               themeConfig={themeConfig}
               queryVariables={activeFilters}
               totalRowCount={dashboardStats[config.count]}
