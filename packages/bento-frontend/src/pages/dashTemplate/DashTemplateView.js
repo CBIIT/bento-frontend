@@ -4,14 +4,12 @@ import styles from './DashTemplateStyle';
 import BentoFacetFilter from './sideBar/BentoFacetFilter';
 import WidgetView from './widget/WidgetView';
 import StatsView from '../../components/Stats/StatsView';
-import {Tabs} from '@bento-core/tab';
-import themes, {overrides} from '../../themes';
+import TabsView from './tabs/TabsView';
 
 const DashTemplate = ({
   classes,
   dashData,
-  onTabChange,
-  tabData,
+  activeFilters,
 }) => (
   <div className={classes.dashboardContainer}>
     <StatsView data={dashData} />
@@ -25,20 +23,9 @@ const DashTemplate = ({
             <WidgetView
               data={dashData}
             />
-            <Tabs
-              tabData={tabData}
-              onChange={onTabChange}
-              themes={themes}
-              overrides={overrides}
-              styles={{
-                tabsLabel:
-                  {
-                    '& .count': {
-                      marginLeft: '5px',
-                      fontSize: '17px',
-                    },
-                  },
-              }}
+            <TabsView
+              dashboardStats={dashData}
+              activeFilters={activeFilters}
             />
           </div>
         </div>
