@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
-import { cn, CustomDataTable } from 'bento-components';
+import { CustomDataTable } from 'bento-components';
 
 import AlertMessage from '../../../bento-core/AlertMessage';
 import { UserDetailsGenerator } from '@bento-core/admin';
