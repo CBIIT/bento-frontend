@@ -7,6 +7,7 @@ import { Tab,
 import { makeStyles } from '@material-ui/core/styles';
 import generateStyle from './utils/generateStyle';
 import TabThemeProvider from './TabThemeProvider';
+import { defaultTheme } from './defaultTheme';
 
 /* Tabs coponenent */
 // function Tabs({
@@ -80,32 +81,6 @@ import TabThemeProvider from './TabThemeProvider';
 // }
 
 // export default Tabs;
-const defaultTheme = {
-  defaultStyle: {
-    fontFamily: 'Open Sans',
-    textTransform: 'none',
-    fontSize: '17px',
-  },
-  flexContainer: {
-    flexDirection: 'column',
-  },
-  indicator: {
-    display: 'none',
-  },
-  tabHighlightColor: {
-    color: '#6d9eba',
-  },
-  tabs: {
-    paddingLeft: '10px',
-  },
-  MuiTab: {
-    root: {
-      fontFamily: 'Open Sans',
-      textTransform: 'none',
-      fontSize: '17px',
-    },
-  },
-};
 
 const TabItems = ({
   tabItems,
@@ -114,12 +89,16 @@ const TabItems = ({
   orientation,
   customTheme = {},
 }) => {
-  const getTabLalbel = ({ name, count, clsName }) => (
+  const getTabLalbel = ({ name, count, clsName, index }) => (
     <>
       <span>
         {name}
         {count && (
-          <span className={`${clsName}_count`}>{count}</span>
+          <span
+            className={`index_${index} ${clsName}_count`}
+          >
+            {count}
+          </span>
         )}
       </span>
     </>
@@ -135,7 +114,7 @@ const TabItems = ({
     <Tab
       index={index}
       label={
-        getTabLalbel(tab)
+        getTabLalbel({ ...tab, index })
       }
       key={index}
       className={tab.clsName}
@@ -143,7 +122,7 @@ const TabItems = ({
     />
   ));
 
-  const themeConfig = createTheme({ overrides: { ...defaultTheme, ...customTheme } });
+  const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
       <Tabs
