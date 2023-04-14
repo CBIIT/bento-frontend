@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Button, Grid, Typography, withStyles,
 } from '@material-ui/core';
-import { cn, CustomDataTable, getColumns } from 'bento-components';
+import { cn, getColumns } from 'bento-components';
 import { useMutation } from '@apollo/client';
 import { UserDetailsGenerator } from '@bento-core/admin';
 import USER_DETAILS_CONFIG from '../userDetails/userDetailsViewConfig';
@@ -17,13 +17,15 @@ import {
   adminPortalIcon,
   getReviewDARConfig,
 } from '../../../bento/adminData';
+import { ReviewRequestsTableGenerator } from '../../../bento-core/ReviewRequestsTable/ReviewRequestsTableGenerator';
+import REVIEW_REQUESTS_TABLE_CONFIG from './reviewRequestsTableConfig';
 import { reformatDate, showAlert } from './utils/reviewDARUtilFun';
-import custodianUtils from '../../../utils/custodianUtilFuncs';
 import { adminPortal } from '../../../bento/siteWideConfig';
 
 const ReviewRequestView = ({ classes, data }) => {
   const { listRequest } = data;
   const { UserDetails } = UserDetailsGenerator(USER_DETAILS_CONFIG);
+  const { ReviewRequestsTable } = ReviewRequestsTableGenerator(REVIEW_REQUESTS_TABLE_CONFIG);
   // Redirect to Admin page once all individual DAR has been given an Access
   if (listRequest.length === 0) return <Redirect to={adminPortal} />;
 
@@ -167,7 +169,6 @@ const ReviewRequestView = ({ classes, data }) => {
       },
     });
   };
-  const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
 
   return (
     <>
@@ -197,16 +198,12 @@ const ReviewRequestView = ({ classes, data }) => {
             userInfo={userInfo}
             userRole={userInfo.role}
           />
-          <Grid container>
-            <Grid item xs={12}>
-              <CustomDataTable
-                data={filteredArms}
-                columns={columns}
-                options={options}
-                className={classes.customDataTable}
-              />
-            </Grid>
-          </Grid>
+          <ReviewRequestsTable
+            data={filteredArms}
+            columns={columns}
+            options={options}
+            className={classes.customDataTable}
+          />
         </div>
       </div>
       {/* Approve Dialog */}
@@ -313,24 +310,6 @@ const styles = (theme) => ({
   },
   rejectButton: {
     backgroundColor: '#BA2810',
-  },
-  customDataTable: {
-    '& .MuiTableFooter-root': {
-      borderBottom: '3px solid #42779A',
-    },
-    '& .MuiTableCell-head:first-child, .MuiTableCell-body:first-child': {
-      paddingLeft: '37px',
-    },
-    '& .MuiTableCell-head:last-child': {
-      paddingRight: '37px',
-      textAlign: 'center',
-    },
-    '& .MuiTableCell-body:last-child': {
-      paddingRight: '37px',
-    },
-    '& .MuiTableRow-root': {
-      height: '54px',
-    },
   },
 });
 
