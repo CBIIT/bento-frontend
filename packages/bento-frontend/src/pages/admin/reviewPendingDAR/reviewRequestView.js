@@ -4,7 +4,9 @@ import {
 } from '@material-ui/core';
 import { cn, getColumns } from 'bento-components';
 import { useMutation } from '@apollo/client';
+import { ReviewRequestsTableGenerator } from '@bento-core/admin';
 import { UserDetailsGenerator } from '@bento-core/admin';
+import REVIEW_REQUESTS_TABLE_CONFIG from './reviewRequestsTableConfig';
 import USER_DETAILS_CONFIG from '../userDetails/userDetailsViewConfig';
 import { Redirect } from 'react-router-dom';
 import Stats from '../../../components/Stats/AllStatsController';
@@ -17,8 +19,6 @@ import {
   adminPortalIcon,
   getReviewDARConfig,
 } from '../../../bento/adminData';
-import { ReviewRequestsTableGenerator } from '../../../bento-core/ReviewRequestsTable/ReviewRequestsTableGenerator';
-import REVIEW_REQUESTS_TABLE_CONFIG from './reviewRequestsTableConfig';
 import { reformatDate, showAlert } from './utils/reviewDARUtilFun';
 import { adminPortal } from '../../../bento/siteWideConfig';
 
