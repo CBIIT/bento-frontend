@@ -2,13 +2,23 @@
  * User Details View Styles
  */
 export default (theme) => ({
+  userInfoHeader: {
+    minWidth: 'fit-content',
+    margin: '32px 0 38px 0',
+    padding: '0 0 0 36px',
+    display: 'flex',
+    gap: '12px',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+    },
+  },
   firstInfoSection: {
     display: 'flex',
     flexGrow: 1,
   },
   secondInfoSection: {
     display: 'flex',
-    flexGrow: 2,
+    flexGrow: 1,
   },
   infoKeyWrapper: {
     [theme.breakpoints.down('xs')]: {
@@ -22,13 +32,11 @@ export default (theme) => ({
   infoKey: {
     whiteSpace: 'nowrap',
     fontFamily: 'Nunito',
-    letter: '50px',
-    // fontStyle: 'italic',
-    fontWeight: '400', // regular
-    fontSize: '11px',
+    fontWeight: '300', // light
+    fontSize: '12px',
     color: '#708292',
     letterSpacing: 0,
-    lineHeight: '34px',
+    lineHeight: '30px',
   },
   toggleAdmin: {
     color: '#375FAC',
@@ -37,14 +45,13 @@ export default (theme) => ({
     fontWeight: 'bold',
   },
   infoValue: {
-    lineHeight: '34px',
+    lineHeight: '30px',
     fontFamily: 'Nunito',
-    // fontStyle: 'italic',
+    fontStyle: 'italic',
     fontWeight: '300', // light
     fontSize: '17px',
     color: '#4F5D69',
     letterSpacing: 0,
-    minHeight: '32px',
     whiteSpace: 'nowrap',
     marginLeft: '21px',
     float: 'left',
