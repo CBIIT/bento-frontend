@@ -8,6 +8,7 @@ import { formFields, pageTitle, SUBMIT_REQUEST_ACCESS } from '../../bento/reques
 import custodianUtils from '../../utils/custodianUtilFuncs';
 import Stats from '../../components/Stats/AllStatsController';
 import { bentoHelpEmail } from '../../bento/userLoginData';
+import AlertMessage from "../../bento-core/AlertMessage";
 
 // Importing GraphQL Query.
 import {
@@ -42,6 +43,7 @@ const accessRequestController = ({ match }) => {
        SUBMIT_REQUEST_ACCESS ={SUBMIT_REQUEST_ACCESS}
        custodianUtils={custodianUtils}
        bentoHelpEmail={bentoHelpEmail}
+       AlertMessage = {AlertMessage}
       />
     </div>
   );

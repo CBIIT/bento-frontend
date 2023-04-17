@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
 import { useHistory} from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import AlertMessage from '../../bento-frontend/src/bento-core/AlertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 import getRedirectedType from './utils/getRedirectType';
@@ -26,6 +25,8 @@ function DataAccessRequest({
   custodianUtils,
   notification,
   styles,
+  AlertMessage
+  
 }) {
   /* styles */
   const generatedStyle = generateStyle(styles);
