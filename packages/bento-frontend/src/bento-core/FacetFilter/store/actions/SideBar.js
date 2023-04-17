@@ -25,3 +25,8 @@ export const clearSliderSection = (facetSection) => ({
     facetSection,
   },
 });
+
+export const clearAllAndSelectFacet = (facetValue) => ({
+  type: sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE,
+  payload: facetValue,
+});

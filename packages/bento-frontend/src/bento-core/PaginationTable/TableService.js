@@ -17,12 +17,11 @@ export const setSelectedRows = (rows = [], table) => {
 };
 
 /**
-* update table data based on
-* 1. paginated table value
-* 2. active filters
+* update query variable (eg active filters / files ids)
+* with table pagination state
 */
-const getQueryVariables = (activeFilters, table) => {
-  const variables = { ...activeFilters };
+const getPaginatedQueryVariables = (queryVariables, table) => {
+  const variables = { ...queryVariables };
   const {
     page,
     rowsPerPage,
@@ -38,12 +37,12 @@ const getQueryVariables = (activeFilters, table) => {
 };
 
 /**
- * @param {*} activefilters
+ * @param {*} queryVariables
  * @param {*} table (table state)
  * @param {*} tab (tab)
  * @returns table data
  */
-export const getTableData = ({ activeFilters, table }) => {
+export const getTableData = ({ queryVariables, table }) => {
   const {
     page,
     rowsPerPage,
@@ -51,10 +50,10 @@ export const getTableData = ({ activeFilters, table }) => {
     query,
   } = table;
   async function getData() {
-    const queryVariable = getQueryVariables(activeFilters, table);
+    const paginatedqueryVariable = getPaginatedQueryVariables(queryVariables, table);
     const result = await client.query({
       query,
-      variables: queryVariable,
+      variables: paginatedqueryVariable,
     })
       .then((response) => response.data);
     return result;
@@ -73,31 +72,6 @@ export const getTableData = ({ activeFilters, table }) => {
       // cancel the request before component unmounts
       controller.abort();
     };
-  }, [activeFilters, page, rowsPerPage, sortOrder]);
+  }, [queryVariables, page, rowsPerPage, sortOrder]);
   return { tableData };
-};
-
-export const addAllFiles = (activeFilters, query) => {
-  async function getData() {
-    const queryVariable = { ...activeFilters };
-    const result = await client.query({
-      query,
-      variables: queryVariable,
-    })
-      .then((response) => response.data);
-    return result;
-  }
-  getData(); // .then((result) => console.log(result));
-};
-
-export const addSelectedFiles = (selectedIds, query) => {
-  async function getData() {
-    const result = await client.query({
-      query,
-      variables: selectedIds,
-    })
-      .then((response) => response.data);
-    return result;
-  }
-  getData(); // .then((result) => console.log(result));
 };

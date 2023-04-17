@@ -20,14 +20,15 @@ import {
   getReviewDARConfig,
 } from '../../../bento/adminData';
 import { reformatDate, showAlert } from './utils/reviewDARUtilFun';
-import { adminPortal } from '../../../bento/siteWideConfig';
+import custodianUtils from '../../../utils/custodianUtilFuncs';
+import { adminPortalPath } from '../../../bento/siteWideConfig';
 
 const ReviewRequestView = ({ classes, data }) => {
   const { listRequest } = data;
   const { UserDetails } = UserDetailsGenerator(USER_DETAILS_CONFIG);
   const { ReviewRequestsTable } = ReviewRequestsTableGenerator(REVIEW_REQUESTS_TABLE_CONFIG);
   // Redirect to Admin page once all individual DAR has been given an Access
-  if (listRequest.length === 0) return <Redirect to={adminPortal} />;
+  if (listRequest.length === 0) return <Redirect to={adminPortalPath} />;
 
   const userInfo = listRequest[0];
   const userId = userInfo.userID;

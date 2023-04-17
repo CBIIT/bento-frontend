@@ -3,13 +3,10 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import _ from 'lodash';
 import { useDispatch } from 'react-redux';
-import { getOptions, getColumns } from 'bento-components';
-import globalData from '../../bento/siteWideConfig';
+import TableContextProvider from '../../bento-core/PaginationTable/ContextProvider';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import GridWithFooter from '../../components/GridWithFooter/GridView';
 import icon from '../../assets/icons/Cases.Icon.svg';
 import Subsection from '../../components/PropertySubsection/caseDetailSubsection';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
@@ -18,23 +15,25 @@ import {
   leftPanel,
   rightPanel,
   table1,
-  table2,
-  externalLinkIcon,
-  tooltipContent,
+  filesTable,
 } from '../../bento/caseDetailData';
 import Snackbar from '../../components/Snackbar';
 import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
+import SampleTableView from './SampleView/SampleTableView';
+import FilesTableView from './FilesView/FilesTableView';
 
 // Main case detail component
-const CaseDetail = ({ data, filesOfSamples, classes }) => {
+const CaseDetail = ({
+  data,
+  filesOfSamples,
+  classes,
+  subjectId,
+}) => {
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
     value: 0,
     action: 'added',
   });
-  function openSnack(value1) {
-    setsnackbarState({ open: true, value: value1, action: 'added' });
-  }
   function closeSnack() {
     setsnackbarState({ open: false });
   }
@@ -71,7 +70,8 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
 
   const samplesData = data.samples.map((s) => {
     const files = filesOfSamplesObj[s.sample_id];
-    const sample = _.cloneDeep(s);
+    //reverted back to prevent undefined (s) value
+    const sample = { ...s };
     sample.files = files;
     if (datFieldsFromRoot.length > 0) {
       datFieldsFromRoot.forEach((e) => {
@@ -158,72 +158,28 @@ const CaseDetail = ({ data, filesOfSamples, classes }) => {
           </Grid>
         </div>
       </div>
-      {table1.display
-        ? (
-          <div id="case_detail_table_associated_samples" className={classes.tableContainer}>
-            <div className={classes.tableDiv}>
-              <Grid item xs={12}>
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
-                    <GridWithFooter
-                      data={samplesData}
-                      title={(
-                        <div className={classes.tableTitle}>
-                          <span className={classes.tableHeader}>{table1.tableTitle}</span>
-                        </div>
-                      )}
-                      columns={getColumns(table1, classes, data, externalLinkIcon, '', () => {}, '', globalData.replaceEmptyValueWith)}
-                      options={getOptions(table1, classes)}
-                      customOnRowsSelect={table1.customOnRowsSelect}
-                      openSnack={openSnack}
-                      closeSnack={closeSnack}
-                      disableRowSelection={table1.disableRowSelection}
-                      buttonText={table1.buttonText}
-                      saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
-                      ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
-                      DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
-                      tooltipMessage={table1.tooltipMessage}
-                      tooltipContent={tooltipContent}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </div>
-          </div>
-        ) : ''}
-      {table2.display
-        ? (
-          <div id="case_detail_table_associated_files" className={classes.tableContainer}>
-            <div className={classes.tableDiv}>
-              <Grid item xs={12}>
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
-                    <GridWithFooter
-                      data={data[table2.subjectDetailField]}
-                      title={(
-                        <div className={classes.tableTitle}>
-                          <span className={classes.tableHeader}>{table2.tableTitle}</span>
-                        </div>
-                      )}
-                      columns={getColumns(table2, classes, data, '', '', () => {}, '', globalData.replaceEmptyValueWith)}
-                      options={getOptions(table2, classes)}
-                      customOnRowsSelect={table2.customOnRowsSelect}
-                      openSnack={openSnack}
-                      closeSnack={closeSnack}
-                      disableRowSelection={table2.disableRowSelection}
-                      buttonText={table2.buttonText}
-                      saveButtonDefaultStyle={table1.saveButtonDefaultStyle}
-                      ActiveSaveButtonDefaultStyle={table1.ActiveSaveButtonDefaultStyle}
-                      DeactiveSaveButtonDefaultStyle={table1.DeactiveSaveButtonDefaultStyle}
-                      tooltipMessage={table2.tooltipMessage}
-                      tooltipContent={tooltipContent}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </div>
-          </div>
-        ) : ''}
+
+      <div id="case_detail_table_associated_samples" className={classes.tableContainer}>
+        <div className={classes.tableDiv}>
+          <TableContextProvider>
+            <SampleTableView
+              subjectId={subjectId}
+              data={samplesData}
+            />
+          </TableContextProvider>
+        </div>
+      </div>
+
+      <div id="case_detail_table_associated_samples" className={classes.tableContainer}>
+        <div className={classes.tableDiv}>
+          <TableContextProvider>
+            <FilesTableView
+              subjectId={subjectId}
+              data={data[filesTable.subjectDetailField]}
+            />
+          </TableContextProvider>
+        </div>
+      </div>
       <div className={classes.blankSpace} />
     </>
   );
