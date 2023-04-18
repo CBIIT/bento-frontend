@@ -4,7 +4,7 @@ export default {
   // Suggested for replaceEmptyValueWith: 'N/A' or '-' or ''
   replaceEmptyValueWith: '',
   // List for options for authentication empty array defaults to google
-  authProviders: ['google', 'nih', 'loginGov'], // authEndPoint: []
+  authProviders: ['google', 'nih', 'loginGov'], // authEndPoint: []//
 };
 
 
@@ -16,6 +16,10 @@ export const userProfilePath = '/profile';
 
 // Authentication: Enabled (True) or Disabled (False)
 export const enableAuthentication = env.AUTH !== undefined ? env.AUTH : true;
+
+// List of enabled identity providers. This is an array of enabled identity providers,
+// where each element corresponds to a key from loginProvidersData.
+export const enabledAuthProviders = ['google', 'nih', 'loginGov'];
 
 // Public Level Access
 export const PUBLIC_ACCESS = env.PUBLIC_ACCESS || 'Metadata Only';
