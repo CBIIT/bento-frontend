@@ -18,6 +18,11 @@
       "outputs": [
         "{projectRoot}/dist"
       ]
+    },
+    "start": {
+      "dependsOn": [
+        "^build"
+      ]
     }
   }
 }

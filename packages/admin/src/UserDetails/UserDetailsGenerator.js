@@ -62,7 +62,7 @@ export const UserDetailsGenerator = (uiConfig = DEFAULT_CONFIG) => {
     }
 
     return (
-      <>
+      <div className={classes.userInfoHeader}>
         <div className={classes.firstInfoSection}>
           <div className={classes.infoKeyWrapper}>
             <Typography className={classes.userInfo}>
@@ -110,7 +110,7 @@ export const UserDetailsGenerator = (uiConfig = DEFAULT_CONFIG) => {
             </Typography>
           </div>
         </div>
-      </>
+      </div>
     );
   };
 

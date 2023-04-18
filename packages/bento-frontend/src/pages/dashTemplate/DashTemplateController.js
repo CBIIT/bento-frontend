@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useApolloClient } from '@apollo/client';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
+import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
 import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
-import { getFilters } from '../../bento-core/FacetFilter/utils/filter';
 
 const getDashData = (states) => {
   const {
