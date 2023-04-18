@@ -1,5 +1,5 @@
 import React from 'react';
-import ToolTip from '@bento-core/toolTip';
+import ToolTip from '@bento-core/tool-tip';
 
 /**
 * customize tooltips based on tooltipContent
