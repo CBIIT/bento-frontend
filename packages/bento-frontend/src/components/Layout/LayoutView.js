@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles, CssBaseline } from '@material-ui/core';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch, useHistory } from 'react-router-dom';
 import aboutPageRoutes from '../../bento/aboutPagesRoutes';
 import Header from '../Header/HeaderView';
 import NavBar from '../NavBar/NavBarContainer';
@@ -28,33 +28,51 @@ import SysInfoView from '../../pages/sysInfo/view';
 import ProfileController from '../../pages/profile/profileController';
 import editUserController from '../../pages/admin/userDetails/editUserController';
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
-import InActivityDialog from '../InActivityDialog';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
 import CarView from '../../pages/cart/cartController';
+import env from '../../utils/env';
+import { PING_INTERVAL, REDIRECT_AFTER_SIGN_OUT, SHOW_WARNING_BEFORE } from '../../bento/siteWideConfig';
 
-import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
+import { AuthenticationMiddlewareGenerator, useAuth } from '@bento-core/authentication';
+import { SessionTimeoutGenerator } from '@bento-core/session-timeout';
 
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
+import { useGlobal } from '../Global/GlobalProvider';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
   return null;
 };
 
-const Layout = ({ classes, isSidebarOpened }) => {
+const { SessionTimeout } = SessionTimeoutGenerator({
+  config: {
+    pingInterval: PING_INTERVAL,
+    thresholdTime: SHOW_WARNING_BEFORE,
+    extendEndpoint: `${env.REACT_APP_AUTH_SERVICE_API}authenticated`,
+    ttlEndpoint: `${env.REACT_APP_AUTH_SERVICE_API}session-ttl`,
+  },
+});
 
+const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
   const { LoginRoute, MixedRoute, PrivateRoute, AdminRoute} = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
-  
+  const { signOut } = useAuth();
+
+  const history = useHistory();
+  const { Notification } = useGlobal();
+
   return (
   <>
     <CssBaseline />
     <HashRouter>
       <>
         <Notifactions />
-        <InActivityDialog />
+        <SessionTimeout
+          signOut={() => signOut(history, REDIRECT_AFTER_SIGN_OUT)}
+          showNotification={(content, duration) => Notification.show(content, duration)}
+        />
         <Header />
         <OverlayWindow />
         <NavBar />
