@@ -9,7 +9,6 @@ export const CustomCellView = (props) => {
     displayEmpty, dataField,
   } = props;
   if (downloadDocument) {
-    console.log(props);
     return (
       <DocumentDownloadView
         fileSize={props.file_size}
