@@ -6,6 +6,8 @@ This package provides a session timeout component that handles:
 - A timeout warning dialog
 - Session timeout/TTL extension
 
+and is easy to integrate with the `@bento-core/authentication` package. For the component's technical details, please see [DESIGN.md](./DESIGN.md).
+
 See below for usage instructions.
 
 # Usage
@@ -47,7 +49,7 @@ See below for usage instructions.
 
 ## Generator Configuration
 
-See the available `DEFAULT_CONFIG_SESSIONTIMEOUT` object to understand the component generator options. You can choose to override `config`, `functions`, and/or `selectors`. You DO NOT need to override all of the options if you don't want to. The component generator will only use the options you provide.
+See the available `DEFAULT_CONFIG_SESSIONTIMEOUT` object to understand the component generator options. You can choose to override `config`, and/or `selectors`. You DO NOT need to override all of the options if you don't want to. The component generator will only use the options you provide.
 
 ```javascript
 export const DEFAULT_CONFIG_SESSIONTIMEOUT = {
