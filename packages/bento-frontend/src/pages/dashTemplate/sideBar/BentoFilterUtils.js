@@ -1,5 +1,5 @@
 
-import { clearAllAndSelectFacet } from '../../../bento-core/FacetFilter/store/actions/SideBar';
+import { clearAllAndSelectFacet } from '@bento-core/facet-filter';
 import store from '../../../store';
 
 export const getFacetValues = (facet, facetValue) => ({[facet]: { [facetValue]: true }});

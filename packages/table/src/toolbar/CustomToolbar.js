@@ -32,9 +32,7 @@ const defaultTheme = {
 
 const CustomToolbar = ({
   numSelected,
-  onColumnViewChange,
   customTheme = {},
-  table,
 }) => (
   <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
     {numSelected > 0 && (
@@ -45,14 +43,6 @@ const CustomToolbar = ({
           {`${numSelected} row(s) selected`}
         </Typography>
       </Toolbar>
-    )}
-    {(numSelected === 0 && table.manageViewColumns) && (
-      <Tooltip title="View Columns">
-        <ManageColumnView
-          table={table}
-          onColumnViewChange={onColumnViewChange}
-        />
-      </Tooltip>
     )}
   </ThemeProvider>
 );

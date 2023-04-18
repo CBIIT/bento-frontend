@@ -1,6 +1,6 @@
 /* eslint-disable */
 import gql from 'graphql-tag';
-import { cellTypes, headerTypes } from '../bento-core/Table/util/Types';
+import { cellTypes } from '@bento-core/table';
 import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 
 // --------------- Tooltip configuration --------------
@@ -1698,6 +1698,13 @@ export const tabContainers = [
     defaultSortDirection: 'asc',
     buttonText: 'Add Selected Files',
     tableID: 'case_tab_table',
+    extendedViewConfig: {
+      // download: true,
+      // manageViewColumns: {
+      //   title: 'View Columns'
+      // },
+      pagination: true,
+    },
     columns: [
       {
         cellType: cellTypes.CHECKBOX,
