@@ -82,7 +82,6 @@ const DocumentDownload = ({
     },
     [],
   );
-  console.log(approvedACLs);
 
   const closeModal = () => {
     setShowModal(false);
