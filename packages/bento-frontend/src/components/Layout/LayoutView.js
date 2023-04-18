@@ -22,7 +22,7 @@ import JBrowseDetail from '../../pages/jbrowseDetail/jbrowseDetailController';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import adminController from '../../pages/admin/adminController';
 import reviewRequestController from '../../pages/admin/reviewPendingDAR/reviewRequestController';
-import Login from '../../pages/accessManagment/login';
+import Login from '../../pages/login';
 import RequestAccess from '../../pages/requestAccess/requestAccessController';
 import SysInfoView from '../../pages/sysInfo/view';
 import ProfileController from '../../pages/profile/profileController';
