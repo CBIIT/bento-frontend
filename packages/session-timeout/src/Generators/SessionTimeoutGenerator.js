@@ -114,15 +114,16 @@ export const SessionTimeoutGenerator = ({ config, selectors } = DEFAULT_CONFIG) 
 
       return (
         <Dialog
+          id="session-timeout-dialog"
           classes={classes}
           TransitionComponent={Transition}
           open={open}
           keepMounted
         >
-          <DialogTitle id="customized-dialog-title">
+          <DialogTitle id="session-timeout-title">
             { title || 'Session Timeout Warning' }
           </DialogTitle>
-          <DialogContent>
+          <DialogContent id="session-timeout-content">
             { body
               || (
                 <Typography gutterBottom>
