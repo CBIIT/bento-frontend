@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useApolloClient } from '@apollo/client';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
-import { DASHBOARD_QUERY_NEW, tabContainers } from '../../bento/dashboardTabData';
-import client from '../../utils/graphqlClient';
-import useGenerateTabData from './tabs/hooks/useGenerateTabData';
+import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
 
 const getDashData = (states) => {
   const {
@@ -13,6 +12,7 @@ const getDashData = (states) => {
     localFindUpload, localFindAutocomplete,
   } = states;
 
+  const client = useApolloClient();
   async function getData(activeFilters) {
     const result = await client.query({
       query: DASHBOARD_QUERY_NEW,
@@ -46,11 +46,6 @@ const getDashData = (states) => {
 
 const DashTemplateController = ((props) => {
   const { dashData, activeFilters } = getDashData(props);
-  const [activeTab, setActiveTab] = useState(0);
-
-  const { generatedTabData } = useGenerateTabData({
-    tabContainers, dashboardStats: dashData, activeFilters, activeTab,
-  });
 
   if (!dashData) {
     return (<CircularProgress />);
@@ -61,8 +56,6 @@ const DashTemplateController = ((props) => {
       {...props}
       dashData={dashData}
       activeFilters={activeFilters}
-      onTabChange={setActiveTab}
-      tabData={generatedTabData}
     />
   );
 });
