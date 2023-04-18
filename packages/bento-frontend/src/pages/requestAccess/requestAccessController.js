@@ -7,7 +7,7 @@ import {DataAccessRequest} from '@bento-core/data-access-request';
 import { formFields, pageTitle, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
 import custodianUtils from '../../utils/custodianUtilFuncs';
 import Stats from '../../components/Stats/AllStatsController';
-import { bentoHelpEmail } from '../../bento/userLoginData';
+import { bentoHelpEmail } from '../../bento/loginData';
 import AlertMessage from "../../bento-core/AlertMessage";
 
 // Importing GraphQL Query.

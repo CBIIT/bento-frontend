@@ -1,13 +1,10 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import { TableView } from '../../bento-core/PaginationTable';
+import { TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
 import { themeConfig } from './tableConfig/Theme';
-import { Wrapper } from '../../bento-core/Wrapper';
-import { footerConfig } from './wrapperConfig/Wrapper';
-import { customTheme } from './wrapperConfig/Theme';
 import styles from './cartView.style';
-import Header from './cartHeader';
+import CartWrapper from './cartWrapper';
 
 const CartView = (props) => {
   const {
@@ -15,17 +12,6 @@ const CartView = (props) => {
     config,
     filesId = [],
   } = props;
-
-  const Footer = () => (
-    <>
-      <Wrapper
-        wrapConfig={footerConfig}
-        customTheme={customTheme}
-        classes={classes}
-        section="myFiles"
-      />
-    </>
-  );
 
   /**
   * configure table state
@@ -51,17 +37,17 @@ const CartView = (props) => {
     <Grid>
       <Grid item xs={12}>
         <div className={classes.myFilesWrapper}>
-          <Header
+          <CartWrapper
             classes={classes}
             queryVariables={variables}
-          />
-          <TableView
-            initState={initTblState}
-            themeConfig={themeConfig}
-            queryVariables={variables}
-            totalRowCount={filesId.length}
-          />
-          <Footer />
+          >
+            <TableView
+              initState={initTblState}
+              themeConfig={themeConfig}
+              queryVariables={variables}
+              totalRowCount={filesId.length}
+            />
+          </CartWrapper>
         </div>
       </Grid>
     </Grid>
