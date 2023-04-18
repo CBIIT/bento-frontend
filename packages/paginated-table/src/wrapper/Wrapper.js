@@ -84,6 +84,7 @@ export const defaultTheme = {
 */
 const CustomLayout = (props) => {
   const {
+    children,
     configs,
     customTheme = {},
   } = props;
@@ -103,21 +104,31 @@ const CustomLayout = (props) => {
   return (
     <>
       {
-        configs.map((container) => (
-          <ThemeProvider theme={themeConfig}>
-            <Container
-              maxWidth={container.size}
-              className={container.clsName}
-            >
-              {container.items.map((item) => (
-                <ViewComponent
-                  {...item}
-                  {...props}
-                />
-              ))}
-            </Container>
-          </ThemeProvider>
-        ))
+        configs.map((container) => {
+          /**
+          * return child/table component
+          */
+          if (container.paginatedTable) {
+            return <> {children} </>;
+          }
+          /**
+          * return other wrapper components
+          */
+          return (
+            <ThemeProvider theme={themeConfig}>
+              <Container
+                maxWidth={container.size}
+                className={container.clsName}
+              >
+                {container.items.map((item) => (
+                  <ViewComponent
+                    {...item}
+                    {...props}
+                  />
+                ))}
+              </Container>
+            </ThemeProvider>
+        )})
       }
     </>
   );
@@ -142,8 +153,9 @@ const CustomWrapper = (props) => {
         classes={classes}
         activeFilters={activeFilters}
         tblDispatch={tblDispatch}
-      />
-      {children}
+      >
+        {children}
+      </CustomLayout>
     </>
   );
 };

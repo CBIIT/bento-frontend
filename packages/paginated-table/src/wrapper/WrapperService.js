@@ -1,6 +1,3 @@
-// import { useEffect, useState } from 'react';
-import client from '../../utils/graphqlClient';
-
 /**
 * query varibales to fetch all the selected files id
 */
@@ -11,6 +8,7 @@ export const getQueryVariables = (variables) => {
 };
 
 export const getFilesID = ({
+  client,
   variables,
   query,
 }) => {

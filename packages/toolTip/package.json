@@ -1,5 +1,5 @@
 {
-  "name": "@bento-core/paginated-table",
+  "name": "@bento-core/toolTip",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
@@ -12,8 +12,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.4",
-    "@bento-core/table": "*"
+    "@material-ui/core": "^4.12.4"
   },
   "peerDependencies": {
     "react": "^17.0.2",

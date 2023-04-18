@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useApolloClient } from '@apollo/client';
 import AddAllFilesView from './AddAllFiles/AddAllView';
 import AddSelectedFilesView from './AddSelectedFiles/AddSelectedFilesController';
 import SnackbarView from './Snackbar/Snackbar';
@@ -28,6 +29,10 @@ const AddFilesView = (props) => {
   * conditionally display max file Alter/Error dialog view
   */
   const [displayAlter, setAlterDisplay] = useState(false);
+  /**
+  * acess bento app client via ApolloProvider
+  */
+  const client = useApolloClient();
 
   return (
     <>
@@ -35,6 +40,7 @@ const AddFilesView = (props) => {
         (btnTypes.ADD_SELECTED_FILES === btnType) && (
           <AddSelectedFilesView
             {...props}
+            client={client}
             setAlterDisplay={setAlterDisplay}
             setOpenSnackbar={setOpenSnackbar}
           />
@@ -44,6 +50,7 @@ const AddFilesView = (props) => {
         (btnTypes.ADD_ALL_FILES === btnType) && (
           <AddAllFilesView
             {...props}
+            client={client}
             setAlterDisplay={setAlterDisplay}
             setOpenSnackbar={setOpenSnackbar}
           />

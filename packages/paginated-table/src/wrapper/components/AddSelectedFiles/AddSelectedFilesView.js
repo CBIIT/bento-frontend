@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import ToolTip from '../../../toolTips/ToolTip';
+import ToolTip from '@bento-core/toolTip';
 
 /**
 * customize tooltips based on tooltipContent

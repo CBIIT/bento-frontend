@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Button } from '@material-ui/core';
+import { useApolloClient } from '@apollo/client';
 import {
   downloadJson,
   CartContext,
 } from '@bento-core/cart';
 import ToolTipView from './TooltipView';
-import client from '../../../utils/graphqlClient';
 
 const DownloadManifestView = (props) => {
   const {
@@ -28,6 +28,7 @@ const DownloadManifestView = (props) => {
     return variables;
   };
 
+  const client = useApolloClient();
   async function fetchData({ queryVariables, table }) {
     const fetchResult = await client
       .query({

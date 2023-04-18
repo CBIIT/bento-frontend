@@ -42,7 +42,6 @@ function getApprovedArms(acl) {
       );
     }
   });
-
   return approvedArms;
 }
 

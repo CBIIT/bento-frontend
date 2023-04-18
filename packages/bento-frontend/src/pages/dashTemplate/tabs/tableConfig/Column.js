@@ -17,6 +17,7 @@ export const CustomCellView = (props) => {
         fileLocation={props[documentDownloadProps.fileLocationColumn]}
         {...documentDownloadProps}
         {...props}
+        requiredACLs={props[dataField]}
       />
     );
   } else if (typeof displayEmpty === "boolean") {

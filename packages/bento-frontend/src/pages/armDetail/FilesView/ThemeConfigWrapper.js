@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { types, btnTypes } from '../../../bento-core/Wrapper';
+import { types, btnTypes } from '@bento-core/paginated-table';
 import { GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL } from '../../../bento/dashboardTabData';
 import {
   filesTable,
