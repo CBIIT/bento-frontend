@@ -102,9 +102,8 @@ export const tabPendingRequest = {
 
 };
 
-// --------------- tab Pending Request --------------
+// --------------- tab Manage Access --------------
 export const tabManageAccess = {
-
   tabTitle: 'MANAGE ACCESS',
 
   table: {
@@ -144,7 +143,6 @@ export const tabManageAccess = {
       },
     ],
   },
-
 };
 
 // --------------- Columns Configuration for Review DAR Table --------------
