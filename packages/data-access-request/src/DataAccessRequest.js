@@ -1,104 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, withStyles } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import generateStyle from './utils/generateStyle';
+import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-import { bentoHelpEmail } from '../../bento/userLoginData';
-import AlertMessage from '../../bento-core/AlertMessage';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
-import Stats from '../../components/Stats/AllStatsController';
-import custodianUtils from '../../utils/custodianUtilFuncs';
-// Custodian data imports
-import { formFields, pageTitle, SUBMIT_REQUEST_ACCESS } from '../../bento/requestAccessData';
+import getRedirectedType from './utils/getRedirectType';
+import useQuery from './hooks/useQuery';
+import getAvailableArms from './utils/getAvailableArms';
+import isDisabledMember from './utils/isDisabledMember';
+import setDefaultValues from './utils/setDefaultValues';
+import generateNotification from './utils/generateNotification';
 
-function useQuery() {
-  const { search } = useLocation();
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
+/* DataAccessRequest coponenent */
+function DataAccessRequest({
+  data,
+  formFields, 
+  pageTitle, 
+  SUBMIT_REQUEST_ACCESS,
+  bentoHelpEmail,
+  custodianUtils,
+  notification,
+  styles,
+  AlertMessage
+  
+}) {
+  /* styles */
+  const generatedStyle = generateStyle(styles);
+  const useStyles = makeStyles(generatedStyle);
+  const classes = useStyles();
 
-function getRedirectedType(query) {
-  const path = query.get('type') || '/';
-  return path;
-}
-
-const unavailableArmsStatus = ['approved', 'pending'];
-
-/**
- * Determines whether a user is a disabled member
- *
- * @param {string} role The name of the user's role
- * @param {string} status The user's membership status
- */
-const isDisabledMember = (role, status) => {
-  const roles = [
-    'admin',
-    'member',
-  ];
-
-  if (roles.includes(role.toLowerCase()) && status.toLowerCase === 'disabled') {
-    return false;
-  }
-
-  return true;
-};
-
-const getAvailableArms = (currentACL, listOfArms) => {
-  const unavailableArms = Object.keys(currentACL).reduce((previousArms, key) => {
-    const armObject = currentACL[key];
-    const resultArray = previousArms;
-    if (unavailableArmsStatus.includes(
-      armObject.accessStatus.toLowerCase(),
-    )) resultArray.push(armObject.armID);
-    return resultArray;
-  }, []);
-  const availableArms = listOfArms.filter((arm) => !unavailableArms.includes(arm.id));
-  return availableArms;
-};
-
-function requestAccessView({ data, classes }) {
-  const { getMyUser, listArms } = data;
-  const {
-    email: userEmail,
-    IDP,
-    role,
-    userStatus,
-  } = getMyUser;
-  const history = useHistory();
-  const query = useQuery();
-  const redirectdType = getRedirectedType(query);
+  /* Component states */
   const [disableSubmit, setDisableSubmit] = useState(true);
-  const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
-
-  const availableArms = getAvailableArms(getMyUser.acl, listArms);
-  const getDefaultACL = () => (availableArms[0] || []).id;
-
-  // Initial State and Reset functions
-  const fieldsToChk = formFields.map(
-    (field) => (field.required ? field.id : null),
-  );
-  const setDefaultValues = () => formFields.reduce((values, field) => {
-    const {
-      id, type, multiple, display,
-    } = field;
-
-    if (!values[id]) {
-      // eslint-disable-next-line no-param-reassign
-      values[id] = (['dropdown', 'aclDropdown'].includes(type) && !display) ? getDefaultACL() : multiple ? [] : getMyUser[id] || '';
-    }
-
-    return values;
-  }, {});
-
-  // Init state for inputs.
-  const [formValues, setFormValues] = useState(setDefaultValues());
   const [isFormSubmitted, setSubmitted] = useState(false);
 
-  const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0) || disableSubmit;
-
-  // GraphQL Operations
+  /* hooks */
+  const history = useHistory();
+  const query = useQuery();
   const [mutate, response] = useMutation(SUBMIT_REQUEST_ACCESS, {
     context: { clientName: 'userService' },
     onCompleted() {
@@ -109,7 +50,27 @@ function requestAccessView({ data, classes }) {
       // INPUT parm can be 'ApolloError'
     },
   });
+
+  /* variables */
+  const { getMyUser, listArms } = data;
+  const {
+    email: userEmail,
+    IDP,
+    role,
+    userStatus,
+  } = getMyUser;
+  const redirectdType = getRedirectedType(query);
+  const { getAuthenticatorName, capitalizeFirstLetter } = custodianUtils;
   const { loading, error, data: successData } = response;
+  const availableArms = getAvailableArms(getMyUser.acl, listArms);
+  const fieldsToChk = formFields.map(
+    (field) => (field.required ? field.id : null),
+  );
+  const [formValues, setFormValues] = useState(setDefaultValues(formFields,getMyUser,availableArms));
+
+  /* event handlers */
+  const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0) || userStatus==="Disabled";
+
 
   const getErrorDetails = () => {
     const {
@@ -135,35 +96,37 @@ function requestAccessView({ data, classes }) {
   };
 
   const showAlert = (alertType) => {
+    const notificationSchema = generateNotification(notification);
+
     switch (alertType) {
       case 'error':
         return (
-          <AlertMessage severity="error" backgroundColor="#f44336">
-            {getErrorDetails()}
+          <AlertMessage severity="error" backgroundColor={notificationSchema.error.color}>
+            {notificationSchema.error.message? notificationSchema.error.message : getErrorDetails()}
           </AlertMessage>
         );
       case 'success':
         return (
-          <AlertMessage severity="success" timeout={5000000}>
-            The Data Access Request has been sent to a System Administrator for review
+          <AlertMessage severity="success" backgroundColor={notificationSchema.success.color}>
+            {notificationSchema.success.message}
           </AlertMessage>
         );
       case 'noAclToRequest':
         return (
-          <AlertMessage severity="error" backgroundColor="#f44336">
-            Your data access request has been submitted. No additional access can be requested.
+          <AlertMessage severity="error" backgroundColor={notificationSchema.noAclToRequest.color}>
+            {notificationSchema.noAclToRequest.message}
           </AlertMessage>
         );
       case 'noAccess':
         return (
-          <AlertMessage severity="success" timeout={5000000}>
-            Please submit a Data Access Request (DAR) to access protected pages
+          <AlertMessage severity="success" timeout={5000000} backgroundColor={notificationSchema.noAccess.color}>
+            {notificationSchema.noAccess.message}
           </AlertMessage>
         );
       case 'disabled':
       return (
-        <AlertMessage severity="success" timeout={5000000}>
-          Request failed, disabled users are not allowed to submit data access reqeusts.
+        <AlertMessage severity="error" timeout={5000000} backgroundColor={notificationSchema.disabled.color}>
+          {notificationSchema.disabled.message}
         </AlertMessage>
       );
       default:
@@ -192,10 +155,6 @@ function requestAccessView({ data, classes }) {
     }
   };
 
-  // use effect to track form changes
-  useEffect(validateFields);
-
-  // State Change Managemnt
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({
@@ -231,10 +190,12 @@ function requestAccessView({ data, classes }) {
 
     return null;
   }
-  
+
+  /* useEffect hooks */
+  useEffect(validateFields);
+
   return (
     <div className={classes.Container}>
-      <Stats />
       {/* ROW 1 */}
       <Grid
         container
@@ -394,190 +355,4 @@ function requestAccessView({ data, classes }) {
   );
 }
 
-const styles = () => ({
-  Container: {
-    backgroundColor: '#FFFFFF',
-    fontFamily: 'Nunito',
-  },
-  pageTitle: {
-    color: '#3974A8',
-    fontSize: '27px',
-    textAlign: 'center',
-    fontFamily: 'Inter',
-    fontWeight: '500',
-    lineHeight: '40px',
-    marginBottom: '10px',
-    marginTop: '10px',
-  },
-  pageTitleUnderline: {
-    boxSizing: 'border-box',
-    height: '2px',
-    width: '474px',
-    minWidth: '200px',
-    border: '1px solid #88B4DA',
-    backgroundColor: '#F2F6FA',
-    boxShadow: '-4px 8px 27px 4px rgb(27 28 28 / 9%)',
-  },
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  brace: {
-    flex: 1,
-  },
-  SummaryBox: {
-    boxSizing: 'border-box',
-    flexDirection: 'column',
-    minWidth: '500px',
-    justifyContent: 'center',
-    fontFamily: 'Nunito',
-    padding: '0 0 0 110px',
-    flex: '1.5',
-    marginBottom: '20px',
-    marginTop: '10px',
-  },
-  row: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: '5px',
-  },
-  column: {
-    '&:first-child': {
-      flex: '.60',
-    },
-    flex: 1,
-  },
-  itemTitles: {
-    color: '#708292',
-    textTransform: 'uppercase',
-    fontFamily: 'Nunito',
-    fontWeight: 300,
-    fontSize: '12px',
-    fontStyle: 'italic',
-    letterSpacing: '0',
-    lineHeight: '34px',
-    flex: 1,
-    textAlign: 'left',
-    padding: '0 0px 0 0px',
-  },
-  itemValue: {
-    color: '#4F5D69',
-    fontFamily: 'Nunito',
-    fontSize: '17px',
-    fontWeight: '500',
-    letterSpacing: '0',
-    lineHeight: '34px',
-    flex: 1,
-  },
-  Box: {
-    width: '535px',
-    boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09);',
-    border: '#A9C8E3 2px solid',
-    borderRadius: '10px',
-    margin: '10px 0px',
-    padding: '30px 10px 0px 10px !important',
-    backgroundColor: '#F2F6FA',
-  },
-  helperMessage: {
-    textAlign: 'center',
-    width: '397px',
-    color: '#323232',
-    fontFamily: 'Nunito',
-    fontSize: '14px',
-    fontWeight: '300',
-    letterSpacing: '0',
-    lineHeight: '22px',
-    margin: 'auto',
-    marginTop: '25px',
-  },
-  createAccountMessage: {
-    marginTop: '4px',
-    marginBottom: '18px',
-  },
-  formButton: {
-    height: '45px',
-    color: '#FFFFFF',
-    backgroundColor: '#5D53F6',
-    marginTop: '23px',
-    marginBottom: '50px',
-    '&:disabled': {
-      backgroundColor: '#A7A4F8',
-      color: '#FFFFFF',
-    },
-    '&:hover': {
-      backgroundColor: '#5D53F6',
-    },
-  },
-  goToHomeButton: {
-  },
-  submitButton: {
-    width: '139px',
-  },
-  emptySpace: {
-    height: '50px',
-  },
-
-  // Page Styles
-  inputSelect: {
-    boxSizing: 'border-box',
-    height: '37px',
-    width: '359px',
-  },
-
-  inputText: {
-    width: '359px',
-    border: '1px solid #61A6E6',
-    height: '35px',
-    boxSizing: 'border-box',
-    borderRadius: '5px',
-    backgroundColor: '#FFFFFF',
-    padding: '0px 0px 0px 15px',
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-  },
-  selectMenuItem: {
-    paddingTop: '0px',
-    paddingRight: '10px',
-    paddingBottom: '0px',
-  },
-
-  // Styles for inputs
-  required: {
-    color: '#BC3900',
-    marginLeft: '5px',
-    fontFamily: 'Lato',
-    fontSize: '15px',
-    letterSpacing: '-100px',
-    lineHeight: '22px',
-  },
-  formLabel: {
-    height: '18px',
-    color: '#0467BD',
-    fontFamily: 'Lato',
-    fontSize: '18px',
-    fontWeight: 500,
-    letterSpacing: '0',
-    lineHeight: '22px',
-    marginBottom: '10px',
-    marginTop: '15px',
-  },
-  requiredFieldMessage: {
-    color: '#BC3900',
-    fontFamily: 'Lato',
-    fontSize: '15px',
-    letterSpacing: '0',
-    lineHeight: '22px',
-    textAlign: 'center',
-  },
-
-});
-
-export default withStyles(styles, { withTheme: true })(requestAccessView);
+export default DataAccessRequest;

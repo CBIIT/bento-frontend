@@ -6,10 +6,11 @@ import {
 } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
-import { cn, CustomDataTable } from 'bento-components';
+import { CustomDataTable } from 'bento-components';
 
 import AlertMessage from '../../../bento-core/AlertMessage';
-import UserDetails from '../../../bento-core/Admin';
+import { UserDetailsGenerator } from '@bento-core/admin';
+import USER_DETAILS_CONFIG from './userDetailsViewConfig';
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
 import {
@@ -68,6 +69,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [userRole, setUserRole] = useState(userInfo.role.toLowerCase());
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
+  const { UserDetails } = UserDetailsGenerator(USER_DETAILS_CONFIG);
 
   // GraphQL Operations
   // eslint-disable-next-line no-unused-vars
@@ -218,18 +220,11 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
               </Typography>
             </div>
           </div>
-          <div className={
-            accessType === EDIT
-              ? cn(classes.editUserInfoHeader, classes.userInfoHeader)
-              : classes.userInfoHeader
-          }
-          >
-            <UserDetails
-              handleCheckbox={toggleAdminRole}
-              userInfo={userInfo}
-              userRole={userRole}
-            />
-          </div>
+          <UserDetails
+            handleCheckbox={toggleAdminRole}
+            userInfo={userInfo}
+            userRole={userRole}
+          />
           <Grid container>
             {userInfo.role.toLowerCase() !== 'admin' ? (
               <Grid item xs={12}>
@@ -286,67 +281,6 @@ const styles = (theme) => ({
   pageContainer: {
     background: '#fff',
   },
-  userInfoHeader: {
-    minWidth: 'fit-content',
-    margin: '42px 0 48px 0',
-    padding: '0 0 0 36px',
-    display: 'flex',
-    gap: '12px',
-    fontFamily: 'Nunito',
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
-    },
-  },
-  editUserInfoHeader: {
-    margin: '30px 0 48px 0',
-  },
-  firstInfoSection: {
-    display: 'flex',
-    flexGrow: 1,
-  },
-  secondInfoSection: {
-    display: 'flex',
-    flexGrow: 2,
-  },
-  infoKeyWrapper: {
-    [theme.breakpoints.down('xs')]: {
-      width: '120px',
-    },
-  },
-  userInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  infoKey: {
-    whiteSpace: 'nowrap',
-    fontFamily: 'Nunito',
-    letter: '50px',
-    // fontStyle: 'italic',
-    fontWeight: '400', // regular
-    fontSize: '11px',
-    color: '#708292',
-    letterSpacing: 0,
-    lineHeight: '34px',
-  },
-  toggleAdmin: {
-    color: '#375FAC',
-    fontFamily: 'Nunito',
-    fontSize: '11px',
-    fontWeight: 'bold',
-  },
-  infoValue: {
-    lineHeight: '34px',
-    fontFamily: 'Nunito',
-    // fontStyle: 'italic',
-    fontWeight: '300', // light
-    fontSize: '17px',
-    color: '#4F5D69',
-    letterSpacing: 0,
-    minHeight: '32px',
-    whiteSpace: 'nowrap',
-    marginLeft: '21px',
-    float: 'left',
-  },
   selectRole: {
     width: '140px',
     fontFamily: 'Nunito',
@@ -392,10 +326,9 @@ const styles = (theme) => ({
   },
   container: {
     margin: 'auto',
-    maxWidth: '1440px',
-    marginTop: '-50px',
-    paddingLeft: '60px',
-    paddingRight: '60px',
+    maxWidth: '1000px',
+    paddingLeft: '36px',
+    paddingRight: '36px',
     paddingBottom: '80px',
   },
   header: {
