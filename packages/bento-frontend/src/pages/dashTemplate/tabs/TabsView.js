@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TabPanel from './TabPanel';
 import { tabContainers } from '../../../bento/dashboardTabData';
-import { Tabs as BentoTabs }  from '@bento-core/Tab';
+import { Tabs as BentoTabs }  from '@bento-core/tab';
 import { customTheme } from './DefaultTabTheme';
 
 const Tabs = (props) => {
