@@ -19,6 +19,8 @@ export const sortByCheckedItem = (sortfacetValues) => sortfacetValues
 
 const startIndex = (range) => Number(`${range}`.split('-')[0]);
 
+const lowerCaseString = (text) => `${text}`.toLowerCase();
+
 /**
  * return numbers array from string
  */
@@ -43,7 +45,8 @@ export const sortBySection = ({ facetValues, sort_type, sortBy }) => {
   if (sortBy === sortType.NUMERIC) {
     sortfacetValues.sort((a, b) => b.subjects - a.subjects);
   } else {
-    sortfacetValues.sort(((a, b) => (a.name > b.name || -(a.name < b.name))));
+    sortfacetValues.sort(((a, b) => (lowerCaseString(a.name) > lowerCaseString(b.name)
+      || -(lowerCaseString(a.name) < lowerCaseString(b.name)))));
   }
 
   if (sort_type === sortType.CUSTOM_NUMBER && sortBy !== sortType.NUMERIC) {
