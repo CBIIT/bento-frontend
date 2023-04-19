@@ -6,10 +6,13 @@ import {
 } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
-import { CustomDataTable } from 'bento-components';
 
 import AlertMessage from '../../../bento-core/AlertMessage';
-import { UserDetailsGenerator } from '@bento-core/admin';
+import {
+  RevokeAccessTableGenerator,
+  UserDetailsGenerator,
+} from '@bento-core/admin';
+import REVOKE_ACCESS_TABLE_CONFIG from './revokeAccessTableConfig';
 import USER_DETAILS_CONFIG from './userDetailsViewConfig';
 import Stats from '../../../components/Stats/AllStatsController';
 import { columnInfo, options } from '../../../bento/userDetailViewData';
@@ -24,7 +27,6 @@ import {
 import getDateInFormat from '../../../utils/date';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
 import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
-// import TableThemeProvider from './tableThemeConfig';
 
 // acl is array of object.
 function getApprovedArms(acl) {
@@ -71,6 +73,7 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
   const [seletedArms, setSeletedArms] = useState([]);
   const [notification, setNotification] = React.useState('');
   const { UserDetails } = UserDetailsGenerator(USER_DETAILS_CONFIG);
+  const { RevokeAccessTable } = RevokeAccessTableGenerator(REVOKE_ACCESS_TABLE_CONFIG);
 
   // GraphQL Operations
   // eslint-disable-next-line no-unused-vars
@@ -226,43 +229,38 @@ const UserDetailView = ({ classes, data, accessType = VIEW }) => {
             userInfo={userInfo}
             userRole={userRole}
           />
-          <Grid container>
-            {userInfo.role.toLowerCase() !== 'admin' ? (
-              <Grid item xs={12}>
-                {/* <TableThemeProvider> */}
-                <CustomDataTable
-                  data={approvedArms}
-                  columns={columns}
-                  options={options}
-                />
-                {/* </TableThemeProvider> */}
+          {userInfo.role.toLowerCase() === 'admin' ? (
+            <Grid container>
+              <Grid item xs={12} className={classes.adminMessageGrid}>
+                <div className={classes.adminMessage}>
+                  <span className={classes.adminTxtMessage}>
+                    You have access to all
+                    {' '}
+                    {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+                  </span>
+                </div>
               </Grid>
-            )
-              : (
-                <Grid item xs={12} className={classes.adminMessageGrid}>
-                  <div className={classes.adminMessage}>
-                    <span className={classes.adminTxtMessage}>
-                      You have access to all
-                      {' '}
-                      {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
-                    </span>
-                  </div>
-                </Grid>
-              )}
-            {accessType === EDIT ? (
-              <Grid item xs={12} style={{ textAlign: 'center' }} justifyContent="center">
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className={classes.saveButtton}
-                  endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
-                  onClick={handleSaveUserDetails}
-                >
-                  Save changes
-                </Button>
-              </Grid>
-            ) : null }
-          </Grid>
+            </Grid>
+          ) : (
+            <RevokeAccessTable
+              columns={columns}
+              data={approvedArms}
+              options={options}
+            />
+          )}
+          {accessType === EDIT ? (
+            <Grid item xs={12} style={{ textAlign: 'center' }} justifyContent="center">
+              <Button
+                variant="contained"
+                type="submit"
+                className={classes.saveButtton}
+                endIcon={loading ? <CircularProgress color="secondary" size={20} /> : null}
+                onClick={handleSaveUserDetails}
+              >
+                Save changes
+              </Button>
+            </Grid>
+          ) : null }
         </div>
       </div>
     </>
