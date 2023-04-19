@@ -4,6 +4,7 @@
   "version": "4.0.0",
   "private": true,
   "dependencies": {
+    "@bento-core/session-timeout": "*",
     "@bento-core/global-search": "*",
     "@bento-core/stats-bar": "*",
     "@bento-core/widgets": "*",

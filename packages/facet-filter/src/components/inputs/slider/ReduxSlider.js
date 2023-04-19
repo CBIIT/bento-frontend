@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleSilder } from '../../../store/actions/SideBar';
+import { toggleSilder } from '../../../store/actions/Actions';
 import SliderView from './SliderView';
 
 const ReduxSlider = ((props) => <SliderView {...props} />);
