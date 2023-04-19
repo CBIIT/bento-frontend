@@ -104,16 +104,51 @@ export const themeConfig = {
 
 ## 3 Table state Context provider Configuration
 ```
-import TableContextProvider from 'bento-core';
-import TableView from 'bento-core/PaginationTable/PaginatedTable';
-import WrapperComponent from 'bento-core/PaginationTable/Wrapper';
+Reference - TabPanel.js (bento-frontend)
+
+import { 
+  TableContextProvider,
+  TableView,
+  Wrapper,
+} from '@bento-core/paginated-table';
+
+const initTblState = (initailState) => ({
+  ...initailState,
+  title: config.name,
+  query: config.api,
+  paginationAPIField: config.paginationAPIField,
+  dataKey: config.dataKey,
+  columns: configColumn(config.columns),
+  count: dashboardStats[config.count],
+  selectedRows: [],
+  enableRowSelection: config.enableRowSelection,
+  tableMsg: config.tableMsg,
+  sortBy: config.defaultSortField,
+  sortOrder: config.defaultSortDirection,
+  extendedViewConfig: config.extendedViewConfig,
+  rowsPerPage: 10,
+  page: 0,
+});
 
 <TableContextProvider>
-  <WrapperComponent>
-    <TableView
-      ...
-    />
-  </WrapperComponent>
+  <Wrapper
+    wrapConfig={configWrapper(config, wrapperConfig)}
+    customTheme={customTheme}
+    classes={classes}
+    section={config.name}
+  >
+    <Grid container>
+      <Grid item xs={12} id={config.tableID}>
+        <TableView
+          initState={initTblState}
+          themeConfig={themeConfig}
+          queryVariables={activeFilters}
+          totalRowCount={dashboardStats[config.count]}
+          activeTab={activeTab}
+        />
+      </Grid>
+    </Grid>
+  </Wrapper>
 </TableContextProvider>
 
 //child component
@@ -134,7 +169,11 @@ Wrapper component around table compnent.
 3. Go to My File link
 
 ```
- export const headerConfig = [{
+/**
+* Configuration display component based on index
+* CAUTION: If table is in wrapper component provide position of table component
+*/
+ export const wrapperConfig = [{
   container: 'buttons',
   size: 'xl',
   clsName: 'container_header',
@@ -143,6 +182,7 @@ Wrapper component around table compnent.
       title: 'ADD ALL FILES',
       clsName: 'add_all_button',
       type: types.BUTTON,
+      role: btnTypes.ADD_ALL_FILES,
       btnType: btnTypes.ADD_ALL_FILES,
       conditional: false,
       alertMessage,
@@ -151,12 +191,17 @@ Wrapper component around table compnent.
       title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
+      role: btnTypes.ADD_SELECTED_FILES,
       btnType: btnTypes.ADD_SELECTED_FILES,
       tooltipCofig: tooltipContent,
+      conditional: true,
     }],
-}];
-
-export const footerConfig = [{
+},
+{
+  container: 'paginatedTable',
+  paginatedTable: true,
+},
+{
   container: 'buttons',
   size: 'xl',
   clsName: 'container_footer',
@@ -165,8 +210,10 @@ export const footerConfig = [{
       title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
+      role: btnTypes.ADD_SELECTED_FILES,
       btnType: btnTypes.ADD_SELECTED_FILES,
       tooltipCofig: tooltipContent,
+      conditional: true,
     }],
 },
 {
@@ -180,7 +227,8 @@ export const footerConfig = [{
       url: '#/fileCentricCart',
       type: types.LINK,
     }],
-}];
+},
+];
 ```
 
 Each item in headerConfig and footerConfig represent container
