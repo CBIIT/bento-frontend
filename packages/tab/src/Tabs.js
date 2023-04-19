@@ -1,80 +1,58 @@
-import React, { useState } from 'react';
-import { Tab as MuiTab, Tabs as MuiTabs, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import generateStyle from './utils/generateStyle';
-import TabThemeProvider from './TabThemeProvider';
+import React from 'react';
+import { Tab,
+  Tabs,
+  createTheme, 
+  ThemeProvider,
+} from '@material-ui/core';
+import { defaultTheme } from './defaultTheme';
 
-/* Tabs coponenent */
-function Tabs({
-  tabData,
-  onChange,
-  styles,
-  themes,
-  overrides
-}) {
-  /* styles */
-  const generatedStyle = generateStyle(styles);
-  const useStyles = makeStyles(generatedStyle);
-  const classes = useStyles();
-
-  /* Component states */
-  const [currentTab, setCurrentTab] = useState(0);
-
-  /* tab headers and specific style generator */
-  const getSpecificTabStyle = (currentSelectedTab, index, tabHeaderStyle = undefined) => {
-    let style = {};
-    if (tabHeaderStyle) {
-      style = tabHeaderStyle.root ? { ...tabHeaderStyle.root } : {};
-      if (currentSelectedTab === index && tabHeaderStyle.selected) {
-        style = { ...style, ...tabHeaderStyle.selected };
-      }
-    }
-    return style;
-  };
-
-  const TabHeader = tabData.map((tab, index) => {
-    const specificTabStyle = getSpecificTabStyle(currentTab, index, tab.label.style);
-    return (
-      <MuiTab
-        key={index}
-        className={classes.tabsLabel}
-        label={tab.label.content}
-        style={specificTabStyle}
-        disableRipple
-      />
-    );
-  });
-
-  /* event handlers */
-  const handleChange = (event, newValue) => {
-    setCurrentTab(newValue);
-
-    if (onChange) {
-      onChange(newValue);
-    }
-  };
-
-  return (
-    <div className={classes.tabsContainer}>
-      <TabThemeProvider
-        muiTabTheme={generatedStyle.muiTab}
-        muiTabsTheme={generatedStyle.muiTabs}
-        themes={themes}
-        overrides={overrides}
-      >
-        <MuiTabs value={currentTab} onChange={handleChange}>
-          {TabHeader}
-        </MuiTabs>
-
-        {tabData.map((tab, index) => (
-          <Typography key={index} component="div" className={classes.tabsPanel} hidden={currentTab !== index}>
-            {tab.panel}
-          </Typography>
-        ))}
-
-      </TabThemeProvider>
-    </div>
+const TabItems = ({
+  tabItems,
+  handleTabChange,
+  currentTab,
+  orientation,
+  customTheme = {},
+}) => {
+  const getTabLalbel = ({ name, count, clsName, index }) => (
+    <>
+      <span>
+        {name}
+        {count && (
+          <span
+            className={`index_${index} ${clsName}_count`}
+          >
+            {count}
+          </span>
+        )}
+      </span>
+    </>
   );
-}
 
-export default Tabs;
+  const TABs = tabItems.map((tab, index) => (
+    <Tab
+      index={index}
+      label={
+        getTabLalbel({ ...tab, index })
+      }
+      key={index}
+      className={tab.clsName}
+      disableRipple
+    />
+  ));
+
+  const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
+  return (
+    <ThemeProvider theme={themeConfig}>
+      <Tabs
+        onChange={(event, value) => handleTabChange(event, value)}
+        value={currentTab}
+        TabIndicatorProps={{ style: { background: 'none' } }}
+        orientation={orientation}
+      >
+        {TABs}
+      </Tabs>
+    </ThemeProvider>
+  );
+};
+
+export default TabItems;

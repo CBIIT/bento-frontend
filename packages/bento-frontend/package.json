@@ -4,6 +4,7 @@
   "version": "4.0.0",
   "private": true,
   "dependencies": {
+    "@bento-core/session-timeout": "*",
     "@bento-core/global-search": "*",
     "@bento-core/stats-bar": "*",
     "@bento-core/widgets": "*",
@@ -11,6 +12,9 @@
     "@bento-core/admin": "*",
     "@bento-core/cart": "*",
     "@bento-core/tab": "*",
+    "@bento-core/facet-filter": "*", 
+    "@bento-core/table": "*",
+    "@bento-core/paginated-table": "*",
     "@bento-core/authentication": "*",
     "@bento-core/data-access-request": "*",
     "@apollo/client": "^3.6.9",

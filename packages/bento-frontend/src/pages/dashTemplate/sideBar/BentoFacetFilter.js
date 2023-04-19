@@ -22,9 +22,8 @@ import {
 } from '@bento-core/local-find';
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
-import FacetFilter from '../../../bento-core/FacetFilter/FacetFilterController';
+import { FacetFilter, generateClearAllFilterBtn } from '@bento-core/facet-filter';
 import { facetsConfig, facetSectionVariables } from '../../../bento/dashTemplate';
-import { generateClearAllFilterBtn } from '../../../bento-core/FacetFilter/generator/component';
 import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
 import FacetFilterThemeProvider from './FilterThemeConfig';
