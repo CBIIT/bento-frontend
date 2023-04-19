@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { clearFacetSection, clearSliderSection } from '../../store/actions/SideBar';
+import { clearFacetSection, clearSliderSection } from '../../store/actions/Actions';
 import FacetView from './FacetView';
 
 const ReduxFacetView = ((props) => <FacetView {...props} />);

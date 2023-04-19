@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleCheckBox } from '../../../store/actions/SideBar';
+import { toggleCheckBox } from '../../../store/actions/Actions';
 import CheckboxView from './CheckboxView';
 
 const ReduxCheckbox = ((props) => <CheckboxView {...props} />);
