@@ -31,7 +31,7 @@ const TabView = (props) => {
   /**
   * Server Pagination Table Configuration
   * 1. title - (Required) table name (Case, Sample, Files), required for class name
-  * 2. api - (Required) GraphQL Query for paginated Table (e.g. GET_CASES_OVERVIEW_QUERY)
+  * 2. query/api - (Required) GraphQL Query for paginated Table (e.g. GET_CASES_OVERVIEW_QUERY)
   * 3. dataKey - (Required) Tracking selected rows (case - dataKey: 'subject_id')
   * 4. sortBy - (Required) default sort column
   * 5. columns - (Required) columns defined by dashboardTabData (tabContainers)
@@ -43,6 +43,9 @@ const TabView = (props) => {
   * dashboardTabData (tabContainers)
   * eg. case tab paginationAPIField: 'subjectOverview' - {subjectOverview: [data]}
   * 9. viewConfig - (Optional) table view config, set hide/diaply pagination above table header
+  * 10. extendedViewConfig: (Optional) config to add (pagination on top of the table, manage Column view)
+  * 11. selectedRows: (Optional) provides ids of the selected row (id defined by dataKey)
+  * 12. themeConfig - (optional) configure table style
   */
   const initTblState = (initailState) => ({
     ...initailState,

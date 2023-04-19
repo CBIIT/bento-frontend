@@ -43,8 +43,9 @@ const initTblState = (initailState) => ({
 | paginationAPIField | TRUE |  Access http response data - defined by dashboardTabData (tabContainers) | ```paginationAPIField: 'subjectOverview'```|
 | sortBy | TRUE | default sort column | defaultSortField: 'subject_id',|
 | sortOrder | FALSE | default sort column 'ASC' | ```defaultSortDirection: 'asc',```|
-| rowsPerPage | TRUE | default 10 | |
-| page | TRUE | 0 | |
+| rowsPerPage | FALSE | default 10 | |
+| page | FALSE | 0 | |
+| extendedViewConfig | FALSE | extended view of table header component | refer bento-frontend tabContainers, dashboardTabData.js |
 
 
 ### 2 Importing Component and Configuration

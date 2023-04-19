@@ -1838,6 +1838,9 @@ export const tabContainers = [
     defaultSortField: 'sample_id',
     defaultSortDirection: 'asc',
     tableID: 'sample_tab_table',
+    extendedViewConfig: {
+      pagination: true,
+    },
     saveButtonDefaultStyle: {
       color: '#fff',
       backgroundColor: '#00AEEF',
@@ -1992,6 +1995,9 @@ export const tabContainers = [
     count: 'numberOfFiles',
     dataKey: 'file_name',
     tableID: 'file_tab_table',
+    extendedViewConfig: {
+      pagination: true,
+    },
     columns: [
       {
         cellType: cellTypes.CHECKBOX,
