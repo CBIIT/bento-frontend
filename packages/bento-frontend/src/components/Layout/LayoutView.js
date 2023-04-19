@@ -28,11 +28,10 @@ import SysInfoView from '../../pages/sysInfo/view';
 import ProfileController from '../../pages/profile/profileController';
 import editUserController from '../../pages/admin/userDetails/editUserController';
 import viewUserController from '../../pages/admin/userDetails/viewUserController';
-import InActivityDialog from '../InActivityDialog';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
 import CarView from '../../pages/cart/cartController';
-
+import AuthSessionTimeoutController from '../SessionTimeout/SessionTimeoutController';
 import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 
 import Notifactions from '../Notifications/NotifactionView';
@@ -44,17 +43,16 @@ const ScrollToTop = () => {
 };
 
 const Layout = ({ classes, isSidebarOpened }) => {
-
   // Access control imports
   const { LoginRoute, MixedRoute, PrivateRoute, AdminRoute} = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
-  
+
   return (
   <>
     <CssBaseline />
     <HashRouter>
       <>
         <Notifactions />
-        <InActivityDialog />
+        <AuthSessionTimeoutController />
         <Header />
         <OverlayWindow />
         <NavBar />
