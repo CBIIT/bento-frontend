@@ -18,6 +18,7 @@ const ProfileView = (props) => {
     editTool,
     ignoredArms,
     profileArmsTable,
+    tblThemeConfig,
   } = props;
   const theme = createTheme({ overrides: {
     ...defaultTheme(),
@@ -39,6 +40,7 @@ const ProfileView = (props) => {
           data={data}
           ignoredArms={ignoredArms}
           profileArmsTable={profileArmsTable}
+          tblThemeConfig={tblThemeConfig}
         />
       </Container>
     </ThemeProvider>

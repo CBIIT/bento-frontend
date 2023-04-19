@@ -10,7 +10,8 @@ import { useEffect, useState } from 'react';
 export const setSelectedRows = (rows = [], table) => {
   const { selectedRows, dataKey } = table;
   const updateRows = [...rows].map((row) => {
-    const isChecked = (selectedRows.indexOf(row[dataKey]) !== -1);
+    const isChecked = dataKey
+      ? (selectedRows.indexOf(row[dataKey]) !== -1) : false;
     return { ...row, isChecked };
   }, []);
   return updateRows;

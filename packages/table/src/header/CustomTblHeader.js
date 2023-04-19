@@ -24,7 +24,7 @@ const CustomTableHeader = ({
 }) => {
   const {
     columns,
-    selectedRows,
+    selectedRows = [],
     sortBy,
     sortOrder,
   } = table;

@@ -4,10 +4,8 @@ import {
   createTheme,
   ThemeProvider,
   Toolbar,
-  Tooltip,
   Typography,
 } from '@material-ui/core';
-import ManageColumnView from './ManageColumnView';
 
 const defaultTheme = {
   MuiToolbar: {

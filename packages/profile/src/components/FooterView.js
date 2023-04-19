@@ -1,19 +1,21 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box, Button, Grid, Paper, withStyles,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { CustomDataTable, getColumns, getOptions } from 'bento-components';
+import { TableView } from '@bento-core/paginated-table';
 import { custodianUtils, getDateInFormat } from '@bento-core/util';
 import style from './defaultStyle';
 
-export const NODE_LEVEL_ACCESS = process.env.NODE_LEVEL_ACCESS !== undefined ? process.env.NODE_LEVEL_ACCESS : true;
+export const NODE_LEVEL_ACCESS = process.env.NODE_LEVEL_ACCESS !== undefined
+  ? process.env.NODE_LEVEL_ACCESS : true;
 
 const ProfileViewFooter = ({
   classes,
   data,
   ignoredArms,
   profileArmsTable,
+  tblThemeConfig,
  }) => {
   const { role, userStatus } = data.getMyUser;
 
@@ -101,6 +103,18 @@ const ProfileViewFooter = ({
 
   const gridConfig = profileArmsTable;
 
+  const initTblState = (initailState) => ({
+    ...initailState,
+    title: gridConfig.title,
+    columns: gridConfig.columns,
+    tableMsg: gridConfig.tableMsg,
+    rowsPerPage: 10,
+    sortBy: gridConfig.defaultSortField,
+    sortOrder: gridConfig.defaultSortDirection || 'asc',
+    page: 0,
+  });
+
+  const formatedData = formatDate()[gridConfig.dataField];
   const renderGrid = () => (
     <>
       <div>
@@ -108,10 +122,12 @@ const ProfileViewFooter = ({
           <div id="table_profile" className={classes.tableDiv}>
             <Grid container>
               <Grid item xs={12}>
-                <CustomDataTable
-                  data={formatDate()[gridConfig.dataField]}
-                  columns={getColumns(gridConfig, classes, formatDate())}
-                  options={getOptions(gridConfig, classes)}
+                <TableView
+                  initState={initTblState}
+                  server={false}
+                  tblRows={formatedData}
+                  totalRowCount={formatedData.length}
+                  themeConfig={tblThemeConfig}
                 />
               </Grid>
             </Grid>

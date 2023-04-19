@@ -29,11 +29,11 @@ const TableView = ({
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
       onPageChange={onPageChange}
-      numSelected={table.selectedRows.length}
+      numSelected={table?.selectedRows?.length || 0}
       customTheme={themeConfig.extendedView}
     />
     <CustomToolbar
-      numSelected={table.selectedRows.length || 0}
+      numSelected={table?.selectedRows?.length || 0}
       table={table}
       onColumnViewChange={onColumnViewChange}
       customTheme={themeConfig.toolbar}
