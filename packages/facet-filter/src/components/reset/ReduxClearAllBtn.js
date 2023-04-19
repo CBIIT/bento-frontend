@@ -8,7 +8,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { clearAllFilters } from '../../store/actions/SideBar';
+import { clearAllFilters } from '../../store/actions/Actions';
 
 const ClearAllFiltersBtn = ({
   CustomClearAllBtn,

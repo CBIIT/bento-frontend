@@ -33,7 +33,7 @@ export const onClearFacetSection = ({
   return updatedState;
 };
 
-const onClearSliderSection = ({
+export const onClearSliderSection = ({
   filterState,
   facetSection,
 }) => {

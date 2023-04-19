@@ -20,7 +20,6 @@ import {
   getReviewDARConfig,
 } from '../../../bento/adminData';
 import { reformatDate, showAlert } from './utils/reviewDARUtilFun';
-import custodianUtils from '../../../utils/custodianUtilFuncs';
 import { adminPortalPath } from '../../../bento/siteWideConfig';
 
 const ReviewRequestView = ({ classes, data }) => {

@@ -6,18 +6,23 @@ export {
   sortBySection,
 } from './utils/Sort';
 export { getFilters } from './utils/filter';
+export { InputTypes } from './components/inputs/Types';
 export {
-  InputTypes
-} from './components/inputs/Types';
-export{
   sideBarReducerGenerator,
+  // Exporting reducers helper functions, for any custom sideBarReducerGenerator.
+  onToggleStateUpdate,
+  onClearFacetSection,
+  onClearSliderSection,
+  updateSiderValue,
+} from './store/reducers/SideBarReducer';
+export {
   toggleCheckBox,
   toggleSilder,
   clearAllFilters,
   clearFacetSection,
   clearSliderSection,
   clearAllAndSelectFacet,
-} from './store/reducers/SideBarReducer';
+} from './store/actions/Actions';
 export {
   generateClearAllFilterBtn,
   generateFacetSectionView,
