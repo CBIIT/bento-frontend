@@ -4,7 +4,7 @@ import generateStyle from './utils/generateStyle';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
-import { useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
@@ -18,15 +18,15 @@ import generateNotification from './utils/generateNotification';
 /* DataAccessRequest coponenent */
 function DataAccessRequest({
   data,
-  formFields, 
-  pageTitle, 
+  formFields,
+  pageTitle,
   SUBMIT_REQUEST_ACCESS,
   bentoHelpEmail,
   custodianUtils,
   notification,
   styles,
   AlertMessage
-  
+
 }) {
   /* styles */
   const generatedStyle = generateStyle(styles);
@@ -36,6 +36,7 @@ function DataAccessRequest({
   /* Component states */
   const [disableSubmit, setDisableSubmit] = useState(true);
   const [isFormSubmitted, setSubmitted] = useState(false);
+  const [showDisabledAlert, setShowDisabledAlert] = useState(false);
 
   /* hooks */
   const history = useHistory();
@@ -66,10 +67,10 @@ function DataAccessRequest({
   const fieldsToChk = formFields.map(
     (field) => (field.required ? field.id : null),
   );
-  const [formValues, setFormValues] = useState(setDefaultValues(formFields,getMyUser,availableArms));
+  const [formValues, setFormValues] = useState(setDefaultValues(formFields, getMyUser, availableArms));
 
   /* event handlers */
-  const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0) || userStatus==="Disabled";
+  const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0);
 
 
   const getErrorDetails = () => {
@@ -102,7 +103,7 @@ function DataAccessRequest({
       case 'error':
         return (
           <AlertMessage severity="error" backgroundColor={notificationSchema.error.color}>
-            {notificationSchema.error.message? notificationSchema.error.message : getErrorDetails()}
+            {notificationSchema.error.message ? notificationSchema.error.message : getErrorDetails()}
           </AlertMessage>
         );
       case 'success':
@@ -124,11 +125,11 @@ function DataAccessRequest({
           </AlertMessage>
         );
       case 'disabled':
-      return (
-        <AlertMessage severity="error" timeout={5000000} backgroundColor={notificationSchema.disabled.color}>
-          {notificationSchema.disabled.message}
-        </AlertMessage>
-      );
+        return (
+          <AlertMessage severity="error" timeout={5000000} backgroundColor={notificationSchema.disabled.color}>
+            {notificationSchema.disabled.message}
+          </AlertMessage>
+        );
       default:
         return null;
     }
@@ -141,14 +142,14 @@ function DataAccessRequest({
       setDisableSubmit(true);
       return;
     }
-   
+
     // if not cehck form values are corrct or not.
     const validInputValues = fieldsToChk.reduce((status, field) => {
       const fieldValue = formValues[field];
       return (fieldValue.length >= 1) && status;
     }, true);
 
-    if (validInputValues && userStatus!=="Disabled") {
+    if (validInputValues) {
       setDisableSubmit(false);
     } else {
       setDisableSubmit(true);
@@ -157,7 +158,7 @@ function DataAccessRequest({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({
+         setFormValues({
       ...formValues,
       [name]: value,
     });
@@ -166,7 +167,11 @@ function DataAccessRequest({
   const handleSubmit = (event) => {
     event.preventDefault();
     const userInfo = formValues;
-    mutate({ variables: { userInfo } });
+    if (userStatus !== "Disabled") {
+      mutate({ variables: { userInfo } })
+    } else if (userStatus === "Disabled") {
+        setShowDisabledAlert(true);
+    }
   };
 
   function redirectUser(path) {
@@ -177,7 +182,7 @@ function DataAccessRequest({
     return availableArms.length > 0;
   }
 
-  function getNotification() {
+  function getNotification(isDisabledAlert) {
     if (error) { return showAlert('error'); }
 
     if (!isACLAvailable()) { return showAlert('noAclToRequest'); }
@@ -186,7 +191,7 @@ function DataAccessRequest({
 
     if (redirectdType && redirectdType === 'noAccess') { return showAlert(redirectdType); }
 
-    if (userStatus==='Disabled') { return showAlert('disabled'); }
+    if (userStatus === 'Disabled' && isDisabledAlert) { return showAlert('disabled'); }
 
     return null;
   }
@@ -205,7 +210,7 @@ function DataAccessRequest({
       >
         {/* Top Space */}
         <Grid container item justifyContent="center" className={classes.emptySpace}>
-          {getNotification()}
+          {getNotification(showDisabledAlert)}
         </Grid>
 
         {/* ROW 2 */}
