@@ -1,11 +1,9 @@
 
-export const NODE_LEVEL_ACCESS = process.env.NODE_LEVEL_ACCESS !== undefined ? process.env.NODE_LEVEL_ACCESS : true;
-export const NODE_LABEL = process.env.NODE_LABEL || 'Study Arm(s)';
-
 export const custodianUtils = {
-  getNodeLevelLabel: () => {
+  getNodeLevelLabel: (nodeLabel, nodeLevelAccess) => {
     const limit = 30;
-    return NODE_LEVEL_ACCESS ? NODE_LABEL.substring(0, limit) : NODE_LABEL;
+  
+    return nodeLevelAccess ? nodeLabel.substring(0, limit) : nodeLabel;
   },
   /**
    * Gets the display format for the authenticator.

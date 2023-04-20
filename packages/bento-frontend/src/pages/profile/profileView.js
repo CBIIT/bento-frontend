@@ -12,6 +12,7 @@ import {
   ignoredArms,
   profileArmsTable,
 } from '../../bento/profileData';
+import { NODE_LEVEL_ACCESS, NODE_LABEL } from '../../bento/siteWideConfig';
 
 const imageMap = {
   member: userIcon,
@@ -39,6 +40,8 @@ function ProfileView({ classes, data }) {
             ignoredArms={ignoredArms}
             profileArmsTable={profileArmsTable}
             tblThemeConfig={themeConfig}
+            nodeLevelAccess={NODE_LEVEL_ACCESS}
+            nodeLabel={NODE_LABEL}
           />
         </div>
       </div>

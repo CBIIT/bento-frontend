@@ -19,6 +19,8 @@ const ProfileView = (props) => {
     ignoredArms,
     profileArmsTable,
     tblThemeConfig,
+    nodeLevelAccess,
+    nodeLabel,
   } = props;
   const theme = createTheme({ overrides: {
     ...defaultTheme(),
@@ -41,6 +43,8 @@ const ProfileView = (props) => {
           ignoredArms={ignoredArms}
           profileArmsTable={profileArmsTable}
           tblThemeConfig={tblThemeConfig}
+          nodeLevelAccess={nodeLevelAccess}
+          nodeLabel={nodeLabel}
         />
       </Container>
     </ThemeProvider>

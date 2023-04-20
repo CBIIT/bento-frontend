@@ -7,15 +7,14 @@ import { TableView } from '@bento-core/paginated-table';
 import { custodianUtils, getDateInFormat } from '@bento-core/util';
 import style from './defaultStyle';
 
-export const NODE_LEVEL_ACCESS = process.env.NODE_LEVEL_ACCESS !== undefined
-  ? process.env.NODE_LEVEL_ACCESS : true;
-
 const ProfileViewFooter = ({
   classes,
   data,
   ignoredArms,
   profileArmsTable,
   tblThemeConfig,
+  nodeLevelAccess = true,
+  nodeLabel,
  }) => {
   const { role, userStatus } = data.getMyUser;
 
@@ -52,7 +51,8 @@ const ProfileViewFooter = ({
         <div>
           You have access to all
           {' '}
-          {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+          {nodeLevelAccess ? custodianUtils
+            .getNodeLevelLabel(nodeLabel, nodeLevelAccess) : 'data'}
         </div>
       </Paper>
     </Box>
