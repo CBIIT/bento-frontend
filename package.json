@@ -12,9 +12,5 @@
     "@babel/preset-env": "^7.20.2",
     "cross-env": "^7.0.3",
     "lerna": "^6.5.1"
-  },
-  "dependencies": {
-    "@bento-core/admin": "^0.1.0",
-    "@bento-core/authentication": "^0.1.0"
   }
 }
