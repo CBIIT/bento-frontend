@@ -481,6 +481,7 @@ export const sampleTable = {
       sort: 'asc',
       primary: true,
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
@@ -488,35 +489,42 @@ export const sampleTable = {
       header: 'Diagnosis',
       dataFromRoot: true,
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'tissue_type',
       header: 'Tissue Type',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'composition',
       header: 'Tissue Composition',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'sample_anatomic_site',
       header: 'Sample Anatomic Site',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'method_of_sample_procurement',
       header: 'Sample Procurement Method',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'test_name',
       header: 'Platform',
+      display: true,
+      tooltipText: 'sort',
       dataFromRoot: true,
       role: cellTypes.DISPLAY,
     },
@@ -555,7 +563,6 @@ export const filesTable = {
   // Set 'selectableRows' to true to show the row selection
   selectableRows: true,
   // A maximum of 10 columns are allowed
-  manageViewColumns: false,
   columns: [
     {
       cellType: cellTypes.CHECKBOX,
@@ -566,30 +573,35 @@ export const filesTable = {
       dataField: 'file_name',
       header: 'File Name',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'file_type',
       header: 'File Type',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'association',
       header: 'Association',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'file_description',
       header: 'Description',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
       dataField: 'file_format',
       header: 'Format',
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
     {
@@ -598,6 +610,7 @@ export const filesTable = {
       // set formatBytes to true to display file size (in bytes) in a more human readable format
       formatBytes: true,
       display: true,
+      tooltipText: 'sort',
       role: cellTypes.DISPLAY,
     },
   ],

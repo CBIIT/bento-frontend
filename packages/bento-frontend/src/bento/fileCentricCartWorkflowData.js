@@ -144,7 +144,7 @@ export const table = {
 export const tableConfig = {
   dataField: 'filesInList',
   // Value must be one of the 'dataField's in "columns"
-  defaultSortField: 'file_name',
+  defaultSortField: 'subject_id',
   // 'asc' or 'desc'
   api: GET_MY_CART_DATA_QUERY,
   defaultSortDirection: 'asc',
