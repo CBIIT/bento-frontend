@@ -1,18 +1,20 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
-import { adminIcon, inactiveUserIcon, userIcon } from '../../../bento/profileData';
+import { Alert, withStyles } from '@material-ui/core';
+import { capitalize } from '@bento-core/util';
 import RoleBadgeGroup from './RoleBadgeGroup';
-import style from '../styles';
+import style from './defaultStyle';
 
-const imageMap = {
-  member: userIcon,
-  'non-member': inactiveUserIcon,
-  admin: adminIcon,
-};
+const HeaderView = ({
+  classes,
+  data,
+  imageMap,
+}) => {
+  if (!data || !data.getMyUser) {
+    return (
+      <Alert severity="error">Provide Valid User Information.</Alert>
+    );
+  }
 
-const capitalize = (str) => str.substr(0, 1).toUpperCase() + str.substr(1, str.length - 1);
-
-const ProfileViewHeader = ({ classes, data }) => {
   let icon;
   const { role } = data.getMyUser;
 
@@ -37,6 +39,6 @@ const ProfileViewHeader = ({ classes, data }) => {
       </div>
     </>
   );
-};
+}
 
-export default withStyles(style, { withTheme: true })(ProfileViewHeader);
+export default withStyles(style)(HeaderView);

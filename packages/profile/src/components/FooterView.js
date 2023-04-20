@@ -1,16 +1,21 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box, Button, Grid, Paper, withStyles,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { CustomDataTable, getColumns, getOptions } from 'bento-components';
-import { ignoredArms, profileArmsTable } from '../../../bento/profileData';
-import { NODE_LEVEL_ACCESS } from '../../../bento/siteWideConfig';
-import custodianUtils from '../../../utils/custodianUtilFuncs';
-import style from '../styles';
-import getDateInFormat from '../../../utils/date';
+import { TableView } from '@bento-core/paginated-table';
+import { custodianUtils, getDateInFormat } from '@bento-core/util';
+import style from './defaultStyle';
 
-const ProfileViewFooter = ({ classes, data }) => {
+const ProfileViewFooter = ({
+  classes,
+  data,
+  ignoredArms,
+  profileArmsTable,
+  tblThemeConfig,
+  nodeLevelAccess = true,
+  nodeLabel,
+ }) => {
   const { role, userStatus } = data.getMyUser;
 
   /**
@@ -46,7 +51,8 @@ const ProfileViewFooter = ({ classes, data }) => {
         <div>
           You have access to all
           {' '}
-          {NODE_LEVEL_ACCESS ? custodianUtils.getNodeLevelLabel() : 'data'}
+          {nodeLevelAccess ? custodianUtils
+            .getNodeLevelLabel(nodeLabel, nodeLevelAccess) : 'data'}
         </div>
       </Paper>
     </Box>
@@ -97,6 +103,18 @@ const ProfileViewFooter = ({ classes, data }) => {
 
   const gridConfig = profileArmsTable;
 
+  const initTblState = (initailState) => ({
+    ...initailState,
+    title: gridConfig.title,
+    columns: gridConfig.columns,
+    tableMsg: gridConfig.tableMsg,
+    rowsPerPage: 10,
+    sortBy: gridConfig.defaultSortField,
+    sortOrder: gridConfig.defaultSortDirection || 'asc',
+    page: 0,
+  });
+
+  const formatedData = formatDate()[gridConfig.dataField];
   const renderGrid = () => (
     <>
       <div>
@@ -104,10 +122,12 @@ const ProfileViewFooter = ({ classes, data }) => {
           <div id="table_profile" className={classes.tableDiv}>
             <Grid container>
               <Grid item xs={12}>
-                <CustomDataTable
-                  data={formatDate()[gridConfig.dataField]}
-                  columns={getColumns(gridConfig, classes, formatDate())}
-                  options={getOptions(gridConfig, classes)}
+                <TableView
+                  initState={initTblState}
+                  server={false}
+                  tblRows={formatedData}
+                  totalRowCount={formatedData.length}
+                  themeConfig={tblThemeConfig}
                 />
               </Grid>
             </Grid>

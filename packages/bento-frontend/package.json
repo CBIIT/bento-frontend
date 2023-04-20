@@ -17,6 +17,7 @@
     "@bento-core/paginated-table": "*",
     "@bento-core/authentication": "*",
     "@bento-core/data-access-request": "*",
+    "@bento-core/profile": "*",
     "@apollo/client": "^3.6.9",
     "@apollo/react-components": "^4.0.0",
     "@babel/core": "7.2.2",
