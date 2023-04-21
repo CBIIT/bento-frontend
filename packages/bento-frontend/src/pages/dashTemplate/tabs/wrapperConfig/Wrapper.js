@@ -15,6 +15,10 @@ export const layoutConfig = [{
   ],
 }];
 
+/**
+* Configuration display component based on index
+* CAUTION: provide position of table component
+*/
 export const wrapperConfig = [{
   container: 'buttons',
   size: 'xl',

@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { TextField, withStyles } from '@material-ui/core';
-import { changeUserBasicInfo } from '../../../bento/profileData';
 import TextEditComponent from './textEditComponent';
-import style from '../styles';
-import { getFromLocalStorage, storeInLocalStorage } from '../../../utils/localStorage';
-import custodianUtils from '../../../utils/custodianUtilFuncs';
+import { getFromLocalStorage, storeInLocalStorage } from '@bento-core/util';
+import { custodianUtils } from '@bento-core/util';
+import style from './defaultStyle';
 
-const ProfileViewBody = ({ classes, data }) => {
+const BodyView = ({
+    classes,
+    data,
+    changeUserBasicInfo,
+    editTool,
+}) => {
   const { getMyUser } = data;
   const [firstName, setFirstName] = useState(getMyUser.firstName);
   const [lastName, setLastName] = useState(getMyUser.lastName);
@@ -37,7 +41,6 @@ const ProfileViewBody = ({ classes, data }) => {
     variables.userInfo[field] = value;
     mutate({ variables });
   };
-
   return (
     <>
       <div className={classes.profile_body_container}>
@@ -60,6 +63,7 @@ const ProfileViewBody = ({ classes, data }) => {
               data={`${lastName}`}
               customOptions={{ alt: 'Edit last name', field: 'lastName' }}
               onSave={completeSave}
+              editTool={editTool}
             />
           </div>
           <div className={classes.textContainer}>
@@ -70,6 +74,7 @@ const ProfileViewBody = ({ classes, data }) => {
               data={`${firstName}`}
               customOptions={{ alt: 'Edit first name', field: 'firstName' }}
               onSave={completeSave}
+              editTool={editTool}
             />
           </div>
           <div className={classes.textContainer}>
@@ -80,6 +85,7 @@ const ProfileViewBody = ({ classes, data }) => {
               customOptions={{ alt: 'edit organization', field: 'organization', useLargerField: true }}
               data={organization}
               onSave={completeSave}
+              editTool={editTool}
             />
           </div>
         </div>
@@ -90,4 +96,4 @@ const ProfileViewBody = ({ classes, data }) => {
   );
 };
 
-export default withStyles(style, { withTheme: true })(ProfileViewBody);
+export default withStyles(style, { withTheme: true })(BodyView);

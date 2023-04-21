@@ -11,3 +11,8 @@ export { default as DEFAULT_MANAGE_ACCESS_STYLES } from './ManageAccessTable/sty
 export { ReviewRequestsTableGenerator } from './ReviewRequestsTable/ReviewRequestsTableGenerator';
 export { DEFAULT_CONFIG_REVIEW_REQUESTS_TABLE } from './ReviewRequestsTable/config';
 export { default as DEFAULT_REVIEW_REQUESTS_STYLES } from './ReviewRequestsTable/styles';
+
+// Revoke Access Table Exports
+export { RevokeAccessTableGenerator } from './RevokeAccessTable/RevokeAccessTableGenerator';
+export { DEFAULT_CONFIG_REVOKE_ACCESS_TABLE } from './RevokeAccessTable/config';
+export { default as DEFAULT_REVOKE_ACCESS_STYLES } from './RevokeAccessTable/styles';

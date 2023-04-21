@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Button, TextField, withStyles, InputAdornment,
 } from '@material-ui/core';
-import { editTool } from '../../../bento/profileData';
 
 const checkProp = (obj, prop) => {
   if (!obj || !prop) {
@@ -15,7 +14,11 @@ const checkProp = (obj, prop) => {
 const defaultValidation = (val) => val && val.length > 0;
 
 function TextEditComponent({
-  data, classes, customOptions, onSave,
+  data,
+  classes,
+  customOptions,
+  onSave,
+  editTool,
 }) {
   const [value, setValue] = React.useState(data || '');
   const [editActivated, setEditActivated] = React.useState(false);

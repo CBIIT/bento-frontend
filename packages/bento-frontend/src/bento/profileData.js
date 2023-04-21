@@ -58,6 +58,9 @@ export const profileArmsTable = {
       display: true,
     },
   ],
+  tableMsg: {
+    noMatch: 'No Matching Records Found',
+  },
 };
 
 const GET_MY_PROFILE_QUERY = gql`
