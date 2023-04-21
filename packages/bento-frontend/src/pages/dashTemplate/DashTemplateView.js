@@ -5,6 +5,7 @@ import BentoFacetFilter from './sideBar/BentoFacetFilter';
 import WidgetView from './widget/WidgetView';
 import StatsView from '../../components/Stats/StatsView';
 import TabsView from './tabs/TabsView';
+import QueryBarView from './filterQueryBar/QueryBarView';
 
 const DashTemplate = ({
   classes,
@@ -20,6 +21,7 @@ const DashTemplate = ({
         </div>
         <div className={classes.rightContent}>
           <div className={classes.widgetsContainer}>
+            <QueryBarView />
             <WidgetView
               data={dashData}
             />
