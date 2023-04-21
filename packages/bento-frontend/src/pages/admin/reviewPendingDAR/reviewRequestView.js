@@ -17,12 +17,12 @@ import {
 } from '../../../bento/adminData';
 import { reformatDate, showAlert } from './utils/reviewDARUtilFun';
 import custodianUtils from '../../../utils/custodianUtilFuncs';
-import { adminPortal } from '../../../bento/siteWideConfig';
+import { adminPortalPath } from '../../../bento/siteWideConfig';
 
 const ReviewRequestView = ({ classes, data }) => {
   const { listRequest } = data;
   // Redirect to Admin page once all individual DAR has been given an Access
-  if (listRequest.length === 0) return <Redirect to={adminPortal} />;
+  if (listRequest.length === 0) return <Redirect to={adminPortalPath} />;
 
   const userInfo = listRequest[0];
   const userId = userInfo.userID;

@@ -8,17 +8,8 @@ export const tblHeader = {
       fontWeight: 'bold',
       letterSpacing: '0.06em',
       textDecoration: 'underline',
-      '&.samples_header_col_sample_procurement_method': {
-        minWidth: '180px',
-      },
-      '&.samples_header_col_sample_anatomic_site': {
-        minWidth: '140px',
-      },
-      '&.samples_header_col_subject_id': {
-        minWidth: '100px',
-      },
-      '&.samples_header_col_sample_id': {
-        minWidth: '100px',
+      '&:hover': {
+        color: '#13344A',
       },
     },
   },

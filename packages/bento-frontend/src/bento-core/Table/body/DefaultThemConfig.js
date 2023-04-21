@@ -22,6 +22,7 @@ const defaultTheme = () => ({
   },
   MuiTableCell: {
     root: {
+      minHeight: '45px',
       padding: '0',
       paddingRight: '20px',
       color: '#004C73',
@@ -51,6 +52,26 @@ const defaultTheme = () => ({
       color: '#142D64',
       '&:hover': {
         background: 'none',
+      },
+    },
+  },
+  MuiButtonBase: {
+    root: {
+      '&.del_row_btn': {
+        width: '29px',
+        border: '1px solid #ccc',
+        margin: '10px 10px 10px 10px',
+        cursor: 'pointer',
+        height: '26px',
+        padding: '0',
+        background: '#fff',
+        borderRadius: '15%',
+      },
+    },
+  },
+  MuiSvgIcon: {
+    root: {
+      '&.del_row_btn_icon': {
       },
     },
   },

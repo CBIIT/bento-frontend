@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { withStyles } from '@material-ui/core';
-import styles from './TabsStyle';
 import TabGenerator from '../../../bento-core/Tab/TabGenerator';
 import TabPanelGenrator from '../../../bento-core/Tab/TabPanelGenrator';
 import TabPanel from './TabPanel';
@@ -70,10 +68,15 @@ const Tabs = (props) => {
     setCurrentTab(value);
   };
 
+  /**
+  * 1. change <name> to <display> as array item
+  * 2. <display> -> [tab.name, props.dashboardStats[tab.count]]
+  */
   const getTabs = (tabs) => tabs.map((tab) => ({
     ...tab,
     name: tab.name,
     count: `(${props.dashboardStats[tab.count]})`,
+    display: [tab.name, props.dashboardStats[tab.count]],
     clsName: `${tab.name}`.toLowerCase().replace(' ', '_'),
   }));
 
@@ -103,4 +106,4 @@ const Tabs = (props) => {
   );
 };
 
-export default withStyles(styles)(Tabs);
+export default Tabs;

@@ -4,9 +4,13 @@
   "version": "4.0.0",
   "private": true,
   "dependencies": {
+    "@bento-core/global-search": "*",
     "@bento-core/stats-bar": "*",
     "@bento-core/widgets": "*",
     "@bento-core/local-find": "*",
+    "@bento-core/cart": "*",
+    "@bento-core/tab": "*",
+    "@bento-core/authentication": "*",
     "@apollo/client": "^3.6.9",
     "@apollo/react-components": "^4.0.0",
     "@babel/core": "7.2.2",

@@ -188,8 +188,10 @@ const BentoFacetFilter = ({
           )}
           className={classes.customExpansionPanelSummaryRoot}
         >
-          <div className={
-            clsx(classes.sectionSummaryText, classes[facetClasses])
+          <div
+            id={facet.label}
+            className={
+              clsx(classes.sectionSummaryText, classes[facetClasses])
             }
           >
             {facet.label}

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import TableView from './TableController';
+import ServerTableView from './ServerController';
+import ClientTableView from './ClientController';
 import {
   onRowsPerPageChange,
   onPageChange,
@@ -7,37 +8,41 @@ import {
   setTotalRowCount,
   onColumnSort,
   onPageAndTotalCountChange,
+  onColumnViewChange,
 } from './state/Actions';
-import reducer from './state/Reducer';
 import { TableContext } from './ContextProvider';
+import reducer from './state/Reducer';
 
-const PaginatedTable = (props) => {
+const PaginatedTable = ({
+  queryVariables = {},
+  viewConfig,
+  themeConfig = {},
+  totalRowCount = 0,
+  initState,
+  activeTab = true,
+  server = true,
+  tblRows = [],
+}) => {
   /**
-  * initialize state for useReducer
-  * @param {*} initailState
-  * @returns reducer state
+  * Initailize useReducer state
+  * 1. table: state (Note: table includes cofiguration in addition to pagination state)
+  * 2. dispatch: dispatch action (as redux action) to update pagination state
+  * 3. Add all btn / Add file button also dispatch action to update table state
   */
-  const {
-    activeFilters = {},
-    themeConfig = {},
-    totalRowCount,
-    initState,
-  } = props;
+  const [table, dispatch] = useReducer(reducer, {}, initState);
 
   /**
   * use context to provide table state to wrapper component
   */
   const tableContext = useContext(TableContext);
 
-  /**
-  * Initailize useReducer state
-  * 1. table: state (Note: table includes cofiguration in addition to pagination state)
-  * 2. dispatch: dispatch action (as redux action) to update pagination state
-  */
-  const [table, dispatch] = useReducer(reducer, {}, initState);
-
   useEffect(() => {
-    tableContext.setTblState(table);
+    /**
+    * set table context
+    * 1. provide table state to other component (wrapper comp -> Add file button)
+    * 2. provide table dispatch action to other component (wrapper comp)
+    */
+    tableContext.setContext({ ...table, dispatch });
   }, [table]);
 
   /**
@@ -45,8 +50,10 @@ const PaginatedTable = (props) => {
   */
   useEffect(() => {
     const { page, rowsPerPage } = table;
-    if (totalRowCount < page * rowsPerPage) {
-      const currentRows = page * rowsPerPage;
+    // validate table state - curr rowCount should be less than total row count after filter
+    if (totalRowCount <= page * rowsPerPage) {
+      const adjustRow = (page === 1) ? 1 : 0;
+      const currentRows = (page * rowsPerPage) + adjustRow;
       const newPage = Math.floor(totalRowCount / currentRows);
       dispatch(onPageAndTotalCountChange({
         page: newPage,
@@ -55,7 +62,7 @@ const PaginatedTable = (props) => {
     } else {
       dispatch(setTotalRowCount(totalRowCount));
     }
-  }, [activeFilters, totalRowCount]);
+  }, [totalRowCount]);
 
   const handleChangeRowsPerPage = (event) => {
     const noOfRows = parseInt(event.target.value, 10);
@@ -63,7 +70,7 @@ const PaginatedTable = (props) => {
     let newPage = page;
     // row per page is greater than total row count
     // set page to last page number
-    if (page * noOfRows > totalRowCount) {
+    if (page * noOfRows >= totalRowCount) {
       newPage = Math.floor(totalRowCount / noOfRows);
     }
     dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows, page: newPage }));
@@ -109,24 +116,71 @@ const PaginatedTable = (props) => {
     const sort = order === 'asc' ? 'desc' : 'asc';
     dispatch(onColumnSort({ sort, column }));
   };
+
+  /**
+  * manage columns view change
+  * hide/display columns from table
+  */
+  const handleColumnViewChange = (column) => {
+    const columns = table.columns.map((col) => {
+      const updateColumnView = { ...col };
+      if (col.dataField === column.dataField) {
+        updateColumnView.display = !column.display;
+      }
+      return updateColumnView;
+    });
+    dispatch(onColumnViewChange({
+      ...table,
+      columns,
+    }));
+  };
+  /**
+  * A. client table
+  * table data provide by bento app (tblRows)
+  * Rows display & column sorting by ClientController
+  */
+  if (!server) {
+    return (
+      <>
+        <ClientTableView
+          tblRows={tblRows}
+          table={table}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowSelectChange={onRowSelectHandler}
+          onToggleSelectAll={handleToggleSelectAll}
+          onSortByColumn={handleSortByColumn}
+          onColumnViewChange={handleColumnViewChange}
+          themeConfig={themeConfig}
+        />
+      </>
+    );
+  }
+
+  /**
+  * B. server table
+  * bento-core makes http call base on table state
+  */
   /**
   * prevent loading data except for active tab
   */
-  const { activeTab } = props;
   if (!activeTab) {
     return null;
   }
 
   return (
     <>
-      <TableView
-        {...props}
+      <ServerTableView
+        queryVariables={queryVariables}
+        totalRowCount={totalRowCount}
+        viewConfig={viewConfig}
         table={table}
         onRowsPerPageChange={handleChangeRowsPerPage}
         onPageChange={handleChangePage}
         onRowSelectChange={onRowSelectHandler}
         onToggleSelectAll={handleToggleSelectAll}
         onSortByColumn={handleSortByColumn}
+        onColumnViewChange={handleColumnViewChange}
         themeConfig={themeConfig}
       />
     </>

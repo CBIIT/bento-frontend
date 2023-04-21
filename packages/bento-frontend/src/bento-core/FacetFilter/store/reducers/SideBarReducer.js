@@ -91,6 +91,10 @@ export function sideBarReducerGenerator() {
             ...state,
             filterState: { ...updateState },
           };
+        case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
+          return {
+            filterState: payload,
+          };
         default:
           return state;
       }
