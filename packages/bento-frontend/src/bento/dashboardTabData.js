@@ -2,6 +2,7 @@
 import gql from 'graphql-tag';
 import { cellTypes } from '@bento-core/table';
 import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
+import { dataFormatTypes } from '@bento-core/table';
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -2044,9 +2045,10 @@ export const tabContainers = [
         header: 'Size',
         sort: 'asc',
         display: true,
-        formatBytes: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        dataFormatType: dataFormatTypes.FORMAT_BYTES,
+        cellType: cellTypes.FORMAT_DATA,
       },
       {
         dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon

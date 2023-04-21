@@ -12,6 +12,10 @@ import { cellTypes } from '../util/Types';
 import CheckboxView from './components/CheckBoxView';
 import DeleteCellView from './components/DeleteCellView';
 
+/**
+* 1. Returns cell associated with action (checkbox / delete view)
+* 2. Returns cell associated with display data (CustomBodyCell)
+*/
 const CustomTableBody = ({
   rows = [],
   table,

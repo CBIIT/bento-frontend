@@ -53,7 +53,6 @@ import TableView from 'bento-core/PaginationTable/PaginatedTable';
 // active filter json structure
 <TableView
   initState={initTblState}
-  viewConfig={tableViewConfig}
   themeConfig={themeConfig}
   activeFilters={activeFilters}
   totalRowCount={dashboardStats[config.count]}

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { cellTypes } from '@bento-core/table';
+import { cellTypes, dataFormatTypes } from '@bento-core/table';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
 
 export const navBarCartData = {
@@ -182,6 +182,8 @@ export const tableConfig = {
       // set formatBytes to true to display file size (in bytes) in a more human readable format
       formatBytes: true,
       display: true,
+      dataFormatType: dataFormatTypes.FORMAT_BYTES,
+      cellType: cellTypes.FORMAT_DATA,
     },
     {
       dataField: 'subject_id',

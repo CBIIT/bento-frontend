@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { cellTypes } from '@bento-core/table';
+import { cellTypes, dataFormatTypes } from '@bento-core/table';
 import { FileOnRowsSelect } from '../utils/fileTable';
 import { SampleOnRowsSelect } from '../utils/sampleFileTable';
 
@@ -608,10 +608,11 @@ export const filesTable = {
       dataField: 'file_size',
       header: 'Size',
       // set formatBytes to true to display file size (in bytes) in a more human readable format
-      formatBytes: true,
       display: true,
       tooltipText: 'sort',
       role: cellTypes.DISPLAY,
+      dataFormatType: dataFormatTypes.FORMAT_BYTES,
+      cellType: cellTypes.FORMAT_DATA,
     },
   ],
   tableMsg: {

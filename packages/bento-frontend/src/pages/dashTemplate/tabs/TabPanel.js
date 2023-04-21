@@ -42,7 +42,7 @@ const TabView = (props) => {
   * 8. paginationAPIField - (Required) Access http response data - defined by
   * dashboardTabData (tabContainers)
   * eg. case tab paginationAPIField: 'subjectOverview' - {subjectOverview: [data]}
-  * 9. viewConfig - (Optional) table view config, set hide/diaply pagination above table header
+  * 9. extendedViewConfig - (Optional) table view config, set hide/diaply pagination above table header
   */
   const initTblState = (initailState) => ({
     ...initailState,

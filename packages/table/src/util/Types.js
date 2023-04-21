@@ -5,7 +5,12 @@ export const cellTypes = {
   CHECKBOX: 'CHECKBOX',
   DELETE: 'DELETE',
   DEFAULT: 'DEFAULT',
+  FORMAT_DATA: 'FORMAT_DATA',
 };
+
+export const dataFormatTypes = {
+  FORMAT_BYTES: 'FORMAT_BYTES',
+}
 
 export const headerTypes = {
   CUSTOM_ELEM: 'CUSTOM_ELEM',
