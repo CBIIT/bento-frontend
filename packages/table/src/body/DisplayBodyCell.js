@@ -63,7 +63,7 @@ const ViewCell = ({
   }
 };
 
-const CustomBodyCell = ({
+const DisplayCell = ({
   row,
   column,
 }) => (
@@ -75,4 +75,4 @@ const CustomBodyCell = ({
   </TableCell>
 );
 
-export default CustomBodyCell;
+export default DisplayCell;

@@ -9,9 +9,10 @@ import {
 import HeaderCell from './CustomCell';
 // import { getClsName, tableCls } from '../util/ClassNames';
 import defaultTheme from './DefaultThemConfig';
-import { cellTypes } from '../util/Types';
+import { actionCellTypes, cellTypes } from '../util/Types';
 import CheckboxView from './components/CheckBoxView';
 import DeleteCellView from './components/DeleteCellView';
+import ActionHeaderCell from './ActionHeaderCell';
 
 const CustomTableHeader = ({
   table,
@@ -44,34 +45,30 @@ const CustomTableHeader = ({
           {
             displayColunms.map((column) => {
               const { cellType } = column;
-              switch (cellType) {
-                case cellTypes.CHECKBOX:
-                  return (
-                    <CheckboxView
-                      includeSelectedIds={includeSelectedIds}
-                      toggleSelectAll={toggleSelectAll}
-                      Ids={Ids}
-                    />
-                  );
-                case cellTypes.DELETE:
-                  return (
-                    <DeleteCellView
-                      rows={rows}
-                      count={count}
-                      column={column}
-                    />
-                  );
-                default:
-                  return (
-                    <HeaderCell
-                      components={components}
-                      column={column}
-                      sortBy={sortBy}
-                      sortOrder={sortOrder}
-                      toggleSort={() => sortByColumn(column.dataField, sortOrder)}
-                    />
-                  );
+              const isActionCell = actionCellTypes.includes(cellType) || false;
+
+              if (isActionCell) {
+                return (
+                  <ActionHeaderCell
+                    includeSelectedIds={includeSelectedIds}
+                    toggleSelectAll={toggleSelectAll}
+                    Ids={Ids}
+                    rows={rows}
+                    count={count}
+                    column={column}
+                  />
+                )
               }
+
+              return (
+                <HeaderCell
+                  components={components}
+                  column={column}
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
+                  toggleSort={() => sortByColumn(column.dataField, sortOrder)}
+                />
+              );
             })
           }
         </TableRow>
