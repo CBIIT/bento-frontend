@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 export default ({
-  index, data, classes,
+  index, data, classes, maxItems,
   onSectionClick, onItemClick,
 }) => {
   const { items, section } = data;
@@ -26,7 +26,7 @@ export default ({
           {items.length === 1 ? 'IS ' : 'IN '}
         </span>
         {items.length > 1 && <span className={classes.bracketsOpen}>(</span>}
-        {items.slice(0, 2).map((d, idx) => (
+        {items.slice(0, maxItems).map((d, idx) => (
           <>
             <span
               className={clsx(classes.filterCheckboxes, classes[`facetSection${section}`])}
@@ -35,10 +35,10 @@ export default ({
             >
               {d}
             </span>
-            {idx === 1 ? null : ' '}
+            {idx === (maxItems - 1) ? null : ' '}
           </>
         ))}
-        {items.length > 2 && '...'}
+        {items.length > maxItems && '...'}
         {items.length > 1 && <span className={classes.bracketsClose}>)</span>}
       </span>
     </span>

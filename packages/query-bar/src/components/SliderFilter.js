@@ -24,6 +24,7 @@ export default ({
         {' '}
         <span className={classes.operators}>
           IS BETWEEN
+          {' '}
         </span>
         <span
           className={clsx(classes.filterCheckboxes, classes[`facetSection${section}`])}
