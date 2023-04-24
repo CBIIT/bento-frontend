@@ -65,4 +65,11 @@ export default () => ({
   highlight: {
     color: '#b2c6d6',
   },
+  showMore: {
+    textAlign: 'right',
+    paddingRight: '5px',
+    cursor: 'pointer',
+    fontSize: '10px',
+    width: '100%',
+  },
 });

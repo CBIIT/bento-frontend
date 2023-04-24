@@ -7,6 +7,7 @@ const ReduxFacetView = ((props) => <FacetView {...props} />);
 
 const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,
+  autoComplete: state?.localFind?.autocomplete || [],
 });
 
 const mapDispatchToProps = (dispatch) => ({
