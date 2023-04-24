@@ -2,13 +2,14 @@ import React from 'react';
 import { withStyles, Button } from '@material-ui/core';
 import { InputTypes } from '@bento-core/facet-filter';
 import clsx from 'clsx';
+import { Filter } from './components/FilterMap';
 import DEFAULT_STYLES from './styles';
 
 /**
  * TODO:
  * - Documentation (README and DESIGN)
  * - Convert to a component generator
- * - General refactor and split into smaller components (slider, checkbox, localfind)
+ * - General refactor and split localfind into its own component
  * - When dispatching events, destroy the element first (it will make the UI more responsive)
  * - Convert filter.items.slice to a configuration option (e.g. maxItems)
  */
@@ -18,11 +19,14 @@ const ActiveFiltersQuery = ({
   onClearAll, onClearUpload, onClearAutocomplete, onDeleteAutocomplete,
   onResetFacetSection, onResetFacetCheckbox, onResetSlider,
 }) => {
-  const { CHECKBOX, SLIDER } = InputTypes;
+  const { CHECKBOX } = InputTypes;
   const { autocomplete, upload } = localFind;
 
-  const mappedCheckboxes = statusReducer.filter((facet) => facet.section && CHECKBOX === facet.type)
+  // Remove any sections without checkboxes selected
+  const mappedInputs = statusReducer.filter((facet) => facet.section && facet.type)
     .map((facet) => {
+      if (facet.type !== CHECKBOX) { return facet; }
+
       const items = Object.keys(facet.items);
       items.sort((a, b) => a.localeCompare(b));
 
@@ -30,46 +34,8 @@ const ActiveFiltersQuery = ({
     })
     .filter((facet) => facet.items.length > 0);
 
-  const mappedSliders = statusReducer.filter((facet) => facet.section && SLIDER === facet.type);
-
-  const getInputSet = () => {
-    if (upload.length && autocomplete.length) {
-      return (
-        <>
-          {' '}
-          <span
-            className={clsx(classes.filterCheckboxes, classes.localFind)}
-            onClick={onClearUpload}
-          >
-            INPUT CASE SET
-          </span>
-          {' '}
-        </>
-      );
-    }
+  if ((mappedInputs.length || autocomplete.length || upload.length) <= 0) {
     return null;
-  };
-
-  // Builds the inner section of a query array (e.g. "(ABC 123 DDD)")
-  const getFilterJoin = (data, idx, isLastIndex, onClick, section) => (
-    <>
-      <span
-        className={clsx(
-          classes.filterCheckboxes,
-          classes[section && section.section ? `facetSection${section.section}` : 'facetSectionCases'],
-        )}
-        key={idx}
-        onClick={onClick}
-      >
-        {data}
-      </span>
-      {isLastIndex ? null : ' '}
-    </>
-  );
-
-  if ((mappedCheckboxes.length || mappedSliders.length
-      || autocomplete.length || upload.length) <= 0) {
-    return '';
   }
 
   return (
@@ -84,6 +50,7 @@ const ActiveFiltersQuery = ({
       </Button>
       <span className={classes.divider} />
       <span className={classes.queryContainer}>
+        {/* Local Find Selections */}
         {(autocomplete.length || upload.length) ? (
           <span>
             {/* Standalone case set button */}
@@ -97,7 +64,7 @@ const ActiveFiltersQuery = ({
                 </span>
               ) : null}
 
-            {/* Local Find Selections */}
+            {/* Local Find Search Selections */}
             {autocomplete.length
               ? (
                 <span>
@@ -116,91 +83,58 @@ const ActiveFiltersQuery = ({
                 </span>
               ) : null}
             <span>
-              {(upload.length || autocomplete.length > 1)
-                && <span className={classes.bracketsOpen}>(</span>}
-              {getInputSet()}
-              {autocomplete.slice(0, 2).map((data, idx) => (
-                getFilterJoin(
-                  data.title,
-                  idx,
-                  autocomplete.length - 1 === idx,
-                  () => onDeleteAutocomplete(data.title),
-                )
+              {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
+                ? <span className={classes.bracketsOpen}>(</span>
+                : null}
+              {upload.length && autocomplete.length ? (
+                <>
+                  {' '}
+                  <span
+                    className={clsx(classes.filterCheckboxes, classes.localFind)}
+                    onClick={onClearUpload}
+                  >
+                    INPUT CASE SET
+                  </span>
+                  {' '}
+                </>
+              ) : null}
+              {autocomplete.slice(0, 2).map((d, idx) => (
+                <>
+                  <span
+                    className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
+                    key={idx}
+                    onClick={() => onDeleteAutocomplete(d.title)}
+                  >
+                    {d.title}
+                  </span>
+                  {idx === 1 ? null : ' '}
+                </>
               ))}
               {autocomplete.length > 2 && '...'}
-              {(upload.length || autocomplete.length > 1)
-                && <span className={classes.bracketsClose}>)</span>}
+              {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
+                ? <span className={classes.bracketsClose}>)</span>
+                : null}
             </span>
           </span>
         ) : null}
 
-        {/* Facet Checkbox Selections */}
-        {((autocomplete.length || upload.length) && mappedCheckboxes.length)
+        {/* Facet Sidebar Selections */}
+        {((autocomplete.length || upload.length) && mappedInputs.length)
           ? <span className={classes.operators}> AND </span>
           : null}
-        {mappedCheckboxes.map((filter, index) => (
-          <span>
-            <span>
-              {' '}
-              {index !== 0 ? <span className={classes.operators}> AND </span> : ''}
-              <span
-                className={clsx(classes.filterName, classes[`facetSection${filter.section}Background`])}
-                onClick={() => onResetFacetSection(filter)}
-              >
-                {filter.label}
-              </span>
-              {' '}
-            </span>
-            <span>
-              {' '}
-              <span className={classes.operators}>
-                {filter.items.length === 1 ? 'IS ' : 'IN '}
-              </span>
-              {filter.items.length > 1 && <span className={classes.bracketsOpen}>(</span>}
-              {filter.items.slice(0, 2).map((data, idx) => (
-                getFilterJoin(data, idx, filter.items.length - 1 === idx, () => {
-                  onResetFacetCheckbox(filter, data);
-                }, filter)
-              ))}
-              {filter.items.length > 2 && '...'}
-              {filter.items.length > 1 && <span className={classes.bracketsClose}>)</span>}
-            </span>
-          </span>
-        ))}
-
-        {/* Facet Slider Selections */}
-        {((autocomplete.length || upload.length || mappedCheckboxes.length) && mappedSliders.length)
-          ? <span className={classes.operators}> AND </span>
-          : null}
-        {mappedSliders.map((filter, index) => (
-          <span>
-            <span>
-              {' '}
-              {index !== 0 ? <span className={classes.operators}> AND </span> : ''}
-              <span
-                className={clsx(classes.filterName, classes[`facetSection${filter.section}Background`])}
-                onClick={() => onResetSlider(filter)}
-              >
-                {filter.label}
-              </span>
-              {' '}
-            </span>
-            <span>
-              {' '}
-              <span className={classes.operators}>
-                IS BETWEEN
-              </span>
-              (
-              {' '}
-              {getFilterJoin(filter.items[0], 0, false, () => onResetSlider(filter), filter)}
-              {' '}
-              AND
-              {' '}
-              {getFilterJoin(filter.items[1], 1, true, () => onResetSlider(filter), filter)}
-              {' '}
-              )
-            </span>
-          </span>
+        {mappedInputs.map((filter, index) => (
+          <Filter
+            index={index}
+            type={filter.type}
+            data={filter}
+            classes={classes}
+            onSectionClick={filter.type === CHECKBOX
+              ? onResetFacetSection
+              : onResetSlider}
+            onItemClick={filter.type === CHECKBOX
+              ? onResetFacetCheckbox
+              : onResetSlider}
+          />
         ))}
       </span>
     </div>
