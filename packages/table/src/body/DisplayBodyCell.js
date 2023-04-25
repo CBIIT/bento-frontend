@@ -5,6 +5,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { cellTypes } from '../util/Types';
+import CustomLinkView from './components/CustomLinkView';
+import DataFormatView from './components/DataFormatView';
 
 /**
 * Custom Column reneder
@@ -22,24 +24,7 @@ const CustomComponent = ({
 };
 
 /**
-* Custom Link component
-*/
-const CustomLink = ({
-  children,
-  column,
-  row,
-}) => {
-  const { rootPath, pathParams } = column.linkAttr;
-  const url = pathParams.map((attr) => `#${rootPath}/`.concat(row[attr]));
-  return (
-    <Link href={url} className={cellTypes.LINK}>
-      {children}
-    </Link>
-  );
-};
-
-/**
-*
+* data display columns
 * @returns default/Link/Custom view
 */
 const ViewCell = ({
@@ -48,16 +33,19 @@ const ViewCell = ({
 }) => {
   const { cellType } = column;
   switch (cellType) {
+    case cellTypes.FORMAT_DATA:
+      return (
+        <DataFormatView
+          row={row}
+          column={column}
+        />
+      );
     case cellTypes.LINK:
       return (
-        <CustomLink
-          column={column}
+        <CustomLinkView
           row={row}
-        >
-          <Typography>
-            {row[column.dataField]}
-          </Typography>
-        </CustomLink>
+          column={column}
+        />
       );
     case cellTypes.CUSTOM_ELEM:
       return (
@@ -75,7 +63,7 @@ const ViewCell = ({
   }
 };
 
-const CustomBodyCell = ({
+const DisplayCell = ({
   row,
   column,
 }) => (
@@ -87,4 +75,4 @@ const CustomBodyCell = ({
   </TableCell>
 );
 
-export default CustomBodyCell;
+export default DisplayCell;

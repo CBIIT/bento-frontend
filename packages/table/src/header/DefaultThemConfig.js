@@ -17,8 +17,7 @@ const defaultTheme = () => ({
   },
   MuiTableCell: {
     root: {
-      padding: '0',
-      paddingRight: '5px',
+      padding: '0px 5px 0px 20px',
       color: '#13344A',
       cursor: 'pointer',
     },
