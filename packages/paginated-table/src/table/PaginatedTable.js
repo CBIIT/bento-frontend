@@ -50,7 +50,9 @@ const PaginatedTable = ({
   useEffect(() => {
     const { page, rowsPerPage } = table;
     // validate table state - curr rowCount should be less than total row count after filter
-    if (totalRowCount <= page * rowsPerPage) {
+    // above validation steps when page is zero
+    // prevent currentRows denominator to be zero (newPage -> Nan)
+    if (page > 0 && totalRowCount <= page * rowsPerPage) {
       const adjustRow = (page === 1) ? 1 : 0;
       const currentRows = (page * rowsPerPage) + adjustRow;
       const newPage = Math.floor(totalRowCount / currentRows);
