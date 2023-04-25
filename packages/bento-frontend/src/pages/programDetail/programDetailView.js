@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {
   Grid,
   withStyles,
@@ -26,9 +26,11 @@ import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
 import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
+import { useSelector } from 'react-redux';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
+  console.log(programData);
 
   const widgetGeneratorConfig = {
     theme,
