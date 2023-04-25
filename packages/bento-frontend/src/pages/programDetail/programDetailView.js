@@ -20,17 +20,18 @@ import {
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import {
-  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
+  setSideBarToLoading, setDashboardTableLoading,
 } from '../dashboardTab/store/dashboardReducer';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
 import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
-import { useSelector } from 'react-redux';
+import {toggleCheckBox} from '@bento-core/facet-filter';
+import { useDispatch } from 'react-redux';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
-  console.log(programData);
+  const dispatch = useDispatch();
 
   const widgetGeneratorConfig = {
     theme,
@@ -48,13 +49,11 @@ const ProgramView = ({ classes, data, theme }) => {
   const redirectToArm = (programArm) => {
     setSideBarToLoading();
     setDashboardTableLoading();
-    singleCheckBox([{
-      datafield: 'studies',
-      groupName: 'Arm',
-      isChecked: true,
+    dispatch(toggleCheckBox({
       name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
-      section: 'Filter By Cases',
-    }]);
+      datafield: 'studies',
+      isChecked: true,
+    }));
   };
 
   const stat = {

@@ -76,6 +76,7 @@ const CheckBoxView = ({
         className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
       >
         <Checkbox
+          id={`checkbox_${section}_${name}`}
           icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
           onClick={handleToggle}
           checked={isChecked}

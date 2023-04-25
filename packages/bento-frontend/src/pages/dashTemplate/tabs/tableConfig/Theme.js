@@ -11,6 +11,8 @@ export const tblHeader = {
       '&:hover': {
         color: '#13344A',
       },
+      '&:hover $svg': {
+      },
     },
   },
 };

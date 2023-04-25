@@ -20,14 +20,13 @@ const Programs = ({ classes, data }) => {
   const dispatch = useDispatch();
 
   const redirectTo = (program) => {
-    window.alert('dfgdfg');
     setSideBarToLoading();
     setDashboardTableLoading();
-    /* dispatch(toggleCheckBox({
+    dispatch(toggleCheckBox({
       name: program.rowData[0],
       datafield: 'programs',
       isChecked: true,
-    })); */
+    }));
   };
 
   return (

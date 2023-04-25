@@ -6,12 +6,15 @@ import {
   ThemeProvider,
   createTheme,
 } from '@material-ui/core';
-import CustomBodyCell from './CustomCell';
+import DisplayCell from './DisplayBodyCell';
 import defaultTheme from './DefaultThemConfig';
-import { cellTypes } from '../util/Types';
-import CheckboxView from './components/CheckBoxView';
-import DeleteCellView from './components/DeleteCellView';
+import { actionCellTypes } from '../util/Types';
+import ActionCell from './ActionBodyCell';
 
+/**
+* 1. Returns cell associated with action (checkbox / delete view)
+* 2. Returns cell associated with display data (DisplayBodyCell)
+*/
 const CustomTableBody = ({
   rows = [],
   table,
@@ -31,29 +34,22 @@ const CustomTableBody = ({
               {
                 displayColunms.map((column) => {
                   const { cellType } = column;
-                  switch (cellType) {
-                    case cellTypes.CHECKBOX:
-                      return (
-                        <CheckboxView
-                          row={row}
-                          onRowSelectChange={onRowSelectChange}
-                        />
-                      );
-                    case cellTypes.DELETE:
-                      return (
-                        <DeleteCellView
-                          row={row}
-                          column={column}
-                        />
-                      );
-                    default:
-                      return (
-                        <CustomBodyCell
-                          column={column}
-                          row={row}
-                        />
-                      );
+                  const isActionCell = actionCellTypes.includes(cellType) || false;
+                  if (isActionCell) {
+                    return (
+                      <ActionCell
+                        row={row}
+                        column={column}
+                        onRowSelectChange={onRowSelectChange}
+                      />
+                    );
                   }
+                  return (
+                    <DisplayCell
+                      column={column}
+                      row={row}
+                    />
+                  );
                 })
               }
             </TableRow>
