@@ -1,6 +1,6 @@
 import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
-import { prepareLinks } from 'bento-components';
+import { prepareLinks } from '@bento-core/util';
 import { Link } from 'react-router-dom';
 import PropertyItem from './PropertyItem';
 
