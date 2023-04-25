@@ -12,3 +12,4 @@ export {
 } from './Date';
 export * from './Anchor';
 export { default as RouteLinks } from './RouteLinks';
+export { default as createSvgIcon } from './createSvgIcon';
