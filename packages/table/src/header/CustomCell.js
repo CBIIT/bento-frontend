@@ -36,6 +36,7 @@ const CustomHeaderCell = ({
       >
         <TableSortLabel
           active={sortBy === dataField}
+          hideSortIcon={sortBy !== dataField}
           direction={sortBy === dataField ? sortOrder : 'asc'}
           onClick={toggleSort}
         >

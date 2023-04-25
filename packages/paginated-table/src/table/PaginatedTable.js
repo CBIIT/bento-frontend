@@ -15,7 +15,6 @@ import reducer from './state/Reducer';
 
 const PaginatedTable = ({
   queryVariables = {},
-  viewConfig,
   themeConfig = {},
   totalRowCount = 0,
   initState,
@@ -173,7 +172,6 @@ const PaginatedTable = ({
       <ServerTableView
         queryVariables={queryVariables}
         totalRowCount={totalRowCount}
-        viewConfig={viewConfig}
         table={table}
         onRowsPerPageChange={handleChangeRowsPerPage}
         onPageChange={handleChangePage}

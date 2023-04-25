@@ -17,9 +17,10 @@ const FilesTableView = ({
     columns: filesTable.columns,
     selectedRows: [],
     tableMsg: filesTable.tableMsg,
+    sortBy: filesTable.defaultSortField,
+    sortOrder: filesTable.defaultSortDirection,
     rowsPerPage: 10,
     dataKey: filesTable.dataKey,
-    manageViewColumns: filesTable.manageViewColumns,
     page: 0,
   });
 
