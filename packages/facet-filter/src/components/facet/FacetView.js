@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-closing-tag-location */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   List,
@@ -22,9 +22,19 @@ const FacetView = ({
   onClearFacetSection,
   onClearSliderSection,
   CustomView,
+  autoComplete,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
+
+  /**
+  * expand section incase of active local search
+  */
+  useEffect(() => {
+    if (autoComplete && autoComplete.length > 0) {
+      setExpand(true);
+    }
+  }, [autoComplete]);
 
   const [sortBy, setSortBy] = useState(null);
   const onSortFacet = (type) => {
@@ -47,7 +57,7 @@ const FacetView = ({
   const displayFacet = { ...facet };
   displayFacet.facetValues = selectedItems;
   const isActiveFacet = [...selectedItems].length > 0;
-
+  const limitCheckBoxCount = facet?.showCheckboxCount || 5;
   return (
     <>
       <Accordion
@@ -147,6 +157,16 @@ const FacetView = ({
               />
             </List>
           </>
+        )
+      }
+      {
+        (!expand && selectedItems.length > limitCheckBoxCount) && (
+          <div
+            className={classes.showMore}
+            onClick={onExpandFacet}
+          >
+            ...expand to see all selections
+          </div>
         )
       }
     </>
