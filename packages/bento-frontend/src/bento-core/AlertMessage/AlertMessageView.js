@@ -29,7 +29,7 @@ const AlertMessage = (props) => {
   } = props;
 
   const classes = useStyles(props);
-
+  
   useEffect(() => {
     // when the component is mounted, the alert is displayed for 3 seconds
     setTimeout(() => {

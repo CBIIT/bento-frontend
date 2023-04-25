@@ -20,7 +20,7 @@ import NumberOfThings from '../../components/NumberOfThings';
 import Snackbar from '../../components/Snackbar';
 import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
-import { TableContextProvider } from '../../bento-core/PaginationTable/';
+import { TableContextProvider } from '@bento-core/paginated-table';
 import FilesTableView from './FilesView/FilesTableView';
 import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
 

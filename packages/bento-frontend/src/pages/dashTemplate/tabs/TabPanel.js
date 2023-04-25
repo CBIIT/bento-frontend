@@ -1,13 +1,15 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
+import { 
+  TableContextProvider,
+  TableView,
+  Wrapper,
+} from '@bento-core/paginated-table';
 import styles from './TabStyle';
-import { tableViewConfig } from '../../../bento/dashboardTabData';
 import { themeConfig } from './tableConfig/Theme';
 import { configColumn } from './tableConfig/Column';
-import { configWrapper, footerConfig, headerConfig } from './wrapperConfig/Wrapper';
+import { configWrapper, wrapperConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
-import { TableContextProvider, TableView } from '../../../bento-core/PaginationTable';
-import { Wrapper } from '../../../bento-core/Wrapper';
 
 const TabView = (props) => {
   /**
@@ -29,7 +31,7 @@ const TabView = (props) => {
   /**
   * Server Pagination Table Configuration
   * 1. title - (Required) table name (Case, Sample, Files), required for class name
-  * 2. api - (Required) GraphQL Query for paginated Table (e.g. GET_CASES_OVERVIEW_QUERY)
+  * 2. query/api - (Required) GraphQL Query for paginated Table (e.g. GET_CASES_OVERVIEW_QUERY)
   * 3. dataKey - (Required) Tracking selected rows (case - dataKey: 'subject_id')
   * 4. sortBy - (Required) default sort column
   * 5. columns - (Required) columns defined by dashboardTabData (tabContainers)
@@ -41,6 +43,9 @@ const TabView = (props) => {
   * dashboardTabData (tabContainers)
   * eg. case tab paginationAPIField: 'subjectOverview' - {subjectOverview: [data]}
   * 9. viewConfig - (Optional) table view config, set hide/diaply pagination above table header
+  * 10. extendedViewConfig: (Optional) config to add (pagination on top of the table, manage Column view)
+  * 11. selectedRows: (Optional) provides ids of the selected row (id defined by dataKey)
+  * 12. themeConfig - (optional) configure table style
   */
   const initTblState = (initailState) => ({
     ...initailState,
@@ -55,6 +60,7 @@ const TabView = (props) => {
     tableMsg: config.tableMsg,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
+    extendedViewConfig: config.extendedViewConfig,
     rowsPerPage: 10,
     page: 0,
   });
@@ -62,29 +68,23 @@ const TabView = (props) => {
   return (
     <TableContextProvider>
       <Wrapper
-        wrapConfig={configWrapper(config, headerConfig)}
+        wrapConfig={configWrapper(config, wrapperConfig)}
         customTheme={customTheme}
         classes={classes}
         section={config.name}
-      />
-      <Grid container>
-        <Grid item xs={12} id={config.tableID}>
-          <TableView
-            initState={initTblState}
-            viewConfig={tableViewConfig}
-            themeConfig={themeConfig}
-            queryVariables={activeFilters}
-            totalRowCount={dashboardStats[config.count]}
-            activeTab={activeTab}
-          />
+      >
+        <Grid container>
+          <Grid item xs={12} id={config.tableID}>
+            <TableView
+              initState={initTblState}
+              themeConfig={themeConfig}
+              queryVariables={activeFilters}
+              totalRowCount={dashboardStats[config.count]}
+              activeTab={activeTab}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-      <Wrapper
-        wrapConfig={configWrapper(config, footerConfig)}
-        customTheme={customTheme}
-        classes={classes}
-        section={config.name}
-      />
+      </Wrapper>
     </TableContextProvider>
   );
 };

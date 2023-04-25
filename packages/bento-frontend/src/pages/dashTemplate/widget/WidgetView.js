@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Button,
   Collapse,
@@ -41,7 +41,7 @@ const WidgetView = ({
       },
     },
   };
-  const { Widget } = WidgetGenerator(widgetGeneratorConfig);
+  const { Widget } = useCallback(WidgetGenerator(widgetGeneratorConfig), []);
 
   return (
     <>

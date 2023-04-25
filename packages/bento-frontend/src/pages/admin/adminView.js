@@ -10,11 +10,13 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import {
   getColumns,
-} from '../../bento-core/util';
+} from 'bento-components';
 import {
-  ManageAccessTable,
-  PendingRequestsTable,
-} from '../../bento-core/Admin';
+  ManageAccessTableGenerator,
+  PendingRequestsTableGenerator
+} from '@bento-core/admin';
+import MANAGE_ACCESS_TABLE_CONFIG from './manageAccessTableConfig';
+import PENDING_REQUESTS_TABLE_CONFIG from './pendingRequestsTableConfig';
 import Stats from '../../components/Stats/AllStatsController';
 import {
   GET_LIST_REQUESTS,
@@ -136,6 +138,9 @@ const adminView = ({ classes }) => {
     ? getColumns(tabManageAccess.table, classes).concat(nodeLevelColumn).concat(actionColumn)
     : getColumns(tabManageAccess.table, classes).concat(actionColumn);
 
+  const { ManageAccessTable } = ManageAccessTableGenerator(MANAGE_ACCESS_TABLE_CONFIG);
+  const { PendingRequestsTable } = PendingRequestsTableGenerator(PENDING_REQUESTS_TABLE_CONFIG);
+
   return (
     <div className={classes.pageContainer}>
       <Stats />
@@ -226,6 +231,12 @@ const styles = (theme) => ({
     '&:hover': {
       textDecoration: 'underline',
     },
+  },
+  btn: {
+    backgroundColor: '#437BBE',
+    color: '#fff',
+    borderRadius: '10px',
+    marginLeft: '-6px',
   },
   card: {
     minHeight: '100%',

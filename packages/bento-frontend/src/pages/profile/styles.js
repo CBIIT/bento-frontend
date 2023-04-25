@@ -2,6 +2,7 @@ const style = () => ({
   profileView: {
     backgroundColor: '#ffffff',
     paddingTop: '45px',
+    minHeight: '70vh',
   },
   profile_container: {
     background: '#ffffff',

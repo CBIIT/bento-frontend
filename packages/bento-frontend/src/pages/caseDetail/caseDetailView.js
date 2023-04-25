@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import TableContextProvider from '../../bento-core/PaginationTable/ContextProvider';
+import { TableContextProvider } from '@bento-core/paginated-table';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Cases.Icon.svg';
