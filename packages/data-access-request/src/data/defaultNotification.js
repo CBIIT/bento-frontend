@@ -5,7 +5,7 @@ const defaultNotification = {
     },
     success:{
         message:'The Data Access Request has been sent to a System Administrator for review.',
-        color:'#3CD4A0'
+        color:'#5D53F6'
     },
     noAclToRequest:{
         message:'Your data access request has been submitted. No additional access can be requested.',
@@ -14,7 +14,7 @@ const defaultNotification = {
 
     noAccess:{
         message:'Please submit a Data Access Request (DAR) to access protected pages.',
-        color:'#3CD4A0'
+        color:'#5D53F6'
     },
 
     disabled:{
