@@ -1,5 +1,3 @@
-import RouterLinks from './routeLinks';
-
 export { capitalize } from './Style';
 export {
   storeInLocalStorage,
@@ -13,5 +11,5 @@ export {
   getDateInFormat,
 } from './Date';
 
-export { RouterLinks };
+export { default as CustomRouterLinks } from './routeLinks';
 export { manipulateLinks } from './helpers';
