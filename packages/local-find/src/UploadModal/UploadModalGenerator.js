@@ -5,7 +5,7 @@ import {
   TextareaAutosize, IconButton, withStyles,
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
-import { ToolTip } from 'bento-components';
+import ToolTip from '@bento-core/tool-tip';
 import FileUploader from './components/FileUploader';
 import SummaryTable from './components/SummaryTable';
 import DEFAULT_STYLES from './styles';

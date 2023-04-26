@@ -1,7 +1,7 @@
 import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { prepareLinks } from 'bento-components';
+import { prepareLinks } from '@bento-core/util';
 import PropertyItem from './PropertyItem';
 
 const CARD_PROPERTIES = [

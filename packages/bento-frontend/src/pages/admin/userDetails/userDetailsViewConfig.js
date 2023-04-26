@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { cn } from 'bento-components';
+import clsx from 'clsx';
 /**
  * Default configuration for Local Find Upload Modal
  */
@@ -13,9 +13,9 @@ export const USER_DETAILS_CONFIG = {
     /**
      * Additinoal details will be added soon
      *
-     * 
+     *
      */
-    cn,
+    cn: clsx,
   },
 };
 

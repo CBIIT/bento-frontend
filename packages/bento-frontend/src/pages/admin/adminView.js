@@ -11,19 +11,23 @@ import Typography from '@material-ui/core/Typography';
 import {
   getColumns,
 } from 'bento-components';
-import { ManageAccessTableGenerator } from '@bento-core/admin';
+import {
+  ManageAccessTableGenerator,
+  PendingRequestsTableGenerator
+} from '@bento-core/admin';
 import MANAGE_ACCESS_TABLE_CONFIG from './manageAccessTableConfig';
+import PENDING_REQUESTS_TABLE_CONFIG from './pendingRequestsTableConfig';
 import Stats from '../../components/Stats/AllStatsController';
 import {
+  GET_LIST_REQUESTS,
+  GET_LIST_USERS,
   icon,
   nodeField,
   nodeLevelAccess,
   nodeName,
-  tabPendingRequest,
   tabManageAccess,
+  tabPendingRequest,
 } from '../../bento/adminData';
-import TablePendingRequest from './components/tablePendingRequest';
-import queries from './queries';
 
 const useMock = false;
 
@@ -65,7 +69,7 @@ const adminView = ({ classes }) => {
     setPageState({ ...pageState, includeNonMember: event.target.checked });
   };
 
-  const usersList = useQuery(queries.GET_LIST_USERS, {
+  const usersList = useQuery(GET_LIST_USERS, {
     fetchPolicy: 'no-cache',
     context: {
       clientName: useMock ? 'mockService' : 'userService',
@@ -73,6 +77,16 @@ const adminView = ({ classes }) => {
     variables: {
       role: pageState.includeNonMember ? ['member', 'non-member', 'admin'] : ['member', 'admin'],
       accessStatus: ['approved'],
+    },
+  });
+
+  const requestsList = useQuery(GET_LIST_REQUESTS, {
+    fetchPolicy: 'no-cache',
+    context: {
+      clientName: useMock ? 'mockService' : 'userService',
+    },
+    variables: {
+      accessStatus: ['pending'],
     },
   });
 
@@ -125,6 +139,7 @@ const adminView = ({ classes }) => {
     : getColumns(tabManageAccess.table, classes).concat(actionColumn);
 
   const { ManageAccessTable } = ManageAccessTableGenerator(MANAGE_ACCESS_TABLE_CONFIG);
+  const { PendingRequestsTable } = PendingRequestsTableGenerator(PENDING_REQUESTS_TABLE_CONFIG);
 
   return (
     <div className={classes.pageContainer}>
@@ -195,7 +210,10 @@ const adminView = ({ classes }) => {
           />
         </TabPanel>
         <TabPanel value={pageState.tabValue} index={1}>
-          <TablePendingRequest />
+          <PendingRequestsTable
+            content={requestsList}
+            tableSpec={tabPendingRequest.table}
+          />
         </TabPanel>
       </div>
     </div>
