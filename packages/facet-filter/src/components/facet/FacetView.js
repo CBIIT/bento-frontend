@@ -23,6 +23,7 @@ const FacetView = ({
   onClearSliderSection,
   CustomView,
   autoComplete,
+  upload,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
@@ -31,10 +32,11 @@ const FacetView = ({
   * expand section incase of active local search
   */
   useEffect(() => {
-    if (autoComplete && autoComplete.length > 0) {
+    if ((autoComplete && autoComplete.length > 0)
+      || (upload && upload.length > 0)) {
       setExpand(true);
     }
-  }, [autoComplete]);
+  }, [autoComplete, upload]);
 
   const [sortBy, setSortBy] = useState(null);
   const onSortFacet = (type) => {
@@ -67,6 +69,7 @@ const FacetView = ({
         classes={{
           root: classes.expansionPanelsideBarItem,
         }}
+        id={facet.section}
       >
         { CustomView ? (
           <CustomView
@@ -92,7 +95,7 @@ const FacetView = ({
           </CustomAccordionSummary>
         )}
         {
-          facet.type === InputTypes.SLIDER
+          (facet.type === InputTypes.SLIDER || facetValues.length === 0)
           && (<div className={classes.NonSortGroup}>
               <span
                 className={classes.NonSortGroupItem}
@@ -101,48 +104,52 @@ const FacetView = ({
               </span>
           </div>)
         }
-        <div className={classes.sortGroup}>
-          <span className={classes.sortGroupIcon}>
-            <Icon
-              style={{ fontSize: 10 }}
-              onClick={onClearSection}
-            >
-              <img
-                src={clearIcon}
-                height={12}
-                width={12}
-                alt="clear-icon"
-              />
-            </Icon>
-          </span>
-          { facet.type === InputTypes.CHECKBOX
-            && (<>
-                  <span
-                    className={
-                      clsx(classes.sortGroupItem, {
-                        [classes.highlight]: sortBy === sortType.ALPHABET,
-                      })
-                    }
-                    onClick={() => {
-                      onSortFacet(sortType.ALPHABET);
-                    }}
-                  >
-                    Sort alphabetically
-                  </span>
-                  <span
-                    className={
-                      clsx(classes.sortGroupItemCounts, {
-                        [classes.highlight]: sortBy === sortType.NUMERIC,
-                      })
-                    }
-                    onClick={() => {
-                      onSortFacet(sortType.NUMERIC);
-                    }}
-                  >
-                    Sort by count
-                  </span>
-              </>)}
-        </div>
+        {
+          (facet.type === InputTypes.SLIDER || facetValues.length > 0)
+          && (
+          <div className={classes.sortGroup}>
+            <span className={classes.sortGroupIcon}>
+              <Icon
+                style={{ fontSize: 10 }}
+                onClick={onClearSection}
+              >
+                <img
+                  src={clearIcon}
+                  height={12}
+                  width={12}
+                  alt="clear-icon"
+                />
+              </Icon>
+            </span>
+        { (facet.type === InputTypes.CHECKBOX && facetValues.length > 0)
+          && (<>
+                <span
+                  className={
+                    clsx(classes.sortGroupItem, {
+                      [classes.highlight]: sortBy === sortType.ALPHABET,
+                    })
+                  }
+                  onClick={() => {
+                    onSortFacet(sortType.ALPHABET);
+                  }}
+                >
+                  Sort alphabetically
+                </span>
+                <span
+                  className={
+                    clsx(classes.sortGroupItemCounts, {
+                      [classes.highlight]: sortBy === sortType.NUMERIC,
+                    })
+                  }
+                  onClick={() => {
+                    onSortFacet(sortType.NUMERIC);
+                  }}
+                >
+                  Sort by count
+                </span>
+            </>)}
+          </div>
+        )}
         <FilterItems
           facet={facet}
           sortBy={sortBy}

@@ -10,11 +10,11 @@ const PropertyItem = ({
   return (
     <Grid item container>
       <Grid item xs={6}>
-        <span className={classes.title} id={`case_detail_left_section_title_${index + 1}`}>
+        <span className={classes.title} id={`case_detail_left_section_title_${label}`}>
           {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : label}
         </span>
       </Grid>
-      <Grid item xs={6} className={classes.content} id={`case_detail_left_section_description_${index + 1}`}>
+      <Grid item xs={6} className={classes.content} id={`case_detail_left_section_description_${value}`}>
         {value || value === 0 ? (
           link ? <Anchor link={link} text={value} classes={classes} /> : value
         ) : defaultValue}

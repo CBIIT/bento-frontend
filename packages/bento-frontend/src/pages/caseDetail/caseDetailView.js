@@ -170,7 +170,7 @@ const CaseDetail = ({
         </div>
       </div>
 
-      <div id="case_detail_table_associated_samples" className={classes.tableContainer}>
+      <div id="case_detail_table_associated_files" className={classes.tableContainer}>
         <div className={classes.tableDiv}>
           <TableContextProvider>
             <FilesTableView
