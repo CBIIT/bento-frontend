@@ -7,6 +7,11 @@ export { ManageAccessTableGenerator } from './ManageAccessTable/ManageAccessTabl
 export { DEFAULT_CONFIG_MANAGE_ACCESS_TABLE } from './ManageAccessTable/config';
 export { default as DEFAULT_MANAGE_ACCESS_STYLES } from './ManageAccessTable/styles';
 
+// Pending Requests Table Exports
+export { PendingRequestsTableGenerator } from './PendingRequestsTable/PendingRequestsTableGenerator';
+export { DEFAULT_CONFIG_PENDING_REQUESTS_TABLE } from './PendingRequestsTable/config';
+export { default as DEFAULT_PENDING_REQUESTS_STYLES } from './PendingRequestsTable/styles';
+
 // Review Requests Table Exports
 export { ReviewRequestsTableGenerator } from './ReviewRequestsTable/ReviewRequestsTableGenerator';
 export { DEFAULT_CONFIG_REVIEW_REQUESTS_TABLE } from './ReviewRequestsTable/config';
