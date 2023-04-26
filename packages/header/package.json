@@ -1,10 +1,10 @@
 {
-  "name": "@bento-core/util",
+  "name": "@bento-core/header",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "build": "rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "https://github.com/CBIIT/bento-frontend",
@@ -14,11 +14,11 @@
   "peerDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
-    "react-redux": "^7.2.1",
-    "react-router-dom": "^5.1.2"
+    "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "react-jss": "^10.1.1",
+    "@bento-core/util": "*"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

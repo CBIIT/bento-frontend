@@ -1,12 +1,17 @@
+import RouterLinks from './routeLinks';
+
 export { capitalize } from './Style';
 export {
   storeInLocalStorage,
   getFromLocalStorage,
-  deleteFromLocalStorage
+  deleteFromLocalStorage,
 } from './LocalStorage';
 export {
-  custodianUtils
+  custodianUtils,
 } from './CustodianUtils';
 export {
-  getDateInFormat
+  getDateInFormat,
 } from './Date';
+
+export { RouterLinks };
+export { manipulateLinks } from './helpers';

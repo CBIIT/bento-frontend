@@ -7,10 +7,11 @@ import { Link } from 'react-router-dom';
 import {
   CustomDataTable,
   cn,
-  manipulateLinks,
   getOptions,
   getColumns,
 } from 'bento-components';
+import {  manipulateLinks } from '@bento-core/util';
+
 import globalData from '../../bento/siteWideConfig';
 import {
   pageTitle, table, externalLinkIcon,
