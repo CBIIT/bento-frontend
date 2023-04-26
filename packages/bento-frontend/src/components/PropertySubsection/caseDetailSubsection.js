@@ -14,7 +14,7 @@ const PropertyItem = ({
           {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : label}
         </span>
       </Grid>
-      <Grid item xs={6} className={classes.content} id={`case_detail_left_section_description_${value}`}>
+      <Grid item xs={6} className={classes.content} id={`case_detail_left_section_description_${label}_${value}`}>
         {value || value === 0 ? (
           link ? <Anchor link={link} text={value} classes={classes} /> : value
         ) : defaultValue}
