@@ -2,11 +2,14 @@ export { capitalize } from './Style';
 export {
   storeInLocalStorage,
   getFromLocalStorage,
-  deleteFromLocalStorage
+  deleteFromLocalStorage,
 } from './LocalStorage';
 export {
-  custodianUtils
+  custodianUtils,
 } from './CustodianUtils';
 export {
-  getDateInFormat
+  getDateInFormat,
 } from './Date';
+export { prepareLinks, Anchor } from './Anchor';
+export { default as RouteLinks } from './RouteLinks';
+export { default as createSvgIcon } from './createSvgIcon';

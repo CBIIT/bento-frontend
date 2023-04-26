@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createSvgIcon } from 'bento-components';
+import { createSvgIcon } from '@bento-core/util';
 
 /**
  * @ignore - internal component.
