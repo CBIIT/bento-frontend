@@ -11,5 +11,5 @@ export {
   getDateInFormat,
 } from './Date';
 
-export { default as CustomRouterLinks } from './routeLinks';
+export { default as RouteLinks } from './routeLinks';
 export { manipulateLinks } from './helpers';

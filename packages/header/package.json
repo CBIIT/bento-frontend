@@ -17,8 +17,8 @@
     "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "react-jss": "^10.1.1",
-    "@bento-core/util": "*"
+    "@bento-core/util": "*",
+    "@material-ui/core": "^4.12.4"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

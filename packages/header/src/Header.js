@@ -1,7 +1,8 @@
-import React from 'react';import {
+import React from 'react';
+import {
   withStyles,
 } from '@material-ui/core';
-import { CustomRouterLinks } from '@bento-core/util';
+import { RouteLinks } from '@bento-core/util';
 import nihLogo from './CTDC_Logo.svg';
 
 const styles = () => ({
@@ -63,13 +64,13 @@ const Header = ({ classes, ...props }) => {
   return (
     <div id="header" className={classes.headerBar}>
       <div className={classes.nihLogoContainer}>
-        <CustomRouterLinks to={homeLink}>
+        <RouteLinks to={homeLink}>
           <img
             className={classes.nihLogoImg}
             src={logo}
             alt={alt}
           />
-        </CustomRouterLinks>
+        </RouteLinks>
       </div>
       <div className={classes.icdcLogoContainer}>
         <div className={classes.grow} />
