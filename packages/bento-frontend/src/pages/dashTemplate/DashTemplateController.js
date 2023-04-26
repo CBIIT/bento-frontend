@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApolloClient } from '@apollo/client';
-import { connect, useSelector,useDispatch } from 'react-redux';
+import { connect,useDispatch } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
@@ -49,7 +49,6 @@ const getDashData = (states) => {
 const DashTemplateController = ((props) => {
   const { dashData, activeFilters } = getDashData(props);
   const dispatch = useDispatch();
-  const statusReducer = useSelector((state)=>state.statusReducer);
   useEffect(()=>{
     dispatch(clearFacetSection(facetsConfig[0]));
   },[]);
