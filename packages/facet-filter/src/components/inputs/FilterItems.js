@@ -20,6 +20,7 @@ const FilterItems = ({
           <ReduxCheckbox
             checkboxItem={{ ...item, index, section }}
             datafield={datafield}
+            facet={facet}
           />
         ));
       case InputTypes.SLIDER:
