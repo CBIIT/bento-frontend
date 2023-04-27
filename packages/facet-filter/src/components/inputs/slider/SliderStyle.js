@@ -12,6 +12,7 @@ export default () => ({
     marginBottom: '0px',
     float: 'left',
     width: '75px',
+    display: 'flex',
   },
   maxValue: {
     fontFamily: 'Nunito',
@@ -19,6 +20,7 @@ export default () => ({
     color: '#000000',
     float: 'right',
     marginBottom: '0px',
+    display: 'flex',
   },
   rail: {
     borderRadius: 4,
