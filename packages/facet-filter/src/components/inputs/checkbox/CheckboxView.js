@@ -29,6 +29,7 @@ const CheckBoxView = ({
   checkboxItem,
   datafield,
   onToggle,
+  facet,
 }) => {
   const {
     name,
@@ -76,7 +77,7 @@ const CheckBoxView = ({
         className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
       >
         <Checkbox
-          id={`checkbox_${section}_${name}`}
+          id={`checkbox_${facet.label}_${name}`}
           icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
           onClick={handleToggle}
           checked={isChecked}

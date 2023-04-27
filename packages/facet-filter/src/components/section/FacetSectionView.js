@@ -26,7 +26,6 @@ const FacetSectionView = ({
         classes={{
           root: classes.expansionPanelsideBarItem,
         }}
-        id="test_expansion"
       >
         {CustomSection ? (
           <>
@@ -39,7 +38,10 @@ const FacetSectionView = ({
             </div>
           </CustomAccordionSummary>
         )}
-        <AccordionDetails classes={{ root: classes.expansionPanelDetailsRoot }}>
+        <AccordionDetails
+          classes={{ root: classes.expansionPanelDetailsRoot }}
+          id={section.sectionName}
+        >
           {children}
         </AccordionDetails>
       </Accordion>
