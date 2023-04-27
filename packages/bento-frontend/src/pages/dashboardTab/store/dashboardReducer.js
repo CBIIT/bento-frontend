@@ -12,7 +12,7 @@ import {
   getDonutDataFromDashboardData,
   transformInitialDataForSunburst,
   transformAPIDataIntoCheckBoxData,
-} from 'bento-components';
+} from '@bento-core/util';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
 import { globalStatsData as statsCount } from '../../../bento/globalStatsData';

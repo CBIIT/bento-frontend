@@ -5,13 +5,14 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import {
-  CustomDataTable,
-  cn,
   getOptions,
   getColumns,
-} from 'bento-components';
+  manipulateLinks
+} from '@bento-core/util';
+import {
+  CustomDataTable
+} from '@bento-core/data-table';
 import clsx from 'clsx';
-import {  manipulateLinks } from '@bento-core/util'
 import globalData from '../../bento/siteWideConfig';
 import {
   pageTitle, table, externalLinkIcon,

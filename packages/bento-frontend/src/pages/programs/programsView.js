@@ -3,7 +3,10 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable, getOptions, getColumns } from 'bento-components';
+import {
+  CustomDataTable
+} from '@bento-core/data-table';
+import { getOptions, getColumns } from '@bento-core/util';
 import globalData from '../../bento/siteWideConfig';
 import {
   table, programListingIcon, externalLinkIcon,

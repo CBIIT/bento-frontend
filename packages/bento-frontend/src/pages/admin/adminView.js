@@ -10,7 +10,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import {
   getColumns,
-} from 'bento-components';
+} from '@bento-core/util';
 import {
   ManageAccessTableGenerator,
   PendingRequestsTableGenerator

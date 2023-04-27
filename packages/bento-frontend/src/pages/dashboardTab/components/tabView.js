@@ -7,7 +7,8 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import HelpIcon from '@material-ui/icons/Help';
-import { getColumns, ToolTip } from 'bento-components';
+import { getColumns } from '@bento-core/util';
+import ToolTip from '@bento-core/tool-tip';
 import _ from 'lodash';
 import SelectAllModal from './modal';
 import {

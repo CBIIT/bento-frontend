@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Button, Grid, Typography, withStyles,
 } from '@material-ui/core';
-import { getColumns } from 'bento-components';
+import { getColumns } from '@bento-core/util';
 import clsx from 'clsx';
 import { useMutation } from '@apollo/client';
 import { ReviewRequestsTableGenerator } from '@bento-core/admin';
