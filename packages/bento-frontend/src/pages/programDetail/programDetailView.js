@@ -6,11 +6,12 @@ import {
 import { Link } from 'react-router-dom';
 import {
   CustomDataTable,
-  manipulateLinks,
+  cn,
   getOptions,
   getColumns,
 } from 'bento-components';
 import clsx from 'clsx';
+import {  manipulateLinks } from '@bento-core/util'
 import globalData from '../../bento/siteWideConfig';
 import {
   pageTitle, table, externalLinkIcon,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Footer } from 'bento-components';
+import { Footer } from '@bento-core/footer';
 import FooterData from '../../bento/globalFooterData';
 import env from '../../utils/env';
 import CustomThemeProvider from './FooterThemeConfig';

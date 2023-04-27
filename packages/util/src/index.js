@@ -11,5 +11,8 @@ export {
   getDateInFormat,
 } from './Date';
 export { prepareLinks, Anchor } from './Anchor';
-export { default as RouteLinks } from './RouteLinks';
 export { default as createSvgIcon } from './createSvgIcon';
+
+export { default as RouteLinks } from './routeLinks';
+export { manipulateLinks } from './helpers';
+export { default as cn } from './classNameConcat';

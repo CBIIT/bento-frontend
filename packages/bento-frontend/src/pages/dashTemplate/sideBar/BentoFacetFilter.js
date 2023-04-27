@@ -148,7 +148,7 @@ const BentoFacetFilter = ({
 
     return (
       <>
-        <CustomExpansionPanelSummary onClick={collapseHandler}>
+        <CustomExpansionPanelSummary onClick={collapseHandler} id={section}>
           <div className={classes.sectionSummaryTextContainer}>
             {name}
             {hasSearch && (
@@ -185,6 +185,7 @@ const BentoFacetFilter = ({
               style={{ fontSize: 26 }}
             />
           )}
+          id={facet.label}
           className={classes.customExpansionPanelSummaryRoot}
         >
           <div

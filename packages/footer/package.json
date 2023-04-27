@@ -1,5 +1,5 @@
 {
-  "name": "@bento-core/util",
+  "name": "@bento-core/footer",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
@@ -14,12 +14,12 @@
   "peerDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
-    "react-redux": "^7.2.1",
-    "react-router-dom": "*",
-    "prop-types": "*"
+    "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "@bento-core/util": "*",
+    "@material-ui/core": "^4.12.4",
+    "react-markdown": "^8.0.5"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"
