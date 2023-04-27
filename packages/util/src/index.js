@@ -13,6 +13,6 @@ export {
 export { prepareLinks, Anchor } from './Anchor';
 export { default as createSvgIcon } from './createSvgIcon';
 
-export { default as RouteLinks } from './routeLinks';
+export { default as RouteLinks } from './RouteLinks';
 export { manipulateLinks } from './helpers';
 export { default as cn } from './classNameConcat';
