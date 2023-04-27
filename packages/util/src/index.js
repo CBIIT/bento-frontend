@@ -13,3 +13,4 @@ export {
 
 export { default as RouteLinks } from './routeLinks';
 export { manipulateLinks } from './helpers';
+export { default as cn } from './classNameConcat';
