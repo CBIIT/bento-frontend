@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import {
   Grid,
   withStyles,
@@ -25,8 +25,7 @@ import {
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
-import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
-import {toggleCheckBox} from '@bento-core/facet-filter';
+import {toggleCheckBox, useFacetFilterReset} from '@bento-core/facet-filter';
 import { useDispatch } from 'react-redux';
 
 const ProgramView = ({ classes, data, theme }) => {
@@ -113,7 +112,6 @@ const ProgramView = ({ classes, data, theme }) => {
                 <Link
                   className={classes.headerButtonLink}
                   to={(location) => ({ ...location, pathname: `${aggregateCount.link}` })}
-                  onClick={onClearAllAndSelectFacetValue('programs', programData.program_acronym)}
                 >
                   {' '}
                   <span className={classes.headerButtonLinkText}>{aggregateCount.labelText}</span>

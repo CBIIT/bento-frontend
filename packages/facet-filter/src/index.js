@@ -27,3 +27,5 @@ export {
   generateClearAllFilterBtn,
   generateFacetSectionView,
 } from './generator/component';
+
+export {default as useFacetFilterReset} from './hooks/useFacetFilterReset';

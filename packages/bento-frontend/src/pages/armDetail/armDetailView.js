@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 // import { useDispatch } from 'react-redux';
 import {
   Grid,
@@ -23,10 +23,13 @@ import { WidgetGenerator } from '@bento-core/widgets';
 import { TableContextProvider } from '@bento-core/paginated-table';
 import FilesTableView from './FilesView/FilesTableView';
 import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
+import {useFacetFilterReset} from '@bento-core/facet-filter';
+import { facetsConfig } from '../../bento/dashTemplate';
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
   // const dispatch = useDispatch();
+  const {resetFacetFilter} = useFacetFilterReset();
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
@@ -59,6 +62,10 @@ const ArmDetail = ({ data, classes }) => {
     numberOfLabProcedures: data.num_lab_procedures,
     numberOfFiles: data.num_files,
   };
+
+  useEffect(()=>{
+    resetFacetFilter(facetsConfig[1]);
+  },[]);
 
   return (
     <>

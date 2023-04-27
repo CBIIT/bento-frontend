@@ -108,7 +108,7 @@ const table = {
     {
       dataField: 'study_acronym',
       header: 'Arm',
-      link: '/arm/{study_acronym}',
+      link: '/arm/{study_acronym}'
     },
     {
       dataField: 'study_name',
