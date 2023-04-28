@@ -27,3 +27,4 @@ export {
   generateClearAllFilterBtn,
   generateFacetSectionView,
 } from './generator/component';
+

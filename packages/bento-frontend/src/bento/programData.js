@@ -33,7 +33,7 @@ const table = {
       dataField: 'program_acronym',
       header: 'Program Code',
       link: '/program/{program_id}',
-      display: true,
+      display: true
     },
     {
       dataField: 'program_id',
