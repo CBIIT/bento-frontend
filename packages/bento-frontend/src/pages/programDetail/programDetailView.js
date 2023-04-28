@@ -25,8 +25,9 @@ import {
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
-import {toggleCheckBox, useFacetFilterReset} from '@bento-core/facet-filter';
+import {toggleCheckBox} from '@bento-core/facet-filter';
 import { useDispatch } from 'react-redux';
+import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
@@ -112,6 +113,7 @@ const ProgramView = ({ classes, data, theme }) => {
                 <Link
                   className={classes.headerButtonLink}
                   to={(location) => ({ ...location, pathname: `${aggregateCount.link}` })}
+                  onClick={()=>onClearAllAndSelectFacetValue('programs', programData.program_acronym)}
                 >
                   {' '}
                   <span className={classes.headerButtonLinkText}>{aggregateCount.labelText}</span>
