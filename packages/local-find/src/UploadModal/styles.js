@@ -104,6 +104,7 @@ export default (theme) => ({
     background: 'green',
   },
   textArea: {
+    overflowY: 'auto !important',
     height: '151px !important',
     width: '100%',
     border: '1.5px solid #437BBE',
