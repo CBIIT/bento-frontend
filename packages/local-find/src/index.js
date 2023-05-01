@@ -12,3 +12,4 @@ export {
   resetUploadData,
   resetAllData,
 } from './store/actions/Actions';
+export { chunkSplit } from './utils';

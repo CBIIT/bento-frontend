@@ -197,6 +197,7 @@ const styles = () => ({
   tableBox: {
     maxHeight: 150,
     overflowY: 'auto',
+    maxWidth: '646px',
   },
 });
 
