@@ -67,14 +67,8 @@ const PaginatedTable = ({
 
   const handleChangeRowsPerPage = (event) => {
     const noOfRows = parseInt(event.target.value, 10);
-    const { page } = table;
-    let newPage = page;
-    // row per page is greater than total row count
-    // set page to last page number
-    if (page * noOfRows >= totalRowCount) {
-      newPage = Math.floor(totalRowCount / noOfRows);
-    }
-    dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows, page: newPage }));
+       }
+    dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows, page: 0 }));
   };
 
   const handleChangePage = (event, newPage) => {
