@@ -7,7 +7,7 @@ export const tblHeader = {
       fontFamily: 'Lato Regular,Raleway, sans-serif',
       fontWeight: 'bold',
       letterSpacing: '0.06em',
-      textDecoration: 'underline',
+      textDecoration: 'none',
       '&:hover': {
         color: '#13344A',
       },

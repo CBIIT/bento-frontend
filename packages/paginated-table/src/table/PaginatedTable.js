@@ -108,7 +108,8 @@ const PaginatedTable = ({
   };
 
   const handleSortByColumn = (column, order) => {
-    const sort = order === 'asc' ? 'desc' : 'asc';
+    const { sortBy } = table;
+    const sort = (order === 'asc' && sortBy === column) ? 'desc' : 'asc';
     dispatch(onColumnSort({ sort, column }));
   };
 
