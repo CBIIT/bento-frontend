@@ -86,6 +86,7 @@ const { UploadModal } = UploadModalGenerator({
 const BentoFacetFilter = ({
   classes,
   searchData,
+  activeFilters,
 }) => {
   /**
   * Clear All Filter Button
@@ -105,6 +106,7 @@ const BentoFacetFilter = ({
             onClearAllFilters();
             store.dispatch(resetAllData());
           }}
+          activeFilters={activeFilters}
           className={classes.customButton}
           classes={{ root: classes.clearAllButtonRoot }}
         >
