@@ -24,6 +24,8 @@ const WidgetView = ({
   const [collapse, setCollapse] = React.useState(true);
   const themeChanger = useTheme();
   const handleChange = () => setCollapse((prev) => !prev);
+  console.log(widgetsData);
+  console.log(displayWidgets);
 
   const widgetGeneratorConfig = {
     theme,
@@ -75,7 +77,7 @@ const WidgetView = ({
         <Grid container>
           {widgetsData.slice(0, 6).map((widget, index) => {
             const dataset = displayWidgets[widget.dataName];
-            if (!dataset) {
+            if (!dataset || dataset.length === 0) {
               return <></>;
             }
             if (widget.type === 'sunburst' && (!dataset.children || !dataset.children.length)) {
