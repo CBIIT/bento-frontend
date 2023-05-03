@@ -1,4 +1,5 @@
 import env from '../utils/env';
+import { getEnvBoolean } from '../utils/env';
 
 export default {
   // Suggested for replaceEmptyValueWith: 'N/A' or '-' or ''
@@ -15,7 +16,7 @@ export const adminPortalPath = '/admin';
 export const userProfilePath = '/profile';
 
 // Authentication: Enabled (True) or Disabled (False)
-export const enableAuthentication = env.AUTH !== undefined ? env.AUTH : true;
+export const enableAuthentication = getEnvBoolean(env.AUTH, true);
 
 // List of enabled identity providers. This is an array of enabled identity providers,
 // where each element corresponds to a key from loginProvidersData.
@@ -25,7 +26,7 @@ export const enabledAuthProviders = ['google', 'nih', 'loginGov'];
 export const PUBLIC_ACCESS = env.PUBLIC_ACCESS || 'Metadata Only';
 
 // Node level access
-export const NODE_LEVEL_ACCESS = env.NODE_LEVEL_ACCESS !== undefined ? env.NODE_LEVEL_ACCESS : true;
+export const NODE_LEVEL_ACCESS = getEnvBoolean(env.NODE_LEVEL_ACCESS, true);
 export const NODE_LABEL = env.NODE_LABEL || 'Study Arm(s)';
 
 // Redirect configs.
