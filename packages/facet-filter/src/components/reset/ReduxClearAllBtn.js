@@ -13,15 +13,15 @@ import { clearAllFilters } from '../../store/actions/Actions';
 const ClearAllFiltersBtn = ({
   CustomClearAllBtn,
   onClearAllFilters,
-  filterState,
+  activeFilters = {},
 }) => {
   const dispatchClearAllFilters = () => onClearAllFilters();
 
   const [disable, setDisable] = useState(false);
   useEffect(() => {
-    if (filterState) {
-      const filters = Object.keys(filterState).reduce((count, key) => {
-        if (Object.keys(filterState[key]).length > 0) { count += 1;}
+    if (activeFilters) {
+      const filters = Object.keys(activeFilters).reduce((count, key) => {
+        if (activeFilters[key].length > 0) { count += 1;}
         return count;
       }, 0);
       if (!disable && filters === 0) {
@@ -30,7 +30,7 @@ const ClearAllFiltersBtn = ({
         setDisable(false);
       }
     }
-  }, [filterState]);
+  }, [activeFilters]);
 
   return (
     <>

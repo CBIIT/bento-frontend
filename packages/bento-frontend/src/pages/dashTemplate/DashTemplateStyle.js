@@ -9,6 +9,7 @@ export default () => ({
   },
   sideBar: {
     width: '250px',
+    maxHeight: '1300px',
     overflowX: 'hidden',
     backgroundColor: 'transparent',
     borderRight: 'thin solid #B1B1B1',
