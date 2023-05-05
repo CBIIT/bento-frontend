@@ -5,12 +5,14 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import {
-  CustomDataTable,
-  cn,
-  manipulateLinks,
   getOptions,
   getColumns,
-} from 'bento-components';
+  manipulateLinks
+} from '@bento-core/util';
+import {
+  CustomDataTable
+} from '@bento-core/data-table';
+import clsx from 'clsx';
 import globalData from '../../bento/siteWideConfig';
 import {
   pageTitle, table, externalLinkIcon,
@@ -19,19 +21,13 @@ import {
 } from '../../bento/programDetailData';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import {
-  setSideBarToLoading, setDashboardTableLoading,
-} from '../dashboardTab/store/dashboardReducer';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
-import {toggleCheckBox} from '@bento-core/facet-filter';
-import { useDispatch } from 'react-redux';
 import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
-  const dispatch = useDispatch();
 
   const widgetGeneratorConfig = {
     theme,
@@ -46,15 +42,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
   const { Widget } = WidgetGenerator(widgetGeneratorConfig);
 
-  const redirectToArm = (programArm) => {
-    setSideBarToLoading();
-    setDashboardTableLoading();
-    dispatch(toggleCheckBox({
-      name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
-      datafield: 'studies',
-      isChecked: true,
-    }));
-  };
+  const redirectToArm = (programArm) => onClearAllAndSelectFacetValue('studies', `${programArm.rowData[0]}: ${programArm.rowData[1]}`);
 
   const stat = {
     numberOfPrograms: 1,
@@ -97,7 +85,7 @@ const ProgramView = ({ classes, data, theme }) => {
                 </span>
               </span>
             </div>
-            <div className={cn(classes.headerMSubTitle, classes.headerSubTitleCate)}>
+            <div className={clsx(classes.headerMSubTitle, classes.headerSubTitleCate)}>
               <span id="program_detail_subtile">
                 {' '}
                 {programData[pageSubTitle.dataField]}

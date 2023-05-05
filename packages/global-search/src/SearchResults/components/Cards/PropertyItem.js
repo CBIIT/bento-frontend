@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import { Anchor } from 'bento-components';
+import { Anchor } from '@bento-core/util';
 
 /**
  * Property Item component generates the result card key:value element

@@ -106,7 +106,6 @@ const BentoFacetFilter = ({
             onClearAllFilters();
             store.dispatch(resetAllData());
           }}
-          activeFilters={activeFilters}
           className={classes.customButton}
           classes={{ root: classes.clearAllButtonRoot }}
         >
@@ -125,7 +124,7 @@ const BentoFacetFilter = ({
       </div>
     );
   };
-  const ClearAllFiltersButton = () => generateClearAllFilterBtn(CustomClearAllFiltersBtn);
+  const ClearAllFiltersButton = () => generateClearAllFilterBtn(CustomClearAllFiltersBtn, activeFilters);
 
   /** Note:
   * Generate Custom facet Section Component

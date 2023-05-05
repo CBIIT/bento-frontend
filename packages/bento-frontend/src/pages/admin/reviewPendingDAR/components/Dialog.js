@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { isEmpty } from 'lodash';
-import { cn } from 'bento-components';
+import clsx from 'clsx';
 
 const BootstrapDialog = styled(Dialog)(() => ({
   '& .MuiBackdrop-root': {
@@ -115,14 +115,14 @@ function CustomizedDialogs(props) {
           <Button
             variant="contained"
             onClick={handleClose}
-            className={cn(classes.actionBtn, classes.cancelButton)}
+            className={clsx(classes.actionBtn, classes.cancelButton)}
           >
             CANCEL
           </Button>
           <Button
             variant="contained"
             onClick={handleConfrim}
-            className={cn(classes.actionBtn, classes.confrimButton)}
+            className={clsx(classes.actionBtn, classes.confrimButton)}
             {...commentField === 'Required' && isEmpty(comment && comment.trim()) ? { disabled: true } : {}}
           >
             CONFIRM
