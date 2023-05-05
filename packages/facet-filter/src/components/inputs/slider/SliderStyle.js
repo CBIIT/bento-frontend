@@ -42,10 +42,23 @@ export default () => ({
     width: 16,
     background: '#10A075',
   },
+  invalidThumb: {
+    height: 16,
+    width: 16,
+    background: '#F44336',
+  },
   track: {
     borderRadius: 4,
     height: 6,
     background: '#10A075',
+    '&~&': {
+      background: '#142D64',
+    },
+  },
+  invalidTrack: {
+    borderRadius: 4,
+    height: 6,
+    background: '#F44336',
     '&~&': {
       background: '#142D64',
     },

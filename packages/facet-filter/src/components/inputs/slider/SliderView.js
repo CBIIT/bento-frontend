@@ -84,8 +84,8 @@ const SliderView = ({
             max={maxUpperBound}
             classes={{
               rail: classes.rail,
-              thumb: classes.thumb,
-              track: classes.track,
+              thumb: lowerBoundValue <= upperBoundValue ? classes.thumb : classes.invalidThumb,
+              track: lowerBoundValue <= upperBoundValue ? classes.track : classes.invalidTrack,
             }}
           />
         </div>
