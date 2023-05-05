@@ -35,8 +35,6 @@ import {
   GET_SAMPLES_OVERVIEW_QUERY,
 } from '../../../bento/dashboardTabData';
 import {
-  GET_IDS_BY_TYPE,
-  GET_SUBJECT_IDS,
   widgetsSearchData,
   SUBJECT_OVERVIEW_QUERY,
   GET_SEARCH_NODES_BY_FACET,
@@ -103,23 +101,6 @@ const initialState = {
 // HELPERS
 const getState = () => store.getState()[storeKey];
 
-const SUNBURST_COLORS_LEVEL_1 = [
-  '#7dc242',
-  '#274fa5',
-  '#79287c',
-  '#f78f48',
-  '#057ebd',
-];
-
-const SUNBURST_COLORS_LEVEL_2 = [
-  '#057ebd',
-  '#f78f48',
-  '#79287c',
-  '#0e3151',
-  '#057ebd',
-  '#7dc242',
-];
-
 function shouldFetchDataForDashboardTabDataTable(state) {
   return !(state.isFetched);
 }
@@ -156,29 +137,6 @@ function getFilteredStat(input, statCountVariables) {
     { ...acc, [stat.statAPI]: input[stat.statAPI] }
   ), {});
   return filteredStats;
-}
-
-/**
- * removes EmptySubjectsFromDonutDataa.
- * @param {object} data
- *  @param {object}
- */
-const removeEmptySubjectsFromDonutData = (data) => data.filter((item) => item.subjects !== 0);
-
-/**
- * Returns the widgets data.
- * @param {object} data
- * @param {json} widgetsInfoFromCustConfig
- * @return {json}r
- */
-export function getWidgetsInitData(data, widgetsInfoFromCustConfig) {
-  const donut = widgetsInfoFromCustConfig.reduce((acc, widget) => {
-    const Data = widget.type === 'sunburst' ? transformInitialDataForSunburst(data[widget.dataName], widget.datatable_level1_field, widget.datatable_level2_field, 'children', SUNBURST_COLORS_LEVEL_1, SUNBURST_COLORS_LEVEL_2) : removeEmptySubjectsFromDonutData(data[widget.dataName]);
-    const label = widget.dataName;
-    return { ...acc, [label]: Data };
-  }, {});
-
-  return donut;
 }
 
 /**
@@ -253,34 +211,6 @@ function fetchDashboardTabForClearAll() {
     .catch((error) => store.dispatch(
       { type: 'DASHBOARDTAB_QUERY_ERR', error },
     ));
-}
-
-export async function getAllIds(type) {
-  const allids = await client
-    .query({
-      query: GET_IDS_BY_TYPE(type),
-      variables: {
-      },
-    })
-    .then((result) => result.data.idsLists)
-    .catch((error) => store.dispatch(
-      { type: 'DASHBOARDTAB_QUERY_ERR', error },
-    ));
-  return allids;
-}
-export async function getAllSubjectIds(subjectIdsArray) {
-  const allids = await client
-    .query({
-      query: GET_SUBJECT_IDS,
-      variables: {
-        subject_ids: subjectIdsArray,
-      },
-    })
-    .then((result) => result.data.findSubjectIdsInList)
-    .catch((error) => store.dispatch(
-      { type: 'DASHBOARDTAB_QUERY_ERR', error },
-    ));
-  return allids;
 }
 
 export const getSubjectIds = () => getState().filteredSubjectIds;

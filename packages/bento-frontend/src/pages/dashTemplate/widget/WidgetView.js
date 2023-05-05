@@ -12,15 +12,15 @@ import styles from './WidgetStyle';
 import { WidgetGenerator } from '@bento-core/widgets';
 import { widgetsData } from '../../../bento/dashboardData';
 import colors from '../../../utils/colors';
-import { getWidgetsInitData } from '../../dashboardTab/store/dashboardReducer';
 import { Typography } from '../../../components/Wrappers/Wrappers';
+import { formatWidgetData } from './WidgetUtils';
 
 const WidgetView = ({
   classes,
   data,
   theme,
 }) => {
-  const displayWidgets = getWidgetsInitData(data, widgetsData);
+  const displayWidgets = formatWidgetData(data, widgetsData);
   const [collapse, setCollapse] = React.useState(true);
   const themeChanger = useTheme();
   const handleChange = () => setCollapse((prev) => !prev);
