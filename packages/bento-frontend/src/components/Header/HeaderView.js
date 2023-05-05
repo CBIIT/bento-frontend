@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Header } from 'bento-components';
+import  {Header}  from '@bento-core/header';
 import { withRouter } from 'react-router-dom';
 import { SearchBarGenerator } from '@bento-core/global-search';
 import headerData from '../../bento/globalHeaderData';

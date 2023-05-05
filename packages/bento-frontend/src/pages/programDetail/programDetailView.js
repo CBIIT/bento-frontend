@@ -5,12 +5,14 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import {
-  CustomDataTable,
-  cn,
-  manipulateLinks,
   getOptions,
   getColumns,
-} from 'bento-components';
+  manipulateLinks
+} from '@bento-core/util';
+import {
+  CustomDataTable
+} from '@bento-core/data-table';
+import clsx from 'clsx';
 import globalData from '../../bento/siteWideConfig';
 import {
   pageTitle, table, externalLinkIcon,
@@ -83,7 +85,7 @@ const ProgramView = ({ classes, data, theme }) => {
                 </span>
               </span>
             </div>
-            <div className={cn(classes.headerMSubTitle, classes.headerSubTitleCate)}>
+            <div className={clsx(classes.headerMSubTitle, classes.headerSubTitleCate)}>
               <span id="program_detail_subtile">
                 {' '}
                 {programData[pageSubTitle.dataField]}

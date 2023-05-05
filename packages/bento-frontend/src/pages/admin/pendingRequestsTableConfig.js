@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
+import{
+  CustomDataTable,
+} from'@bento-core/data-table';
 import {
+  getDateInFormat,
   getColumns,
   getOptions,
   getDefaultCustomFooter,
-  CustomDataTable,
-} from 'bento-components';
-import {
-  getDateInFormat,
 } from '@bento-core/util'
 
 /**

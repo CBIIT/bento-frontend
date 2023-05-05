@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {
   Button, Grid, Typography, withStyles,
 } from '@material-ui/core';
-import { cn, getColumns } from 'bento-components';
+import { getColumns } from '@bento-core/util';
+import clsx from 'clsx';
 import { useMutation } from '@apollo/client';
 import { ReviewRequestsTableGenerator } from '@bento-core/admin';
 import { UserDetailsGenerator } from '@bento-core/admin';
@@ -113,7 +114,7 @@ const ReviewRequestView = ({ classes, data }) => {
           <div className={classes.actionColumn}>
             <Button
               variant="contained"
-              className={cn(classes.actionButton, classes.approveButton)}
+              className={clsx(classes.actionButton, classes.approveButton)}
               onClick={() => handleOpenAproveDialog(value)}
             >
               APPROVE
@@ -121,7 +122,7 @@ const ReviewRequestView = ({ classes, data }) => {
             &nbsp;&nbsp;
             <Button
               variant="contained"
-              className={cn(classes.actionButton, classes.rejectButton)}
+              className={clsx(classes.actionButton, classes.rejectButton)}
               onClick={() => handleOpenRejectDialog(value)}
             >
               REJECT

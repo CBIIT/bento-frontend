@@ -3,7 +3,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { CustomDataTable } from 'bento-components';
+import { CustomDataTable } from '@bento-core/data-table';
 
 const columns = [{ name: 'program_id', label: 'Program' },
   { name: 'clinical_study_designation', label: 'Study Code' },

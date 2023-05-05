@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Grid, withStyles, IconButton,
 } from '@material-ui/core';
-import { ToolTip } from 'bento-components';
+import ToolTip from '@bento-core/tool-tip';
 
 import { DeleteOutline as DeleteOutlineIcon, ArrowDropDown as ArrowDropDownIcon, Help as HelpIcon } from '@material-ui/icons';
 import CartHeader from './components/header/cartHeader';

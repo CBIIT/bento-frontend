@@ -35,7 +35,7 @@ export const customTheme = {
       textTransform: 'uppercase',
       '&.add_all_button': {
         marginRight: '24px',
-        width: '120px',
+        // width: '120px',
         backgroundColor: '#142D64',
       },
       '&.add_selected_button': {
