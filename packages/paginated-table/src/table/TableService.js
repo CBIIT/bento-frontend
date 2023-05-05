@@ -50,6 +50,7 @@ export const getTableData = ({ queryVariables, table }) => {
     rowsPerPage,
     sortOrder,
     query,
+    sortBy
   } = table;
   async function getData() {
     const paginatedqueryVariable = getPaginatedQueryVariables(queryVariables, table);
@@ -74,6 +75,6 @@ export const getTableData = ({ queryVariables, table }) => {
       // cancel the request before component unmounts
       controller.abort();
     };
-  }, [queryVariables, page, rowsPerPage, sortOrder]);
+  }, [queryVariables, page, rowsPerPage, sortOrder, sortBy]);
   return { tableData };
 };

@@ -18,8 +18,9 @@ import ClearAllFiltersBtn from '../components/reset/ReduxClearAllBtn';
  * @param {*} CustomBtn
  * 
  */
-export const generateClearAllFilterBtn = (CustomBtn) => {
+export const generateClearAllFilterBtn = (CustomBtn, activeFilters) => {
   return ( <ClearAllFiltersBtn
+    activeFilters={activeFilters}
     CustomClearAllBtn={(props) => (<CustomBtn {...props} />)}
   />);
 };

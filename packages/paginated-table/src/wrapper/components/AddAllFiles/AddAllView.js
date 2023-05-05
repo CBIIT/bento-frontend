@@ -51,6 +51,8 @@ const AddAllFilesComponent = (props) => {
           setOpen(true);
           setAddFilesId(ids);
         }
+      } else {
+        setOpen(true);
       }
       return [];
     });

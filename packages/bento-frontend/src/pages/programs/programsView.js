@@ -13,22 +13,10 @@ import {
 } from '../../bento/programData';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import {
-  singleCheckBox, setSideBarToLoading, setDashboardTableLoading,
-} from '../dashboardTab/store/dashboardReducer';
+import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
 
 const Programs = ({ classes, data }) => {
-  const redirectTo = (program) => {
-    setSideBarToLoading();
-    setDashboardTableLoading();
-    singleCheckBox([{
-      datafield: 'programs',
-      groupName: 'Program',
-      isChecked: true,
-      name: program.rowData[0],
-      section: 'Filter By Cases',
-    }]);
-  };
+  const redirectTo = (program) => onClearAllAndSelectFacetValue('programs', program.rowData[0]);
 
   return (
     <>

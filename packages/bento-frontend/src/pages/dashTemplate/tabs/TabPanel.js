@@ -72,6 +72,7 @@ const TabView = (props) => {
         customTheme={customTheme}
         classes={classes}
         section={config.name}
+        activeFilters={activeFilters}
       >
         <Grid container>
           <Grid item xs={12} id={config.tableID}>

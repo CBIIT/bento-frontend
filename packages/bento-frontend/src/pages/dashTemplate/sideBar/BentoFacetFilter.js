@@ -86,6 +86,7 @@ const { UploadModal } = UploadModalGenerator({
 const BentoFacetFilter = ({
   classes,
   searchData,
+  activeFilters,
 }) => {
   /**
   * Clear All Filter Button
@@ -123,7 +124,7 @@ const BentoFacetFilter = ({
       </div>
     );
   };
-  const ClearAllFiltersButton = () => generateClearAllFilterBtn(CustomClearAllFiltersBtn);
+  const ClearAllFiltersButton = () => generateClearAllFilterBtn(CustomClearAllFiltersBtn, activeFilters);
 
   /** Note:
   * Generate Custom facet Section Component
