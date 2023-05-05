@@ -19,19 +19,13 @@ import {
 } from '../../bento/programDetailData';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import {
-  setSideBarToLoading, setDashboardTableLoading,
-} from '../dashboardTab/store/dashboardReducer';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import colors from '../../utils/colors';
 import { WidgetGenerator } from '@bento-core/widgets';
-import {toggleCheckBox} from '@bento-core/facet-filter';
-import { useDispatch } from 'react-redux';
 import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
 
 const ProgramView = ({ classes, data, theme }) => {
   const programData = data.programDetail;
-  const dispatch = useDispatch();
 
   const widgetGeneratorConfig = {
     theme,
@@ -46,15 +40,7 @@ const ProgramView = ({ classes, data, theme }) => {
 
   const { Widget } = WidgetGenerator(widgetGeneratorConfig);
 
-  const redirectToArm = (programArm) => {
-    setSideBarToLoading();
-    setDashboardTableLoading();
-    dispatch(toggleCheckBox({
-      name: `${programArm.rowData[0]}: ${programArm.rowData[1]}`,
-      datafield: 'studies',
-      isChecked: true,
-    }));
-  };
+  const redirectToArm = (programArm) => onClearAllAndSelectFacetValue('studies', `${programArm.rowData[0]}: ${programArm.rowData[1]}`);
 
   const stat = {
     numberOfPrograms: 1,

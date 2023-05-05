@@ -10,24 +10,10 @@ import {
 } from '../../bento/programData';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import {
-  setSideBarToLoading, setDashboardTableLoading,
-} from '../dashboardTab/store/dashboardReducer';
-import {toggleCheckBox} from '@bento-core/facet-filter';
-import { useDispatch } from 'react-redux';
+import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilterUtils';
 
 const Programs = ({ classes, data }) => {
-  const dispatch = useDispatch();
-
-  const redirectTo = (program) => {
-    setSideBarToLoading();
-    setDashboardTableLoading();
-    dispatch(toggleCheckBox({
-      name: program.rowData[0],
-      datafield: 'programs',
-      isChecked: true,
-    }));
-  };
+  const redirectTo = (program) => onClearAllAndSelectFacetValue('programs', program.rowData[0]);
 
   return (
     <>
