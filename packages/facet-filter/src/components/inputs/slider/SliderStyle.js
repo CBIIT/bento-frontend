@@ -79,6 +79,17 @@ export default () => ({
     background: '#f5fdee',
     marginTop: '10px',
   },
+  invalidSliderText: {
+    color: '#D32F2F',
+    lineHeight: '120%',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    padding: '5px 15px 5px 0px',
+    width: '100%',
+    textAlign: 'right',
+    background: '#E57373',
+    marginTop: '10px',
+  },
   sliderListItem: {
     height: '15px',
   },
