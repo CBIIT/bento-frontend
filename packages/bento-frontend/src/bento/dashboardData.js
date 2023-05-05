@@ -159,7 +159,6 @@ export const displayActiveFiltersQuery = true;
 // dataName: string
 // datatable_level1_field: string
 // datatable_level2_field: string
-// datatable_field: string
 // sliceTitle: string (optional)
 export const widgetsData = [
   {
@@ -173,31 +172,26 @@ export const widgetsData = [
     type: 'donut',
     title: 'Diagnosis',
     dataName: 'subjectCountByDiagnoses',
-    datatable_field: 'diagnosis',
   },
   {
     type: 'donut',
     title: 'Recurrence Score',
     dataName: 'subjectCountByRecurrenceScore',
-    datatable_field: 'recurrence_score',
   },
   {
     type: 'donut',
     title: 'Tumor Size',
     dataName: 'subjectCountByTumorSize',
-    datatable_field: 'tumor_size',
   },
   {
     type: 'donut',
     title: 'Chemotherapy',
     dataName: 'subjectCountByChemotherapyRegimen',
-    datatable_field: 'chemotherapy',
   },
   {
     type: 'donut',
     title: 'Endocrine Therapy',
     dataName: 'subjectCountByEndocrineTherapy',
-    datatable_field: 'endocrine_therapy',
   },
 ];
 
