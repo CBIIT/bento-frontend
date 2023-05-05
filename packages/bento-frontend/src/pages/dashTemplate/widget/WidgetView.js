@@ -10,7 +10,7 @@ import {
 import { useTheme } from '../../../components/ThemeContext';
 import styles from './WidgetStyle';
 import { WidgetGenerator } from '@bento-core/widgets';
-import { widgetsData } from '../../../bento/dashboardData';
+import { widgetConfig } from '../../../bento/dashTemplate';
 import colors from '../../../utils/colors';
 import { Typography } from '../../../components/Wrappers/Wrappers';
 import { formatWidgetData } from './WidgetUtils';
@@ -20,7 +20,7 @@ const WidgetView = ({
   data,
   theme,
 }) => {
-  const displayWidgets = formatWidgetData(data, widgetsData);
+  const displayWidgets = formatWidgetData(data, widgetConfig);
   const [collapse, setCollapse] = React.useState(true);
   const themeChanger = useTheme();
   const handleChange = () => setCollapse((prev) => !prev);
@@ -73,7 +73,7 @@ const WidgetView = ({
       </div>
       <Collapse in={collapse} className={classes.backgroundWidgets}>
         <Grid container>
-          {widgetsData.slice(0, 6).map((widget, index) => {
+          {widgetConfig.slice(0, 6).map((widget, index) => {
             const dataset = displayWidgets[widget.dataName];
             if (!dataset || dataset.length === 0) {
               return <></>;
