@@ -1,7 +1,7 @@
 export { default as CartContextProvider, CartContext } from './ContextProvider';
 export { cartReducerGenerator } from './store/reducers';
 export {
-  initCart, 
+  initCart,
   onAddCartFiles,
   onDeleteCartFile,
   onDeleteAllCartFile,
