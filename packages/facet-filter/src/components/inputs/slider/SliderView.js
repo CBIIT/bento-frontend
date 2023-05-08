@@ -101,15 +101,19 @@ const SliderView = ({
       {/* Change to red if invalid range */}
       {
         (sliderValue[0] > minLowerBound || sliderValue[1] < maxUpperBound)
-         && (
-          <Typography className={lowerBoundValue <= upperBoundValue ? classes.sliderText : classes.invalidSliderText}>
+        && (
+          <Typography
+            className={lowerBoundValue <= upperBoundValue
+              ? classes.sliderText
+              : classes.invalidSliderText}
+          >
             {sliderValue[0]}
             {' - '}
             {sliderValue[1]}
             &nbsp;
             {quantifier}
           </Typography>
-         )
+        )
       }
     </>
   );
