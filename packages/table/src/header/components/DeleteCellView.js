@@ -37,6 +37,7 @@ const DeleteCellView = ({
         Remove
       </Typography>
       <Tooltip
+        id="del_all_row_tooltip"
         className="del_all_row_tooltip"
         title={TooltipContent()}
         renderComponent={TooltipContent()}

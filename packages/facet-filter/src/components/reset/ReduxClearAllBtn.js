@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { clearAllFilters } from '../../store/actions/Actions';
 
 const ClearAllFiltersBtn = ({
-  CustomClearAllBtn,
+  Component,
   onClearAllFilters,
   activeFilters = {},
 }) => {
@@ -34,7 +34,7 @@ const ClearAllFiltersBtn = ({
 
   return (
     <>
-      <CustomClearAllBtn
+      <Component
         onClearAllFilters={dispatchClearAllFilters}
         disable={disable}
       />
@@ -42,12 +42,9 @@ const ClearAllFiltersBtn = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  filterState: state.statusReducer.filterState,
-});
 
 const mapDispatchToProps = (dispatch) => ({
   onClearAllFilters: () => {dispatch(clearAllFilters());},
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClearAllFiltersBtn);
+export default connect(null, mapDispatchToProps)(ClearAllFiltersBtn);

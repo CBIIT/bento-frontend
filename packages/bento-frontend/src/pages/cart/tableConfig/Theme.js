@@ -8,6 +8,9 @@ export const tblHeader = {
       fontWeight: 'bold',
       letterSpacing: '0.06em',
       textDecoration: 'none',
+      '&:hover': {
+        color: '#13344A',
+      },
     },
   },
   MuiTableCell: {
@@ -22,15 +25,12 @@ export const tblHeader = {
     },
   },
   MuiTooltip: {
-    tooltipPlacementBottom: {
-      marginTop: '-10px',
-      '@media (min-width: 600px)': {
+    popper: {
+      '&#del_all_row_tooltip div': {
+        background: 'none',
         marginTop: '-10px',
         marginLeft: '-20px',
       },
-    },
-    tooltip: {
-      backgroundColor: 'none',
     },
   },
   MuiIconButton: {

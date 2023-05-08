@@ -23,7 +23,18 @@ const CustomHeaderCell = ({
     customColHeaderRender,
   } = column;
 
-  const Tooltip = components.Tooltip || MuiTooltip;
+  const DefaultTooltip = ({ children }) => {
+    if (tooltipText) {
+      return (
+        <MuiTooltip title={tooltipText}>
+          {children}
+        </MuiTooltip>
+      );
+    }
+    return <>{children}</>
+  }
+
+  const Tooltip = components.Tooltip || DefaultTooltip;
 
   return (
     <TableCell
@@ -31,9 +42,7 @@ const CustomHeaderCell = ({
       active={sortBy === dataField}
       direction={sortOrder}
     >
-      <Tooltip
-        title={tooltipText}
-      >
+      <Tooltip>
         <TableSortLabel
           active={sortBy === dataField}
           hideSortIcon={sortBy !== dataField}
