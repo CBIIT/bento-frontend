@@ -3,6 +3,8 @@ import {
   Paper,
   Table,
   TableContainer,
+  ThemeProvider,
+  createTheme,
 } from '@material-ui/core';
 import TableHeader from './header/CustomTblHeader';
 import CustomPagination from './pagination/CustomPagination';
@@ -10,6 +12,18 @@ import CustomTableBody from './body/CustomTblBody';
 import CustomToolbar from './toolbar/CustomToolbar';
 import DisplayErrMsg from './errMsg/DisplayErrMsg';
 import ExtendedView from './ExtendedView';
+
+const CustomTableContainer = (props) => {
+  const { children, customTheme } = props;
+  const themeConfig = createTheme({ overrides: { ...customTheme } });
+  return (
+    <ThemeProvider theme={themeConfig}>
+      <TableContainer component={Paper}>
+        {children}
+      </TableContainer>
+    </ThemeProvider>
+  );
+};
 
 const TableView = ({
   tableRows = [],
@@ -38,7 +52,9 @@ const TableView = ({
       onColumnViewChange={onColumnViewChange}
       customTheme={themeConfig.toolbar}
     />
-    <TableContainer component={Paper}>
+    <CustomTableContainer
+      customTheme={themeConfig.tblContainer || {}}
+    >
       <Table>
         <TableHeader
           customTheme={themeConfig.tblHeader}
@@ -55,7 +71,7 @@ const TableView = ({
           onRowSelectChange={onRowSelectChange}
         />
       </Table>
-    </TableContainer>
+    </CustomTableContainer>
     {tableRows.length === 0 && (
       <DisplayErrMsg
         customTheme={themeConfig.displayErr}

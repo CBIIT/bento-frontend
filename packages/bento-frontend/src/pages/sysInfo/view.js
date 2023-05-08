@@ -4,7 +4,10 @@ import {
   Grid,
   makeStyles,
 } from '@material-ui/core';
-import { CustomDataTable, getColumns } from 'bento-components';
+import {
+  CustomDataTable
+} from '@bento-core/data-table';
+import { getColumns } from '@bento-core/util';
 import env from '../../utils/env';
 import bentoComponentsPackageJson from 'bento-components/package.json';
 import materialUICorePackageJson from '@material-ui/core/package.json';

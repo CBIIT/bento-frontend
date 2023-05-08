@@ -30,7 +30,27 @@ export const tblPgn = {
   },
 };
 
+export const tblContainer = {
+  MuiTableContainer: {
+    root: {
+      width: '100%',
+      overflowX: 'auto',
+      transform: 'rotateX(180deg)',
+    }
+  },
+  MuiTable: {
+    root: {
+      transform: 'rotateX(180deg)',
+      width: '100%',
+      display: 'table',
+      borderSpacing: '0',
+      borderCollapse: 'collapse',
+    },
+  },
+};
+
 export const themeConfig = {
   tblHeader,
+  tblContainer,
   tblPgn,
 };

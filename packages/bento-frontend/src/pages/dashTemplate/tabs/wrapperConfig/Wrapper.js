@@ -78,9 +78,8 @@ export const wrapperConfig = [{
 
 
 /**
-* holder function to add files on cart
-* console log will be remove when myCart page is integrated
-* with bento core paginated table
+* 1. addFileQuery - query to addAll files or add selected files on cart
+* 2. responseKeys - provided respose key for addFileQuery
 */
 export const configWrapper = (tab, configs) => {
   const wrpConfig = configs.map((container) => ({

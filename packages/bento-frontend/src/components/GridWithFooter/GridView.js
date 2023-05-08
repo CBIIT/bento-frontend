@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
-import { CustomDataTable } from 'bento-components';
+import { CustomDataTable } from '@bento-core/data-table';
 import HelpIcon from '@material-ui/icons/Help';
 import IconButton from '@material-ui/core/IconButton';
 import { addToCart, cartWillFull } from '../../pages/fileCentricCart/store/cart';

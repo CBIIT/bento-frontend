@@ -1,5 +1,5 @@
 import React from 'react';
-import { AboutHeader, AboutBody } from 'bento-components';
+import { AboutHeader, AboutBody } from '@bento-core/about';
 import { withStyles } from '@material-ui/core';
 import Stats from '../../components/Stats/AllStatsController';
 

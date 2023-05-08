@@ -12,6 +12,7 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@bento-core/tool-tip": "*",
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "*",
     "@material-ui/lab": "*",
