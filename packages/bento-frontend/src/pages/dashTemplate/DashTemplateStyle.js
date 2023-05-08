@@ -18,7 +18,7 @@ export default () => ({
     zIndex: '99',
   },
   rightContent: {
-    maxWidth: 'calc(100% - 250px)',
+    width: 'calc(100% - 250px)',
     position: 'relative',
     borderRight: 'thin solid #B1B1B1',
   },
