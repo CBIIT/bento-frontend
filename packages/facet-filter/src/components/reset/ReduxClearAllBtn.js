@@ -24,7 +24,7 @@ const ClearAllFiltersBtn = ({
         if (activeFilters[key].length > 0) { count += 1;}
         return count;
       }, 0);
-      if (!disable && filters === 0) {
+      if (filters === 0) {
         setDisable(true);
       } else {
         setDisable(false);
