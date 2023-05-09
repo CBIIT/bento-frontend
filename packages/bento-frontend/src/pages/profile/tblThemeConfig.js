@@ -24,7 +24,7 @@ export const tblBody = {
       fontStyle: 'normal',
       fontFamily: 'Nunito',
       fontWeight: 'normal',
-      padding: '5px 0px 5px 30px',
+      padding: '5px 0px 5px 50px',
       letterSpacing: '0.025em',
     },
     body: {
