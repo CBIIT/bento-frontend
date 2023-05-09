@@ -24,7 +24,7 @@ const FilesTableView = ({
     tableMsg: filesTable.tableMsg,
     rowsPerPage: 10,
     dataKey: filesTable.dataKey,
-    manageViewColumns: filesTable.manageViewColumns,
+    sortBy: filesTable.defaultSortField,
     page: 0,
   });
 
