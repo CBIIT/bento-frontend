@@ -26,7 +26,7 @@ const CustomHeaderCell = ({
   const DefaultTooltip = ({ children }) => {
     if (tooltipText) {
       return (
-        <MuiTooltip title={tooltipText}>
+        <MuiTooltip id="header-tooltip" title={tooltipText}>
           {children}
         </MuiTooltip>
       );

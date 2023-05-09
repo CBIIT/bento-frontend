@@ -25,11 +25,18 @@ export const tblHeader = {
     },
   },
   MuiTooltip: {
-    popper: {
-      '&#del_all_row_tooltip div': {
-        background: 'none',
+    tooltipPlacementBottom: {
+      '@media (min-width: 600px)': {
         marginTop: '-10px',
         marginLeft: '-20px',
+        background: 'none',
+      },
+    },
+    popper: {
+      '&#header-tooltip div': {
+        background: '#61614F',
+        marginTop: '0px',
+        marginLeft: '0px',
       },
     },
   },
