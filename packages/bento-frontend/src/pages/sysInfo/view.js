@@ -9,7 +9,7 @@ import {
 } from '@bento-core/data-table';
 import { getColumns } from '@bento-core/util';
 import env from '../../utils/env';
-import bentoComponentsPackageJson from 'bento-components/package.json';
+import bentoCorePackageJson from '@bento-core/all/package.json';
 import materialUICorePackageJson from '@material-ui/core/package.json';
 // import jbrowsePackageJson from '@jbrowse/core/package.json';
 import packageJson from '../../../package.json';
@@ -94,7 +94,7 @@ function SysInfoView() {
   const coreServicesData = [
     createThreeColumnRow('Frontend Version', coreRequirements.frontend, env.REACT_APP_FE_VERSION),
     createThreeColumnRow('Backend Version', coreRequirements.backend, state.backendVersion),
-    createThreeColumnRow('Bento Components (aka Bento-tools) Version', coreRequirements['bento-tools'], bentoComponentsPackageJson.version),
+    createThreeColumnRow('Bento-Core Version', coreRequirements['bento-core'], bentoCorePackageJson.version),
   ];
 
   const microservicesData = [

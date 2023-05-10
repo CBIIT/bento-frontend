@@ -16,6 +16,16 @@
     "classnames": "^2.2.6",
     "prop-types": "^15.7.2",
     "lodash": "^4.17.20",
+    "lodash.assignwith": "^4.2.0",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.debounce": "^4.0.8",
+    "lodash.find": "^4.6.0",
+    "lodash.get": "^4.4.2",
+    "lodash.isequal": "^4.5.0",
+    "lodash.isundefined": "^3.0.1",
+    "lodash.memoize": "^4.1.2",
+    "lodash.merge": "^4.6.2",
+    "react-to-print": "^2.8.0",
     "@bento-core/util": "*"
   },
   "peerDependencies": {
