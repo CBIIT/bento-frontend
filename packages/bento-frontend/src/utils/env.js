@@ -9,6 +9,10 @@ const injectedEnv = window && window.injectedEnv ? window.injectedEnv : {};
  * @returns {boolean} - The boolean value of the environment variable or the default value.
  */
 export const getEnvBoolean = (envVariable, defaultValue) => {
+
+  //NOTE: Adding specific case if envVariable is in string format.
+  if(envVariable === "false") return false;
+
   return envVariable !== undefined &&  typeof envVariable === 'boolean' ? envVariable : defaultValue;
 }
 
