@@ -94,8 +94,10 @@ const CheckBoxView = ({
           classes={{ root: classes.checkboxRoot }}
         />
         { tooltip ? (
-          <Tooltip title={tooltip}>
-            <LabelComponent />
+          <Tooltip id={datafield} title={tooltip}>
+            <div className={datafield}>
+              <LabelComponent />
+            </div>
           </Tooltip>
         ) : (
           <LabelComponent />
