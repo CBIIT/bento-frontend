@@ -4,7 +4,6 @@ import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { sideBarReducerGenerator } from '@bento-core/facet-filter';
 import layout from '../components/Layout/LayoutState';
-import dashboard from '../pages/dashboard/dashboardState';
 import stats from '../components/Stats/StatsState';
 import { cartReducerGenerator } from '@bento-core/cart';
 import { LocalFindReducerGenerator } from '@bento-core/local-find';
@@ -22,7 +21,6 @@ const reducers = {
   statusReducer,
   login,
   layout,
-  dashboard,
   stats,
 };
 const loggerMiddleware = createLogger();

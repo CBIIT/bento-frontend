@@ -13,24 +13,20 @@ import {
   DialogActions,
 } from '@material-ui/core';
 import FiberManualRecord from '@material-ui/icons/FiberManualRecord';
-// import { useSelector } from 'react-redux';
 import * as text from './OverlayText.json';
 import DialogThemeProvider from './OverlayThemConfig';
-import { setOverLayWindow } from '../../pages/dashboardTab/store/dashboardReducer';
 
 const OverlayWindow = () => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
-    setOverLayWindow(false);
     sessionStorage.setItem('overlayLoad', 'true');
   };
 
   useEffect(() => {
     if (!sessionStorage.length) {
       setOpen(true);
-      setOverLayWindow(true);
     }
   }, [open]);
 

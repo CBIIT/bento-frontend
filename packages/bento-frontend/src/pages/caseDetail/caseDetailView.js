@@ -3,7 +3,6 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
 import { TableContextProvider } from '@bento-core/paginated-table';
 import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
@@ -18,7 +17,6 @@ import {
   filesTable,
 } from '../../bento/caseDetailData';
 import Snackbar from '../../components/Snackbar';
-import { fetchDataForDashboardDataTable } from '../dashboard/dashboardState';
 import SampleTableView from './SampleView/SampleTableView';
 import FilesTableView from './FilesView/FilesTableView';
 
@@ -37,12 +35,7 @@ const CaseDetail = ({
   function closeSnack() {
     setsnackbarState({ open: false });
   }
-  const dispatch = useDispatch();
 
-  // make sure dashboard data has been loaded first for stats bar to work
-  React.useEffect(() => {
-    dispatch(fetchDataForDashboardDataTable());
-  }, []);
 
   const stat = {
     numberOfPrograms: 1,

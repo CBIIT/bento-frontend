@@ -151,56 +151,6 @@ export const defaultSearch = {
 // --------------- Dashboard ActiveFiltersQuery configuration --------------
 export const displayActiveFiltersQuery = true;
 
-// --------------- Dashboard Widgets configuration --------------
-// A maximum of 6 widgets are allowed
-//
-// type: 'sunburst' | 'donut'
-// title: string
-// dataName: string
-// datatable_level1_field: string
-// datatable_level2_field: string
-// datatable_field: string
-// sliceTitle: string (optional)
-export const widgetsData = [
-  {
-    type: 'sunburst',
-    title: 'Programs and Arms',
-    dataName: 'armsByPrograms',
-    datatable_level1_field: 'program',
-    datatable_level2_field: 'arm',
-  },
-  {
-    type: 'donut',
-    title: 'Diagnosis',
-    dataName: 'subjectCountByDiagnoses',
-    datatable_field: 'diagnosis',
-  },
-  {
-    type: 'donut',
-    title: 'Recurrence Score',
-    dataName: 'subjectCountByRecurrenceScore',
-    datatable_field: 'recurrence_score',
-  },
-  {
-    type: 'donut',
-    title: 'Tumor Size',
-    dataName: 'subjectCountByTumorSize',
-    datatable_field: 'tumor_size',
-  },
-  {
-    type: 'donut',
-    title: 'Chemotherapy',
-    dataName: 'subjectCountByChemotherapyRegimen',
-    datatable_field: 'chemotherapy',
-  },
-  {
-    type: 'donut',
-    title: 'Endocrine Therapy',
-    dataName: 'subjectCountByEndocrineTherapy',
-    datatable_field: 'endocrine_therapy',
-  },
-];
-
 // --------------- Dahboard Table external link configuration --------------
 // Ideal size for externalLinkIcon is 16x16 px
 export const externalLinkIcon = {
