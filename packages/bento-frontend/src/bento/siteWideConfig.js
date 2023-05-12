@@ -16,7 +16,7 @@ export const adminPortalPath = '/admin';
 export const userProfilePath = '/profile';
 
 // Authentication: Enabled (True) or Disabled (False)
-export const enableAuthentication = getEnvBoolean(env.AUTH, true);
+export const enableAuthentication = getEnvBoolean(env.REACT_APP_AUTH, true);
 
 // List of enabled identity providers. This is an array of enabled identity providers,
 // where each element corresponds to a key from loginProvidersData.

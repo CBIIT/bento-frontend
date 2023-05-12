@@ -11,19 +11,6 @@
 
 import React from 'react';
 import FacetSectionView from '../components/section/FacetSectionView';
-import ClearAllFiltersBtn from '../components/reset/ReduxClearAllBtn';
-
-/**
- * accepts button as component
- * @param {*} CustomBtn
- * 
- */
-export const generateClearAllFilterBtn = (CustomBtn, activeFilters) => {
-  return ( <ClearAllFiltersBtn
-    activeFilters={activeFilters}
-    CustomClearAllBtn={(props) => (<CustomBtn {...props} />)}
-  />);
-};
 
 export const generateFacetSectionView = (props) => {
   return (

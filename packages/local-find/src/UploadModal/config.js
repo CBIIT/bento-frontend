@@ -10,6 +10,7 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     inputTooltip: 'Add the case indentifier.',
     uploadTooltip: 'Add the case indentifier.',
     accept: '.csv,.txt',
+    maxSearchTerms: 1000,
   },
 
   // Helper functions used by the component

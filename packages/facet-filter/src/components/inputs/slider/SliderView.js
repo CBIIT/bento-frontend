@@ -72,19 +72,20 @@ const SliderView = ({
           </div>
         </div>
         <div className={classes.slider}>
+          {/* Change to red if invalid range */}
           <Slider
-            value={[...sliderValue]}
+            disableSwap
+            getAriaValueText={valuetext}
             onChange={handleChangeSlider}
             onChangeCommitted={(event, value) => handleChangeCommittedSlider(value)}
+            value={[...sliderValue]}
             valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
-            disableSwap
             min={minLowerBound}
             max={maxUpperBound}
             classes={{
               rail: classes.rail,
-              thumb: classes.thumb,
-              track: classes.track,
+              thumb: lowerBoundValue <= upperBoundValue ? classes.thumb : classes.invalidThumb,
+              track: lowerBoundValue <= upperBoundValue ? classes.track : classes.invalidTrack,
             }}
           />
         </div>
@@ -97,17 +98,22 @@ const SliderView = ({
           </Typography>
         </Box>
       </div>
+      {/* Change to red if invalid range */}
       {
         (sliderValue[0] > minLowerBound || sliderValue[1] < maxUpperBound)
-         && (
-          <Typography className={classes.sliderText}>
+        && (
+          <Typography
+            className={lowerBoundValue <= upperBoundValue
+              ? classes.sliderText
+              : classes.invalidSliderText}
+          >
             {sliderValue[0]}
             {' - '}
             {sliderValue[1]}
             &nbsp;
             {quantifier}
           </Typography>
-         )
+        )
       }
     </>
   );

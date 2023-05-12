@@ -200,7 +200,7 @@ const styles = () => ({
     '&:first-child': {
       minWidth: '190px',
       maxWidth: '225px',
-      padding: '6px 20px 10px 90px',
+      padding: props.styles.statsGroup ? (props.styles.statsGroup['&:first-child'] && props.styles.statsGroup['&:first-child'].padding) ? props.styles.statsGroup['&:first-child'].padding : '6px 20px 10px 90px' : '6px 20px 10px 90px',
     },
     '&:last-child': {
       borderRight: 'none',

@@ -62,7 +62,7 @@ Bento Tools Footer Component
 				},
 				{
 					"link": "https://www.linkedin.com/",
-					"icon": "https://raw.githubusercontent.com/CBIIT/bento-tools/master/src/components/assets/footer/linkedInIcon.svg"
+					"icon": "https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/linkedInIcon.svg"
 				}
 			]
 		}

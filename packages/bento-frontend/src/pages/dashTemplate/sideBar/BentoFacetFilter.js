@@ -17,12 +17,12 @@ import {
 } from '@material-ui/icons';
 import clsx from 'clsx';
 import {
-  resetAllData,
+  resetAllData, chunkSplit,
   SearchView, SearchBoxGenerator, UploadModalGenerator,
 } from '@bento-core/local-find';
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
-import { FacetFilter, generateClearAllFilterBtn } from '@bento-core/facet-filter';
+import { FacetFilter, ClearAllFiltersBtn } from '@bento-core/facet-filter';
 import { facetsConfig, facetSectionVariables } from '../../../bento/dashTemplate';
 import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
@@ -72,7 +72,14 @@ const { UploadModal } = UploadModalGenerator({
   functions: {
     searchMatches: async (inputArray) => {
       try {
-        const matched = await getAllSubjectIds(inputArray).catch(() => []);
+        // Split the search terms into chunks of 500
+        const caseChunks = chunkSplit(inputArray, 500);
+        const matched = (await Promise.allSettled(caseChunks.map((chunk) => getAllSubjectIds(chunk))))
+          .filter((result) => result.status === 'fulfilled')
+          .map((result) => result.value || [])
+          .flat(1);
+
+        // Combine the results and remove duplicates
         const unmatched = new Set(inputArray);
         matched.forEach((obj) => unmatched.delete(obj.subject_id));
         return { matched, unmatched: [...unmatched] };
@@ -124,7 +131,6 @@ const BentoFacetFilter = ({
       </div>
     );
   };
-  const ClearAllFiltersButton = () => generateClearAllFilterBtn(CustomClearAllFiltersBtn, activeFilters);
 
   /** Note:
   * Generate Custom facet Section Component
@@ -205,7 +211,10 @@ const BentoFacetFilter = ({
   return (
     <div>
       <FacetFilterThemeProvider>
-        <ClearAllFiltersButton />
+        <ClearAllFiltersBtn
+          Component={CustomClearAllFiltersBtn}
+          activeFilters={activeFilters}
+        />
         <FacetFilter
           data={searchData}
           facetSectionConfig={facetSectionVariables}

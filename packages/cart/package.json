@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/cart",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -10,9 +10,6 @@
   "repository": "https://github.com/CBIIT/bento-frontend",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    
   },
   "peerDependencies": {
     "react": "^17.0.2",

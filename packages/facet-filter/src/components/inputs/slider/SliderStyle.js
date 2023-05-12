@@ -42,10 +42,23 @@ export default () => ({
     width: 16,
     background: '#10A075',
   },
+  invalidThumb: {
+    height: 16,
+    width: 16,
+    background: '#F44336',
+  },
   track: {
     borderRadius: 4,
     height: 6,
     background: '#10A075',
+    '&~&': {
+      background: '#142D64',
+    },
+  },
+  invalidTrack: {
+    borderRadius: 4,
+    height: 6,
+    background: '#F44336',
     '&~&': {
       background: '#142D64',
     },
@@ -77,6 +90,17 @@ export default () => ({
     width: '100%',
     textAlign: 'right',
     background: '#f5fdee',
+    marginTop: '10px',
+  },
+  invalidSliderText: {
+    color: '#D32F2F',
+    lineHeight: '120%',
+    fontFamily: 'Nunito',
+    fontSize: '14px',
+    padding: '5px 15px 5px 0px',
+    width: '100%',
+    textAlign: 'right',
+    background: '#E57373',
     marginTop: '10px',
   },
   sliderListItem: {
