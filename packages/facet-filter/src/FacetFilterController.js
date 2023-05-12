@@ -68,7 +68,7 @@ const FacetFilterController = (props) => {
         sideBar[section] = {
           name: section,
           sectionName: section,
-          expandSection: facetSectionConfig[section].isExpanded,
+          expandSection: facetSectionConfig[section]?.isExpanded || true,
           items: [],
         };
       }

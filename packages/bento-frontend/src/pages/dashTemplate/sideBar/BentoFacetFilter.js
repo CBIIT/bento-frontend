@@ -22,7 +22,7 @@ import {
 } from '@bento-core/local-find';
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
-import { FacetFilter, generateClearAllFilterBtn } from '@bento-core/facet-filter';
+import { FacetFilter, ClearAllFiltersBtn } from '@bento-core/facet-filter';
 import { facetsConfig, facetSectionVariables } from '../../../bento/dashTemplate';
 import { resetIcon } from '../../../bento/dashboardData';
 // import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
@@ -131,7 +131,6 @@ const BentoFacetFilter = ({
       </div>
     );
   };
-  const ClearAllFiltersButton = () => generateClearAllFilterBtn(CustomClearAllFiltersBtn, activeFilters);
 
   /** Note:
   * Generate Custom facet Section Component
@@ -212,7 +211,10 @@ const BentoFacetFilter = ({
   return (
     <div>
       <FacetFilterThemeProvider>
-        <ClearAllFiltersButton />
+        <ClearAllFiltersBtn
+          Component={CustomClearAllFiltersBtn}
+          activeFilters={activeFilters}
+        />
         <FacetFilter
           data={searchData}
           facetSectionConfig={facetSectionVariables}

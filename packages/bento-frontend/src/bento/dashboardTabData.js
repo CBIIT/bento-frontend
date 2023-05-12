@@ -1892,8 +1892,8 @@ export const tabContainers = [
         dataField: 'program',
         header: 'Program Code',
         sort: 'asc',
-        link: '/program/{program_id}',
         cellType: cellTypes.LINK,
+        tooltipText: 'sort',
         linkAttr : {
           rootPath: '/program',
           pathParams: ['program_id'],

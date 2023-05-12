@@ -24,7 +24,8 @@ export {
   clearAllAndSelectFacet,
 } from './store/actions/Actions';
 export {
-  generateClearAllFilterBtn,
   generateFacetSectionView,
 } from './generator/component';
-
+export {
+  default as ClearAllFiltersBtn
+} from './components/reset/ReduxClearAllBtn';
