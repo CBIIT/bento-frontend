@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Divider, withStyles } from '@material-ui/core';
+import { Divider, Typography, withStyles } from '@material-ui/core';
 import ArrowRight from '@material-ui/icons/ArrowRight';
+import clsx from 'clsx';
 
 /**
  * Creates a simple tabbed table to display the matched case IDs
@@ -10,11 +11,12 @@ import ArrowRight from '@material-ui/icons/ArrowRight';
  * @param {object} props.classes - Material UI styles
  * @param {array} props.matched - Array of matched case IDs
  * @param {array} props.unmatched - Array of unmatched case IDs
+ * @param {string|null} props.error - Error message to display
  * @returns {JSX.Element}
  */
 const SummaryTable = (props) => {
   const {
-    classes, matched, unmatched,
+    classes, matched, unmatched, error = null,
   } = props;
 
   const [tab, setTab] = useState('matched');
@@ -24,6 +26,11 @@ const SummaryTable = (props) => {
       <p className={classes.summary} id="uploadCaseSetSummaryCount">
         {`${matched.length + unmatched.length} submitted Case IDs mapped to ${matched.length} unique Bento Case IDs`}
       </p>
+      {error ? (
+        <Typography className={clsx(classes.summary, classes.error)}>
+          {error}
+        </Typography>
+      ) : null}
       <p className={classes.title}>
         Summary Table
         <ArrowRight className={classes.arrowRight} />
@@ -197,6 +204,10 @@ const styles = () => ({
   tableBox: {
     maxHeight: 150,
     overflowY: 'auto',
+    maxWidth: '646px',
+  },
+  error: {
+    color: 'red',
   },
 });
 

@@ -17,7 +17,7 @@ import {
 } from '@material-ui/icons';
 import clsx from 'clsx';
 import {
-  resetAllData,
+  resetAllData, chunkSplit,
   SearchView, SearchBoxGenerator, UploadModalGenerator,
 } from '@bento-core/local-find';
 import store from '../../../store';
@@ -72,7 +72,14 @@ const { UploadModal } = UploadModalGenerator({
   functions: {
     searchMatches: async (inputArray) => {
       try {
-        const matched = await getAllSubjectIds(inputArray).catch(() => []);
+        // Split the search terms into chunks of 500
+        const caseChunks = chunkSplit(inputArray, 500);
+        const matched = (await Promise.allSettled(caseChunks.map((chunk) => getAllSubjectIds(chunk))))
+          .filter((result) => result.status === 'fulfilled')
+          .map((result) => result.value || [])
+          .flat(1);
+
+        // Combine the results and remove duplicates
         const unmatched = new Set(inputArray);
         matched.forEach((obj) => unmatched.delete(obj.subject_id));
         return { matched, unmatched: [...unmatched] };
