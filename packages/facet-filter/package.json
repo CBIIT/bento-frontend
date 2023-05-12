@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/facet-filter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "access": "public"
   },
   "dependencies": {
-    
+    "@material-ui/core": "^4.12.4"
   },
   "peerDependencies": {
     "react": "^17.0.2",

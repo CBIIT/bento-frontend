@@ -8,6 +8,9 @@ export const tblHeader = {
       fontWeight: 'bold',
       letterSpacing: '0.06em',
       textDecoration: 'none',
+      '&:hover': {
+        color: '#13344A',
+      },
     },
   },
   MuiTableCell: {
@@ -16,18 +19,25 @@ export const tblHeader = {
       paddingRight: '5px',
       color: '#13344A',
       cursor: 'pointer',
+      '&.del_all_row': {
+        minWidth: '150px',
+      },
     },
   },
   MuiTooltip: {
     tooltipPlacementBottom: {
-      marginTop: '-10px',
       '@media (min-width: 600px)': {
         marginTop: '-10px',
         marginLeft: '-20px',
+        background: 'none',
       },
     },
-    tooltip: {
-      backgroundColor: 'none',
+    popper: {
+      '&#header-tooltip div': {
+        background: '#61614F',
+        marginTop: '0px',
+        marginLeft: '0px',
+      },
     },
   },
   MuiIconButton: {
@@ -101,8 +111,28 @@ export const tblBody = {
   },
 };
 
+export const tblContainer = {
+  MuiTableContainer: {
+    root: {
+      width: '100%',
+      overflowX: 'auto',
+      transform: 'rotateX(180deg)',
+    }
+  },
+  MuiTable: {
+    root: {
+      transform: 'rotateX(180deg)',
+      width: '100%',
+      display: 'table',
+      borderSpacing: '0',
+      borderCollapse: 'collapse',
+    },
+  },
+};
+
 export const themeConfig = {
   tblHeader,
   tblPgn,
   tblBody,
+  tblContainer,
 };

@@ -5,7 +5,7 @@ import {
   TextareaAutosize, IconButton, withStyles,
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
-import { ToolTip } from 'bento-components';
+import ToolTip from '@bento-core/tool-tip';
 import FileUploader from './components/FileUploader';
 import SummaryTable from './components/SummaryTable';
 import DEFAULT_STYLES from './styles';
@@ -52,6 +52,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.accept
     : DEFAULT_CONFIG.config.accept;
 
+  const maxTerms = config && typeof config.maxSearchTerms === 'number'
+    ? config.maxSearchTerms
+    : DEFAULT_CONFIG.config.maxSearchTerms;
+
   const stateProps = (state) => ({
     metadata: state.localFind.uploadMetadata,
   });
@@ -79,6 +83,9 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const [fileContent, setFileContent] = useState(metadata.fileContent || '');
       const [matchIds, setMatchIds] = useState(metadata.matched || []);
       const [unmatchedIds, setUnmatchedIds] = useState(metadata.unmatched || []);
+
+      const overMaxTerms = matchIds.length > maxTerms;
+      const errorText = `Total number of cases exceeds the maximum of ${maxTerms} cases.`;
 
       const clearData = () => {
         setFileContent('');
@@ -197,7 +204,12 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
               </div>
             </div>
             {fileContent && (
-              <SummaryTable classes={summaryClasses} matched={matchIds} unmatched={unmatchedIds} />
+              <SummaryTable
+                classes={summaryClasses}
+                matched={matchIds}
+                unmatched={unmatchedIds}
+                error={overMaxTerms ? errorText : null}
+              />
             )}
             <div className={classes.modalFooter}>
               <Button
@@ -224,8 +236,9 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="blueGrey"
                 onClick={applySearchWrapper}
-                style={{ backgroundColor: '#03A383' }}
+                style={overMaxTerms ? undefined : { backgroundColor: '#03A383' }}
                 className={classes.button}
+                disabled={overMaxTerms}
                 id="local_find_upload_submit"
               >
                 Submit

@@ -1,0 +1,40 @@
+{
+  "name": "@bento-core/all",
+  "version": "0.2.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/CBIIT/bento-frontend",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@bento-core/about": "^0.2.0",
+    "@bento-core/admin": "^0.2.0",
+    "@bento-core/authentication": "^0.2.0",
+    "@bento-core/cart": "^0.2.0",
+    "@bento-core/data-access-request": "^0.2.0",
+    "@bento-core/data-table": "^0.2.0",
+    "@bento-core/facet-filter": "^0.2.0",
+    "@bento-core/footer": "^0.2.0",
+    "@bento-core/global-search": "^0.2.0",
+    "@bento-core/header": "^0.2.0",
+    "@bento-core/local-find": "^0.2.0",
+    "@bento-core/nav-bar": "^0.2.0",
+    "@bento-core/paginated-table": "^0.2.0",
+    "@bento-core/profile": "^0.2.0",
+    "@bento-core/query-bar": "^0.2.0",
+    "@bento-core/session-timeout": "^0.2.0",
+    "@bento-core/stats-bar": "^0.2.0",
+    "@bento-core/tab": "^0.2.0",
+    "@bento-core/table": "^0.2.0",
+    "@bento-core/tool-tip": "^0.2.0",
+    "@bento-core/util": "^0.2.0",
+    "@bento-core/widgets": "^0.2.0"
+  },
+  "author": "CTOS Bento Team",
+  "license": "ISC"
+}

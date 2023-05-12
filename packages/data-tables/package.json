@@ -1,0 +1,38 @@
+{
+  "name": "@bento-core/data-table",
+  "version": "0.2.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/CBIIT/bento-frontend",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@bento-core/util": "^0.2.0",
+    "@material-ui/core": "^4.12.4",
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.20",
+    "lodash.assignwith": "^4.2.0",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.debounce": "^4.0.8",
+    "lodash.find": "^4.6.0",
+    "lodash.get": "^4.4.2",
+    "lodash.isequal": "^4.5.0",
+    "lodash.isundefined": "^3.0.1",
+    "lodash.memoize": "^4.1.2",
+    "lodash.merge": "^4.6.2",
+    "prop-types": "^15.7.2",
+    "react-to-print": "^2.8.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.0",
+    "react-redux": "^7.2.1"
+  },
+  "author": "CTOS Bento Team",
+  "license": "ISC"
+}

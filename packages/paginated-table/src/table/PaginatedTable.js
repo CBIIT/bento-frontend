@@ -67,8 +67,8 @@ const PaginatedTable = ({
 
   const handleChangeRowsPerPage = (event) => {
     const noOfRows = parseInt(event.target.value, 10);
-       }
-    dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows, page: 0 }));
+   
+    dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows, page:0}));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -108,7 +108,8 @@ const PaginatedTable = ({
   };
 
   const handleSortByColumn = (column, order) => {
-    const sort = order === 'asc' ? 'desc' : 'asc';
+    const { sortBy } = table;
+    const sort = (order === 'asc' && sortBy === column) ? 'desc' : 'asc';
     dispatch(onColumnSort({ sort, column }));
   };
 

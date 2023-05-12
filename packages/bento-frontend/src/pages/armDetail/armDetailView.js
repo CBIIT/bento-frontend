@@ -107,7 +107,7 @@ const ArmDetail = ({ data, classes }) => {
                     ...location,
                     pathname: `/explore`
                   })}
-                  onClick={onClearAllAndSelectFacetValue('studies', data.study_info)}
+                  onClick={()=>onClearAllAndSelectFacetValue('studies', data.study_info)}
                 >
                   <span className={classes.headerButtonLinkNumber} id="arm_detail_header_file_count">
                     {data.num_subjects}

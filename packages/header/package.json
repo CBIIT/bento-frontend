@@ -1,0 +1,25 @@
+{
+  "name": "@bento-core/header",
+  "version": "0.2.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/CBIIT/bento-frontend",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.0",
+    "react-redux": "^7.2.1"
+  },
+  "dependencies": {
+    "@bento-core/util": "^0.2.0",
+    "@material-ui/core": "^4.12.4"
+  },
+  "author": "CTOS Bento Team",
+  "license": "ISC"
+}

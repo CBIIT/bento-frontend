@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/global-search",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -12,11 +12,12 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@bento-core/util": "*",
+    "@material-ui/core": "*",
+    "@material-ui/lab": "*",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
-    "react-redux": "^7.2.1",
-    "@material-ui/lab": "*",
-    "@material-ui/core": "*"
+    "react-redux": "^7.2.1"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

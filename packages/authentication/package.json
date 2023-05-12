@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/authentication",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -12,16 +12,16 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@apollo/client": "^3.6.9",
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "*",
     "@material-ui/lab": "*",
+    "graphql-tag": "^2.11.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1",
-    "@apollo/client": "^3.6.9",
-    "react-use-googlelogin": "^0.12.5",
-    "graphql-tag": "^2.11.0",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "react-use-googlelogin": "^0.12.5"
   },
   "dependencies": {
     "lodash": "^4.17.20"

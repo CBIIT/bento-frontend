@@ -42,6 +42,7 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     inputTooltip: 'Add the case indentifier.',  // The tooltip text for the textarea input section. Empty = no tooltip
     uploadTooltip: 'Add the case indentifier.', // The tooltip text for the upload button section. Empty = no tooltip
     accept: '.csv,.txt',                        // The file types that can be uploaded (must be text/* files only)
+    maxSearchTerms: 1000,                       // The maximum number of search terms that can be searched for. See note below.
   },
 
   // Helper functions used by the component
@@ -69,6 +70,9 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
   },
 };
 ```
+
+> **Note**: The configuration option `maxSearchTerms` specifies the maximum number of matched search terms (e.g. cases)
+> that can be submitted to the dashboard/explore page. This addresses an OpenSearch maximum clause count issue. If over this limit, the submit button will be disabled and an error will be visible.
 
 # Exports
 

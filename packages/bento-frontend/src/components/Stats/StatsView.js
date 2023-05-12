@@ -8,6 +8,7 @@ const StatsView = ({ data }) => {
   const stats = globalStatsData.map((e) => ({
     name: e.statTitle,
     val: data[e.statAPI],
+    statIconSrc: e.statIconSrc,
   }));
 
   return (

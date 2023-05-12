@@ -6,7 +6,6 @@ import Header from '../Header/HeaderView';
 import NavBar from '../NavBar/NavBarContainer';
 import Footer from '../Footer/FooterView';
 import Error from '../../pages/error/Error';
-import Dashboard from '../../pages/dashboardTab/dashboardController';
 import CaseDetail from '../../pages/caseDetail/caseDetailController';
 import ArmDetail from '../../pages/armDetail/armDetailController';
 import modelPage from '../../pages/modelPage/modelPageView';
@@ -73,7 +72,6 @@ const Layout = ({ classes, isSidebarOpened }) => {
             {/* END SECTION */}
 
             {/* SECTION: Member & Admin only Path */}
-            <PrivateRoute path="/explore_old" access={['admin', 'member']} component={Dashboard} />
             <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
             <PrivateRoute path="/model" access={['admin', 'member']} component={modelPage} />
             <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CarView} />
@@ -139,7 +137,7 @@ const styles = (theme) => ({
     // width: `calc(100vw - 240px)`,   // Ajay need to add this on addung side bar
     width: 'calc(100%)', // Remove this on adding sidebar
     background: theme.custom.bodyBackGround,
-    marginTop: '185px',
+    marginTop: '194px',
   },
   '@global': {
     '*::-webkit-scrollbar': {

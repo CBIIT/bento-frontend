@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import {
   getColumns, getOptions, getDefaultCustomFooter,
-} from 'bento-components';
+} from '@bento-core/util';
 import _ from 'lodash';
 import CustomDataTable from '../../../../components/serverPaginatedTable/serverPaginatedTable';
 import Styles from './cartBody.style';

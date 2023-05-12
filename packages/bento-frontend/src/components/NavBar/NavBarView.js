@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { NavBar } from 'bento-components';
+import { NavBar } from '@bento-core/nav-bar';
 import {
   navBarData, navBarCartData, navBarstyling,
 } from '../../bento/navigationBarData';

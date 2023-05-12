@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import {
   withStyles,
 } from '@material-ui/core';
-import { ToolTip } from 'bento-components';
+import ToolTip from '@bento-core/tool-tip';
 import { Link, useHistory } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
