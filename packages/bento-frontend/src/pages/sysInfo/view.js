@@ -107,7 +107,6 @@ function SysInfoView() {
     createRow('Backend API Endpoint', env.REACT_APP_BACKEND_API),
     createRow('File Service API Endpoint', env.REACT_APP_FILE_SERVICE_API),
     createRow('Auth Service API Endpoint', env.REACT_APP_AUTH_SERVICE_API),
-    createRow('REACT_APP_ABOUT_CONTENT_URL', env.REACT_APP_ABOUT_CONTENT_URL),
   ];
 
   const dependenciesData = [
