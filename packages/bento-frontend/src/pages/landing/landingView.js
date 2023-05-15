@@ -180,7 +180,7 @@ const LandingView = ({ classes, statsData }) => (
 );
 const styles = () => ({
   page: {
-    marginTop: '-47px',
+    marginTop: '-53px',
   },
   heroImage: {
     width: '100%',
