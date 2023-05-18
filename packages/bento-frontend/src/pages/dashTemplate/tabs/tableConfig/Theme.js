@@ -17,6 +17,30 @@ export const tblHeader = {
   },
 };
 
+const tblBody = {
+  MuiTableCell: {
+    root: {
+      minHeight: '45px',
+      padding: '0px 5px 0px 20px',
+      color: '#004C73',
+      cursor: 'pointer',
+    },
+    paddingCheckbox: {
+      width: '48px',
+      padding: '0 0 0 5px',
+    },
+    body: {
+      color: '#13344A',
+      '&.file_name': {
+        maxWidth: '300px',
+        '& p': {
+          lineBreak: 'anywhere',
+        },
+      },
+    },
+  },
+}
+
 export const tblPgn = {
   MuiTablePagination: {
     root: {
@@ -51,6 +75,7 @@ export const tblContainer = {
 
 export const themeConfig = {
   tblHeader,
+  tblBody,
   tblContainer,
   tblPgn,
 };

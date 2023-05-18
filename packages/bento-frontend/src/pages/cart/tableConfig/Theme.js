@@ -94,19 +94,23 @@ export const tblBody = {
     },
   },
   MuiTableCell: {
+    body: {
+      color: '#004C73',
+      '&.file_name': {
+        maxWidth: '300px',
+        '& p': {
+          lineBreak: 'anywhere',
+          paddingTop: '10px',
+          paddingBottom: '10px',
+        },
+      },
+    },
     root: {
       minHeight: '45px',
       padding: '0px 0px 0px 25px',
       paddingRight: '20px',
       color: '#004C73',
       cursor: 'pointer',
-    },
-    paddingCheckbox: {
-      width: '48px',
-      padding: '0 0 0 5px',
-    },
-    body: {
-      color: '#004C73',
     },
   },
 };
