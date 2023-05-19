@@ -45,7 +45,7 @@ const ExtendedView = ({
         {
           (pagination) && (
             <CustomPagination
-              customTheme={themeConfig.tblTopPgn}
+              customTheme={customTheme.tblTopPgn}
               rowsPerPageOptions={[10, 25, 50, 100]}
               component="div"
               count={table.totalRowCount || 0}

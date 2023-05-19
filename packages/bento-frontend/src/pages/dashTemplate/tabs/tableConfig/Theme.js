@@ -15,6 +15,12 @@ export const tblHeader = {
       },
     },
   },
+  MuiTableRow: {
+    head: {
+      height: '40px',
+      borderBottom: '3px solid #42779a',
+    },
+  },
 };
 
 const tblBody = {
@@ -37,9 +43,24 @@ const tblBody = {
           lineBreak: 'anywhere',
         },
       },
+      '&.acl': {
+        textAlign: 'center',
+      },
     },
   },
 }
+
+export const extendedView = {
+  tblTopPgn: {
+    MuiTablePagination: {
+      root: {
+        paddingRight: '50px',
+        borderTop: '3px solid #42779a',
+        borderBottom: '3px solid #42779a',
+      },
+    },
+  },
+};
 
 export const tblPgn = {
   MuiTablePagination: {
@@ -47,6 +68,9 @@ export const tblPgn = {
       paddingRight: '50px',
       borderTop: '5px solid #e7e5e5',
       borderBottom: '3px solid #e7e5e5',
+      '&:last-child': {
+        paddingRight: '50px',
+      }
     },
     toolbar: {
       minHeight: '45px',
@@ -78,4 +102,5 @@ export const themeConfig = {
   tblBody,
   tblContainer,
   tblPgn,
+  extendedView,
 };
