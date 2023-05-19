@@ -8,7 +8,7 @@ export const statsStyling = {
     background: '#8DCAFF',
   },
   statsGroup: {
-    margin: '7.25px 0px 9.25px 0px',
+    margin: '6px 9.25px',
     padding: '0.1% 6% 2% 6%',
     borderRight: '1px solid #0B3556',
     '&:first-child': {
@@ -21,20 +21,21 @@ export const statsStyling = {
     margin: '2px 0px 0px -45px',
   },
   statCount: {
-    color: '#263960',
-    fontFamily: 'sans-serif',
-    fontSize: '16.8px',
-    margin: '0px 0px -4px 8px',
-    float: 'left',
-    padding: '4px 60px',
+    color: '#0467BD',
+    fontFamily: 'Oswald',
+    fontSize: '20px',
+    lineHeight: '17px',
+    letterSpacing: '0.02em',
+    margin: '4px 0 2px 13px',
   },
   statTitle: {
-    color: '#0B3556',
-    fontFamily: 'sans-serif',
-    fontSize: '14px',
-    textTransform: 'none',
-    margin: '0px 0px 0px 8px',
-    float: 'left',
+    color: '#062D4F',
+    fontFamily: 'Nunito',
+    fontSize: '12px',
+    fontWeight: '700',
+    lineHeight: '16px',
+    textTransform: 'uppercase',
+    margin: '0 0 0 13px',
   },
 };
 
@@ -63,7 +64,7 @@ export const globalStatsData = [
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/master/icdc/images/svgs/Cases_.svg',
   },
   {
-    statTitle: 'samples',
+    statTitle: 'Samples',
     type: 'field',
     statAPI: 'numberOfSamples',
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Samples.svg',
@@ -75,7 +76,7 @@ export const globalStatsData = [
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Assays.svg',
   },
   {
-    statTitle: 'files',
+    statTitle: 'Files',
     type: 'field',
     statAPI: 'numberOfFiles',
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Files.svg',
