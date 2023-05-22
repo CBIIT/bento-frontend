@@ -24,6 +24,7 @@ const tblBody = {
       padding: '0px 5px 0px 20px',
       color: '#004C73',
       cursor: 'pointer',
+      borderBottom: 'none',
     },
     paddingCheckbox: {
       width: '48px',

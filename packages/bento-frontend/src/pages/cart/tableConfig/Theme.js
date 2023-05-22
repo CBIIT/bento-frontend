@@ -96,6 +96,7 @@ export const tblBody = {
   MuiTableCell: {
     body: {
       color: '#004C73',
+      borderBottom: 'none',
       '&.file_name': {
         maxWidth: '300px',
         '& p': {
@@ -111,6 +112,7 @@ export const tblBody = {
       paddingRight: '20px',
       color: '#004C73',
       cursor: 'pointer',
+      borderBottom: 'none',
     },
   },
 };
