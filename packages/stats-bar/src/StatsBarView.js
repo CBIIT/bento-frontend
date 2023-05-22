@@ -210,7 +210,7 @@ const styles = () => ({
       borderRight: 'none',
       minWidth: '205px',
       maxWidth: '225px',
-      padding: '4px 40px 10px 80px',
+      padding: props.styles.statsGroup ? (props.styles.statsGroup['&:last-child'] && props.styles.statsGroup['&:last-child'].padding) ? props.styles.statsGroup['&:last-child'].padding : '4px 40px 10px 80px' : '4px 40px 10px 80px',
     },
   }),
   statsIcon: (props) => ({
@@ -219,6 +219,7 @@ const styles = () => ({
     width: props.styles.statsIcon ? props.styles.statsIcon.width ? props.styles.statsIcon.width : '28px' : '28px',
     height: props.styles.statsIcon ? props.styles.statsIcon.height ? props.styles.statsIcon.height : '28px' : '28px',
     margin: props.styles.statsIcon ? props.styles.statsIcon.margin ? props.styles.statsIcon.margin : '8px 0px 0px -35px' : '8px 0px 0px -35px',
+    ...props.styles.statsIcon,
   }),
 });
 

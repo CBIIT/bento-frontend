@@ -14,11 +14,15 @@ export const statsStyling = {
     '&:first-child': {
       padding: '0.1% 6% 2% 6%',
     },
+    '&:last-child': {
+      padding: '0.1% 6% 2% 6%',
+    },
   },
   statsIcon: {
     width: '40px',
     height: '45px',
     margin: '2px 0px 0px -45px',
+    position: 'relative',
   },
   statCount: {
     color: '#0467BD',
