@@ -35,27 +35,32 @@ export const profileArmsTable = {
       dataField: 'armID',
       header: 'Arms',
       display: false,
+      tooltipText: 'sort',
     },
     {
       dataField: 'armName',
       header: NODE_LEVEL_ACCESS ? nodeName : 'Data Commons',
       display: true,
+      tooltipText: 'sort',
     },
     {
       dataField: 'accessStatus',
       header: 'Status',
       primary: true,
       display: true,
+      tooltipText: 'sort',
     },
     {
       dataField: 'requestDate',
       header: 'Request Date',
       display: true,
+      tooltipText: 'sort',
     },
     {
       dataField: 'reviewDate',
       header: 'Approved Date',
       display: true,
+      tooltipText: 'sort',
     },
   ],
   tableMsg: {

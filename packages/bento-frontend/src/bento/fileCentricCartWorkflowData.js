@@ -26,28 +26,68 @@ export const tooltipContent = {
   },
 };
 
+//BENTO-2455 Configuration set for Bento 4.0.
 export const myFilesPageData = {
-  mainTitle: 'Cart >',
-  subTitle: 'Selected Files',
-  downButtonText: 'DOWNLOAD MANIFEST',
-  headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Workflow.svg',
-  headerIconAlt: 'Bento MyFiles header logo',
   manifestFileName: 'BENTO File Manifest',
   tooltipIcon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   tooltipAlt: 'tooltip icon',
   tooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
-  textareaPlaceholder: 'Please add a description for the CSV file you are about to download.',
   errorMessage: 'An error has occurred in loading CART',
-  popUpWindow: {
-    showNumberOfFileBeRemoved: true,
-    messagePart1: 'Remove ',
-    messagePart2: 'All files (',
-    messagePart3: ') ',
-    messagePart4: 'From Cart',
-    okButtonText: 'Ok',
-    cancelButtonText: 'Cancel',
+  layout: [
+    {
+      container: 'outer_layout',
+      size: 'xl',
+      clsName: 'container_outer_layout',
+      items: [
+        {
+          clsName: 'cart_icon',
+          type: types.ICON,
+          src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Workflow.svg',
+          alt: 'Bento MyFiles header logo',
+        },
+        {
+          clsName: 'cart_header_text',
+          text: 'Cart >',
+          type: types.TEXT,
+        },
+        {
+          clsName: 'cart_sel_files_text',
+          text: 'Selected Files',
+          type: types.TEXT,
+        },
+      ],
+    },
+    {
+    container: 'buttons',
+    size: 'xl',
+    clsName: 'container_header',
+    items: [
+      {
+        title: 'DOWNLOAD MANIFEST',
+        clsName: 'download_manifest',
+        type: types.BUTTON,
+        role: btnTypes.DOWNLOAD_MANIFEST,
+        btnType: btnTypes.DOWNLOAD_MANIFEST,
+        tooltipCofig: tooltipContent,
+      }],
   },
+  {
+    container: 'paginatedTable',
+    paginatedTable: true,
+  },
+  {
+    container: 'buttons',
+    size: 'xl',
+    clsName: 'container_footer',
+    items: [
+      {
+        clsName: 'manifest_comments',
+        type: types.TEXT_INPUT,
+        placeholder: 'Please add a description for the CSV file you are about to download.',
+      }],
+  }]
 };
+
 
 export const manifestData = {
   keysToInclude: ['study_code', 'subject_id', 'file_name', 'file_id', 'md5sum'],
@@ -228,59 +268,4 @@ export const tableConfig = {
     noMatch: 'No Matching Records Found',
   },
 };
-
-//BENTO-2455 Bento-local 4.0.0-Cusdotian -> Unable to see the configuration changes in the Bento UI.
-export const wrapperConfig = [
-  {
-    container: 'outer_layout',
-    size: 'xl',
-    clsName: 'container_outer_layout',
-    items: [
-      {
-        clsName: 'cart_icon',
-        type: types.ICON,
-        src: myFilesPageData.headerIconSrc,
-        alt: myFilesPageData.headerIconAlt,
-      },
-      {
-        clsName: 'cart_header_text',
-        text: 'Cart >',
-        type: types.TEXT,
-      },
-      {
-        clsName: 'cart_sel_files_text',
-        text: 'Selected Files',
-        type: types.TEXT,
-      },
-    ],
-  },
-  {
-  container: 'buttons',
-  size: 'xl',
-  clsName: 'container_header',
-  items: [
-    {
-      title: 'DOWNLOAD MANIFEST',
-      clsName: 'download_manifest',
-      type: types.BUTTON,
-      role: btnTypes.DOWNLOAD_MANIFEST,
-      btnType: btnTypes.DOWNLOAD_MANIFEST,
-      tooltipCofig: tooltipContent,
-    }],
-},
-{
-  container: 'paginatedTable',
-  paginatedTable: true,
-},
-{
-  container: 'buttons',
-  size: 'xl',
-  clsName: 'container_footer',
-  items: [
-    {
-      clsName: 'manifest_comments',
-      type: types.TEXT_INPUT,
-      placeholder: myFilesPageData.textareaPlaceholder,
-    }],
-}];
 

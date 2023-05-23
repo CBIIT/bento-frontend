@@ -3,7 +3,7 @@ import { CartContext, setCartConfig } from '@bento-core/cart';
 import { Wrapper } from '@bento-core/paginated-table';
 import { customTheme } from './wrapperConfig/Theme';
 import {
-  myFilesPageData, table, manifestData, wrapperConfig,
+  myFilesPageData, table, manifestData,
 } from '../../bento/fileCentricCartWorkflowData';
 
 const Header = ({
@@ -31,7 +31,7 @@ const Header = ({
   return (
     <>
       <Wrapper
-        wrapConfig={wrapperConfig}
+        wrapConfig={myFilesPageData.layout}
         customTheme={customTheme}
         classes={classes}
         section="myFiles"
