@@ -19,7 +19,6 @@ const defaultTheme = () => ({
     root: {
       padding: '0px 5px 0px 20px',
       color: '#13344A',
-      cursor: 'pointer',
     },
   },
   MuiTableSortLabel: {

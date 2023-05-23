@@ -6,7 +6,7 @@ import {
   CartContextProvider,
 } from '@bento-core/cart';
 import { TableContextProvider } from '@bento-core/paginated-table';
-import { tableConfig } from '../../bento/fileCentricCartWorkflowData';
+import { table } from '../../bento/fileCentricCartWorkflowData';
 import CartView from './cartView';
 
 const CartController = (props) => (
@@ -14,7 +14,7 @@ const CartController = (props) => (
     <TableContextProvider>
       <CartView
         {...props}
-        config={tableConfig}
+        config={table}
       />
     </TableContextProvider>
   </CartContextProvider>

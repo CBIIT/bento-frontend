@@ -18,9 +18,9 @@ export const tblHeader = {
       padding: '0px 0px 0px 25px',
       paddingRight: '5px',
       color: '#13344A',
-      cursor: 'pointer',
       '&.del_all_row': {
         minWidth: '150px',
+        cursor: 'pointer',
       },
     },
   },
@@ -111,7 +111,6 @@ export const tblBody = {
       padding: '0px 0px 0px 25px',
       paddingRight: '20px',
       color: '#004C73',
-      cursor: 'pointer',
       borderBottom: 'none',
     },
   },
