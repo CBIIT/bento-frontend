@@ -15,7 +15,7 @@ const ProfileViewFooter = ({
   tblThemeConfig,
   nodeLevelAccess = true,
   nodeLabel,
- }) => {
+}) => {
   const { role, userStatus } = data.getMyUser;
 
   /**

@@ -31,8 +31,8 @@ const CustomHeaderCell = ({
         </MuiTooltip>
       );
     }
-    return <>{children}</>
-  }
+    return <>{children}</>;
+  };
 
   const Tooltip = components.Tooltip || DefaultTooltip;
 

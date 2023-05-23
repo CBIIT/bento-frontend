@@ -1,7 +1,8 @@
 import React from 'react';
-import { Tab,
+import {
+  Tab,
   Tabs,
-  createTheme, 
+  createTheme,
   ThemeProvider,
 } from '@material-ui/core';
 import { defaultTheme } from './defaultTheme';
@@ -13,16 +14,18 @@ const TabItems = ({
   orientation,
   customTheme = {},
 }) => {
-  const getTabLalbel = ({ name, count, clsName, index }) => (
+  const getTabLalbel = ({
+    name, count, clsName, index,
+  }) => (
     <>
       <span>
         {name}
         {count && (
-          <span
-            className={`index_${index} ${clsName}_count`}
-          >
-            {count}
-          </span>
+        <span
+          className={`index_${index} ${clsName}_count`}
+        >
+          {count}
+        </span>
         )}
       </span>
     </>

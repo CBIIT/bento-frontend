@@ -1,4 +1,4 @@
-
+/* eslint-disable import/prefer-default-export */
 export function formatBytes(bytes, decimals = 2) {
   if (bytes === 0) return '0 Bytes';
   const dm = decimals < 0 ? 0 : decimals;

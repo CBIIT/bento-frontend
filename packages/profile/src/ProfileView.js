@@ -2,7 +2,7 @@ import React from 'react';
 import {
   ThemeProvider,
   createTheme,
-  Container
+  Container,
 } from '@material-ui/core';
 import defaultTheme from './DefaultTheme';
 import HeaderView from './components/HeaderView';
@@ -22,10 +22,12 @@ const ProfileView = (props) => {
     nodeLevelAccess,
     nodeLabel,
   } = props;
-  const theme = createTheme({ overrides: {
-    ...defaultTheme(),
-    customTheme,
-  }});
+  const theme = createTheme({
+    overrides: {
+      ...defaultTheme(),
+      customTheme,
+    },
+  });
   return (
     <ThemeProvider theme={theme}>
       <Container className="container">
