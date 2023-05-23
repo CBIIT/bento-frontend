@@ -21,9 +21,14 @@ const ICDCFooter = () => {
   useEffect(() => {
     const getSystems = async () => {
       const backendApiUrl = new URL(BACKEND_API);
-      const backendUrl = `${backendApiUrl.protocol}//${backendApiUrl.hostname}:${backendApiUrl.port}/`;
+      const backendOrigin = `${backendApiUrl.protocol}//${backendApiUrl.hostname}${
+        // Just in case port doesn't exist
+        backendApiUrl.port
+          ? `:${backendApiUrl.port}/`
+          : '/'
+      }`;
       const [BEversion, FileServiceVersion] = (await Promise.allSettled([
-        fetchVersion(backendUrl),
+        fetchVersion(backendOrigin),
         fetchVersion(FILE_SERVICE_API),
       ])).map((res) => (res.status === 'fulfilled' ? res.value : '0.0.0'));
 
