@@ -31,7 +31,7 @@ const CustomHeaderCell = ({
         <CustomToolTip>
           {children}
         </CustomToolTip>
-      )
+      );
     }
     // return default tooltip
     if (tooltipText) {
