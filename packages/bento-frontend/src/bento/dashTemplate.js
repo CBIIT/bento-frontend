@@ -202,3 +202,70 @@ export const facetsConfig = [
     show: true,
   },
 ];
+
+// --------------- Dashboard Widgets configuration --------------
+// Sunburst chart color scheme
+export const SUNBURST_COLORS_LEVEL_1 = [
+  '#7dc242',
+  '#274fa5',
+  '#79287c',
+  '#f78f48',
+  '#057ebd',
+];
+
+export const SUNBURST_COLORS_LEVEL_2 = [
+  '#057ebd',
+  '#f78f48',
+  '#79287c',
+  '#0e3151',
+  '#057ebd',
+  '#7dc242',
+];
+
+// A maximum of 6 widgets are allowed
+// for donuts only the following are required: type, title, dataName
+//
+// type: 'sunburst' | 'donut'
+// title: string
+// dataName: string
+// datatable_level1_field: string
+// datatable_level1_colors: string[]
+// datatable_level2_field: string
+// datatable_level2_colors: string[]
+// sliceTitle: string (optional)
+export const widgetConfig = [
+  {
+    type: 'sunburst',
+    title: 'Programs and Arms',
+    dataName: 'armsByPrograms',
+    datatable_level1_field: 'program',
+    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
+    datatable_level2_field: 'arm',
+    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+  },
+  {
+    type: 'donut',
+    title: 'Diagnosis',
+    dataName: 'subjectCountByDiagnoses',
+  },
+  {
+    type: 'donut',
+    title: 'Recurrence Score',
+    dataName: 'subjectCountByRecurrenceScore',
+  },
+  {
+    type: 'donut',
+    title: 'Tumor Size',
+    dataName: 'subjectCountByTumorSize',
+  },
+  {
+    type: 'donut',
+    title: 'Chemotherapy',
+    dataName: 'subjectCountByChemotherapyRegimen',
+  },
+  {
+    type: 'donut',
+    title: 'Endocrine Therapy',
+    dataName: 'subjectCountByEndocrineTherapy',
+  },
+];

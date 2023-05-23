@@ -188,7 +188,6 @@ export const tableConfig = {
       dataField: 'file_size',
       header: 'Size',
       // set formatBytes to true to display file size (in bytes) in a more human readable format
-      formatBytes: true,
       display: true,
       dataFormatType: dataFormatTypes.FORMAT_BYTES,
       cellType: cellTypes.FORMAT_DATA,

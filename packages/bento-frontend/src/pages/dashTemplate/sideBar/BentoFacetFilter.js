@@ -29,7 +29,7 @@ import { resetIcon } from '../../../bento/dashboardData';
 import FacetFilterThemeProvider from './FilterThemeConfig';
 import {
   getAllSubjectIds, getAllIds,
-} from '../../dashboardTab/store/dashboardReducer';
+} from './BentoFilterUtils';
 
 const CustomExpansionPanelSummary = withStyles({
   root: {
