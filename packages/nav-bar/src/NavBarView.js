@@ -6,6 +6,7 @@ import {
   Button,
   Toolbar,
   Tooltip as MuiTooltip,
+  Box,
   withStyles,
 } from '@material-ui/core';
 import classnames from 'classnames';
@@ -81,7 +82,7 @@ const NavBar = ({
                 />
               )
               : (
-                <Button id="button_navbar_navButton" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRoot }}>
+                <Box id={`button_navbar_navButton_${index}`} className={classes.logotype} classes={{ root: classes.buttonRoot }}>
                   <HashRouter>
                     <NavLink
                       className={classes.labelText}
@@ -92,7 +93,7 @@ const NavBar = ({
                       {navButton.labelText}
                     </NavLink>
                   </HashRouter>
-                </Button>
+                </Box>
               )
           ))}
         </div>
@@ -101,7 +102,7 @@ const NavBar = ({
           <LoginComponent />
           {
             navBarCartData && (
-              <Button id="button_navbar_mycases" disableRipple weight="medium" className={classes.logotype} classes={{ root: classes.buttonRootNoRightPadding }}>
+              <Box id="button_navbar_mycases" className={classes.logotype} classes={{ root: classes.buttonRootNoRightPadding }}>
                 <HashRouter>
                   <NavLink
                     className={classes.cartLabelText}
@@ -123,7 +124,7 @@ const NavBar = ({
                     {/* </Badge> */}
                   </NavLink>
                 </HashRouter>
-              </Button>
+              </Box>
             )
           }
         </div>
@@ -194,9 +195,33 @@ const styles = () => ({
   }),
   buttonRoot: (props) => ({
     padding: props.navBarstyling.global.padding ? props.navBarstyling.global.padding : '9px 20px 0px 20px',
+    border: '0',
+    cursor: 'pointer',
+    margin: '0',
+    display: 'inline-flex',
+    position: 'relative',
+    alignItems: 'center',
+    verticalAlign: 'middle',
+    justifyContent: 'center',
+    textDecoration: 'none',
+    backgroundColor: 'transparent',
+    textTransform: 'uppercase',
+    lineHeight: '1.75'
   }),
   buttonRootNoRightPadding: (props) => ({
     padding: props.navBarstyling.cart.padding || props.navBarstyling.global.padding || '9px 20px 0px 20px',
+    border: '0',
+    cursor: 'pointer',
+    margin: '0',
+    display: 'inline-flex',
+    position: 'relative',
+    alignItems: 'center',
+    verticalAlign: 'middle',
+    justifyContent: 'center',
+    textDecoration: 'none',
+    backgroundColor: 'transparent',
+    textTransform: 'uppercase',
+    lineHeight: '1.75'
   }),
   badge: {
     display: 'inline-flex',
