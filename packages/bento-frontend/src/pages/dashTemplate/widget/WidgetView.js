@@ -65,9 +65,8 @@ const WidgetView = ({
             }}
             className={classes.customSwitch}
             disableRipple
-            onChange={() => {
-              themeChanger.toggleTheme();
-            }}
+            checked={themeChanger.dark}
+            onChange={themeChanger.toggleTheme}
           />
         </div>
       </div>
