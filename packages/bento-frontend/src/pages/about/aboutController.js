@@ -14,19 +14,21 @@ const About = ({ match }) => {
       try {
         result = await axios.get(YAMLData);
         resultData = yaml.safeLoad(result.data);
+        const supportObj = resultData.find(({ page }) => page === match.path);
+        setData(supportObj);
       } catch (error) {
-        result = await axios.get(YAMLData);
-        resultData = yaml.safeLoad(result.data);
+        return setData({error})
       }
-
-      const supportObj = resultData.find(({ page }) => page === match.path);
-
-      setData(supportObj);
     };
     fetchData();
   }, [match.path]);
 
+  if(data.error){
+    return <div>Error in Loading aboutPagesContent.yaml.</div>
+  }
+
   return (
+
     <AboutView data={data} />
   );
 };
