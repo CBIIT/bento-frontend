@@ -9,18 +9,22 @@ import { facetsConfig } from '../../../bento/dashTemplate';
  * Generate the Explore Tab Query Bar
  *
  * @param {object} props
+ * @param {object} props.data API search resultset
  * @param {object} props.statusReducer Facet Filter State
  * @param {object} props.localFind Local Find State
  * @returns {JSX.Element}
  */
-const QueryBarView = ({ statusReducer, localFind }) => {
+const QueryBarView = ({ data, statusReducer, localFind }) => {
   const dispatch = useDispatch();
 
   const sectionOrder = facetsConfig.map((v) => v.datafield);
   const mappedFilterState = Object.keys(statusReducer || {}).map((facet) => {
+    const config = facetsConfig.find((config) => config.datafield === facet);
+
     return {
-      ...facetsConfig.find((config) => config.datafield === facet),
+      ...config,
       items: statusReducer[facet],
+      data: data[config.apiForFiltering],
     }
   });
   mappedFilterState.sort((a, b) => sectionOrder.indexOf(a.datafield) - sectionOrder.indexOf(b.datafield));
