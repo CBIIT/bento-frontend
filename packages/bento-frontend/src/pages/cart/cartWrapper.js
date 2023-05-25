@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { CartContext, setCartConfig } from '@bento-core/cart';
 import { Wrapper } from '@bento-core/paginated-table';
 import { customTheme } from './wrapperConfig/Theme';
-import { wrapperConfig } from './wrapperConfig/Wrapper';
 import {
   myFilesPageData, table, manifestData,
 } from '../../bento/fileCentricCartWorkflowData';
@@ -32,7 +31,7 @@ const Header = ({
   return (
     <>
       <Wrapper
-        wrapConfig={wrapperConfig}
+        wrapConfig={myFilesPageData.layout}
         customTheme={customTheme}
         classes={classes}
         section="myFiles"

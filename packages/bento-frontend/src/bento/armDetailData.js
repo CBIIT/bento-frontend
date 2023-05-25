@@ -197,24 +197,28 @@ export const filesTable = {
       header: 'File Name',
       display: true,
       role: cellTypes.DISPLAY,
+      tooltipText: 'sort',
     },
     {
       dataField: 'file_type',
       header: 'File Type',
       display: true,
       role: cellTypes.DISPLAY,
+      tooltipText: 'sort',
     },
     {
       dataField: 'file_description',
       header: 'Description',
       display: true,
       role: cellTypes.DISPLAY,
+      tooltipText: 'sort',
     },
     {
       dataField: 'file_format',
       header: 'Format',
       display: true,
       role: cellTypes.DISPLAY,
+      tooltipText: 'sort',
     },
     {
       dataField: 'file_size',
@@ -223,6 +227,7 @@ export const filesTable = {
       formatBytes: true,
       display: true,
       role: cellTypes.DISPLAY,
+      tooltipText: 'sort',
     },
   ],
   tableMsg: {

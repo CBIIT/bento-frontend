@@ -117,7 +117,7 @@ const LandingView = ({ classes, statsData }) => (
                   <img
                     className={classes.image}
                     src={landingPageData.tile3.img}
-                    alt={landingPageData.tile3.src}
+                    alt={landingPageData.tile3.alt}
                     id="tile3_image"
                   />
                 </div>
@@ -191,7 +191,7 @@ const styles = () => ({
   },
   texture: {
     backgroundSize: 'cover',
-    background: '#B6DCFC',
+    background: '#CAE6FC',
     padding: '120px 0 80px 0',
   },
   container: {
@@ -385,13 +385,13 @@ const styles = () => ({
   mountainMeadowButtonSection: {
     height: '46px',
     width: '176px',
-    backgroundColor: '#10A075',
+    backgroundColor: '#0E8662',
     marginTop: '20px',
 
   },
   blueButton: {
     height: '45px',
-    background: '#0077E3',
+    background: '#0074DB',
     color: '#FFFFFF',
     fontFamily: 'Raleway',
     fontSize: '12px',

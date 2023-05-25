@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import MuiTooltip from '@material-ui/core/Tooltip';
@@ -23,7 +23,17 @@ const CustomHeaderCell = ({
     customColHeaderRender,
   } = column;
 
-  const DefaultTooltip = ({ children }) => {
+  const Tooltip = useCallback(({ children }) => {
+    // return custom tooltips
+    if (components.Tooltip) {
+      const CustomToolTip = components.Tooltip;
+      return (
+        <CustomToolTip>
+          {children}
+        </CustomToolTip>
+      );
+    }
+    // return default tooltip
     if (tooltipText) {
       return (
         <MuiTooltip id="header-tooltip" title={tooltipText}>
@@ -31,10 +41,9 @@ const CustomHeaderCell = ({
         </MuiTooltip>
       );
     }
+    // return default view
     return <>{children}</>;
-  };
-
-  const Tooltip = components.Tooltip || DefaultTooltip;
+  }, []);
 
   return (
     <TableCell
