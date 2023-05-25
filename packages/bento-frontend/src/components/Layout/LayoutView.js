@@ -8,7 +8,6 @@ import Footer from '../Footer/FooterView';
 import Error from '../../pages/error/Error';
 import CaseDetail from '../../pages/caseDetail/caseDetailController';
 import ArmDetail from '../../pages/armDetail/armDetailController';
-import modelPage from '../../pages/modelPage/modelPageView';
 import table from '../../pages/table/tableView';
 import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
@@ -73,7 +72,6 @@ const Layout = ({ classes, isSidebarOpened }) => {
 
             {/* SECTION: Member & Admin only Path */}
             <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
-            <PrivateRoute path="/model" access={['admin', 'member']} component={modelPage} />
             <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CarView} />
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             <PrivateRoute path="/case/:id" access={['admin', 'member']} component={CaseDetail} />
