@@ -3,7 +3,6 @@ import React from 'react';
 import { HashRouter, NavLink } from 'react-router-dom';
 import {
   AppBar,
-  Button,
   Toolbar,
   Tooltip as MuiTooltip,
   Box,
@@ -206,7 +205,7 @@ const styles = () => ({
     textDecoration: 'none',
     backgroundColor: 'transparent',
     textTransform: 'uppercase',
-    lineHeight: '1.75'
+    lineHeight: '1.75',
   }),
   buttonRootNoRightPadding: (props) => ({
     padding: props.navBarstyling.cart.padding || props.navBarstyling.global.padding || '9px 20px 0px 20px',
@@ -221,7 +220,7 @@ const styles = () => ({
     textDecoration: 'none',
     backgroundColor: 'transparent',
     textTransform: 'uppercase',
-    lineHeight: '1.75'
+    lineHeight: '1.75',
   }),
   badge: {
     display: 'inline-flex',
