@@ -33,7 +33,6 @@ const DropdownMenu = ({
       <Button
         id="button_navbar_about"
         weight="medium"
-        aria-controls="simple-menu"
         aria-haspopup="true"
         onFocus={handleClick}
         className={classes.logotype}
