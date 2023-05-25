@@ -12,7 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@bento-core/about": "^0.2.0",
     "@bento-core/admin": "^0.2.0",
     "@bento-core/authentication": "^0.2.0",
