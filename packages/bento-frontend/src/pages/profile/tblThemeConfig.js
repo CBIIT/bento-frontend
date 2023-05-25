@@ -26,6 +26,7 @@ export const tblBody = {
       fontWeight: 'normal',
       padding: '5px 0px 5px 50px',
       letterSpacing: '0.025em',
+      borderBottom: 'none',
     },
     body: {
       color: '#004C73',
