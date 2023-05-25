@@ -2,10 +2,8 @@ import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
 import { onAddCartFiles } from '@bento-core/cart';
-import {
-  TableContext,
-  onRowSeclect,
-} from '@bento-core/paginated-table';
+import { TableContext } from '../../../table/ContextProvider';
+import { onRowSeclect } from '../../../table/state/Actions';
 import AddSelectedFileComponent from './AddSelectedFilesView';
 import { getFilesID } from '../../WrapperService';
 
@@ -23,10 +21,11 @@ const AddSelectedFilesController = (props) => {
   } = props;
 
   const tableContext = useContext(TableContext);
+  const { context } = tableContext;
   const {
     selectedRows = [],
     dispatch,
-  } = tableContext.context;
+  } = context;
   const variables = {};
   variables[dataKey] = selectedRows;
   // add selected files id

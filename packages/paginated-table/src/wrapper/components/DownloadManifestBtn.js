@@ -17,9 +17,10 @@ const DownloadManifestView = (props) => {
   * get cart state
   */
   const cartContext = useContext(CartContext);
+  const { context } = cartContext;
   const {
     cart,
-  } = cartContext.context;
+  } = context;
 
   const getQueryVeriables = (queryVariables) => {
     const variables = { ...queryVariables };

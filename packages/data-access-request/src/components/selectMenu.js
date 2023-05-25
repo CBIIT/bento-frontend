@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -69,6 +68,7 @@ const SelectMenu = (field, formValues, handleInputChange,
           disabled={disabled}
           name={id}
           displayEmpty
+          // eslint-disable-next-line react/destructuring-assignment
           value={formValues[id]}
           required={required}
           onChange={handleInputChange}
@@ -90,7 +90,10 @@ const SelectMenu = (field, formValues, handleInputChange,
         >
           {selectOptions.map(({ id: key, name }) => (
             <MenuItem dense key={key} value={key} className={classes.selectMenuItem}>
-              <Checkbox checked={formValues[id].indexOf(key) > -1} />
+              <Checkbox
+                // eslint-disable-next-line react/destructuring-assignment
+                checked={formValues[id].indexOf(key) > -1}
+              />
               {name}
             </MenuItem>
           ))}

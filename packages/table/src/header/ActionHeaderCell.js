@@ -1,5 +1,4 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
 import { cellTypes } from '../util/Types';
 import CheckboxView from './components/CheckBoxView';
 import DeleteCellView from './components/DeleteCellView';
@@ -21,7 +20,7 @@ const ActionHeaderCell = ({
         toggleSelectAll={toggleSelectAll}
         Ids={Ids}
       />
-    )
+    );
   }
 
   if (cellTypes.DELETE === cellType) {
@@ -33,10 +32,10 @@ const ActionHeaderCell = ({
       />
     );
   }
-  
+
   return (
     <></>
   );
-}
+};
 
 export default ActionHeaderCell;

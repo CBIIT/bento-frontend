@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { TextField, withStyles } from '@material-ui/core';
+import { getFromLocalStorage, storeInLocalStorage, custodianUtils } from '@bento-core/util';
 import TextEditComponent from './textEditComponent';
-import { getFromLocalStorage, storeInLocalStorage } from '@bento-core/util';
-import { custodianUtils } from '@bento-core/util';
 import style from './defaultStyle';
 
 const BodyView = ({
-    classes,
-    data,
-    changeUserBasicInfo,
-    editTool,
+  classes,
+  data,
+  changeUserBasicInfo,
+  editTool,
 }) => {
   const { getMyUser } = data;
   const [firstName, setFirstName] = useState(getMyUser.firstName);

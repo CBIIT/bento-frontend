@@ -3,7 +3,7 @@ const defaultTheme = () => ({
     maxWidthLg: {
       '@media (min-width: 1280px)': {
         maxWidth: '70vw',
-      }
+      },
     },
     root: {
       backgroundColor: '#ffffff',
@@ -18,6 +18,5 @@ const defaultTheme = () => ({
     },
   },
 });
-  
+
 export default defaultTheme;
-  

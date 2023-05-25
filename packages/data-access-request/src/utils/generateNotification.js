@@ -1,6 +1,6 @@
-import defaultNotification from "../data/defaultNotification";
+import defaultNotification from '../data/defaultNotification';
 
-const generateNotification= (customNotification = {}) => {
+const generateNotification = (customNotification = {}) => {
   const notification = { ...defaultNotification };
 
   if (customNotification.error) {
@@ -8,14 +8,17 @@ const generateNotification= (customNotification = {}) => {
   }
 
   if (customNotification.success) {
-    notification.success= { ...notification.success, ...customNotification.success };
+    notification.success = { ...notification.success, ...customNotification.success };
   }
   if (customNotification.noAclToRequest) {
-    notification.noAclToRequest = { ...notification.noAclToRequest, ...customNotification.noAclToRequest };
+    notification.noAclToRequest = {
+      ...notification.noAclToRequest,
+      ...customNotification.noAclToRequest,
+    };
   }
 
   if (customNotification.noAccess) {
-    notification.noAccess= { ...notification.noAccess, ...customNotification.noAccess };
+    notification.noAccess = { ...notification.noAccess, ...customNotification.noAccess };
   }
 
   if (customNotification.disabled) {

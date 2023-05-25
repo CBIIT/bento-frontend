@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   TableCell,
-  Link,
   Typography,
 } from '@material-ui/core';
 import { cellTypes } from '../util/Types';

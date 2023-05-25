@@ -27,5 +27,5 @@ export {
   generateFacetSectionView,
 } from './generator/component';
 export {
-  default as ClearAllFiltersBtn
+  default as ClearAllFiltersBtn,
 } from './components/reset/ReduxClearAllBtn';

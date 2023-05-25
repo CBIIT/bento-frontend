@@ -12,8 +12,8 @@ const CellView = ({
   row,
 }) => {
   const { dataFormatType } = column;
-  const value = row[column?.dataField]
-  switch(dataFormatType) {
+  const value = row[column?.dataField];
+  switch (dataFormatType) {
     case dataFormatTypes.FORMAT_BYTES:
       return (
         <Typography>

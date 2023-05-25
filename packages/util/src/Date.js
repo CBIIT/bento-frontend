@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 /**
  * Provides timestamp in simple format.
  * @param {string} dateString - date string to be reformatted.

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import generateStyle from './utils/generateStyle';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useMutation } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import generateStyle from './utils/generateStyle';
 import SelectMenu from './components/selectMenu';
 import TextBox from './components/textBox';
 import getRedirectedType from './utils/getRedirectType';
@@ -25,7 +25,7 @@ function DataAccessRequest({
   custodianUtils,
   notification,
   styles,
-  AlertMessage
+  AlertMessage,
 
 }) {
   /* styles */
@@ -67,11 +67,12 @@ function DataAccessRequest({
   const fieldsToChk = formFields.map(
     (field) => (field.required ? field.id : null),
   );
-  const [formValues, setFormValues] = useState(setDefaultValues(formFields, getMyUser, availableArms));
+  const [formValues, setFormValues] = useState(
+    setDefaultValues(formFields, getMyUser, availableArms),
+  );
 
   /* event handlers */
   const isInputDisabled = () => isFormSubmitted || (availableArms.length <= 0);
-
 
   const getErrorDetails = () => {
     const {
@@ -103,7 +104,8 @@ function DataAccessRequest({
       case 'error':
         return (
           <AlertMessage severity="error" backgroundColor={notificationSchema.error.color}>
-            {notificationSchema.error.message ? notificationSchema.error.message : getErrorDetails()}
+            {notificationSchema.error.message
+              ? notificationSchema.error.message : getErrorDetails()}
           </AlertMessage>
         );
       case 'success':
@@ -158,7 +160,7 @@ function DataAccessRequest({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-         setFormValues({
+    setFormValues({
       ...formValues,
       [name]: value,
     });
@@ -167,10 +169,10 @@ function DataAccessRequest({
   const handleSubmit = (event) => {
     event.preventDefault();
     const userInfo = formValues;
-    if (userStatus !== "Disabled") {
-      mutate({ variables: { userInfo } })
-    } else if (userStatus === "Disabled") {
-        setShowDisabledAlert(true);
+    if (userStatus !== 'Disabled') {
+      mutate({ variables: { userInfo } });
+    } else if (userStatus === 'Disabled') {
+      setShowDisabledAlert(true);
     }
   };
 

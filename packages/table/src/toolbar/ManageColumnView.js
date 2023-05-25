@@ -18,7 +18,6 @@ import {
 import { cellTypes } from '../util/Types';
 
 const ManageColumnView = ({
-  classes,
   table,
   onColumnViewChange,
   manageViewColumns,
@@ -69,12 +68,12 @@ const ManageColumnView = ({
               className="viewColumnListItem"
             >
               <Checkbox
-                icon={
+                icon={(
                   <CheckBoxBlankIcon
                     style={{ fontSize: 18 }}
                     className="checkBoxIcon"
                   />
-                }
+                )}
                 onClick={() => onColumnViewChange(column)}
                 checked={column.display}
                 checkedIcon={(

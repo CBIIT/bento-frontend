@@ -3,27 +3,24 @@ import {
   IconButton,
   Tooltip,
 } from '@material-ui/core';
-import {
-  CloudDownload,
-} from '@material-ui/icons';
+import { CloudDownload } from '@material-ui/icons';
 
 const DownloadButton = ({
-  download
+  download,
 }) => {
   if (!download) {
     return null;
   }
-  
+
   return (
     <>
       <Tooltip title={download.downloadCsv}>
-        <IconButton
-        >
+        <IconButton>
           <CloudDownload />
         </IconButton>
       </Tooltip>
     </>
-  )
-}
+  );
+};
 
 export default DownloadButton;

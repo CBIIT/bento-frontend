@@ -58,7 +58,7 @@ export const SearchResultsGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHRESULTS) 
                 <Tab
                   key={`result_tab_${idx}`}
                   classes={prop.classes}
-                  label={
+                  label={(
                     <span>
                       <span id={`global_search_tab_label_${idx}`}>
                         {typeof prop.name === 'function' ? prop.name() : prop.name}
@@ -66,7 +66,7 @@ export const SearchResultsGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHRESULTS) 
                       {' '}
                       <span id={`global_search_tab_count_${idx}`}>{prop.count}</span>
                     </span>
-                  }
+                  )}
                   value={prop.value}
                 />
               ))}

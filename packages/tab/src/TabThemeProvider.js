@@ -2,7 +2,7 @@ import React from 'react';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 
 export default ({
-  children, extraStyles, muiTabsTheme, muiTabTheme,themes, overrides
+  children, extraStyles, muiTabsTheme, muiTabTheme, themes, overrides,
 }) => {
   const style = [];
   const overridesObj = themes.light.overrides;

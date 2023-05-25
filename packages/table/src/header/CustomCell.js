@@ -42,7 +42,7 @@ const CustomHeaderCell = ({
       );
     }
     // return default view
-    return <>{children}</>
+    return <>{children}</>;
   }, []);
 
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -9,9 +10,7 @@ import {
 import HeaderCell from './CustomCell';
 // import { getClsName, tableCls } from '../util/ClassNames';
 import defaultTheme from './DefaultThemConfig';
-import { actionCellTypes, cellTypes } from '../util/Types';
-import CheckboxView from './components/CheckBoxView';
-import DeleteCellView from './components/DeleteCellView';
+import { actionCellTypes } from '../util/Types';
 import ActionHeaderCell from './ActionHeaderCell';
 
 const CustomTableHeader = ({
@@ -57,7 +56,7 @@ const CustomTableHeader = ({
                     count={count}
                     column={column}
                   />
-                )
+                );
               }
 
               return (

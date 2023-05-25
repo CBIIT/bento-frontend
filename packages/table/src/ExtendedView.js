@@ -17,32 +17,32 @@ const ExtendedView = ({
   numSelected = 0,
   customTheme,
 }) => {
-    const { extendedViewConfig } = table;
-    if (!extendedViewConfig) {
-      return null;
-    }
-    const {
-      download = false,
-      manageViewColumns = false,
-      pagination = false,
-    } = extendedViewConfig;
+  const { extendedViewConfig } = table;
+  if (!extendedViewConfig) {
+    return null;
+  }
+  const {
+    download = false,
+    manageViewColumns = false,
+    pagination = false,
+  } = extendedViewConfig;
 
-    const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
-    return (
-      <ThemeProvider theme={themeConfig}>
-        {(numSelected === 0 && (download || manageViewColumns)) && (
-          <Toolbar className="downloadColumnView">
-            <DownloadButton
-              download={download}
-            />
-            <ManageColumnView
-              table={table}
-              manageViewColumns={manageViewColumns}
-              onColumnViewChange={onColumnViewChange}
-            />
-          </Toolbar>
-        )}
-        {
+  const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
+  return (
+    <ThemeProvider theme={themeConfig}>
+      {(numSelected === 0 && (download || manageViewColumns)) && (
+      <Toolbar className="downloadColumnView">
+        <DownloadButton
+          download={download}
+        />
+        <ManageColumnView
+          table={table}
+          manageViewColumns={manageViewColumns}
+          onColumnViewChange={onColumnViewChange}
+        />
+      </Toolbar>
+      )}
+      {
           (pagination) && (
             <CustomPagination
               customTheme={customTheme.tblTopPgn}
@@ -56,8 +56,8 @@ const ExtendedView = ({
             />
           )
         }
-       </ThemeProvider>
-    );
+    </ThemeProvider>
+  );
 };
 
 export default ExtendedView;
