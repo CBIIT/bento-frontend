@@ -5,6 +5,9 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable no-useless-escape */
+/* eslint-disable no-unneeded-ternary */
+
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -42,7 +45,7 @@ const CheckBoxView = ({
     tooltip,
   } = checkboxItem;
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
-  const checkedSection = `${section}`.toLowerCase().replace(/\ /g,'_');
+  const checkedSection = `${section}`.toLowerCase().replace(/\ /g, '_');
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
