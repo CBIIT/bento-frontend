@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/local-find",
-  "version": "0.2.0",
+  "version": "0.3.0-alpha.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,14 +16,14 @@
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "*",
     "@material-ui/lab": "*",
+    "clsx": "^1.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
-    "react-redux": "^7.2.1",
-    "clsx": "^1.2.1"
+    "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "lodash": "^4.17.20",
-    "@bento-core/tool-tip": "^0.2.0"
+    "@bento-core/tool-tip": "^0.3.0-alpha.0",
+    "lodash": "^4.17.20"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"
