@@ -6,7 +6,6 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-useless-escape */
-/* eslint-disable no-unneeded-ternary */
 
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
@@ -105,7 +104,7 @@ const CheckBoxView = ({
         { tooltip ? (
           <Tooltip id={datafield} title={tooltip}>
             <div className={datafield}>
-              {customName ? customName : name}
+              {customName || name}
             </div>
           </Tooltip>
         ) : (
@@ -118,7 +117,7 @@ const CheckBoxView = ({
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {customSubjects ? customSubjects : `(${subjects})`}
+          {customSubjects || `(${subjects})`}
         </Typography>
       </ListItem>
       <Divider
