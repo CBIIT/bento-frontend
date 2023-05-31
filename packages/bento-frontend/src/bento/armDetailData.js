@@ -6,6 +6,10 @@ import { FileOnRowsSelect } from '../utils/fileTable';
 export const tooltipContent = {
   src: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
+  arrow: true,
+  placement: 'top-end',
+  sample: 'Click button to add selected files associated with the selected sample(s).',
+  files: 'Click button to add selected files.',
 };
 
 // -------------- Case ID area configurations --------------
