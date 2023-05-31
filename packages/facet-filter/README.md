@@ -279,4 +279,31 @@ const {
 // 4. set customSubjects to display customize value or adjust correct field for subject count
 // 5. tooltip - provide text value to tooltip text
 
+ /**
+   * Add Bento frontend filter count/subjects
+   * Add tootip text
+   */
+  const filterData = facetsConfig.reduce((acc, item) => {
+    const facetValues = searchData[item.apiPath];
+    if (!facetValues) {
+      return acc;
+    }
+    const subjectCounts = [...facetValues].map((checkbox) => {
+      const text = tooltipText[item.tooltipKey];
+      return {
+        ...checkbox,
+        customSubjects: checkbox.count,
+        tooltip: text ? text[checkbox.group] : undefined,
+      };
+    });
+    return { ...acc, [item.apiPath]: [...subjectCounts] };
+  }, {});
+
+  <FacetFilter
+    data={filterData}
+    facetSectionConfig={facetSectionVariables}
+    facetsConfig={facetsConfig}
+    CustomFacetSection={CustomFacetSection}
+    CustomFacetView={CustomFacetView}
+  />
 ```
