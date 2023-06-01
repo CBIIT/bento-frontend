@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Container, withStyles } from '@material-ui/core';
 import { TableContext, TableView, Wrapper } from '@bento-core/paginated-table';
 import {
-  sampleTable, table1,
+  sampleTable,
 } from '../../../bento/caseDetailData';
 import { themeConfig, wrapperThemConfig } from './Theme';
 import { footerConfig } from './Wrapper';
@@ -32,7 +32,7 @@ const SampleTableView = ({
       {selectedRows.length === 0 && (
         <Container className={classes.container}>
           <span className={classes.tableName}>
-            {table1.tableTitle}
+            {sampleTable.tableTitle}
           </span>
         </Container>
       )}

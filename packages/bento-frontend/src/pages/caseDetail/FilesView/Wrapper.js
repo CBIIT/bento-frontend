@@ -3,7 +3,6 @@ import { types, btnTypes } from '@bento-core/paginated-table';
 import { GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL } from '../../../bento/dashboardTabData';
 import {
   filesTable,
-  table2,
   tooltipContent,
 } from '../../../bento/caseDetailData';
 
@@ -14,7 +13,7 @@ export const footerConfig = [{
   section: filesTable.name,
   items: [
     {
-      title: table2.buttonText,
+      title: filesTable.buttonText,
       clsName: 'add_selected_button',
       type: types.BUTTON,
       role: btnTypes.ADD_SELECTED_FILES,

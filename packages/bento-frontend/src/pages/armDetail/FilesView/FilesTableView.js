@@ -9,7 +9,7 @@ import {
 } from './Theme';
 import { footerConfig } from './ThemeConfigWrapper';
 import {
-  filesTable, table,
+  filesTable,
 } from '../../../bento/armDetailData';
 
 const FilesTableView = ({
@@ -37,7 +37,7 @@ const FilesTableView = ({
       {selectedRows.length === 0 && (
         <div className={classes.tableTitle} id="arm_detail_table_title">
           <span className={classes.tableName}>
-            {table.title}
+            {filesTable.title}
           </span>
         </div>
       )}
