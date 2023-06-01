@@ -37,7 +37,7 @@ const FilesTableView = ({
       {selectedRows.length === 0 && (
         <div className={classes.tableTitle} id="arm_detail_table_title">
           <span className={classes.tableName}>
-            ASSOCIATED FILES
+            {filesTable.title}
           </span>
         </div>
       )}
