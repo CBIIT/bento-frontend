@@ -132,7 +132,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
         // Split content by lines and commas
         const searchTokens = content
           .split(/[,\n]/g)
-          .map((e) => e.trim().replace('\r', ''))
+          .map((e) => e.trim().replace('\r', '')).toUppercase()
           .filter((e) => e && e.length > 1);
 
         const { matched, unmatched } = await searchMatches(searchTokens);
