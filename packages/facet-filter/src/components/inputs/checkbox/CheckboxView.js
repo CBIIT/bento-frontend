@@ -5,6 +5,8 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable no-useless-escape */
+
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -33,15 +35,16 @@ const CheckBoxView = ({
 }) => {
   const {
     name,
+    customName,
     subjects,
+    customSubjects,
     isChecked = false,
     index,
     section,
     tooltip,
-    label,
   } = checkboxItem;
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
-  const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
+  const checkedSection = `${section}`.toLowerCase().replace(/\ /g, '_');
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
@@ -60,8 +63,8 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      {label ? (
-        <Typography className={classes.checkboxLabel}>{label}</Typography>
+      {customName ? (
+        <Typography className={classes.checkboxLabel}>{customName}</Typography>
       ) : (<Typography className={classes.checkboxName}>{name}</Typography>)}
     </Box>
   );
@@ -78,7 +81,12 @@ const CheckBoxView = ({
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
-          icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+          icon={
+            <CheckBoxBlankIcon
+              style={{ fontSize: 18 }}
+              className={checkedSection}
+            />
+          }
           onClick={handleToggle}
           checked={isChecked}
           checkedIcon={(
@@ -96,20 +104,20 @@ const CheckBoxView = ({
         { tooltip ? (
           <Tooltip id={datafield} title={tooltip}>
             <div className={datafield}>
-              <LabelComponent />
+              {customName || name}
             </div>
           </Tooltip>
         ) : (
           <LabelComponent />
         )}
-        <ListItemText />
+        <ListItemText className={`${checkedSection}_md_space`} />
         <Typography
           className={clsx(`${checkedSection}Subjects`, {
             [`${checkedSection}SubjectUnChecked`]: !isChecked,
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {`(${subjects})`}
+          {customSubjects || `(${subjects})`}
         </Typography>
       </ListItem>
       <Divider
