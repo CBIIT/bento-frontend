@@ -56,7 +56,6 @@ export const extendedView = {
       root: {
         paddingRight: '50px',
         borderTop: '3px solid #42779a',
-        borderBottom: '3px solid #42779a',
       },
     },
   },
@@ -84,6 +83,8 @@ export const tblContainer = {
       width: '100%',
       overflowX: 'auto',
       transform: 'rotateX(180deg)',
+      boxShadow: 'none',
+      borderRadius: '0',
     }
   },
   MuiTable: {
@@ -93,6 +94,7 @@ export const tblContainer = {
       display: 'table',
       borderSpacing: '0',
       borderCollapse: 'collapse',
+      borderTop: '3px solid #42779a',
     },
   },
 };
