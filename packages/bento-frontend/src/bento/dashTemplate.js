@@ -5,6 +5,14 @@ const SAMPLES = 'Samples';
 const FILES = 'Files';
 const GROUP = 'group';
 
+// --------------- Facet resetIcon link configuration --------------
+// Ideal size for resetIcon is 16x16 px
+export const resetIcon = {
+  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Clear-icon.svg',
+  alt: 'Reset icon',
+  size: '12 px',
+};
+
 // --------------- Dashboard Sidebar Sections styling --------------
 export const facetSectionVariables = {
   Cases: {

@@ -22,9 +22,10 @@ const FilesTableView = ({
     columns: filesTable.columns,
     selectedRows: [],
     tableMsg: filesTable.tableMsg,
+    sortBy: filesTable.defaultSortField,
+    sortOrder: filesTable.defaultSortDirection,
     rowsPerPage: 10,
     dataKey: filesTable.dataKey,
-    sortBy: filesTable.defaultSortField,
     page: 0,
   });
 
