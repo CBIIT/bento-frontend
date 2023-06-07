@@ -1207,488 +1207,8 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
   }`;
 
 // --------------- Tabs Table configuration --------------
-export const tabContainersOld = [
-  {
-
-    name: 'Cases',
-    dataField: 'dataCase',
-    api: GET_CASES_OVERVIEW_QUERY,
-    paginationAPIField: 'subjectOverview',
-    count: 'numberOfSubjects',
-    dataKey: 'subject_id',
-    defaultSortField: 'subject_id',
-    defaultSortDirection: 'asc',
-    buttonText: 'Add Selected Files',
-    tabHeaderStyle:{selected:{
-      background: '#d6f2ea',
-      color: '#10a075',
-    }},
-    saveButtonDefaultStyle: {
-      color: '#fff',
-      backgroundColor: '#09A175',
-      opacity: '1',
-      border: '0px',
-      cursor: 'pointer',
-    },
-    ActiveSaveButtonDefaultStyle: {
-      cursor: 'pointer',
-      opacity: 'unset',
-      border: 'unset',
-    },
-    DeactiveSaveButtonDefaultStyle: {
-      opacity: '0.3',
-      cursor: 'auto',
-    },
-    columns: [
-      {
-        dataField: 'subject_id',
-        header: 'Case ID',
-        sort: 'asc',
-        link: '/case/{subject_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/case',
-          pathParams: ['subject_id'],
-        },
-        primary: true,
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'program',
-        header: 'Program Code',
-        sort: 'asc',
-        link: '/program/{program_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'study_acronym',
-        header: 'Arm',
-        sort: 'asc',
-        link: '/arm/{study_acronym}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['study_acronym'],
-        },
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'diagnosis',
-        header: 'Diagnosis',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'recurrence_score',
-        header: 'Recurrence Score',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'tumor_size',
-        header: 'Tumor Size (cm)',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'er_status',
-        header: 'ER Status',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'pr_status',
-        header: 'PR Status',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'age_at_index',
-        header: 'Age (years)',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'survival_time',
-        header: 'Survival (days)',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-    ],
-    id: 'case_tab',
-    onRowsSelect: 'type1',
-    disableRowSelection: 'type1',
-    tableID: 'case_tab_table',
-    selectableRows: true,
-    tableDownloadCSV: customCasesTabDownloadCSV,
-    tabIndex: '0',
-    downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
-    tableMsg: {
-      noMatch: 'No Matching Records Found',
-    },
-    addAddFileAPI: GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
-    addSelectedIdAPI: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
-  },
-  {
-    name: 'Samples',
-    dataField: 'dataSample',
-    api: GET_SAMPLES_OVERVIEW_QUERY,
-    count: 'numberOfSamples',
-    paginationAPIField: 'sampleOverview',
-    dataKey: 'sample_id',
-    defaultSortField: 'sample_id',
-    defaultSortDirection: 'asc',
-    tabHeaderStyle:{selected:{
-      background: '#cfedf9',
-      color: '#0dafec',
-    }},
-    saveButtonDefaultStyle: {
-      color: '#fff',
-      backgroundColor: '#00AEEF',
-      opacity: '1',
-      border: '0px',
-      cursor: 'pointer',
-    },
-    DeactiveSaveButtonDefaultStyle: {
-      opacity: '0.3',
-      cursor: 'auto',
-    },
-    ActiveSaveButtonDefaultStyle: {
-      cursor: 'pointer',
-      opacity: 'unset',
-      border: 'unset',
-    },
-    columns: [
-      {
-        dataField: 'sample_id',
-        header: 'Sample ID',
-        sort: 'asc',
-        primary: true,
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'subject_id',
-        header: 'Case ID',
-        sort: 'asc',
-        link: '/case/{subject_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/case',
-          pathParams: ['subject_id'],
-        },
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'program',
-        header: 'Program Code',
-        sort: 'asc',
-        link: '/program/{program_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        sort: 'asc',
-        display: false,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'arm',
-        header: 'Arm',
-        sort: 'asc',
-        link: '/arm/{arm}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['study_acronym'],
-        },
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'diagnosis',
-        header: 'Diagnosis',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'tissue_type',
-        header: 'Tissue Type',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'tissue_composition',
-        header: 'Tissue Composition',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'sample_anatomic_site',
-        header: 'Sample Anatomic Site',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'sample_procurement_method',
-        header: 'Sample Procurement Method',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'platform',
-        header: 'platform',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-    ],
-    id: 'sample_tab',
-    onRowsSelect: 'type3',
-    disableRowSelection: 'type2',
-    buttonText: 'Add Selected Files',
-    tableID: 'sample_tab_table',
-    selectableRows: true,
-    tabIndex: '1',
-    tableDownloadCSV: customSamplesTabDownloadCSV,
-    downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
-    tableMsg: {
-      noMatch: 'No Matching Records Found',
-    },
-    addAddFileAPI: GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
-    addSelectedIdAPI: GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
-  },
-  {
-    name: 'Files',
-    dataField: 'dataFile',
-    api: GET_FILES_OVERVIEW_QUERY,
-    paginationAPIField: 'fileOverview',
-    defaultSortField: 'file_name',
-    defaultSortDirection: 'asc',
-    count: 'numberOfFiles',
-    buttonText: 'Add Selected Files',
-    dataKey: 'file_name',
-    tabHeaderStyle:{selected:{
-      background: '#f7d7f7',
-      color: '#c92ec7',
-    }},
-    saveButtonDefaultStyle: {
-      color: '#fff',
-      backgroundColor: '#DC2FDA',
-      opacity: '1',
-      border: '0px',
-      cursor: 'pointer',
-    },
-    DeactiveSaveButtonDefaultStyle: {
-      opacity: '0.3',
-      cursor: 'auto',
-    },
-    ActiveSaveButtonDefaultStyle: {
-      cursor: 'pointer',
-      opacity: 'unset',
-      border: 'unset',
-    },
-    columns: [
-      {
-        dataField: 'file_name',
-        header: 'File Name',
-        sort: 'asc',
-        primary: true,
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'file_id',
-        header: 'File ID',
-        sort: 'asc',
-        display: false,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'association',
-        header: 'Association',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'file_description',
-        header: 'Description',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'file_format',
-        header: 'File Format',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'file_size',
-        header: 'Size',
-        sort: 'asc',
-        display: true,
-        formatBytes: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon
-        header: 'Access',
-        sort: 'asc',
-        display: true,
-        cellType: cellTypes.CUSTOM_ELEM,
-        downloadDocument: true, // To indicate that column is document donwload
-        documentDownloadProps: {
-          // Max file size needs to bin Bytes to seperate two support file preview and download
-          maxFileSize: 315,
-          // Tool top text for Unauthenticated users
-          toolTipTextUnauthenticated: 'Controlled access file',
-          // Tool top text for file download
-          toolTipTextFileDownload: 'Download a copy of this file',
-          // Tool top text for file preview
-          toolTipTextFilePreview: 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
-          // datafield where file file column exists in the table
-          fileSizeColumn: 'file_size',
-          // datafield where file file id exists in the table which is used to get file location
-          fileLocationColumn: 'file_id',
-          // datafield where file format exists in the table
-          fileFormatColumn: 'file_format',
-          // datafield where file case id exists in the table which is used to get file information
-          caseIdColumn: 'subject_id',
-          // Unauthenticated lock icon
-          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Access_Lock.svg',
-          // file download icon
-          iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
-          // file preview icon
-          iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
-          // file viewer icon JBrowse
-          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
-        },
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'program',
-        header: 'Program Code',
-        sort: 'asc',
-        link: '/program/{program_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        sort: 'asc',
-        display: false,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'arm',
-        header: 'Arm',
-        sort: 'asc',
-        link: '/arm/{arm}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['study_acronym'],
-        },
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'subject_id',
-        header: 'Case ID',
-        sort: 'asc',
-        link: '/case/{subject_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/case',
-          pathParams: ['subject_id'],
-        },
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'sample_id',
-        header: 'Sample ID',
-        sort: 'asc',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'diagnosis',
-        header: 'Diagnosis',
-        sort: 'asc',
-        display: false,
-        tooltipText: 'sort',
-      },
-    ],
-    id: 'file_tab',
-    onRowsSelect: 'type2',
-    disableRowSelection: 'type3',
-    tableID: 'file_tab_table',
-    selectableRows: true,
-    tabIndex: '2',
-    tableDownloadCSV: customFilesTabDownloadCSV,
-    downloadFileName: 'Bento_Dashboard_cases_download',
-    headerPagination: true,
-    footerPagination: true,
-    tableMsg: {
-      noMatch: 'No Matching Records Found',
-    },
-    addAllFileAPI: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
-    addSelectedIdAPI: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
-  },
-];
-
-// --------------- Tabs Table configuration --------------
 export const tabContainers = [
   {
-
     name: 'Cases',
     dataField: 'dataCase',
     api: GET_CASES_OVERVIEW_QUERY,
@@ -1711,7 +1231,6 @@ export const tabContainers = [
       {
         dataField: 'subject_id',
         header: 'Case ID',
-        sort: 'asc',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/case',
@@ -1725,7 +1244,6 @@ export const tabContainers = [
       {
         dataField: 'program',
         header: 'Program Code',
-        sort: 'asc',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/program',
@@ -1738,7 +1256,6 @@ export const tabContainers = [
       {
         dataField: 'program_id',
         header: 'Program ID',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1746,7 +1263,6 @@ export const tabContainers = [
       {
         dataField: 'study_acronym',
         header: 'Arm',
-        sort: 'asc',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/arm',
@@ -1759,7 +1275,6 @@ export const tabContainers = [
       {
         dataField: 'diagnosis',
         header: 'Diagnosis',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1767,7 +1282,6 @@ export const tabContainers = [
       {
         dataField: 'recurrence_score',
         header: 'Recurrence Score',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1775,7 +1289,6 @@ export const tabContainers = [
       {
         dataField: 'tumor_size',
         header: 'Tumor Size (cm)',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1783,7 +1296,6 @@ export const tabContainers = [
       {
         dataField: 'er_status',
         header: 'ER Status',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1791,7 +1303,6 @@ export const tabContainers = [
       {
         dataField: 'pr_status',
         header: 'PR Status',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1799,7 +1310,6 @@ export const tabContainers = [
       {
         dataField: 'age_at_index',
         header: 'Age (years)',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1807,7 +1317,6 @@ export const tabContainers = [
       {
         dataField: 'survival_time',
         header: 'Survival (days)',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1868,7 +1377,6 @@ export const tabContainers = [
       {
         dataField: 'sample_id',
         header: 'Sample ID',
-        sort: 'asc',
         primary: true,
         display: true,
         tooltipText: 'sort',
@@ -1877,21 +1385,19 @@ export const tabContainers = [
       {
         dataField: 'subject_id',
         header: 'Case ID',
-        sort: 'asc',
         link: '/case/{subject_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/case',
           pathParams: ['subject_id'],
         },
-        display: true,
+        display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
         dataField: 'program',
         header: 'Program Code',
-        sort: 'asc',
         cellType: cellTypes.LINK,
         tooltipText: 'sort',
         linkAttr : {
@@ -1904,7 +1410,6 @@ export const tabContainers = [
       {
         dataField: 'program_id',
         header: 'Program ID',
-        sort: 'asc',
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1912,7 +1417,6 @@ export const tabContainers = [
       {
         dataField: 'arm',
         header: 'Arm',
-        sort: 'asc',
         link: '/arm/{arm}',
         cellType: cellTypes.LINK,
         linkAttr : {
@@ -1926,7 +1430,6 @@ export const tabContainers = [
       {
         dataField: 'diagnosis',
         header: 'Diagnosis',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1934,7 +1437,6 @@ export const tabContainers = [
       {
         dataField: 'tissue_type',
         header: 'Tissue Type',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1942,7 +1444,6 @@ export const tabContainers = [
       {
         dataField: 'tissue_composition',
         header: 'Tissue Composition',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1950,7 +1451,6 @@ export const tabContainers = [
       {
         dataField: 'sample_anatomic_site',
         header: 'Sample Anatomic Site',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1958,7 +1458,6 @@ export const tabContainers = [
       {
         dataField: 'sample_procurement_method',
         header: 'Sample Procurement Method',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1966,7 +1465,6 @@ export const tabContainers = [
       {
         dataField: 'platform',
         header: 'platform',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2008,7 +1506,6 @@ export const tabContainers = [
       {
         dataField: 'file_name',
         header: 'File Name',
-        sort: 'asc',
         primary: true,
         display: true,
         tooltipText: 'sort',
@@ -2017,7 +1514,6 @@ export const tabContainers = [
       {
         dataField: 'file_id',
         header: 'File ID',
-        sort: 'asc',
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2025,7 +1521,6 @@ export const tabContainers = [
       {
         dataField: 'association',
         header: 'Association',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2033,7 +1528,6 @@ export const tabContainers = [
       {
         dataField: 'file_description',
         header: 'Description',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2041,7 +1535,6 @@ export const tabContainers = [
       {
         dataField: 'file_format',
         header: 'File Format',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2049,7 +1542,6 @@ export const tabContainers = [
       {
         dataField: 'file_size',
         header: 'Size',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2059,7 +1551,6 @@ export const tabContainers = [
       {
         dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon
         header: 'Access',
-        sort: 'asc',
         display: true,
         cellType: cellTypes.CUSTOM_ELEM,
         downloadDocument: true, // To indicate that column is document donwload
@@ -2095,7 +1586,6 @@ export const tabContainers = [
       {
         dataField: 'program',
         header: 'Program Code',
-        sort: 'asc',
         link: '/program/{program_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
@@ -2109,7 +1599,6 @@ export const tabContainers = [
       {
         dataField: 'program_id',
         header: 'Program ID',
-        sort: 'asc',
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2117,7 +1606,6 @@ export const tabContainers = [
       {
         dataField: 'arm',
         header: 'Arm',
-        sort: 'asc',
         link: '/arm/{arm}',
         cellType: cellTypes.LINK,
         linkAttr : {
@@ -2131,7 +1619,6 @@ export const tabContainers = [
       {
         dataField: 'subject_id',
         header: 'Case ID',
-        sort: 'asc',
         link: '/case/{subject_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
@@ -2145,7 +1632,6 @@ export const tabContainers = [
       {
         dataField: 'sample_id',
         header: 'Sample ID',
-        sort: 'asc',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2153,7 +1639,6 @@ export const tabContainers = [
       {
         dataField: 'diagnosis',
         header: 'Diagnosis',
-        sort: 'asc',
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
