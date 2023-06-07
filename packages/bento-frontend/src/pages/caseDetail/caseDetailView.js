@@ -13,7 +13,7 @@ import {
   caseHeader,
   leftPanel,
   rightPanel,
-  table1,
+  sampleTable,
   filesTable,
 } from '../../bento/caseDetailData';
 import Snackbar from '../../components/Snackbar';
@@ -59,7 +59,7 @@ const CaseDetail = ({
 
   // NOTE: Needs improvement.
   const datFieldsFromRoot = [];
-  table1.columns.forEach((e) => (e.dataFromRoot ? datFieldsFromRoot.push(e.dataField) : null));
+  sampleTable.columns.forEach((e) => (e.dataFromRoot ? datFieldsFromRoot.push(e.dataField) : null));
 
   const samplesData = data.samples.map((s) => {
     const files = filesOfSamplesObj[s.sample_id];
