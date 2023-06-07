@@ -1254,7 +1254,6 @@ export const tabContainers = [
       {
         dataField: 'subject_id',
         header: 'Case ID',
-        link: '/case/{subject_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/case',
@@ -1454,7 +1453,6 @@ export const tabContainers = [
       {
         dataField: 'program',
         header: 'Program Code',
-        link: '/program/{program_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/program',
@@ -1487,7 +1485,6 @@ export const tabContainers = [
       {
         dataField: 'subject_id',
         header: 'Case ID',
-        link: '/case/{subject_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
           rootPath: '/case',
