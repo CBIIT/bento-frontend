@@ -726,136 +726,7 @@ query fileOverview(
 }
 `;
 
-export const GET_FILES_OVERVIEW_STRING_QUERY =`
-query fileOverview(
-    $subject_ids: [String],
-    $file_ids: [String],
-    $programs: [String] ,
-    $studies: [String] ,
-    $diagnoses: [String] ,
-    $rc_scores: [String] ,
-    $tumor_sizes: [String] ,
-    $chemo_regimen: [String] ,
-    $tumor_grades: [String] ,
-    $er_status: [String] ,
-    $pr_status: [String] ,
-    $endo_therapies: [String] ,
-    $meno_status: [String] ,
-    $tissue_type: [String],
-    $composition: [String],
-    $association: [String],
-    $file_type: [String],
-    $age_at_index: [Float],
-    $first: Int, 
-    $offset: Int, 
-    $order_by:  String
-    $sort_direction: String ){
-    fileOverview(
-        subject_ids: $subject_ids,
-        file_ids: $file_ids,
-        programs: $programs,
-        studies: $studies,
-        diagnoses: $diagnoses,
-        rc_scores: $rc_scores,
-        tumor_sizes: $tumor_sizes,
-        chemo_regimen: $chemo_regimen,
-        tumor_grades: $tumor_grades,
-        er_status: $er_status,
-        pr_status: $pr_status,
-        endo_therapies: $endo_therapies,
-        meno_status: $meno_status,
-        tissue_type: $tissue_type,
-        composition: $composition,
-        association: $association,       
-        file_type: $file_type,
-        age_at_index: $age_at_index,
-        first: $first, 
-        offset: $offset, 
-        order_by: $order_by,
-        sort_direction: $sort_direction
-    ){
-        file_id,
-        program_id,
-        file_name,
-        association,
-        file_description,
-        file_format,
-        file_size,
-        program,
-        arm,
-        acl,
-        subject_id,
-        sample_id,
-        diagnosis,
-    }
-}
-`;
-
 export const GET_SAMPLES_OVERVIEW_QUERY = gql`
-query sampleOverview(
-    $subject_ids: [String],
-    $sample_ids: [String],
-    $programs: [String] ,
-    $studies: [String] ,
-    $diagnoses: [String] ,
-    $rc_scores: [String] ,
-    $tumor_sizes: [String] ,
-    $chemo_regimen: [String] ,
-    $tumor_grades: [String] ,
-    $er_status: [String] ,
-    $pr_status: [String] ,
-    $endo_therapies: [String] ,
-    $meno_status: [String] ,
-    $tissue_type: [String],
-    $composition: [String],
-    $association: [String],
-    $file_type: [String],
-    $age_at_index: [Float],
-    $first: Int, 
-    $offset: Int, 
-    $order_by:  String
-    $sort_direction: String ){
-    sampleOverview(
-        subject_ids: $subject_ids,
-        sample_ids: $sample_ids,
-        programs: $programs,
-        studies: $studies,
-        diagnoses: $diagnoses,
-        rc_scores: $rc_scores,
-        tumor_sizes: $tumor_sizes,
-        chemo_regimen: $chemo_regimen,
-        tumor_grades: $tumor_grades,
-        er_status: $er_status,
-        pr_status: $pr_status,
-        endo_therapies: $endo_therapies,
-        meno_status: $meno_status,
-        tissue_type: $tissue_type,
-        composition: $composition,
-        association: $association,       
-        file_type: $file_type,
-        age_at_index: $age_at_index,
-        first: $first, 
-        offset: $offset, 
-        order_by: $order_by,
-        sort_direction: $sort_direction
-    ){
-        sample_id,
-        subject_id,
-        program,
-        program_id,
-        arm,
-        diagnosis,
-        tissue_type,
-        tissue_composition,
-        sample_anatomic_site,
-        sample_procurement_method,
-        platform,
-        files 
-    }
-}
-`;
-
-export const GET_SAMPLES_OVERVIEW_STRING_QUERY =`
 query sampleOverview(
     $subject_ids: [String],
     $sample_ids: [String],
@@ -1221,6 +1092,7 @@ export const tabContainers = [
     tableID: 'case_tab_table',
     extendedViewConfig: {
       pagination: true,
+      manageViewColumns: false,
     },
     columns: [
       {
@@ -1236,10 +1108,8 @@ export const tabContainers = [
           rootPath: '/case',
           pathParams: ['subject_id'],
         },
-        primary: true,
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
       },
       {
         dataField: 'program',
@@ -1350,6 +1220,7 @@ export const tabContainers = [
     tableID: 'sample_tab_table',
     extendedViewConfig: {
       pagination: true,
+      manageViewColumns: false,
     },
     saveButtonDefaultStyle: {
       color: '#fff',
@@ -1377,10 +1248,8 @@ export const tabContainers = [
       {
         dataField: 'sample_id',
         header: 'Sample ID',
-        primary: true,
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
       },
       {
         dataField: 'subject_id',
@@ -1391,7 +1260,7 @@ export const tabContainers = [
           rootPath: '/case',
           pathParams: ['subject_id'],
         },
-        display: false,
+        display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
@@ -1496,6 +1365,7 @@ export const tabContainers = [
     tableID: 'file_tab_table',
     extendedViewConfig: {
       pagination: true,
+      manageViewColumns: false,
     },
     columns: [
       {
@@ -1506,10 +1376,8 @@ export const tabContainers = [
       {
         dataField: 'file_name',
         header: 'File Name',
-        primary: true,
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
       },
       {
         dataField: 'file_id',
