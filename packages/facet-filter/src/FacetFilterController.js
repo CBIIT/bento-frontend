@@ -63,12 +63,14 @@ const FacetFilterController = (props) => {
 
   const arrangeBySections = (arr) => {
     const sideBar = {};
+
     arr.forEach(({ section, ...item }) => {
+      const { isExpanded } =facetSectionConfig[section];
       if (!sideBar[section]) {
         sideBar[section] = {
           name: section,
           sectionName: section,
-          expandSection: facetSectionConfig[section]?.isExpanded || true,
+          expandSection: isExpanded !== undefined && typeof isExpanded === 'boolean' ? isExpanded : true,
           items: [],
         };
       }
