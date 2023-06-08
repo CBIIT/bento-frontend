@@ -1,8 +1,8 @@
-
+/* eslint-disable import/prefer-default-export */
 export const custodianUtils = {
   getNodeLevelLabel: (nodeLabel, nodeLevelAccess) => {
     const limit = 30;
-  
+
     return nodeLevelAccess ? nodeLabel.substring(0, limit) : nodeLabel;
   },
   /**
@@ -15,7 +15,7 @@ export const custodianUtils = {
       nih: 'NIH',
       'login.gov': 'Login.gov',
     };
-  
+
     if (Object.prototype.hasOwnProperty.call(loginMap, idpValue)) {
       return loginMap[idpValue];
     }

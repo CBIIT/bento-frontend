@@ -52,7 +52,10 @@ const generateStyle = (customStyle = {}) => {
   }
 
   if (customStyle.createAccountMessage) {
-    style.createAccountMessage = { ...style.createAccountMessage, ...customStyle.createAccountMessage };
+    style.createAccountMessage = {
+      ...style.createAccountMessage,
+      ...customStyle.createAccountMessage,
+    };
   }
 
   if (customStyle.formButton) {
@@ -67,11 +70,9 @@ const generateStyle = (customStyle = {}) => {
     style.submitButton = { ...style.submitButton, ...customStyle.submitButton };
   }
 
-
   if (customStyle.emptySpace) {
     style.emptySpace = { ...style.emptySpace, ...customStyle.emptySpace };
   }
-
 
   if (customStyle.inputSelect) {
     style.inputSelect = { ...style.inputSelect, ...customStyle.inputSelect };
@@ -102,7 +103,10 @@ const generateStyle = (customStyle = {}) => {
   }
 
   if (customStyle.requiredFieldMessage) {
-    style.requiredFieldMessage = { ...style.requiredFieldMessage, ...customStyle.requiredFieldMessage };
+    style.requiredFieldMessage = {
+      ...style.requiredFieldMessage,
+      ...customStyle.requiredFieldMessage,
+    };
   }
 
   return style;

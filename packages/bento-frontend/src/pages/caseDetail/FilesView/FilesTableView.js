@@ -32,7 +32,7 @@ const FilesTableView = ({
       {selectedRows.length === 0 && (
         <Container className={classes.container}>
           <span className={classes.tableName}>
-            ASSOCIATED FILES
+            {filesTable.tableTitle}
           </span>
         </Container>
       )}

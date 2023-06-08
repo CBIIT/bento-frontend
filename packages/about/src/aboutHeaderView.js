@@ -24,7 +24,7 @@ const styles = () => ({
   titleBody: {
     textAlign: 'center',
   },
-  titleText:(props) => ({
+  titleText: (props) => ({
     height: '65px',
     width: '252px',
     color: props.titleColor,

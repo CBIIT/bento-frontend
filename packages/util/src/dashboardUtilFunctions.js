@@ -603,7 +603,7 @@ export function updateCheckBox(
  * @return {json}
  */
 
-function setSelectedVlauesToTrue(checkboxItems, filters) {
+export function setSelectedVlauesToTrue(checkboxItems, filters) {
   const result = checkboxItems.map((checkboxItem) => {
     if (filters.includes(checkboxItem.name)) return { ...checkboxItem, isChecked: true };
     return checkboxItem;

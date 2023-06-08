@@ -181,7 +181,7 @@ const dataAcccessRequestStyle = {
     lineHeight: '22px',
     textAlign: 'center',
   },
-  supportEmail:{}
+  supportEmail: {},
 
 };
 

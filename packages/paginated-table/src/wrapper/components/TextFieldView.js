@@ -10,9 +10,10 @@ const TextFieldView = ({
 }) => {
   const [text, setText] = useState('');
   const cartContext = useContext(CartContext);
+  const { context } = cartContext;
   const {
     dispatch,
-  } = cartContext.context;
+  } = context;
   useEffect(() => {
     dispatch(onCommentChange(text));
   }, [text]);

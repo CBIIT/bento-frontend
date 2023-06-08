@@ -158,6 +158,7 @@ const styles = () => ({
     letterSpacing: '1px',
     margin: '14px 8px 0px 0px',
     textTransform: props.styles.statTitle ? props.styles.statTitle.textTransform ? props.styles.statTitle.textTransform : 'uppercase' : 'uppercase',
+    ...props.styles.statTitle,
   } : {
     float: props.styles.statTitle ? props.styles.statTitle.float ? props.styles.statTitle.float : 'left' : 'left',
     color: props.styles.statTitle ? props.styles.statTitle.color ? props.styles.statTitle.color : '#263960' : '#263960',
@@ -165,10 +166,11 @@ const styles = () => ({
     fontSize: props.styles.statTitle ? props.styles.statTitle.fontSize ? props.styles.statTitle.fontSize : '11px' : '11px',
     fontWeight: props.styles.statTitle
       ? props.styles.statTitle.fontWeight ? props.styles.statTitle.fontWeight : 500 : 500,
-    margin: props.styles.statTitle ? props.styles.statTitle.margin ? props.styles.statTitle.margin : '6px 0px 0px 15px' : '6px 0px 0px 15px',
+    margin: props.styles.statTitle ? typeof props.styles.statTitle.margin !== 'undefined' ? props.styles.statTitle.margin : '6px 0px 0px 15px' : '6px 0px 0px 15px',
     textTransform: props.styles.statTitle ? props.styles.statTitle.textTransform ? props.styles.statTitle.textTransform : 'uppercase' : 'uppercase',
     width: props.styles.statTitle ? props.styles.statTitle.width ? props.styles.statTitle.width : '90px' : '90px',
     textAlign: 'left',
+    ...props.styles.statTitle,
   }),
   statCount: (props) => ((props.styles.global && props.styles.global.horizontalStyle) ? {
     display: 'inline-block',
@@ -178,6 +180,7 @@ const styles = () => ({
     fontSize: props.styles.statCount ? props.styles.statCount.fontSize ? props.styles.statCount.fontSize : '20px' : '20px',
     margin: props.styles.statCount ? props.styles.statCount.margin ? props.styles.statCount.margin : '6px 0px 0px 0px' : '6px 0px 0px 0px',
     fontWeight: 600,
+    ...props.styles.statCount,
   } : {
     width: props.styles.statCount ? props.styles.statCount.width ? props.styles.statCount.width : '100%' : '100%',
     textAlign: props.styles.statCount ? props.styles.statCount.textAlign ? props.styles.statCount.textAlign : 'left' : 'left',
@@ -187,6 +190,7 @@ const styles = () => ({
     margin: props.styles.statCount ? props.styles.statCount.margin ? props.styles.statCount.margin : '6px 0px 0px 0px' : '6px 0px 0px 0px',
     float: props.styles.statCount ? props.styles.statCount.float ? props.styles.statCount.float : 'none' : 'none',
     fontWeight: 600,
+    ...props.styles.statCount,
   }),
   statsGroup: (props) => ((props.styles.global && props.styles.global.horizontalStyle) ? {
     // spacing between stats
@@ -206,7 +210,7 @@ const styles = () => ({
       borderRight: 'none',
       minWidth: '205px',
       maxWidth: '225px',
-      padding: '4px 40px 10px 80px',
+      padding: props.styles.statsGroup ? (props.styles.statsGroup['&:last-child'] && props.styles.statsGroup['&:last-child'].padding) ? props.styles.statsGroup['&:last-child'].padding : '4px 40px 10px 80px' : '4px 40px 10px 80px',
     },
   }),
   statsIcon: (props) => ({
@@ -215,6 +219,7 @@ const styles = () => ({
     width: props.styles.statsIcon ? props.styles.statsIcon.width ? props.styles.statsIcon.width : '28px' : '28px',
     height: props.styles.statsIcon ? props.styles.statsIcon.height ? props.styles.statsIcon.height : '28px' : '28px',
     margin: props.styles.statsIcon ? props.styles.statsIcon.margin ? props.styles.statsIcon.margin : '8px 0px 0px -35px' : '8px 0px 0px -35px',
+    ...props.styles.statsIcon,
   }),
 });
 

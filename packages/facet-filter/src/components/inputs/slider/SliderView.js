@@ -18,6 +18,16 @@ const SliderView = ({
   const lowerBoundValue = facetValues[0];
   const upperBoundValue = facetValues[1];
 
+  // Determines whether the lower bound and upper bound values are valid
+  const isValid = () => {
+    const checks = [
+      lowerBoundValue <= upperBoundValue,
+      lowerBoundValue >= minLowerBound,
+      upperBoundValue <= maxUpperBound,
+    ];
+
+    return checks.every((condition) => condition === true);
+  };
   const handleChangeCommittedSlider = (value) => {
     if (!value.includes('')) {
       onSliderToggle({ sliderValue: value, ...facet });
@@ -84,8 +94,8 @@ const SliderView = ({
             max={maxUpperBound}
             classes={{
               rail: classes.rail,
-              thumb: lowerBoundValue <= upperBoundValue ? classes.thumb : classes.invalidThumb,
-              track: lowerBoundValue <= upperBoundValue ? classes.track : classes.invalidTrack,
+              thumb: isValid() ? classes.thumb : classes.invalidThumb,
+              track: isValid() ? classes.track : classes.invalidTrack,
             }}
           />
         </div>
@@ -103,7 +113,7 @@ const SliderView = ({
         (sliderValue[0] > minLowerBound || sliderValue[1] < maxUpperBound)
         && (
           <Typography
-            className={lowerBoundValue <= upperBoundValue
+            className={isValid()
               ? classes.sliderText
               : classes.invalidSliderText}
           >

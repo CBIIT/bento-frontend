@@ -1,7 +1,7 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 import CheckboxView from './components/CheckBoxView';
 import DeleteCellView from './components/DeleteCellView';
-import { Typography } from '@material-ui/core';
 import { cellTypes } from '../util/Types';
 
 const ActionCell = ({
@@ -17,7 +17,7 @@ const ActionCell = ({
         row={row}
         onRowSelectChange={onRowSelectChange}
       />
-    )
+    );
   }
 
   if (cellTypes.DELETE === cellType) {
@@ -34,6 +34,6 @@ const ActionCell = ({
       {row[column.dataField]}
     </Typography>
   );
-}
+};
 
 export default ActionCell;

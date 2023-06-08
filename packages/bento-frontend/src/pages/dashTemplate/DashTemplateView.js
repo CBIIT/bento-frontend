@@ -24,7 +24,7 @@ const DashTemplate = ({
         </div>
         <div className={classes.rightContent}>
           <div className={classes.widgetsContainer}>
-            <QueryBarView />
+            <QueryBarView data={dashData} />
             <WidgetView
               data={dashData}
             />

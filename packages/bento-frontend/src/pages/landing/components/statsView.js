@@ -10,6 +10,7 @@ const LandingStatsView = ({ classes, stats, statsData }) => (
       [classes.statsSection]: stats.length < 5,
       [classes.statsSectionCenter]: stats.length === 5,
     })}
+    tabIndex={0}
     >
       { stats.length > 0 && (
       <div

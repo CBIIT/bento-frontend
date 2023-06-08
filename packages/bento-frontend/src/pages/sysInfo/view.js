@@ -22,7 +22,7 @@ async function getVersionDataFromService(url) {
       else return response.json();
     })
     .then((data) => data.version)
-    .catch((error) => error);
+    .catch((error) => '0.0.0'); // TODO: Need to improve this error hander.
 
   return result;
 }
@@ -43,27 +43,6 @@ function createRow(key, value) {
   return { key, value };
 }
 
-function getHashlessUrl() {
-  // if (window.location.href.indexOf('localhost') !== -1) return 'https://bento-dev.bento-tools.org';
-  const url = window.location.href;
-  const { hash } = window.location;
-  const indexOfHash = url.indexOf(hash) || url.length;
-  return url.substr(0, indexOfHash);
-}
-
-async function getBEVersion(url) {
-  const schemaVersion = await fetch(
-    `${url}version`,
-  )
-    .then((response) => response.text())
-    .then((data) => {
-      const backendObj = JSON.parse(data);
-      return backendObj.version;
-    })
-    .catch(() => '0.0.0');
-  return schemaVersion;
-}
-
 async function getVersion(envVariable, route = 'version') {
   const response = await getVersionDataFromService(`${envVariable}${route}`);
   return response || '0.0.0';
@@ -77,10 +56,17 @@ function envVariableNotSetError(variable) {
 function SysInfoView() {
   const classes = useStyles();
   const [state, setState] = useState({});
+  const backendApiUrl = new URL(env.REACT_APP_BACKEND_API);
+  const backendOrigin = `${backendApiUrl.protocol}//${backendApiUrl.hostname}${
+        // Just in case port doesn't exist
+        backendApiUrl.port
+          ? `:${backendApiUrl.port}/`
+          : '/'
+      }`;
 
   useEffect(() => {
     const getSystems = async () => {
-      const backendVersion = await getBEVersion(getHashlessUrl());
+      const backendVersion = backendOrigin ? await getVersion(backendOrigin) : envVariableNotSetError('REACT_APP_BACKEND_API');
       const fileServiceVersion = env.REACT_APP_FILE_SERVICE_API ? await getVersion(env.REACT_APP_FILE_SERVICE_API) : envVariableNotSetError('REACT_APP_FILE_SERVICE_API');
       const authVersion = env.REACT_APP_AUTH_SERVICE_API ? await getVersion(env.REACT_APP_AUTH_SERVICE_API) : envVariableNotSetError('REACT_APP_AUTH_SERVICE_API');
       const authUserVersion = env.REACT_APP_USER_SERVICE_API ? await getVersion(env.REACT_APP_USER_SERVICE_API) : envVariableNotSetError('REACT_APP_USER_SERVICE_API');
@@ -107,7 +93,6 @@ function SysInfoView() {
     createRow('Backend API Endpoint', env.REACT_APP_BACKEND_API),
     createRow('File Service API Endpoint', env.REACT_APP_FILE_SERVICE_API),
     createRow('Auth Service API Endpoint', env.REACT_APP_AUTH_SERVICE_API),
-    createRow('REACT_APP_ABOUT_CONTENT_URL', env.REACT_APP_ABOUT_CONTENT_URL),
   ];
 
   const dependenciesData = [

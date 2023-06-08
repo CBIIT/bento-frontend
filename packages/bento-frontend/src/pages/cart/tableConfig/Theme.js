@@ -18,9 +18,9 @@ export const tblHeader = {
       padding: '0px 0px 0px 25px',
       paddingRight: '5px',
       color: '#13344A',
-      cursor: 'pointer',
       '&.del_all_row': {
         minWidth: '150px',
+        cursor: 'pointer',
       },
     },
   },
@@ -94,19 +94,24 @@ export const tblBody = {
     },
   },
   MuiTableCell: {
+    body: {
+      color: '#004C73',
+      borderBottom: 'none',
+      '&.file_name': {
+        maxWidth: '300px',
+        '& p': {
+          lineBreak: 'anywhere',
+          paddingTop: '10px',
+          paddingBottom: '10px',
+        },
+      },
+    },
     root: {
       minHeight: '45px',
       padding: '0px 0px 0px 25px',
       paddingRight: '20px',
       color: '#004C73',
-      cursor: 'pointer',
-    },
-    paddingCheckbox: {
-      width: '48px',
-      padding: '0 0 0 5px',
-    },
-    body: {
-      color: '#004C73',
+      borderBottom: 'none',
     },
   },
 };
@@ -117,6 +122,8 @@ export const tblContainer = {
       width: '100%',
       overflowX: 'auto',
       transform: 'rotateX(180deg)',
+      boxShadow: 'none',
+      borderRadius: '0',
     }
   },
   MuiTable: {

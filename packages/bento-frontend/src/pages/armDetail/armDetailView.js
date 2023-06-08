@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useDispatch } from 'react-redux';
 import {
   Grid,
   withStyles,
@@ -9,7 +8,6 @@ import StatsView from '../../components/Stats/StatsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import icon from '../../assets/icons/Arms.Icon.svg';
 import fileCountIcon from '../../assets/icons/Program_Detail.FileCount.svg';
-// import globalData from '../../bento/siteWideConfig';
 import {
   filesTable,
   header,
@@ -26,15 +24,12 @@ import { onClearAllAndSelectFacetValue } from '../dashTemplate/sideBar/BentoFilt
 
 // Main case detail component
 const ArmDetail = ({ data, classes }) => {
-  // const dispatch = useDispatch();
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
     value: 0,
   });
-  // function openSnack(value1) {
-  //   setsnackbarState({ open: true, value: value1 });
-  // }
+  
   function closeSnack() {
     setsnackbarState({ open: false });
   }
@@ -174,44 +169,6 @@ const ArmDetail = ({ data, classes }) => {
               </TableContextProvider>
             </div>
           </div>
-          {/* <div id="arm_detail_table" className={classes.tableContainer}>
-            <div className={classes.tableDiv}>
-              { table.display
-                ? (
-                  <>
-                    <div className={classes.tableTitle} id="arm_detail_table_title">
-                      <span className={classes.tableHeader}>{table.title}</span>
-                    </div>
-                    <Grid item xs={12}>
-                      <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                          <GridWithFooter
-                            tableConfig={table}
-                            data={data[table.filesField]}
-                            columns={getColumns(table, classes, data, '', '', ()
-                            => {}, '', globalData.replaceEmptyValueWith)}
-                            options={getOptions(table, classes)}
-                            customOnRowsSelect={table.customOnRowsSelect}
-                            openSnack={openSnack}
-                            closeSnack={closeSnack}
-                            disableRowSelection={table.disableRowSelection}
-                            buttonText={table.buttonText}
-                            saveButtonDefaultStyle={table.saveButtonDefaultStyle}
-                            ActiveSaveButtonDefaultStyle={table.ActiveSaveButtonDefaultStyle}
-                            DeactiveSaveButtonDefaultStyle={table.DeactiveSaveButtonDefaultStyle}
-                            tooltipMessage={table.tooltipMessage}
-                            tooltipContent={tooltipContent}
-                          />
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </>
-                ) : null}
-            </div>
-          </div> */}
         </div>
       </div>
     </>

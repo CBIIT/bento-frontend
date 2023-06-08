@@ -16,6 +16,27 @@ export const tblHeader = {
   },
 };
 
+export const tblContainer = {
+  MuiTableContainer: {
+    root: {
+      width: '100%',
+      overflowX: 'auto',
+      transform: 'rotateX(180deg)',
+      boxShadow: 'none',
+      borderRadius: '0',
+    }
+  },
+  MuiTable: {
+    root: {
+      transform: 'rotateX(180deg)',
+      width: '100%',
+      display: 'table',
+      borderSpacing: '0',
+      borderCollapse: 'collapse',
+    },
+  },
+};
+
 export const tblBody = {
   MuiTableCell: {
     root: {
@@ -26,6 +47,7 @@ export const tblBody = {
       fontWeight: 'normal',
       padding: '5px 0px 5px 50px',
       letterSpacing: '0.025em',
+      borderBottom: 'none',
     },
     body: {
       color: '#004C73',
@@ -58,6 +80,7 @@ export const tblPgn = {
   
 export const themeConfig = {
   tblHeader,
+  tblContainer,
   tblBody,
   tblPgn
 };

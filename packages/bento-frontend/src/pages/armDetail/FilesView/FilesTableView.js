@@ -22,9 +22,10 @@ const FilesTableView = ({
     columns: filesTable.columns,
     selectedRows: [],
     tableMsg: filesTable.tableMsg,
+    sortBy: filesTable.defaultSortField,
+    sortOrder: filesTable.defaultSortDirection,
     rowsPerPage: 10,
     dataKey: filesTable.dataKey,
-    sortBy: filesTable.defaultSortField,
     page: 0,
   });
 
@@ -37,7 +38,7 @@ const FilesTableView = ({
       {selectedRows.length === 0 && (
         <div className={classes.tableTitle} id="arm_detail_table_title">
           <span className={classes.tableName}>
-            ASSOCIATED FILES
+            {filesTable.title}
           </span>
         </div>
       )}

@@ -41,7 +41,8 @@ const PaginatedTable = ({
     * 1. provide table state to other component (wrapper comp -> Add file button)
     * 2. provide table dispatch action to other component (wrapper comp)
     */
-    tableContext.setContext({ ...table, dispatch });
+    const { setContext } = tableContext;
+    setContext({ ...table, dispatch });
   }, [table]);
 
   /**
@@ -67,8 +68,7 @@ const PaginatedTable = ({
 
   const handleChangeRowsPerPage = (event) => {
     const noOfRows = parseInt(event.target.value, 10);
-   
-    dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows, page:0}));
+    dispatch(onRowsPerPageChange({ rowsPerPage: noOfRows, page: 0 }));
   };
 
   const handleChangePage = (event, newPage) => {

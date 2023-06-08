@@ -225,12 +225,8 @@ const styles = (theme) => ({
     background: '#fff',
   },
   link: {
-    textDecoration: 'none',
+    textDecoration: 'underline',
     fontWeight: 'bold',
-    color: theme.palette.text.link,
-    '&:hover': {
-      textDecoration: 'underline',
-    },
   },
   btn: {
     backgroundColor: '#437BBE',

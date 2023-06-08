@@ -39,6 +39,6 @@ const HeaderView = ({
       </div>
     </>
   );
-}
+};
 
 export default withStyles(style)(HeaderView);

@@ -38,6 +38,8 @@ const CustomDropdownMenu = ({
               className={
               classes.link
             }
+            // TODO: find out use of activeStyle, If not used please remove.
+            // eslint-disable-next-line react/no-unknown-property
               activeStyle={{ color: '#27DBFF' }}
             >
               {link.title}

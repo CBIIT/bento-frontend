@@ -235,7 +235,7 @@ const Footer = ({ classes, data }) => {
 
   const handleModalOpen = (itemContent) => {
     itemContent.then((res) => { setContent(res); });
-    console.log('itemContent', itemContent);
+    // console.log('itemContent', itemContent);
     // setContent(itemContent);
     setOpen(true);
   };

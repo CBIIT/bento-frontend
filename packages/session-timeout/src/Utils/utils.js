@@ -4,7 +4,8 @@
  * @param {number} seconds
  * @returns {string} mm:ss
  */
-export const secondsToMinuteString = (seconds) => new Date(seconds * 1000).toISOString().substring(14, 19);
+export const secondsToMinuteString = (seconds) => new Date(seconds * 1000)
+  .toISOString().substring(14, 19);
 
 /**
  * Perform a POST session extension request
@@ -48,4 +49,4 @@ export const getSessionTTL = async (url) => {
   } catch (e) {
     return 0;
   }
-}
+};

@@ -1,11 +1,12 @@
 {
   "name": "@bento-core/widgets",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src"
   },
   "repository": "https://github.com/CBIIT/bento-frontend",
   "publishConfig": {
@@ -20,7 +21,8 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "lodash": "^4.17.20",
-    "react-vis": "^1.11.7"
+    "react-vis": "^1.11.7",
+    "recharts": "^1.7.1"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

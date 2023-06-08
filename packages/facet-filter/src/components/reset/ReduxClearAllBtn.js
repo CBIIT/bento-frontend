@@ -1,11 +1,3 @@
-/* eslint-disable block-scoped-var */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
-/* eslint-disable block-spacing */
-/* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { clearAllFilters } from '../../store/actions/Actions';
@@ -21,7 +13,8 @@ const ClearAllFiltersBtn = ({
   useEffect(() => {
     if (activeFilters) {
       const filters = Object.keys(activeFilters).reduce((count, key) => {
-        if (activeFilters[key].length > 0) { count += 1;}
+        // eslint-disable-next-line no-param-reassign
+        if (activeFilters[key].length > 0) { count += 1; }
         return count;
       }, 0);
       if (filters === 0) {
@@ -42,9 +35,8 @@ const ClearAllFiltersBtn = ({
   );
 };
 
-
 const mapDispatchToProps = (dispatch) => ({
-  onClearAllFilters: () => {dispatch(clearAllFilters());},
+  onClearAllFilters: () => { dispatch(clearAllFilters()); },
 });
 
 export default connect(null, mapDispatchToProps)(ClearAllFiltersBtn);

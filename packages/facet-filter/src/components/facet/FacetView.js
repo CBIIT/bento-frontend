@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable react/jsx-indent */
-/* eslint-disable react/jsx-closing-tag-location */
 import React, { useEffect, useState } from 'react';
 import {
   Accordion,
@@ -96,13 +93,15 @@ const FacetView = ({
         )}
         {
           (facet.type === InputTypes.SLIDER || facetValues.length === 0)
-          && (<div className={classes.NonSortGroup}>
-              <span
-                className={classes.NonSortGroupItem}
-              >
-                No data for this field
-              </span>
-          </div>)
+          && (
+          <div className={classes.NonSortGroup}>
+            <span
+              className={classes.NonSortGroupItem}
+            >
+              No data for this field
+            </span>
+          </div>
+          )
         }
         {
           (facet.type === InputTypes.SLIDER || facetValues.length > 0)
@@ -121,35 +120,38 @@ const FacetView = ({
                 />
               </Icon>
             </span>
-        { (facet.type === InputTypes.CHECKBOX && facetValues.length > 0)
-          && (<>
-                <span
-                  className={
+            { (facet.type === InputTypes.CHECKBOX && facetValues.length > 0)
+          && (
+          <>
+            <span
+              className={
                     clsx(classes.sortGroupItem, {
                       [classes.highlight]: sortBy === sortType.ALPHABET,
                     })
                   }
-                  onClick={() => {
-                    onSortFacet(sortType.ALPHABET);
-                  }}
-                >
-                  Sort alphabetically
-                </span>
-                <span
-                  className={
+              onClick={() => {
+                onSortFacet(sortType.ALPHABET);
+              }}
+            >
+              Sort alphabetically
+            </span>
+            <span
+              className={
                     clsx(classes.sortGroupItemCounts, {
                       [classes.highlight]: sortBy === sortType.NUMERIC,
                     })
                   }
-                  onClick={() => {
-                    onSortFacet(sortType.NUMERIC);
-                  }}
-                >
-                  Sort by count
-                </span>
-            </>)}
+              onClick={() => {
+                onSortFacet(sortType.NUMERIC);
+              }}
+            >
+              Sort by count
+            </span>
+          </>
+          )}
           </div>
-        )}
+          )
+}
         <FilterItems
           facet={facet}
           sortBy={sortBy}

@@ -15,7 +15,7 @@ export const CustomSearchIcon = ({ ...props }) => {
     id = 'global_search_input_find',
     classes,
     onClick,
-    type
+    type,
   } = props;
 
   if (type === 'image') {

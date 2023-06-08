@@ -109,7 +109,13 @@ const CustomLayout = (props) => {
           * return child/table component
           */
           if (container.paginatedTable) {
-            return <> {children} </>;
+            return (
+              <>
+                {' '}
+                {children}
+                {' '}
+              </>
+            );
           }
           /**
           * return other wrapper components
@@ -128,7 +134,8 @@ const CustomLayout = (props) => {
                 ))}
               </Container>
             </ThemeProvider>
-        )})
+          );
+        })
       }
     </>
   );
