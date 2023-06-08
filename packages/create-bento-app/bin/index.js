@@ -56,14 +56,16 @@ async function getAndUnZip(props) {
   zip.extractEntryTo(extractEntryTo, outputDir, maintainEntryPath, overwrite);
 }
 
+const bentoVersionRegEx = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:\.(0|[1-9]\d*))?(?:-((?:0|[1-9A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9A-Za-z-][0-9A-Za-z-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/;
+
 const questions = {
   projectPath: {
     type: 'toggle',
     name: 'isProjectPathCorrect',
     message: `Is projectPath: ${projectPath} correct?`,
     initial: true,
-    active: 'yes',
-    inactive: 'no',
+    active: 'Yes',
+    inactive: 'No',
   },
   bentoRIVersion: {
     type: 'select',
@@ -71,8 +73,37 @@ const questions = {
     message: '🍱 Please select a bento reference implementation version.',
     choices: [
       { title: '4.0.0', value: '4.0.0' },
+      { title: 'custom', value: 'custom' },
     ],
     initial: 0,
+  },
+  customBentoRIVersion: {
+    type: 'text',
+    name: 'customBentoRIVersion',
+    message: 'Please Enter a bento reference implementation version that you would like to have',
+    validate: (customBentoRIVersion) => customBentoRIVersion.match(bentoVersionRegEx),
+  },
+  customBentoCore: {
+    type: 'toggle',
+    name: 'customBentoCore',
+    message: 'Would you like to install custom @Bento-core package version?',
+    initial: true,
+    active: 'Yes',
+    inactive: 'No',
+  },
+  customBentoCoreVersion: {
+    type: 'text',
+    name: 'customBentoCoreVersion',
+    message: 'Please Enter @Bento-core package version that you would like to have:',
+    validate: (customBentoCoreVersion) => customBentoCoreVersion.match(bentoVersionRegEx),
+  },
+  gitInit: {
+    type: 'toggle',
+    name: 'gitInit',
+    message: 'Would you like to initialize git?',
+    initial: false,
+    active: 'No',
+    inactive: 'Yes',
   },
 };
 
@@ -88,7 +119,15 @@ async function main() {
 
     const { bentoRIVersion } = await askQuestion(questions.bentoRIVersion);
 
-    const gitTag = releasedTagMapplings[bentoRIVersion] || undefined;
+    let gitTag;
+
+    if (bentoRIVersion !== 'custom') {
+      gitTag = releasedTagMapplings[bentoRIVersion] || undefined;
+    } else {
+      const { customBentoRIVersion } = await askQuestion(questions.customBentoRIVersion);
+      gitTag = customBentoRIVersion;
+    }
+
     if (!gitTag) {
       console.log(`Process terminated due to releasedTagMapplings.json file is missing tag for ${bentoRIVersion}`);
       process.exit(1);
@@ -124,15 +163,32 @@ async function main() {
 
     execSync(`echo "This project is based on the Bento Reference Implementation ${bentoRIVersion}" > BentoRIVersion.txt`);
 
-    // Git Init & Commit initial code.
-    console.log('Initializing a new repository...');
-    execSync('git init');
+    // START Section: Git Init
+    const { gitInit } = await askQuestion(questions.gitInit);
 
-    console.log('Adding .gitignore');
-    execSync(`curl https://raw.githubusercontent.com/CBIIT/${repoName}/${bentoRIVersion}/.gitignore --output .gitignore`);
+    if (gitInit) {
+      // Git Init & Commit initial code.
+      console.log('Initializing a new repository...');
+      execSync('git init');
+    }
+    // END Section: Git Init
 
-    console.log('Installing dependencies... (npm install --legacy-peer-deps)');
-    execSync('npm install --legacy-peer-deps');
+    // Adding some additional files like .gitignore, .eslintignore, .eslintrc.js
+    const rawContentURL = `https://raw.githubusercontent.com/CBIIT/${repoName}/${bentoRIVersion}/`;
+    console.log('Adding .gitignore, .eslintignore, .eslintrc.js');
+    execSync(`curl ${rawContentURL}.gitignore --output .gitignore`);
+    execSync(`curl ${rawContentURL}.eslintignore --output .eslintignore`);
+    execSync(`curl ${rawContentURL}.eslintrc.js --output .eslintrc.js`);
+
+    // Renaming package-lock.json.standalone to package-lock.json 📑
+    console.log('renaming package-lock.json.standalone to package-lock.json 📑');
+    execSync('mv package-lock.json.standalone package-lock.json');
+
+    console.log('Installing dependencies... (npm install)');
+    execSync('npm install');
+
+    execSync('npm uninstall @bento-core/all');
+    execSync('npm install @bento-core/all');
 
     // NPM Install
   } catch (error) {
