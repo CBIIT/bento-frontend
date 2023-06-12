@@ -26,7 +26,7 @@ const ManageColumnView = ({
     return null;
   }
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
+  const toggleDisplay = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -39,7 +39,11 @@ const ManageColumnView = ({
   return (
     <>
       <Tooltip title={manageViewColumns.title}>
-        <IconButton variant="contained" onClick={handleClick}>
+        <IconButton
+          variant="contained"
+          onClick={toggleDisplay}
+          className="manageViewColumnBtn"
+        >
           <ViewColumn />
         </IconButton>
       </Tooltip>
@@ -70,7 +74,6 @@ const ManageColumnView = ({
               <Checkbox
                 icon={(
                   <CheckBoxBlankIcon
-                    style={{ fontSize: 18 }}
                     className="checkBoxIcon"
                   />
                 )}
@@ -78,9 +81,6 @@ const ManageColumnView = ({
                 checked={column.display}
                 checkedIcon={(
                   <CheckBoxIcon
-                    style={{
-                      fontSize: 18,
-                    }}
                     className="checkBoxIcon"
                   />
                 )}

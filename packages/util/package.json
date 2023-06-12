@@ -22,7 +22,8 @@
   "dependencies": {
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "@apollo/client": "^3.6.9"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

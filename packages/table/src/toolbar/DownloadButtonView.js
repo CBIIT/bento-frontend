@@ -11,11 +11,20 @@ const DownloadButton = ({
   if (!download) {
     return null;
   }
+  const {
+    downloadCsv = 'download',
+    downloadTable,
+  } = download;
 
   return (
     <>
-      <Tooltip title={download.downloadCsv}>
-        <IconButton>
+      <Tooltip
+        title={downloadCsv}
+        className="download-icon"
+      >
+        <IconButton
+          onClick={downloadTable}
+        >
           <CloudDownload />
         </IconButton>
       </Tooltip>

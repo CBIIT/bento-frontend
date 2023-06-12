@@ -14,24 +14,27 @@ const ExtendedView = ({
   onColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
-  numSelected = 0,
   customTheme,
 }) => {
   const { extendedViewConfig } = table;
-  if (!extendedViewConfig) {
-    return null;
-  }
+
   const {
     download = false,
     manageViewColumns = false,
     pagination = false,
   } = extendedViewConfig;
 
+  if (!download || !manageViewColumns) {
+    return null;
+  }
+
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
+
   return (
     <ThemeProvider theme={themeConfig}>
-      {(numSelected === 0 && (download || manageViewColumns)) && (
-      <Toolbar className="downloadColumnView">
+      <Toolbar
+        className="downloadAndColumnView"
+      >
         <DownloadButton
           download={download}
         />
@@ -41,21 +44,20 @@ const ExtendedView = ({
           onColumnViewChange={onColumnViewChange}
         />
       </Toolbar>
-      )}
       {
-          (pagination) && (
-            <CustomPagination
-              customTheme={customTheme.tblTopPgn}
-              rowsPerPageOptions={[10, 25, 50, 100]}
-              component="div"
-              count={table.totalRowCount || 0}
-              rowsPerPage={table.rowsPerPage || 10}
-              page={table.page || 0}
-              onPageChange={onPageChange}
-              onRowsPerPageChange={onRowsPerPageChange}
-            />
-          )
-        }
+        (pagination) && (
+          <CustomPagination
+            customTheme={customTheme.tblTopPgn}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+            component="div"
+            count={table.totalRowCount || 0}
+            rowsPerPage={table.rowsPerPage || 10}
+            page={table.page || 0}
+            onPageChange={onPageChange}
+            onRowsPerPageChange={onRowsPerPageChange}
+          />
+        )
+      }
     </ThemeProvider>
   );
 };

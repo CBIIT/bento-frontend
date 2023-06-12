@@ -3,6 +3,7 @@ import { Button } from '@material-ui/core';
 import clsx from 'clsx';
 import { getFilesID } from '../../WrapperService';
 import AddToCartDialogView from '../AddToCartDialog/AddToCartDialogView';
+import ToolTipView from '../TooltipView';
 
 const AddAllFilesComponent = (props) => {
   const {
@@ -16,6 +17,7 @@ const AddAllFilesComponent = (props) => {
     setAlterDisplay,
     setOpenSnackbar,
     client,
+    tooltipCofig,
   } = props;
   /**
   * conditionally display dialog view
@@ -76,6 +78,7 @@ const AddAllFilesComponent = (props) => {
       >
         {title}
       </Button>
+      {tooltipCofig && (<ToolTipView {...props} />)}
       <AddToCartDialogView
         open={openAddDialog}
         onYesClick={addFilesToCart}
