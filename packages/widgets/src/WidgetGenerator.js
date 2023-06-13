@@ -132,7 +132,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
                   sliceTitle={sliceTitle || 'Cases'}
                   width={250}
                   height={173}
-                  padAngle={0}
+                  padAngle={0.02}
                   titleLocation={chartTitleLocation || 'bottom'}
                   titleAlignment={chartTitleAlignment || 'center'}
                 />
