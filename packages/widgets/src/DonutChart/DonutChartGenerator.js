@@ -146,11 +146,11 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
     showTotalCount, textOverflowLength,
   } = styles && typeof styles === 'object' ? styles : DEFAULT_CONFIG_DONUT.styles;
 
-  const COLORS_EVEN = colors && colors.even
+  const COLORS_EVEN = (colors && colors.even)
     ? colors.even
     : DEFAULT_CONFIG_DONUT.colors.even;
 
-  const COLORS_ODD = colors && colors.odd 
+  const COLORS_ODD = (colors && colors.odd)
     ? colors.even
     : DEFAULT_CONFIG_DONUT.colors.odd;
 
