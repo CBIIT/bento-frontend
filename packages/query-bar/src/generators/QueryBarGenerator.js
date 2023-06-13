@@ -163,19 +163,21 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
               ? <span className={classes.operators}> AND </span>
               : null}
             {mappedInputs.map((filter, index) => (
-              <Filter
-                index={index}
-                type={filter.type}
-                data={filter}
-                maxItems={maxItems}
-                classes={classes}
-                onSectionClick={filter.type === CHECKBOX
-                  ? resetFacetSection
-                  : resetFacetSlider}
-                onItemClick={filter.type === CHECKBOX
-                  ? resetFacetCheckbox
-                  : resetFacetSlider}
-              />
+              <span className={filter.section.replace(/\s+/g, '-').toLowerCase()}>
+                <Filter
+                  index={index}
+                  type={filter.type}
+                  data={filter}
+                  maxItems={maxItems}
+                  classes={classes}
+                  onSectionClick={filter.type === CHECKBOX
+                    ? resetFacetSection
+                    : resetFacetSlider}
+                  onItemClick={filter.type === CHECKBOX
+                    ? resetFacetCheckbox
+                    : resetFacetSlider}
+                />
+              </span>
             ))}
           </span>
         </div>
