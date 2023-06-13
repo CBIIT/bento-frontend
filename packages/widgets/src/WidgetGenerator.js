@@ -87,7 +87,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
         customBackGround, bottomDivider, noPaddedTitle,
         // Chart Options
         chartType, sliceTitle, data, chartTitleLocation, chartTitleAlignment,
-        children,padAngle
+        children, padAngle,
       } = props;
 
       return (
