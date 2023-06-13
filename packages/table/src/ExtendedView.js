@@ -17,6 +17,9 @@ const ExtendedView = ({
   customTheme,
 }) => {
   const { extendedViewConfig } = table;
+  if (!extendedViewConfig) {
+    return null;
+  }
 
   const {
     download = false,
@@ -24,26 +27,24 @@ const ExtendedView = ({
     pagination = false,
   } = extendedViewConfig;
 
-  if (!download || !manageViewColumns) {
-    return null;
-  }
-
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
 
   return (
     <ThemeProvider theme={themeConfig}>
-      <Toolbar
-        className="downloadAndColumnView"
-      >
-        <DownloadButton
-          download={download}
-        />
-        <ManageColumnView
-          table={table}
-          manageViewColumns={manageViewColumns}
-          onColumnViewChange={onColumnViewChange}
-        />
-      </Toolbar>
+      {(download || manageViewColumns) && (
+        <Toolbar
+          className="downloadAndColumnView"
+        >
+          <DownloadButton
+            download={download}
+          />
+          <ManageColumnView
+            table={table}
+            manageViewColumns={manageViewColumns}
+            onColumnViewChange={onColumnViewChange}
+          />
+        </Toolbar>
+      )}
       {
         (pagination) && (
           <CustomPagination
