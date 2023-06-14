@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/global-search",
-  "version": "0.3.0",
+  "version": "1.0.0-alpha.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/util": "^0.3.0"
+    "@bento-core/util": "^1.0.0-alpha.0"
   },
   "peerDependencies": {
     "@material-ui/core": "*",

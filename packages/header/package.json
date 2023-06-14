@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/header",
-  "version": "0.3.0",
+  "version": "1.0.0-alpha.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "@bento-core/util": "^0.3.0",
+    "@bento-core/util": "^1.0.0-alpha.0",
     "@material-ui/core": "^4.12.4"
   },
   "author": "CTOS Bento Team",

@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/local-find",
-  "version": "0.3.0",
+  "version": "1.0.0-alpha.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "@bento-core/tool-tip": "^0.3.0",
+    "@bento-core/tool-tip": "^1.0.0-alpha.0",
     "lodash": "^4.17.20"
   },
   "author": "CTOS Bento Team",
