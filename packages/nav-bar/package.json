@@ -1,0 +1,31 @@
+{
+  "name": "@bento-core/nav-bar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src"
+  },
+  "repository": "https://github.com/CBIIT/bento-frontend",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.9.1",
+    "classnames": "^2.2.6",
+    "clsx": "^1.2.1",
+    "lodash": "^4.17.20",
+    "prop-types": "^15.7.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.0",
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.1.2"
+  },
+  "author": "CTOS Bento Team",
+  "license": "ISC"
+}
