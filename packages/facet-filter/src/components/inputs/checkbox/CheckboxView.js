@@ -35,9 +35,7 @@ const CheckBoxView = ({
 }) => {
   const {
     name,
-    customName,
     subjects,
-    customSubjects,
     isChecked = false,
     index,
     section,
@@ -63,9 +61,7 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      {customName ? (
-        <Typography className={classes.checkboxLabel}>{customName}</Typography>
-      ) : (<Typography className={classes.checkboxName}>{name}</Typography>)}
+      <Typography className={classes.checkboxName}>{name}</Typography>
     </Box>
   );
 
@@ -104,7 +100,7 @@ const CheckBoxView = ({
         { tooltip ? (
           <Tooltip id={datafield} title={tooltip}>
             <div className={datafield}>
-              {customName || name}
+              {name}
             </div>
           </Tooltip>
         ) : (
@@ -117,7 +113,7 @@ const CheckBoxView = ({
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {customSubjects || `(${subjects})`}
+          {subjects}
         </Typography>
       </ListItem>
       <Divider
