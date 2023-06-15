@@ -25,6 +25,7 @@ const FacetFilterController = (props) => {
     data,
     facetsConfig,
     facetSectionConfig,
+    tooltipText = {},
   } = props;
 
   const updateFacetState = (filterSections) => {
@@ -64,11 +65,13 @@ const FacetFilterController = (props) => {
   const arrangeBySections = (arr) => {
     const sideBar = {};
     arr.forEach(({ section, ...item }) => {
+      const { isExpanded } = facetSectionConfig[section];
       if (!sideBar[section]) {
         sideBar[section] = {
           name: section,
           sectionName: section,
-          expandSection: facetSectionConfig[section]?.isExpanded || true,
+          expandSection: isExpanded !== undefined
+            && typeof isExpanded === 'boolean' ? isExpanded : true,
           items: [],
         };
       }
@@ -81,6 +84,7 @@ const FacetFilterController = (props) => {
    * Construct filter object
    * 1. add facet values to facets
    * 2. add 'name' key to each facet value
+   * 3. add '
    */
   const addFacetValues = (facets) => {
     const updateFacets = [];
@@ -89,6 +93,9 @@ const FacetFilterController = (props) => {
         const updateFacet = { ...facet, facetValues: [] };
         const {
           field,
+          count = 'subjects',
+          customCount = (text) => `(${text})`,
+          tooltipKey,
           ApiLowerBoundName,
           ApiUpperBoundName,
           apiForFiltering,
@@ -98,6 +105,10 @@ const FacetFilterController = (props) => {
             const updateField = data[apiForFiltering].map((item) => {
               const addField = { ...item };
               addField.name = item[field];
+              addField.subjects = customCount(item[count] || 0);
+              // set tooltip text
+              const text = tooltipText[tooltipKey];
+              addField.tooltip = text ? text[item[field]] : undefined;
               return addField;
             });
             updateFacet.facetValues = updateField;
