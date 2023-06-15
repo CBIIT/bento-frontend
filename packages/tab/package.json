@@ -1,10 +1,10 @@
 {
   "name": "@bento-core/tab",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npm run lint && rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src"
   },
@@ -13,10 +13,10 @@
     "access": "public"
   },
   "peerDependencies": {
+    "@material-ui/core": "^4.12.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
-    "react-redux": "^7.2.1",
-    "@material-ui/core": "^4.12.4"
+    "react-redux": "^7.2.1"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

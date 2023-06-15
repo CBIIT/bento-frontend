@@ -12,7 +12,6 @@ export default () => ({
     maxHeight: '1300px',
     overflowX: 'hidden',
     backgroundColor: 'transparent',
-    borderRight: 'thin solid #B1B1B1',
     borderLeft: 'thin solid #B1B1B1',
     overflow: 'auto',
     zIndex: '99',
@@ -21,5 +20,6 @@ export default () => ({
     width: 'calc(100% - 250px)',
     position: 'relative',
     borderRight: 'thin solid #B1B1B1',
+    borderLeft: 'thin solid #B1B1B1',
   },
 });

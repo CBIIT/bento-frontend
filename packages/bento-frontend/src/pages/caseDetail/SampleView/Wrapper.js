@@ -13,7 +13,7 @@ export const footerConfig = [{
   section: sampleTable.section,
   items: [
     {
-      title: 'ADD SELECTED FILES',
+      title: sampleTable.buttonText,
       clsName: 'add_selected_button',
       type: types.BUTTON,
       role: btnTypes.ADD_SELECTED_FILES,

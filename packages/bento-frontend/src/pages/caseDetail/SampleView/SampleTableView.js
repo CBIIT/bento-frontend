@@ -32,7 +32,7 @@ const SampleTableView = ({
       {selectedRows.length === 0 && (
         <Container className={classes.container}>
           <span className={classes.tableName}>
-            ASSOCIATED SAMPLES
+            {sampleTable.tableTitle}
           </span>
         </Container>
       )}

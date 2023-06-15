@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/util",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,17 +13,16 @@
     "access": "public"
   },
   "peerDependencies": {
-    "prop-types": "^15.7.2",
+    "@material-ui/core": "^4.12.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1",
-    "react-router-dom": "^5.1.2",
-    "lodash": "^4.17.20",
-    "@material-ui/core": "^4.12.4",
-    "uuid": "^3.3.3"
+    "react-router-dom": "^5.1.2"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "lodash": "^4.17.20",
+    "prop-types": "^15.7.2",
+    "uuid": "^3.3.3"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

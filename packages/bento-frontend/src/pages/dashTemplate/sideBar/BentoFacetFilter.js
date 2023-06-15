@@ -23,9 +23,7 @@ import {
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
 import { FacetFilter, ClearAllFiltersBtn } from '@bento-core/facet-filter';
-import { facetsConfig, facetSectionVariables } from '../../../bento/dashTemplate';
-import { resetIcon } from '../../../bento/dashboardData';
-// import FacetSectionView from '../FacetFilter/components/section/FacetSectionView';
+import { facetsConfig, facetSectionVariables, resetIcon } from '../../../bento/dashTemplate';
 import FacetFilterThemeProvider from './FilterThemeConfig';
 import {
   getAllSubjectIds, getAllIds,

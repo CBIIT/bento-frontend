@@ -122,6 +122,8 @@ export const tblContainer = {
       width: '100%',
       overflowX: 'auto',
       transform: 'rotateX(180deg)',
+      boxShadow: 'none',
+      borderRadius: '0',
     }
   },
   MuiTable: {

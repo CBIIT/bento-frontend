@@ -1,10 +1,10 @@
 {
   "name": "@bento-core/global-search",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npm run lint && rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src"
   },
@@ -12,15 +12,17 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@bento-core/util": "^1.0.0"
+  },
   "peerDependencies": {
-    "@bento-core/util": "*",
     "@material-ui/core": "*",
+    "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "*",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1",
-    "react-router-dom": "^5.1.2",
-    "@material-ui/icons": "^4.9.1"
+    "react-router-dom": "^5.1.2"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

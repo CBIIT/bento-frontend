@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/profile",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -12,15 +12,17 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@bento-core/paginated-table": "^1.0.0",
+    "@bento-core/util": "^1.0.0"
+  },
   "peerDependencies": {
-    "@bento-core/util": "^0.2.0",
-    "@bento-core/paginated-table": "^0.2.0",
+    "@apollo/client": "^3.6.9",
+    "@material-ui/core": "^4.12.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1",
-    "react-router-dom": "^5.1.2",
-    "@apollo/client": "^3.6.9",
-    "@material-ui/core": "^4.12.4"
+    "react-router-dom": "^5.1.2"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"
