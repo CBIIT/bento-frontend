@@ -48,6 +48,8 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? functions.resetFacetSlider
     : DEFAULT_CONFIG.functions.resetFacetSlider;
 
+  const clsName = (text='filter-section') => text.replace(/\s+/g, '-').toLowerCase();
+
   return {
     QueryBar: withStyles(DEFAULT_STYLES, { withTheme: true })((props) => {
       const { statusReducer, localFind, classes } = props;
@@ -163,7 +165,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
               ? <span className={classes.operators}> AND </span>
               : null}
             {mappedInputs.map((filter, index) => (
-              <span className={filter.section.replace(/\s+/g, '-').toLowerCase()}>
+              <span className={clsName(filter.section)}>
                 <Filter
                   index={index}
                   type={filter.type}
