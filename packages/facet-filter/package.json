@@ -1,5 +1,5 @@
 {
-  "name": "icdc-facet-filter",
+  "name": "@bento-core/facet-filter",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
