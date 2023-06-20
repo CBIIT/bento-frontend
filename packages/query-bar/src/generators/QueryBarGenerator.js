@@ -48,7 +48,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? functions.resetFacetSlider
     : DEFAULT_CONFIG.functions.resetFacetSlider;
 
-  const clsName = (text='filter-section') => text.replace(/\s+/g, '-').toLowerCase();
+  const clsName = (text = 'filter-section') => text.replace(/\s+/g, '-').toLowerCase();
 
   return {
     QueryBar: withStyles(DEFAULT_STYLES, { withTheme: true })((props) => {

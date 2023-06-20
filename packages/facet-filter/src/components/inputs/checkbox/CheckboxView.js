@@ -24,8 +24,6 @@ import {
 } from '@material-ui/icons';
 import styles from './CheckboxStyle';
 
-const alignment = 'flex-start';
-
 const CheckBoxView = ({
   classes,
   checkboxItem,
@@ -34,15 +32,21 @@ const CheckBoxView = ({
   facet,
 }) => {
   const {
-    name,
-    subjects,
     isChecked = false,
     index,
     section,
     tooltip,
   } = checkboxItem;
+  const {
+    field = 'group',
+    count = 'subjects',
+    customCount = (text) => `(${text})`,
+  } = facet;
+
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
   const checkedSection = `${section}`.toLowerCase().replace(/\ /g, '_');
+
+  const name = checkboxItem[field] || 'N/A';
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
@@ -61,7 +65,9 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      <Typography className={classes.checkboxName}>{name}</Typography>
+      <Typography className={classes.checkboxName}>
+        {name}
+      </Typography>
     </Box>
   );
 
@@ -113,7 +119,7 @@ const CheckBoxView = ({
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {subjects}
+          {customCount(checkboxItem[count] || 0)}
         </Typography>
       </ListItem>
       <Divider
