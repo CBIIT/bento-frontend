@@ -88,6 +88,9 @@ const ManageColumnView = ({
                 color="secondary"
                 className="checkBox"
               />
+              {column.icon && (
+                <img src={column.icon} alt={column.header} className={column.dataField} />
+              )}
               <Typography>{column.header}</Typography>
             </ListItem>
           ))}

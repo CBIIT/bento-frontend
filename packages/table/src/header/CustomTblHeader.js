@@ -12,6 +12,7 @@ import HeaderCell from './CustomCell';
 import defaultTheme from './DefaultThemConfig';
 import { actionCellTypes } from '../util/Types';
 import ActionHeaderCell from './ActionHeaderCell';
+import ColumnGrouping from './ColumnGrouping';
 
 const CustomTableHeader = ({
   table,
@@ -27,6 +28,7 @@ const CustomTableHeader = ({
     selectedRows = [],
     sortBy,
     sortOrder,
+    columnGroups,
   } = table;
   const Ids = rows.map((row) => row[table.dataKey]);
   const includeSelectedIds = Ids.some((id) => selectedRows.includes(id));
@@ -40,6 +42,7 @@ const CustomTableHeader = ({
   return (
     <ThemeProvider theme={themeConfig}>
       <TableHead>
+        <ColumnGrouping columnGroups={columnGroups} />
         <TableRow>
           {
             displayColunms.map((column) => {
