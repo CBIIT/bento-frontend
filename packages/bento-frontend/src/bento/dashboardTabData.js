@@ -28,50 +28,6 @@ export const externalLinkIcon = {
 };
 
 
-// --------------- Tabs Header Data configuration --------------
-export const tabs = [
-  {
-    id: 'case_tab',
-    title: 'Cases',
-    dataField: 'dataCase',
-    count: 'numberOfSubjects',
-  },
-  {
-    id: 'sample_tab',
-    title: 'Samples',
-    dataField: 'dataSample',
-    count: 'numberOfSamples',
-  },
-  {
-    id: 'file_tab',
-    title: 'Files',
-    dataField: 'dataFile',
-    count: 'numberOfFiles',
-  },
-];
-
-// --------------- Tabs Header Style configuration --------------
-export const tabIndex = [
-  {
-    title: 'Cases',
-    primaryColor: '#D6F2EA',
-    secondaryColor: '#FFDFB8',
-    selectedColor: '#10A075',
-  },
-  {
-    title: 'Samples',
-    primaryColor: '#CFEDF9',
-    secondaryColor: '#C9F1F1',
-    selectedColor: '#0DAFEC',
-  },
-  {
-    title: 'Files',
-    primaryColor: '#F7D7F7',
-    secondaryColor: '#86D6F0',
-    selectedColor: '#C92EC7',
-  },
-];
-
 export const DASHBOARD_QUERY_NEW = gql`
 query search (          
     $subject_ids: [String],
