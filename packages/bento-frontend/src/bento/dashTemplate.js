@@ -267,7 +267,7 @@ export const widgetConfig = [
     dataName: 'subjectCountByTumorSize',
   },
   {
-    type: 'donut',
+    type: 'bar',
     title: 'Chemotherapy',
     dataName: 'subjectCountByChemotherapyRegimen',
   },
