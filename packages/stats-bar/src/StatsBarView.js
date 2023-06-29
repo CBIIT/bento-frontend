@@ -136,7 +136,7 @@ const styles = () => ({
     top: props.styles.global.top ? props.styles.global.top : '139px',
     width: '100%',
     zIndex: 999,
-    position: 'fixed',
+    position: props.styles.global.position ? props.styles.global.position : 'fixed',
     background: props.styles.global.background ? props.styles.global.background : '#8DCAFF',
     textAlign: 'center',
     left: 0,
