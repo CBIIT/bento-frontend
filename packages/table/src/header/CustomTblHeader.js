@@ -42,7 +42,7 @@ const CustomTableHeader = ({
   return (
     <ThemeProvider theme={themeConfig}>
       <TableHead>
-        <ColumnGrouping columnGroups={columnGroups} />
+        <ColumnGrouping columnGroups={columnGroups} columns={columns} />
         <TableRow>
           {
             displayColunms.map((column) => {
