@@ -12,6 +12,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@bento-core/util": "^1.0.0"
+  },
   "peerDependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.9.1",

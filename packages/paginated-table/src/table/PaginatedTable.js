@@ -170,6 +170,7 @@ const PaginatedTable = ({
         queryVariables={queryVariables}
         totalRowCount={totalRowCount}
         table={table}
+        server={server}
         onRowsPerPageChange={handleChangeRowsPerPage}
         onPageChange={handleChangePage}
         onRowSelectChange={onRowSelectHandler}

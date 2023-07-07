@@ -36,15 +36,20 @@ const TableView = ({
   onSortByColumn,
   onColumnViewChange,
   themeConfig = {},
+  queryVariables,
+  server,
 }) => (
   <>
     <ExtendedView
       table={table}
+      rows={tableRows}
+      server={server}
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
       onPageChange={onPageChange}
       numSelected={table?.selectedRows?.length || 0}
       customTheme={themeConfig.extendedView}
+      queryVariables={queryVariables}
     />
     <CustomToolbar
       numSelected={table?.selectedRows?.length || 0}

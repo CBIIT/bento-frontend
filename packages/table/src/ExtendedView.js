@@ -11,10 +11,13 @@ import DownloadButton from './toolbar/DownloadButtonView';
 
 const ExtendedView = ({
   table,
+  rows,
   onColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
   customTheme,
+  queryVariables,
+  server,
 }) => {
   const { extendedViewConfig } = table;
   if (!extendedViewConfig) {
@@ -37,6 +40,10 @@ const ExtendedView = ({
         >
           <DownloadButton
             download={download}
+            rows={rows}
+            server={server}
+            table={table}
+            queryVariables={queryVariables}
           />
           <ManageColumnView
             table={table}
