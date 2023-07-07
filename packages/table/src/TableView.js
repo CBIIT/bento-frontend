@@ -27,6 +27,7 @@ const CustomTableContainer = (props) => {
 
 const TableView = ({
   tableRows = [],
+  totalRows = [],
   table,
   onRowsPerPageChange,
   onPageChange,
@@ -42,7 +43,7 @@ const TableView = ({
   <>
     <ExtendedView
       table={table}
-      rows={tableRows}
+      rows={totalRows}
       server={server}
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
