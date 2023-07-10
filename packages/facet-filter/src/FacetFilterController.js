@@ -34,9 +34,15 @@ const FacetFilterController = (props) => {
       for (const [key, value] of Object.entries(filterState)) {
         updateSections.forEach((sideBar) => {
           if (sideBar.type === InputTypes.CHECKBOX && sideBar.datafield === key) {
-            sideBar.facetValues.forEach((item) => {
-              item.isChecked = value[item.name] ? value[item.name] : false;
+            const { facetValues = [] } = sideBar;
+            const updateFacetVals = facetValues.map((item) => {
+              const facetVal = item[sideBar.field];
+              return {
+                ...item,
+                isChecked: value[facetVal] ? value[facetVal] : false,
+              };
             });
+            sideBar.facetValues = updateFacetVals;
           }
           if (sideBar.type === InputTypes.SLIDER && sideBar.datafield === key) {
             sideBar.facetValues = value;
@@ -46,9 +52,12 @@ const FacetFilterController = (props) => {
     } else {
       updateSections.forEach((sideBar) => {
         if (sideBar.type === InputTypes.CHECKBOX) {
-          sideBar.facetValues.forEach((item) => {
-            item.isChecked = false;
-          });
+          const { facetValues = [] } = sideBar;
+          const updateFacetVals = facetValues.map((item) => ({
+            ...item,
+            isChecked: false,
+          }));
+          sideBar.facetValues = updateFacetVals;
         }
         /**
          * set default value for slider - on clear all filter
@@ -92,26 +101,13 @@ const FacetFilterController = (props) => {
       facets.forEach((facet) => {
         const updateFacet = { ...facet, facetValues: [] };
         const {
-          field,
-          count = 'subjects',
-          customCount = (text) => `(${text})`,
-          tooltipKey,
           ApiLowerBoundName,
           ApiUpperBoundName,
           apiForFiltering,
         } = updateFacet;
         if (data[apiForFiltering]) {
           if (Array.isArray(data[apiForFiltering])) {
-            const updateField = data[apiForFiltering].map((item) => {
-              const addField = { ...item };
-              addField.name = item[field];
-              addField.subjects = customCount(item[count] || 0);
-              // set tooltip text
-              const text = tooltipText[tooltipKey];
-              addField.tooltip = text ? text[item[field]] : undefined;
-              return addField;
-            });
-            updateFacet.facetValues = updateField;
+            updateFacet.facetValues = data[apiForFiltering];
           }
           /**
           * add object to facet values
