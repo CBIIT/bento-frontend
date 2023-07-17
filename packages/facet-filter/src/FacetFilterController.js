@@ -125,7 +125,8 @@ const FacetFilterController = (props) => {
    * Generate facet sections state
    *
    */
-  const displayFacets = facetsConfig.filter((facet) => facet.show).slice(0, 16);
+  // const displayFacets = facetsConfig.filter((facet) => facet.show).slice(0, 16);
+  const displayFacets = facetsConfig.filter((facet) => facet.show);
   const facetStates = addFacetValues(displayFacets);
   const updateState = updateFacetState(facetStates);
   const facetSections = arrangeBySections(updateState);
