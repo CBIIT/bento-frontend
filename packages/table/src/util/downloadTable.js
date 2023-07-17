@@ -1,5 +1,4 @@
-import { formatBytes } from '@bento-core/util';
-import { formatColumnValues } from './Dataformat';
+import { formatBytes, formatColumnValues } from './Dataformat';
 
 export function createFileName(fileName) {
   const date = new Date();
