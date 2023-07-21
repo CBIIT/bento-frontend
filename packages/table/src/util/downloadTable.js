@@ -1,4 +1,5 @@
 import { formatBytes, formatColumnValues } from './Dataformat';
+import { actionCellTypes } from './Types';
 
 export function createFileName(fileName) {
   const date = new Date();
@@ -54,7 +55,8 @@ export function convertToCSV(jsonse, keysToInclude, header) {
 
 export function downloadJson(tableData, table, downloadFileName) {
   const { columns = [] } = table;
-  const formatDataVal = formatColumnValues(columns, tableData);
+  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
+  const formatDataVal = formatColumnValues(filterColumns, tableData);
   const jsonse = JSON.stringify(formatDataVal);
   const keysToInclude = columns.filter(({ dataField }) => dataField)
     .map(({ dataField }) => dataField);

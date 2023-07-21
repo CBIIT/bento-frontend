@@ -19,6 +19,8 @@ const AddAllFilesComponent = (props) => {
     setOpenSnackbar,
     client,
     tooltipCofig,
+    maxFileLimit = 1000,
+    DisplayCustomText,
   } = props;
   /**
   * conditionally display dialog view
@@ -40,7 +42,7 @@ const AddAllFilesComponent = (props) => {
       const data = response[responseKeys[0]];
       if (data && data.length > 0) {
         const ids = addFilesResponseHandler(response, responseKeys);
-        if (ids.length > 1000) {
+        if (ids.length > maxFileLimit) {
           setAlterDisplay(true);
         } else {
           setOpen(true);
@@ -76,6 +78,7 @@ const AddAllFilesComponent = (props) => {
         open={openAddDialog}
         onYesClick={addFilesToCart}
         onNoClick={toggleOpen}
+        DisplayCustomText={DisplayCustomText}
       />
     </>
   );

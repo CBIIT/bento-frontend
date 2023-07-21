@@ -43,7 +43,7 @@ const PaginatedTable = ({
     * 2. provide table dispatch action to other component (wrapper comp)
     */
     const { setContext } = tableContext;
-    setContext({ table, dispatch });
+    setContext({ ...table, dispatch });
   }, [table]);
 
   /**
@@ -130,7 +130,7 @@ const PaginatedTable = ({
   const handleColumnViewChange = (column) => {
     const columns = table.columns.map((col) => {
       const updateColumnView = { ...col };
-      if (col.dataField === column.dataField) {
+      if (col.dataField && col.dataField === column.dataField) {
         updateColumnView.display = !column.display;
       }
       return updateColumnView;

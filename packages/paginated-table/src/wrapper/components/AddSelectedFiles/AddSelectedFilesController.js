@@ -19,6 +19,7 @@ const AddSelectedFilesController = (props) => {
     setOpenSnackbar,
     setAlterDisplay,
     client,
+    maxFileLimit = 1000,
   } = props;
 
   const tableContext = useContext(TableContext);
@@ -42,7 +43,7 @@ const AddSelectedFilesController = (props) => {
 
     fileIds().then((response) => {
       const ids = addFilesResponseHandler(response, responseKeys);
-      if (ids.length >= 1000) {
+      if (ids.length >= maxFileLimit) {
         setAlterDisplay(true);
       } else {
         addFiles(ids);
