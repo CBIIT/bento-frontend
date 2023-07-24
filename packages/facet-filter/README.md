@@ -72,12 +72,17 @@ import FacetFilter from 'bento-core';
 ```
 import { InputTypes } from 'bento-core';
 
+// fields for labelds and counts
+const GROUP = 'group'; // access labels
+const COUNT = 'subjects'; // access count value
+
 export const facetsConfig = [{ 
   section: CASES,
   label: 'Program', 
   apiForFiltering: 'filterSubjectCountByProgram', 
   datafield: 'programs', 
-  field: GROUP, 
+  field: GROUP,
+  count: COUNT,
   type: InputTypes.CHECKBOX, 
   sort_type: sortType.ALPHABET,
   show: true, 
