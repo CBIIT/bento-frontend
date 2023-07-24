@@ -152,13 +152,16 @@ const FacetView = ({
           </div>
           )
 }
-        <FilterItems
-          facet={facet}
-          sortBy={sortBy}
-        />
+        {(expand)
+          && (
+          <FilterItems
+            facet={facet}
+            sortBy={sortBy}
+          />
+          )}
       </Accordion>
       {
-        (!expand && type === InputTypes.CHECKBOX) && (
+        (!expand && type === InputTypes.CHECKBOX && selectedItems.length > 0) && (
           <>
             <List id="filter_Items">
               <FilterItems
