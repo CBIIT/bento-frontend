@@ -270,11 +270,29 @@ const CustomClearAllFiltersBtn = ({ onClearAllFilters, disable }) => {
 ```
 // response 
 // filterCaseCountByProgram: [{group: "COP", subjects: 301}]
+
+// facet = { 
+//  section: CASES,
+//  label: 'Program', 
+//  apiForFiltering: 'filterSubjectCountByProgram', 
+//  datafield: 'programs', 
+//  field: GROUP,
+//  count: COUNT,
+//  type: InputTypes.CHECKBOX, 
+//  sort_type: sortType.ALPHABET,
+//  show: true, 
+//  customCount = (text) => `(${text})`,
+// }
+
 const {
-  name,
-  customName,
-  subjects,
-  customSubjects,
+  field = 'group',
+  count = 'subjects',
+  customCount = (text) => `(${text})`,
+} = facet;
+const {
+  isChecked = false,
+  index,
+  section,
   tooltip,
 } = checkboxItem;
 
