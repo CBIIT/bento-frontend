@@ -12,6 +12,7 @@ function AddToCartDialogView(props) {
     onNoClick,
     cartWillFull = false,
     alertMessage,
+    DisplayCustomText,
   } = props;
 
   if (cartWillFull) {
@@ -32,15 +33,24 @@ function AddToCartDialogView(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure to add All Files
-            {' '}
-            {numberOfFilesSelected}
-            {' '}
-            to cart
-          </DialogContentText>
+          {
+            DisplayCustomText ? (
+              <DisplayCustomText
+                onYesClick={onYesClick}
+                onNoClick={onNoClick}
+              />
+            ) : (
+              <DialogContentText id="alert-dialog-description">
+                Are you sure to add All Files
+                {' '}
+                {numberOfFilesSelected}
+                {' '}
+                to cart
+              </DialogContentText>
+            )
+          }
         </DialogContent>
-        <DialogActions>
+        <DialogActions className="dialog_actions">
           <Button className="yesBtn" onClick={() => onYesClick()}>
             Yes
           </Button>
