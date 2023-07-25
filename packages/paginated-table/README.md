@@ -13,6 +13,67 @@
 
 ### Generate and integrate redux dispatch actions
 ```
+const config = {
+  title: 'program',
+  dataField: 'studiesByProgram',
+  extendedViewConfig: { // display download button and manage view column
+    download: {
+      downloadFileName: 'ICDC_Studies_download',
+      downloadCsv: 'Download Table Contents As CSV',
+    },
+    manageViewColumns: {
+      title: 'View Columns',
+    },
+  }
+  columns: [
+    {
+      cellType: cellTypes.CHECKBOX,
+      display: true,
+      role: cellTypes.CHECKBOX,
+    },
+    {
+      dataField: 'program_id',
+      header: 'Program',
+      cellType: cellTypes.LINK,
+      linkAttr: {
+        rootPath: '/program',
+        pathParams: ['program_id'],
+      },
+      role: cellTypes.DISPLAY,
+      display: true,
+    },
+    {
+      dataField: 'clinical_study_name',
+      header: 'Study Name',
+      display: true,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: 'numberOfStudyFiles',
+      header: 'Study File(s)',
+      display: true,
+      columnDefaultValues: {
+        '0': 'Not Applicable', // replaces 0 with other text value in a column
+      },
+      role: cellTypes.DISPLAY, 
+    }
+  ],
+  columnGroups: {
+    {
+      clsName: 'col_group_1',
+      title: 'column group title',
+      columnIndexes: [startColIndex, endColIndex],
+    },
+    {
+      clsName: 'col_group_2',
+      title: 'column group title',
+      customViewRender: () => <h2>'custom Text'</h2>, // customize element (takes priority over title)
+      columnIndexes: [startColIndex, endColIndex],
+    },
+  }
+}
+
 const initTblState = (initailState) => ({
     ...initailState,
     title: config.name,
@@ -25,6 +86,7 @@ const initTblState = (initailState) => ({
     paginationAPIField: config.paginationAPIField,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
+    columnGroups: config.columnGroups
     rowsPerPage: 10,
     page: 0,
   });
@@ -45,7 +107,9 @@ const initTblState = (initailState) => ({
 | sortOrder | FALSE | default sort column 'ASC' | ```defaultSortDirection: 'asc',```|
 | rowsPerPage | FALSE | default 10 | |
 | page | FALSE | 0 | |
-| extendedViewConfig | FALSE | extended view of table header component | refer bento-frontend tabContainers, dashboardTabData.js |
+| extendedViewConfig | FALSE | extended view of table header component | refer bento-frontend / bento-icdc-frontend tabContainers, dashboardTabData.js |
+| ColumnGroups | FALSE | ColumnGrouping Component | refer bento-icdc-frontend tabContainers, StudiesData.js |
+
 
 
 ### 2 Importing Component and Configuration
@@ -125,13 +189,14 @@ const initTblState = (initailState) => ({
   sortBy: config.defaultSortField,
   sortOrder: config.defaultSortDirection,
   extendedViewConfig: config.extendedViewConfig,
+  columnGroups: config.columnGroups,
   rowsPerPage: 10,
   page: 0,
 });
 
 <TableContextProvider>
   <Wrapper
-    wrapConfig={configWrapper(config, wrapperConfig)}
+    wrapConfig={configWrapper(tableLayout)} // tableLayout - refer to step #4
     customTheme={customTheme}
     classes={classes}
     section={config.name}
@@ -172,7 +237,7 @@ Wrapper component around table compnent.
 * Configuration display component based on index
 * CAUTION: If table is in wrapper component provide position of table component
 */
- export const wrapperConfig = [{
+ export const tableLayout = [{
   container: 'buttons',
   size: 'xl',
   clsName: 'container_header',
@@ -250,4 +315,9 @@ headerConfig - upper component on the table
 | type | TRUE | add all files or add selected files| btnTypes.ADD_SELECTED_FILES |
 | tooltipCofig | FALSE | appears on side of the refers button | dashboardTabData/ tooltipContent |
 
+***More reference***
+```
+https://github.com/CBIIT/bento-icdc-frontend/tree/Bento-4.0/src/components/PaginatedTable
+```
 
+**Code for table view under bento-core/table - please refer to source code for more information**
