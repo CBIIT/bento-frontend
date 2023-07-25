@@ -47,7 +47,7 @@ const config = {
       header: 'Study Name',
       display: true,
       tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
+      role: cellTypes.DISPLAY, // to display column in managecolumn view 
     },
     {
       dataField: 'numberOfStudyFiles',
@@ -209,6 +209,7 @@ const initTblState = (initailState) => ({
           queryVariables={activeFilters}
           totalRowCount={dashboardStats[config.count]}
           activeTab={activeTab}
+          paginationOptions={paginationOptions}
         />
       </Grid>
     </Grid>
@@ -314,6 +315,56 @@ headerConfig - upper component on the table
 | clsName | TRUE | class name to apply style using themeprovider | |
 | type | TRUE | add all files or add selected files| btnTypes.ADD_SELECTED_FILES |
 | tooltipCofig | FALSE | appears on side of the refers button | dashboardTabData/ tooltipContent |
+
+
+#### 
+
+## 5 Pagination Configuration:
+
+```
+import {
+  TableContext,
+  onColumnViewChange, // dispact action
+  onColumnSort, // dispact action
+  onChangeSortDirection, // dispact action
+  onRowsPerPageChange, // dispact action
+  onPageAndTotalCountChange, // dispact action
+  onPageChange, // dispact action
+  onRowSeclect, // dispact action
+  setTotalRowCount, // dispact action
+  customPaginationAction, // dispact action
+} from '@bento-core/paginated-table';
+
+  const tableContext = useContext(TableContext);
+  const { context } = tableContext;
+  const { dispatch } = context;
+
+  const paginationOptions = {
+    customizeOnRowSelect: (event, row) => {
+      const payload = {
+        page: 2,
+        rowPerPage: 10,
+        ...
+      };
+      // updates table state, 
+      dispatch(customPaginationAction(payload));
+    },
+    customizeToggleSelectAll: (event, Ids, includeIds) => {}, // Ids - selected ids
+    customizeSortByColumn: (column, order) => {},
+    customizeChangePage: (event, newPage) => {},
+    customizeChangeRowsPerPage: (event) => {},
+    customizeColumnViewChange: (column) => {},
+  };
+  
+  <TableView
+    initState={initTblState}
+    themeConfig={themeConfig}
+    queryVariables={activeFilters}
+    totalRowCount={dashboardStats[config.count]}
+    activeTab={activeTab}
+    paginationOptions={paginationOptions}
+  />
+```
 
 ***More reference***
 ```
