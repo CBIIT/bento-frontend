@@ -11,7 +11,7 @@ export default () => ({
     fontFamily: 'Nunito',
     fontSize: '10px',
     marginRight: '12px',
-    marginLeft: '16px',
+    marginLeft: '24px',
   },
   sortGroupItem: {
     cursor: 'pointer',
