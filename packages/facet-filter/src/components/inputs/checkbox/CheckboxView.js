@@ -15,11 +15,14 @@ import {
   Tooltip,
   Box,
   Typography,
+  Icon,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
+import emptyCheckBox from './assets/emptycheckbox.svg';
+import checkedBox from './assets/checkedbox.svg';
 import styles from './CheckboxStyle';
 
 const alignment = 'flex-start';
@@ -78,16 +81,33 @@ const CheckBoxView = ({
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
-          icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+          icon={
+            <Icon style={{
+              fontSize: '18px',
+              lineHeight: '22px',
+            }}
+            >
+              <img
+                src={emptyCheckBox}
+                alt="checkbox-icon"
+              />
+            </Icon>
+          }
           onClick={handleToggle}
           checked={isChecked}
           checkedIcon={(
-            <CheckBoxIcon
+            <Icon
               style={{
-                fontSize: 18,
+                fontSize: '18px',
+                lineHeight: '22px',
               }}
               className={`${checkedSection}CheckedIcon`}
-            />
+            >
+              <img
+                src={checkedBox}
+                alt="checkedBox-icon"
+              />
+            </Icon>
           )}
           disableRipple
           color="secondary"

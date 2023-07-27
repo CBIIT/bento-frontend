@@ -113,6 +113,7 @@ const FacetFilterController = (props) => {
             updateFacet.minLowerBound = lowerBound;
             updateFacet.maxUpperBound = upperBound;
             updateFacet.facetValues = [lowerBound, upperBound];
+            updateFacet.style = facet.style;
           }
         }
         updateFacets.push(updateFacet);
