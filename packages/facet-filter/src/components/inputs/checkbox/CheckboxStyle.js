@@ -1,9 +1,9 @@
 export default () => ({
   listItemGutters: {
-    padding: '10px 20px 10px 0px',
+    padding: '10px 10px 10px 0px',
   },
   checkboxRoot: {
-    marginLeft: '5px',
+    marginLeft: '8px',
     height: 12,
   },
   panelDetailText: {
@@ -24,7 +24,8 @@ export default () => ({
   checkboxName: {
     margin: '0',
     color: '#000000',
-    fontSize: '14px',
+    fontSize: '16px',
+    fontWeight: 300,
     marginTop: '1.5px',
     fontFamily: 'Nunito',
     lineHeight: '120%',
