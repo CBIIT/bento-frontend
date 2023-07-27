@@ -67,12 +67,12 @@ export default () => ({
     borderRadius: '15px',
     fontFamily: 'Nunito',
     boxSizing: 'border-box',
-    backgroundColor: '#969696',
+    backgroundColor: '#646464',
     textTransform: 'capitalize',
     border: '1px solid #B4B4B4',
     padding: '1px 5px 0px 6px',
     '&:hover': {
-      backgroundColor: '#969696',
+      backgroundColor: '#646464',
     },
   },
   divider: {
@@ -81,16 +81,16 @@ export default () => ({
   },
   /* Custom Styling by Project */
   localFind: {
-    color: '#10A075',
+    color: '#7AA6B6',
   },
   localFindBackground: {
-    backgroundColor: '#C0E9D7',
+    backgroundColor: '#E4ECE9',
   },
   facetSectionCases: {
-    color: '#10A075',
+    color: '#7AA6B6',
   },
   facetSectionCasesBackground: {
-    backgroundColor: '#C0E9D7',
+    backgroundColor: '#E4ECE9',
   },
   facetSectionFiles: {
     color: '#E636E4',
@@ -98,10 +98,40 @@ export default () => ({
   facetSectionFilesBackground: {
     backgroundColor: '#F5C3F1',
   },
+  facetSectionDemographics: {
+    color: '#7AA6B6',
+  },
+  facetSectionDemographicsBackground: {
+    backgroundColor: '#E4ECE9',
+  },
+  facetSectionDiagnosis: {
+    color: '#7AA6B6',
+  },
+  facetSectionDiagnosisBackground: {
+    backgroundColor: '#E4ECE9',
+  },
   facetSectionSamples: {
-    color: '#10BEFF',
+    color: '#7AA6B6',
   },
   facetSectionSamplesBackground: {
-    backgroundColor: '#C3EAF5',
+    backgroundColor: '#E4ECE9',
+  },
+  facetSectionAssay: {
+    color: '#7AA6B6',
+  },
+  facetSectionAssayBackground: {
+    backgroundColor: '#E4ECE9',
+  },
+  facetSectionStudy: {
+    color: '#7AA6B6',
+  },
+  facetSectionStudyBackground: {
+    backgroundColor: '#E4ECE9',
+  },
+  facetSectionLibrary: {
+    color: '#7AA6B6',
+  },
+  facetSectionLibraryBackground: {
+    backgroundColor: '#E4ECE9',
   },
 });

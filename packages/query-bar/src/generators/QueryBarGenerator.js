@@ -113,7 +113,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                         className={clsx(classes.filterName, classes.localFindBackground)}
                         onClick={clearAutocomplete}
                       >
-                        Case IDs
+                        Participant IDs
                       </span>
                       {' '}
                       {' '}
