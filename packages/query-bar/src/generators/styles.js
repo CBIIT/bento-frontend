@@ -48,6 +48,12 @@ export default () => ({
     marginLeft: 3,
     fontWeight: 600,
   },
+  ellipsis: {
+    fontFamily: 'Nunito',
+    fontWeight: 600,
+    fontSize: 10,
+    marginLeft: 3,
+  },
   operators: {
     color: '#646464',
     marginLeft: '3px',

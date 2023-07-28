@@ -38,7 +38,7 @@ export default ({
             {idx === (maxItems - 1) ? null : ' '}
           </>
         ))}
-        {items.length > maxItems && '...'}
+        {items.length > maxItems && <span className={classes.ellipsis}>...</span>}
         {items.length > 1 && <span className={classes.bracketsClose}>)</span>}
       </span>
     </span>
