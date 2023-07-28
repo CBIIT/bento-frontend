@@ -208,7 +208,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
       // };
 
       return (
-        <ResponsiveContainer width="100%" height={height}>
+        <ResponsiveContainer width={width} height={height}>
           <BarChart
             data={data}
             // margin={{

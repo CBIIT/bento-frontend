@@ -90,7 +90,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
         customBackGround, bottomDivider, noPaddedTitle,
         // Chart Options
         chartType, sliceTitle, data, chartTitleLocation, chartTitleAlignment,
-        children,
+        children, width, height,
       } = props;
 
       return (
@@ -132,7 +132,8 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
               {chartType === 'bar' && (
                 <BarChart
                   data={data}
-                  height={210}
+                  width={width}
+                  height={height}
                 />
               )}
               {chartType === 'sunburst' && (
