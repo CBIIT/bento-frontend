@@ -44,6 +44,7 @@ const SearchList = (props) => {
           </ListItem>
         </>
       ))}
+      {items.length > 0 && <Divider className={classes.divider} />}
     </List>
   );
 };
@@ -51,17 +52,16 @@ const SearchList = (props) => {
 const styles = () => ({
   listPadding: {
     paddingTop: 0,
-    paddingBottom: 4,
+    paddingBottom: 12,
   },
   deleteIcon: {
     cursor: 'pointer',
-    marginTop: -4,
   },
   closeRoot: {
     height: 10,
   },
   listItemGutters: {
-    padding: '0px 15px 0px 18px',
+    padding: '1px 3px 1px 8px',
     display: 'flex',
     justifyContent: 'space-between',
   },
@@ -75,8 +75,6 @@ const styles = () => ({
   divider: {
     backgroundColor: '#B1B1B1',
     height: '1px',
-    marginRight: 11,
-    marginLeft: 12,
   },
 });
 
