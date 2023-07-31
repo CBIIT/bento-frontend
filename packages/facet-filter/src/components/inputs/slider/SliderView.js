@@ -59,6 +59,7 @@ const SliderView = ({
               Min:
             </Typography>
             <InputMinMaxView
+              className={classes.minInputValue}
               lowerBoundVal={sliderValue[0]}
               upperBoundVal={sliderValue[1]}
               minLowerBound={minLowerBound}
@@ -72,6 +73,7 @@ const SliderView = ({
               Max:
             </Typography>
             <InputMinMaxView
+              className={classes.maxInputValue}
               lowerBoundVal={sliderValue[0]}
               upperBoundVal={sliderValue[1]}
               minLowerBound={minLowerBound}
@@ -183,6 +185,24 @@ const styles = () => ({
       float: 'left',
       lineHeight: '34px',
       marginRight: '5px',
+    }),
+  minInputValue: (props) => (props.facet.style && props.facet.style.minInputValue
+    ? props.facet.style.minInputValue
+    : {
+      fontFamily: 'Montserrat',
+      fontSize: '13px',
+      color: '#717171',
+      background: '#F0F0F0',
+      textAlign: 'center',
+    }),
+  maxInputValue: (props) => (props.facet.style && props.facet.style.maxInputValue
+    ? props.facet.style.maxInputValue
+    : {
+      fontFamily: 'Montserrat',
+      fontSize: '13px',
+      color: '#717171',
+      background: '#F0F0F0',
+      textAlign: 'center',
     }),
   thumb: (props) => (props.facet.style && props.facet.style.thumb
     ? props.facet.style.thumb
