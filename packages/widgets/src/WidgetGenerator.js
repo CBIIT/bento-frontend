@@ -114,6 +114,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
                 [classes.noPadding]: noBodyPadding,
                 [bodyClass]: bodyClass,
               })}
+              style={chartType === 'bar' ? {width: '100%'} : {}}
             >
               {chartType === 'donut' && (
                 <DonutChart
