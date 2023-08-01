@@ -29,7 +29,6 @@ const DeleteCellView = ({
   const [displayDialog, setDisplay] = useState(false);
   const toggleDialogDisplay = () => setDisplay(!displayDialog);
   const testTrigger = () => {
-    console.log('test');
     setDisplay(true);
   };
   const { customColHeaderRender } = column;
