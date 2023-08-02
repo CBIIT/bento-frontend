@@ -16,13 +16,12 @@ export const DEFAULT_COLORS_EVEN = [
 ];
 
 export const DEFAULT_COLORS_ODD = [
-  '#057EBD',
-  '#0C3151',
-  '#F78F49',
-  '#79287C',
-  '#7CC242',
-  '#61479D',
-  '#D4D4D4',
+  '#137E87',
+  '#99A4E4',
+  '#CB2809',
+  '#DFC798',
+  '#CECECE',
+  '#9FD1D6',
 ];
 
 export const DEFAULT_CONFIG_DONUT = {
