@@ -79,6 +79,7 @@ const AddAllFilesComponent = (props) => {
         onYesClick={addFilesToCart}
         onNoClick={toggleOpen}
         DisplayCustomText={DisplayCustomText}
+        activeFilters={activeFilters}
       />
     </>
   );
