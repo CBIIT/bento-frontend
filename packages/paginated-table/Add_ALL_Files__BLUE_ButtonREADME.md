@@ -1,6 +1,6 @@
 
 ### 1 Use bento-core/paginated-table package version publish by ICDC
-Alternative 
+Alternative configuratoin for BLUE button
 ```
 // 1.0.1-icdc.3
 npm i @bento-core/paginated-table@1.0.1-icdc.3
