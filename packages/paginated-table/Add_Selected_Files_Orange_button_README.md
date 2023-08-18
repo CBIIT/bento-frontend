@@ -11,7 +11,9 @@ or in package.json
 }
 ```
 
-**Assuming table component is imported from bento-core/paginated-table**
+<span style="color:red">
+Assuming table component is imported from bento-core/paginated-table
+</span>
 
 ### 2 Configure Add_All_Button Or BLUE Button in Dashboard
 

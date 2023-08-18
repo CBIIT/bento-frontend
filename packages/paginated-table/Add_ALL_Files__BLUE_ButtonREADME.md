@@ -10,10 +10,13 @@ or in package.json
     @bento-core/paginated-table: '1.0.1-icdc.3'
 }
 ```
-
 **NOTE: Create a new dashboard page using bento-core components before removing old dashboard page**
+<br>
+<span style="color:red">
+Assuming New Dashboard page have Filter component and table component from bento-core
+</span>.
 
-**Assuming New Dashboard page have Filter component and table component from bento-core**
+
 
 ### 2 Configure Add_All_Button Or BLUE Button in Dashboard
 
