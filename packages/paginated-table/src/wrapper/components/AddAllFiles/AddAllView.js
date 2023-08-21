@@ -1,8 +1,38 @@
 import React, { useState } from 'react';
+import ToolTip from '@bento-core/tool-tip';
 import { Button } from '@material-ui/core';
 import clsx from 'clsx';
 import { getFilesID } from '../../WrapperService';
 import AddToCartDialogView from '../AddToCartDialog/AddToCartDialogView';
+
+export const ToolTipView = (props) => {
+  const {
+    section,
+    tooltipCofig,
+    classes,
+  } = props;
+  const {
+    icon,
+    src,
+    alt,
+    arrow = false,
+    tooltipText,
+    placement,
+  } = tooltipCofig;
+  return (
+    <ToolTip
+      placement={placement}
+      title={tooltipText || `${tooltipCofig[section]}`}
+      arrow={arrow}
+      classes={{
+        tooltip: classes.customTooltip,
+        arrow: classes.customArrow,
+      }}
+    >
+      <img src={icon || src} alt={alt} />
+    </ToolTip>
+  );
+};
 
 const AddAllFilesComponent = (props) => {
   const {
@@ -16,6 +46,7 @@ const AddAllFilesComponent = (props) => {
     setAlterDisplay,
     setOpenSnackbar,
     client,
+    tooltipCofig,
   } = props;
   /**
   * conditionally display dialog view
@@ -76,6 +107,7 @@ const AddAllFilesComponent = (props) => {
       >
         {title}
       </Button>
+      {tooltipCofig && (<ToolTipView {...props} />)}
       <AddToCartDialogView
         open={openAddDialog}
         onYesClick={addFilesToCart}
