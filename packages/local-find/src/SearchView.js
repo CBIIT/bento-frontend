@@ -20,7 +20,7 @@ import { resetUploadData } from './store/actions/Actions';
 const SearchView = (props) => {
   const {
     classes, hidden, state, resetUpload,
-    UploadModal, SearchBox,
+    UploadModal, SearchBox, setTitle = 'Case',
   } = props;
 
   const [showCasesModal, setShowCasesModal] = useState(false);
@@ -53,7 +53,7 @@ const SearchView = (props) => {
         className={classes.uploadButton}
         id="local_find_upload_open"
       >
-        { matchedFiles.length !== 0 ? 'View Case Set' : 'Upload Case Set' }
+        { matchedFiles.length !== 0 ? `View ${setTitle} Set` : `Upload ${setTitle} Set` }
         <span className={classes.iconSpan}>
           <img
             className={classes.uploadIcon}
