@@ -123,10 +123,10 @@ export default () => ({
   facetSectionSamplesBackground: {
     backgroundColor: '#E4ECE9',
   },
-  facetSectionAssay: {
+  facetSectionDatacategory: {
     color: '#7AA6B6',
   },
-  facetSectionAssayBackground: {
+  facetSectionDatacategoryBackground: {
     backgroundColor: '#E4ECE9',
   },
   facetSectionStudy: {
