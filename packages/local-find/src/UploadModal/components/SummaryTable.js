@@ -24,7 +24,7 @@ const SummaryTable = (props) => {
   return (
     <div className={classes.summaryContainer} id="uploadCaseSetSummarySection">
       <p className={classes.summary} id="uploadCaseSetSummaryCount">
-        {`${matched.length + unmatched.length} submitted Case IDs mapped to ${matched.length} unique Bento Case IDs`}
+        {`${matched.length + unmatched.length} submitted Case IDs mapped to ${matched.length} unique ICDC Case IDs`}
       </p>
       {error ? (
         <Typography className={clsx(classes.summary, classes.error)}>
