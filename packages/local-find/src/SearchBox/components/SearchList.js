@@ -66,7 +66,7 @@ const styles = () => ({
     justifyContent: 'space-between',
   },
   searchResultDetailText: {
-    color: '#0D8662',
+    color: '#FCA359',
     lineHeight: '20px',
     fontFamily: 'Lato',
     fontSize: '11px',
