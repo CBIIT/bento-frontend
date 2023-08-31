@@ -221,7 +221,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="group" />
             <YAxis />
-            <Tooltip />
+            <Tooltip cursor={false} />
             {/* <Legend /> */}
             <Bar dataKey="subjects">
               {data.map((entry, index) => (
