@@ -61,7 +61,7 @@ const styles = () => ({
     height: 10,
   },
   listItemGutters: {
-    padding: '0px 15px 0px 18px',
+    padding: '0px 15px 0px 18px !important',
     display: 'flex',
     justifyContent: 'space-between',
   },
