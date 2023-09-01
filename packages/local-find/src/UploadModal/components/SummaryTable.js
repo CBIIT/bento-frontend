@@ -64,7 +64,7 @@ const SummaryTable = (props) => {
               <tr id="uploadCaseSetMatchedHeader">
                 <th className={classes.header}>SUBMITTED CASE ID</th>
                 <td className={classes.emptyCell} />
-                <th className={classes.header}>ASSOCIATED PROGRAM</th>
+                <th className={classes.header}>Study Code</th>
               </tr>
               <tr className={classes.heading}>
                 <td className={classes.columnPadding}><Divider style={{ width: '100%' }} className={classes.divider} /></td>
@@ -75,9 +75,9 @@ const SummaryTable = (props) => {
               </tr>
               {matched.map((data, id) => (
                 <tr key={id}>
-                  <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data.subject_id}</td>
+                  <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data.case_id}</td>
                   <td className={classes.emptyCell} />
-                  <td className={classes.programHeading} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data.program_id}</td>
+                  <td className={classes.programHeading} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data.study_code}</td>
                 </tr>
               ))}
             </table>
