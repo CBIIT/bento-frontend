@@ -2,8 +2,9 @@ import React from 'react';
 import {
   TableCell,
   Checkbox,
-  FormControlLabel,
 } from '@material-ui/core';
+
+const label = { inputProps: { 'aria-label': 'Checkbox item' } };
 
 const CheckboxView = ({
   includeSelectedIds,
@@ -11,15 +12,12 @@ const CheckboxView = ({
   Ids,
 }) => (
   <TableCell padding="checkbox">
-    <FormControlLabel
-      control={(
-        <Checkbox
-          color="primary"
-          indeterminate={includeSelectedIds}
-          checked={includeSelectedIds}
-          onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
-        />
-      )}
+    <Checkbox
+      {...label}
+      color="primary"
+      indeterminate={includeSelectedIds}
+      checked={includeSelectedIds}
+      onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
     />
   </TableCell>
 );
