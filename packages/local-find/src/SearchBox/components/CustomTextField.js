@@ -29,9 +29,12 @@ export const CustomTextField = ({ ...params }) => {
     ),
   };
 
+  const label = { inputProps: { 'aria-label': 'Participant ID Text Search box' } };
+
   return (
     <TextField
       {...params}
+      {...label}
       classes={classes}
       placeholder={placeholder}
       variant="outlined"
