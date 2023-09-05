@@ -21,6 +21,7 @@ const CustomHeaderCell = ({
     header,
     headerType,
     customColHeaderRender,
+    sortable,
   } = column;
 
   const Tooltip = useCallback(({ children }) => {
@@ -44,6 +45,16 @@ const CustomHeaderCell = ({
     // return default view
     return <>{children}</>;
   }, []);
+
+  if (sortable !== undefined && !sortable) {
+    return (
+      <TableCell
+        scope="col"
+      >
+        {header}
+      </TableCell>
+    );
+  }
 
   return (
     <TableCell
