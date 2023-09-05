@@ -32,7 +32,6 @@ export const CustomTextField = ({ ...params }) => {
   return (
     <TextField
       {...params}
-      label={<span style={{ display: 'none' }}>Participant ID Text Search box</span>}
       classes={classes}
       placeholder={placeholder}
       variant="outlined"
