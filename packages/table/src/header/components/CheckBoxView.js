@@ -4,7 +4,7 @@ import {
   Checkbox,
 } from '@material-ui/core';
 
-const label = { inputProps: { 'aria-label': 'Checkbox item' } };
+const label = { inputProps: { 'aria-label': 'Select all checkbox' } };
 
 const CheckboxView = ({
   includeSelectedIds,
@@ -12,6 +12,7 @@ const CheckboxView = ({
   Ids,
 }) => (
   <TableCell padding="checkbox">
+    <span style={{ display: 'none' }}>Select all</span>
     <Checkbox
       {...label}
       color="primary"
