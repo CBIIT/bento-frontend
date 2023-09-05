@@ -46,6 +46,8 @@ const CheckBoxView = ({
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
   const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
 
+  const labelCheckbox = { inputProps: { 'aria-label': 'Checkbox item' } };
+
   const handleToggle = () => {
     const toggleCheckBoxItem = {
       name: name,
@@ -81,6 +83,7 @@ const CheckBoxView = ({
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
+          {...labelCheckbox}
           icon={
             <Icon style={{
               fontSize: '18px',
