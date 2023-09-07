@@ -15,6 +15,7 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     matchedLabel: 'SUBMITTED CASE ID',
     associateId: 'program_id',
     associataLabel: 'ASSOCIATED PROGRAM',
+    projectName: 'BENTO',
   },
 
   // Helper functions used by the component

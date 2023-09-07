@@ -13,8 +13,11 @@ import DEFAULT_CONFIG from './config';
  * @returns {object} { QueryBar }
  */
 export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
-  const { config, functions } = uiConfig;
+  const { config, functions, customStyles = {} } = uiConfig;
   const { CHECKBOX } = InputTypes;
+  const styles = () => (
+    { ...DEFAULT_STYLES(), ...customStyles }
+  );
 
   const maxItems = config && typeof config.maxItems === 'number'
     ? config.maxItems
@@ -51,7 +54,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const clsName = (text = 'filter-section') => text.replace(/\s+/g, '-').toLowerCase();
 
   return {
-    QueryBar: withStyles(DEFAULT_STYLES, { withTheme: true })((props) => {
+    QueryBar: withStyles(styles, { withTheme: true })((props) => {
       const { statusReducer, localFind, classes } = props;
 
       const { autocomplete, upload } = localFind;

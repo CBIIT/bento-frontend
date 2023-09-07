@@ -20,18 +20,18 @@ export default () => ({
     },
     '& :hover': {
       color: 'white',
-      backgroundColor: '#ff7f15;',
+      backgroundColor: '#10A075;',
     },
   },
   paper: {
-    border: '1.25px solid #FCA359',
+    border: '1.25px solid #0D8461',
     backgroundColor: '#717171',
     color: '#fff',
     borderRadius: 10,
     fontFamily: 'Lato',
     fontSize: 12,
     fontWeight: 500,
-    boxShadow: '0 0 0 2px rgba(255, 127, 21,0.36)',
+    boxShadow: '0 0 0 2px rgba(16,160,117,0.36)',
     '& ::-webkit-scrollbar': {
       width: '0.6em',
       height: '1em',
@@ -67,7 +67,7 @@ export default () => ({
     },
     '& fieldset': {
       borderWidth: '1.25px !important',
-      borderColor: '#FCA359 !important',
+      borderColor: '#0D8461 !important',
     },
   },
   searchBoxRoot: {

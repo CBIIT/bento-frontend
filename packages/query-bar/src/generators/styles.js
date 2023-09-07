@@ -81,16 +81,16 @@ export default () => ({
   },
   /* Custom Styling by Project */
   localFind: {
-    color: '#ff7f15',
+    color: '#10A075',
   },
   localFindBackground: {
-    backgroundColor: '#FFB170',
+    backgroundColor: '#C0E9D7',
   },
   facetSectionCases: {
-    color: '#ff7f15',
+    color: '#10A075',
   },
   facetSectionCasesBackground: {
-    backgroundColor: '#FFB170',
+    backgroundColor: '#C0E9D7',
   },
   facetSectionFiles: {
     color: '#E636E4',

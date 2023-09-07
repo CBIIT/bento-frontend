@@ -40,6 +40,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.associataLabel
     : DEFAULT_CONFIG.config.associataLabel;
 
+  const projectName = config && config.projectName && typeof config.projectName === 'string'
+    ? config.projectName
+    : DEFAULT_CONFIG.config.projectName;
+
   const modalClosed = functions && typeof functions.modalClosed === 'function'
     ? functions.modalClosed
     : DEFAULT_CONFIG.functions.modalClosed;
@@ -228,6 +232,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 associateId={associateId}
                 matchedLabel={matchedLabel}
                 associataLabel={associataLabel}
+                projectName={projectName}
                 error={overMaxTerms ? errorText : null}
               />
             )}
