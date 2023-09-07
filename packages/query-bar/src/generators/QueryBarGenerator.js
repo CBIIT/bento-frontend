@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles, Button } from '@material-ui/core';
 import { InputTypes } from '@bento-core/facet-filter';
 import clsx from 'clsx';
@@ -19,6 +19,10 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const maxItems = config && typeof config.maxItems === 'number'
     ? config.maxItems
     : DEFAULT_CONFIG.config.maxItems;
+
+  const displayAllActiveFilters = config && typeof config.displayAllActiveFilters === 'boolean'
+    ? config.displayAllActiveFilters
+    : DEFAULT_CONFIG.config.displayAllActiveFilters;
 
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
@@ -55,6 +59,15 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const { statusReducer, localFind, classes } = props;
 
       const { autocomplete, upload } = localFind;
+
+      const [expand, setExpand] = useState(false);
+      const noOfItems = expand ? autocomplete.length : maxItems;
+
+      useEffect(() => {
+        if (autocomplete.length <= maxItems && expand) {
+          setExpand(!expand);
+        }
+      }, [autocomplete]);
 
       // Remove any sections without checkboxes selected
       const mappedInputs = statusReducer.filter((facet) => facet.section && facet.type)
@@ -149,10 +162,33 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                       >
                         {d.title}
                       </span>
-                      {idx === (maxItems - 1) ? null : ' '}
+                      {idx === (noOfItems - 1) ? null : ' '}
                     </>
                   ))}
-                  {autocomplete.length > maxItems && '...'}
+                  {autocomplete.length > maxItems && (
+                    <>
+                      {
+                        displayAllActiveFilters
+                          ? (
+                            <span
+                              className={classes.expandBtn}
+                              onClick={() => setExpand(!expand)}
+                            >
+                              ...
+                            </span>
+                          )
+                          : '...'
+                        }
+                    </>
+                  )}
+                  {(expand && autocomplete.length > maxItems) && (
+                    <span
+                      className={classes.collapseBtn}
+                      onClick={() => setExpand(!expand)}
+                    >
+                      {' ... LESS'}
+                    </span>
+                  )}
                   {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
                     ? <span className={classes.bracketsClose}>)</span>
                     : null}
@@ -171,6 +207,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   type={filter.type}
                   data={filter}
                   maxItems={maxItems}
+                  displayAllActiveFilters={displayAllActiveFilters}
                   classes={classes}
                   onSectionClick={filter.type === CHECKBOX
                     ? resetFacetSection
