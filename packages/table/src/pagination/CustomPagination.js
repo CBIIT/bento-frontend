@@ -48,6 +48,8 @@ const CustomPagination = ({
   onPageChange,
   onRowsPerPageChange,
   customTheme = {},
+  queryVariables,
+  table,
 }) => (
   <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
     <div className="downloadArea" style={downloadAreaStyle}>
@@ -66,6 +68,8 @@ const CustomPagination = ({
       />
       <DownloadButton
         count={count}
+        queryVariables={queryVariables}
+        table={table}
       />
     </div>
   </ThemeProvider>

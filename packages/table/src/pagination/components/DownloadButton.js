@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useApolloClient } from '@apollo/client';
 import {
   IconButton,
   Tooltip,
@@ -12,14 +13,47 @@ const downloadButtonStyle = {
 
 const DownloadButton = ({
   count,
+  queryVariables,
+  table,
 }) => {
   if (count === 0) {
     return <CloudDownload style={downloadButtonStyle} />;
   }
 
+  const client = useApolloClient();
+
+  async function downloadSCSVFile() {
+    const {
+      query,
+      paginationAPIField,
+    } = table;
+
+    const result = await client.query({
+      query,
+      variables: {
+        ...queryVariables,
+        page: 0,
+        first: 25000,
+      },
+    })
+      .then((response) => {
+        if (paginationAPIField && response && response.data) {
+          return response.data[paginationAPIField];
+        }
+        return response.data;
+      });
+    console.log('result:', result);
+  }
+
+  const downloadTableCSV = useCallback(() => {
+    downloadSCSVFile();
+  }, [queryVariables]);
+
   return (
     <Tooltip title="Download filtered results as a CSV">
-      <IconButton>
+      <IconButton
+        onClick={downloadTableCSV}
+      >
         <CloudDownload />
       </IconButton>
     </Tooltip>

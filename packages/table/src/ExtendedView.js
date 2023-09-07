@@ -16,6 +16,7 @@ const ExtendedView = ({
   onPageChange,
   numSelected = 0,
   customTheme,
+  queryVariables,
 }) => {
   const { extendedViewConfig } = table;
   if (!extendedViewConfig) {
@@ -53,6 +54,8 @@ const ExtendedView = ({
               page={table.page || 0}
               onPageChange={onPageChange}
               onRowsPerPageChange={onRowsPerPageChange}
+              queryVariables={queryVariables}
+              table={table}
             />
           )
         }
