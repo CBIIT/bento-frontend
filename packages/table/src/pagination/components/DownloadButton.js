@@ -5,6 +5,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import { CloudDownload } from '@material-ui/icons';
+import { downloadJson } from '../../util/downloadTable';
 
 const downloadButtonStyle = {
   color: '#d1d2d3',
@@ -21,6 +22,8 @@ const DownloadButton = ({
   }
 
   const client = useApolloClient();
+
+  const downloadFileName = 'CCDI Inventory';
 
   async function downloadSCSVFile() {
     const {
@@ -42,7 +45,7 @@ const DownloadButton = ({
         }
         return response.data;
       });
-    console.log('result:', result);
+    downloadJson(result, table, downloadFileName);
   }
 
   const downloadTableCSV = useCallback(() => {
