@@ -42,6 +42,11 @@ const downloadAreaStyle = {
   paddingRight: '41px',
 };
 
+const downloadButtonStyle = {
+  color: '#d1d2d3',
+  marginTop: '7px',
+};
+
 const CustomPagination = ({
   rowsPerPageOptions,
   count,
@@ -66,11 +71,17 @@ const CustomPagination = ({
           native: true,
         }}
       />
-      <Tooltip title="Download filtered results as a CSV">
-        <IconButton>
-          <CloudDownload />
-        </IconButton>
-      </Tooltip>
+      {
+        count > 0
+          ? (
+            <Tooltip title="Download filtered results as a CSV">
+              <IconButton>
+                <CloudDownload />
+              </IconButton>
+            </Tooltip>
+          )
+          : <CloudDownload style={downloadButtonStyle} />
+      }
     </div>
   </ThemeProvider>
 );
