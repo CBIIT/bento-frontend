@@ -23,13 +23,15 @@ const DownloadButton = ({
 
   const client = useApolloClient();
 
-  const downloadFileName = 'CCDI Inventory';
+  const downloadFile = 'CCDI Inventory ';
 
   async function downloadSCSVFile() {
     const {
       query,
       paginationAPIField,
     } = table;
+
+    const downloadFileName = downloadFile.concat(paginationAPIField.replace('Overview', ''), ' download');
 
     const result = await client.query({
       query,
