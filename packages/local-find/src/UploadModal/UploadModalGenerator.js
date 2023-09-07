@@ -24,6 +24,22 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     config, functions,
   } = uiConfig;
 
+  const matchLocalFindId = config && config.matchedId && typeof config.matchedId === 'string'
+    ? config.matchedId
+    : DEFAULT_CONFIG.config.matchedId;
+
+  const matchedLabel = config && config.matchedLabel && typeof config.matchedLabel === 'string'
+    ? config.matchedLabel
+    : DEFAULT_CONFIG.config.matchedLabel;
+
+  const associateId = config && config.associateId && typeof config.associateId === 'string'
+    ? config.matchedId
+    : DEFAULT_CONFIG.config.associateId;
+
+  const associataLabel = config && config.associataLabel && typeof config.associataLabel === 'string'
+    ? config.associataLabel
+    : DEFAULT_CONFIG.config.associataLabel;
+
   const modalClosed = functions && typeof functions.modalClosed === 'function'
     ? functions.modalClosed
     : DEFAULT_CONFIG.functions.modalClosed;
@@ -208,6 +224,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 classes={summaryClasses}
                 matched={matchIds}
                 unmatched={unmatchedIds}
+                matchLocalFindId={matchLocalFindId}
+                associateId={associateId}
+                matchedLabel={matchedLabel}
+                associataLabel={associataLabel}
                 error={overMaxTerms ? errorText : null}
               />
             )}

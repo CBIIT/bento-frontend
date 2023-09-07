@@ -16,7 +16,14 @@ import clsx from 'clsx';
  */
 const SummaryTable = (props) => {
   const {
-    classes, matched, unmatched, error = null,
+    classes,
+    matched,
+    unmatched,
+    error = null,
+    matchLocalFindId,
+    associateId,
+    matchedLabel,
+    associataLabel,
   } = props;
 
   const [tab, setTab] = useState('matched');
@@ -62,9 +69,9 @@ const SummaryTable = (props) => {
           matched.length ? (
             <table className={classes.tableContainer} id="uploadCaseSetMatchedTable">
               <tr id="uploadCaseSetMatchedHeader">
-                <th className={classes.header}>SUBMITTED CASE ID</th>
+                <th className={classes.header}>{matchedLabel}</th>
                 <td className={classes.emptyCell} />
-                <th className={classes.header}>Study Code</th>
+                <th className={classes.header}>{associataLabel}</th>
               </tr>
               <tr className={classes.heading}>
                 <td className={classes.columnPadding}><Divider style={{ width: '100%' }} className={classes.divider} /></td>
@@ -75,9 +82,9 @@ const SummaryTable = (props) => {
               </tr>
               {matched.map((data, id) => (
                 <tr key={id}>
-                  <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data.case_id}</td>
+                  <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[matchLocalFindId]}</td>
                   <td className={classes.emptyCell} />
-                  <td className={classes.programHeading} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data.study_code}</td>
+                  <td className={classes.programHeading} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[associateId]}</td>
                 </tr>
               ))}
             </table>
@@ -86,7 +93,9 @@ const SummaryTable = (props) => {
           : (
             unmatched.length ? (
               <table className={classes.tableContainer} id="uploadCaseSetUnMatchedTable">
-                <th id="uploadCaseSetUnMatchedHeader" className={classes.heading} style={{ textAlign: 'left', paddingLeft: 50 }}>SUBMITTED CASE ID</th>
+                <th id="uploadCaseSetUnMatchedHeader" className={classes.heading} style={{ textAlign: 'left', paddingLeft: 50 }}>
+                  {matchedLabel}
+                </th>
                 <tr className={classes.heading} style={{ width: '180' }}><Divider className={classes.divider} style={{ width: '48%' }} /></tr>
                 {unmatched.map((data, id) => (
                   <tr key={id} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>
