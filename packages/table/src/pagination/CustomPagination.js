@@ -4,10 +4,8 @@ import {
   createTheme,
   TablePagination,
   ThemeProvider,
-  IconButton,
-  Tooltip,
 } from '@material-ui/core';
-import { CloudDownload } from '@material-ui/icons';
+import DownloadButton from './components/DownloadButton';
 
 const defaultTheme = {
   MuiTablePagination: {
@@ -42,11 +40,6 @@ const downloadAreaStyle = {
   paddingRight: '41px',
 };
 
-const downloadButtonStyle = {
-  color: '#d1d2d3',
-  marginTop: '7px',
-};
-
 const CustomPagination = ({
   rowsPerPageOptions,
   count,
@@ -71,17 +64,9 @@ const CustomPagination = ({
           native: true,
         }}
       />
-      {
-        count > 0
-          ? (
-            <Tooltip title="Download filtered results as a CSV">
-              <IconButton>
-                <CloudDownload />
-              </IconButton>
-            </Tooltip>
-          )
-          : <CloudDownload style={downloadButtonStyle} />
-      }
+      <DownloadButton
+        count={count}
+      />
     </div>
   </ThemeProvider>
 );
