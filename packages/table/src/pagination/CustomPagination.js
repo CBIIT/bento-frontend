@@ -4,7 +4,10 @@ import {
   createTheme,
   TablePagination,
   ThemeProvider,
+  IconButton,
+  Tooltip,
 } from '@material-ui/core';
+import { CloudDownload } from '@material-ui/icons';
 
 const defaultTheme = {
   MuiTablePagination: {
@@ -32,6 +35,13 @@ const defaultTheme = {
   },
 };
 
+const downloadAreaStyle = {
+  display: 'flex',
+  borderTop: '1px solid #8A7F7C',
+  borderBottom: '1px solid #8A7F7C',
+  paddingRight: '41px',
+};
+
 const CustomPagination = ({
   rowsPerPageOptions,
   count,
@@ -42,19 +52,26 @@ const CustomPagination = ({
   customTheme = {},
 }) => (
   <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
-    <TablePagination
-      rowsPerPageOptions={rowsPerPageOptions}
-      component="div"
-      count={count}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={onPageChange}
-      onRowsPerPageChange={onRowsPerPageChange}
-      SelectProps={{
-        inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
-        native: true,
-      }}
-    />
+    <div className="downloadArea" style={downloadAreaStyle}>
+      <TablePagination
+        rowsPerPageOptions={rowsPerPageOptions}
+        component="div"
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+        SelectProps={{
+          inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
+          native: true,
+        }}
+      />
+      <Tooltip title="Download filtered results as a CSV">
+        <IconButton>
+          <CloudDownload />
+        </IconButton>
+      </Tooltip>
+    </div>
   </ThemeProvider>
 );
 
