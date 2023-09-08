@@ -33,7 +33,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     : DEFAULT_CONFIG.config.matchedLabel;
 
   const associateId = config && config.associateId && typeof config.associateId === 'string'
-    ? config.matchedId
+    ? config.associateId
     : DEFAULT_CONFIG.config.associateId;
 
   const associataLabel = config && config.associataLabel && typeof config.associataLabel === 'string'
