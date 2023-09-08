@@ -33,6 +33,13 @@ const downloadAreaStyle = {
   paddingRight: '41px',
 };
 
+const cartDownloadAreaStyle = {
+  display: 'flex',
+  borderTop: '5px solid #e7e5e5',
+  borderBottom: '3px solid #e7e5e5',
+  paddingRight: '40px',
+};
+
 const TableView = ({
   tableRows = [],
   table,
@@ -88,7 +95,7 @@ const TableView = ({
         table={table}
       />
     )}
-    <div className="downloadArea" style={downloadAreaStyle}>
+    <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : downloadAreaStyle}>
       <CustomPagination
         customTheme={themeConfig.tblPgn}
         rowsPerPageOptions={[10, 25, 50, 100]}
