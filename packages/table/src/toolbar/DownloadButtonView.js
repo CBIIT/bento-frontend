@@ -17,6 +17,9 @@ const DownloadButton = ({
   queryVariables,
   table,
 }) => {
+  if (table.paginationAPIField === 'filesInList') {
+    return <></>;
+  }
   if (count === 0) {
     return <CloudDownload className="disableButton" style={downloadButtonStyle} />;
   }

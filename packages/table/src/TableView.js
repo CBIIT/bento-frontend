@@ -28,6 +28,7 @@ const CustomTableContainer = (props) => {
 
 const downloadAreaStyle = {
   display: 'flex',
+  borderTop: '1px solid #8A7F7C',
   borderBottom: '1px solid #8A7F7C',
   paddingRight: '41px',
 };
