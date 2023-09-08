@@ -10,7 +10,6 @@ import { downloadJson } from '../util/downloadTable';
 const downloadButtonStyle = {
   color: '#d1d2d3',
   marginTop: '7px',
-  marginRight: '41px',
 };
 
 const DownloadButton = ({
