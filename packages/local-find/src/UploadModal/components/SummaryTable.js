@@ -23,7 +23,7 @@ const SummaryTable = (props) => {
     matchLocalFindId,
     associateId,
     matchedLabel,
-    associataLabel,
+    associateLabel,
     projectName,
   } = props;
 
@@ -72,7 +72,7 @@ const SummaryTable = (props) => {
               <tr id="uploadCaseSetMatchedHeader">
                 <th className={classes.header}>{matchedLabel}</th>
                 <td className={classes.emptyCell} />
-                <th className={classes.header}>{associataLabel}</th>
+                <th className={classes.header}>{associateLabel}</th>
               </tr>
               <tr className={classes.heading}>
                 <td className={classes.columnPadding}><Divider style={{ width: '100%' }} className={classes.divider} /></td>

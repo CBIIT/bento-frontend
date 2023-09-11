@@ -36,9 +36,9 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.associateId
     : DEFAULT_CONFIG.config.associateId;
 
-  const associataLabel = config && config.associataLabel && typeof config.associataLabel === 'string'
-    ? config.associataLabel
-    : DEFAULT_CONFIG.config.associataLabel;
+  const associateLabel = config && config.associateLabel && typeof config.associateLabel === 'string'
+    ? config.associateLabel
+    : DEFAULT_CONFIG.config.associateLabel;
 
   const projectName = config && config.projectName && typeof config.projectName === 'string'
     ? config.projectName
@@ -231,7 +231,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 matchLocalFindId={matchLocalFindId}
                 associateId={associateId}
                 matchedLabel={matchedLabel}
-                associataLabel={associataLabel}
+                associateLabel={associateLabel}
                 projectName={projectName}
                 error={overMaxTerms ? errorText : null}
               />
