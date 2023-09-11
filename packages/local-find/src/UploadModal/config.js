@@ -14,7 +14,7 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     matchedId: 'subject_id',
     matchedLabel: 'SUBMITTED CASE ID',
     associateId: 'program_id',
-    associataLabel: 'ASSOCIATED PROGRAM',
+    associateLabel: 'ASSOCIATED PROGRAM',
     projectName: 'BENTO',
   },
 
