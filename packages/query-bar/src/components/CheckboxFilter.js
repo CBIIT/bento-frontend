@@ -16,13 +16,15 @@ export default ({
     }
   }, [items]);
 
+  const clsName = (text = '', attr = '') => `facetSection${text.replace(/\s+/g, '')}${attr}`;
+
   return (
     <span>
       <span>
         {' '}
         {index !== 0 ? <span className={classes.operators}> AND </span> : ''}
         <span
-          className={clsx(classes.filterName, classes[`facetSection${section}Background`])}
+          className={clsx(classes.filterName, classes[`${clsName(section, 'Background')}`])}
           onClick={() => onSectionClick(data)}
         >
           {data.label}
@@ -38,7 +40,7 @@ export default ({
         {items.slice(0, noOfItems).map((d, idx) => (
           <>
             <span
-              className={clsx(classes.filterCheckboxes, classes[`facetSection${section}`])}
+              className={clsx(classes.filterCheckboxes, classes[clsName(section)])}
               key={idx}
               onClick={() => onItemClick(data, d)}
             >
@@ -53,7 +55,7 @@ export default ({
               displayAllActiveFilters
                 ? (
                   <span
-                    className={classes.expandBtnclsx}
+                    className={classes.expandBtn}
                     onClick={() => setExpand(!expand)}
                   >
                     ...
