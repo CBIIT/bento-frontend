@@ -153,7 +153,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                       {' '}
                     </>
                   ) : null}
-                  {autocomplete.slice(0, maxItems).map((d, idx) => (
+                  {autocomplete.slice(0, noOfItems).map((d, idx) => (
                     <>
                       <span
                         className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
@@ -186,7 +186,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                       className={classes.collapseBtn}
                       onClick={() => setExpand(!expand)}
                     >
-                      {' ... LESS'}
+                      {' LESS'}
                     </span>
                   )}
                   {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
