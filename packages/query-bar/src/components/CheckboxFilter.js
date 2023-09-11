@@ -53,7 +53,7 @@ export default ({
               displayAllActiveFilters
                 ? (
                   <span
-                    className={classes.expandBtn}
+                    className="expandBtn"
                     onClick={() => setExpand(!expand)}
                   >
                     ...
@@ -65,7 +65,7 @@ export default ({
         )}
         {(expand && items.length > maxItems) && (
           <span
-            className={classes.collapseBtn}
+            className="collapseBtn"
             onClick={() => setExpand(!expand)}
           >
             {' LESS'}
