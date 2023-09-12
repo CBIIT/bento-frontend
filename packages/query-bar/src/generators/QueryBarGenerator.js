@@ -27,6 +27,12 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.displayAllActiveFilters
     : DEFAULT_CONFIG.config.displayAllActiveFilters;
 
+  const group = config && typeof config.group === 'string'
+    ? config.group : DEFAULT_CONFIG.config.group;
+
+  const count = config && typeof config.count === 'string'
+    ? config.count : DEFAULT_CONFIG.config.count;
+
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
     : DEFAULT_CONFIG.functions.clearAll;
@@ -88,8 +94,24 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
               itemKeys.splice(itemKeys.indexOf(item), 1);
             }
           });
+          // return { ...facet, items: itemKeys };
+          /**
+          * Maintain consistant behavior with facet filter component
+          * Display the active filter items based on the count value
+          * Display active filter items in query bar only if count is greater than 0
+          * behavior similar to filter component
+          */
+          // const { group, count } = config;
+          const displayItems = itemKeys.reduce((accumulator, item) => {
+            const itemList = data.filter((d) => (d[group] === item && d[count] > 0)) || [];
+            if (itemList.length > 0) {
+              const labels = itemList.map((filter) => filter[group]);
+              accumulator.push(labels);
+            }
+            return accumulator;
+          }, []);
 
-          return { ...facet, items: itemKeys };
+          return { ...facet, items: displayItems };
         })
         .filter((facet) => facet.items.length > 0);
 
