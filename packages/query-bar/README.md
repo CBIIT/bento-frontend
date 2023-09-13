@@ -58,6 +58,21 @@ const CONFIG = {
      * @var {number}
      */
     maxItems: 2,
+    /**
+     * overirdes maxItems to display all the active filter items
+     * @var {boolean}
+     */
+    displayAllActiveFilters: false,
+    /**
+     * key to access label text
+     * @var {boolean}
+     */
+    group: 'group',
+    /**
+     * key to access count value (Replace if key is other than subjects)
+     * @var {boolean}
+     */
+    count: 'subjects',
   },
 
   /* Component Helper Functions */
