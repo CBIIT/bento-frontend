@@ -41,7 +41,7 @@ const DownloadButton = ({
       variables: {
         ...queryVariables,
         page: 0,
-        first: 25000,
+        first: 10000,
       },
     })
       .then((response) => {
