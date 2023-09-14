@@ -35,8 +35,6 @@ export function convertToCSV(jsonse, keysToInclude, header) {
     let line = '';
     keysToInclude.map((keyName) => {
       if (line !== '') line += ',';
-      console.log('keyname!!!!!', keyName);
-      console.log('entry!!!!!', entry[keyName]);
       if (keyName === 'file_size') {
         line += entry[keyName] !== null ? `"${formatBytes(entry[keyName])}"` : ' ';
       } else if (keyName === 'age_at_diagnosis' || keyName === 'participant_age_at_collection') {
