@@ -10,6 +10,7 @@ const AddFilesRedux = (props) => <AddFiles {...props} />;
 */
 const mapStateToProps = (state) => ({
   count: state.cartReducer && state.cartReducer.count,
+  cartFiles: state.cartReducer && state.cartReducer.filesId,
 });
 
 const mapDispatchToProps = (dispatch) => ({

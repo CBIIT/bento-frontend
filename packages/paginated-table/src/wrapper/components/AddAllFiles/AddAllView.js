@@ -48,6 +48,7 @@ const AddAllFilesComponent = (props) => {
     client,
     tooltipCofig,
     fileCount,
+    cartFiles,
   } = props;
   /**
   * conditionally display dialog view
@@ -66,25 +67,30 @@ const AddAllFilesComponent = (props) => {
       query: addFileQuery,
     });
     if (fileCount <= 6000) {
-      fileIds().then((response) => {
-        const data = response[responseKeys[0]];
-        if (data && data.length > 0) {
-          const isArray = Array.isArray(data[0][responseKeys[1]]);
-          const ids = data.reduce((acc, id) => {
-            if (id && id[responseKeys[1]]) {
-              // if object convert to array
-              const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
-              acc.push(...items);
-            }
-            return acc;
-          }, []);
-          setOpen(true);
-          setAddFilesId(ids);
-        } else {
-          setOpen(true);
-        }
-        return [];
-      });
+      const cartCount = cartFiles.length;
+      if (cartCount + fileCount <= 6000) {
+        fileIds().then((response) => {
+          const data = response[responseKeys[0]];
+          if (data && data.length > 0) {
+            const isArray = Array.isArray(data[0][responseKeys[1]]);
+            const ids = data.reduce((acc, id) => {
+              if (id && id[responseKeys[1]]) {
+                // if object convert to array
+                const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
+                acc.push(...items);
+              }
+              return acc;
+            }, []);
+            setOpen(true);
+            setAddFilesId(ids);
+          } else {
+            setOpen(true);
+          }
+          return [];
+        });
+      } else {
+        setAlterDisplay(true);
+      }
     } else {
       setAlterDisplay(true);
     }

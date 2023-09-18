@@ -19,6 +19,7 @@ const AddFilesView = (props) => {
     btnType,
     count,
     alertMessage,
+    cartFiles,
   } = props;
   /**
   * snackbar state
@@ -53,6 +54,7 @@ const AddFilesView = (props) => {
             client={client}
             setAlterDisplay={setAlterDisplay}
             setOpenSnackbar={setOpenSnackbar}
+            cartFiles={cartFiles}
           />
         )
       }
