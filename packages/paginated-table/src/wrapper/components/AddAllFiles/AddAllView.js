@@ -34,6 +34,16 @@ export const ToolTipView = (props) => {
   );
 };
 
+const checkDuplicate = (cartFiles, ids) => {
+  let duplicateCount = 0;
+  for (let i = 0; i < cartFiles.length; i += 1) {
+    if (ids.includes(cartFiles[i])) {
+      duplicateCount += 1;
+    }
+  }
+  return duplicateCount;
+};
+
 const AddAllFilesComponent = (props) => {
   const {
     title,
@@ -66,31 +76,34 @@ const AddAllFilesComponent = (props) => {
       variables: activeFilters,
       query: addFileQuery,
     });
-    if (fileCount <= 6000) {
-      const cartCount = cartFiles.length;
-      if (cartCount + fileCount <= 6000) {
-        fileIds().then((response) => {
-          const data = response[responseKeys[0]];
-          if (data && data.length > 0) {
-            const isArray = Array.isArray(data[0][responseKeys[1]]);
-            const ids = data.reduce((acc, id) => {
-              if (id && id[responseKeys[1]]) {
-                // if object convert to array
-                const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
-                acc.push(...items);
-              }
-              return acc;
-            }, []);
-            setOpen(true);
+    const cartCount = cartFiles.length;
+    if (fileCount <= 6000 && cartCount < 6000) {
+      fileIds().then((response) => {
+        const data = response[responseKeys[0]];
+        if (data && data.length > 0) {
+          const isArray = Array.isArray(data[0][responseKeys[1]]);
+          const ids = data.reduce((acc, id) => {
+            if (id && id[responseKeys[1]]) {
+              // if object convert to array
+              const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
+              acc.push(...items);
+            }
+            return acc;
+          }, []);
+          if (cartCount + fileCount <= 6000) {
             setAddFilesId(ids);
           } else {
-            setOpen(true);
+            const duplicate = checkDuplicate(cartFiles, ids);
+            if (cartCount + fileCount - duplicate <= 6000) {
+              setAddFilesId(ids);
+            } else {
+              setAlterDisplay(true);
+            }
           }
-          return [];
-        });
-      } else {
-        setAlterDisplay(true);
-      }
+        }
+        setOpen(true);
+        return [];
+      });
     } else {
       setAlterDisplay(true);
     }
