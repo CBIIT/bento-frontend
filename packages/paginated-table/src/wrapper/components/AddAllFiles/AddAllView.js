@@ -91,17 +91,18 @@ const AddAllFilesComponent = (props) => {
             return acc;
           }, []);
           if (cartCount + fileCount <= 6000) {
+            setOpen(true);
             setAddFilesId(ids);
           } else {
             const duplicate = checkDuplicate(cartFiles, ids);
             if (cartCount + fileCount - duplicate <= 6000) {
+              setOpen(true);
               setAddFilesId(ids);
             } else {
               setAlterDisplay(true);
             }
           }
         }
-        setOpen(true);
         return [];
       });
     } else {
