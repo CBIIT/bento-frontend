@@ -49,10 +49,11 @@ const AddSelectedFilesController = (props) => {
     });
     const cartCount = cartFiles.length;
     fileIds().then((response) => {
-      const ids = response[responseKeys[0]] || [];
+      const idsInitial = response[responseKeys[0]] || [];
+      const ids = [...new Set(idsInitial)];
       const fileCount = ids.length;
-      if (ids.length <= 6000 && cartCount < 6000) {
-        if (cartCount + fileCount <= 600) {
+      if (fileCount <= 6000 && cartCount < 6000) {
+        if (cartCount + fileCount <= 6000) {
           addFiles(ids);
           setOpenSnackbar(true);
           dispatch(onRowSeclect([]));

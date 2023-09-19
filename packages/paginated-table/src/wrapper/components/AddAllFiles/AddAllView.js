@@ -82,7 +82,7 @@ const AddAllFilesComponent = (props) => {
         const data = response[responseKeys[0]];
         if (data && data.length > 0) {
           const isArray = Array.isArray(data[0][responseKeys[1]]);
-          const ids = data.reduce((acc, id) => {
+          const idsInitial = data.reduce((acc, id) => {
             if (id && id[responseKeys[1]]) {
               // if object convert to array
               const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
@@ -90,12 +90,13 @@ const AddAllFilesComponent = (props) => {
             }
             return acc;
           }, []);
-          if (cartCount + fileCount <= 6000) {
+          const ids = [...new Set(idsInitial)];
+          if (cartCount + ids.length <= 6000) {
             setOpen(true);
             setAddFilesId(ids);
           } else {
             const duplicate = checkDuplicate(cartFiles, ids);
-            if (cartCount + fileCount - duplicate <= 6000) {
+            if (cartCount + ids.length - duplicate <= 6000) {
               setOpen(true);
               setAddFilesId(ids);
             } else {
