@@ -7,6 +7,16 @@ import { onRowSeclect } from '../../../table/state/Actions';
 import AddSelectedFileComponent from './AddSelectedFilesView';
 import { getFilesID } from '../../WrapperService';
 
+const checkDuplicate = (cartFiles, ids) => {
+  let duplicateCount = 0;
+  for (let i = 0; i < cartFiles.length; i += 1) {
+    if (ids.includes(cartFiles[i])) {
+      duplicateCount += 1;
+    }
+  }
+  return duplicateCount;
+};
+
 const AddSelectedFilesController = (props) => {
   const {
     clsName,
@@ -18,6 +28,7 @@ const AddSelectedFilesController = (props) => {
     setOpenSnackbar,
     setAlterDisplay,
     client,
+    cartFiles,
   } = props;
 
   const tableContext = useContext(TableContext);
@@ -36,15 +47,27 @@ const AddSelectedFilesController = (props) => {
       fileIds: selectedRows,
       query: addFileQuery,
     });
-
+    const cartCount = cartFiles.length;
     fileIds().then((response) => {
       const ids = response[responseKeys[0]] || [];
-      if (ids.length >= 1000) {
-        setAlterDisplay(true);
+      const fileCount = ids.length;
+      if (ids.length <= 6000 && cartCount < 6000) {
+        if (cartCount + fileCount <= 600) {
+          addFiles(ids);
+          setOpenSnackbar(true);
+          dispatch(onRowSeclect([]));
+        } else {
+          const duplicate = checkDuplicate(cartFiles, ids);
+          if (cartCount + fileCount - duplicate <= 6000) {
+            addFiles(ids);
+            setOpenSnackbar(true);
+            dispatch(onRowSeclect([]));
+          } else {
+            setAlterDisplay(true);
+          }
+        }
       } else {
-        addFiles(ids);
-        setOpenSnackbar(true);
-        dispatch(onRowSeclect([]));
+        setAlterDisplay(true);
       }
     });
   };

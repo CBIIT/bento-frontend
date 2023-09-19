@@ -44,6 +44,7 @@ const AddFilesView = (props) => {
             client={client}
             setAlterDisplay={setAlterDisplay}
             setOpenSnackbar={setOpenSnackbar}
+            cartFiles={cartFiles}
           />
         )
       }
