@@ -13,6 +13,7 @@ function AddToCartDialogView(props) {
     cartWillFull = false,
     alertMessage,
     DisplayCustomText,
+    activeFilters,
   } = props;
 
   if (cartWillFull) {
@@ -38,6 +39,7 @@ function AddToCartDialogView(props) {
               <DisplayCustomText
                 onYesClick={onYesClick}
                 onNoClick={onNoClick}
+                activeFilters={activeFilters}
               />
             ) : (
               <DialogContentText id="alert-dialog-description">
