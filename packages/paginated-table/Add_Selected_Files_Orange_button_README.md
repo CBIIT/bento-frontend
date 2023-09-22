@@ -30,6 +30,7 @@ const AddSelectedFilesOrangeButton = useCallback(() => (
       addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
       responseKeys={['caseOverview', 'files']}
       classes={classes}
+      applyActiveFilter={true}
       tooltipCofig={{
         arrow: true,
         clsName: 'addSelectedFileTooltip',
@@ -51,6 +52,7 @@ const AddSelectedFilesOrangeButton = useCallback(() => (
 | classes | TRUE | provide class for toltips to override the style |  tooltip: classes.customTooltip, arrow: classes.customArrow
 | tooltipCofig | FALSE | displays tooltip if provided, configuration for arrow, clsName, icon, tooltipText | graphQL query |
 | dataKey | TRUE | Attribute used for getting selected rows in a table | case_id, file_name or any other column with distinct values |
+| applyActiveFilter | FALSE | Only adds files of selected case or sample based on active filter | Bool |
 
 
 ### 3 Configure Add_All_Button Or BLUE Button in Dashboard

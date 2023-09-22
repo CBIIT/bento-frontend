@@ -36,7 +36,7 @@ const AddSelectedFilesController = (props) => {
   const variables = {
     first: 10000,
     ...activeFilterItems,
-    ...{ [dataKey]: selectedRows },
+    [dataKey]: selectedRows,
   };
 
   // add selected files id
