@@ -66,7 +66,8 @@ export function downloadJson(tableData, table, downloadFileName) {
   const jsonse = JSON.stringify(formatDataVal);
   const keysToInclude = columns.filter(({ dataField }) => dataField)
     .map(({ dataField }) => dataField);
-  const headers = columns.filter(({ dataField }) => dataField).map(({ header }) => header);
+  const headers = columns.filter(({ dataField }) => dataField)
+    .map(({ header, downloadHeader }) => (downloadHeader || header));
   const csv = convertToCSV(jsonse, keysToInclude, headers);
   const exportData = new Blob([csv], { type: 'text/csv' });
   const JsonURL = window.URL.createObjectURL(exportData);
