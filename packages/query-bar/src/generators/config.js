@@ -17,11 +17,6 @@ export default {
      * @var {boolean}
      */
     group: 'group',
-    /**
-     * key to access count value
-     * @var {boolean}
-     */
-    count: 'subjects',
   },
 
   /* Component Helper Functions */
