@@ -16,11 +16,13 @@ const styles = () => ({
   },
   container: (props) => ({
     background: props.background,
+    ...props.container,
   }),
-  whitePadding: {
-    height: '6px',
-    background: 'white',
-  },
+  whitePadding: (props) => ({
+    height: props.whitePadding ? props.whitePadding.height : 0,
+    background: props.background,
+    ...props.whitePadding,
+  }),
   titleBody: {
     textAlign: 'center',
   },

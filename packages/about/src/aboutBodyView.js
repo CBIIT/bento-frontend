@@ -1,9 +1,10 @@
 import React from 'react';
 import { Grid, Link, withStyles } from '@material-ui/core';
 import XoomInOut from './xoomInOutView';
-import tableExternalIcon from './assets/About-Table-ExternalLink.svg';
 
-const AboutBody = ({ classes, data, externalIconImage }) => {
+const AboutBody = ({
+  classes, data, externalIconImage,
+}) => {
   function boldText(text) {
     const boldedText = text.split('$$').map((splitedText) => {
       if (splitedText != null && (/\*(.*)\*/.test(splitedText))) {
@@ -44,6 +45,14 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                       </ol>
                     </div>
                   )}
+                  {contentObj.listWithBullets && (
+                    <div className={classes.text}>
+                      {/* Alphabetised ordered list */}
+                      <ul>
+                        { contentObj.listWithBullets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
+                      </ul>
+                    </div>
+                  )}
                   {/* Ordered List with Alphabets logic */}
                   {contentObj.listWithAlpahbets && (
                     <div className={classes.text}>
@@ -64,7 +73,6 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                           const linkAttrs = splitedParagraph.match(/\((.*)\)/).pop().split(' ');
                           const target = linkAttrs.find((link) => link.includes('target:'));
                           const url = linkAttrs.find((link) => link.includes('url:'));
-                          const type = linkAttrs.find((link) => link.includes('type:')); // 0 : no img
                           const href = splitedParagraph.match(/\((.*)\)/).pop();
 
                           const link = (
@@ -83,7 +91,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                           return (
                             <>
                               {link}
-                              {type ? '' : (
+                              {href.includes('@') || !href.includes('http') ? '' : (
                                 <img
                                   src={externalIconImage}
                                   // externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
@@ -207,7 +215,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                                         {link}
                                         {type ? '' : (
                                           <img
-                                            src={tableExternalIcon}
+                                            src={externalIconImage}
                                             alt="outbounnd web site icon"
                                             className={classes.tablelinkIcon}
                                           />
@@ -229,6 +237,65 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                 </>
               )) : ''}
             </span>
+            {data.downloadableContentTitle
+        && (
+        <div className={classes.downloadableContentContainer}>
+          <div className={classes.downloadableContentTitle}>{data.downloadableContentTitle}</div>
+          <span className={classes.text}>
+            {data.downloadableContent ? data.downloadableContent.map((contentObj) => (
+              <>
+                {/* Ordered List with Numbers logic */}
+
+                {/* Paragraphs */}
+                {contentObj.paragraph && (
+                <div className={classes.text}>
+                  { contentObj.paragraph.split('$$').map((splitedParagraph) => {
+                    // Checking for regex ()[] pattern
+                    if (splitedParagraph != null && ((/\[(.+)\]\((.+)\)/g.test(splitedParagraph)) || (/\((.+)\)\[(.+)\]/g.test(splitedParagraph)))) {
+                      const title = splitedParagraph.match(/\[(.*)\]/).pop();
+                      const linkAttrs = splitedParagraph.match(/\((.*)\)/).pop().split(' ');
+                      const target = linkAttrs.find((link) => link.includes('target:'));
+                      const url = linkAttrs.find((link) => link.includes('url:'));
+                      const href = splitedParagraph.match(/\((.*)\)/).pop();
+
+                      const link = (
+                        <Link
+                          title={title}
+                          target={target ? target.replace('target:', '') : '_blank'}
+                          rel="noreferrer"
+                          href={url ? url.replace('url:', '') : (href && href.includes('@') ? `mailto:${href}` : href)}
+                          color="inherit"
+                          className={classes.link}
+                        >
+                          {title}
+                        </Link>
+                      );
+
+                      return (
+                        <>
+                          {link}
+                          {href.includes('@') || !href.includes('http') ? '' : (
+                            <img
+                              src={externalIconImage}
+                                  // externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
+                              alt="outbounnd web site icon"
+                              className={classes.linkIcon}
+                            />
+                          )}
+
+                        </>
+                      );
+                    }
+
+                    return splitedParagraph;
+                  })}
+                </div>
+                )}
+              </>
+            )) : ''}
+          </span>
+        </div>
+        )}
           </Grid>
           {data.imageLocation === 'right'
             && (
@@ -254,6 +321,9 @@ const styles = () => ({
     lineHeight: '22px',
     maxWidth: '1440px',
   },
+  tabbedParag: {
+    paddingLeft: '40px',
+  },
   maxWidthContainer: {
     margin: '0px auto 0px auto',
     maxWidth: '1440px',
@@ -277,7 +347,8 @@ const styles = () => ({
   },
   title: (props) => ({
     color: props.titleColor,
-    fontWeight: 'bold',
+    fontWeight: '500',
+    fontSize: '24px',
   }),
   email: (props) => ({
     color: props.linkColor,
@@ -285,25 +356,27 @@ const styles = () => ({
   }),
   contentSection: {
     padding: (props) => (props.data.imageLocation === 'right'
-      ? '8px 25px 8px 0px !important' : '8px 0px 8px 25px !important'),
+      ? '8px 25px 8px 25px !important' : '8px 0px 8px 25px !important'),
     float: 'left',
+    background: 'white',
   },
   imageSection: {
     float: 'left',
   },
   aboutSection: {
-    padding: '60px 45px',
+    padding: '0px 45px',
   },
   img: {
     width: '100%',
   },
   linkIcon: {
-    width: '20px',
+    width: '0.8em',
     verticalAlign: 'sub',
-    margin: '0px 0px 0px 2px',
+    margin: '0px 0px 2px 4px',
   },
   link: (props) => ({
     color: props.linkColor,
+    fontWeight: '600',
     '&:hover': {
       color: props.linkColor,
     },
@@ -325,7 +398,6 @@ const styles = () => ({
     borderCollapse: 'collapse',
     fontSize: '12px',
     fontWeight: 'bold',
-    letterSpacing: '0.025em',
     lineHeight: '30px',
     textAlign: 'left',
     width: '100%',
@@ -355,6 +427,19 @@ const styles = () => ({
   },
   MyCasesWizardStep4: {
     width: '600px',
+  },
+  downloadableContentContainer: {
+    background: '#ebebeb',
+    padding: '32px',
+    borderRadius: '8px',
+  },
+  downloadableContentTitle: {
+    fontWeight: 'bold',
+    marginBottom: '20px',
+    color: '#1280AE',
+    fontSize: '20px',
+    fontFamily: 'Lato',
+    letterSpacing: '0.025em',
   },
 });
 
