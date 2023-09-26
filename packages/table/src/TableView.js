@@ -36,6 +36,8 @@ const TableView = ({
   totalRowCount,
   onSortByColumn,
   onColumnViewChange,
+  onDeleteRow,
+  onDeleteAllFiles,
   themeConfig = {},
   queryVariables,
   server,
@@ -68,6 +70,7 @@ const TableView = ({
           rows={tableRows}
           count={totalRowCount}
           toggleSelectAll={onToggleSelectAll}
+          onDeleteAllFiles={onDeleteAllFiles}
           sortByColumn={onSortByColumn}
         />
         <CustomTableBody
@@ -75,6 +78,7 @@ const TableView = ({
           rows={tableRows}
           table={table}
           onRowSelectChange={onRowSelectChange}
+          onDeleteRow={onDeleteRow}
         />
       </Table>
     </CustomTableContainer>

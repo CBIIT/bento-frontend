@@ -46,6 +46,18 @@ const reducer = (state, action) => {
         ...state,
         totalRowCount: payload,
       };
+    case actionTypes.ON_ROW_DELETE:
+      return {
+        ...state,
+        deletedRow: payload.deletedRow,
+        selectedRows: payload.selectedRows,
+      };
+    case actionTypes.ON_ROWS_DELETE:
+      return {
+        ...state,
+        deletedRows: payload.deleteRows,
+        selectedRows: payload.selectedRows,
+      };
     default:
       return state;
   }

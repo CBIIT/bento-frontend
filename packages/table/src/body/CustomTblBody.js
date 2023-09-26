@@ -22,6 +22,7 @@ const CustomTableBody = ({
   rows = [],
   table,
   onRowSelectChange,
+  onDeleteRow,
   customTheme = {},
 }) => {
   const { columns } = table;
@@ -45,6 +46,7 @@ const CustomTableBody = ({
                         row={row}
                         column={column}
                         onRowSelectChange={onRowSelectChange}
+                        onDeleteRow={onDeleteRow}
                       />
                     );
                   }

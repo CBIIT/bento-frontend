@@ -22,6 +22,7 @@ const CustomTableHeader = ({
   components = {},
   customTheme = {},
   count,
+  onDeleteAllFiles,
 }) => {
   const {
     columns,
@@ -54,6 +55,7 @@ const CustomTableHeader = ({
                   <ActionHeaderCell
                     includeSelectedIds={includeSelectedIds}
                     toggleSelectAll={toggleSelectAll}
+                    onDeleteAllFiles={onDeleteAllFiles}
                     Ids={Ids}
                     rows={rows}
                     count={count}

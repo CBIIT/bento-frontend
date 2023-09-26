@@ -25,6 +25,7 @@ const TooltipContent = () => (
 const DeleteCellView = ({
   column,
   count,
+  onDeleteAllFiles,
 }) => {
   const [displayDialog, setDisplay] = useState(false);
   const toggleDialogDisplay = () => setDisplay(!displayDialog);
@@ -66,6 +67,7 @@ const DeleteCellView = ({
           removeAllFiles={column.headerEventHandler}
           count={count}
           toggleDisplay={toggleDialogDisplay}
+          onDeleteAllFiles={onDeleteAllFiles}
         />
       </TableCell>
     </>
