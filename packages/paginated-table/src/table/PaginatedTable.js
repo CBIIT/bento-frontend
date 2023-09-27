@@ -154,15 +154,19 @@ const PaginatedTable = ({
   * remove selected rows
   */
   const onDeleteRow = (row) => {
-    const delId = row[table.dataKey];
-    const selectedIds = table.selectedRows.reduce((acc, id) => {
-      if (delId !== id) {
-        acc.push(id);
-      }
-      return acc;
-    }, []);
+    let selectedIds = table.selectedRows;
+    // if del row is selected remove from selected rows
+    if (row.isChecked) {
+      const delId = row[table.dataKey];
+      selectedIds = table.selectedRows.reduce((acc, id) => {
+        if (delId !== id) {
+          acc.push(id);
+        }
+        return acc;
+      }, []);
+    }
     dispatch(onRowDelete({
-      deletedRow: delId,
+      deletedRow: row,
       selectedRows: selectedIds,
     }));
   };
