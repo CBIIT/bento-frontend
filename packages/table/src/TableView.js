@@ -27,6 +27,7 @@ const CustomTableContainer = (props) => {
 
 const TableView = ({
   tableRows = [],
+  totalRows = [],
   table,
   onRowsPerPageChange,
   onPageChange,
@@ -35,16 +36,23 @@ const TableView = ({
   totalRowCount,
   onSortByColumn,
   onColumnViewChange,
+  onDeleteRow,
+  onDeleteAllFiles,
   themeConfig = {},
+  queryVariables,
+  server,
 }) => (
   <>
     <ExtendedView
       table={table}
+      rows={totalRows}
+      server={server}
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
       onPageChange={onPageChange}
       numSelected={table?.selectedRows?.length || 0}
       customTheme={themeConfig.extendedView}
+      queryVariables={queryVariables}
     />
     <CustomToolbar
       numSelected={table?.selectedRows?.length || 0}
@@ -62,6 +70,7 @@ const TableView = ({
           rows={tableRows}
           count={totalRowCount}
           toggleSelectAll={onToggleSelectAll}
+          onDeleteAllFiles={onDeleteAllFiles}
           sortByColumn={onSortByColumn}
         />
         <CustomTableBody
@@ -69,6 +78,7 @@ const TableView = ({
           rows={tableRows}
           table={table}
           onRowSelectChange={onRowSelectChange}
+          onDeleteRow={onDeleteRow}
         />
       </Table>
     </CustomTableContainer>
