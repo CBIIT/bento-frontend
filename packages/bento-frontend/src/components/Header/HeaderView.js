@@ -7,6 +7,7 @@ import headerData from '../../bento/globalHeaderData';
 import { queryAutocompleteAPI, SEARCH_DATAFIELDS, SEARCH_KEYS } from '../../bento/search';
 import { PUBLIC_ACCESS } from '../../bento/siteWideConfig';
 import { accessLevelTypes } from '@bento-core/authentication';
+import { GOVERNMENT_WARNING_BANNER } from '../../bento/siteWideConfig';
 
 const ICDCHeader = (props) => {
   const { location } = props;
@@ -33,6 +34,7 @@ const ICDCHeader = (props) => {
       alt={headerData.globalHeaderLogoAltText}
       homeLink={headerData.globalHeaderLogoLink}
       SearchComponent={!location.pathname.match('/search') ? SearchBar : undefined}
+      customStyle ={{headerBar : GOVERNMENT_WARNING_BANNER ? {top: '167.578px'} : {}}}
     />
   );
 };

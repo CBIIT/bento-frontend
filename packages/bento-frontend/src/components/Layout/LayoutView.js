@@ -31,6 +31,8 @@ import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
 import CarView from '../../pages/cart/cartController';
 import AuthSessionTimeoutController from '../SessionTimeout/SessionTimeoutController';
 import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
+import { WarningBanner } from '@bento-core/warning-banner';
+import { GOVERNMENT_WARNING_BANNER } from '../../bento/siteWideConfig';
 
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
@@ -49,6 +51,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
     <CssBaseline />
     <HashRouter>
       <>
+        <WarningBanner enabled={GOVERNMENT_WARNING_BANNER} />
         <Notifactions />
         <AuthSessionTimeoutController />
         <Header />
@@ -58,6 +61,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
           change build npm to read env variable */}
         <div
           className={classes.content}
+          style={GOVERNMENT_WARNING_BANNER ? {marginTop: "361.578px"}: {}}
         >
           <Route component={ScrollToTop} />
           <Switch>

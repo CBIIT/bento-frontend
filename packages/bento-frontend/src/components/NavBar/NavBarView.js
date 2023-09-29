@@ -7,6 +7,7 @@ import {
 import Login from '../Auth/loginComponent';
 import { enableAuthentication, PUBLIC_ACCESS } from '../../bento/siteWideConfig';
 import { accessLevelTypes } from '@bento-core/authentication';
+import { GOVERNMENT_WARNING_BANNER } from '../../bento/siteWideConfig';
 
 const BentoNavBar = ({ cartFieldIds = [] }) => {
   const isSignedIn = useSelector((state) => state.login.isSignedIn);
@@ -24,6 +25,8 @@ const BentoNavBar = ({ cartFieldIds = [] }) => {
     if (!enableAuthentication) return undefined;
     return Login;
   };
+
+  navBarstyling.global.marginTop = GOVERNMENT_WARNING_BANNER ?  '267.578px' : navBarstyling.global.marginTop;
 
   return (
     <>

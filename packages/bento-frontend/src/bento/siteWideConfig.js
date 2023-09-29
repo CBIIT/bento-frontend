@@ -38,3 +38,5 @@ export const PING_INTERVAL = 10; // DEFAULT is 5 Seconds.
 // SHOW_WARNING_BEFORE is used to configure when to show Inactivity pop-up.
 // Value is required to be in Seconds format. DEFAULT is 300 Seconds (5 Minutes).
 export const SHOW_WARNING_BEFORE = 300;
+
+export const GOVERNMENT_WARNING_BANNER = getEnvBoolean(env.REACT_APP_GOVERNMENT_WARNING_BANNER, true);
