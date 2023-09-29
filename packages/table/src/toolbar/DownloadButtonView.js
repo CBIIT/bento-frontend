@@ -49,11 +49,14 @@ const DownloadButton = ({
   }
 
   const downloadTableCSV = useCallback(() => {
+    // custom download from bento app
     if (downloadTable) {
-      downloadTable();
+      downloadTable(queryVariables);
     } else if (!downloadTable && !server) {
+      // download client table
       downloadJson(rows, table, downloadFileName);
     } else {
+      // donwload server table
       downloadSCSVFile();
     }
   }, [queryVariables]);
