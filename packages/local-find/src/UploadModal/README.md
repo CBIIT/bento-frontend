@@ -43,6 +43,11 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     uploadTooltip: 'Add the case indentifier.', // The tooltip text for the upload button section. Empty = no tooltip
     accept: '.csv,.txt',                        // The file types that can be uploaded (must be text/* files only)
     maxSearchTerms: 1000,                       // The maximum number of search terms that can be searched for. See note below.
+    matchedId: 'subject_id',                    // The property(key) name for the first column in the backend response object 
+    matchedLabel: 'SUBMITTED CASE ID',          // The header text of the first column of the matched summary table in the Upload Modal
+    associateId: 'program_id',                  // The property(key) name for the second column in the backend response object 
+    associateLabel: 'ASSOCIATED PROGRAM',       // The header text of the second column of the matched summary table in the Upload Modal
+    projectName: 'BENTO',                       // The project name that appears in the text that appears when matching id is found 
   },
 
   // Helper functions used by the component
