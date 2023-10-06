@@ -21,8 +21,12 @@ import { updateUploadData, updateUploadMetadata } from '../store/actions/Actions
  */
 export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const {
-    config, functions,
+    config, functions, customStyles = {},
   } = uiConfig;
+
+  const styles = () => (
+    { ...DEFAULT_STYLES(), ...customStyles }
+  );
 
   const matchLocalFindId = config && config.matchedId && typeof config.matchedId === 'string'
     ? config.matchedId
@@ -88,7 +92,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
   return {
     // @ts-ignore
     // eslint-disable-next-line max-len
-    UploadModal: withStyles(DEFAULT_STYLES, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
+    UploadModal: withStyles(styles, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
       const {
         classes, open, metadata = {},
         onApplySearch, updateMetadata,
