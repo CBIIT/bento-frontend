@@ -21,6 +21,7 @@ const CustomTableBody = ({
   rows = [],
   table,
   onRowSelectChange,
+  onRowExpandChange,
   customTheme = {},
 }) => {
   const { columns } = table;
@@ -32,8 +33,9 @@ const CustomTableBody = ({
       <TableBody>
         {rows
           .map((row) => (
-            <TableRow>
-              {
+            <>
+              <TableRow>
+                {
                 displayColunms.map((column) => {
                   const { cellType } = column;
                   const isActionCell = actionCellTypes.includes(cellType) || false;
@@ -43,6 +45,7 @@ const CustomTableBody = ({
                         row={row}
                         column={column}
                         onRowSelectChange={onRowSelectChange}
+                        onRowExpandChange={onRowExpandChange}
                       />
                     );
                   }
@@ -54,7 +57,9 @@ const CustomTableBody = ({
                   );
                 })
               }
-            </TableRow>
+              </TableRow>
+              {row.isExpanded ? <div> Hello </div> : ''}
+            </>
           ))}
       </TableBody>
     </ThemeProvider>
@@ -65,6 +70,7 @@ CustomTableBody.propTypes = {
   table: PropTypes.objectOf(PropTypes.object).isRequired,
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
   onRowSelectChange: PropTypes.func.isRequired,
+  onRowExpandChange: PropTypes.func.isRequired,
 };
 
 export default CustomTableBody;

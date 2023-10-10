@@ -1101,6 +1101,11 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
+        cellType: cellTypes.EXPANDROW,
+        display: true,
+        role: cellTypes.EXPANDROW,
+      },
+      {
         dataField: 'subject_id',
         header: 'Case ID',
         cellType: cellTypes.LINK,

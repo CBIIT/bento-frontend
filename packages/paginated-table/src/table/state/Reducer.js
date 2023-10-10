@@ -30,6 +30,11 @@ const reducer = (state, action) => {
         ...state,
         selectedRows: payload,
       };
+    case actionTypes.ON_ROW_EXPAND:
+      return {
+        ...state,
+        expandedRows: payload,
+      };
     case actionTypes.ON_PAGE_AND_TOTAL_COUNT_CHANGE:
       return {
         ...state,

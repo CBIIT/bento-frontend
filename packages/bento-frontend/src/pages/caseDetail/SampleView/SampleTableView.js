@@ -16,6 +16,7 @@ const SampleTableView = ({
     title: sampleTable.name,
     columns: sampleTable.columns,
     selectedRows: [],
+    expandedRows: [],
     tableMsg: sampleTable.tableMsg,
     sortBy: sampleTable.defaultSortField,
     sortOrder: sampleTable.defaultSortDirection,

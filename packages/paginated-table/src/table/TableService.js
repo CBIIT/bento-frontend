@@ -18,6 +18,22 @@ export const setSelectedRows = (rows = [], table) => {
 };
 
 /**
+* set true to expanded items
+* @param {*} rows
+* @param {*} table
+* @returns
+*/
+export const setExpandedRows = (rows = [], table) => {
+  const { expandedRows, dataKey } = table;
+  const updateRows = [...rows].map((row) => {
+    const isExpanded = dataKey
+      ? (expandedRows.indexOf(row[dataKey]) !== -1) : false;
+    return { ...row, isExpanded };
+  }, []);
+  return updateRows;
+};
+
+/**
 * update query variable (eg active filters / files ids)
 * with table pagination state
 */

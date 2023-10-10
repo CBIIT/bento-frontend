@@ -2,6 +2,7 @@ import React from 'react';
 import { cellTypes } from '../util/Types';
 import CheckboxView from './components/CheckBoxView';
 import DeleteCellView from './components/DeleteCellView';
+import ExpandIconView from '../body/components/ExpandIconView';
 
 const ActionHeaderCell = ({
   includeSelectedIds,
@@ -26,6 +27,16 @@ const ActionHeaderCell = ({
   if (cellTypes.DELETE === cellType) {
     return (
       <DeleteCellView
+        rows={rows}
+        count={count}
+        column={column}
+      />
+    );
+  }
+
+  if (cellTypes.EXPANDROW === cellType) {
+    return (
+      <ExpandIconView
         rows={rows}
         count={count}
         column={column}

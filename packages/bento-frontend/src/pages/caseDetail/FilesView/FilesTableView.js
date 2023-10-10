@@ -16,6 +16,7 @@ const FilesTableView = ({
     title: filesTable.name,
     columns: filesTable.columns,
     selectedRows: [],
+    expandedRows: [],
     tableMsg: filesTable.tableMsg,
     sortBy: filesTable.defaultSortField,
     sortOrder: filesTable.defaultSortDirection,

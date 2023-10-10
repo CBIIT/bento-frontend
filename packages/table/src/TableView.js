@@ -31,6 +31,7 @@ const TableView = ({
   onRowsPerPageChange,
   onPageChange,
   onRowSelectChange,
+  onRowExpandChange,
   onToggleSelectAll,
   totalRowCount,
   onSortByColumn,
@@ -69,6 +70,7 @@ const TableView = ({
           rows={tableRows}
           table={table}
           onRowSelectChange={onRowSelectChange}
+          onRowExpandChange={onRowExpandChange}
         />
       </Table>
     </CustomTableContainer>

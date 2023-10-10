@@ -1,7 +1,7 @@
 import React from 'react';
 import { CircularProgress, Container } from '@material-ui/core';
 import { TableView } from '@bento-core/table';
-import { setSelectedRows } from './TableService';
+import { setExpandedRows, setSelectedRows } from './TableService';
 
 /**
 * Updates table row when table state is changed 1. (paginated action) and 2. filter action
@@ -20,6 +20,11 @@ const TableController = ((props) => {
   * set selected rows isChecked to TRUE
   */
   const updateRows = setSelectedRows(tblRows, table);
+  /**
+  * update rows
+  * set expanded rows isExpanded to TRUE
+  */
+  const updateRows2 = setExpandedRows(updateRows, table);
   const {
     page = 0,
     rowsPerPage = 10,
@@ -46,7 +51,7 @@ const TableController = ((props) => {
     }
     return alphaNumericSort(b, a);
   };
-  const sortedRows = [...updateRows].sort((a, b) => sortRows(a, b));
+  const sortedRows = [...updateRows2].sort((a, b) => sortRows(a, b));
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const displayRows = [...sortedRows].slice(startIndex, endIndex);

@@ -5,6 +5,7 @@ export const actionTypes = {
   ON_ROWS_PER_PAGE_CHANGE: 'ON_ROWS_PER_PAGE_CHANGE',
   ON_PAGE_CHANGE: 'ON_PAGE_CHANGE',
   ON_ROW_SELECT: 'ON_ROW_SELECT',
+  ON_ROW_EXPAND: 'ON_ROW_EXPAND',
   SET_TOTAL_ROW_COUNT: 'SET_TOTAL_ROW_COUNT',
   ON_PAGE_AND_TOTAL_COUNT_CHANGE: 'ON_PAGE_AND_TOTAL_COUNT_CHANGE',
 };
@@ -41,6 +42,11 @@ export const onPageChange = (pageNumb) => ({
 
 export const onRowSeclect = (rows) => ({
   type: actionTypes.ON_ROW_SELECT,
+  payload: rows,
+});
+
+export const onRowExpand = (rows) => ({
+  type: actionTypes.ON_ROW_EXPAND,
   payload: rows,
 });
 

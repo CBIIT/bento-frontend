@@ -9,6 +9,7 @@ import {
   onColumnSort,
   onPageAndTotalCountChange,
   onColumnViewChange,
+  onRowExpand,
 } from './state/Actions';
 import { TableContext } from './ContextProvider';
 import reducer from './state/Reducer';
@@ -97,6 +98,28 @@ const PaginatedTable = ({
     dispatch(onRowSeclect(selectedIds));
   };
 
+  /**
+  * update Expanded Rows Ids
+  * @param {*} event
+  * @param {*} row
+  */
+  const onRowExpandHandler = (event, row) => {
+    event.stopPropagation();
+    let expandedRows = [...table.expandedRows];
+    const expandRowId = row[table.dataKey];
+    if (!row.isExpanded) {
+      expandedRows.push(expandRowId);
+    } else {
+      expandedRows = expandedRows.reduce((acc, id) => {
+        if (expandRowId !== id) {
+          acc.push(id);
+        }
+        return acc;
+      }, []);
+    }
+    dispatch(onRowExpand(expandedRows));
+  };
+
   const handleToggleSelectAll = (event, Ids, includeIds) => {
     if (event.target.checked && !includeIds) {
       const selecedIds = Ids.concat(table.selectedRows);
@@ -144,6 +167,7 @@ const PaginatedTable = ({
           onRowsPerPageChange={handleChangeRowsPerPage}
           onPageChange={handleChangePage}
           onRowSelectChange={onRowSelectHandler}
+          onRowExpandChange={onRowExpandHandler}
           onToggleSelectAll={handleToggleSelectAll}
           onSortByColumn={handleSortByColumn}
           onColumnViewChange={handleColumnViewChange}
@@ -173,6 +197,7 @@ const PaginatedTable = ({
         onRowsPerPageChange={handleChangeRowsPerPage}
         onPageChange={handleChangePage}
         onRowSelectChange={onRowSelectHandler}
+        onRowExpandChange={onRowExpandHandler}
         onToggleSelectAll={handleToggleSelectAll}
         onSortByColumn={handleSortByColumn}
         onColumnViewChange={handleColumnViewChange}

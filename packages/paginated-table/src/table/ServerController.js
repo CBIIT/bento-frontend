@@ -6,6 +6,7 @@ import {
 import { TableView } from '@bento-core/table';
 import {
   getTableData,
+  setExpandedRows,
   setSelectedRows,
 } from './TableService';
 
@@ -27,11 +28,16 @@ const TableController = ((props) => {
   * set selected rows isChecked to TRUE
   */
   const updateRows = setSelectedRows(tableData, table);
+  /**
+  * update rows
+  * set expanded rows isExpanded to TRUE
+  */
+  const updateRows2 = setExpandedRows(updateRows, table);
   return (
     <>
       <TableView
         {...props}
-        tableRows={updateRows}
+        tableRows={updateRows2}
       />
     </>
   );
