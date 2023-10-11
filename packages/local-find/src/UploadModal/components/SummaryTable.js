@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Divider, Typography, withStyles } from '@material-ui/core';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import clsx from 'clsx';
+import DownloadButton from './DownloadButtonView';
 
 /**
  * Creates a simple tabbed table to display the matched case IDs
@@ -64,6 +65,12 @@ const SummaryTable = (props) => {
             {unmatched.length}
           </span>
         </span>
+        <DownloadButton
+          classes={classes}
+          data={matched}
+          keysToInclude={[matchLocalFindId, associateId]}
+          headers={[matchedLabel, associateLabel]}
+        />
       </div>
       <div className={classes.tableBox}>
         {tab === 'matched' ? (

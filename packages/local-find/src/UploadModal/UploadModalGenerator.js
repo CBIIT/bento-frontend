@@ -98,10 +98,11 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
         onApplySearch, updateMetadata,
       } = props;
 
-      const {
-        FileUploader: uploaderClasses,
-        SummaryTable: summaryClasses,
-      } = classes;
+      // const {
+      //   FileUploader: uploaderClasses,
+      //   SummaryTable: summaryClasses,
+      // } = classes;
+      console.log(classes);
 
       const [filename, setUploadedFileName] = useState(metadata.filename || '');
       const [fileContent, setFileContent] = useState(metadata.fileContent || '');
@@ -216,10 +217,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   <Typography>
                     <p className={classes.listTitle}>Choose a file to upload:</p>
                   </Typography>
-                  {uploadTooltip ? generateToolTip(uploadTooltip) : null}
+                  {uploadTooltip ? generateToolTip(uploadTooltip, icons) : null}
                 </div>
                 <FileUploader
-                  classes={uploaderClasses}
+                  classes={classes}
                   filename={filename}
                   onClear={clearData}
                   onUploadRead={handleFileUpload}
@@ -229,7 +230,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
             </div>
             {fileContent && (
               <SummaryTable
-                classes={summaryClasses}
+                classes={classes}
                 matched={matchIds}
                 unmatched={unmatchedIds}
                 matchLocalFindId={matchLocalFindId}
