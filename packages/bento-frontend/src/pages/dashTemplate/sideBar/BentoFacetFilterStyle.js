@@ -171,11 +171,4 @@ export default () => ({
     marginRight: 0,
     marginBottom: 6,
   },
-  SummaryTable: {
-    summaryContainer: {
-      backgroundColor: '#CBE2EE',
-      paddingLeft: 33,
-      paddingRight: 33,
-    },
-  },
 });
