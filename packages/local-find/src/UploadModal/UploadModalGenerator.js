@@ -9,8 +9,9 @@ import ToolTip from '@bento-core/tool-tip';
 import FileUploader from './components/FileUploader';
 import SummaryTable from './components/SummaryTable';
 import DEFAULT_STYLES from './styles';
-import DEFAULT_CONFIG from './config';
+import DEFAULT_CONFIG, { tooltipIconType } from './config';
 import { updateUploadData, updateUploadMetadata } from '../store/actions/Actions';
+import SpeechBubbleIcon from '../assets/Tooltip_SpeechBubble.svg';
 
 /**
  * Generator function to create UploadModal component with custom configuration
@@ -71,6 +72,9 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const uploadTooltip = config && typeof config.uploadTooltip === 'string'
     ? config.uploadTooltip
     : DEFAULT_CONFIG.config.uploadTooltip;
+
+  const uploadTooltipIcon = config && typeof config.uploadTooltipIcon === 'string'
+    ? config.uploadTooltipIcon : DEFAULT_CONFIG.config.uploadTooltipIcon;
 
   const fileAccept = config && typeof config.accept === 'string'
     ? config.accept
@@ -141,7 +145,16 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const generateToolTip = (message) => (
         <ToolTip className={classes.customTooltip} classes={{ arrow: classes.customArrow }} title={message} arrow placement="bottom">
           <IconButton aria-label="help" className={classes.helpIconButton}>
-            <HelpIcon className={classes.helpIcon} fontSize="small" />
+            { (uploadTooltipIcon === tooltipIconType.DEFAULT) && (
+              <>
+                <HelpIcon className={classes.helpIcon} fontSize="small" />
+              </>
+            )}
+            { (uploadTooltipIcon === tooltipIconType.SPEECH_BUBBLE) && (
+              <>
+                <img src={SpeechBubbleIcon} className={classes.tooltipIcon} alt="help" />
+              </>
+            )}
           </IconButton>
         </ToolTip>
       );
@@ -217,7 +230,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   <Typography>
                     <p className={classes.listTitle}>Choose a file to upload:</p>
                   </Typography>
-                  {uploadTooltip ? generateToolTip(uploadTooltip, icons) : null}
+                  {uploadTooltip ? generateToolTip(uploadTooltip) : null}
                 </div>
                 <FileUploader
                   classes={classes}
