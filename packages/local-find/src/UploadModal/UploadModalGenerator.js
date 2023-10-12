@@ -107,7 +107,6 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       //   FileUploader: uploaderClasses,
       //   SummaryTable: summaryClasses,
       // } = classes;
-      console.log(classes);
 
       const [filename, setUploadedFileName] = useState(metadata.filename || '');
       const [fileContent, setFileContent] = useState(metadata.fileContent || '');
