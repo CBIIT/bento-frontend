@@ -4,6 +4,7 @@ import {
   Modal, Button, Typography,
   TextareaAutosize, IconButton, withStyles,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import HelpIcon from '@material-ui/icons/Help';
 import ToolTip from '@bento-core/tool-tip';
 import FileUploader from './components/FileUploader';
@@ -259,8 +260,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="primary"
                 onClick={closeModalWrapper}
-                style={{ backgroundColor: '#566672' }}
-                className={classes.button}
+                className={clsx(classes.button, classes.cancelBtn)}
                 id="local_find_upload_cancel"
               >
                 Cancel
@@ -269,8 +269,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="blueGrey"
                 onClick={clearData}
-                style={{ backgroundColor: '#437BBE' }}
-                className={classes.button}
+                className={clsx(classes.button, classes.clearBtn)}
                 id="local_find_upload_clear"
               >
                 Clear
@@ -279,8 +278,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="blueGrey"
                 onClick={applySearchWrapper}
-                style={overMaxTerms ? undefined : { backgroundColor: '#03A383' }}
-                className={classes.button}
+                className={clsx(
+                  classes.button,
+                  { [classes.submitBtn]: !overMaxTerms },
+                )}
                 disabled={overMaxTerms}
                 id="local_find_upload_submit"
               >

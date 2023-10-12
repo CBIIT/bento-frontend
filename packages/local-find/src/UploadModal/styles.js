@@ -141,4 +141,13 @@ export default () => ({
   helpIconButton: {
     marginBottom: 10,
   },
+  submitBtn: {
+    backgroundColor: '#03A383',
+  },
+  clearBtn: {
+    backgroundColor: '#437BBE',
+  },
+  cancelBtn: {
+    backgroundColor: '#566672',
+  },
 });
