@@ -4,13 +4,15 @@ import {
   Modal, Button, Typography,
   TextareaAutosize, IconButton, withStyles,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import HelpIcon from '@material-ui/icons/Help';
 import ToolTip from '@bento-core/tool-tip';
 import FileUploader from './components/FileUploader';
 import SummaryTable from './components/SummaryTable';
 import DEFAULT_STYLES from './styles';
-import DEFAULT_CONFIG from './config';
+import DEFAULT_CONFIG, { tooltipIconType } from './config';
 import { updateUploadData, updateUploadMetadata } from '../store/actions/Actions';
+import SpeechBubbleIcon from '../assets/Tooltip_SpeechBubble.svg';
 
 /**
  * Generator function to create UploadModal component with custom configuration
@@ -72,6 +74,9 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.uploadTooltip
     : DEFAULT_CONFIG.config.uploadTooltip;
 
+  const uploadTooltipIcon = config && typeof config.uploadTooltipIcon === 'string'
+    ? config.uploadTooltipIcon : DEFAULT_CONFIG.config.uploadTooltipIcon;
+
   const fileAccept = config && typeof config.accept === 'string'
     ? config.accept
     : DEFAULT_CONFIG.config.accept;
@@ -98,10 +103,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
         onApplySearch, updateMetadata,
       } = props;
 
-      const {
-        FileUploader: uploaderClasses,
-        SummaryTable: summaryClasses,
-      } = classes;
+      // const {
+      //   FileUploader: uploaderClasses,
+      //   SummaryTable: summaryClasses,
+      // } = classes;
 
       const [filename, setUploadedFileName] = useState(metadata.filename || '');
       const [fileContent, setFileContent] = useState(metadata.fileContent || '');
@@ -140,7 +145,16 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const generateToolTip = (message) => (
         <ToolTip className={classes.customTooltip} classes={{ arrow: classes.customArrow }} title={message} arrow placement="bottom">
           <IconButton aria-label="help" className={classes.helpIconButton}>
-            <HelpIcon className={classes.helpIcon} fontSize="small" />
+            { (uploadTooltipIcon === tooltipIconType.DEFAULT) && (
+              <>
+                <HelpIcon className={classes.helpIcon} fontSize="small" />
+              </>
+            )}
+            { (uploadTooltipIcon === tooltipIconType.SPEECH_BUBBLE) && (
+              <>
+                <img src={SpeechBubbleIcon} className={classes.tooltipIcon} alt="help" />
+              </>
+            )}
           </IconButton>
         </ToolTip>
       );
@@ -219,7 +233,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   {uploadTooltip ? generateToolTip(uploadTooltip) : null}
                 </div>
                 <FileUploader
-                  classes={uploaderClasses}
+                  classes={classes}
                   filename={filename}
                   onClear={clearData}
                   onUploadRead={handleFileUpload}
@@ -229,7 +243,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
             </div>
             {fileContent && (
               <SummaryTable
-                classes={summaryClasses}
+                classes={classes}
                 matched={matchIds}
                 unmatched={unmatchedIds}
                 matchLocalFindId={matchLocalFindId}
@@ -245,8 +259,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="primary"
                 onClick={closeModalWrapper}
-                style={{ backgroundColor: '#566672' }}
-                className={classes.button}
+                className={clsx(classes.button, classes.cancelBtn)}
                 id="local_find_upload_cancel"
               >
                 Cancel
@@ -255,8 +268,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="blueGrey"
                 onClick={clearData}
-                style={{ backgroundColor: '#437BBE' }}
-                className={classes.button}
+                className={clsx(classes.button, classes.clearBtn)}
                 id="local_find_upload_clear"
               >
                 Clear
@@ -265,8 +277,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="blueGrey"
                 onClick={applySearchWrapper}
-                style={overMaxTerms ? undefined : { backgroundColor: '#03A383' }}
-                className={classes.button}
+                className={clsx(
+                  classes.button,
+                  { [classes.submitBtn]: !overMaxTerms },
+                )}
                 disabled={overMaxTerms}
                 id="local_find_upload_submit"
               >
