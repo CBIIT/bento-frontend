@@ -12,6 +12,7 @@ const DownloadManifestView = (props) => {
     tooltipCofig,
     clsName,
     title,
+    totalRowCount,
   } = props;
 
   const {
@@ -61,6 +62,7 @@ const DownloadManifestView = (props) => {
         className={clsName}
         disableRipple
         onClick={() => DocumentDownload()}
+        disabled={totalRowCount === 0}
       >
         {title}
       </Button>
