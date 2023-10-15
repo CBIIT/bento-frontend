@@ -31,7 +31,7 @@ const DeleteCellView = ({
   const testTrigger = () => {
     setDisplay(true);
   };
-  const { customColHeaderRender } = column;
+  const { customColHeaderRender, customModalMessage } = column;
   return (
     <>
       <TableCell
@@ -69,6 +69,7 @@ const DeleteCellView = ({
           removeAllFiles={column.headerEventHandler}
           count={count}
           toggleDisplay={toggleDialogDisplay}
+          customModalMessage={customModalMessage}
         />
       </TableCell>
     </>
