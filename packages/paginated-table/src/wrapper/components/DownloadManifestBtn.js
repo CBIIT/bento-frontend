@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Tooltip } from '@material-ui/core';
 import { useApolloClient } from '@apollo/client';
 import {
   downloadJson,
@@ -13,6 +13,13 @@ const DownloadManifestView = (props) => {
     clsName,
     title,
   } = props;
+
+  const {
+    icon,
+    alt,
+    arrow = false,
+    clsName: toolTipClsName,
+  } = tooltipCofig;
   /**
   * get cart state
   */
@@ -38,7 +45,7 @@ const DownloadManifestView = (props) => {
           ...getQueryVeriables(queryVariables),
         },
       })
-      .then((result) => result.data.filesInList);
+      .then((result) => (table.objectKey ? result.data[table.objectKey] : result.data.filesInList));
     return fetchResult;
   }
 
@@ -57,7 +64,22 @@ const DownloadManifestView = (props) => {
       >
         {title}
       </Button>
-      {tooltipCofig && (<ToolTipView {...props} />)}
+      {(tooltipCofig && !tooltipCofig.customToolTipComponent) && (<ToolTipView {...props} />)}
+      {(tooltipCofig && tooltipCofig.customToolTipComponent) && (
+        <Tooltip
+          arrow={arrow}
+          interactive
+          title={(
+            <>
+              {tooltipCofig.customToolTipComponent}
+            </>
+          )}
+          placement="bottom"
+        >
+          {icon && (<img src={icon} alt={alt} className={toolTipClsName} />)}
+        </Tooltip>
+      )}
+
     </>
   );
 };
