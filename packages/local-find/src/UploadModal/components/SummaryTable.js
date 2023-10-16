@@ -25,6 +25,7 @@ const SummaryTable = (props) => {
     matchedLabel,
     associateLabel,
     projectName,
+    caseIds,
   } = props;
 
   const [tab, setTab] = useState('matched');
@@ -32,7 +33,7 @@ const SummaryTable = (props) => {
   return (
     <div className={classes.summaryContainer} id="uploadCaseSetSummarySection">
       <p className={classes.summary} id="uploadCaseSetSummaryCount">
-        {`${matched.length + unmatched.length} submitted Case IDs mapped to ${matched.length} unique ${projectName} Case IDs`}
+        {`${matched.length + unmatched.length} submitted ${caseIds} mapped to ${matched.length} unique ${projectName} ${caseIds}`}
       </p>
       {error ? (
         <Typography className={clsx(classes.summary, classes.error)}>
