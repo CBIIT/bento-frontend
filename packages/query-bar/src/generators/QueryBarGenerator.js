@@ -27,6 +27,9 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.displayAllActiveFilters
     : DEFAULT_CONFIG.config.displayAllActiveFilters;
 
+  const caseIDLabel = config && typeof config.caseIDLabel === 'string'
+    ? config.caseIDLabel : DEFAULT_CONFIG.config.caseIDLabel;
+
   // const group = config && typeof config.group === 'string'
   //   ? config.group : DEFAULT_CONFIG.config.group;
 
@@ -139,7 +142,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                         className={clsx(classes.filterName, classes.localFindBackground)}
                         onClick={clearAutocomplete}
                       >
-                        Case IDs
+                        {caseIDLabel}
                       </span>
                       {' '}
                       {' '}
