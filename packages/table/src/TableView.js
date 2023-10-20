@@ -27,6 +27,7 @@ const CustomTableContainer = (props) => {
 
 const TableView = ({
   tableRows = [],
+  totalRows = [],
   table,
   onRowsPerPageChange,
   onPageChange,
@@ -36,15 +37,20 @@ const TableView = ({
   onSortByColumn,
   onColumnViewChange,
   themeConfig = {},
+  queryVariables,
+  server,
 }) => (
   <>
     <ExtendedView
       table={table}
+      rows={totalRows}
+      server={server}
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
       onPageChange={onPageChange}
       numSelected={table?.selectedRows?.length || 0}
       customTheme={themeConfig.extendedView}
+      queryVariables={queryVariables}
     />
     <CustomToolbar
       numSelected={table?.selectedRows?.length || 0}

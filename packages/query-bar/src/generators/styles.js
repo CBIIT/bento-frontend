@@ -104,4 +104,14 @@ export default () => ({
   facetSectionSamplesBackground: {
     backgroundColor: '#C3EAF5',
   },
+  expandBtn: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  collapseBtn: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
 });

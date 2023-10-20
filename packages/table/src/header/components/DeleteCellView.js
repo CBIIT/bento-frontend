@@ -28,34 +28,51 @@ const DeleteCellView = ({
 }) => {
   const [displayDialog, setDisplay] = useState(false);
   const toggleDialogDisplay = () => setDisplay(!displayDialog);
+  const testTrigger = () => {
+    setDisplay(true);
+  };
+  const { customColHeaderRender, customModalMessage } = column;
   return (
-    <TableCell
-      scope="col"
-      className="del_all_row"
-    >
-      <Typography className="del_all_row_text">
-        Remove
-      </Typography>
-      <Tooltip
-        id="del_all_row_tooltip"
-        className="del_all_row_tooltip"
-        title={TooltipContent()}
-        renderComponent={TooltipContent()}
+    <>
+      <TableCell
+        scope="col"
+        className="del_all_row"
       >
-        <IconButton aria-label="help" className="del_all_row_btn">
-          <ArrowDropDownIcon
-            className="del_all_row_btn_icon"
-            onClick={toggleDialogDisplay}
-          />
-        </IconButton>
-      </Tooltip>
-      <RemoveAllDialogView
-        open={displayDialog}
-        removeAllFiles={column.headerEventHandler}
-        count={count}
-        toggleDisplay={toggleDialogDisplay}
-      />
-    </TableCell>
+        {
+          customColHeaderRender ? (
+            <>
+              {customColHeaderRender(testTrigger)}
+            </>
+          ) : (
+            <>
+              <Typography className="del_all_row_text">
+                Remove
+              </Typography>
+              <Tooltip
+                id="del_all_row_tooltip"
+                className="del_all_row_tooltip"
+                title={TooltipContent()}
+                renderComponent={TooltipContent()}
+              >
+                <IconButton aria-label="help" className="del_all_row_btn">
+                  <ArrowDropDownIcon
+                    className="del_all_row_btn_icon"
+                    onClick={toggleDialogDisplay}
+                  />
+                </IconButton>
+              </Tooltip>
+            </>
+          )
+        }
+        <RemoveAllDialogView
+          open={displayDialog}
+          removeAllFiles={column.headerEventHandler}
+          count={count}
+          toggleDisplay={toggleDialogDisplay}
+          customModalMessage={customModalMessage}
+        />
+      </TableCell>
+    </>
   );
 };
 

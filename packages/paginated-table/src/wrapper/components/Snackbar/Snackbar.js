@@ -31,7 +31,7 @@ const SnackbarView = (props) => {
             <span className="snackBarText">
               {count}
               {' '}
-              File(s) successfully added to your cart
+              File(s) successfully added to My Files.
             </span>
           </div>
         )}
