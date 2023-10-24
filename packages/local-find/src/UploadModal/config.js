@@ -11,6 +11,11 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     uploadTooltip: 'Add the case indentifier.',
     accept: '.csv,.txt',
     maxSearchTerms: 1000,
+    matchedId: 'subject_id',
+    matchedLabel: 'SUBMITTED CASE ID',
+    associateId: 'program_id',
+    associateLabel: 'ASSOCIATED PROGRAM',
+    projectName: 'BENTO',
   },
 
   // Helper functions used by the component

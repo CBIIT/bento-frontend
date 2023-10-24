@@ -5,6 +5,8 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable no-useless-escape */
+
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -22,8 +24,6 @@ import {
 } from '@material-ui/icons';
 import styles from './CheckboxStyle';
 
-const alignment = 'flex-start';
-
 const CheckBoxView = ({
   classes,
   checkboxItem,
@@ -32,16 +32,21 @@ const CheckBoxView = ({
   facet,
 }) => {
   const {
-    name,
-    subjects,
     isChecked = false,
     index,
     section,
     tooltip,
-    label,
   } = checkboxItem;
+  const {
+    field = 'group',
+    count = 'subjects',
+    customCount = (text) => `(${text})`,
+  } = facet;
+
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
-  const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
+  const checkedSection = `${section}`.toLowerCase().replace(/\ /g, '_');
+
+  const name = checkboxItem[field] || 'N/A';
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
@@ -60,9 +65,9 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      {label ? (
-        <Typography className={classes.checkboxLabel}>{label}</Typography>
-      ) : (<Typography className={classes.checkboxName}>{name}</Typography>)}
+      <Typography className={classes.checkboxName}>
+        {name}
+      </Typography>
     </Box>
   );
 
@@ -78,7 +83,12 @@ const CheckBoxView = ({
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
-          icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+          icon={
+            <CheckBoxBlankIcon
+              style={{ fontSize: 18 }}
+              className={checkedSection}
+            />
+          }
           onClick={handleToggle}
           checked={isChecked}
           checkedIcon={(
@@ -96,20 +106,20 @@ const CheckBoxView = ({
         { tooltip ? (
           <Tooltip id={datafield} title={tooltip}>
             <div className={datafield}>
-              <LabelComponent />
+              {name}
             </div>
           </Tooltip>
         ) : (
           <LabelComponent />
         )}
-        <ListItemText />
+        <ListItemText className={`${checkedSection}_md_space`} />
         <Typography
           className={clsx(`${checkedSection}Subjects`, {
             [`${checkedSection}SubjectUnChecked`]: !isChecked,
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {`(${subjects})`}
+          {customCount(checkboxItem[count] || 0)}
         </Typography>
       </ListItem>
       <Divider

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles, Button } from '@material-ui/core';
 import { InputTypes } from '@bento-core/facet-filter';
 import clsx from 'clsx';
@@ -13,12 +13,25 @@ import DEFAULT_CONFIG from './config';
  * @returns {object} { QueryBar }
  */
 export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
-  const { config, functions } = uiConfig;
+  const { config, functions, customStyles = {} } = uiConfig;
   const { CHECKBOX } = InputTypes;
+  const styles = () => (
+    { ...DEFAULT_STYLES(), ...customStyles }
+  );
 
   const maxItems = config && typeof config.maxItems === 'number'
     ? config.maxItems
     : DEFAULT_CONFIG.config.maxItems;
+
+  const displayAllActiveFilters = config && typeof config.displayAllActiveFilters === 'boolean'
+    ? config.displayAllActiveFilters
+    : DEFAULT_CONFIG.config.displayAllActiveFilters;
+
+  const group = config && typeof config.group === 'string'
+    ? config.group : DEFAULT_CONFIG.config.group;
+
+  const count = config && typeof config.count === 'string'
+    ? config.count : DEFAULT_CONFIG.config.count;
 
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
@@ -48,11 +61,22 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? functions.resetFacetSlider
     : DEFAULT_CONFIG.functions.resetFacetSlider;
 
+  const clsName = (text = 'filter-section') => text.replace(/\s+/g, '-').toLowerCase();
+
   return {
-    QueryBar: withStyles(DEFAULT_STYLES, { withTheme: true })((props) => {
+    QueryBar: withStyles(styles, { withTheme: true })((props) => {
       const { statusReducer, localFind, classes } = props;
 
       const { autocomplete, upload } = localFind;
+
+      const [expand, setExpand] = useState(false);
+      const noOfItems = expand ? autocomplete.length : maxItems;
+
+      useEffect(() => {
+        if (autocomplete.length <= maxItems && expand) {
+          setExpand(!expand);
+        }
+      }, [autocomplete]);
 
       // Remove any sections without checkboxes selected
       const mappedInputs = statusReducer.filter((facet) => facet.section && facet.type)
@@ -70,8 +94,24 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
               itemKeys.splice(itemKeys.indexOf(item), 1);
             }
           });
+          // return { ...facet, items: itemKeys };
+          /**
+          * Maintain consistant behavior with facet filter component
+          * Display the active filter items based on the count value
+          * Display active filter items in query bar only if count is greater than 0
+          * behavior similar to filter component
+          */
+          // const { group, count } = config;
+          const displayItems = itemKeys.reduce((accumulator, item) => {
+            const itemList = data.filter((d) => (d[group] === item && d[count] > 0)) || [];
+            if (itemList.length > 0) {
+              const labels = itemList.map((filter) => filter[group]);
+              accumulator.push(labels);
+            }
+            return accumulator;
+          }, []);
 
-          return { ...facet, items: itemKeys };
+          return { ...facet, items: displayItems };
         })
         .filter((facet) => facet.items.length > 0);
 
@@ -138,7 +178,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                       {' '}
                     </>
                   ) : null}
-                  {autocomplete.slice(0, maxItems).map((d, idx) => (
+                  {autocomplete.slice(0, noOfItems).map((d, idx) => (
                     <>
                       <span
                         className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
@@ -147,10 +187,33 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                       >
                         {d.title}
                       </span>
-                      {idx === (maxItems - 1) ? null : ' '}
+                      {idx === (noOfItems - 1) ? null : ' '}
                     </>
                   ))}
-                  {autocomplete.length > maxItems && '...'}
+                  {autocomplete.length > maxItems && (
+                    <>
+                      {
+                        displayAllActiveFilters
+                          ? (
+                            <span
+                              className={classes.expandBtn}
+                              onClick={() => setExpand(!expand)}
+                            >
+                              ...
+                            </span>
+                          )
+                          : '...'
+                        }
+                    </>
+                  )}
+                  {(expand && autocomplete.length > maxItems) && (
+                    <span
+                      className={classes.collapseBtn}
+                      onClick={() => setExpand(!expand)}
+                    >
+                      {' LESS'}
+                    </span>
+                  )}
                   {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
                     ? <span className={classes.bracketsClose}>)</span>
                     : null}
@@ -163,19 +226,22 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
               ? <span className={classes.operators}> AND </span>
               : null}
             {mappedInputs.map((filter, index) => (
-              <Filter
-                index={index}
-                type={filter.type}
-                data={filter}
-                maxItems={maxItems}
-                classes={classes}
-                onSectionClick={filter.type === CHECKBOX
-                  ? resetFacetSection
-                  : resetFacetSlider}
-                onItemClick={filter.type === CHECKBOX
-                  ? resetFacetCheckbox
-                  : resetFacetSlider}
-              />
+              <span className={clsName(filter.section)}>
+                <Filter
+                  index={index}
+                  type={filter.type}
+                  data={filter}
+                  maxItems={maxItems}
+                  displayAllActiveFilters={displayAllActiveFilters}
+                  classes={classes}
+                  onSectionClick={filter.type === CHECKBOX
+                    ? resetFacetSection
+                    : resetFacetSlider}
+                  onItemClick={filter.type === CHECKBOX
+                    ? resetFacetCheckbox
+                    : resetFacetSlider}
+                />
+              </span>
             ))}
           </span>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Divider, List, ListItem, withStyles,
+  Divider, List, ListItem,
 } from '@material-ui/core';
 
 /**
@@ -48,36 +48,4 @@ const SearchList = (props) => {
   );
 };
 
-const styles = () => ({
-  listPadding: {
-    paddingTop: 0,
-    paddingBottom: 4,
-  },
-  deleteIcon: {
-    cursor: 'pointer',
-    marginTop: -4,
-  },
-  closeRoot: {
-    height: 10,
-  },
-  listItemGutters: {
-    padding: '0px 15px 0px 18px',
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  searchResultDetailText: {
-    color: '#0D8662',
-    lineHeight: '20px',
-    fontFamily: 'Lato',
-    fontSize: '11px',
-    fontStyle: 'italic',
-  },
-  divider: {
-    backgroundColor: '#B1B1B1',
-    height: '1px',
-    marginRight: 11,
-    marginLeft: 12,
-  },
-});
-
-export default withStyles(styles)(SearchList);
+export default SearchList;

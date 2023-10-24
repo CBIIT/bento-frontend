@@ -3,6 +3,11 @@ import { actionTypes } from './Actions';
 const reducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
+    case actionTypes.CUSTOMIZE_PAGINATION_ACTION:
+      return {
+        ...state,
+        ...payload,
+      };
     case actionTypes.ON_COLUMN_SORT:
       return {
         ...state,
