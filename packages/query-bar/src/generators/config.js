@@ -7,6 +7,21 @@ export default {
      * @var {number}
      */
     maxItems: 2,
+    /**
+     * overides maxItems to display all the active filter items
+     * @var {boolean}
+     */
+    displayAllActiveFilters: false,
+    /**
+     * key to access label text
+     * @var {string}
+     */
+    group: 'group',
+    /**
+     * For the local find ID label case selection
+     * @var {string}
+     */
+    caseIDLabel: 'Case IDs',
   },
 
   /* Component Helper Functions */
