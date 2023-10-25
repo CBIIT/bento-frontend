@@ -92,7 +92,7 @@ const FacetView = ({
           </CustomAccordionSummary>
         )}
         {
-          (facet.type === InputTypes.SLIDER || facetValues.length === 0)
+          (facet.type !== InputTypes.SLIDER && facetValues.length === 0)
           && (
           <div className={classes.NonSortGroup}>
             <span
