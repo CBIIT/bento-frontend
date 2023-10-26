@@ -29,7 +29,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const styles = () => (
     { ...DEFAULT_STYLES(), ...customStyles }
   );
-  
+
   const matchLocalFindId = config && config.matchedId && typeof config.matchedId === 'string'
     ? config.matchedId
     : DEFAULT_CONFIG.config.matchedId;
@@ -97,7 +97,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     onApplySearch: (data) => dispatch(updateUploadData(data)),
     updateMetadata: (data) => dispatch(updateUploadMetadata(data)),
   });
-  
+
   return {
     // @ts-ignore
     // eslint-disable-next-line max-len
@@ -215,7 +215,12 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
               <div className={classes.textSection}>
                 <div className={classes.inputLabel}>
                   <Typography>
-                    <p className={classes.listTitle}>Add a list of {caseIds}:</p>
+                    <p className={classes.listTitle}>
+                      Add a list of
+                      {' '}
+                      {caseIds}
+                      :
+                    </p>
                   </Typography>
                   {inputTooltip ? generateToolTip(inputTooltip) : null}
                 </div>
