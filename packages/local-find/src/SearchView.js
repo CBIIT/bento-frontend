@@ -32,6 +32,9 @@ const SearchView = (props) => {
   };
 
   const uploadText = config && config.title ? config.title : 'Case';
+  const searchLabel = config && config.searchLabel && typeof config.searchLabel === 'string'
+    ? config.searchLabel
+    : null;
 
   return (
     <div
@@ -40,6 +43,14 @@ const SearchView = (props) => {
       onClick={eventHandler}
       hidden={hidden}
     >
+      {
+        searchLabel
+        && (
+          <span className={classes.searchLabel}>
+            {searchLabel}
+          </span>
+        )
+      }
       {matchedFiles.length !== 0 ? (
         <SearchList
           classes={{ divider: classes.customDivider, listPadding: classes.customListPadding }}
