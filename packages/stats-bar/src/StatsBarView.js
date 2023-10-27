@@ -193,7 +193,7 @@ const styles = () => ({
     ...props.styles.statCount,
   }),
   statsGroup: (props) => ((props.styles.global && props.styles.global.horizontalStyle) ? {
-    // spacing between stats
+    // spacing between stats.
     margin: props.styles.statsGroup ? props.styles.statsGroup.margin ? props.styles.statsGroup.margin : '4px 32px' : '4px 32px',
   } : {
     margin: props.styles.statsGroup ? props.styles.statsGroup.margin ? props.styles.statsGroup.margin : '4px 0px' : '4px 0px',
