@@ -1,14 +1,16 @@
 {
   "name": "@bento-core/cart",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1-ccdihub.6",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src"
   },
-  "repository": "https://github.com/CBIIT/bento-frontend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBIIT/bento-frontend.git"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -18,5 +20,10 @@
     "react-redux": "^7.2.1"
   },
   "author": "CTOS Bento Team",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CBIIT/bento-frontend/issues"
+  },
+  "homepage": "https://github.com/CBIIT/bento-frontend#readme",
+  "description": ""
 }
