@@ -12,6 +12,7 @@ const DownloadManifestView = (props) => {
     tooltipCofig,
     clsName,
     title,
+    cartFiles,
   } = props;
   /**
   * get cart state
@@ -53,6 +54,7 @@ const DownloadManifestView = (props) => {
       <Button
         className={clsName}
         disableRipple
+        disabled={cartFiles.length === 0}
         onClick={() => DocumentDownload()}
       >
         {title}
