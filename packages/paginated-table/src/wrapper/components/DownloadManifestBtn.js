@@ -29,6 +29,15 @@ const DownloadManifestView = (props) => {
     return variables;
   };
 
+  const appendStringsToRecord = (records, columnsToAppendString) => records.map((record) => {
+    const updatedRecord = record;
+    columnsToAppendString.forEach((columnConfigObject) => {
+      updatedRecord[columnConfigObject.dataField] = columnConfigObject.appendString
+        + updatedRecord[columnConfigObject.dataField];
+    });
+    return updatedRecord;
+  });
+
   const client = useApolloClient();
   async function fetchData({ queryVariables, table }) {
     const fetchResult = await client
@@ -38,7 +47,16 @@ const DownloadManifestView = (props) => {
           ...getQueryVeriables(queryVariables),
         },
       })
-      .then((result) => result.data.filesInList);
+      .then((result) => result.data.filesInList)
+      .then((result) => {
+        const { columns } = table;
+        const columnsToAppendString = columns.filter((colum) => colum.appendString);
+        if (Object.keys(columnsToAppendString).length > 0) {
+          return appendStringsToRecord(result, columnsToAppendString);
+        }
+
+        return result;
+      });
     return fetchResult;
   }
 
