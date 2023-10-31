@@ -35,7 +35,7 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
       if (commentResult.search(/("|,|\n)/g) >= 0) commentResult = `"${commentResult}"`;
       str += `\r\n${line},${commentResult}\r\n`;
     } else {
-      str += `${line}\r\n`;
+      str += `${line},\r\n`;
     }
     return str;
   });
