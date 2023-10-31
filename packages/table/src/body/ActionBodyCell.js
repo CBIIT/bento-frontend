@@ -7,6 +7,7 @@ import { cellTypes } from '../util/Types';
 const ActionCell = ({
   row,
   onRowSelectChange,
+  onDeleteRow,
   column,
 }) => {
   const { cellType } = column;
@@ -15,6 +16,7 @@ const ActionCell = ({
     return (
       <CheckboxView
         row={row}
+        column={column}
         onRowSelectChange={onRowSelectChange}
       />
     );
@@ -25,6 +27,7 @@ const ActionCell = ({
       <DeleteCellView
         row={row}
         column={column}
+        onDeleteRow={onDeleteRow}
       />
     );
   }
