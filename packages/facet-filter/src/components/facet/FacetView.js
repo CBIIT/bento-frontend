@@ -52,7 +52,7 @@ const FacetView = ({
    * display checked items on facet collapse
    */
   const { type, facetValues } = facet;
-  const selectedItems = facetValues && facetValues.filter((item) => item.isChecked);
+  const selectedItems = facetValues && facetValues.filter((item) => item && item.isChecked);
   const displayFacet = { ...facet };
   displayFacet.facetValues = selectedItems;
   const isActiveFacet = [...selectedItems].length > 0;

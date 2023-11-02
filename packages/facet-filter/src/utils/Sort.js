@@ -5,6 +5,7 @@ export const sortType = {
   ALPHA_NUMERIC: 'ALPHA_NUMERIC',
   CUSTOM_NUMBER: 'CUSTOM_NUMBER',
   RANGE: 'RANGE',
+  NONE: 'NONE',
 };
 
 /**
@@ -45,7 +46,7 @@ export const sortBySection = ({
   count = 'subjects',
 }) => {
   const sortfacetValues = [...facetValues];
-  if (!sortfacetValues) {
+  if (!sortfacetValues || sort_type === sortType.NONE) {
     return facetValues;
   }
   if (sortBy === sortType.NUMERIC) {
