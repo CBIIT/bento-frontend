@@ -47,10 +47,15 @@ const AddSelectedFilesController = (props) => {
       fileIds: selectedRows,
       query: addFileQuery,
     });
+    let existingIdCount = 0;
+    if (localStorage.getItem('CartFileIds')) {
+      const filesId = JSON.parse(localStorage.getItem('CartFileIds')) || [];
+      existingIdCount = filesId.length;
+    }
 
     fileIds().then((response) => {
       const ids = addFilesResponseHandler(response, responseKeys);
-      if (ids.length >= maxFileLimit) {
+      if (ids.length + existingIdCount >= maxFileLimit) {
         setAlterDisplay(true);
       } else {
         addFiles(ids);
