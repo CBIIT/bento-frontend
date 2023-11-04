@@ -5,6 +5,7 @@ import {
   TablePagination,
   ThemeProvider,
 } from '@material-ui/core';
+import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 
 const defaultTheme = {
   MuiTablePagination: {
@@ -43,6 +44,7 @@ const CustomPagination = ({
 }) => (
   <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
     <TablePagination
+      labelRowsPerPage="Results per Page:"
       rowsPerPageOptions={rowsPerPageOptions}
       component="div"
       count={count}
@@ -51,6 +53,7 @@ const CustomPagination = ({
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
       SelectProps={{
+        IconComponent: KeyboardArrowDownOutlinedIcon,
         inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
         native: true,
       }}
