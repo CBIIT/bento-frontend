@@ -55,7 +55,6 @@ const CustomPagination = ({
       SelectProps={{
         IconComponent: KeyboardArrowDownOutlinedIcon,
         inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
-        native: true,
       }}
     />
   </ThemeProvider>
