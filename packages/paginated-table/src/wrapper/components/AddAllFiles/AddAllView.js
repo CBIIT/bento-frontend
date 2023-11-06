@@ -38,11 +38,17 @@ const AddAllFilesComponent = (props) => {
       variables: activeFilters,
       query: addFileQuery,
     });
+    let filesInCart = 0;
+    if (localStorage.getItem('CartFileIds')) {
+      const filesId = JSON.parse(localStorage.getItem('CartFileIds')) || [];
+      filesInCart = filesId.length;
+    }
+
     fileIds().then((response) => {
       const data = response[responseKeys[0]];
       if (data && data.length > 0) {
         const ids = addFilesResponseHandler(response, responseKeys);
-        if (ids.length > maxFileLimit) {
+        if (ids.length + filesInCart > maxFileLimit) {
           setAlterDisplay(true);
         } else {
           setOpen(true);
