@@ -97,11 +97,30 @@ const FacetFilterController = (props) => {
         } = updateFacet;
         if (data[apiForFiltering]) {
           if (Array.isArray(data[apiForFiltering])) {
+            const validValues = [];
             const updateField = data[apiForFiltering].map((item) => {
               const addField = { ...item };
               addField.name = item[field];
+              validValues.push(addField.name);
               return addField;
             });
+            /**
+             * Check if there are orphen filter values and add them to the facet values
+             */
+            if (filterState !== undefined) {
+              const facetFilter = filterState[facet.datafield];
+              if (facetFilter) {
+                for (const [key, value] of Object.entries(facetFilter)) {
+                  if (validValues.indexOf(key) === -1) {
+                    const tmp = {};
+                    tmp.group = key;
+                    tmp.name = key;
+                    tmp.subjects = 0;
+                    updateField.push(tmp);
+                  }
+                }
+              }
+            }
             updateFacet.facetValues = updateField;
           }
           /**

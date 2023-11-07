@@ -59,17 +59,17 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
         .map((facet) => {
           if (facet.type !== CHECKBOX) { return facet; }
 
-          const { data, items } = facet;
+          const { items } = facet;
           const itemKeys = Object.keys(items);
           itemKeys.sort((a, b) => a.localeCompare(b));
 
           /* Find any SELECTED CHECKBOXES that do NOT have any data
            * and remove them from the list of selected checkboxes artificially */
-          itemKeys.forEach((item) => {
-            if (data.findIndex((d) => d.group === item) < 0) {
-              itemKeys.splice(itemKeys.indexOf(item), 1);
-            }
-          });
+          // itemKeys.forEach((item) => {
+          //   if (data.findIndex((d) => d.group === item) < 0) {
+          //     itemKeys.splice(itemKeys.indexOf(item), 1);
+          //   }
+          // });
 
           return { ...facet, items: itemKeys };
         })
