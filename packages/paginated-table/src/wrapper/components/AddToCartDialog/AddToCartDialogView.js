@@ -26,6 +26,8 @@ function AddToCartDialogView(props) {
     );
   }
 
+  const CustomDialog = DisplayCustomText.component;
+
   return (
     <>
       <Dialog
@@ -36,7 +38,7 @@ function AddToCartDialogView(props) {
         <DialogContent>
           {
             DisplayCustomText ? (
-              <DisplayCustomText
+              <CustomDialog
                 onYesClick={onYesClick}
                 onNoClick={onNoClick}
                 activeFilters={activeFilters}
@@ -53,12 +55,21 @@ function AddToCartDialogView(props) {
           }
         </DialogContent>
         <DialogActions className="dialog_actions">
-          <Button className="yesBtn" onClick={() => onYesClick()}>
-            Yes
-          </Button>
-          <Button className="noBtn" onClick={() => onNoClick()}>
-            No
-          </Button>
+          { DisplayCustomText.actions.map((a) => (
+            <Button
+              className={a.className}
+              onClick={() => {
+                if (a.type === 'Positive') {
+                  onYesClick();
+                } else {
+                  onNoClick();
+                }
+              }}
+            >
+
+              {a.label}
+            </Button>
+          ))}
         </DialogActions>
       </Dialog>
     </>
