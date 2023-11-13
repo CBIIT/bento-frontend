@@ -24,6 +24,9 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
     keysToInclude.map((keyName) => {
       if (line !== '') line += ',';
       let columnResult = entry[keyName];
+      if (keyName === 'guid') {
+        columnResult = 'drs://nci-crdc.datacommons.io/'.concat(entry[keyName]);
+      }
       if (typeof columnResult === 'string') columnResult.replace(/"/g, '""');
       if (typeof columnResult === 'string' && columnResult.search(/("|,|\n)/g) >= 0) columnResult = `"${columnResult}"`;
       line += columnResult !== null ? columnResult : ' ';
