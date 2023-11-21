@@ -21,11 +21,21 @@ const FacetFilterController = (props) => {
    * 2. subject state
    */
   const {
-    filterState,
+    activeFilters,
     data,
     facetsConfig,
     facetSectionConfig,
   } = props;
+
+  const filterState = {};
+  for (const [key, value] of Object.entries(activeFilters)) {
+    if (key !== 'participant_ids') {
+      filterState[key] = {};
+      value.forEach((item) => {
+        filterState[key][item] = true;
+      });
+    }
+  }
 
   const updateFacetState = (filterSections) => {
     const updateSections = [...filterSections];
@@ -161,8 +171,4 @@ const FacetFilterController = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  filterState: state.statusReducer.filterState,
-});
-
-export default connect(mapStateToProps, null)(FacetFilterController);
+export default connect(null, null)(FacetFilterController);

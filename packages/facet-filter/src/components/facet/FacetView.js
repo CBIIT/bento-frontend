@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   List,
@@ -19,8 +19,6 @@ const FacetView = ({
   onClearFacetSection,
   onClearSliderSection,
   CustomView,
-  autoComplete,
-  upload,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
@@ -28,12 +26,12 @@ const FacetView = ({
   /**
   * expand section incase of active local search
   */
-  useEffect(() => {
-    if ((autoComplete && autoComplete.length > 0)
-      || (upload && upload.length > 0)) {
-      setExpand(true);
-    }
-  }, [autoComplete, upload]);
+  // useEffect(() => {
+  //   if ((autoComplete && autoComplete.length > 0)
+  //     || (upload && upload.length > 0)) {
+  //     setExpand(true);
+  //   }
+  // }, [autoComplete, upload]);
 
   const [sortBy, setSortBy] = useState(null);
   const onSortFacet = (type) => {
