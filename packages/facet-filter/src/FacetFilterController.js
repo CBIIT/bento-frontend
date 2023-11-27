@@ -28,12 +28,10 @@ const FacetFilterController = (props) => {
   } = props;
 
   const filterState = {};
+  // console.log(activeFilters);
   for (const [key, value] of Object.entries(activeFilters)) {
     if (key !== 'participant_ids') {
-      filterState[key] = {};
-      value.forEach((item) => {
-        filterState[key][item] = true;
-      });
+      filterState[key] = value;
     }
   }
 
@@ -44,7 +42,8 @@ const FacetFilterController = (props) => {
         updateSections.forEach((sideBar) => {
           if (sideBar.type === InputTypes.CHECKBOX && sideBar.datafield === key) {
             sideBar.facetValues.forEach((item) => {
-              item.isChecked = value[item.name] ? value[item.name] : false;
+              // item.isChecked = value[item.name] ? value[item.name] : false;
+              item.isChecked = value.indexOf(item.name) > -1;
             });
           }
           if (sideBar.type === InputTypes.SLIDER && sideBar.datafield === key) {
@@ -120,15 +119,15 @@ const FacetFilterController = (props) => {
             if (filterState !== undefined) {
               const facetFilter = filterState[facet.datafield];
               if (facetFilter) {
-                for (const [key, value] of Object.entries(facetFilter)) {
-                  if (validValues.indexOf(key) === -1) {
+                facetFilter.forEach((item) => {
+                  if (validValues.indexOf(item) === -1) {
                     const tmp = {};
-                    tmp.group = key;
-                    tmp.name = key;
+                    tmp.group = item;
+                    tmp.name = item;
                     tmp.subjects = 0;
                     updateField.push(tmp);
                   }
-                }
+                });
               }
             }
             updateFacet.facetValues = updateField;
