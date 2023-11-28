@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Tooltip } from '@material-ui/core';
 import { useApolloClient } from '@apollo/client';
 import {
@@ -6,6 +6,7 @@ import {
   CartContext,
 } from '@bento-core/cart';
 import ToolTipView from './TooltipView';
+import DownloadFileManifestDialog from './downloadFileManifestDialog';
 
 const DownloadManifestView = (props) => {
   const {
@@ -50,22 +51,34 @@ const DownloadManifestView = (props) => {
     return fetchResult;
   }
 
-  async function DocumentDownload() {
+  async function DocumentDownload(comment, header) {
     const { table, queryVariables } = cart;
     const tableData = await fetchData({ queryVariables, table });
-    return downloadJson({ ...cart, tableData });
+    return downloadJson({
+      ...cart,
+      tableData,
+      comment,
+      header,
+    });
   }
+
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
       <Button
         className={clsName}
         disableRipple
-        onClick={() => DocumentDownload()}
+        onClick={() => { setIsOpen(true); }}
         disabled={totalRowCount === 0}
       >
         {title}
       </Button>
+      <DownloadFileManifestDialog
+        open={isOpen}
+        onClose={() => { setIsOpen(false); }}
+        downloadSCSVFile={(comment) => DocumentDownload(comment, 'User_Comment')}
+      />
       {(tooltipCofig && !tooltipCofig.customToolTipComponent) && (<ToolTipView {...props} />)}
       {(tooltipCofig && tooltipCofig.customToolTipComponent) && (
         <Tooltip
