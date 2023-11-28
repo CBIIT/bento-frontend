@@ -26,6 +26,9 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
       if (line !== '') line += ',';
       if (keyName === 'data_file_uuid') {
         columnResult = `drs://nci-crdc.datacommons.io/dg.4DFC/${entry[keyName]}`;
+      } else if (keyName === 'User_Comment') {
+        const commentResult = comments.replace(/"/g, '""');
+        columnResult = comments.replace(/"/g, '""').search(/("|,|\n)/g) >= 0 ? `"${commentResult}"` : comments.replace(/"/g, '""');
       } else {
         columnResult = entry[keyName];
       }
@@ -36,7 +39,7 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
     });
     if (index === 0) {
       str = header.join(',');
-      let commentResult = comments.replace(/"/g, '""');
+      let commentResult = '';
       if (commentResult.search(/("|,|\n)/g) >= 0) commentResult = `"${commentResult}"`;
       str += `\r\n${line},${commentResult}\r\n`;
     } else {
