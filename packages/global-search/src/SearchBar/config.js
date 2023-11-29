@@ -13,7 +13,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     query: null,
     searchKeys: [],
     searchFields: [],
-    placeholder: 'SEARCH BENTO',
+    placeholder: 'SEARCH INS',
     expandText: 'Press ENTER for more search results',
     searchRoute: '/search',
     minimumInputLength: 3,

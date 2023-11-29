@@ -1,14 +1,17 @@
 {
   "name": "@bento-core/global-search",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1-ins.0",
+  "description": "Global Search is a component that provides a implementation of a site-wide search. These components provide easy-to-use implementations for the Global Search feature. The two primary components provided by this package are:",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src"
   },
-  "repository": "https://github.com/CBIIT/bento-frontend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBIIT/bento-frontend.git"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -25,5 +28,10 @@
     "react-router-dom": "^5.1.2"
   },
   "author": "CTOS Bento Team",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CBIIT/bento-frontend/issues"
+  },
+  "homepage": "https://github.com/CBIIT/bento-frontend#readme",
+  "devDependencies": {}
 }
