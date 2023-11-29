@@ -26,7 +26,8 @@ const RouteLinks = ({ title, to, children }) => (linkIsEmail(to)
     : (
       <a
         href={to}
-        target="external-url"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         {children}
       </a>
