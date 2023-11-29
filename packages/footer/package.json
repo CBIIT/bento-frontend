@@ -1,14 +1,17 @@
 {
   "name": "@bento-core/footer",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1-ins.0",
+  "description": "ICDC frontend - Footer component (New Design) System Information placement is accomodate for the visibility.  <img width=\"1429\" alt=\"Screen Shot 2022-10-28 at 12 22 06 PM\" src=\"https://user-images.githubusercontent.com/8271695/198687445-8a5694cb-90db-4550-abe7-7b8282fe7f18.png\">",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src"
   },
-  "repository": "https://github.com/CBIIT/bento-frontend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBIIT/bento-frontend.git"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -18,10 +21,14 @@
     "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "@bento-core/util": "^1.0.0",
+    "@bento-core/util": "1.0.1-ins.0",
     "@material-ui/core": "^4.12.4",
     "react-markdown": "^8.0.5"
   },
   "author": "CTOS Bento Team",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CBIIT/bento-frontend/issues"
+  },
+  "homepage": "https://github.com/CBIIT/bento-frontend#readme"
 }
