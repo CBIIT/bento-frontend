@@ -18,6 +18,8 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     searchRoute: '/search',
     minimumInputLength: 3,
     maxSuggestions: 6,
+    showSearchButton: false,
+    displaySearchIcon: true,
   },
 
   /**

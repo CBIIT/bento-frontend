@@ -44,7 +44,7 @@ export const DEFAULT_STYLES = makeStyles({
   },
   autocomplete: {
     margin: '0 auto',
-    paddingTop: '32px',
+    paddingTop: ({ showSearchButton }) => (showSearchButton ? '0px' : '32px'),
     width: '260px',
     height: '37px',
   },
@@ -81,6 +81,28 @@ export const DEFAULT_STYLES = makeStyles({
     strokeWidth: '1.1px',
     marginRight: '8px',
     cursor: 'pointer',
+  },
+  searchContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'auto auto',
+    alignItems: 'center',
+    marginTop: '32px',
+  },
+  searchButton: {
+    height: '32px',
+    fontFamily: 'Lato',
+    fontWeight: 700,
+    fontSize: '16px',
+    lineHeight: '33px',
+    textAlign: 'center',
+    color: '#FFFFFF',
+    background: '#3A75BD',
+    padding: '0 13px',
+    borderRadius: '0px 5px 5px 0px',
+    '&:hover': {
+      cursor: 'pointer',
+      background: '#004971',
+    },
   },
 });
 
