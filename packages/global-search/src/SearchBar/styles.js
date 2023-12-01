@@ -44,7 +44,6 @@ export const DEFAULT_STYLES = makeStyles({
   },
   autocomplete: {
     margin: '0 auto',
-    paddingTop: ({ showSearchButton }) => (showSearchButton ? '0px' : '32px'),
     width: '260px',
     height: '37px',
   },

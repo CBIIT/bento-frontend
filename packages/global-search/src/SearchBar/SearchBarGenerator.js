@@ -24,7 +24,7 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
 
   const classes = uiClasses && typeof uiClasses === 'object'
     ? uiClasses
-    : DEFAULT_STYLES(config);
+    : DEFAULT_STYLES();
 
   const onChange = functions && functions.onChange && typeof functions.onChange === 'function'
     ? functions.onChange
