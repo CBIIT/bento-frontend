@@ -17,13 +17,21 @@ export function createFileName(fileName) {
 
 export function convertToCSV(jsonse, comments, keysToInclude, header) {
   const objArray = jsonse;
+  let columnResult = '';
   const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
   let str = '';
   array.map((entry, index) => {
     let line = '';
     keysToInclude.map((keyName) => {
       if (line !== '') line += ',';
-      let columnResult = entry[keyName];
+      if (keyName === 'data_file_uuid') {
+        columnResult = `drs://nci-crdc.datacommons.io/dg.4DFC/${entry[keyName]}`;
+      } else if (keyName === 'User_Comment') {
+        const commentResult = comments.replace(/"/g, '""');
+        columnResult = comments.replace(/"/g, '""').search(/("|,|\n)/g) >= 0 ? `"${commentResult}"` : comments.replace(/"/g, '""');
+      } else {
+        columnResult = entry[keyName];
+      }
       if (typeof columnResult === 'string') columnResult.replace(/"/g, '""');
       if (typeof columnResult === 'string' && columnResult.search(/("|,|\n)/g) >= 0) columnResult = `"${columnResult}"`;
       line += columnResult !== null ? columnResult : ' ';
@@ -31,7 +39,7 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
     });
     if (index === 0) {
       str = header.join(',');
-      let commentResult = comments.replace(/"/g, '""');
+      let commentResult = '';
       if (commentResult.search(/("|,|\n)/g) >= 0) commentResult = `"${commentResult}"`;
       str += `\r\n${line},${commentResult}\r\n`;
     } else {
