@@ -22,10 +22,10 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
   let str = '';
   array.map((entry, index) => {
     let line = '';
-    keysToInclude.map((keyName) => {
+    keysToInclude.map((keyName, indexHead) => {
       if (line !== '') line += ',';
-      if (keyName === 'data_file_uuid') {
-        columnResult = `drs://nci-crdc.datacommons.io/dg.4DFC/${entry[keyName]}`;
+      if (header[indexHead] === 'drs_uri') {
+        columnResult = `drs://nci-crdc.datacommons.io/${entry[keyName]}`;
       } else if (keyName === 'User_Comment') {
         const commentResult = comments.replace(/"/g, '""');
         columnResult = comments.replace(/"/g, '""').search(/("|,|\n)/g) >= 0 ? `"${commentResult}"` : comments.replace(/"/g, '""');
