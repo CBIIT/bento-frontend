@@ -13,8 +13,8 @@ export default () => ({
     position: 'relative',
     lineHeight: '2.4em',
     fontFamily: 'Nunito',
-    fontSize: '14px',
-    color: '#0e3151',
+    fontSize: '12px',
+    color: '#000000',
   },
   filterName: {
     textTransform: 'uppercase',
@@ -67,9 +67,9 @@ export default () => ({
     margin: '1px',
     marginLeft: -6,
     fontWeight: 600,
-    fontSize: '13px',
+    fontSize: '12px',
     color: '#fff',
-    borderRadius: '15px',
+    borderRadius: '5px',
     fontFamily: 'Nunito',
     boxSizing: 'border-box',
     backgroundColor: '#646464',
@@ -106,39 +106,45 @@ export default () => ({
     backgroundColor: '#F5C3F1',
   },
   facetSectionDemographics: {
-    color: '#7AA6B6',
+    color: '#357288',
   },
   facetSectionDemographicsBackground: {
     backgroundColor: '#E4ECE9',
+    border: '1px solid #646464',
   },
   facetSectionDiagnosis: {
-    color: '#7AA6B6',
+    color: '#8C3F8D',
   },
   facetSectionDiagnosisBackground: {
-    backgroundColor: '#E4ECE9',
+    backgroundColor: '#E1C9E140',
+    border: '1px solid #646464',
   },
   facetSectionSamples: {
-    color: '#7AA6B6',
+    color: '#907642',
   },
   facetSectionSamplesBackground: {
-    backgroundColor: '#E4ECE9',
+    backgroundColor: '#F0DFBD40',
+    border: '1px solid #646464',
   },
   facetSectionDatacategory: {
-    color: '#7AA6B6',
+    color: '#A85348',
   },
   facetSectionDatacategoryBackground: {
-    backgroundColor: '#E4ECE9',
+    backgroundColor: '#F8D7D240',
+    border: '1px solid #646464',
   },
   facetSectionStudy: {
-    color: '#7AA6B6',
+    color: '#1F6BBF',
   },
   facetSectionStudyBackground: {
-    backgroundColor: '#E4ECE9',
+    backgroundColor: '#CEDEF040',
+    border: '1px solid #646464',
   },
   facetSectionLibrary: {
-    color: '#7AA6B6',
+    color: '#14A773',
   },
   facetSectionLibraryBackground: {
-    backgroundColor: '#E4ECE9',
+    backgroundColor: '#DDEAE540',
+    border: '1px solid #646464',
   },
 });
