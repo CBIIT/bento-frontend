@@ -57,6 +57,9 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     searchRoute: '/search',                            // The route to redirect to when the search bar value changes
     minimumInputLength: 3,                             // The minimum number of characters for autocomplete to trigger
     maxSuggestions: 6,                                 // The maximum amount of autocomplete suggestions to show before triggering expandText, 0 = no limit
+    showSearchButton: false,                           // Whether or not to show the search button
+    displaySearchIcon: true,                           // Whether or not to display the custom search icon
+  },
   },
 
   functions: {
