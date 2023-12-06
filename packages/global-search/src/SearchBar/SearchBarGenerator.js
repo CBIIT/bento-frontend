@@ -62,6 +62,10 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
     ? config.displaySearchIcon
     : DEFAULT_CONFIG_SEARCHBAR.config.displaySearchIcon;
 
+  const showSearchButtonContent = config && (React.isValidElement(config.showSearchButtonContent) || typeof config.showSearchButtonContent === 'string')
+    ? config.showSearchButtonContent
+    : DEFAULT_CONFIG_SEARCHBAR.config.showSearchButtonContent;
+
   return {
     SearchBar: ({ ...props }) => {
       const {
@@ -164,7 +168,7 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
               tabIndex={0}
               onClick={() => onChange(inputValue, searchRoute, history)}
             >
-              Search
+              {showSearchButtonContent}
             </div>
           )}
         </div>
