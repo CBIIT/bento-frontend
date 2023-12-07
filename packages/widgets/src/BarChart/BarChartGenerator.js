@@ -207,6 +207,25 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
       //   textOverflowLength,
       // };
 
+      const tooltipStyle = {
+        border: '1px solid #CCCCCC',
+        background: '#FFFFFF',
+        padding: '10px',
+        color: '#000000',
+      };
+
+      const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+          return (
+            <div style={tooltipStyle}>
+              <div>{`${label}`}</div>
+              <div>{`Participants : ${payload[0].value}`}</div>
+            </div>
+          );
+        }
+        return null;
+      };
+
       return (
         <ResponsiveContainer width={width} height={height}>
           <BarChart
@@ -221,7 +240,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="group" />
             <YAxis />
-            <Tooltip cursor={false} />
+            <Tooltip cursor={false} content={<CustomTooltip />} />
             {/* <Legend /> */}
             <Bar dataKey="subjects">
               {data.map((entry, index) => (
