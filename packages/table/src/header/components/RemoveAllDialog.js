@@ -51,11 +51,11 @@ function RemoveAllDialogView(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button className="okBtn" onClick={deleteAllFiles}>
-            Ok
-          </Button>
           <Button className="cancelBtn" onClick={() => toggleDisplay()}>
             Cancel
+          </Button>
+          <Button className="okBtn" onClick={deleteAllFiles}>
+            Ok
           </Button>
         </DialogActions>
       </Dialog>
