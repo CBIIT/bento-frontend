@@ -26,9 +26,11 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
       if (line !== '') line += ',';
       if (header[indexHead] === 'drs_uri') {
         columnResult = `drs://nci-crdc.datacommons.io/${entry[keyName]}`;
-      } else if (keyName === 'User_Comment') {
+      } else if (keyName === 'User_Comment' && index === 0) {
         const commentResult = comments.replace(/"/g, '""');
         columnResult = comments.replace(/"/g, '""').search(/("|,|\n)/g) >= 0 ? `"${commentResult}"` : comments.replace(/"/g, '""');
+      } else if (keyName === 'User_Comment') {
+        columnResult = '';
       } else {
         columnResult = entry[keyName];
       }

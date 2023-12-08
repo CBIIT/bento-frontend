@@ -10,6 +10,7 @@ import DownloadFileManifestDialog from './downloadFileManifestDialog';
 
 const DownloadManifestView = (props) => {
   const {
+    usePopup,
     tooltipCofig,
     clsName,
     title,
@@ -30,6 +31,7 @@ const DownloadManifestView = (props) => {
   const {
     cart,
   } = context;
+  const { comment } = cart;
 
   const getQueryVeriables = (queryVariables) => {
     const variables = { ...queryVariables };
@@ -51,25 +53,33 @@ const DownloadManifestView = (props) => {
     return fetchResult;
   }
 
-  async function DocumentDownload(comment, header) {
+  async function DocumentDownload(commentD, header) {
     const { table, queryVariables } = cart;
     const tableData = await fetchData({ queryVariables, table });
     return downloadJson({
       ...cart,
       tableData,
-      comment,
+      commentD,
       header,
     });
   }
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const onDownloadClick = () => {
+    if (usePopup) {
+      setIsOpen(true);
+    } else {
+      DocumentDownload(comment, 'User_Comment');
+    }
+  };
+
   return (
     <>
       <Button
         className={clsName}
         disableRipple
-        onClick={() => { setIsOpen(true); }}
+        onClick={() => { onDownloadClick(); }}
         disabled={totalRowCount === 0}
       >
         {title}
@@ -77,7 +87,7 @@ const DownloadManifestView = (props) => {
       <DownloadFileManifestDialog
         open={isOpen}
         onClose={() => { setIsOpen(false); }}
-        downloadSCSVFile={(comment) => DocumentDownload(comment, 'User_Comment')}
+        downloadSCSVFile={(commentPopup) => { DocumentDownload(commentPopup, 'User_Comment'); }}
       />
       {(tooltipCofig && !tooltipCofig.customToolTipComponent) && (<ToolTipView {...props} />)}
       {(tooltipCofig && tooltipCofig.customToolTipComponent) && (
