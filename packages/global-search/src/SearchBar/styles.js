@@ -14,7 +14,7 @@ export const DEFAULT_STYLES = makeStyles({
       fontSize: '12px',
       color: '#142D64',
       fontWeight: 500,
-      border: '2px solid #4A8ECB',
+      border: '2px solid #000000',
       padding: '0px',
 
       '& li': {
@@ -54,7 +54,7 @@ export const DEFAULT_STYLES = makeStyles({
   },
   inputRoot: {
     borderRadius: '8px',
-    color: '#4A8ECB',
+    color: '#000000',
     fontFamily: 'Lato',
     fontSize: '16px',
     padding: '9.5px 4px 9.5px 6px !important',
@@ -65,19 +65,19 @@ export const DEFAULT_STYLES = makeStyles({
   textFieldRoot: {
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: '#4A8ECB',
+        borderColor: '#000000',
       },
       '&:hover fieldset': {
-        borderColor: '#4A8ECB',
+        borderColor: '#000000',
       },
       '&.Mui-focused fieldset': {
-        borderColor: '#4A8ECB',
+        borderColor: '#000000',
       },
     },
   },
   searchIconSpan: {
-    color: '#4A8ECB',
-    stroke: '#4A8ECB',
+    color: '#000000',
+    stroke: '#000000',
     strokeWidth: '1.1px',
     marginRight: '8px',
     cursor: 'pointer',
