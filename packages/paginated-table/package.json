@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@bento-core/cart": "1.0.1-ctdc.2",
-    "@bento-core/table": "1.0.1-ctdc.2",
+    "@bento-core/table": "1.0.1-ctdc.3",
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.0",
     "@material-ui/icons": "^4.11.3"
