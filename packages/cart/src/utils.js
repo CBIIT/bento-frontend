@@ -25,7 +25,7 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
     keysToInclude.map((keyName, indexHead) => {
       if (line !== '') line += ',';
       if (header[indexHead] === 'drs_uri') {
-        columnResult = `drs://nci-crdc.datacommons.io/${entry[keyName]}`;
+        columnResult = `drs://nci-crdc.datacommons.io/dg.4DFC/${entry[keyName]}`;
       } else if (keyName === 'User_Comment' && index === 0) {
         const commentResult = comments.replace(/"/g, '""');
         columnResult = comments.replace(/"/g, '""').search(/("|,|\n)/g) >= 0 ? `"${commentResult}"` : comments.replace(/"/g, '""');
