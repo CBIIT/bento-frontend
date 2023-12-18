@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// eslint-disable-next-line import/no-unresolved
 import { onAddCartFiles } from '@bento-core/cart';
 import AddFiles from './AddFiles';
 

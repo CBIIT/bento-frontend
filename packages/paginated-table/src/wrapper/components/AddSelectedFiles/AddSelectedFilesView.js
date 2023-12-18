@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
+// eslint-disable-next-line import/no-unresolved
 import ToolTip from '@bento-core/tool-tip';
 
 /**

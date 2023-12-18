@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
+// eslint-disable-next-line import/no-unresolved
 import { onAddCartFiles } from '@bento-core/cart';
 import { TableContext } from '../../../table/ContextProvider';
 import { onRowSeclect } from '../../../table/state/Actions';
