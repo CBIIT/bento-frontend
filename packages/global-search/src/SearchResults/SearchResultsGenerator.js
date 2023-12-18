@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Tab } from '@material-ui/core';
+import { Box, Grid, Tab } from '@material-ui/core';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import PaginatedPanel from './components/PaginatedPanel';
 import { DEFAULT_CONFIG_SEARCHRESULTS } from './config';
@@ -35,6 +35,10 @@ export const SearchResultsGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHRESULTS) 
     ? functions.getTabData
     : DEFAULT_CONFIG_SEARCHRESULTS.functions.getTabData;
 
+  const showFilterBy = config && typeof config.showFilterBy === 'boolean'
+    ? config.showFilterBy
+    : DEFAULT_CONFIG_SEARCHRESULTS.config.showFilterBy;
+
   return {
     SearchResults: (props) => {
       const { searchText } = props;
@@ -53,24 +57,42 @@ export const SearchResultsGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHRESULTS) 
       return (
         <TabContext value={tabValue}>
           <Box sx={{ borderBottom: '1px solid #828282' }}>
-            <TabList onChange={onChangeWrapper} aria-label="tabs" classes={{ root: classes.tabContainter, indicator: classes.indicator }}>
-              {tabs.map((prop, idx) => (
-                <Tab
-                  key={`result_tab_${idx}`}
-                  classes={prop.classes}
-                  label={(
-                    <span>
-                      <span id={`global_search_tab_label_${idx}`}>
-                        {typeof prop.name === 'function' ? prop.name() : prop.name}
-                      </span>
-                      {' '}
-                      <span id={`global_search_tab_count_${idx}`}>{prop.count}</span>
-                    </span>
-                  )}
-                  value={prop.value}
-                />
-              ))}
-            </TabList>
+            <Grid container alignItems="center" justifyContent="center">
+              {showFilterBy && (
+                <>
+                  <Grid item className={classes.filterByIconContainer}>
+                    <img
+                      src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/global-search/bento/images/icons/svgs/filterByIcon.svg"
+                      alt="Filter By Icon"
+                      className={classes.filterByIcon}
+                    />
+                  </Grid>
+                  <Grid item className={classes.filterByTextContainer}>
+                    <span className={classes.filterByText}>FILTER BY:</span>
+                  </Grid>
+                </>
+              )}
+              <Grid item flexGrow={1}>
+                <TabList onChange={onChangeWrapper} aria-label="tabs" classes={{ root: classes.tabContainter, indicator: classes.indicator }}>
+                  {tabs.map((prop, idx) => (
+                    <Tab
+                      key={`result_tab_${idx}`}
+                      classes={prop.classes}
+                      label={(
+                        <span>
+                          <span id={`global_search_tab_label_${idx}`}>
+                            {typeof prop.name === 'function' ? prop.name() : prop.name}
+                          </span>
+                          {' '}
+                          <span id={`global_search_tab_count_${idx}`}>{prop.count}</span>
+                        </span>
+                      )}
+                      value={prop.value}
+                    />
+                  ))}
+                </TabList>
+              </Grid>
+            </Grid>
           </Box>
           {tabs.map((prop, idx) => (
             <TabPanel value={prop.value} key={`result_panel_${idx}`}>

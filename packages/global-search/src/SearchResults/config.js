@@ -15,6 +15,9 @@ export const DEFAULT_CONFIG_SEARCHRESULTS = {
 
     // The mapping of search result types to JSX components
     resultCardMap: {},
+
+    // Whether to display the Filter icon and "FILTER BY" text or not
+    showFilterBy: false,
   },
 
   // Helper functions used by the component
