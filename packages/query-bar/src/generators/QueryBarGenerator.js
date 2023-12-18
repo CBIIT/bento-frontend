@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { withStyles, Button } from '@material-ui/core';
+// eslint-disable-next-line import/no-unresolved
 import { InputTypes } from '@bento-core/facet-filter';
 import clsx from 'clsx';
 import { Filter } from '../components/FilterMap';

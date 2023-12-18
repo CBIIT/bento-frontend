@@ -86,10 +86,10 @@ export default () => ({
   localFindBackground: {
     backgroundColor: '#C0E9D7',
   },
-  facetSectionCases: {
+  facetSectionProjects: {
     color: '#10A075',
   },
-  facetSectionCasesBackground: {
+  facetSectionProjectsBackground: {
     backgroundColor: '#C0E9D7',
   },
   facetSectionFiles: {
