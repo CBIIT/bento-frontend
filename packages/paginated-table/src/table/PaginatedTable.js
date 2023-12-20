@@ -18,6 +18,7 @@ const PaginatedTable = ({
   themeConfig = {},
   totalRowCount = 0,
   initState,
+  checkedItemReset,
   activeTab = true,
   server = true,
   tblRows = [],
@@ -45,6 +46,12 @@ const PaginatedTable = ({
     const { setContext } = tableContext;
     setContext({ ...table, dispatch });
   }, [table]);
+
+  useEffect(() => {
+    if (checkedItemReset) {
+      dispatch(onRowSeclect([]));
+    }
+  }, [checkedItemReset]);
 
   /**
   * update state to props change
