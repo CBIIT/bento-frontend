@@ -12,7 +12,12 @@ const ExternalLinkView = ({
   row,
 }) => {
   const { rootPath, pathParams } = column?.linkAttr;
-  const url = pathParams.map((attr) => `${rootPath}/`.concat(row[attr]));
+  const url = pathParams.map((attr) => {
+    if (!rootPath) {
+      return row[attr];
+    }
+    return `${rootPath}/`.concat(row[attr]);
+  });
   const externalLinkIcon = {
     src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/externalLinkIcon.svg',
     alt: 'External link icon',
