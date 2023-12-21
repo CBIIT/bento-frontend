@@ -2,6 +2,7 @@ export const CHECKBOX = 'CHECKBOX';
 export const DELETE = 'DELETE';
 export const CUSTOM_ELEM = 'CUSTOM_ELEM';
 export const LINK = 'LINK';
+export const EXTERNAL_LINK = 'EXTERNAL_LINK';
 export const DISPLAY = 'DISPLAY';
 export const DEFAULT = 'DEFAULT';
 export const FORMAT_DATA = 'FORMAT_DATA';
@@ -10,6 +11,7 @@ export const FORMAT_BYTES = 'FORMAT_BYTES';
 export const cellTypes = {
   CUSTOM_ELEM,
   LINK,
+  EXTERNAL_LINK,
   DISPLAY,
   CHECKBOX,
   DELETE,

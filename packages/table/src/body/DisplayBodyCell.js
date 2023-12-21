@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import { cellTypes } from '../util/Types';
 import CustomLinkView from './components/CustomLinkView';
+import ExternalLinkView from './components/ExternalLinkView';
 import DataFormatView from './components/DataFormatView';
 
 /**
@@ -42,6 +43,13 @@ const ViewCell = ({
     case cellTypes.LINK:
       return (
         <CustomLinkView
+          row={row}
+          column={column}
+        />
+      );
+    case cellTypes.EXTERNAL_LINK:
+      return (
+        <ExternalLinkView
           row={row}
           column={column}
         />
