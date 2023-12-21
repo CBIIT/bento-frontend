@@ -1,3 +1,7 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/static-property-placement */
 import React from 'react';
 import PropTypes from 'prop-types';
 import MuiTableRow from '@material-ui/core/TableRow';
@@ -69,6 +73,11 @@ class TablePagination extends React.Component {
             page={getPageValue(count, rowsPerPage, page)}
             labelRowsPerPage={textLabels.rowsPerPage}
             labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
+            firstIconButtonProps={{
+              id: 'pagination-first',
+              'data-testid': 'pagination-first',
+              'aria-label': textLabels.first,
+            }}
             backIconButtonProps={{
               id: 'pagination-back',
               'data-testid': 'pagination-back',
@@ -78,6 +87,11 @@ class TablePagination extends React.Component {
               id: 'pagination-next',
               'data-testid': 'pagination-next',
               'aria-label': textLabels.next,
+            }}
+            lastIconButtonProps={{
+              id: 'pagination-last',
+              'data-testid': 'pagination-last',
+              'aria-label': textLabels.last,
             }}
             SelectProps={{
               id: 'pagination-input',

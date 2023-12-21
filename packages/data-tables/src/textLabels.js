@@ -7,8 +7,10 @@ const getTextLabels = () => ({
     toolTip: 'Sort',
   },
   pagination: {
+    first: 'First Page',
     next: 'Next Page',
     previous: 'Previous Page',
+    last: 'Last Page',
     rowsPerPage: 'Rows per page:',
     displayRows: 'of',
   },
