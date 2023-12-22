@@ -68,6 +68,20 @@ const CONFIG = {
      * @var {boolean}
      */
     group: 'group',
+
+    /**
+     * root path of bento app {window.location.href} or react PUBLIC_URL
+     * PR (https://github.com/CBIIT/bento-icdc-frontend/pull/953)
+     * @var {string}
+     */
+    rootPath: null,
+    /**
+     * display query URL
+     * @var {boolean}
+     * PR (https://github.com/CBIIT/bento-icdc-frontend/pull/953)
+     */
+    viewQueryURL: false,
+
   },
 
   /* Component Helper Functions */
@@ -125,6 +139,7 @@ const CONFIG = {
      * @returns {void}
      */
     resetFacetSlider: (section) => {},
+    
   },
 };
 ```
