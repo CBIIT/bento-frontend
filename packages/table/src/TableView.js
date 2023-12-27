@@ -12,6 +12,7 @@ import CustomTableBody from './body/CustomTblBody';
 import CustomToolbar from './toolbar/CustomToolbar';
 import DisplayErrMsg from './errMsg/DisplayErrMsg';
 import ExtendedView from './ExtendedView';
+import DownloadButton from './toolbar/DownloadButtonView';
 
 const CustomTableContainer = (props) => {
   const { children, customTheme } = props;
@@ -25,9 +26,14 @@ const CustomTableContainer = (props) => {
   );
 };
 
+const downloadAreaStyle = {
+  display: 'flex',
+  borderBottom: '1px solid #8A7F7C',
+  paddingRight: '41px',
+};
+
 const TableView = ({
   tableRows = [],
-  totalRows = [],
   table,
   onRowsPerPageChange,
   onPageChange,
@@ -38,13 +44,10 @@ const TableView = ({
   onColumnViewChange,
   themeConfig = {},
   queryVariables,
-  server,
 }) => (
   <>
     <ExtendedView
       table={table}
-      rows={totalRows}
-      server={server}
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
       onPageChange={onPageChange}
@@ -84,16 +87,23 @@ const TableView = ({
         table={table}
       />
     )}
-    <CustomPagination
-      customTheme={themeConfig.tblPgn}
-      rowsPerPageOptions={[10, 25, 50, 100]}
-      component="div"
-      count={table.totalRowCount || 0}
-      rowsPerPage={table.rowsPerPage || 10}
-      page={table.page || 0}
-      onPageChange={onPageChange}
-      onRowsPerPageChange={onRowsPerPageChange}
-    />
+    <div className="downloadArea" style={downloadAreaStyle}>
+      <CustomPagination
+        customTheme={themeConfig.tblPgn}
+        rowsPerPageOptions={[10, 25, 50, 100]}
+        component="div"
+        count={table.totalRowCount || 0}
+        rowsPerPage={table.rowsPerPage || 10}
+        page={table.page || 0}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+      />
+      <DownloadButton
+        count={table.totalRowCount || 0}
+        queryVariables={queryVariables}
+        table={table}
+      />
+    </div>
   </>
 );
 

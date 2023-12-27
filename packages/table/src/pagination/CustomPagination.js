@@ -105,6 +105,13 @@ const defaultTheme = {
   },
 };
 
+const downloadAreaStyle = {
+  display: 'flex',
+  borderTop: '1px solid #8A7F7C',
+  borderBottom: '1px solid #8A7F7C',
+  paddingRight: '41px',
+};
+
 const CustomPagination = ({
   rowsPerPageOptions,
   count,
@@ -115,16 +122,18 @@ const CustomPagination = ({
   customTheme = {},
 }) => (
   <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
-    <TablePagination
-      rowsPerPageOptions={rowsPerPageOptions}
-      component="div"
-      count={count}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={onPageChange}
-      onRowsPerPageChange={onRowsPerPageChange}
-      ActionsComponent={TablePaginationActions}
-    />
+    <div className="downloadArea" style={downloadAreaStyle}>
+      <TablePagination
+        rowsPerPageOptions={rowsPerPageOptions}
+        component="div"
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+        ActionsComponent={TablePaginationActions}
+      />
+    </div>
   </ThemeProvider>
 );
 

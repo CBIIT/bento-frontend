@@ -9,21 +9,25 @@ import ManageColumnView from './toolbar/ManageColumnView';
 import defaultTheme from './DefaultThemConfig';
 import DownloadButton from './toolbar/DownloadButtonView';
 
+const downloadAreaStyle = {
+  display: 'flex',
+  borderTop: '1px solid #8A7F7C',
+  paddingRight: '41px',
+};
+
 const ExtendedView = ({
   table,
-  rows,
   onColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
+  numSelected = 0,
   customTheme,
   queryVariables,
-  server,
 }) => {
   const { extendedViewConfig } = table;
   if (!extendedViewConfig) {
     return null;
   }
-
   const {
     download = false,
     manageViewColumns = false,
@@ -31,41 +35,43 @@ const ExtendedView = ({
   } = extendedViewConfig;
 
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
-
   return (
     <ThemeProvider theme={themeConfig}>
-      {(download || manageViewColumns) && (
-        <Toolbar
-          className="downloadAndColumnView"
-        >
-          <DownloadButton
-            download={download}
-            rows={rows}
-            server={server}
-            table={table}
-            queryVariables={queryVariables}
-          />
-          <ManageColumnView
-            table={table}
-            manageViewColumns={manageViewColumns}
-            onColumnViewChange={onColumnViewChange}
-          />
-        </Toolbar>
+      {(numSelected === 0 && (download || manageViewColumns)) && (
+      <Toolbar className="downloadColumnView">
+        {/* <DownloadButton
+          download={download}
+        /> */}
+        <ManageColumnView
+          table={table}
+          manageViewColumns={manageViewColumns}
+          onColumnViewChange={onColumnViewChange}
+        />
+      </Toolbar>
       )}
       {
-        (pagination) && (
-          <CustomPagination
-            customTheme={customTheme.tblTopPgn}
-            rowsPerPageOptions={[10, 25, 50, 100]}
-            component="div"
-            count={table.totalRowCount || 0}
-            rowsPerPage={table.rowsPerPage || 10}
-            page={table.page || 0}
-            onPageChange={onPageChange}
-            onRowsPerPageChange={onRowsPerPageChange}
-          />
-        )
-      }
+          (pagination) && (
+            <div className="downloadArea" style={downloadAreaStyle}>
+              <CustomPagination
+                customTheme={customTheme.tblTopPgn}
+                rowsPerPageOptions={[10, 25, 50, 100]}
+                component="div"
+                count={table.totalRowCount || 0}
+                rowsPerPage={table.rowsPerPage || 10}
+                page={table.page || 0}
+                onPageChange={onPageChange}
+                onRowsPerPageChange={onRowsPerPageChange}
+                queryVariables={queryVariables}
+                table={table}
+              />
+              <DownloadButton
+                count={table.totalRowCount || 0}
+                queryVariables={queryVariables}
+                table={table}
+              />
+            </div>
+          )
+        }
     </ThemeProvider>
   );
 };

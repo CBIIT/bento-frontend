@@ -7,29 +7,31 @@ import {
 import { CloudDownload } from '@material-ui/icons';
 import { downloadJson } from '../util/downloadTable';
 
+const downloadButtonStyle = {
+  color: '#d1d2d3',
+  marginTop: '7px',
+};
+
 const DownloadButton = ({
-  download,
-  rows,
-  table,
+  count,
   queryVariables,
-  server,
+  table,
 }) => {
-  if (!download) {
-    return null;
+  if (count === 0) {
+    return <CloudDownload className="disableButton" style={downloadButtonStyle} />;
   }
-  const {
-    downloadCsv = 'download',
-    downloadTable,
-    downloadFileName,
-  } = download;
 
   const client = useApolloClient();
+
+  const downloadFile = 'INS ';
 
   async function downloadSCSVFile() {
     const {
       query,
       paginationAPIField,
     } = table;
+
+    const downloadFileName = downloadFile.concat(paginationAPIField.replace('OverView', ''), ' download');
 
     const result = await client.query({
       query,
@@ -49,28 +51,17 @@ const DownloadButton = ({
   }
 
   const downloadTableCSV = useCallback(() => {
-    if (downloadTable) {
-      downloadTable();
-    } else if (!downloadTable && !server) {
-      downloadJson(rows, table, downloadFileName);
-    } else {
-      downloadSCSVFile();
-    }
+    downloadSCSVFile();
   }, [queryVariables]);
 
   return (
-    <>
-      <Tooltip
-        title={downloadCsv}
-        className="download-icon"
+    <Tooltip title="Download Full Table As CSV">
+      <IconButton
+        onClick={downloadTableCSV}
       >
-        <IconButton
-          onClick={downloadTableCSV}
-        >
-          <CloudDownload />
-        </IconButton>
-      </Tooltip>
-    </>
+        <CloudDownload />
+      </IconButton>
+    </Tooltip>
   );
 };
 
