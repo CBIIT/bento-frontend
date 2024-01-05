@@ -1,18 +1,10 @@
 import React, { createElement } from 'react';
 import {
-  CaseCard, SampleCard, StudyCard, FileCard,
-  ProgramCard, ValueCard, AboutCard,
+  ProjectCard, AboutCard,
 } from './Cards';
 
 const DEFAULT_CARD_MAP = {
-  subject: CaseCard,
-  sample: SampleCard,
-  study: StudyCard,
-  file: FileCard,
-  program: ProgramCard,
-  node: ValueCard,
-  value: ValueCard,
-  property: ValueCard,
+  project: ProjectCard,
   about: AboutCard,
 };
 
