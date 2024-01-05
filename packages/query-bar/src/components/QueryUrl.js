@@ -51,9 +51,9 @@ const QueryUrl = ({
               href={url}
               className={classes.link}
             >
-              <span>
+              <p className={classes.viewLink}>
                 {url}
-              </span>
+              </p>
             </Link>
             <Tooltip
               arrow
