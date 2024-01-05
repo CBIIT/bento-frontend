@@ -20,7 +20,8 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
-  CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon,
+  CheckBox as CheckBoxIcon,
+  CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
 import styles from './CheckboxStyle';
 
@@ -31,12 +32,7 @@ const CheckBoxView = ({
   onToggle,
   facet,
 }) => {
-  const {
-    isChecked = false,
-    index,
-    section,
-    tooltip,
-  } = checkboxItem;
+  const { isChecked = false, index, section, tooltip } = checkboxItem;
   const {
     field = 'group',
     count = 'subjects',
@@ -65,9 +61,7 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      <Typography className={classes.checkboxName}>
-        {name}
-      </Typography>
+      <Typography className={classes.checkboxName}>{name}</Typography>
     </Box>
   );
 
@@ -79,7 +73,9 @@ const CheckBoxView = ({
         alignItems="flex-start"
         onClick={handleToggle}
         classes={{ gutters: classes.listItemGutters }}
-        className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
+        className={clsx({
+          [`${checkedSection}Checked${indexType}`]: isChecked,
+        })}
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
@@ -91,23 +87,21 @@ const CheckBoxView = ({
           }
           onClick={handleToggle}
           checked={isChecked}
-          checkedIcon={(
+          checkedIcon={
             <CheckBoxIcon
               style={{
                 fontSize: 18,
               }}
               className={`${checkedSection}CheckedIcon`}
             />
-          )}
+          }
           disableRipple
           color="secondary"
           classes={{ root: classes.checkboxRoot }}
         />
-        { tooltip ? (
+        {tooltip ? (
           <Tooltip id={datafield} title={tooltip}>
-            <div className={datafield}>
-              {name}
-            </div>
+            <div className={datafield}>{name}</div>
           </Tooltip>
         ) : (
           <LabelComponent />

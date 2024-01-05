@@ -14,6 +14,13 @@ export default () => ({
       position: 'initial',
     },
   },
+  subSectionSummaryTextWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingRight: '15px',
+  },
   subSectionSummaryText: {
     marginLeft: '10px',
     lineHeight: 0,
