@@ -72,12 +72,17 @@ import FacetFilter from 'bento-core';
 ```
 import { InputTypes } from 'bento-core';
 
+// fields for labelds and counts
+const GROUP = 'group'; // access labels
+const COUNT = 'subjects'; // access count value
+
 export const facetsConfig = [{ 
   section: CASES,
   label: 'Program', 
   apiForFiltering: 'filterSubjectCountByProgram', 
   datafield: 'programs', 
-  field: GROUP, 
+  field: GROUP,
+  count: COUNT,
   type: InputTypes.CHECKBOX, 
   sort_type: sortType.ALPHABET,
   show: true, 
@@ -244,12 +249,84 @@ className={clsx(classes.sectionSummaryText, classes[facetClasses])}
 ## 10  CLearAllFilterButton Component
 Bento Core provides 1. function to clear all active filters, 2. disable flag (true incase of no active filters). Client is responsible for defining view (custom html).
 ```
-import { generateClearAllFilterBtn } from 'bento-core';
+import { ClearAllFiltersBtn, FacetFilter } from '@bento-core/facet-filter';
+import { getFilters } from '@bento-core/facet-filter';
 
 const CustomClearAllFiltersBtn = ({ onClearAllFilters, disable }) => {
     //...custom component 1. bind onClearFilters fn
     // 2. disable flag to disable button
-}
+} 
+  // get filter data
+  // filterState: state.statusReducer.filterState, (from reducer)
+  // const activeFilters = getFilters(filterState) // formating
 
-const ClearAllFiltersButton = () => generateClearAllFilterBtn(CustomClearAllFiltersBtn); 
+  <ClearAllFiltersBtn
+    Component={CustomClearAllFiltersBtn}
+    activeFilters={activeFilters}
+  />  
+```
+
+## 11  Facet Value Component
+```
+// response 
+// filterCaseCountByProgram: [{group: "COP", subjects: 301}]
+
+// facet = { 
+//  section: CASES,
+//  label: 'Program', 
+//  apiForFiltering: 'filterSubjectCountByProgram', 
+//  datafield: 'programs', 
+//  field: GROUP,
+//  count: COUNT,
+//  type: InputTypes.CHECKBOX, 
+//  sort_type: sortType.ALPHABET,
+//  show: true, 
+//  customCount = (text) => `(${text})`,
+// }
+
+const {
+  field = 'group',
+  count = 'subjects',
+  customCount = (text) => `(${text})`,
+} = facet;
+const {
+  isChecked = false,
+  index,
+  section,
+  tooltip,
+} = checkboxItem;
+
+// 1. by default facet value component display group ("COP")
+// 2. set customName to display customize value
+// 3. by default facet value component display subjects (301)
+// 4. set customSubjects to display customize value or adjust correct field for subject count
+// 5. tooltip - provide text value to tooltip text
+
+ /**
+   * Add Bento frontend filter count/subjects
+   * Add tootip text
+   */
+  const filterData = facetsConfig.reduce((acc, item) => {
+    const facetValues = searchData[item.apiPath];
+    if (!facetValues) {
+      return acc;
+    }
+    const subjectCounts = [...facetValues].map((checkbox) => {
+      const text = tooltipText[item.tooltipKey];
+      return {
+        ...checkbox,
+        customSubjects: checkbox.count,
+        tooltip: text ? text[checkbox.group] : undefined,
+      };
+    });
+    return { ...acc, [item.apiPath]: [...subjectCounts] };
+  }, {});
+
+  <FacetFilter
+    data={filterData}
+    facetSectionConfig={facetSectionVariables}
+    facetsConfig={facetsConfig}
+    CustomFacetSection={CustomFacetSection}
+    CustomFacetView={CustomFacetView}
+  />
 ```

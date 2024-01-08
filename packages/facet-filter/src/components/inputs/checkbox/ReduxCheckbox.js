@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toggleCheckBox } from '../../../store/actions/Actions';
 import CheckboxView from './CheckboxView';
 
-const ReduxCheckbox = ((props) => <CheckboxView {...props} />);
+const ReduxCheckbox = (props) => <CheckboxView {...props} />;
 
 const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,
