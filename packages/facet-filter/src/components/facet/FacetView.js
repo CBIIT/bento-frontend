@@ -21,7 +21,6 @@ const FacetView = ({
   CustomView,
   autoComplete,
   upload,
-  onToggle,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
@@ -54,24 +53,13 @@ const FacetView = ({
   /**
    * display checked items on facet collapse
    */
-  const { type, facetValues, datafield } = facet;
+  const { type, facetValues } = facet;
   const selectedItems = facetValues && facetValues.filter((item) => item.isChecked);
   const displayFacet = { ...facet };
   displayFacet.facetValues = selectedItems;
   const isActiveFacet = [...selectedItems].length > 0;
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
 
-  const clearFacetSectionValues = () => {
-    facetValues.forEach((item) => {
-      const toggleCheckBoxItem = {
-        name: item.group,
-        datafield,
-        isChecked: false,
-      };
-
-      onToggle(toggleCheckBoxItem);
-    });
-  };
   return (
     <>
       <Accordion
@@ -85,7 +73,7 @@ const FacetView = ({
       >
         {CustomView ? (
           <CustomView
-            clearFacetSectionValues={clearFacetSectionValues}
+            clearFacetSectionValues={onClearSection}
             hasSelections={selectedItems.length}
             facet={facet}
             facetClasses={
@@ -118,7 +106,7 @@ const FacetView = ({
                   {facet.label}
                 </div>
                 {selectedItems.length ? (
-                  <IconButton onClick={clearFacetSectionValues}>
+                  <IconButton onClick={onClearSection}>
                     <RefreshIcon />
                   </IconButton>
                 ) : null}
