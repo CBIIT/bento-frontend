@@ -126,6 +126,15 @@ const CustomLayout = (props) => {
                 maxWidth={container.size}
                 className={container.clsName}
               >
+                {
+                  container.text
+                  && (
+                  <p>
+                    <span>{container.textTitle}</span>
+                    {container.text}
+                  </p>
+                  )
+                }
                 {container.items.map((item) => (
                   <ViewComponent
                     {...item}
