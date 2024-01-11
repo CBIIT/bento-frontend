@@ -117,8 +117,6 @@ export const filesTable = {
   defaultSortField: 'file_name',
   // 'asc' or 'desc'
   defaultSortDirection: 'asc',
-  // Set 'selectableRows' to true to show the row selection
-  selectableRows: true,
   tooltipMessage: 'Click button to add selected files.',
   helpMessage: 'Here help message',
   // Text to appear on Add to cart button

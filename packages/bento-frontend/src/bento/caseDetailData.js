@@ -299,13 +299,7 @@ export const sampleTable = {
   tooltipMessage: 'Click button to add selected files associated with the selected sample(s).',
   helpMessage: 'Here help message',
   // showHideColumns 'true' or 'false'
-  showHideColumns: true,
-  // download csv
-  download: false,
-  // downloaded File Name
   downloadFileName: 'Bento_case_files_download',
-  // Set 'selectableRows' to true to show the row selection
-  selectableRows: true,
   // A maximum of 10 columns are allowed
   columns: [
     {
@@ -391,14 +385,8 @@ export const filesTable = {
   // Help Icon Message
   tooltipMessage: 'Click button to add selected files.',
   helpMessage: 'Here help message',
-  // showHideColumns 'true' or 'false'
-  showHideColumns: true,
-  // download csv 'true' or 'false'
-  download: false,
   // downloaded File Name
   downloadFileName: 'Bento_case_samples_download',
-  // Set 'selectableRows' to true to show the row selection
-  selectableRows: true,
   // A maximum of 10 columns are allowed
   columns: [
     {

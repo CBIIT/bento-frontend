@@ -29,7 +29,6 @@ export const profileArmsTable = {
   dataField: 'acl',
   defaultSortField: 'armName',
   defaultSortDirection: 'asc',
-  selectableRows: false,
   columns: [
     {
       dataField: 'armID',
