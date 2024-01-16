@@ -11,8 +11,8 @@ import DownloadButton from './toolbar/DownloadButtonView';
 
 const downloadAreaStyle = {
   display: 'flex',
-  borderTop: '1px solid #8A7F7C',
   paddingRight: '41px',
+  float: 'right',
 };
 
 const ExtendedView = ({

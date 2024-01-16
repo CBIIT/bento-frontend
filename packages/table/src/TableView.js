@@ -28,8 +28,8 @@ const CustomTableContainer = (props) => {
 
 const downloadAreaStyle = {
   display: 'flex',
-  borderBottom: '1px solid #8A7F7C',
   paddingRight: '41px',
+  float: 'right',
 };
 
 const TableView = ({
