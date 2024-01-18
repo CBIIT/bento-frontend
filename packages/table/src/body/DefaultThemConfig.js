@@ -38,7 +38,7 @@ const defaultTheme = () => ({
   MuiLink: {
     root: {
       textDecoration: 'none',
-      color: '#900f89',
+      color: '#7747ff',
     },
   },
   MuiCheckbox: {
