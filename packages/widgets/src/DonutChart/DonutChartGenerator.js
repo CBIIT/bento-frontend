@@ -5,23 +5,23 @@ import {
 } from 'recharts';
 
 export const DEFAULT_COLORS_EVEN = [
-  '#D4D4D4',
-  '#057EBD',
-  '#0C3151',
-  '#F78F49',
-  '#79287C',
-  '#7CC242',
-  '#61479D',
+  '#0053A0',
+  '#279BCC',
+  '#62E5B6',
+  '#FED339',
+  '#A44B19',
+  '#D6D8DF',
+  '#EFA56F',
 ];
 
 export const DEFAULT_COLORS_ODD = [
-  '#057EBD',
-  '#0C3151',
-  '#F78F49',
-  '#79287C',
-  '#7CC242',
-  '#61479D',
-  '#D4D4D4',
+  '#0053A0',
+  '#279BCC',
+  '#62E5B6',
+  '#FED339',
+  '#A44B19',
+  '#D6D8DF',
+  '#EFA56F',
 ];
 
 export const DEFAULT_CONFIG_DONUT = {
