@@ -43,7 +43,7 @@ const ProjectCard = ({ data, classes, index }) => {
       </Grid>
       <Grid item xs={11} className={classes.propertyContainer}>
         <div>
-          <span className={classes.detailContainerHeader}>Project</span>
+          <span className={classes.detailContainerHeader}>Grant</span>
           <Link to={`/project/${data.project_id}`} className={classes.cardTitle}>
             {data.project_id}
           </Link>
@@ -61,7 +61,7 @@ const ProjectCard = ({ data, classes, index }) => {
   );
 };
 
-const styles = (theme) => ({
+const styles = () => ({
   indexContainer: {
     padding: '18px 0px 18px 18px',
     color: '#747474',
@@ -73,7 +73,7 @@ const styles = (theme) => ({
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: theme.palette.text.link,
+    color: '#7747FF',
     textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',
@@ -83,7 +83,7 @@ const styles = (theme) => ({
   detailContainerHeader: {
     textTransform: 'uppercase',
     padding: '2px 8px',
-    backgroundColor: '#FFE25A',
+    backgroundColor: '#C0E9D7',
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '12px',
