@@ -43,7 +43,7 @@ const DEFAULT_CLASSES = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    overflow: 'hidden',
+    overflow: 'visible',
     boxShadow: 'none',
   },
   customBackGround: {
