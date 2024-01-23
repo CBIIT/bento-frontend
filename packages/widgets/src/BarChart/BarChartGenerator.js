@@ -120,7 +120,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
           <BarChart
             data={data}
           >
-            <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#D6D8DF" />
+            <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
             <XAxis dataKey="group" />
             <YAxis />
             <Tooltip cursor={false} content={<CustomTooltip />} />
