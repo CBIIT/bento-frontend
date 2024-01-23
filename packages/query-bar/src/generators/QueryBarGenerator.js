@@ -16,9 +16,7 @@ import QueryUrl from '../components/QueryUrl';
 export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const { config, functions, customStyles = {} } = uiConfig;
   const { CHECKBOX } = InputTypes;
-  const styles = () => (
-    { ...DEFAULT_STYLES(), ...customStyles }
-  );
+  const styles = () => ({ ...DEFAULT_STYLES(), ...customStyles });
 
   const maxItems = config && typeof config.maxItems === 'number'
     ? config.maxItems
@@ -85,9 +83,12 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
       }, [autocomplete]);
 
       // Remove any sections without checkboxes selected
-      const mappedInputs = statusReducer.filter((facet) => facet.section && facet.type)
+      const mappedInputs = statusReducer
+        .filter((facet) => facet.section && facet.type)
         .map((facet) => {
-          if (facet.type !== CHECKBOX) { return facet; }
+          if (facet.type !== CHECKBOX) {
+            return facet;
+          }
 
           const { items } = facet;
           const itemKeys = Object.keys(items);
@@ -102,10 +103,10 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
           // });
 
           /**
-          * commenting out line 89-93
-          * to display all the active filters in the query bar
-          * ICDC-3287
-          */
+           * commenting out line 89-93
+           * to display all the active filters in the query bar
+           * ICDC-3287
+           */
           return { ...facet, items: itemKeys };
         })
         .filter((facet) => facet.items.length > 0);
@@ -129,44 +130,52 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
             <span className={classes.queryContainer}>
               {/* Local Find Selections */}
               {/* TODO: Refactor this into a separate component */}
-              {(autocomplete.length || upload.length) ? (
+              {autocomplete.length || upload.length ? (
                 <span>
                   {/* Standalone case set button */}
-                  {(upload.length && !autocomplete.length)
-                    ? (
+                  {upload.length && !autocomplete.length ? (
+                    <span
+                      className={clsx(
+                        classes.filterCheckboxes,
+                        classes.localFindBackground,
+                      )}
+                      onClick={clearUpload}
+                    >
+                      INPUT CASE SET
+                    </span>
+                  ) : null}
+                  {autocomplete.length ? (
+                    <span>
+                      {' '}
                       <span
-                        className={clsx(classes.filterCheckboxes, classes.localFindBackground)}
-                        onClick={clearUpload}
+                        className={clsx(
+                          classes.filterName,
+                          classes.localFindBackground,
+                        )}
+                        onClick={clearAutocomplete}
                       >
-                        INPUT CASE SET
+                        Case ID
                       </span>
-                    ) : null}
-                  {autocomplete.length
-                    ? (
-                      <span>
-                        {' '}
-                        <span
-                          className={clsx(classes.filterName, classes.localFindBackground)}
-                          onClick={clearAutocomplete}
-                        >
-                          Case IDs
-                        </span>
-                        {' '}
-                        {' '}
-                        <span className={classes.operators}>
-                          {(autocomplete.length === 1 && !upload.length) ? 'IS ' : 'IN '}
-                        </span>
+                      {' '}
+                      <span className={classes.operators}>
+                        {autocomplete.length === 1 && !upload.length
+                          ? 'IS '
+                          : 'IN '}
                       </span>
-                    ) : null}
+                    </span>
+                  ) : null}
                   <span>
-                    {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
-                      ? <span className={classes.bracketsOpen}>(</span>
-                      : null}
+                    {(upload.length > 0 ? 1 : 0) + autocomplete.length > 1 ? (
+                      <span className={classes.bracketsOpen}>(</span>
+                    ) : null}
                     {upload.length && autocomplete.length ? (
                       <>
                         {' '}
                         <span
-                          className={clsx(classes.filterCheckboxes, classes.localFind)}
+                          className={clsx(
+                            classes.filterCheckboxes,
+                            classes.localFind,
+                          )}
                           onClick={clearUpload}
                         >
                           INPUT CASE SET
@@ -177,32 +186,33 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                     {autocomplete.slice(0, noOfItems).map((d, idx) => (
                       <>
                         <span
-                          className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
+                          className={clsx(
+                            classes.filterCheckboxes,
+                            classes.facetSectionCases,
+                          )}
                           key={idx}
                           onClick={() => deleteAutocompleteItem(d.title)}
                         >
                           {d.title}
                         </span>
-                        {idx === (noOfItems - 1) ? null : ' '}
+                        {idx === noOfItems - 1 ? null : ' '}
                       </>
                     ))}
                     {autocomplete.length > maxItems && (
                       <>
-                        {
-                          displayAllActiveFilters
-                            ? (
-                              <span
-                                className={classes.expandBtn}
-                                onClick={() => setExpand(!expand)}
-                              >
-                                ...
-                              </span>
-                            )
-                            : '...'
-                          }
+                        {displayAllActiveFilters ? (
+                          <span
+                            className={classes.expandBtn}
+                            onClick={() => setExpand(!expand)}
+                          >
+                            ...
+                          </span>
+                        ) : (
+                          '...'
+                        )}
                       </>
                     )}
-                    {(expand && autocomplete.length > maxItems) && (
+                    {expand && autocomplete.length > maxItems && (
                       <span
                         className={classes.collapseBtn}
                         onClick={() => setExpand(!expand)}
@@ -210,17 +220,17 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                         {' LESS'}
                       </span>
                     )}
-                    {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
-                      ? <span className={classes.bracketsClose}>)</span>
-                      : null}
+                    {(upload.length > 0 ? 1 : 0) + autocomplete.length > 1 ? (
+                      <span className={classes.bracketsClose}>)</span>
+                    ) : null}
                   </span>
                 </span>
               ) : null}
 
               {/* Facet Sidebar Selections */}
-              {((autocomplete.length || upload.length) && mappedInputs.length)
-                ? <span className={classes.operators}> AND </span>
-                : null}
+              {(autocomplete.length || upload.length) && mappedInputs.length ? (
+                <span className={classes.operators}> AND </span>
+              ) : null}
               {mappedInputs.map((filter, index) => (
                 <span className={clsName(filter.section)}>
                   <Filter
@@ -230,26 +240,28 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                     maxItems={maxItems}
                     displayAllActiveFilters={displayAllActiveFilters}
                     classes={classes}
-                    onSectionClick={filter.type === CHECKBOX
-                      ? resetFacetSection
-                      : resetFacetSlider}
-                    onItemClick={filter.type === CHECKBOX
-                      ? resetFacetCheckbox
-                      : resetFacetSlider}
+                    onSectionClick={
+                      filter.type === CHECKBOX
+                        ? resetFacetSection
+                        : resetFacetSlider
+                    }
+                    onItemClick={
+                      filter.type === CHECKBOX
+                        ? resetFacetCheckbox
+                        : resetFacetSlider
+                    }
                   />
                 </span>
               ))}
             </span>
-            {
-              (viewQueryURL && queryURLRootPath) && (
-                <QueryUrl
-                  classes={classes}
-                  localFind={localFind}
-                  filterItems={mappedInputs}
-                  rootPath={queryURLRootPath}
-                />
-              )
-            }
+            {viewQueryURL && queryURLRootPath && (
+              <QueryUrl
+                classes={classes}
+                localFind={localFind}
+                filterItems={mappedInputs}
+                rootPath={queryURLRootPath}
+              />
+            )}
           </div>
         </>
       );
