@@ -235,43 +235,6 @@ const styles = () => ({
     marginLeft: '10px',
     float: 'left',
   },
-  dialogBox: {
-    '& div.MuiBackdrop-root': {
-      backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    },
-    '& div.MuiPaper-root': {
-      borderRadius: '20px',
-      border: '2px solid #1D79A8',
-      width: '430px',
-      backgroundColor: '#E8EFEF',
-      padding: '20px 0px 30px 0px',
-      '& .MuiDialogContent-root': {
-        fontFamily: 'Nunito',
-        fontSize: '14px',
-        fontWeight: '600',
-        lineHeight: '20px',
-        textAlign: 'center',
-        '& .MuiTypography-colorTextSecondary': {
-          color: '#000000',
-        },
-      },
-      '& .MuiDialogActions-root': {
-        '& button': {
-          width: '125px',
-          height: '38px',
-          borderRadius: '8px',
-          border: '1px solid #1A8CCB',
-          backgroundColor: '#1A8CCB',
-          color: '#fff',
-          fontFamily: 'Lato',
-          fontSize: '16px',
-          fontWeight: '400',
-          lineHeight: '16px',
-          margin: 'auto',
-        },
-      },
-    },
-  },
 });
 
 export default withStyles(styles)(QueryUrl);
