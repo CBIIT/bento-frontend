@@ -116,9 +116,12 @@ export default () => ({
   },
   urlContainer: {
     marginTop: '10px',
+    minHeight: '10px',
+    marginBottom: '10px',
   },
   link: {
     lineBreak: 'anywhere',
+    overflow: 'hidden',
     fontFamily: 'Nunito',
     fontSize: '12px',
     fontWeight: '500',
@@ -126,23 +129,34 @@ export default () => ({
     letterSpacing: '0em',
     padding: '5px',
     borderRadius: '5px',
-    marginLeft: '10px',
     float: 'left',
     color: '#1D79A8',
     backgroundColor: '#fff',
-    width: '80%',
+    maxWidth: '80%',
   },
   viewLink: {
-    maxWidth: '800px',
+    margin: '0',
+  },
+  collapseLink: {
     maxHeight: '1em',
-    display: '-webkit-box',
+    display: 'block',
+    // display: '-webkit-box',
     '-webkit-box-orient': 'vertical',
     '-webkit-line-clamp': '1',
     overflow: 'hidden',
-    margin: '0',
+  },
+  expandLink: {
+    cursor: 'pointer',
+  },
+  expandLinkBtn: {
+    float: 'left',
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
   viewLinkToggleBtn: {
     height: '20px',
+    marginRight: '10px',
     fontFamily: 'Nunito',
     fontSize: '12px',
     fontWeight: '500',
@@ -158,8 +172,63 @@ export default () => ({
       color: '#fff',
     },
   },
+  urlView: {
+    float: 'left',
+    width: 'calc(100% - 13px)',
+    minWidth: '840px',
+    '@media (max-width: 2560px)': {
+      maxWidth: '1800px',
+    },
+    '@media (max-width: 2000px)': {
+      maxWidth: '1400px',
+    },
+    '@media (max-width: 1600px)': {
+      maxWidth: '1200px',
+    },
+    '@media (max-width: 1300px)': {
+      maxWidth: '1050px',
+    },
+  },
   copyIconBtn: {
     padding: '0px',
     marginLeft: '10px',
+    float: 'left',
+  },
+  dialogBox: {
+    '& div.MuiBackdrop-root': {
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    },
+    '& div.MuiPaper-root': {
+      borderRadius: '20px',
+      border: '2px solid #1D79A8',
+      width: '430px',
+      backgroundColor: '#E8EFEF',
+      padding: '20px 0px 30px 0px',
+      '& .MuiDialogContent-root': {
+        fontFamily: 'Nunito',
+        fontSize: '14px',
+        fontWeight: '600',
+        lineHeight: '20px',
+        textAlign: 'center',
+        '& .MuiTypography-colorTextSecondary': {
+          color: '#000000',
+        },
+      },
+      '& .MuiDialogActions-root': {
+        '& button': {
+          width: '125px',
+          height: '38px',
+          borderRadius: '8px',
+          border: '1px solid #1A8CCB',
+          backgroundColor: '#1A8CCB',
+          color: '#fff',
+          fontFamily: 'Lato',
+          fontSize: '16px',
+          fontWeight: '400',
+          lineHeight: '16px',
+          margin: 'auto',
+        },
+      },
+    },
   },
 });
