@@ -72,6 +72,6 @@ export const sortBySection = ({
   /**
    * Display checked item always on top
    */
-  const sortedValues = sortByCheckedItem([...sortfacetValues]);
-  return sortedValues;
+  // const sortedValues = sortByCheckedItem([...sortfacetValues]);
+  return sortfacetValues;
 };
