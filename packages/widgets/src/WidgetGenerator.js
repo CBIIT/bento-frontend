@@ -9,7 +9,8 @@ const DEFAULT_CLASSES = makeStyles({
     display: 'flex',
     minHeight: '100%',
   },
-  widgetHeader: { },
+  widgetHeader: {
+  },
   widgetDivider: {
     background: (theme) => (theme && theme.custom ? theme.custom.widgetDivider : 'transparent'),
     height: '6px',
@@ -18,9 +19,9 @@ const DEFAULT_CLASSES = makeStyles({
     margin: '16px auto 0px auto',
   },
   paddedTitle: {
-    margin: '32px 32px 0px 64px',
+    margin: '32px 32px 0px 32px',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   noPaddedTitle: {
@@ -29,7 +30,7 @@ const DEFAULT_CLASSES = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  widgetRoot: { },
+  widgetRoot: {},
   widgetBody: {
     margin: '0px auto',
     paddingRight: (theme) => (theme && theme.spacing ? theme.spacing.unit * 3 : 0),
