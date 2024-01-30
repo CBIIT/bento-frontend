@@ -30,7 +30,7 @@ export const onClearFacetSection = ({
   if (updatedState[datafield]) {
     updatedState[datafield] = {};
   }
-  return updatedState;
+  return { updatedState, datafield };
 };
 
 export const onClearSliderSection = ({
@@ -78,12 +78,19 @@ export function sideBarReducerGenerator() {
           return {
             ...state,
             filterState: {},
+            currentActionType: sideBarActionTypes.CLEAR_ALL_FILTERS,
           };
         case sideBarActionTypes.CLEAR_FACET_SECTION:
-          updateState = onClearFacetSection({ ...payload, ...state });
+          const {
+            updatedState: updtState,
+            datafield,
+          } = onClearFacetSection({ ...payload, ...state });
+          updateState = updtState;
+          const currentActionType = { [datafield]: sideBarActionTypes.CLEAR_FACET_SECTION };
           return {
             ...state,
             filterState: { ...updateState },
+            currentActionType,
           };
         case sideBarActionTypes.CLEAR_SLIDER_SECTION:
           updateState = onClearSliderSection({ ...payload, ...state });

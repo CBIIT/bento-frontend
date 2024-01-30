@@ -11,6 +11,7 @@ const BentoFacetFilter = ({
   CustomFacetSection,
   CustomFacetView,
   enableClearSection,
+  enableFacetCollapse,
 }) => {
   return (
     <>
@@ -26,6 +27,7 @@ const BentoFacetFilter = ({
                 facet={facet}
                 CustomView={CustomFacetView}
                 enableClearSection={enableClearSection}
+                enableFacetCollapse={enableFacetCollapse}
               />
             ))}
           </FacetSectionView>

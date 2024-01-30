@@ -11,6 +11,7 @@ import styles from './FacetStyle';
 import FilterItems from '../inputs/FilterItems';
 import { sortType } from '../../utils/Sort';
 import clearIcon from './assets/clearIcon.svg';
+import { sideBarActionTypes } from '../../store/actions/ActionTypes';
 
 const FacetView = ({
   classes,
@@ -21,9 +22,28 @@ const FacetView = ({
   CustomView,
   autoComplete,
   upload,
+  filterState,
+  currentActionType = {},
+  enableFacetCollapse,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
+
+  const { datafield } = facet;
+  /**
+   * Collapse expanded facet or facets
+   * 1. on clear facet section
+   * 2. on clear all
+   */
+  useEffect(() => {
+    if (enableFacetCollapse) {
+      const actionType = currentActionType[datafield];
+      if ((actionType && actionType === sideBarActionTypes.CLEAR_FACET_SECTION)
+        || currentActionType === sideBarActionTypes.CLEAR_ALL_FILTERS) {
+        setExpand(false);
+      }
+    }
+  }, [currentActionType]);
 
   /**
    * expand section incase of active local search
@@ -44,10 +64,13 @@ const FacetView = ({
 
   const onClearSection = () => {
     setSortBy(null);
-    if (facet.type === InputTypes.SLIDER) {
-      onClearSliderSection(facet);
-    } else {
-      onClearFacetSection(facet);
+    const activeFilterItems = filterState[datafield];
+    if (activeFilterItems && Object.keys(activeFilterItems).length > 0) {
+      if (facet.type === InputTypes.SLIDER) {
+        onClearSliderSection(facet);
+      } else {
+        onClearFacetSection(facet);
+      }
     }
   };
   /**

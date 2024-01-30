@@ -11,6 +11,7 @@ const ReduxFacetView = (props) => <FacetView {...props} />;
 
 const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,
+  currentActionType: state.statusReducer.currentActionType,
   autoComplete: state?.localFind?.autocomplete || [],
   upload: state?.localFind?.upload || [],
 });
