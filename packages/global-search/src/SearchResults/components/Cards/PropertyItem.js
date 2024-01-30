@@ -20,21 +20,24 @@ const PropertyItem = ({ ...props }) => {
     label, value, link, labelLink, classes, index,
   } = props;
   const defaultValue = '';
-
+  let processedValue = value;
+  if (value === '') {
+    processedValue = 'Not Available';
+  }
   return (
     <Grid item container className={classes.propertyContainer}>
-      {value ? (
+      {processedValue ? (
         <Grid item xs={12}>
           <span className={classes.title} id={`section_title_${index + 1}`}>
             {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : `${label}:`}
           </span>
           <span className={classes.content} id={`section_description_${index + 1}`}>
-            {value || value === 0 ? (
-              link ? <Anchor link={link} text={value} classes={classes} /> : value
+            {processedValue || processedValue === 0 ? (
+              link ? <Anchor link={link} text={processedValue} classes={classes} /> : processedValue
             ) : defaultValue}
           </span>
         </Grid>
-      ) : '' }
+      ) : ''}
     </Grid>
   );
 };
