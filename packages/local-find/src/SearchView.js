@@ -15,12 +15,13 @@ import { resetUploadData } from './store/actions/Actions';
  * @param {function} props.resetUpload - redux action to reset upload data
  * @param {object} props.SearchBox - Generated SearchBox component
  * @param {object} props.UploadModal - Generated UploadModal component
+ * @param {object} props.config - configuration object
  * @returns {JSX.Element}
  */
 const SearchView = (props) => {
   const {
     classes, hidden, state, resetUpload,
-    UploadModal, SearchBox,
+    UploadModal, SearchBox, config,
   } = props;
 
   const [showCasesModal, setShowCasesModal] = useState(false);
@@ -30,6 +31,11 @@ const SearchView = (props) => {
     e.stopPropagation();
   };
 
+  const uploadText = config && config.title ? config.title : 'Case';
+  const searchLabel = config && config.searchLabel && typeof config.searchLabel === 'string'
+    ? config.searchLabel
+    : null;
+
   return (
     <div
       className={classes.searchContainer}
@@ -37,6 +43,14 @@ const SearchView = (props) => {
       onClick={eventHandler}
       hidden={hidden}
     >
+      {
+        searchLabel
+        && (
+          <span className={classes.searchLabel}>
+            {searchLabel}
+          </span>
+        )
+      }
       {matchedFiles.length !== 0 ? (
         <SearchList
           classes={{ divider: classes.customDivider, listPadding: classes.customListPadding }}
@@ -53,7 +67,7 @@ const SearchView = (props) => {
         className={classes.uploadButton}
         id="local_find_upload_open"
       >
-        { matchedFiles.length !== 0 ? 'View Case Set' : 'Upload Case Set' }
+        { matchedFiles.length !== 0 ? `View ${uploadText} Set` : `Upload ${uploadText} Set` }
         <span className={classes.iconSpan}>
           <img
             className={classes.uploadIcon}

@@ -4,13 +4,15 @@ import {
   Modal, Button, Typography,
   TextareaAutosize, IconButton, withStyles,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import HelpIcon from '@material-ui/icons/Help';
 import ToolTip from '@bento-core/tool-tip';
 import FileUploader from './components/FileUploader';
 import SummaryTable from './components/SummaryTable';
 import DEFAULT_STYLES from './styles';
-import DEFAULT_CONFIG from './config';
+import DEFAULT_CONFIG, { tooltipIconType } from './config';
 import { updateUploadData, updateUploadMetadata } from '../store/actions/Actions';
+import SpeechBubbleIcon from '../assets/Tooltip_SpeechBubble.svg';
 
 /**
  * Generator function to create UploadModal component with custom configuration
@@ -21,8 +23,36 @@ import { updateUploadData, updateUploadMetadata } from '../store/actions/Actions
  */
 export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const {
-    config, functions,
+    config, functions, customStyles = {},
   } = uiConfig;
+
+  const styles = () => (
+    { ...DEFAULT_STYLES(), ...customStyles }
+  );
+
+  const matchLocalFindId = config && config.matchedId && typeof config.matchedId === 'string'
+    ? config.matchedId
+    : DEFAULT_CONFIG.config.matchedId;
+
+  const matchedLabel = config && config.matchedLabel && typeof config.matchedLabel === 'string'
+    ? config.matchedLabel
+    : DEFAULT_CONFIG.config.matchedLabel;
+
+  const associateId = config && config.associateId && typeof config.associateId === 'string'
+    ? config.associateId
+    : DEFAULT_CONFIG.config.associateId;
+
+  const associateLabel = config && config.associateLabel && typeof config.associateLabel === 'string'
+    ? config.associateLabel
+    : DEFAULT_CONFIG.config.associateLabel;
+
+  const projectName = config && config.projectName && typeof config.projectName === 'string'
+    ? config.projectName
+    : DEFAULT_CONFIG.config.projectName;
+
+  const caseIds = config && config.caseIds && typeof config.caseIds === 'string'
+    ? config.caseIds
+    : DEFAULT_CONFIG.config.caseIds;
 
   const modalClosed = functions && typeof functions.modalClosed === 'function'
     ? functions.modalClosed
@@ -48,6 +78,9 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.uploadTooltip
     : DEFAULT_CONFIG.config.uploadTooltip;
 
+  const uploadTooltipIcon = config && typeof config.uploadTooltipIcon === 'string'
+    ? config.uploadTooltipIcon : DEFAULT_CONFIG.config.uploadTooltipIcon;
+
   const fileAccept = config && typeof config.accept === 'string'
     ? config.accept
     : DEFAULT_CONFIG.config.accept;
@@ -68,16 +101,16 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
   return {
     // @ts-ignore
     // eslint-disable-next-line max-len
-    UploadModal: withStyles(DEFAULT_STYLES, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
+    UploadModal: withStyles(styles, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
       const {
         classes, open, metadata = {},
         onApplySearch, updateMetadata,
       } = props;
 
-      const {
-        FileUploader: uploaderClasses,
-        SummaryTable: summaryClasses,
-      } = classes;
+      // const {
+      //   FileUploader: uploaderClasses,
+      //   SummaryTable: summaryClasses,
+      // } = classes;
 
       const [filename, setUploadedFileName] = useState(metadata.filename || '');
       const [fileContent, setFileContent] = useState(metadata.fileContent || '');
@@ -85,7 +118,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const [unmatchedIds, setUnmatchedIds] = useState(metadata.unmatched || []);
 
       const overMaxTerms = matchIds.length > maxTerms;
-      const errorText = `Total number of cases exceeds the maximum of ${maxTerms} cases.`;
+      const errorText = `Total number of participants exceeds the maximum of ${maxTerms} participants.`;
 
       const clearData = () => {
         setFileContent('');
@@ -116,7 +149,16 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const generateToolTip = (message) => (
         <ToolTip className={classes.customTooltip} classes={{ arrow: classes.customArrow }} title={message} arrow placement="bottom">
           <IconButton aria-label="help" className={classes.helpIconButton}>
-            <HelpIcon className={classes.helpIcon} fontSize="small" />
+            { (uploadTooltipIcon === tooltipIconType.DEFAULT) && (
+              <>
+                <HelpIcon className={classes.helpIcon} fontSize="small" />
+              </>
+            )}
+            { (uploadTooltipIcon === tooltipIconType.SPEECH_BUBBLE) && (
+              <>
+                <img src={SpeechBubbleIcon} className={classes.tooltipIcon} alt="help" />
+              </>
+            )}
           </IconButton>
         </ToolTip>
       );
@@ -173,7 +215,12 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
               <div className={classes.textSection}>
                 <div className={classes.inputLabel}>
                   <Typography>
-                    <p className={classes.listTitle}>Add a list of Case IDs:</p>
+                    <p className={classes.listTitle}>
+                      Add a list of
+                      {' '}
+                      {caseIds}
+                      :
+                    </p>
                   </Typography>
                   {inputTooltip ? generateToolTip(inputTooltip) : null}
                 </div>
@@ -195,7 +242,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   {uploadTooltip ? generateToolTip(uploadTooltip) : null}
                 </div>
                 <FileUploader
-                  classes={uploaderClasses}
+                  classes={classes}
                   filename={filename}
                   onClear={clearData}
                   onUploadRead={handleFileUpload}
@@ -205,9 +252,15 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
             </div>
             {fileContent && (
               <SummaryTable
-                classes={summaryClasses}
+                classes={classes}
                 matched={matchIds}
                 unmatched={unmatchedIds}
+                matchLocalFindId={matchLocalFindId}
+                associateId={associateId}
+                matchedLabel={matchedLabel}
+                associateLabel={associateLabel}
+                projectName={projectName}
+                caseIds={caseIds}
                 error={overMaxTerms ? errorText : null}
               />
             )}
@@ -216,8 +269,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="primary"
                 onClick={closeModalWrapper}
-                style={{ backgroundColor: '#566672' }}
-                className={classes.button}
+                className={clsx(classes.button, classes.cancelBtn)}
                 id="local_find_upload_cancel"
               >
                 Cancel
@@ -226,8 +278,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="blueGrey"
                 onClick={clearData}
-                style={{ backgroundColor: '#437BBE' }}
-                className={classes.button}
+                className={clsx(classes.button, classes.clearBtn)}
                 id="local_find_upload_clear"
               >
                 Clear
@@ -236,8 +287,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="blueGrey"
                 onClick={applySearchWrapper}
-                style={overMaxTerms ? undefined : { backgroundColor: '#03A383' }}
-                className={classes.button}
+                className={clsx(
+                  classes.button,
+                  { [classes.submitBtn]: !overMaxTerms },
+                )}
                 disabled={overMaxTerms}
                 id="local_find_upload_submit"
               >
