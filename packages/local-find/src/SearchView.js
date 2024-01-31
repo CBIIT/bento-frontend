@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button } from '@material-ui/core';
+import clsx from 'clsx';
 import SearchList from './SearchBox/components/SearchList';
 import { resetUploadData } from './store/actions/Actions';
 
@@ -35,7 +36,7 @@ const SearchView = (props) => {
 
   return (
     <div
-      className={classes.searchContainer}
+      className={clsx(classes.searchContainer, 'searchContainer')}
       onFocus={eventHandler}
       onClick={eventHandler}
       hidden={hidden}
@@ -53,13 +54,13 @@ const SearchView = (props) => {
         variant="contained"
         disableElevation
         onClick={() => setShowCasesModal(true)}
-        className={classes.uploadButton}
+        className={clsx(classes.uploadButton, 'uploadButton')}
         id="local_find_upload_open"
       >
         { matchedFiles.length !== 0 ? `View ${uploadText} Set` : `Upload ${uploadText} Set` }
-        <span className={classes.iconSpan}>
+        <span className={clsx(classes.iconSpan, 'iconSpan')}>
           <img
-            className={classes.uploadIcon}
+            className={clsx(classes.uploadIcon, 'uploadIcon')}
             src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
             alt="upload icon"
           />
