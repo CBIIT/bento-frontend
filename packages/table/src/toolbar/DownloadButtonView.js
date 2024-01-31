@@ -3,7 +3,9 @@ import { useApolloClient } from '@apollo/client';
 import {
   IconButton,
   Tooltip,
+  Button,
 } from '@material-ui/core';
+// import ToolTip from '@bento-core/tool-tip';
 import { CloudDownload } from '@material-ui/icons';
 import { downloadJson } from '../util/downloadTable';
 
@@ -12,10 +14,27 @@ const downloadButtonStyle = {
   marginTop: '7px',
 };
 
+// Default style for Download Button with Text.
+const DEFAULT_BUTTON_STYLE = {
+  width: '223px',
+  height: '41px',
+  borderRadius: '5px',
+  backgroundColor: '#2A6E93',
+  color: '#fff',
+  marginTop: '10px',
+  fontFamily: 'poppins',
+  '& #cloudIcon': {
+    margin: '10px',
+    marginTop: '6px',
+  },
+};
+
 const DownloadButton = ({
   count,
   queryVariables,
   table,
+  buttonConfig = {},
+  isIcon = false,
 }) => {
   if (table.paginationAPIField === 'filesInList') {
     return <></>;
@@ -53,7 +72,11 @@ const DownloadButton = ({
     downloadSCSVFile();
   }, [queryVariables]);
 
-  return (
+  const {
+    buttonStyle, title = 'DOWNLOAD CSV', cloudIcon = false,
+  } = buttonConfig;
+
+  return isIcon ? (
     <Tooltip title="Download filtered results as a CSV">
       <IconButton
         onClick={downloadTableCSV}
@@ -61,6 +84,18 @@ const DownloadButton = ({
         <CloudDownload />
       </IconButton>
     </Tooltip>
+  ) : (
+    <>
+      <Button
+        onClick={downloadTableCSV}
+        style={buttonStyle || DEFAULT_BUTTON_STYLE}
+        disableRipple
+      >
+        {title}
+        {' '}
+        {cloudIcon ? <CloudDownload style={{ margin: '6px 0px 10px 10px' }} /> : ''}
+      </Button>
+    </>
   );
 };
 

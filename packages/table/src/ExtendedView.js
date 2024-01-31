@@ -32,6 +32,7 @@ const ExtendedView = ({
     download = false,
     manageViewColumns = false,
     pagination = false,
+    downloadButtonConfig,
   } = extendedViewConfig;
 
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
@@ -39,9 +40,12 @@ const ExtendedView = ({
     <ThemeProvider theme={themeConfig}>
       {(numSelected === 0 && (download || manageViewColumns)) && (
       <Toolbar className="downloadColumnView">
-        {/* <DownloadButton
-          download={download}
-        /> */}
+        <DownloadButton
+          count={table.totalRowCount || 0}
+          queryVariables={queryVariables}
+          table={table}
+          buttonConfig={downloadButtonConfig}
+        />
         <ManageColumnView
           table={table}
           manageViewColumns={manageViewColumns}
@@ -64,11 +68,13 @@ const ExtendedView = ({
                 queryVariables={queryVariables}
                 table={table}
               />
-              <DownloadButton
+              {/* TODO: Commented out this section, Make this options configrable on Bento. */}
+              {/* <DownloadButton
                 count={table.totalRowCount || 0}
                 queryVariables={queryVariables}
                 table={table}
-              />
+                isIcon={false}
+              /> */}
             </div>
           )
         }
