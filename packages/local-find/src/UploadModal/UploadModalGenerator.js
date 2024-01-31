@@ -89,6 +89,14 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.maxSearchTerms
     : DEFAULT_CONFIG.config.maxSearchTerms;
 
+  const listTitleIds = config && config.listTitleIds && typeof config.listTitleIds === 'string'
+    ? config.listTitleIds
+    : DEFAULT_CONFIG.config.listTitleIds;
+
+  const listTitleUpload = config && config.listTitleUpload && typeof config.listTitleUpload === 'string'
+    ? config.listTitleUpload
+    : DEFAULT_CONFIG.config.listTitleUpload;
+
   const stateProps = (state) => ({
     metadata: state.localFind.uploadMetadata,
   });
@@ -215,7 +223,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
               <div className={classes.textSection}>
                 <div className={classes.inputLabel}>
                   <Typography>
-                    <p className={classes.listTitle}>Add a list of Case IDs:</p>
+                    <p className={classes.listTitle}>{listTitleIds}</p>
                   </Typography>
                   {inputTooltip ? generateToolTip(inputTooltip) : null}
                 </div>
@@ -232,7 +240,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 <div className={classes.orTitle}>or</div>
                 <div className={classes.inputLabel}>
                   <Typography>
-                    <p className={classes.listTitle}>Choose a file to upload:</p>
+                    <p className={classes.listTitle}>{listTitleUpload}</p>
                   </Typography>
                   {uploadTooltip ? generateToolTip(uploadTooltip) : null}
                 </div>

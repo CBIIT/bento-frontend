@@ -21,7 +21,7 @@ import { resetUploadData } from './store/actions/Actions';
 const SearchView = (props) => {
   const {
     classes, hidden, state, resetUpload,
-    UploadModal, SearchBox, config
+    UploadModal, SearchBox, config,
   } = props;
 
   const [showCasesModal, setShowCasesModal] = useState(false);

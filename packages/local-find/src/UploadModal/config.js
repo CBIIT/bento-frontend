@@ -27,6 +27,8 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     associateLabel: 'ASSOCIATED PROGRAM',
     projectName: 'BENTO',
     caseIds: 'Case IDs',
+    listTitleIds: 'Add a list of Case IDs:',
+    listTitleUpload: 'Choose a file to upload:',
   },
 
   // Helper functions used by the component

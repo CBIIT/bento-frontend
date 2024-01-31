@@ -48,6 +48,9 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     associateId: 'program_id',                  // The property(key) name for the second column in the backend response object 
     associateLabel: 'ASSOCIATED PROGRAM',       // The header text of the second column of the matched summary table in the Upload Modal
     projectName: 'BENTO',                       // The project name that appears in the text that appears when matching id is found 
+    listTitleIds: 'Add a list of Case IDs:',    // Field for chaning text lebel of input caseIds/subjects
+ 
+    listTitleUpload: 'Choose a file to upload:',// Field for chaning text lebel of file upload button
   },
 
   // Helper functions used by the component
