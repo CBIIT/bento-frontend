@@ -124,6 +124,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const [fileContent, setFileContent] = useState(metadata.fileContent || '');
       const [matchIds, setMatchIds] = useState(metadata.matched || []);
       const [unmatchedIds, setUnmatchedIds] = useState(metadata.unmatched || []);
+      const [isClearButtonDisabled, setIsClearButtonDisabled] = useState(true);
 
       const overMaxTerms = matchIds.length > maxTerms;
       const errorText = `Total number of cases exceeds the maximum of ${maxTerms} cases.`;
@@ -132,6 +133,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
         setFileContent('');
         setMatchIds([]);
         setUnmatchedIds([]);
+        setIsClearButtonDisabled(true);
         setUploadedFileName('');
         updateMetadata({});
       };
@@ -188,6 +190,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
         const { matched, unmatched } = await searchMatches(searchTokens);
         setMatchIds(matched);
         setUnmatchedIds(unmatched);
+        setIsClearButtonDisabled(false);
       };
 
       const handleChange = ({ target: { value } }) => {
@@ -283,6 +286,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 onClick={clearData}
                 className={clsx(classes.button, classes.clearBtn)}
                 id="local_find_upload_clear"
+                disabled={isClearButtonDisabled}
               >
                 Clear
               </Button>
@@ -294,7 +298,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   classes.button,
                   { [classes.submitBtn]: !overMaxTerms },
                 )}
-                disabled={overMaxTerms}
+                disabled={overMaxTerms || !matchIds.length}
                 id="local_find_upload_submit"
               >
                 Submit
