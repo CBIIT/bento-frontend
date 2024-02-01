@@ -27,9 +27,6 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.displayAllActiveFilters
     : DEFAULT_CONFIG.config.displayAllActiveFilters;
 
-  // const group = config && typeof config.group === 'string'
-  //   ? config.group : DEFAULT_CONFIG.config.group;
-
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
     : DEFAULT_CONFIG.functions.clearAll;

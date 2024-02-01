@@ -12,11 +12,6 @@ export default {
      * @var {boolean}
      */
     displayAllActiveFilters: false,
-    /**
-     * key to access label text
-     * @var {boolean}
-     */
-    group: 'group',
   },
 
   /* Component Helper Functions */
