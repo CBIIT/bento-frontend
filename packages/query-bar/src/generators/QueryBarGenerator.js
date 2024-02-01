@@ -102,7 +102,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                       className={clsx(classes.filterCheckboxes, classes.localFindBackground)}
                       onClick={clearUpload}
                     >
-                      INPUT CASE SET
+                      INPUT PARTICIPANT SET
                     </span>
                   ) : null}
                 {autocomplete.length
@@ -133,7 +133,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                         className={clsx(classes.filterCheckboxes, classes.localFind)}
                         onClick={clearUpload}
                       >
-                        INPUT CASE SET
+                        INPUT PARTICIPANT SET
                       </span>
                       {' '}
                     </>
