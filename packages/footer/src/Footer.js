@@ -201,7 +201,6 @@ const styles = () => ({
   horizontalLine: {
     width: '100%',
     margin: '32px auto 16px auto',
-    backgroundColor: '#2E5573',
   },
   marginRight40: {
     marginRight: '40px',

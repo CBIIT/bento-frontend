@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/footer",
-  "version": "1.0.1-ins.0",
+  "version": "1.0.1-ins.1",
   "description": "ICDC frontend - Footer component (New Design) System Information placement is accomodate for the visibility.  <img width=\"1429\" alt=\"Screen Shot 2022-10-28 at 12 22 06 PM\" src=\"https://user-images.githubusercontent.com/8271695/198687445-8a5694cb-90db-4550-abe7-7b8282fe7f18.png\">",
   "main": "dist/index.js",
   "scripts": {
