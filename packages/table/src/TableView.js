@@ -12,7 +12,6 @@ import CustomTableBody from './body/CustomTblBody';
 import CustomToolbar from './toolbar/CustomToolbar';
 import DisplayErrMsg from './errMsg/DisplayErrMsg';
 import ExtendedView from './ExtendedView';
-import DownloadButton from './toolbar/DownloadButtonView';
 
 const CustomTableContainer = (props) => {
   const { children, customTheme } = props;
@@ -105,11 +104,6 @@ const TableView = ({
         page={table.page || 0}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
-      />
-      <DownloadButton
-        count={table.totalRowCount || 0}
-        queryVariables={queryVariables}
-        table={table}
       />
     </div>
   </>
