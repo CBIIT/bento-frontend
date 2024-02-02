@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { withStyles, Button } from '@material-ui/core';
 import { InputTypes } from '@bento-core/facet-filter';
@@ -117,137 +118,155 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
       return (
         <>
           <div className={classes.queryWrapper}>
-            <Button
-              className={classes.clearQueryButton}
-              color="primary"
-              variant="outlined"
-              onClick={clearAll}
-            >
-              Clear Query
-            </Button>
-            <span className={classes.divider} />
-            <span className={classes.queryContainer}>
-              {/* Local Find Selections */}
-              {/* TODO: Refactor this into a separate component */}
-              {(autocomplete.length || upload.length) ? (
-                <span>
-                  {/* Standalone case set button */}
-                  {(upload.length && !autocomplete.length)
-                    ? (
-                      <span
-                        className={clsx(classes.filterCheckboxes, classes.localFindBackground)}
-                        onClick={clearUpload}
-                      >
-                        INPUT CASE SET
-                      </span>
-                    ) : null}
-                  {autocomplete.length
-                    ? (
-                      <span>
-                        {' '}
-                        <span
-                          className={clsx(classes.filterName, classes.localFindBackground)}
-                          onClick={clearAutocomplete}
-                        >
-                          Case ID
-                        </span>
-                        {' '}
-                        {' '}
-                        <span className={classes.operators}>
-                          {(autocomplete.length === 1 && !upload.length) ? 'IS ' : 'IN '}
-                        </span>
-                      </span>
-                    ) : null}
+            <div>
+              {
+                config.useSpanForClearButton ? (
+                  <span className={classes.clearQueryButton} onClick={clearAll}>Clear</span>
+                ) : (
+                  <Button
+                    className={classes.clearQueryButton}
+                    color="primary"
+                    variant="outlined"
+                    onClick={clearAll}
+                    size="small"
+                  >
+                    Clear
+                  </Button>
+
+                )
+              }
+              <span className={classes.divider} />
+              <span className={classes.queryContainer}>
+                {/* Local Find Selections */}
+                {/* TODO: Refactor this into a separate component */}
+                {(autocomplete.length || upload.length) ? (
                   <span>
-                    {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
-                      ? <span className={classes.bracketsOpen}>(</span>
-                      : null}
-                    {upload.length && autocomplete.length ? (
-                      <>
-                        {' '}
+                    {/* Standalone case set button */}
+                    {(upload.length && !autocomplete.length)
+                      ? (
                         <span
-                          className={clsx(classes.filterCheckboxes, classes.localFind)}
+                          className={
+                            clsx(
+                              classes.filterCheckboxes,
+                              classes.localFindBackground,
+                              classes.standAloneInputSet,
+                            )
+                          }
                           onClick={clearUpload}
                         >
                           INPUT CASE SET
                         </span>
-                        {' '}
-                      </>
-                    ) : null}
-                    {autocomplete.slice(0, noOfItems).map((d, idx) => (
-                      <>
-                        <span
-                          className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
-                          key={idx}
-                          onClick={() => deleteAutocompleteItem(d.title)}
-                        >
-                          {d.title}
+                      ) : null}
+                    {autocomplete.length
+                      ? (
+                        <span>
+                          {' '}
+                          <span
+                            className={clsx(classes.filterName, classes.localFindBackground)}
+                            onClick={clearAutocomplete}
+                          >
+                            Case ID
+                          </span>
+                          {' '}
+                          {' '}
+                          <span className={classes.operators}>
+                            {(autocomplete.length === 1 && !upload.length) ? 'IS ' : 'IN '}
+                          </span>
                         </span>
-                        {idx === (noOfItems - 1) ? null : ' '}
-                      </>
-                    ))}
-                    {autocomplete.length > maxItems && (
-                      <>
-                        {
-                          displayAllActiveFilters
-                            ? (
-                              <span
-                                className={classes.expandBtn}
-                                onClick={() => setExpand(!expand)}
-                              >
-                                ...
-                              </span>
-                            )
-                            : '...'
+                      ) : null}
+                    <span>
+                      {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
+                        ? <span className={classes.bracketsOpen}>(</span>
+                        : null}
+                      {upload.length && autocomplete.length ? (
+                        <>
+                          {' '}
+                          <span
+                            className={clsx(classes.filterCheckboxes, classes.localFind)}
+                            onClick={clearUpload}
+                          >
+                            INPUT CASE SET
+                          </span>
+                          {' '}
+                        </>
+                      ) : null}
+                      {autocomplete.slice(0, noOfItems).map((d, idx) => (
+                        <>
+                          <span
+                            className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
+                            key={idx}
+                            onClick={() => deleteAutocompleteItem(d.title)}
+                          >
+                            {d.title}
+                          </span>
+                          {idx === (noOfItems - 1) ? null : ' '}
+                        </>
+                      ))}
+                      {autocomplete.length > maxItems && (
+                        <>
+                          {
+                            displayAllActiveFilters
+                              ? (
+                                <span
+                                  className={classes.expandBtn}
+                                  onClick={() => setExpand(!expand)}
+                                >
+                                  ...
+                                </span>
+                              )
+                              : '...'
                           }
-                      </>
-                    )}
-                    {(expand && autocomplete.length > maxItems) && (
-                      <span
-                        className={classes.collapseBtn}
-                        onClick={() => setExpand(!expand)}
-                      >
-                        {' LESS'}
-                      </span>
-                    )}
-                    {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
-                      ? <span className={classes.bracketsClose}>)</span>
-                      : null}
+                        </>
+                      )}
+                      {(expand && autocomplete.length > maxItems) && (
+                        <span
+                          className={classes.collapseBtn}
+                          onClick={() => setExpand(!expand)}
+                        >
+                          {' LESS'}
+                        </span>
+                      )}
+                      {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
+                        ? <span className={classes.bracketsClose}>)</span>
+                        : null}
+                    </span>
                   </span>
-                </span>
-              ) : null}
+                ) : null}
 
-              {/* Facet Sidebar Selections */}
-              {((autocomplete.length || upload.length) && mappedInputs.length)
-                ? <span className={classes.operators}> AND </span>
-                : null}
-              {mappedInputs.map((filter, index) => (
-                <span className={clsName(filter.section)}>
-                  <Filter
-                    index={index}
-                    type={filter.type}
-                    data={filter}
-                    maxItems={maxItems}
-                    displayAllActiveFilters={displayAllActiveFilters}
-                    classes={classes}
-                    onSectionClick={filter.type === CHECKBOX
-                      ? resetFacetSection
-                      : resetFacetSlider}
-                    onItemClick={filter.type === CHECKBOX
-                      ? resetFacetCheckbox
-                      : resetFacetSlider}
-                  />
-                </span>
-              ))}
-            </span>
+                {/* Facet Sidebar Selections */}
+                {((autocomplete.length || upload.length) && mappedInputs.length)
+                  ? <span className={classes.operators}> AND </span>
+                  : null}
+                {mappedInputs.map((filter, index) => (
+                  <span className={clsName(filter.section)}>
+                    <Filter
+                      index={index}
+                      type={filter.type}
+                      data={filter}
+                      maxItems={maxItems}
+                      displayAllActiveFilters={displayAllActiveFilters}
+                      classes={classes}
+                      onSectionClick={filter.type === CHECKBOX
+                        ? resetFacetSection
+                        : resetFacetSlider}
+                      onItemClick={filter.type === CHECKBOX
+                        ? resetFacetCheckbox
+                        : resetFacetSlider}
+                    />
+                  </span>
+                ))}
+              </span>
+            </div>
             {
               (viewQueryURL && queryURLRootPath) && (
-                <QueryUrl
-                  classes={classes}
-                  localFind={localFind}
-                  filterItems={mappedInputs}
-                  rootPath={queryURLRootPath}
-                />
+                <div>
+                  <QueryUrl
+                    classes={classes}
+                    localFind={localFind}
+                    filterItems={mappedInputs}
+                    rootPath={queryURLRootPath}
+                  />
+                </div>
               )
             }
           </div>
