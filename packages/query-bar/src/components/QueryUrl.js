@@ -156,9 +156,9 @@ const QueryUrl = ({
 
 const styles = () => ({
   urlContainer: {
+    display: 'flex',
     marginTop: '10px',
     minHeight: '10px',
-    marginBottom: '10px',
   },
   link: {
     lineBreak: 'anywhere',
@@ -197,7 +197,6 @@ const styles = () => ({
   },
   viewLinkToggleBtn: {
     height: '20px',
-    marginRight: '10px',
     fontFamily: 'Nunito',
     fontSize: '12px',
     fontWeight: '500',
@@ -208,6 +207,7 @@ const styles = () => ({
     textTransform: 'none',
     color: '#fff',
     float: 'left',
+    margin: '0px 10px 0px 0px',
     '&:hover': {
       backgroundColor: '#1D79A8',
       color: '#fff',
@@ -232,6 +232,7 @@ const styles = () => ({
   },
   copyIconBtn: {
     padding: '0px',
+    height: '20px',
     marginLeft: '10px',
     float: 'left',
   },
