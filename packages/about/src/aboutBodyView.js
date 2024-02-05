@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Link, withStyles } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 import XoomInOut from './xoomInOutView';
 
 const AboutBody = ({
@@ -297,11 +298,33 @@ const AboutBody = ({
         </div>
         )}
           </Grid>
-          {data.imageLocation === 'right'
+          {(data.imageLocation === 'right'
+            || (data.actionButtonLabel && data.actionLink))
             && (
-              <Grid item lg={3} md={3} sm={12} xs={12} className={classes.imageSection}>
-                {data.image}
-              </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12} className={classes.imageSection}>
+              {data.image}
+
+              {data.actionButtonLabel && data.actionLink && (
+                <div className={classes.actionSection}>
+                  {data.actionTitle && (
+                    <div className={classes.actionTitle}>
+                      {data.actionTitle}
+                    </div>
+                  )}
+                  <Link
+                    {...(data.actionLink && data.actionLink.includes('http')
+                      ? { href: data.actionLink, target: '_blank', rel: 'noreferrer' }
+                      : { component: RouterLink, to: data.actionLink })}
+                    title={data.actionButtonLabel}
+                    color="inherit"
+                    underline="none"
+                    className={classes.actionLink}
+                  >
+                    {data.actionButtonLabel}
+                  </Link>
+                </div>
+              )}
+            </Grid>
             )}
         </Grid>
       </div>
@@ -355,13 +378,61 @@ const styles = () => ({
     fontWeight: 'bold',
   }),
   contentSection: {
-    padding: (props) => (props.data.imageLocation === 'right'
+    padding: (props) => ((props.data.imageLocation === 'right' || (props.data.actionButtonLabel && props.data.actionLink))
       ? '8px 25px 8px 25px !important' : '8px 0px 8px 25px !important'),
+    marginBottom: (props) => (props.data.marginBottom ? props.data.marginBottom : 0),
     float: 'left',
     background: 'white',
   },
   imageSection: {
     float: 'left',
+  },
+  actionSection: {
+    display: 'flex',
+    width: '100%',
+    padding: '25px 25px 35px',
+    flexDirection: 'column',
+    alignItems: 'center',
+    flexShrink: 0,
+    border: '0.5px solid #98B5CB',
+    background: '#EBF3F7',
+    marginTop: '19px',
+  },
+  actionTitle: {
+    color: '#7A9BB1',
+    textAlign: 'center',
+    fontFamily: 'Lato',
+    fontSize: '19px',
+    fontStyle: 'normal',
+    fontWeight: '700',
+    lineHeight: '25px',
+    letterSpacing: '0.15px',
+    textTransform: 'uppercase',
+    wordBreak: 'break-word',
+    marginBottom: '22px',
+  },
+  actionLink: {
+    display: 'flex',
+    width: '210px',
+    height: 'fit-content',
+    minHeight: '45px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '10px',
+    flexShrink: '0',
+    borderRadius: '10px',
+    border: '1px solid #42779A',
+    background: '#0E6292',
+    color: '#FFF',
+    textAlign: 'center',
+    fontFamily: 'Lato',
+    fontSize: '12px',
+    fontStyle: 'normal',
+    fontWeight: 600,
+    lineHeight: 'normal',
+    letterSpacing: '1px',
+    wordBreak: 'break-word',
+    padding: '15.5px',
   },
   aboutSection: {
     padding: '0px 45px',
@@ -370,9 +441,9 @@ const styles = () => ({
     width: '100%',
   },
   linkIcon: {
-    width: '0.8em',
+    width: '1em',
     verticalAlign: 'sub',
-    margin: '0px 0px 2px 4px',
+    margin: '0px 0px 2px 2px',
   },
   link: (props) => ({
     color: props.linkColor,
