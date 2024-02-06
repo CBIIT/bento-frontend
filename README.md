@@ -1,13 +1,19 @@
 # Bento Frontend Installation Guide
 
 🍱 Welcome to the Bento Frontend Installation Guide! 🍱
-
-**Prerequisites:**
+---
+### Prerequisites:
 - Node 16.17.1
 - NPM 8.15.0
 - Lerna 6.6.7
 
-**Installation Steps:**
+### Lerna Installation Steps:
+
+1. **Install Lerna globally:**
+   ```bash
+   npm install -g lerna@6.6.2
+   
+### Bento Frontend Installation Steps:
 
 1. **Clone Bento Frontend Repository:**
    ```bash
@@ -37,5 +43,17 @@
    ```bash
    lerna run start
    ```
+
+---
+
+### Creating Custom Applications:
+
+🛠️ If you want to create a custom application using Bento, you can use the following command:
+
+```bash
+npx @bento-core/create-bento-app <My Application Name>
+```
+
+ℹ️ This command will scaffold a new Bento application for you to customize according to your needs.
 
 🚀 Following these steps should have Bento Frontend up and running on your system. Enjoy exploring Bento! 🚀
