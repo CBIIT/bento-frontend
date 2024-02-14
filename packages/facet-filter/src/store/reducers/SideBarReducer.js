@@ -67,12 +67,14 @@ export function sideBarReducerGenerator() {
           return {
             ...state,
             filterState: { ...updateState },
+            currentActionType: sideBarActionTypes.FACET_VALUE_CHANGED,
           };
         case sideBarActionTypes.ON_TOGGLE_SLIDER:
           updateState = updateSiderValue({ ...state, ...payload });
           return {
             ...state,
             filterState: { ...updateState },
+            currentActionType: sideBarActionTypes.ON_TOGGLE_SLIDER,
           };
         case sideBarActionTypes.CLEAR_ALL_FILTERS:
           return {
@@ -97,10 +99,12 @@ export function sideBarReducerGenerator() {
           return {
             ...state,
             filterState: { ...updateState },
+            currentActionType: sideBarActionTypes.CLEAR_SLIDER_SECTION,
           };
         case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
           return {
             filterState: payload,
+            currentActionType: sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE,
           };
         default:
           return state;

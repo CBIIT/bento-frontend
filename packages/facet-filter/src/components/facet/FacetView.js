@@ -38,12 +38,14 @@ const FacetView = ({
   useEffect(() => {
     if (enableFacetCollapse) {
       const actionType = currentActionType[datafield];
+      console.log(currentActionType);
       if ((actionType && actionType === sideBarActionTypes.CLEAR_FACET_SECTION)
         || currentActionType === sideBarActionTypes.CLEAR_ALL_FILTERS) {
+        console.log('set to false');
         setExpand(false);
       }
     }
-  }, [currentActionType]);
+  }, [filterState]);
 
   /**
    * expand section incase of active local search
