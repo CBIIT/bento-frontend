@@ -62,7 +62,7 @@ const ViewFullLinkComponent = ({
 const QueryUrl = ({
   classes,
   filterItems,
-  localFind,
+  localFind = {},
   rootPath,
 }) => {
   const [display, setDisplay] = useState(false);
@@ -72,8 +72,6 @@ const QueryUrl = ({
 
   const [open, toggleOpen] = useState(false);
 
-  const { autocomplete = [], upload } = localFind;
-
   const pathFilterParams = filterItems.reduce((acc, item) => {
     const { datafield, items = [] } = item;
     acc[datafield] = items;
@@ -82,8 +80,7 @@ const QueryUrl = ({
 
   const query = JSON.stringify({
     ...pathFilterParams,
-    autocomplete,
-    upload,
+    ...localFind,
   });
   const url = encodeURI(rootPath.concat(query));
 
