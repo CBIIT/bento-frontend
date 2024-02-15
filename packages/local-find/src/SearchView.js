@@ -21,7 +21,7 @@ import { resetUploadData } from './store/actions/Actions';
 const SearchView = (props) => {
   const {
     classes, hidden, state, resetUpload,
-    UploadModal, SearchBox, config,
+    UploadModal, SearchBox, config, uploadButtonEnabled = false,
   } = props;
 
   const [showCasesModal, setShowCasesModal] = useState(false);
@@ -60,22 +60,24 @@ const SearchView = (props) => {
         />
       ) : null}
       <SearchBox classes={classes} />
-      <Button
-        variant="contained"
-        disableElevation
-        onClick={() => setShowCasesModal(true)}
-        className={classes.uploadButton}
-        id="local_find_upload_open"
-      >
-        { matchedFiles.length !== 0 ? `View ${uploadText} Set` : `Upload ${uploadText} Set` }
-        <span className={classes.iconSpan}>
-          <img
-            className={classes.uploadIcon}
-            src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
-            alt="upload icon"
-          />
-        </span>
-      </Button>
+      {uploadButtonEnabled ? (
+        <Button
+          variant="contained"
+          disableElevation
+          onClick={() => setShowCasesModal(true)}
+          className={classes.uploadButton}
+          id="local_find_upload_open"
+        >
+          { matchedFiles.length !== 0 ? `View ${uploadText} Set` : `Upload ${uploadText} Set` }
+          <span className={classes.iconSpan}>
+            <img
+              className={classes.uploadIcon}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
+              alt="upload icon"
+            />
+          </span>
+        </Button>
+      ) : null}
       <UploadModal
         open={showCasesModal}
         onCloseModal={() => setShowCasesModal(false)}
