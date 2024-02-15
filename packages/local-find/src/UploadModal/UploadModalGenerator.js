@@ -286,7 +286,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 onClick={clearData}
                 className={clsx(classes.button, classes.clearBtn)}
                 id="local_find_upload_clear"
-                disabled={isClearButtonDisabled}
+                disabled={isClearButtonDisabled || !matchIds.length}
               >
                 Clear
               </Button>
