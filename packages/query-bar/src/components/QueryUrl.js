@@ -18,7 +18,7 @@ const ViewFullLinkComponent = ({
   maxWidth = 1200,
 }) => {
   const linkRef = useRef(null);
-  const [expandLink, setExpand] = useState(false);
+  const [collapseLink, setCollapseLink] = useState(false);
 
   /**
    * Compute url link width based on the windowsize
@@ -26,12 +26,16 @@ const ViewFullLinkComponent = ({
   useEffect(() => {
     const urlWidth = linkRef?.current?.offsetWidth;
     if (urlWidth > maxWidth / 2) {
-      setExpand(true);
+      setCollapseLink(true);
     }
   }, []);
 
   const expandUrl = () => {
-    setExpand(!expandLink);
+    setCollapseLink(false);
+  };
+
+  const collapseUrl = () => {
+    setCollapseLink(true);
   };
 
   return (
@@ -39,12 +43,17 @@ const ViewFullLinkComponent = ({
       <span ref={linkRef} className={classes.link}>
         <span
           className={clsx(classes.viewLink,
-            { [classes.collapseLink]: expandLink })}
+            { [classes.collapseLink]: collapseLink })}
         >
-          <span className={classes.urlView}>
+          <span
+            className={clsx(classes.urlView,
+              { [classes.urlViewBtn]: !collapseLink })}
+            type="button"
+            onClick={collapseUrl}
+          >
             {url}
           </span>
-          {(expandLink) && (
+          {(collapseLink) && (
             <span
               className={classes.expandLinkBtn}
               type="button"
@@ -174,6 +183,9 @@ const styles = () => ({
   },
   viewLink: {
     margin: '0',
+  },
+  urlViewBtn: {
+    cursor: 'pointer',
   },
   collapseLink: {
     maxHeight: '1em',
