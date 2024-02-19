@@ -14,7 +14,7 @@ import DropdownMenu from './components/DropdownMenu';
 const drawerWidth = 240;
 
 const NavBar = ({
-  classes, isSidebarOpened, navBarData,
+  classes, isSidebarOpened, navBarData, externalLinksFirst,
   navBarCartData, navBarstyling, numberOfCases, components = {},
   externalLinksFlag, externalLinks, LoginComponent,
 }) => {
@@ -78,6 +78,7 @@ const NavBar = ({
                   navBarstyling={navBarstyling}
                   externalLinksFlag={externalLinksFlag}
                   externalLinks={externalLinks}
+                  externalLinksFirst={externalLinksFirst}
                 />
               )
               : (
