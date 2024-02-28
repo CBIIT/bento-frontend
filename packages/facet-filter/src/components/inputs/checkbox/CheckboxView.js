@@ -102,6 +102,7 @@ const CheckBoxView = ({
           disableRipple
           color="secondary"
           classes={{ root: classes.checkboxRoot }}
+          inputProps={{ 'aria-label': 'Select' }}
         />
         { tooltip ? (
           <Tooltip id={datafield} title={tooltip}>
