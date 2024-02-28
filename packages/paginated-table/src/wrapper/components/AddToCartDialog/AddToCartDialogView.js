@@ -26,7 +26,7 @@ function AddToCartDialogView(props) {
     );
   }
 
-  const CustomDialog = DisplayCustomText.component;
+  const CustomDialog = DisplayCustomText && DisplayCustomText.component;
 
   return (
     <>
@@ -55,7 +55,7 @@ function AddToCartDialogView(props) {
           }
         </DialogContent>
         <DialogActions className="dialog_actions">
-          { DisplayCustomText.actions.map((a) => (
+          { DisplayCustomText && DisplayCustomText.actions && DisplayCustomText.actions.map((a) => (
             <Button
               className={a.className}
               onClick={() => {
