@@ -92,7 +92,15 @@ const PaginatedPanel = (props) => {
       );
     }
 
-    if (!data || data.length <= 0) return <div>No data</div>;
+    if (!data || data.length <= 0) {
+      return (
+        <div className={classes.noData}>
+          No results found for "
+          <strong>{searchText}</strong>
+          "
+        </div>
+      );
+    }
 
     return data.map((d, index) => (
       <ResultCard
@@ -243,6 +251,10 @@ const styles = {
     fontFamily: 'Inter',
   },
   loadingMessageWrapper: {
+    textAlign: 'center',
+  },
+  noData: {
+    margin: 'auto',
     textAlign: 'center',
   },
 };
