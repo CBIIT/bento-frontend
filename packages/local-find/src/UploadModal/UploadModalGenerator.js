@@ -5,6 +5,7 @@ import {
   TextareaAutosize, IconButton, withStyles,
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
+// eslint-disable-next-line import/no-unresolved
 import ToolTip from '@bento-core/tool-tip';
 import FileUploader from './components/FileUploader';
 import SummaryTable from './components/SummaryTable';

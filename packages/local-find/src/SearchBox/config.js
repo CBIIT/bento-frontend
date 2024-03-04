@@ -5,7 +5,7 @@
 export const DEFAULT_CONFIG_SEARCHBAR = {
   // Misc. Configuration Options
   config: {
-    inputPlaceholder: 'e.g. BENTO-CASE-06, BENTO-CASE-22',
+    inputPlaceholder: 'Program Names',
     noOptionsText: 'No matching items found',
     searchType: 'subjectIds',
   },

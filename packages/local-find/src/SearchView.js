@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React
+// , { useState }
+from 'react';
 import { connect } from 'react-redux';
-import { Button } from '@material-ui/core';
+// import { Button } from '@material-ui/core';
 import SearchList from './SearchBox/components/SearchList';
 import { resetUploadData } from './store/actions/Actions';
 
@@ -19,11 +21,15 @@ import { resetUploadData } from './store/actions/Actions';
  */
 const SearchView = (props) => {
   const {
-    classes, hidden, state, resetUpload,
-    UploadModal, SearchBox,
+    classes,
+    hidden,
+    state,
+    resetUpload,
+    // UploadModal,
+    SearchBox,
   } = props;
 
-  const [showCasesModal, setShowCasesModal] = useState(false);
+  // const [showCasesModal, setShowCasesModal] = useState(false);
   const matchedFiles = state && state.upload ? state.upload : [];
 
   const eventHandler = (e) => {
@@ -46,7 +52,7 @@ const SearchView = (props) => {
         />
       ) : null}
       <SearchBox classes={classes} />
-      <Button
+      {/* <Button
         variant="contained"
         disableElevation
         onClick={() => setShowCasesModal(true)}
@@ -61,11 +67,11 @@ const SearchView = (props) => {
             alt="upload icon"
           />
         </span>
-      </Button>
-      <UploadModal
+      </Button> */}
+      {/* <UploadModal
         open={showCasesModal}
         onCloseModal={() => setShowCasesModal(false)}
-      />
+      /> */}
     </div>
   );
 };
