@@ -23,10 +23,6 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.maxItems
     : DEFAULT_CONFIG.config.maxItems;
 
-  const displayAllActiveFilters = config && typeof config.displayAllActiveFilters === 'boolean'
-    ? config.displayAllActiveFilters
-    : DEFAULT_CONFIG.config.displayAllActiveFilters;
-
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
     : DEFAULT_CONFIG.functions.clearAll;
@@ -63,7 +59,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
       const { autocomplete, upload } = localFind;
 
-      const [expand, setExpand] = useState(false);
+      const [expand, setExpand] = useState(true);
       const noOfItems = expand ? autocomplete.length : maxItems;
 
       useEffect(() => {
@@ -77,22 +73,11 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
         .map((facet) => {
           if (facet.type !== CHECKBOX) { return facet; }
 
-          const { data, items } = facet;
+          const { items } = facet;
           const itemKeys = Object.keys(items);
           itemKeys.sort((a, b) => a.localeCompare(b));
 
-          /* Find any SELECTED CHECKBOXES that do NOT have any data
-           * and remove them from the list of selected checkboxes artificially */
-          if (!displayAllActiveFilters) {
-            itemKeys.forEach((item) => {
-              if (data.findIndex((d) => d.group === item) < 0) {
-                itemKeys.splice(itemKeys.indexOf(item), 1);
-              }
-            });
-          }
-
           /**
-          * Set displayAllActiveFilters to True
           * to display all the active filters in the query bar
           * ICDC-3287
           */
@@ -177,18 +162,12 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   ))}
                   {autocomplete.length > maxItems && (
                     <>
-                      {
-                        displayAllActiveFilters
-                          ? (
-                            <span
-                              className={classes.expandBtn}
-                              onClick={() => setExpand(!expand)}
-                            >
-                              ...
-                            </span>
-                          )
-                          : '...'
-                        }
+                      <span
+                        className={classes.expandBtn}
+                        onClick={() => setExpand(!expand)}
+                      >
+                        ...
+                      </span>
                     </>
                   )}
                   {(expand && autocomplete.length > maxItems) && (
@@ -217,7 +196,6 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   type={filter.type}
                   data={filter}
                   maxItems={maxItems}
-                  displayAllActiveFilters={displayAllActiveFilters}
                   classes={classes}
                   onSectionClick={filter.type === CHECKBOX
                     ? resetFacetSection
