@@ -21,19 +21,11 @@ const FacetFilterController = (props) => {
    * 2. subject state
    */
   const {
-    activeFilters,
+    filterState,
     data,
     facetsConfig,
     facetSectionConfig,
   } = props;
-
-  const filterState = {};
-  // console.log(activeFilters);
-  for (const [key, value] of Object.entries(activeFilters)) {
-    if (key !== 'participant_ids') {
-      filterState[key] = value;
-    }
-  }
 
   const updateFacetState = (filterSections) => {
     const updateSections = [...filterSections];
@@ -42,8 +34,7 @@ const FacetFilterController = (props) => {
         updateSections.forEach((sideBar) => {
           if (sideBar.type === InputTypes.CHECKBOX && sideBar.datafield === key) {
             sideBar.facetValues.forEach((item) => {
-              // item.isChecked = value[item.name] ? value[item.name] : false;
-              item.isChecked = value.indexOf(item.name) > -1;
+              item.isChecked = value[item.name] ? value[item.name] : false;
             });
           }
           if (sideBar.type === InputTypes.SLIDER && sideBar.datafield === key) {
@@ -106,30 +97,11 @@ const FacetFilterController = (props) => {
         } = updateFacet;
         if (data[apiForFiltering]) {
           if (Array.isArray(data[apiForFiltering])) {
-            const validValues = [];
             const updateField = data[apiForFiltering].map((item) => {
               const addField = { ...item };
               addField.name = item[field];
-              validValues.push(addField.name);
               return addField;
             });
-            /**
-             * Check if there are orphen filter values and add them to the facet values
-             */
-            if (filterState !== undefined) {
-              const facetFilter = filterState[facet.datafield];
-              if (facetFilter) {
-                facetFilter.forEach((item) => {
-                  if (validValues.indexOf(item) === -1) {
-                    const tmp = {};
-                    tmp.group = item;
-                    tmp.name = item;
-                    tmp.subjects = 0;
-                    updateField.push(tmp);
-                  }
-                });
-              }
-            }
             updateFacet.facetValues = updateField;
           }
           /**
@@ -138,13 +110,19 @@ const FacetFilterController = (props) => {
           if (facet.type === InputTypes.SLIDER) {
             const lowerBound = data[apiForFiltering][ApiLowerBoundName];
             const upperBound = data[apiForFiltering][ApiUpperBoundName];
-            updateFacet.minLowerBound = lowerBound;
-            updateFacet.maxUpperBound = upperBound;
-            updateFacet.facetValues = [lowerBound, upperBound];
-            updateFacet.style = facet.style;
+            if (lowerBound === 0 && upperBound === 0) {
+              updateFacet.filterOut = true;
+            } else {
+              updateFacet.minLowerBound = lowerBound;
+              updateFacet.maxUpperBound = upperBound;
+              updateFacet.facetValues = [lowerBound, upperBound];
+              updateFacet.style = facet.style;
+            }
           }
         }
-        updateFacets.push(updateFacet);
+        if (!updateFacet.filterOut) {
+          updateFacets.push(updateFacet);
+        }
       });
     }
     return updateFacets;
@@ -170,4 +148,8 @@ const FacetFilterController = (props) => {
   );
 };
 
-export default connect(null, null)(FacetFilterController);
+const mapStateToProps = (state) => ({
+  filterState: state.statusReducer.filterState,
+});
+
+export default connect(mapStateToProps, null)(FacetFilterController);
