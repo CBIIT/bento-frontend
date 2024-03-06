@@ -50,7 +50,7 @@ const CheckBoxView = ({
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
-      name: name,
+      name: checkboxItem[field],
       datafield: datafield,
       isChecked: !isChecked,
     };
