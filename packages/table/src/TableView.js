@@ -94,7 +94,7 @@ const TableView = ({
         table={table}
       />
     )}
-    <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : downloadAreaStyle}>
+    <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : (table.paginationCustomStyle && table.paginationCustomStyle.bottomPagination) ? table.paginationCustomStyle.bottomPagination : downloadAreaStyle}>
       <CustomPagination
         customTheme={themeConfig.tblPgn}
         rowsPerPageOptions={[10, 25, 50, 100]}
