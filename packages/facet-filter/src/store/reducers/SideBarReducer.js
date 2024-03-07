@@ -64,10 +64,11 @@ export function sideBarReducerGenerator() {
       switch (type) {
         case sideBarActionTypes.FACET_VALUE_CHANGED:
           updateState = onToggleStateUpdate({ ...state, ...payload });
+          const { actionType = sideBarActionTypes.FACET_VALUE_CHANGED } = payload;
           return {
             ...state,
             filterState: { ...updateState },
-            currentActionType: sideBarActionTypes.FACET_VALUE_CHANGED,
+            currentActionType: actionType,
           };
         case sideBarActionTypes.ON_TOGGLE_SLIDER:
           updateState = updateSiderValue({ ...state, ...payload });

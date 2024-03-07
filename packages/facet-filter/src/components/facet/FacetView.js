@@ -34,10 +34,20 @@ const FacetView = ({
    * Collapse expanded facet or facets
    * 1. on clear facet section
    * 2. on clear all
+   * 3. on uncheck facet from DQB
    */
   useEffect(() => {
     if (enableFacetCollapse) {
       const actionType = currentActionType[datafield];
+      // collapse facet if uncheck from DQB
+      if (actionType && actionType === sideBarActionTypes.FACET_VALUE_CHANGED) {
+        const { isFacetOrigin } = currentActionType;
+        if (!isFacetOrigin) {
+          if (Object.keys(filterState[datafield] || {}).length === 0) {
+            setExpand(false);
+          }
+        }
+      }
       if ((actionType && actionType === sideBarActionTypes.CLEAR_FACET_SECTION)
         || currentActionType === sideBarActionTypes.CLEAR_ALL_FILTERS) {
         setExpand(false);

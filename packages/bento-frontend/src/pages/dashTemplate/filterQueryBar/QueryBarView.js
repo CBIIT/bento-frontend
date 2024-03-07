@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { clearAllFilters, clearFacetSection, clearSliderSection, toggleCheckBox } from '@bento-core/facet-filter';
+import { clearAllFilters, clearFacetSection, clearSliderSection, toggleCheckBox, sideBarActionTypes } from '@bento-core/facet-filter';
 import { resetAllData, resetUploadData, updateAutocompleteData } from '@bento-core/local-find';
 import { QueryBarGenerator } from '@bento-core/query-bar';
 import { facetsConfig } from '../../../bento/dashTemplate';
@@ -61,7 +61,11 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
         dispatch(toggleCheckBox({
           datafield: section.datafield,
           isChecked: false,
-          name: checkbox
+          name: checkbox,
+          actionType: {
+            [section.datafield]: sideBarActionTypes.FACET_VALUE_CHANGED,
+            isFacetOrigin: false,
+          },
         }));
       },
     },

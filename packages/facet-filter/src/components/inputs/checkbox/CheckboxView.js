@@ -24,6 +24,7 @@ import {
   CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
 import styles from './CheckboxStyle';
+import { sideBarActionTypes } from '../../../store/actions/ActionTypes';
 
 const CheckBoxView = ({
   classes,
@@ -49,6 +50,10 @@ const CheckBoxView = ({
       name: name,
       datafield: datafield,
       isChecked: !isChecked,
+      actionType: {
+        [datafield]: sideBarActionTypes.FACET_VALUE_CHANGED,
+        isFacetOrigin: true,
+      },
     };
     onToggle(toggleCheckBoxItem);
   };
