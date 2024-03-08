@@ -79,17 +79,17 @@ export default () => ({
     borderRight: '2px solid #969696',
     marginLeft: 7,
   },
-  /* Custom Styling by Project */
+  /* Custom Styling by Programs */
   localFind: {
     color: '#10A075',
   },
   localFindBackground: {
     backgroundColor: '#C0E9D7',
   },
-  facetSectionProjects: {
+  facetSectionPrograms: {
     color: '#10A075',
   },
-  facetSectionProjectsBackground: {
+  facetSectionProgramsBackground: {
     backgroundColor: '#C0E9D7',
   },
   facetSectionFiles: {
