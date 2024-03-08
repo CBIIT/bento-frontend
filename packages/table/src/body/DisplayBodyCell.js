@@ -6,6 +6,7 @@ import {
 import { cellTypes } from '../util/Types';
 import CustomLinkView from './components/CustomLinkView';
 import ExternalLinkView from './components/ExternalLinkView';
+import ConditionalExternalLinkView from './components/ConditionalExternalLinkView';
 import DataFormatView from './components/DataFormatView';
 
 /**
@@ -50,6 +51,13 @@ const ViewCell = ({
     case cellTypes.EXTERNAL_LINK:
       return (
         <ExternalLinkView
+          row={row}
+          column={column}
+        />
+      );
+    case cellTypes.CONDITIONAL_EXTERNAL_LINK:
+      return (
+        <ConditionalExternalLinkView
           row={row}
           column={column}
         />
