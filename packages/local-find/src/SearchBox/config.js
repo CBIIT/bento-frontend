@@ -7,7 +7,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
   config: {
     inputPlaceholder: 'Program Names',
     noOptionsText: 'No matching items found',
-    searchType: 'programNames',
+    searchType: 'program_name',
   },
 
   // Helper functions used by the component
