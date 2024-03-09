@@ -63,24 +63,28 @@ const TableView = ({
     <CustomTableContainer
       customTheme={themeConfig.tblContainer || {}}
     >
-      <Table>
-        <TableHeader
-          customTheme={themeConfig.tblHeader}
-          table={table}
-          rows={tableRows}
-          count={totalRowCount}
-          toggleSelectAll={onToggleSelectAll}
-          onDeleteAllFiles={onDeleteAllFiles}
-          sortByColumn={onSortByColumn}
-        />
-        <CustomTableBody
-          customTheme={themeConfig.tblBody}
-          rows={tableRows}
-          table={table}
-          onRowSelectChange={onRowSelectChange}
-          onDeleteRow={onDeleteRow}
-        />
-      </Table>
+      <TableContainer
+        component={Paper}
+      >
+        <Table {...table.tblAttr}>
+          <TableHeader
+            customTheme={themeConfig.tblHeader}
+            table={table}
+            rows={tableRows}
+            count={totalRowCount}
+            toggleSelectAll={onToggleSelectAll}
+            onDeleteAllFiles={onDeleteAllFiles}
+            sortByColumn={onSortByColumn}
+          />
+          <CustomTableBody
+            customTheme={themeConfig.tblBody}
+            rows={tableRows}
+            table={table}
+            onRowSelectChange={onRowSelectChange}
+            onDeleteRow={onDeleteRow}
+          />
+        </Table>
+      </TableContainer>
     </CustomTableContainer>
     {tableRows.length === 0 && (
       <DisplayErrMsg
@@ -90,7 +94,7 @@ const TableView = ({
     )}
     <CustomPagination
       customTheme={themeConfig.tblPgn}
-      rowsPerPageOptions={[10, 25, 50, 100]}
+      rowsPerPageOptions={table.rowsPerPageOptions || [10, 25, 50, 100]}
       component="div"
       count={table.totalRowCount || 0}
       rowsPerPage={table.rowsPerPage || 10}
