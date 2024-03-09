@@ -23,7 +23,6 @@ const ExtendedView = ({
   if (!extendedViewConfig) {
     return null;
   }
-  console.log('rowsPerPageOptions', rowsPerPageOptions);
   const {
     download = false,
     manageViewColumns = false,
