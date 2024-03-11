@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { makeStyles, Paper } from '@material-ui/core';
 import { DEFAULT_CONFIG_DONUT, DonutChartGenerator } from './DonutChart/DonutChartGenerator';
 import { DEFAULT_CONFIG_SUNBURST, SunburstChartGenerator } from './SunburstChart/SunburstChartGenerator';
+import { BarChartGenerator } from './BarChart/BarChartGenerator';
 
 const DEFAULT_CLASSES = makeStyles({
   widgetWrapper: {
@@ -76,6 +77,8 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
   const DonutConfig = dConfig && typeof dConfig === 'object' ? dConfig : DEFAULT_CONFIG_DONUT;
   const { DonutChart } = DonutChartGenerator(DonutConfig);
 
+  const { BarChart } = BarChartGenerator();
+
   const classes = uiClasses && typeof uiClasses === 'object'
     ? uiClasses
     : DEFAULT_CLASSES(theme);
@@ -125,6 +128,13 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
                   cy={98}
                   titleLocation={chartTitleLocation || 'bottom'}
                   titleAlignment={chartTitleAlignment || 'center'}
+                />
+              )}
+              {chartType === 'bar' && (
+                <BarChart
+                  data={data}
+                  width={500}
+                  height={210}
                 />
               )}
               {chartType === 'sunburst' && (
