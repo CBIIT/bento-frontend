@@ -39,9 +39,6 @@ const ExtendedView = ({
     <ThemeProvider theme={themeConfig}>
       {(numSelected === 0 && (download || manageViewColumns)) && (
       <Toolbar className="downloadColumnView">
-        {/* <DownloadButton
-          download={download}
-        /> */}
         <ManageColumnView
           table={table}
           manageViewColumns={manageViewColumns}

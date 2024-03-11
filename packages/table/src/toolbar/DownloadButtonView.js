@@ -31,7 +31,7 @@ const DownloadButton = ({
       paginationAPIField,
     } = table;
 
-    const downloadFileName = downloadFile.concat(paginationAPIField.replace('OverView', ''), ' download');
+    const downloadFileName = downloadFile.concat(paginationAPIField.replace('Overview', ''), ' download');
 
     const result = await client.query({
       query,

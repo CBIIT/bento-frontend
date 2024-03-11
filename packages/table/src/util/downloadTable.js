@@ -54,13 +54,14 @@ export function convertToCSV(jsonse, keysToInclude, header) {
 }
 
 export function downloadJson(tableData, table, downloadFileName) {
-  const { columns = [] } = table;
-  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
+  const { downloadColumns = [] } = table;
+  // eslint-disable-next-line max-len
+  const filterColumns = downloadColumns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
   const formatDataVal = formatColumnValues(filterColumns, tableData);
   const jsonse = JSON.stringify(formatDataVal);
-  const keysToInclude = columns.filter(({ dataField }) => dataField)
+  const keysToInclude = downloadColumns.filter(({ dataField }) => dataField)
     .map(({ dataField }) => dataField);
-  const headers = columns.filter(({ dataField }) => dataField).map(({ header }) => header);
+  const headers = downloadColumns.filter(({ dataField }) => dataField).map(({ header }) => header);
   const csv = convertToCSV(jsonse, keysToInclude, headers);
   const exportData = new Blob([csv], { type: 'text/csv' });
   const JsonURL = window.URL.createObjectURL(exportData);
