@@ -140,7 +140,10 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               noOptionsText={noOptionsText}
               options={options}
               loading={loading}
-              filterOptions={createFilterOptions({ trim: true })}
+              filterOptions={createFilterOptions({
+                trim: true,
+                stringify: (option) => `${option.title} ${option.id}`,
+              })}
               onOpen={() => {
                 setOpen(true);
               }}
