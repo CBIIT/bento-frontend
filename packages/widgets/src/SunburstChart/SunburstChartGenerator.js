@@ -136,6 +136,21 @@ function valueMouseOver(node, data, setState, callback) {
 }
 
 /**
+ * Handle mouse out event for the SunburstChart component
+ *
+ * @param {object} data current chart data
+ * @param {function} setState react hook to set state
+ * @param {function} callback callback function
+ */
+function valueMouseOut(data, setState, callback) {
+  setState({
+    data: callback(data, false), // Resetting the chart by highlighting all nodes
+    title: '',
+    caseSize: findCaseCountByTitle(data, ''),
+  });
+}
+
+/**
  * Exposes a Sunburst component with the defined configuration
  *
  * @param {object|null} uiConfig
@@ -150,7 +165,7 @@ export const SunburstChartGenerator = (uiConfig = DEFAULT_CONFIG_SUNBURST) => {
     SunburstChart: ({ data, ...props }) => {
       const {
         titleLocation, width, height,
-        padAngle, sliceTitle,
+        padAngle, sliceTitle, resetSunburstOnMouseOut,
       } = props;
 
       const classes = uiConfig && uiConfig.classes && typeof uiConfig.classes === 'object'
@@ -192,6 +207,9 @@ export const SunburstChartGenerator = (uiConfig = DEFAULT_CONFIG_SUNBURST) => {
               ? styles.sunburst
               : DEFAULT_CONFIG_SUNBURST.styles.sunburst}
             onValueMouseOver={(node) => valueMouseOver(node, state.data, setState, highlightNode)}
+            {...(resetSunburstOnMouseOut && {
+              onValueMouseOut: () => valueMouseOut(state.data, setState, highlightNode),
+            })}
             padAngle={padAngle}
           >
             {/* This cannot be it's own component */}
