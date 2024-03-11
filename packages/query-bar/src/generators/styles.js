@@ -15,7 +15,7 @@ export default () => ({
     letterSpacing: '0.5px',
     fontFamily: 'Nunito',
     fontSize: '14px',
-    color: '#0e3151',
+    color: '#10A075',
   },
   filterName: {
     textTransform: 'uppercase',
