@@ -44,23 +44,35 @@ export const BarChartGenerator = () => ({
       width,
       height,
     } = props;
+
+    const tooltipStyle = {
+      border: '1px solid #CCCCCC',
+      background: '#FFFFFF',
+      padding: '10px',
+      color: '#000000',
+    };
+
+    const CustomTooltip = ({ active, payload, label }) => {
+      if (active && payload && payload.length) {
+        return (
+          <div style={tooltipStyle}>
+            <div>{`${label}`}</div>
+            <div>{`Publications: ${payload[0].value}`}</div>
+          </div>
+        );
+      }
+      return null;
+    };
+
     return (
       <ResponsiveContainer width={width} height={height}>
         <BarChart
-          width={width}
-          height={height}
           data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="group" />
           <YAxis />
-          <Tooltip />
+          <Tooltip cursor={false} content={<CustomTooltip />} />
           <Bar dataKey="subjects">
             {data.map((entry, index) => (
               <Cell
