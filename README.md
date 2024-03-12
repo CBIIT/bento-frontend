@@ -1,6 +1,6 @@
 # Bento Frontend Installation Guide
 
-> ℹ️ **NOTE:** This guide is only for Bento Framework development. If you would like to consume Bento Framework for your project, please refer to the [How get my copy of Bento Frontend?](https://github.com/CBIIT/bento-frontend?tab=readme-ov-file#creating-custom-applications).
+> ℹ️ **NOTE:** This guide is only for Bento Framework development. If you would like to consume Bento Framework for your project, please refer to the [How get my copy of Bento Frontend?](https://github.com/CBIIT/bento-frontend?tab=readme-ov-file#creating-custom-applications-how-get-my-copy-of-bento-frontend).
 
 🍱 Welcome to the Bento Frontend Installation Guide! 🍱
 ---
