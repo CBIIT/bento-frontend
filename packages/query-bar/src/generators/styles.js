@@ -140,10 +140,10 @@ export default () => ({
     backgroundColor: '#CEDEF040',
     border: '1px solid #646464',
   },
-  facetSectionLibrary: {
+  facetSectionSequencinglibrary: {
     color: '#14A773',
   },
-  facetSectionLibraryBackground: {
+  facetSectionSequencinglibraryBackground: {
     backgroundColor: '#DDEAE540',
     border: '1px solid #646464',
   },
