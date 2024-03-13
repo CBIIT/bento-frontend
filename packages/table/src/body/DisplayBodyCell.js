@@ -82,7 +82,7 @@ const DisplayCell = ({
   row,
   column,
 }) => (
-  <TableCell className={column.dataField}>
+  <TableCell className={column.className}>
     <ViewCell
       row={row}
       column={column}
