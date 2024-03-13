@@ -133,7 +133,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
               {chartType === 'bar' && (
                 <BarChart
                   data={data}
-                  width={500}
+                  width={398}
                   height={210}
                 />
               )}
