@@ -51,34 +51,29 @@ const PaginatedPanel = (props) => {
     setLoading(false);
     setData(searchResp);
   }
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 54,
+      behavior: 'smooth',
+    });
+  };
 
   const onNext = () => {
     if (page >= Math.ceil(count / pageSize)) {
       return;
     }
-    
     onChange(page + 1);
     setPage(page + 1);
     scrollToTop();
-
   };
 
   const onPrevious = () => {
     if (page <= 1) {
       return;
     }
-
-    
     onChange(page - 1);
     setPage(page - 1);
     scrollToTop();
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 54,
-      behavior: 'smooth',
-    });
   };
 
   const handleChangePage = (event, newPage) => {

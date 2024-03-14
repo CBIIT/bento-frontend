@@ -62,7 +62,7 @@ export const SearchResultsGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHRESULTS) 
                 <>
                   <Grid item className={classes.filterByIconContainer}>
                     <img
-                      src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/global-search/bento/images/icons/svgs/filterByIcon.svg"
+                      src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/filterByIcon.svg"
                       alt="Filter By Icon"
                       className={classes.filterByIcon}
                     />
