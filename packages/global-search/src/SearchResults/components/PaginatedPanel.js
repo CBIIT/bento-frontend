@@ -56,9 +56,11 @@ const PaginatedPanel = (props) => {
     if (page >= Math.ceil(count / pageSize)) {
       return;
     }
-
+    
     onChange(page + 1);
     setPage(page + 1);
+    scrollToTop();
+
   };
 
   const onPrevious = () => {
@@ -66,8 +68,10 @@ const PaginatedPanel = (props) => {
       return;
     }
 
+    
     onChange(page - 1);
     setPage(page - 1);
+    scrollToTop();
   };
 
   const scrollToTop = () => {
