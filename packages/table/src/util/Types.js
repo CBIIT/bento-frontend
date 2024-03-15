@@ -8,6 +8,7 @@ export const DISPLAY = 'DISPLAY';
 export const DEFAULT = 'DEFAULT';
 export const FORMAT_DATA = 'FORMAT_DATA';
 export const FORMAT_BYTES = 'FORMAT_BYTES';
+export const TRANSFORM = 'TRANSFORM';
 
 export const cellTypes = {
   CUSTOM_ELEM,
@@ -19,6 +20,10 @@ export const cellTypes = {
   DELETE,
   DEFAULT,
   FORMAT_DATA,
+};
+
+export const cellStyles = {
+  TRANSFORM,
 };
 
 export const actionCellTypes = [CHECKBOX, DELETE];
