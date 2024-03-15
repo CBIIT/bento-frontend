@@ -5,53 +5,56 @@ import { Anchor } from '@bento-core/util';
 const AboutCard = ({
   searchText, data, classes, index,
 }) => {
-  const results = data.text.replaceAll('$', '');
+  const results = data.text.map((result) => result.replaceAll('$', ''));
 
   function getHighlightedText(text, highlight) {
     // Split on highlight term and include term into parts, ignore case
-    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    const textString = text.reduce((searchResults, currentString, currentIndex) => {
+      let newResults = searchResults;
+      if (currentString.endsWith('.') || currentIndex >= text.length - 1) {
+        newResults = `${`${newResults} ${currentString}`}`;
+      } else {
+        newResults = `${`${newResults} ${currentString}`} ... `;
+      }
+      return newResults;
+    }, '');
+    const parts = textString.split(new RegExp(`(${highlight})`, 'gi'));
     return (
       <span>
         {' '}
-        { parts.map((part, i) => (
+        {parts.map((part, i) => (
           <span id={i} style={part.toLowerCase() === highlight.toLowerCase() ? { color: '#0467BD' } : {}}>
-            { part }
+            {part}
           </span>
         ))}
         {' '}
-
       </span>
     );
   }
 
   return (
-    <>
-      <Grid item container className={classes.card}>
-        <Grid item xs={1} className={classes.indexContainer}>
-          {index + 1 }
-        </Grid>
-        <Grid item xs={11} className={classes.propertyContainer}>
-          <div>
-            <span className={classes.detailContainerHeader}>ABOUT</span>
-            <span className={classes.cardTitle}>{data.title}</span>
-          </div>
-          <div className={classes.text}>{getHighlightedText(results, searchText)}</div>
-          <div className={classes.linkText}><Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes} /></div>
-        </Grid>
+    <Grid item container className={classes.card} id={`global_search_card_${index}`}>
+      <Grid item xs={1} className={classes.indexContainer}>
+        {index + 1}
       </Grid>
-
-    </>
+      <Grid item xs={11} className={classes.propertyContainer}>
+        <div>
+          <span className={classes.detailContainerHeader}>ABOUT</span>
+          <span className={classes.cardTitle}>{data.title}</span>
+        </div>
+        <div className={classes.text}>{getHighlightedText(results, searchText)}</div>
+        <div className={classes.linkText}>
+          <Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes} />
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 
-const styles = () => ({
-  cartIcon: {
-    height: '22px',
-    margin: '0px 0px 0px 6px',
-  },
+const styles = (theme) => ({
   linkText: {
     fontFamily: 'Nunito',
-    color: '#7747ff',
+    color: theme.palette.text.link,
     textDecoration: 'none',
   },
   indexContainer: {
@@ -65,15 +68,12 @@ const styles = () => ({
     borderBottom: '2px solid #E7EEF5',
   },
   cardTitle: {
-    color: '#7747FF',
+    color: theme.palette.text.link,
     textDecoration: 'none',
     fontSize: '16px',
     fontFamily: 'Nunito',
     paddingLeft: '9px',
     verticalAlign: 'middle',
-  },
-  content: {
-    fontSize: '12px',
   },
   detailContainerHeader: {
     textTransform: 'uppercase',
