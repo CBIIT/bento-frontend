@@ -141,6 +141,7 @@ const QueryUrl = ({
       </div>
       <Dialog
         open={open}
+        onClose={() => toggleOpen(!open)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         className={clsx(classes.dialogBox, 'dialogBox')}
