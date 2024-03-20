@@ -12,16 +12,6 @@ export default {
      * @var {boolean}
      */
     displayAllActiveFilters: false,
-    /**
-     * key to access label text
-     * @var {boolean}
-     */
-    group: 'group',
-    /**
-     * key to access count value
-     * @var {boolean}
-     */
-    count: 'subjects',
   },
 
   /* Component Helper Functions */
