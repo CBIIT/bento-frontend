@@ -30,6 +30,9 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
   mappedFilterState.sort((a, b) => sectionOrder.indexOf(a.datafield) - sectionOrder.indexOf(b.datafield));
 
   const { QueryBar } = QueryBarGenerator({
+    config: {
+      displayAllActiveFilters: true,
+    },
     functions: {
       clearAll: () => {
         dispatch(resetAllData());
