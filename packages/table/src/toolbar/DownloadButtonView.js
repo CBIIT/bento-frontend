@@ -39,6 +39,8 @@ const DownloadButton = ({
         ...queryVariables,
         page: 0,
         first: 10000,
+        sort_direction: table.sortBy,
+        order_by: table.sortOrder,
       },
     })
       .then((response) => {
@@ -52,7 +54,7 @@ const DownloadButton = ({
 
   const downloadTableCSV = useCallback(() => {
     downloadSCSVFile();
-  }, [queryVariables]);
+  }, [queryVariables, table]);
 
   return (
     <Tooltip title="Download Full Table As CSV">
