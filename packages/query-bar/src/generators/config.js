@@ -12,6 +12,7 @@ export default {
      * @var {boolean}
      */
     displayAllActiveFilters: false,
+    viewQueryURL: false,
   },
 
   /* Component Helper Functions */
