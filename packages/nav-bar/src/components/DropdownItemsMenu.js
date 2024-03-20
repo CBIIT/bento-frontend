@@ -7,49 +7,70 @@ import clsx from 'clsx';
 
 const CustomDropdownMenu = ({
   classes, handleClick, dropDownElements,
-  externalLinksFlag, linkText, externalLinks,
-}) => (
-  <Paper className={classes.paper}>
-    <div id="aboutDropDown">
-      {dropDownElements.map((dropDownElementsItem) => (
-        <HashRouter>
-          <NavLink
-            className={
-              dropDownElementsItem.sublink
-                ? clsx(classes.sublink, classes.link)
-                : classes.link
-            }
-            activeStyle={dropDownElementsItem.linkActiveStyle
-              ? { color: dropDownElementsItem.linkActiveStyle } : { color: '#27DBFF' }}
-            to={dropDownElementsItem.link}
-            onClick={handleClick}
-          >
-            {dropDownElementsItem.labelText}
-          </NavLink>
-        </HashRouter>
-      ))}
-      {
-        externalLinksFlag && externalLinks[linkText] ? (
-          externalLinks[linkText].map((link) => (
-            <a
-              href={link.link}
-              rel="noreferrer"
-              target="_blank"
-              className={
-              classes.link
-            }
-            // TODO: find out use of activeStyle, If not used please remove.
-            // eslint-disable-next-line react/no-unknown-property
-              activeStyle={{ color: '#27DBFF' }}
-            >
-              {link.title}
-            </a>
-          ))
-        ) : null
-      }
-    </div>
-  </Paper>
-);
+  externalLinksFlag, linkText, externalLinks, externalLinksFirst,
+}) => {
+  const renderInternalLinks = React.useCallback(() => (
+    dropDownElements.map((dropDownElementsItem) => (
+      <HashRouter>
+        <NavLink
+          className={
+            dropDownElementsItem.sublink
+              ? clsx(classes.sublink, classes.link)
+              : classes.link
+          }
+          activeStyle={dropDownElementsItem.linkActiveStyle
+            ? { color: dropDownElementsItem.linkActiveStyle } : { color: '#27DBFF' }}
+          to={dropDownElementsItem.link}
+          onClick={handleClick}
+        >
+          {dropDownElementsItem.labelText}
+        </NavLink>
+      </HashRouter>
+    ))
+  ), [dropDownElements]);
+
+  const renderExternalLinks = React.useCallback(() => (
+    externalLinksFlag && externalLinks[linkText] ? (
+      externalLinks[linkText].map((link) => (
+        <a
+          href={link.link}
+          rel="noreferrer"
+          target="_blank"
+          className={
+            classes.link
+          }
+          // TODO: find out use of activeStyle, If not used please remove.
+          // eslint-disable-next-line react/no-unknown-property
+          activeStyle={{ color: '#27DBFF' }}
+        >
+          {link.title}
+        </a>
+      ))
+    ) : null
+  ), [externalLinks, externalLinksFirst, externalLinksFlag]);
+
+  return (
+    <Paper className={classes.paper}>
+      <div id="aboutDropDown">
+        {
+          !externalLinksFirst
+            ? (
+              <>
+                {renderInternalLinks()}
+                {renderExternalLinks()}
+              </>
+            )
+            : (
+              <>
+                {renderExternalLinks()}
+                {renderInternalLinks()}
+              </>
+            )
+        }
+      </div>
+    </Paper>
+  );
+};
 
 const styles = () => ({
   paper: (props) => {
