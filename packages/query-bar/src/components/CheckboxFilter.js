@@ -4,10 +4,9 @@ import clsx from 'clsx';
 export default ({
   index, data, classes, maxItems,
   onSectionClick, onItemClick,
-  displayAllActiveFilters,
 }) => {
   const { items, section } = data;
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(true);
   const noOfItems = expand ? items.length : maxItems;
 
   useEffect(() => {
@@ -51,18 +50,12 @@ export default ({
         ))}
         {items.length > maxItems && (
           <>
-            {
-              displayAllActiveFilters
-                ? (
-                  <span
-                    className={classes.expandBtn}
-                    onClick={() => setExpand(!expand)}
-                  >
-                    ...
-                  </span>
-                )
-                : '...'
-              }
+            <span
+              className={classes.expandBtn}
+              onClick={() => setExpand(!expand)}
+            >
+              ...
+            </span>
           </>
         )}
         {(expand && items.length > maxItems) && (

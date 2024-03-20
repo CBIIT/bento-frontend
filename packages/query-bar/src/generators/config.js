@@ -12,21 +12,6 @@ export default {
      * @var {boolean}
      */
     displayAllActiveFilters: false,
-    /**
-     * key to access label text
-     * @var {boolean}
-     */
-    group: 'group',
-    /**
-     * root path of bento app
-     * @var {boolean}
-     */
-    rootPath: null,
-    /**
-     * display query URL
-     * @var {boolean}
-     */
-    viewQueryURL: false,
   },
 
   /* Component Helper Functions */
