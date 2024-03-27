@@ -31,24 +31,36 @@ const TableController = ((props) => {
   * client table aplhanumeric sorting for column table
   * uses string prototype function for sorting
   */
-  const alphaNumericSort = (a, b) => {
-    if (sortBy !== 'csvDownload') {
-      return `${a[sortBy]}`.localeCompare(
-        `${b[sortBy]}`, undefined, {
-          numeric: true,
-          sensitivity: 'base',
-        },
-      );
-    }
+  const alphaNumericSort = (a, b) => `${a[sortBy]}`.localeCompare(
+    `${b[sortBy]}`, undefined, {
+      numeric: true,
+      sensitivity: 'base',
+    },
+  );
+
+  /**
+  * client table array sorting for column table
+  * checks array length to sort
+  */
+  const arraySort = (a, b) => {
     // handles sort for csvDownload column
     const aHasData = a.csvDataRow && a.csvDataRow.length > 0;
     const bHasData = b.csvDataRow && b.csvDataRow.length > 0;
     return aHasData === bHasData ? 0 : aHasData ? -1 : 1;
   };
+
   /**
   * sort base on table state
   */
   const sortRows = (a, b) => {
+    const areValuesArrays = Array.isArray(a[sortBy]) && Array.isArray(b[sortBy]);
+    if (areValuesArrays) {
+      if (sortOrder === 'asc') {
+        return arraySort(a, b);
+      }
+      return arraySort(b, a);
+    }
+
     if (sortOrder === 'asc') {
       return alphaNumericSort(a, b);
     }
