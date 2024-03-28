@@ -37,10 +37,30 @@ const TableController = ((props) => {
       sensitivity: 'base',
     },
   );
+
+  /**
+  * client table array sorting for column table
+  * checks array length to sort
+  */
+  const arraySort = (a, b) => {
+    // handles sort for csvDownload column
+    const aHasData = a.csvDataRow && a.csvDataRow.length > 0;
+    const bHasData = b.csvDataRow && b.csvDataRow.length > 0;
+    return aHasData === bHasData ? 0 : aHasData ? -1 : 1;
+  };
+
   /**
   * sort base on table state
   */
   const sortRows = (a, b) => {
+    const areValuesArrays = Array.isArray(a[sortBy]) && Array.isArray(b[sortBy]);
+    if (areValuesArrays) {
+      if (sortOrder === 'asc') {
+        return arraySort(a, b);
+      }
+      return arraySort(b, a);
+    }
+
     if (sortOrder === 'asc') {
       return alphaNumericSort(a, b);
     }
