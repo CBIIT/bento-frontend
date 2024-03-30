@@ -21,12 +21,19 @@ const FacetFilterController = (props) => {
    * 2. subject state
    */
   const {
-    filterState,
+    activeFilters,
     data,
     facetsConfig,
     facetSectionConfig,
-    tooltipText = {},
   } = props;
+
+  const filterState = {};
+  // console.log(activeFilters);
+  for (const [key, value] of Object.entries(activeFilters)) {
+    if (key !== 'program_names') {
+      filterState[key] = value;
+    }
+  }
 
   const updateFacetState = (filterSections) => {
     const updateSections = [...filterSections];
@@ -34,15 +41,10 @@ const FacetFilterController = (props) => {
       for (const [key, value] of Object.entries(filterState)) {
         updateSections.forEach((sideBar) => {
           if (sideBar.type === InputTypes.CHECKBOX && sideBar.datafield === key) {
-            const { facetValues = [] } = sideBar;
-            const updateFacetVals = facetValues.map((item) => {
-              const facetVal = item[sideBar.field];
-              return {
-                ...item,
-                isChecked: value[facetVal] ? value[facetVal] : false,
-              };
+            sideBar.facetValues.forEach((item) => {
+              // item.isChecked = value[item.name] ? value[item.name] : false;
+              item.isChecked = value.indexOf(item.name) > -1;
             });
-            sideBar.facetValues = updateFacetVals;
           }
           if (sideBar.type === InputTypes.SLIDER && sideBar.datafield === key) {
             sideBar.facetValues = value;
@@ -52,12 +54,9 @@ const FacetFilterController = (props) => {
     } else {
       updateSections.forEach((sideBar) => {
         if (sideBar.type === InputTypes.CHECKBOX) {
-          const { facetValues = [] } = sideBar;
-          const updateFacetVals = facetValues.map((item) => ({
-            ...item,
-            isChecked: false,
-          }));
-          sideBar.facetValues = updateFacetVals;
+          sideBar.facetValues.forEach((item) => {
+            item.isChecked = false;
+          });
         }
         /**
          * set default value for slider - on clear all filter
@@ -93,7 +92,6 @@ const FacetFilterController = (props) => {
    * Construct filter object
    * 1. add facet values to facets
    * 2. add 'name' key to each facet value
-   * 3. add '
    */
   const addFacetValues = (facets) => {
     const updateFacets = [];
@@ -101,13 +99,38 @@ const FacetFilterController = (props) => {
       facets.forEach((facet) => {
         const updateFacet = { ...facet, facetValues: [] };
         const {
+          field,
           ApiLowerBoundName,
           ApiUpperBoundName,
           apiForFiltering,
         } = updateFacet;
         if (data[apiForFiltering]) {
           if (Array.isArray(data[apiForFiltering])) {
-            updateFacet.facetValues = data[apiForFiltering];
+            const validValues = [];
+            const updateField = data[apiForFiltering].map((item) => {
+              const addField = { ...item };
+              addField.name = item[field];
+              validValues.push(addField.name);
+              return addField;
+            });
+            /**
+             * Check if there are orphen filter values and add them to the facet values
+             */
+            if (filterState !== undefined) {
+              const facetFilter = filterState[facet.datafield];
+              if (facetFilter) {
+                facetFilter.forEach((item) => {
+                  if (validValues.indexOf(item) === -1) {
+                    const tmp = {};
+                    tmp.group = item;
+                    tmp.name = item;
+                    tmp.subjects = 0;
+                    updateField.push(tmp);
+                  }
+                });
+              }
+            }
+            updateFacet.facetValues = updateField;
           }
           /**
           * add object to facet values

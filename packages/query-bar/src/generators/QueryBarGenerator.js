@@ -28,12 +28,6 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.displayAllActiveFilters
     : DEFAULT_CONFIG.config.displayAllActiveFilters;
 
-  const group = config && typeof config.group === 'string'
-    ? config.group : DEFAULT_CONFIG.config.group;
-
-  const count = config && typeof config.count === 'string'
-    ? config.count : DEFAULT_CONFIG.config.count;
-
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
     : DEFAULT_CONFIG.functions.clearAll;
@@ -84,17 +78,17 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
         .map((facet) => {
           if (facet.type !== CHECKBOX) { return facet; }
 
-          const { data, items } = facet;
+          const { items } = facet;
           const itemKeys = Object.keys(items);
           itemKeys.sort((a, b) => a.localeCompare(b));
 
           /* Find any SELECTED CHECKBOXES that do NOT have any data
            * and remove them from the list of selected checkboxes artificially */
-          itemKeys.forEach((item) => {
-            if (data.findIndex((d) => d.group === item) < 0) {
-              itemKeys.splice(itemKeys.indexOf(item), 1);
-            }
-          });
+          // itemKeys.forEach((item) => {
+          //   if (data.findIndex((d) => d.group === item) < 0) {
+          //     itemKeys.splice(itemKeys.indexOf(item), 1);
+          //   }
+          // });
           // return { ...facet, items: itemKeys };
           /**
           * Maintain consistant behavior with facet filter component
@@ -103,16 +97,16 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
           * behavior similar to filter component
           */
           // const { group, count } = config;
-          const displayItems = itemKeys.reduce((accumulator, item) => {
-            const itemList = data.filter((d) => (d[group] === item && d[count] > 0)) || [];
-            if (itemList.length > 0) {
-              const labels = itemList.map((filter) => filter[group]);
-              accumulator.push(labels);
-            }
-            return accumulator;
-          }, []);
+          // const displayItems = itemKeys.reduce((accumulator, item) => {
+          //   const itemList = data.filter((d) => (d[group] === item && d[count] > 0)) || [];
+          //   if (itemList.length > 0) {
+          //     const labels = itemList.map((filter) => filter[group]);
+          //     accumulator.push(labels);
+          //   }
+          //   return accumulator;
+          // }, []);
 
-          return { ...facet, items: displayItems };
+          return { ...facet, items: itemKeys };
         })
         .filter((facet) => facet.items.length > 0);
 
