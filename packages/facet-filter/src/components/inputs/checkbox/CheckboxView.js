@@ -41,12 +41,13 @@ const CheckBoxView = ({
     field = 'group',
     count = 'subjects',
     customCount = (text) => `(${text})`,
+    defaultValue = '',
   } = facet;
 
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
   const checkedSection = `${section}`.toLowerCase().replace(/\ /g, '_');
 
-  const name = checkboxItem[field] || 'N/A';
+  const name = checkboxItem[field] || defaultValue || 'N/A';
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {

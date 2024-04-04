@@ -87,7 +87,9 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
         customBackGround, bottomDivider, noPaddedTitle,
         // Chart Options
         chartType, sliceTitle, data, chartTitleLocation, chartTitleAlignment,
-        children, padAngle, resetSunburstOnMouseOut,
+        children, padAngle,
+        // Sunburst widget options
+        resetSunburstOnMouseOut, titleTransformer,
       } = props;
 
       return (
@@ -136,6 +138,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
                   titleLocation={chartTitleLocation || 'bottom'}
                   titleAlignment={chartTitleAlignment || 'center'}
                   resetSunburstOnMouseOut={resetSunburstOnMouseOut || false}
+                  titleTransformer={titleTransformer || null}
                 />
               )}
               {!chartType && children}
