@@ -120,17 +120,20 @@ function findCaseCountByTitle(dataset, title) {
  * @param {object} data current chart data
  * @param {function} setState react hook to set state
  * @param {function} callback callback function
+ * @param {function} titleTransformer - function to transform the title
  */
-function valueMouseOver(node, data, setState, callback) {
+function valueMouseOver(node, data, setState, callback, titleTransformer) {
   const path = getKeyPath(node).reverse();
   const pathAsMap = path.reduce((res, row) => {
     res[row.toString()] = true;
     return res;
   }, {});
 
+  const title = titleTransformer ? titleTransformer(node.title) : node.title;
+
   setState({
     data: callback(data, pathAsMap),
-    title: node.title,
+    title,
     caseSize: node.size || node.caseSize,
   });
 }
@@ -165,7 +168,7 @@ export const SunburstChartGenerator = (uiConfig = DEFAULT_CONFIG_SUNBURST) => {
     SunburstChart: ({ data, ...props }) => {
       const {
         titleLocation, width, height,
-        padAngle, sliceTitle, resetSunburstOnMouseOut,
+        padAngle, sliceTitle, resetSunburstOnMouseOut, titleTransformer,
       } = props;
 
       const classes = uiConfig && uiConfig.classes && typeof uiConfig.classes === 'object'
@@ -206,7 +209,9 @@ export const SunburstChartGenerator = (uiConfig = DEFAULT_CONFIG_SUNBURST) => {
             style={styles && styles.sunburst
               ? styles.sunburst
               : DEFAULT_CONFIG_SUNBURST.styles.sunburst}
-            onValueMouseOver={(node) => valueMouseOver(node, state.data, setState, highlightNode)}
+            onValueMouseOver={
+              (node) => valueMouseOver(node, state.data, setState, highlightNode, titleTransformer)
+            }
             {...(resetSunburstOnMouseOut && {
               onValueMouseOut: () => valueMouseOut(state.data, setState, highlightNode),
             })}
