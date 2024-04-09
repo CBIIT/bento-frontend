@@ -62,6 +62,8 @@ const DownloadButton = ({
         ...queryVariables,
         page: 0,
         first: 10000,
+        order_by: table.sortBy,
+        sort_direction: table.sortOrder,
       },
     })
       .then((response) => {
@@ -85,6 +87,8 @@ const DownloadButton = ({
         ...queryVariables,
         page: 0,
         first: 10000,
+        order_by: table.sortBy,
+        sort_direction: table.sortOrder,
       },
     })
       .then((response) => {
@@ -99,12 +103,12 @@ const DownloadButton = ({
   const downloadTableCSV = useCallback(() => {
     downloadSCSVFile();
     setListDisplay('none');
-  }, [queryVariables]);
+  }, [queryVariables, table]);
 
   const downloadTableJson = useCallback(() => {
     downloadJsonFile();
     setListDisplay('none');
-  }, [queryVariables]);
+  }, [queryVariables, table]);
 
   const handleClickButton = () => {
     if (listDisplay === 'none') {
