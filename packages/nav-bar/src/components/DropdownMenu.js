@@ -7,7 +7,7 @@ import DropdownItemsMenu from './DropdownItemsMenu';
 
 const DropdownMenu = ({
   classes, handleButtonClickEvent, linkText, clickedEl, dropDownElements,
-  navBarstyling, externalLinksFlag, externalLinks, index,
+  navBarstyling, index,
 }) => {
   const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
 
@@ -43,7 +43,14 @@ const DropdownMenu = ({
         </span>
         {navBarstyling.dropDownIcon.displayIcon === true ? <ExpandMoreRoundedIcon className={classes.dropDownicon} /> : ''}
       </Button>
-      {displayDropDownMenu ? <DropdownItemsMenu navBarstyling={navBarstyling} handleClick={dropdownMenuClickEvent} dropDownElements={dropDownElements} externalLinksFlag={externalLinksFlag} linkText={linkText} externalLinks={externalLinks} /> : ''}
+      {displayDropDownMenu ? (
+        <DropdownItemsMenu
+          navBarstyling={navBarstyling}
+          handleClick={dropdownMenuClickEvent}
+          dropDownElements={dropDownElements}
+          linkText={linkText}
+        />
+      ) : ''}
     </div>
   );
 };
