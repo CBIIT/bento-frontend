@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withStyles, Button } from '@material-ui/core';
 import { InputTypes } from '@bento-core/facet-filter';
 import clsx from 'clsx';
@@ -61,12 +61,6 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
       const [expand, setExpand] = useState(true);
       const noOfItems = expand ? autocomplete.length : maxItems;
-
-      useEffect(() => {
-        if (autocomplete.length <= maxItems && expand) {
-          setExpand(!expand);
-        }
-      }, [autocomplete]);
 
       // Remove any sections without checkboxes selected
       const mappedInputs = statusReducer.filter((facet) => facet.section && facet.type)
@@ -160,7 +154,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                       {idx === (noOfItems - 1) ? null : ' '}
                     </>
                   ))}
-                  {autocomplete.length > maxItems && (
+                  {(autocomplete.length > maxItems && !expand) && (
                     <>
                       <span
                         className={classes.expandBtn}
