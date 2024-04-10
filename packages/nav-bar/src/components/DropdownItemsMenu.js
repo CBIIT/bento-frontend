@@ -5,48 +5,41 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 
-const CustomDropdownMenu = ({
-  classes, handleClick, dropDownElements,
-  externalLinksFlag, linkText, externalLinks,
-}) => (
+const CustomDropdownMenu = ({ classes, handleClick, dropDownElements }) => (
   <Paper className={classes.paper}>
     <div id="aboutDropDown">
-      {dropDownElements.map((dropDownElementsItem) => (
+      {dropDownElements.map((dropDownElementsItem) => (dropDownElementsItem.isExternalLink ? (
+        <a
+          href={dropDownElementsItem.link}
+          rel="noreferrer"
+          target="_blank"
+          className={classes.link}
+            // TODO: find out use of activeStyle, If not used please remove.
+            // eslint-disable-next-line react/no-unknown-property
+          activeStyle={{ color: '#27DBFF' }}
+        >
+          {dropDownElementsItem.labelText}
+        </a>
+      ) : (
         <HashRouter>
           <NavLink
             className={
-              dropDownElementsItem.sublink
-                ? clsx(classes.sublink, classes.link)
-                : classes.link
-            }
-            activeStyle={dropDownElementsItem.linkActiveStyle
-              ? { color: dropDownElementsItem.linkActiveStyle } : { color: '#27DBFF' }}
+                dropDownElementsItem.sublink
+                  ? clsx(classes.sublink, classes.link)
+                  : classes.link
+              }
+            activeStyle={
+                dropDownElementsItem.linkActiveStyle
+                  ? { color: dropDownElementsItem.linkActiveStyle }
+                  : { color: '#27DBFF' }
+              }
             to={dropDownElementsItem.link}
             onClick={handleClick}
           >
             {dropDownElementsItem.labelText}
           </NavLink>
         </HashRouter>
-      ))}
-      {
-        externalLinksFlag && externalLinks[linkText] ? (
-          externalLinks[linkText].map((link) => (
-            <a
-              href={link.link}
-              rel="noreferrer"
-              target="_blank"
-              className={
-              classes.link
-            }
-            // TODO: find out use of activeStyle, If not used please remove.
-            // eslint-disable-next-line react/no-unknown-property
-              activeStyle={{ color: '#27DBFF' }}
-            >
-              {link.title}
-            </a>
-          ))
-        ) : null
-      }
+      )))}
     </div>
   </Paper>
 );

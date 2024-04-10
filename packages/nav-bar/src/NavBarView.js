@@ -16,7 +16,7 @@ const drawerWidth = 240;
 const NavBar = ({
   classes, isSidebarOpened, navBarData,
   navBarCartData, navBarstyling, numberOfCases, components = {},
-  externalLinksFlag, externalLinks, LoginComponent,
+  externalLinksFlag, LoginComponent,
 }) => {
   // Similar to componentDidMount and componentDidUpdate:
   // Empty second argument of react useEffect will avoid the infinte loop that
@@ -66,35 +66,42 @@ const NavBar = ({
 
         {/* End Sidebar button */}
         <div id="navbar" className={classes.buttonContainer}>
-          {navBarData.slice(0, 7).map((navButton, index) => (
-            navButton.type === 'dropdown'
-              ? (
-                <DropdownMenu
-                  handleButtonClickEvent={handleButtonClickEvent}
-                  clickedEl={clickedEl}
-                  index={index}
-                  linkText={navButton.labelText}
-                  dropDownElements={navButton.dropDownLinks.slice(0, 15)}
-                  navBarstyling={navBarstyling}
-                  externalLinksFlag={externalLinksFlag}
-                  externalLinks={externalLinks}
-                />
-              )
-              : (
-                <Box id={`button_navbar_navButton_${index}`} className={classes.logotype} classes={{ root: classes.buttonRoot }}>
-                  <HashRouter>
-                    <NavLink
-                      className={classes.labelText}
-                      activeClassName={classes.activeLabel}
-                      to={navButton.link ? navButton.link : '/'}
-                      onClick={() => handleButtonClickEvent(`${navButton.labelText}`)}
-                    >
-                      {navButton.labelText}
-                    </NavLink>
-                  </HashRouter>
-                </Box>
-              )
-          ))}
+          {navBarData.slice(0, 15).map((navButton, index) => {
+            const slicedElements = navButton.dropDownLinks && navButton.dropDownLinks.length > 0
+              ? navButton.dropDownLinks.slice(0, 15)
+              : [];
+            const dropDownElements = !externalLinksFlag
+              ? slicedElements.filter((element) => !element.isExternalLink)
+              : slicedElements;
+
+            return (
+              navButton.type === 'dropdown'
+                ? (
+                  <DropdownMenu
+                    handleButtonClickEvent={handleButtonClickEvent}
+                    clickedEl={clickedEl}
+                    index={index}
+                    linkText={navButton.labelText}
+                    dropDownElements={dropDownElements}
+                    navBarstyling={navBarstyling}
+                  />
+                )
+                : (
+                  <Box id={`button_navbar_navButton_${index}`} className={classes.logotype} classes={{ root: classes.buttonRoot }}>
+                    <HashRouter>
+                      <NavLink
+                        className={classes.labelText}
+                        activeClassName={classes.activeLabel}
+                        to={navButton.link ? navButton.link : '/'}
+                        onClick={() => handleButtonClickEvent(`${navButton.labelText}`)}
+                      >
+                        {navButton.labelText}
+                      </NavLink>
+                    </HashRouter>
+                  </Box>
+                )
+            );
+          })}
         </div>
         {/* Start of Theme Switching Icon and logic */}
         <div className={classes.myCasesPosition}>
