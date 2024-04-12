@@ -29,7 +29,7 @@ const DownloadButton = ({
   const useOutsideAlerter = (ref) => {
     useEffect(() => {
       function handleClickOutside(event) {
-        if (!event.target.getAttribute('class').includes('dropdownListItem')) {
+        if (!(event.target.getAttribute('id') && event.target.getAttribute('id').includes('dropdownListItem'))) {
           setListDisplay('none');
         }
       }
@@ -171,8 +171,8 @@ const DownloadButton = ({
         </IconButton>
       </Tooltip>
       <div className={classes.dropdownList} style={{ display: listDisplay }}>
-        <div className={classes.dropdownListItem} onClick={downloadTableCSV}>CSV</div>
-        <div className={classes.dropdownListItem} onClick={downloadTableJson}>JSON</div>
+        <div id="dropdownListItemCSV" className={classes.dropdownListItem} onClick={downloadTableCSV}>CSV</div>
+        <div id="dropdownListItemJSON" className={classes.dropdownListItem} onClick={downloadTableJson}>JSON</div>
       </div>
     </div>
   );
