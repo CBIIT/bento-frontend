@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 export default ({
@@ -8,12 +8,6 @@ export default ({
   const { items, section } = data;
   const [expand, setExpand] = useState(true);
   const noOfItems = expand ? items.length : maxItems;
-
-  useEffect(() => {
-    if (items.length <= maxItems && expand) {
-      setExpand(!expand);
-    }
-  }, [items]);
 
   const clsName = (text = '', attr = '') => `facetSection${text.replace(/\s+/g, '')}${attr}`;
 
@@ -48,7 +42,7 @@ export default ({
             {idx === (maxItems - 1) ? null : ' '}
           </>
         ))}
-        {items.length > maxItems && (
+        {(items.length > maxItems && !expand) && (
           <>
             <span
               className={classes.expandBtn}
