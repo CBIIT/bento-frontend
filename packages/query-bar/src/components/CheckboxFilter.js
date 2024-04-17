@@ -42,7 +42,7 @@ export default ({
             {idx === (maxItems - 1) ? null : ' '}
           </>
         ))}
-        {items.length > maxItems && (
+        {(items.length > maxItems && !expand) && (
           <>
             <span
               className={classes.expandBtn}
