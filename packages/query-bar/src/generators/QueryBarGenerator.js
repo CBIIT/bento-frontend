@@ -170,7 +170,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                         {idx === (noOfItems - 1) ? null : ' '}
                       </>
                     ))}
-                    {autocomplete.length > maxItems && (
+                    {(autocomplete.length > maxItems && !expand) && (
                       <>
                         <span
                           className={classes.expandBtn}
