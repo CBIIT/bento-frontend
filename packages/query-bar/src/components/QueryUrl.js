@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import clsx from 'clsx';
 import {
   Button,
@@ -12,62 +12,6 @@ import {
 } from '@material-ui/core';
 import CopyIcon from '../assets/CopyIcon.svg';
 
-const ViewFullLinkComponent = ({
-  classes,
-  url,
-  maxWidth = 1200,
-}) => {
-  const linkRef = useRef(null);
-  const [collapseLink, setCollapseLink] = useState(false);
-
-  /**
-   * Compute url link width based on the windowsize
-   */
-  useEffect(() => {
-    const urlWidth = linkRef?.current?.offsetWidth;
-    if (urlWidth > maxWidth / 2) {
-      setCollapseLink(true);
-    }
-  }, []);
-
-  const expandUrl = () => {
-    setCollapseLink(false);
-  };
-
-  const collapseUrl = () => {
-    setCollapseLink(true);
-  };
-
-  return (
-    <>
-      <span ref={linkRef} className={classes.link}>
-        <span
-          className={clsx(classes.viewLink,
-            { [classes.collapseLink]: collapseLink })}
-        >
-          <span
-            className={clsx(classes.urlView,
-              { [classes.urlViewBtn]: !collapseLink })}
-            type="button"
-            onClick={collapseUrl}
-          >
-            {url}
-          </span>
-          {(collapseLink) && (
-            <span
-              className={classes.expandLinkBtn}
-              type="button"
-              onClick={expandUrl}
-            >
-              ...
-            </span>
-          )}
-        </span>
-      </span>
-    </>
-  );
-};
-
 const QueryUrl = ({
   classes,
   filterItems,
@@ -76,8 +20,6 @@ const QueryUrl = ({
 }) => {
   const [display, setDisplay] = useState(false);
   const toggleDisplay = () => setDisplay(!display);
-
-  const [expand, setExpand] = useState(false);
 
   const [open, toggleOpen] = useState(false);
 
@@ -112,21 +54,12 @@ const QueryUrl = ({
         {
           (display) && (
             <>
-              {(expand) ? (
-                <span
-                  type="button"
-                  onClick={() => setExpand(!expand)}
-                  className={clsx(classes.link, classes.viewLink, classes.expandLink)}
-                >
-                  {url}
-                </span>
-              ) : (
-                <ViewFullLinkComponent
-                  url={url}
-                  classes={classes}
-                  maxWidth={queryRef?.current?.offsetWidth}
-                />
-              )}
+              <div
+                type="button"
+                className={clsx(classes.viewLink)}
+              >
+                {url}
+              </div>
               <Tooltip
                 arrow
                 title="Copy to Clipboard"
@@ -167,45 +100,40 @@ const styles = () => ({
     marginTop: '10px',
     minHeight: '10px',
   },
-  link: {
-    lineBreak: 'anywhere',
+  viewLink: {
     overflow: 'hidden',
+    textOverflow: 'ellipsis',
     fontFamily: 'Nunito',
     fontSize: '12px',
     fontWeight: '500',
     lineHeight: '16px',
     letterSpacing: '0em',
-    padding: '5px',
+    padding: '2px 5px',
     borderRadius: '5px',
     float: 'left',
     color: '#1D79A8',
     backgroundColor: '#fff',
-    maxWidth: '80%',
-  },
-  viewLink: {
     margin: '0',
+    whiteSpace: 'nowrap',
+    wordBreak: 'break-all',
+    '@media (max-width: 2560px)': {
+      maxWidth: '1800px',
+    },
+    '@media (max-width: 2000px)': {
+      maxWidth: '1500px',
+    },
+    '@media (max-width: 1600px)': {
+      maxWidth: '1100px',
+    },
+    '@media (max-width: 1300px)': {
+      maxWidth: '900px',
+    },
   },
   urlViewBtn: {
     cursor: 'pointer',
   },
-  collapseLink: {
-    maxHeight: '1em',
-    display: 'block',
-    // display: '-webkit-box',
-    '-webkit-box-orient': 'vertical',
-    '-webkit-line-clamp': '1',
-    overflow: 'hidden',
-  },
-  expandLink: {
-    cursor: 'pointer',
-  },
-  expandLinkBtn: {
-    float: 'left',
-    '&:hover': {
-      cursor: 'pointer',
-    },
-  },
   viewLinkToggleBtn: {
+    padding: '5px 10px 5px 10px',
     height: '20px',
     fontFamily: 'Nunito',
     fontSize: '12px',
@@ -218,26 +146,10 @@ const styles = () => ({
     color: '#fff',
     float: 'left',
     margin: '0px 10px 0px 0px',
+    whiteSpace: 'nowrap',
     '&:hover': {
       backgroundColor: '#1D79A8',
       color: '#fff',
-    },
-  },
-  urlView: {
-    float: 'left',
-    width: 'calc(100% - 13px)',
-    minWidth: '840px',
-    '@media (max-width: 2560px)': {
-      maxWidth: '1800px',
-    },
-    '@media (max-width: 2000px)': {
-      maxWidth: '1400px',
-    },
-    '@media (max-width: 1600px)': {
-      maxWidth: '1200px',
-    },
-    '@media (max-width: 1300px)': {
-      maxWidth: '1050px',
     },
   },
   copyIconBtn: {

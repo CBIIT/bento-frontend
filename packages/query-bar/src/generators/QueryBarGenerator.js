@@ -100,7 +100,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
             variant="outlined"
             onClick={clearAll}
           >
-            Clear Query
+            Clear
           </Button>
           <span className={classes.divider} />
           <span className={classes.queryContainer}>
