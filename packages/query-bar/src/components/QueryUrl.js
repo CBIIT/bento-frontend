@@ -97,7 +97,7 @@ const QueryUrl = ({
 const styles = () => ({
   urlContainer: {
     display: 'flex',
-    marginTop: '10px',
+    marginTop: '3px',
     minHeight: '10px',
   },
   viewLink: {
