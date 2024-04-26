@@ -13,7 +13,7 @@ import DEFAULT_CONFIG from './config';
  * @returns {object} { QueryBar }
  */
 export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
-  const { config, functions } = uiConfig;
+  const { config, functions, customStyles } = uiConfig;
   const { CHECKBOX } = InputTypes;
 
   const maxItems = config && typeof config.maxItems === 'number'
@@ -49,7 +49,8 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     : DEFAULT_CONFIG.functions.resetFacetSlider;
 
   return {
-    QueryBar: withStyles(DEFAULT_STYLES, { withTheme: true })((props) => {
+    QueryBar: withStyles(customStyles || DEFAULT_STYLES,
+      { withTheme: true })((props) => {
       const { statusReducer, localFind, classes } = props;
 
       const { autocomplete, upload } = localFind;
