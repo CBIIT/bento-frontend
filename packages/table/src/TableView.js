@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Paper,
   Table,
@@ -19,7 +19,7 @@ const CustomTableContainer = (props) => {
   const themeConfig = createTheme({ overrides: { ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
-      <TableContainer component={Paper}>
+      <TableContainer id="tableContainer" component={Paper}>
         {children}
       </TableContainer>
     </ThemeProvider>
@@ -40,6 +40,17 @@ const cartDownloadAreaStyle = {
   paddingRight: '40px',
 };
 
+const addScrollContainerStyle = {
+  overflowX: 'auto',
+  overflowY: 'hidden',
+  width: '100%',
+  height: '14px',
+};
+
+const addScrollStyle = {
+  height: '14px',
+};
+
 const TableView = ({
   tableRows = [],
   table,
@@ -52,67 +63,90 @@ const TableView = ({
   onColumnViewChange,
   themeConfig = {},
   queryVariables,
-}) => (
-  <>
-    <ExtendedView
-      table={table}
-      onColumnViewChange={onColumnViewChange}
-      onRowsPerPageChange={onRowsPerPageChange}
-      onPageChange={onPageChange}
-      numSelected={table?.selectedRows?.length || 0}
-      customTheme={themeConfig.extendedView}
-      queryVariables={queryVariables}
-    />
-    <CustomToolbar
-      numSelected={table?.selectedRows?.length || 0}
-      table={table}
-      onColumnViewChange={onColumnViewChange}
-      customTheme={themeConfig.toolbar}
-    />
-    <CustomTableContainer
-      customTheme={themeConfig.tblContainer || {}}
-    >
-      <Table>
-        <TableHeader
-          customTheme={themeConfig.tblHeader}
-          table={table}
-          rows={tableRows}
-          count={totalRowCount}
-          toggleSelectAll={onToggleSelectAll}
-          sortByColumn={onSortByColumn}
-        />
-        <CustomTableBody
-          customTheme={themeConfig.tblBody}
-          rows={tableRows}
-          table={table}
-          onRowSelectChange={onRowSelectChange}
-        />
-      </Table>
-    </CustomTableContainer>
-    {tableRows.length === 0 && (
-      <DisplayErrMsg
-        customTheme={themeConfig.displayErr}
+}) => {
+  useEffect(() => {
+    const tableContainer = document.getElementById('tableContainer');
+    const addScrollContainer = document.getElementById('addScrollContainer');
+    const targetTable = tableContainer.firstChild;
+    const addScroll = addScrollContainer.firstChild;
+    const tableWidth = targetTable.clientWidth;
+    addScroll.style.width = `${tableWidth}px`;
+    tableContainer.onscroll = () => {
+      addScrollContainer.scrollLeft = tableContainer.scrollLeft;
+    };
+    addScrollContainer.onscroll = () => {
+      tableContainer.scrollLeft = addScrollContainer.scrollLeft;
+    };
+    if (!(tableWidth > tableContainer.clientWidth)) {
+      addScrollContainer.style.height = '0px';
+    }
+  });
+
+  return (
+    <>
+      <ExtendedView
         table={table}
-      />
-    )}
-    <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : downloadAreaStyle}>
-      <CustomPagination
-        customTheme={themeConfig.tblPgn}
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={table.totalRowCount || 0}
-        rowsPerPage={table.rowsPerPage || 10}
-        page={table.page || 0}
-        onPageChange={onPageChange}
+        onColumnViewChange={onColumnViewChange}
         onRowsPerPageChange={onRowsPerPageChange}
-      />
-      <DownloadButton
-        count={table.totalRowCount || 0}
+        onPageChange={onPageChange}
+        numSelected={table?.selectedRows?.length || 0}
+        customTheme={themeConfig.extendedView}
         queryVariables={queryVariables}
-        table={table}
       />
-    </div>
-  </>
-);
+      <CustomToolbar
+        numSelected={table?.selectedRows?.length || 0}
+        table={table}
+        onColumnViewChange={onColumnViewChange}
+        customTheme={themeConfig.toolbar}
+      />
+      <CustomTableContainer
+        customTheme={themeConfig.tblContainer || {}}
+      >
+        <Table>
+          <TableHeader
+            customTheme={themeConfig.tblHeader}
+            table={table}
+            rows={tableRows}
+            count={totalRowCount}
+            toggleSelectAll={onToggleSelectAll}
+            sortByColumn={onSortByColumn}
+          />
+          <CustomTableBody
+            customTheme={themeConfig.tblBody}
+            rows={tableRows}
+            table={table}
+            onRowSelectChange={onRowSelectChange}
+          />
+        </Table>
+      </CustomTableContainer>
+      <div id="addScrollContainer" style={addScrollContainerStyle}>
+        <div style={addScrollStyle} />
+      </div>
+      {tableRows.length === 0 && (
+        <DisplayErrMsg
+          customTheme={themeConfig.displayErr}
+          table={table}
+        />
+      )}
+      <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : downloadAreaStyle}>
+        <CustomPagination
+          customTheme={themeConfig.tblPgn}
+          rowsPerPageOptions={[10, 25, 50, 100]}
+          component="div"
+          count={table.totalRowCount || 0}
+          rowsPerPage={table.rowsPerPage || 10}
+          page={table.page || 0}
+          onPageChange={onPageChange}
+          onRowsPerPageChange={onRowsPerPageChange}
+        />
+        <DownloadButton
+          count={table.totalRowCount || 0}
+          queryVariables={queryVariables}
+          table={table}
+        />
+      </div>
+    </>
+  );
+};
 
 export default TableView;
