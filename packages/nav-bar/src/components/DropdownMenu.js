@@ -64,7 +64,8 @@ const styles = () => ({
     },
   }),
   buttonRoot: (props) => ({
-    padding: props.navBarstyling.global.padding ? props.navBarstyling.global.padding : '9px 20px 0px 20px',
+    ...(props.navBarstyling.dropdownButtonRoot ? props.navBarstyling.dropdownButtonRoot : { padding: props.navBarstyling.global.padding ? props.navBarstyling.global.padding : '9px 20px 0px 20px' }),
+
   }),
   buttonRootClicked: {
     borderBottom: '2px solid #FFFFFF',
@@ -73,9 +74,10 @@ const styles = () => ({
     fontSize: props.navBarstyling.dropDownIcon.fontSize ? props.navBarstyling.dropDownIcon.fontSize : '18px',
     margin: props.navBarstyling.dropDownIcon.margin ? props.navBarstyling.dropDownIcon.margin : '0px 0px 0px 0px',
   }),
-  aboutMenu: {
+  aboutMenu: (props) => ({
     display: 'inline-block',
-  },
+    ...(props.navBarstyling.aboutMenu ? props.navBarstyling.aboutMenu : {}),
+  }),
 });
 
 DropdownMenu.defaultProps = {
