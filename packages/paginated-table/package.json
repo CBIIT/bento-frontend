@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/paginated-table",
-  "version": "1.0.1-CDS.2",
+  "version": "1.0.1-CDS.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
