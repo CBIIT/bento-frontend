@@ -42,7 +42,7 @@ const DownloadManifestView = (props) => {
   async function fetchData({ queryVariables, table }) {
     const fetchResult = await client
       .query({
-        query: table.api,
+        query: table.manifestAPI ? table.manifestAPI : table.api,
         variables: {
           ...getQueryVeriables(queryVariables),
         },
