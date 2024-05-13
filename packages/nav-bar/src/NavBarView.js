@@ -134,10 +134,13 @@ const NavBar = ({
 };
 
 const styles = () => ({
-  myCasesPosition: {
-    position: 'absolute',
-    right: '20px',
-  },
+  myCasesPosition: (props) => ({
+    ...(props.navBarstyling.myCasesPosition ? props.navBarstyling.myCasesPosition : {
+      position: 'absolute',
+      right: '20px',
+    }),
+
+  }),
   logotype: (props) => ({
     whiteSpace: 'nowrap',
     color: '#FFFFFF',
@@ -149,9 +152,10 @@ const styles = () => ({
       borderRadius: '0',
     },
   }),
-  buttonContainer: {
+  buttonContainer: (props) => ({
     margin: '0 auto',
-  },
+    ...(props.navBarstyling.buttonContainer || {}),
+  }),
   appBar: (props) => ({
     backgroundColor: props.navBarstyling.global.backgroundColor ? props.navBarstyling.global.backgroundColor : '#142D64',
     marginTop: props.navBarstyling.global.marginTop ? props.navBarstyling.global.marginTop : '100px',
@@ -190,37 +194,45 @@ const styles = () => ({
     minHeight: props.navBarstyling.global.height ? props.navBarstyling.global.height : '39px',
     paddingRight: props.navBarstyling.global.paddingRight ? props.navBarstyling.global.paddingRight : '45px',
     paddingLeft: props.navBarstyling.global.paddingLeft ? props.navBarstyling.global.paddingLeft : '45px',
-    alignItems: 'flex-start',
+    alignItems: props.navBarstyling.global.alignItems ? props.navBarstyling.global.alignItems : 'flex-start',
   }),
   buttonRoot: (props) => ({
-    padding: props.navBarstyling.global.padding ? props.navBarstyling.global.padding : '9px 20px 0px 20px',
-    border: '0',
-    cursor: 'pointer',
-    margin: '0',
-    display: 'inline-flex',
-    position: 'relative',
-    alignItems: 'center',
-    verticalAlign: 'middle',
-    justifyContent: 'center',
-    textDecoration: 'none',
-    backgroundColor: 'transparent',
-    textTransform: 'uppercase',
-    lineHeight: '1.75',
+    padding: props.navBarstyling.global.padding ? props.navBarstyling.global.buttonRootPadding : '9px 20px 0px 20px',
+    ...(props.navBarstyling.buttonRoot ? props.navBarstyling.buttonRoot : {
+      border: '0',
+      cursor: 'pointer',
+      margin: '0',
+      display: 'inline-flex',
+      position: 'relative',
+      alignItems: 'center',
+      verticalAlign: 'middle',
+      justifyContent: 'center',
+      textDecoration: 'none',
+      backgroundColor: 'transparent',
+      textTransform: 'uppercase',
+      lineHeight: '1.75',
+    }),
+
   }),
   buttonRootNoRightPadding: (props) => ({
-    padding: props.navBarstyling.cart.padding || props.navBarstyling.global.padding || '9px 20px 0px 20px',
-    border: '0',
-    cursor: 'pointer',
-    margin: '0',
-    display: 'inline-flex',
-    position: 'relative',
-    alignItems: 'center',
-    verticalAlign: 'middle',
-    justifyContent: 'center',
-    textDecoration: 'none',
-    backgroundColor: 'transparent',
-    textTransform: 'uppercase',
-    lineHeight: '1.75',
+    ...(props.navBarstyling.buttonRootNoRightPadding
+      ? props.navBarstyling.buttonRootNoRightPadding
+      : {
+        padding: props.navBarstyling.cart.padding || props.navBarstyling.global.padding || '9px 20px 0px 20px',
+        border: '0',
+        cursor: 'pointer',
+        margin: '0',
+        display: 'inline-flex',
+        position: 'relative',
+        alignItems: 'center',
+        verticalAlign: 'middle',
+        justifyContent: 'center',
+        textDecoration: 'none',
+        backgroundColor: 'transparent',
+        textTransform: 'uppercase',
+        lineHeight: '1.75',
+      }),
+
   }),
   badge: {
     display: 'inline-flex',

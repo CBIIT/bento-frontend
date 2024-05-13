@@ -30,15 +30,18 @@ const AddSelectedFilesController = (props) => {
     selectedRows = [],
     dispatch,
   } = context;
-
+ 
   const activeFilterItems = applyActiveFilter ? activeFilters : {};
+  const activeFilterItems = applyActiveFilter ? {
+    ...activeFilters,
+  } : {};
 
   const variables = {
     first: 10000,
     ...activeFilterItems,
     [dataKey]: selectedRows,
   };
-
+ 
   // add selected files id
   const addSelectedFiles = () => {
     const fileIds = getFilesID({

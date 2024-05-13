@@ -58,6 +58,11 @@ const CONFIG = {
      * @var {number}
      */
     maxItems: 2,
+    /**
+     * overirdes maxItems to display all the active filter items
+     * @var {boolean}
+     */
+    displayAllActiveFilters: false,
   },
 
   /* Component Helper Functions */

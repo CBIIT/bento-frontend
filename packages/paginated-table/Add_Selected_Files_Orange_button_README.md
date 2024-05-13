@@ -55,6 +55,7 @@ const AddSelectedFilesOrangeButton = useCallback(() => (
 | applyActiveFilter | FALSE | Only adds files of selected case or sample based on active filter | Bool |
 
 
+
 ### 3 Configure Add_All_Button Or BLUE Button in Dashboard
 
 ```

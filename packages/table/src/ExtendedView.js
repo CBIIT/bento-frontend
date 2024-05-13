@@ -23,6 +23,7 @@ const ExtendedView = ({
   if (!extendedViewConfig) {
     return null;
   }
+
   const {
     download = false,
     manageViewColumns = false,
@@ -56,6 +57,7 @@ const ExtendedView = ({
           <CustomPagination
             customTheme={customTheme.tblTopPgn}
             rowsPerPageOptions={rowsPerPageOptions || [10, 25, 50, 100]}
+            rowsPerPageOptions={[10, 25, 50, 100]}
             component="div"
             count={table.totalRowCount || 0}
             rowsPerPage={table.rowsPerPage || 10}
