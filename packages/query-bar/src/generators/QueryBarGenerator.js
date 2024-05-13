@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Filter } from '../components/FilterMap';
 import DEFAULT_STYLES from './styles';
 import DEFAULT_CONFIG from './config';
+import QueryUrl from '../components/QueryUrl';
 
 /**
  * Generate a pre-configured Explore Query Bar component
@@ -22,6 +23,14 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const maxItems = config && typeof config.maxItems === 'number'
     ? config.maxItems
     : DEFAULT_CONFIG.config.maxItems;
+
+  const queryURLRootPath = config && typeof config.rootPath === 'string'
+    ? config.rootPath
+    : DEFAULT_CONFIG.config.rootPath;
+
+  const viewQueryURL = config && typeof config.viewQueryURL === 'boolean'
+    ? config.viewQueryURL
+    : DEFAULT_CONFIG.config.viewQueryURL;
 
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
@@ -91,7 +100,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
             variant="outlined"
             onClick={clearAll}
           >
-            Clear Query
+            Clear
           </Button>
           <span className={classes.divider} />
           <span className={classes.queryContainer}>
@@ -117,7 +126,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                         className={clsx(classes.filterName, classes.localFindBackground)}
                         onClick={clearAutocomplete}
                       >
-                        Case IDs
+                        Case ID
                       </span>
                       {' '}
                       {' '}
@@ -178,7 +187,6 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 </span>
               </span>
             ) : null}
-
             {/* Facet Sidebar Selections */}
             {((autocomplete.length || upload.length) && mappedInputs.length)
               ? <span className={classes.operators}> AND </span>
@@ -201,6 +209,16 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
               </span>
             ))}
           </span>
+          {
+            (viewQueryURL && queryURLRootPath) && (
+              <QueryUrl
+                classes={classes}
+                localFind={localFind}
+                filterItems={mappedInputs}
+                rootPath={queryURLRootPath}
+              />
+            )
+          }
         </div>
       );
     }),
