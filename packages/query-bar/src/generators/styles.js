@@ -23,7 +23,6 @@ export default () => ({
     fontSize: 12,
     fontWeight: 600,
     cursor: 'pointer',
-    backgroundColor: '#E6FFF9',
   },
   filterCheckboxes: {
     padding: '3px 6px 3px 6px',
@@ -34,7 +33,6 @@ export default () => ({
     width: 'fit-content',
     backgroundColor: '#fff',
     cursor: 'pointer',
-    color: '#008566',
   },
   bracketsOpen: {
     fontSize: 20,
@@ -108,28 +106,18 @@ export default () => ({
     backgroundColor: '#F5C3F1',
   },
   facetSectionDemographics: {
-    color: '#006A8F',
+    color: '#357288',
   },
   facetSectionDemographicsBackground: {
-    backgroundColor: '#E2F1F5',
+    backgroundColor: '#E4ECE9',
     border: '1px solid #646464',
   },
   facetSectionDiagnosis: {
-    color: '#794900',
+    color: '#8C3F8D',
   },
   facetSectionDiagnosisBackground: {
-    backgroundColor: '#FFF2DF',
+    backgroundColor: '#E1C9E140',
     border: '1px solid #646464',
-  },
-  facetSectionSurvivalBackground: {
-    border: '1px solid #646464',
-    textTransform: 'uppercase',
-    padding: '3px 6px 3px 6px',
-    borderRadius: 4,
-    fontSize: 12,
-    fontWeight: 600,
-    cursor: 'pointer',
-    backgroundColor: '#E6FFF9',
   },
   facetSectionSamples: {
     color: '#907642',
@@ -146,10 +134,10 @@ export default () => ({
     border: '1px solid #646464',
   },
   facetSectionStudy: {
-    color: '#501166',
+    color: '#1F6BBF',
   },
   facetSectionStudyBackground: {
-    backgroundColor: '#F6F0FB',
+    backgroundColor: '#CEDEF040',
     border: '1px solid #646464',
   },
   facetSectionLibrary: {
