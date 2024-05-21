@@ -64,16 +64,19 @@ export const getTableData = ({ queryVariables, table }) => {
   const [tableData, setTableData] = useState(null);
   useEffect(() => {
     const controller = new AbortController();
-    getData().then((result) => {
-      if (table.paginationAPIField && result[table.paginationAPIField]) {
-        setTableData(result[table.paginationAPIField]);
-      } else {
-        setTableData(result);
-      }
-    });
+    const timeoutId = setTimeout(() => {
+      getData().then((result) => {
+        if (table.paginationAPIField && result[table.paginationAPIField]) {
+          setTableData(result[table.paginationAPIField]);
+        } else {
+          setTableData(result);
+        }
+      });
+    }, 5000);
     return () => {
       // cancel the request before component unmounts
       controller.abort();
+      clearTimeout(timeoutId); // Clear the timeout if dependencies change or component unmounts
     };
   }, [queryVariables, page, rowsPerPage, sortOrder, sortBy]);
   return { tableData };
