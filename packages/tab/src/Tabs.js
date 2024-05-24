@@ -33,7 +33,7 @@ const TabItems = ({
   );
 
   const TABs = tabItems.map((tab, index) => (
-    <ToolTip border="1px solid #2D5380" arrowBorder="1px solid #598AC5" title={tab.toolTipText || '.'} arrow placement="top">
+    <ToolTip {...tab.tooltipStyles} title={tab.toolTipText || '.'} arrow placement="top">
       <Tab
         index={index}
         label={
