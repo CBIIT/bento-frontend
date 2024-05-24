@@ -14,10 +14,10 @@ import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownO
 import { CloudDownload } from '@material-ui/icons';
 import { downloadCSV, downloadJson } from '../util/downloadTable';
 
-const downloadButtonStyle = {
-  color: '#d1d2d3',
-  marginTop: '7px',
-};
+// const downloadButtonStyle = {
+//   color: '#d1d2d3',
+//   marginTop: '7px',
+// };
 
 const DownloadButton = ({
   count,
@@ -44,9 +44,9 @@ const DownloadButton = ({
   if (table.paginationAPIField === 'filesInList') {
     return <></>;
   }
-  if (count === 0) {
-    return <CloudDownload className="disableButton" style={downloadButtonStyle} />;
-  }
+  // if (count === 0) {
+  //   return <CloudDownload className="disableButton" style={downloadButtonStyle} />;
+  // }
 
   const client = useApolloClient();
 
@@ -156,6 +156,10 @@ const DownloadButton = ({
       marginLeft: '5px',
       fill: '#606060',
     },
+    arrowdownIconDisabled: {
+      marginLeft: '5px',
+      fill: '#00000042',
+    },
   });
 
   const classes = useStyles();
@@ -163,12 +167,21 @@ const DownloadButton = ({
   return (
     <div className={classes.dropdown}>
       <Tooltip title="Download filtered results">
-        <IconButton
-          onClick={handleClickButton}
-        >
-          <CloudDownload />
-          <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIcon} />
-        </IconButton>
+        {
+          count !== 0
+            ? (
+              <IconButton onClick={handleClickButton}>
+                <CloudDownload />
+                <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIcon} />
+              </IconButton>
+            )
+            : (
+              <IconButton disabled>
+                <CloudDownload />
+                <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIconDisabled} />
+              </IconButton>
+            )
+        }
       </Tooltip>
       <div className={classes.dropdownList} style={{ display: listDisplay }}>
         <div id="dropdownListItemCSV" className={classes.dropdownListItem} onClick={downloadTableCSV}>CSV</div>
