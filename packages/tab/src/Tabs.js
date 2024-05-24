@@ -5,6 +5,7 @@ import {
   createTheme,
   ThemeProvider,
 } from '@material-ui/core';
+import ToolTip from '@bento-core/tool-tip';
 import { defaultTheme } from './defaultTheme';
 
 const TabItems = ({
@@ -32,15 +33,17 @@ const TabItems = ({
   );
 
   const TABs = tabItems.map((tab, index) => (
-    <Tab
-      index={index}
-      label={
+    <ToolTip border="1px solid #2D5380" arrowBorder="1px solid #598AC5" title={tab.toolTipText || '.'} arrow placement="top">
+      <Tab
+        index={index}
+        label={
         getTabLalbel({ ...tab, index })
       }
-      key={index}
-      className={tab.clsName}
-      disableRipple
-    />
+        key={index}
+        className={tab.clsName}
+        disableRipple
+      />
+    </ToolTip>
   ));
 
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
