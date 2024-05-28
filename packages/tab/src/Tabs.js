@@ -33,17 +33,33 @@ const TabItems = ({
   );
 
   const TABs = tabItems.map((tab, index) => (
-    <ToolTip {...tab.tooltipStyles} title={tab.toolTipText || '.'} arrow placement="top">
-      <Tab
-        index={index}
-        label={
+
+    tab.hasToolTip
+      ? (
+        <ToolTip {...tab.tooltipStyles} title={tab.toolTipText || '.'} arrow placement="top">
+          <Tab
+            index={index}
+            label={
         getTabLalbel({ ...tab, index })
       }
-        key={index}
-        className={tab.clsName}
-        disableRipple
-      />
-    </ToolTip>
+            key={index}
+            className={tab.clsName}
+            disableRipple
+          />
+        </ToolTip>
+      )
+      : (
+        <Tab
+          index={index}
+          label={
+    getTabLalbel({ ...tab, index })
+  }
+          key={index}
+          className={tab.clsName}
+          disableRipple
+        />
+      )
+
   ));
 
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
