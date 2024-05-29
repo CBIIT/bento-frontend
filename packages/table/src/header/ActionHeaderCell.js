@@ -6,6 +6,7 @@ import DeleteCellView from './components/DeleteCellView';
 const ActionHeaderCell = ({
   includeSelectedIds,
   toggleSelectAll,
+  onDeleteAllFiles,
   Ids,
   count,
   rows,
@@ -29,6 +30,7 @@ const ActionHeaderCell = ({
         rows={rows}
         count={count}
         column={column}
+        onDeleteAllFiles={onDeleteAllFiles}
       />
     );
   }
