@@ -37,12 +37,7 @@ const getPaginatedQueryVariables = (queryVariables, table) => {
   return variables;
 };
 
-/**
- * @param {*} queryVariables
- * @param {*} table (table state)
- * @param {*} tab (tab)
- * @returns table data
- */
+let callCounter = 0;
 export const getTableData = ({ queryVariables, table }) => {
   const client = useApolloClient();
   const {
@@ -64,19 +59,21 @@ export const getTableData = ({ queryVariables, table }) => {
   const [tableData, setTableData] = useState(null);
   useEffect(() => {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => {
-      getData().then((result) => {
+    callCounter += 1;
+    const currentCall = callCounter;
+    getData().then((result) => {
+      // Only update the table data if this is the most recent call
+      if (currentCall === callCounter) {
         if (table.paginationAPIField && result[table.paginationAPIField]) {
           setTableData(result[table.paginationAPIField]);
         } else {
           setTableData(result);
         }
-      });
-    }, 5000);
+      }
+    });
     return () => {
       // cancel the request before component unmounts
       controller.abort();
-      clearTimeout(timeoutId); // Clear the timeout if dependencies change or component unmounts
     };
   }, [queryVariables, page, rowsPerPage, sortOrder, sortBy]);
   return { tableData };
