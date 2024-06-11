@@ -6,6 +6,7 @@ import { TableContext } from '../../../table/ContextProvider';
 import { onRowSeclect } from '../../../table/state/Actions';
 import AddSelectedFileComponent from './AddSelectedFilesView';
 import { getFilesID } from '../../WrapperService';
+import addFilesResponseHandler from '../util';
 
 const AddSelectedFilesController = (props) => {
   const {
@@ -18,6 +19,9 @@ const AddSelectedFilesController = (props) => {
     setOpenSnackbar,
     setAlterDisplay,
     client,
+    maxFileLimit = 1000,
+    applyActiveFilter = false,
+    activeFilters = {},
   } = props;
 
   const tableContext = useContext(TableContext);
@@ -26,8 +30,15 @@ const AddSelectedFilesController = (props) => {
     selectedRows = [],
     dispatch,
   } = context;
-  const variables = {};
-  variables[dataKey] = selectedRows;
+
+  const activeFilterItems = applyActiveFilter ? activeFilters : {};
+
+  const variables = {
+    first: 10000,
+    ...activeFilterItems,
+    [dataKey]: selectedRows,
+  };
+
   // add selected files id
   const addSelectedFiles = () => {
     const fileIds = getFilesID({
@@ -38,8 +49,8 @@ const AddSelectedFilesController = (props) => {
     });
 
     fileIds().then((response) => {
-      const ids = response[responseKeys[0]] || [];
-      if (ids.length >= 1000) {
+      const ids = addFilesResponseHandler(response, responseKeys);
+      if (ids.length >= maxFileLimit) {
         setAlterDisplay(true);
       } else {
         addFiles(ids);
