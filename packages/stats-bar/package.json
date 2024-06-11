@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/stats-bar",
-  "version": "1.0.1-ccdihub.2",
+  "version": "1.0.1-ccdihub.3",
   "description": "The StatsBar component shows a list of numeric values and their labels.",
   "main": "dist/index.js",
   "scripts": {
