@@ -108,7 +108,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
           return (
             <div style={tooltipStyle}>
               <div>{`${label}`}</div>
-              <div>{`Participants : ${payload[0].value}`}</div>
+              <div>{`Participants : ${payload[0].value.toLocaleString()}`}</div>
             </div>
           );
         }
@@ -122,7 +122,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
           >
             <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
             <XAxis dataKey="group" />
-            <YAxis />
+            <YAxis tickFormatter={(tick) => tick.toLocaleString()} />
             <Tooltip cursor={false} content={<CustomTooltip />} />
             <Bar dataKey="subjects">
               {data.map((entry, index) => (

@@ -31,6 +31,9 @@ const ViewCell = ({
   row,
 }) => {
   const { cellType } = column;
+  function isNumeric(value) {
+    return /^-?\d+\.?\d*$/.test(value);
+  }
   switch (cellType) {
     case cellTypes.FORMAT_DATA:
       return (
@@ -52,6 +55,14 @@ const ViewCell = ({
           row={row}
           column={column}
         />
+      );
+    case cellTypes.COMMA:
+      return (
+        <Typography>
+          {isNumeric(row[column.dataField])
+            ? Number(row[column.dataField]).toLocaleString()
+            : row[column.dataField]}
+        </Typography>
       );
     default:
       return (
