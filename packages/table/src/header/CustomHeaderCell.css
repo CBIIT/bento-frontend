@@ -14,10 +14,8 @@
   position: absolute;
   z-index: 1;
   bottom: 125%;
-  /* Position the tooltip above the icon */
   left: 50%;
   margin-left: -40px;
-  /* Use half of the width to center it */
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -26,7 +24,6 @@
   content: '';
   position: absolute;
   top: 100%;
-  /* At the bottom of the tooltip */
   left: 50%;
   margin-left: -5px;
   border-width: 5px;

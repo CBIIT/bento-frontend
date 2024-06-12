@@ -3,7 +3,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import { headerTypes } from '../util/Types';
-import './CustomHeaderCell.css'; // Import the CSS file
+import './CustomHeaderCell.css';
 
 /**
 *
