@@ -63,6 +63,7 @@ const CustomHeaderCell = ({
             ? customColHeaderRender(column) : header}
         </TableSortLabel>
       </Tooltip>
+      <img src="https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg" alt="tooltipIcon" title="TEST" />
     </TableCell>
   );
 };
