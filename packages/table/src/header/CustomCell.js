@@ -3,6 +3,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import { headerTypes } from '../util/Types';
+import './CustomHeaderCell.css'; // Import the CSS file
 
 /**
 *
@@ -18,6 +19,7 @@ const CustomHeaderCell = ({
   const {
     dataField,
     tooltipText,
+    // tooltipDefinition,
     header,
     headerType,
     customColHeaderRender,
@@ -27,11 +29,7 @@ const CustomHeaderCell = ({
     // return custom tooltips
     if (components.Tooltip) {
       const CustomToolTip = components.Tooltip;
-      return (
-        <CustomToolTip>
-          {children}
-        </CustomToolTip>
-      );
+      return <CustomToolTip>{children}</CustomToolTip>;
     }
     // return default tooltip
     if (tooltipText) {
@@ -63,7 +61,11 @@ const CustomHeaderCell = ({
             ? customColHeaderRender(column) : header}
         </TableSortLabel>
       </Tooltip>
-      <img src="https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg" alt="tooltipIcon" title="TEST" />
+      <div className="tooltip-icon">
+        <img src="https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg" alt="tooltipIcon" />
+        {/* <div className="tooltip-text">{{ tooltipDefinition }}</div> */}
+        <div className="tooltip-text">TEST</div>
+      </div>
     </TableCell>
   );
 };
