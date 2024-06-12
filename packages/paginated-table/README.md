@@ -228,6 +228,8 @@ TableContextProvider provides table state to Wrapper Component or it can be used
 #### 
 
 ## 4 Wrapper Configuration:
+<span style="color:#E1B41D"> Alternative option to configure Blue and Orange button refer to ADD_ALL_FILES_BLUE_BUTTON_ReadME and ADD_SELECTED_FILES_Orange_button_ReadMe.  </span><span style="color:#E1701D"> (No Wrapper conponent required) </span> <br>
+
 Wrapper component around table compnent. 
 1. ADD ALL FILES button
 2. ADD SELECTED ROWS button

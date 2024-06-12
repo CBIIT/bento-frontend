@@ -1,5 +1,5 @@
 
-### 1 Use bento-core/paginated-table package version publish by ICDC
+### 1 Use latest or bento-core/paginated-table package version publish by ICDC
 Alternative configuration for ORANGE button
 ```
 // 1.0.1-icdc.3
@@ -11,7 +11,7 @@ or in package.json
 }
 ```
 
-<span style="color:red">
+<span style="color:yellow">
 Assuming table component is imported from bento-core/paginated-table
 </span>
 
@@ -74,9 +74,24 @@ const AddSelectedFilesOrangeButton = useCallback(() => (
     };
 
     const btnTheme = createTheme({ overrides: { ...customTheme } });
-    <ThemeProvider theme={btnTheme}>
-      <Container>
-        <AddSelectedFilesOrangeButton /> // from step 2
-      </Container>
-    </ThemeProvider>
+    <TableContextProvider>
+      // add all button
+      <ThemeProvider theme={btnTheme}>
+        <Container>
+          // add all button 
+          <AddAllBlueButton /> 
+          // add selected file orange button
+          <AddSelectedFilesOrangeButton /> // step 2
+        </Container>
+      </ThemeProvider>
+
+      // table view
+      <Grid container>
+        <Grid item xs={12} id={config.tableID}>
+          <TableView
+            ...
+          />
+        </Grid>
+      </Grid>
+    </TableContextProvider>
 ```

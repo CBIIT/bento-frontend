@@ -1,5 +1,5 @@
 
-### 1 Use bento-core/paginated-table package version publish by ICDC
+### 1 Use latest or bento-core/paginated-table package version publish by ICDC
 Alternative configuratoin for BLUE button
 ```
 // 1.0.1-icdc.3
@@ -12,7 +12,7 @@ or in package.json
 ```
 **NOTE: Create a new dashboard page using bento-core components before removing old dashboard page**
 <br>
-<span style="color:red">
+<span style="color:yellow">
 Assuming New Dashboard page have Filter component and table component from bento-core
 </span>.
 
@@ -22,7 +22,7 @@ Assuming New Dashboard page have Filter component and table component from bento
 
 ```
 import React, { useCallback } from 'react';
-import { ButtonView, btnTypes } from '@bento-core/paginated-table';
+import { ButtonView, btnTypes, TableContextProvider } from '@bento-core/paginated-table';
 
 const AddAllBlueButton = useCallback(() => (
     <ButtonView
@@ -78,9 +78,23 @@ const AddAllBlueButton = useCallback(() => (
     };
 
     const btnTheme = createTheme({ overrides: { ...customTheme } });
-    <ThemeProvider theme={btnTheme}>
-      <Container>
-        <AddAllBlueButton /> // from step 2
-      </Container>
-    </ThemeProvider>
+    <TableContextProvider>
+      <ThemeProvider theme={btnTheme}>
+        <Container>
+          // add all button
+          <AddAllBlueButton /> // from step 2
+          // add selected file orange button
+          <AddSelectedFilesOrangeButton />
+        </Container>
+      </ThemeProvider>
+
+      // table view
+      <Grid container>
+        <Grid item xs={12} id={config.tableID}>
+          <TableView
+            ...
+          />
+        </Grid>
+      </Grid>
+    </TableContextProvider>
 ```
