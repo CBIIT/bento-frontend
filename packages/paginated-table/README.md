@@ -1,5 +1,7 @@
 # PAGINATED TABLE COMPONENT DESIGN
 
+<code style="color : red">After updating to latest version,
+Remove transform: 'rotateX(180deg)'</code>
 ### Bento core paginated table design:
 
 * Use of UseReducer to track table state and local state to display dialog component
@@ -228,7 +230,8 @@ TableContextProvider provides table state to Wrapper Component or it can be used
 #### 
 
 ## 4 Wrapper Configuration:
-<span style="color:#E1B41D"> Alternative option to configure Blue and Orange button refer to ADD_ALL_FILES_BLUE_BUTTON_ReadME and ADD_SELECTED_FILES_Orange_button_ReadMe.  </span><span style="color:#E1701D"> (No Wrapper conponent required) </span> <br>
+
+<code style="color : darkorange">Alternative option to configure Blue and Orange button refer to [ADD_ALL_FILES_BLUE_BUTTON_ReadME](Add_ALL_Files__BLUE_ButtonREADME.md) and [ADD_SELECTED_FILES_Orange_button_ReadMe](Add_Selected_Files_Orange_button_README.md).  (Note: No Wrapper conponent required)</code> <br>
 
 Wrapper component around table compnent. 
 1. ADD ALL FILES button
@@ -321,8 +324,8 @@ headerConfig - upper component on the table
 
 #### 
 
-## 5 Pagination Configuration:
-
+## 5 Customize Pagination Action:
+Customize paginated action is provided to add event in addition to  update of the table state. It will override default paginated action.  
 ```
 import {
   TableContext,
@@ -341,7 +344,7 @@ import {
   const { context } = tableContext;
   const { dispatch } = context;
 
-  const paginationOptions = {
+  const customPaginationOptions = {
     customizeOnRowSelect: (event, row) => {
       const payload = {
         page: 2,
@@ -364,7 +367,7 @@ import {
     queryVariables={activeFilters}
     totalRowCount={dashboardStats[config.count]}
     activeTab={activeTab}
-    paginationOptions={paginationOptions}
+    paginationOptions={customPaginationOptions}
   />
 ```
 
