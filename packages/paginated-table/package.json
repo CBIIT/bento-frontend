@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@bento-core/cart": "^1.0.1-ccdihub.8",
-    "@bento-core/table": "1.0.1-ccdihub.62",
+    "@bento-core/table": "1.0.1-ccdihub.64",
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.0"
   },
