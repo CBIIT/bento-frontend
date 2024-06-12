@@ -1,7 +1,8 @@
 # PAGINATED TABLE COMPONENT DESIGN
 
-<code style="color : red">After updating to latest version,
-Remove transform: 'rotateX(180deg)'</code>
+```diff
+- After updating to latest version remove transform: 'rotateX(180deg)) in red
+```
 ### Bento core paginated table design:
 
 * Use of UseReducer to track table state and local state to display dialog component
@@ -231,7 +232,8 @@ TableContextProvider provides table state to Wrapper Component or it can be used
 
 ## 4 Wrapper Configuration:
 
-<code style="color : darkorange">Alternative option to configure Blue and Orange button refer to [ADD_ALL_FILES_BLUE_BUTTON_ReadME](Add_ALL_Files__BLUE_ButtonREADME.md) and [ADD_SELECTED_FILES_Orange_button_ReadMe](Add_Selected_Files_Orange_button_README.md).  (Note: No Wrapper conponent required)</code> <br>
+**NOTE: Alternative option to configure Blue and Orange button refer to [ADD_ALL_FILES_BLUE_BUTTON_ReadME](Add_ALL_Files__BLUE_ButtonREADME.md) and [ADD_SELECTED_FILES_Orange_button_ReadMe](Add_Selected_Files_Orange_button_README.md).  (Note: No Wrapper conponent required)in red**
+
 
 Wrapper component around table compnent. 
 1. ADD ALL FILES button
