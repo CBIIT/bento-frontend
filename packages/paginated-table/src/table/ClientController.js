@@ -28,7 +28,7 @@ const TableController = ((props) => {
   } = table;
 
   const arraySort = (a, b) => {
-    // handles sort for csvDownload column
+    // handles sort for the column with the array value
     const aHasData = a[sortBy] && a[sortBy].length > 0;
     const bHasData = b[sortBy] && b[sortBy].length > 0;
     return aHasData === bHasData ? 0 : aHasData ? -1 : 1;
