@@ -7,7 +7,7 @@ import DropdownItemsMenu from './DropdownItemsMenu';
 
 const DropdownMenu = ({
   classes, handleButtonClickEvent, linkText, clickedEl, dropDownElements,
-  navBarstyling, externalLinksFlag, externalLinks, index,
+  navBarstyling, externalLinksFlag, externalLinks, index, externalLinksFirst,
 }) => {
   const [displayDropDownMenu, setDisplayDropDownMenu] = React.useState(false);
 
@@ -39,11 +39,11 @@ const DropdownMenu = ({
         classes={{ root: classes.buttonRoot }}
       >
         <span className={index === clickedEl ? classes.buttonRootClicked : ''} id={`navbar_dropdown_${linkText}`}>
-          { linkText }
+          {linkText}
         </span>
         {navBarstyling.dropDownIcon.displayIcon === true ? <ExpandMoreRoundedIcon className={classes.dropDownicon} /> : ''}
       </Button>
-      {displayDropDownMenu ? <DropdownItemsMenu navBarstyling={navBarstyling} handleClick={dropdownMenuClickEvent} dropDownElements={dropDownElements} externalLinksFlag={externalLinksFlag} linkText={linkText} externalLinks={externalLinks} /> : ''}
+      {displayDropDownMenu ? <DropdownItemsMenu externalLinksFirst={externalLinksFirst} navBarstyling={navBarstyling} handleClick={dropdownMenuClickEvent} dropDownElements={dropDownElements} externalLinksFlag={externalLinksFlag} linkText={linkText} externalLinks={externalLinks} /> : ''}
     </div>
   );
 };
