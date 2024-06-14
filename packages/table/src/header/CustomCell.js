@@ -19,7 +19,7 @@ const CustomHeaderCell = ({
   const {
     dataField,
     tooltipText,
-    // tooltipDefinition,
+    tooltipDefinition,
     header,
     headerType,
     customColHeaderRender,
@@ -63,8 +63,9 @@ const CustomHeaderCell = ({
       </Tooltip>
       <div className="tooltip-icon">
         <img src="https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg" alt="tooltipIcon" />
-        {/* <div className="tooltip-text">{{ tooltipDefinition }}</div> */}
-        <div className="tooltip-text">TEST</div>
+        <div className="tooltip-text">
+          {tooltipDefinition}
+        </div>
       </div>
     </TableCell>
   );
