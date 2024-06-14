@@ -21,24 +21,21 @@ Assuming table component is imported from bento-core/paginated-table
 import React, { useCallback } from 'react';
 import { ButtonView, btnTypes } from '@bento-core/paginated-table';
 
-const AddSelectedFilesOrangeButton = useCallback(() => (
-    <ButtonView
-      btnType={btnTypes.ADD_SELECTED_FILES}
-      title="ADD SELECTED FILES Btn"
-      clsName="add_selected_button"
-      dataKey="case_ids"
-      addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
-      responseKeys={['caseOverview', 'files']}
-      classes={classes}
-      applyActiveFilter={true}
-      tooltipCofig={{
-        arrow: true,
-        clsName: 'addSelectedFileTooltip',
-        tooltipText: 'Add files associated selected cases',
-        icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
-      }}
-    />
-  ), []);
+ <ButtonView
+    btnType={btnTypes.ADD_SELECTED_FILES}
+    title="ADD SELECTED FILES Btn"
+    clsName="add_selected_button"
+    dataKey="case_ids"
+    addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
+    responseKeys={['caseOverview', 'files']}
+    classes={classes}
+    tooltipCofig={{
+      arrow: true,
+      clsName: 'addSelectedFileTooltip',
+      tooltipText: 'Add files associated selected cases',
+      icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
+    }}
+  />
 ```
 
 **Add All Button Component or Configuration Properties**
@@ -74,24 +71,51 @@ const AddSelectedFilesOrangeButton = useCallback(() => (
     };
 
     const btnTheme = createTheme({ overrides: { ...customTheme } });
-    <TableContextProvider>
-      // add all button
-      <ThemeProvider theme={btnTheme}>
-        <Container>
-          // add all button 
-          <AddAllBlueButton /> 
-          // add selected file orange button
-          <AddSelectedFilesOrangeButton /> // step 2
+    <ThemeProvider theme={btnTheme}>
+        <Container
+          maxWidth="xl"
+        >
+          <ButtonView
+            btnType={btnTypes.ADD_ALL_FILES}
+            title="Add all files Btn"
+            clsName="add_all_button"
+            maxFileLimit={10000}
+            activeFilters={activeFilters}
+            addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
+            responseKeys={['caseOverview', 'files']}
+            classes={classes}
+            section="toolTipText"
+            tooltipCofig={{
+              arrow: true,
+              clsName: 'addAllTooltip',
+              toolTipText: 'Add filtered files associated with all cases',
+              icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
+            }}
+          />
+          <ButtonView
+            btnType={btnTypes.ADD_SELECTED_FILES}
+            title="ADD SELECTED FILES Btn"
+            clsName="add_selected_button"
+            dataKey="case_ids"
+            addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
+            responseKeys={['caseOverview', 'files']}
+            classes={classes}
+            tooltipCofig={{
+              arrow: true,
+              clsName: 'addSelectedFileTooltip',
+              tooltipText: 'Add files associated selected cases',
+              icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
+            }}
+          />
         </Container>
       </ThemeProvider>
 
-      // table view
       <Grid container>
         <Grid item xs={12} id={config.tableID}>
           <TableView
+            initState={initTblState}
             ...
           />
         </Grid>
       </Grid>
-    </TableContextProvider>
 ```
