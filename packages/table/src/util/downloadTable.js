@@ -87,7 +87,11 @@ export function downloadJson(tableData, table, downloadFileName) {
   const { columns = [] } = table;
   const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
   let formatDataVal = formatColumnValues(filterColumns, tableData);
-  formatDataVal = JSON.parse(JSON.stringify(formatDataVal).split('"participant_age_at_collection":').join('"participant_age_at_collection_(days)":'));
+  filterColumns.forEach((column) => {
+    formatDataVal = JSON.parse(
+      JSON.stringify(formatDataVal).split(`"${column.dataField}":`).join(`"${column.header}":`),
+    );
+  });
   const jsonse = JSON.stringify(formatDataVal);
   const exportData = new Blob([jsonse], { type: 'application/json' });
   const JsonURL = window.URL.createObjectURL(exportData);
