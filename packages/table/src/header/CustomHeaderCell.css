@@ -5,19 +5,19 @@
 
 .tooltip-text {
   visibility: hidden;
-  width: 80px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
   position: absolute;
+  padding: 12px;
   z-index: 1;
   bottom: 125%;
   left: 50%;
   margin-left: -40px;
-  opacity: 0;
   transition: opacity 0.3s;
+  width: 300px;
+  gap: 0px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+  background: #FFFFFF;
+  border: 1px solid #9C0592;
 }
 
 .tooltip-text::after {

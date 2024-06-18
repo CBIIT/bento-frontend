@@ -4,6 +4,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import { headerTypes } from '../util/Types';
 import './CustomHeaderCell.css';
+import helpIcon from './help.svg';
 
 /**
 *
@@ -61,12 +62,17 @@ const CustomHeaderCell = ({
             ? customColHeaderRender(column) : header}
         </TableSortLabel>
       </Tooltip>
-      <div className="tooltip-icon">
-        <img src="https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg" alt="tooltipIcon" />
-        <div className="tooltip-text">
-          {tooltipDefinition}
-        </div>
-      </div>
+      {
+        tooltipDefinition
+        && (
+          <div className="tooltip-icon">
+            <img src={helpIcon} alt="tooltipIcon" />
+            <div className="tooltip-text">
+              {tooltipDefinition}
+            </div>
+          </div>
+        )
+      }
     </TableCell>
   );
 };
