@@ -21,6 +21,7 @@ const CustomHeaderCell = ({
     dataField,
     tooltipText,
     tooltipDefinition,
+    tooltipLocation,
     header,
     headerType,
     customColHeaderRender,
@@ -67,7 +68,9 @@ const CustomHeaderCell = ({
         && (
           <div className="tooltip-icon">
             <img src={helpIcon} alt="tooltipIcon" />
-            <div className="tooltip-text">
+            <div
+              className={`tooltip-text ${tooltipLocation === 'first' ? 'tooltip-text-first' : tooltipLocation === 'last' ? 'tooltip-text-last' : ''}`}
+            >
               {tooltipDefinition}
             </div>
           </div>
