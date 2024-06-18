@@ -89,7 +89,7 @@ export function downloadJson(tableData, table, downloadFileName) {
   let formatDataVal = formatColumnValues(filterColumns, tableData);
   filterColumns.forEach((column) => {
     formatDataVal = JSON.parse(
-      JSON.stringify(formatDataVal).split(column.dataField).join(column.header),
+      JSON.stringify(formatDataVal).split(`"${column.dataField}":`).join(`"${column.header}":`),
     );
   });
   const jsonse = JSON.stringify(formatDataVal);
