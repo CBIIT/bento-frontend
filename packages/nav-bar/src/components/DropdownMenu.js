@@ -50,18 +50,17 @@ const DropdownMenu = ({
 
 const styles = () => ({
   logotype: (props) => ({
-    whiteSpace: 'nowrap',
-    color: props.navBarstyling.global.fontColor ? props.navBarstyling.global.fontColor : '#FFFFFF',
-    fontFamily: props.navBarstyling.global.fontFamily ? props.navBarstyling.global.fontFamily : 'Nunito',
-    fontSize: '13px',
-    fontWeight: '600',
-    letterSpacing: '0.9px',
-    // [theme.breakpoints.down('xs')]: {
-    //   display: 'none',
-    // },
-    '&:hover, &:focus': {
-      borderRadius: '0',
-    },
+    ...(props.navBarstyling.dropDownMenuButton || {
+      whiteSpace: 'nowrap',
+      color: props.navBarstyling.global.fontColor ? props.navBarstyling.global.fontColor : '#FFFFFF',
+      fontFamily: props.navBarstyling.global.fontFamily ? props.navBarstyling.global.fontFamily : 'Nunito',
+      fontSize: '13px',
+      fontWeight: '600',
+      letterSpacing: '0.9px',
+      '&:hover, &:focus': {
+        borderRadius: '0',
+      },
+    }),
   }),
   buttonRoot: (props) => ({
     ...(props.navBarstyling.dropdownButtonRoot ? props.navBarstyling.dropdownButtonRoot : { padding: props.navBarstyling.global.padding ? props.navBarstyling.global.padding : '9px 20px 0px 20px' }),

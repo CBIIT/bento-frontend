@@ -163,20 +163,24 @@ const styles = () => ({
   }),
   cartIcon: (props) => ({
     height: props.navBarstyling.cart && props.navBarstyling.cart.iconSize ? props.navBarstyling.cart.iconSize : '22px',
+    width: props.navBarstyling.cart && props.navBarstyling.cart.iconSize ? props.navBarstyling.cart.iconSize : '22px',
     margin: '0px 0px 0px 6px',
   }),
   labelText: (props) => ({
+    ...(props.navBarstyling.labelText || {}),
     textDecoration: 'none',
     color: props.navBarstyling.global.fontColor ? props.navBarstyling.global.fontColor : '#FFFFFF',
     fontFamily: props.navBarstyling.global.fontFamily ? props.navBarstyling.global.fontFamily : 'Nunito',
-    fontSize: '13px',
+    fontSize: props.navBarstyling.global.labelTextFontSize ? props.navBarstyling.global.labelTextFontSize : '13px',
   }),
   cartLabelText: (props) => ({
     textDecoration: 'none',
     color: props.navBarstyling.global.fontColor ? props.navBarstyling.global.fontColor : '#FFFFFF',
     fontFamily: props.navBarstyling.global.fontFamily ? props.navBarstyling.global.fontFamily : 'Nunito',
     textTransform: props.navBarstyling.global.textTransform ? props.navBarstyling.global.textTransform : 'UPPERCASE',
-    fontSize: '13px',
+    fontSize: props.navBarstyling.global.cartLabelFontSize ? props.navBarstyling.global.cartLabelFontSize : '13px',
+    fontWeight: props.navBarstyling.global.cartLabelFontWeight ? props.navBarstyling.global.cartLabelFontWeight : '600',
+    letterSpacing: props.navBarstyling.global.cartLabelLetterSpacing ? props.navBarstyling.global.cartLabelLetterSpacing : '1px',
   }),
   activeLabel: (props) => ({
     borderBottom: props.navBarstyling.global.activeLabel ? props.navBarstyling.global.activeLabel : '1px solid  #FFFFFF',
@@ -195,6 +199,8 @@ const styles = () => ({
     paddingRight: props.navBarstyling.global.paddingRight ? props.navBarstyling.global.paddingRight : '45px',
     paddingLeft: props.navBarstyling.global.paddingLeft ? props.navBarstyling.global.paddingLeft : '45px',
     alignItems: props.navBarstyling.global.alignItems ? props.navBarstyling.global.alignItems : 'flex-start',
+    paddingTop: props.navBarstyling.global.paddingTop ? props.navBarstyling.global.paddingTop : '0px',
+    paddingBottom: props.navBarstyling.global.paddingBottom ? props.navBarstyling.global.paddingBottom : '0px',
   }),
   buttonRoot: (props) => ({
     padding: props.navBarstyling.global.padding ? props.navBarstyling.global.buttonRootPadding : '9px 20px 0px 20px',
@@ -239,14 +245,16 @@ const styles = () => ({
     position: 'relative',
     verticalAlign: 'middle',
   },
-  cartCounter: {
+  cartCounter: (props) => ({
     height: '16px',
     minWidth: '16px',
-    fontFamily: 'inter',
-    fontWeight: '600',
-    letterSpacing: '0.8px',
     transform: 'scale(1) translate(0%, -50%)',
-  },
+    ...(props.navBarstyling.cartCounter || {
+      fontFamily: 'inter',
+      fontWeight: '600',
+      letterSpacing: '0.8px',
+    }),
+  }),
   cartCounter2Wrapper: {
     marginTop: '-6px',
     marginLeft: '6px',
