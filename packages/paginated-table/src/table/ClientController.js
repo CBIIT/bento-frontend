@@ -27,6 +27,13 @@ const TableController = ((props) => {
     sortOrder,
   } = table;
 
+  const arraySort = (a, b) => {
+    // handles sort for the column with the array value
+    const aHasData = a[sortBy] && a[sortBy].length > 0;
+    const bHasData = b[sortBy] && b[sortBy].length > 0;
+    return aHasData === bHasData ? 0 : aHasData ? -1 : 1;
+  };
+
   /**
   * client table aplhanumeric sorting for column table
   * uses string prototype function for sorting
@@ -37,10 +44,19 @@ const TableController = ((props) => {
       sensitivity: 'base',
     },
   );
+
   /**
   * sort base on table state
   */
   const sortRows = (a, b) => {
+    const areValuesArrays = Array.isArray(a[sortBy]) && Array.isArray(b[sortBy]);
+    if (areValuesArrays) {
+      if (sortOrder === 'asc') {
+        return arraySort(a, b);
+      }
+      return arraySort(b, a);
+    }
+
     if (sortOrder === 'asc') {
       return alphaNumericSort(a, b);
     }
@@ -55,6 +71,7 @@ const TableController = ((props) => {
     <>
       <TableView
         {...props}
+        totalRows={tblRows}
         tableRows={displayRows}
       />
     </>

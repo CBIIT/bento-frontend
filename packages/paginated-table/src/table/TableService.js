@@ -8,10 +8,13 @@ import { useEffect, useState } from 'react';
 * @returns
 */
 export const setSelectedRows = (rows = [], table) => {
-  const { selectedRows, dataKey } = table;
+  const { selectedRows, dataKey, deletedRow } = table;
+  // checked selected row if deleted
+  const checkedRows = deletedRow?.isChecked
+    ? [...selectedRows, deletedRow[dataKey]] : selectedRows;
   const updateRows = [...rows].map((row) => {
     const isChecked = dataKey
-      ? (selectedRows.indexOf(row[dataKey]) !== -1) : false;
+      ? (checkedRows.indexOf(row[dataKey]) !== -1) : false;
     return { ...row, isChecked };
   }, []);
   return updateRows;

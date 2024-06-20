@@ -3,6 +3,8 @@ import { Button } from '@material-ui/core';
 import clsx from 'clsx';
 import { getFilesID } from '../../WrapperService';
 import AddToCartDialogView from '../AddToCartDialog/AddToCartDialogView';
+import ToolTipView from '../TooltipView';
+import addFilesResponseHandler from '../util';
 
 const AddAllFilesComponent = (props) => {
   const {
@@ -16,6 +18,9 @@ const AddAllFilesComponent = (props) => {
     setAlterDisplay,
     setOpenSnackbar,
     client,
+    tooltipCofig,
+    maxFileLimit = 1000,
+    DisplayCustomText,
   } = props;
   /**
   * conditionally display dialog view
@@ -36,16 +41,8 @@ const AddAllFilesComponent = (props) => {
     fileIds().then((response) => {
       const data = response[responseKeys[0]];
       if (data && data.length > 0) {
-        const isArray = Array.isArray(data[0][responseKeys[1]]);
-        const ids = data.reduce((acc, id) => {
-          if (id && id[responseKeys[1]]) {
-            // if object convert to array
-            const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
-            acc.push(...items);
-          }
-          return acc;
-        }, []);
-        if (ids.length > 1000) {
+        const ids = addFilesResponseHandler(response, responseKeys);
+        if (ids.length > maxFileLimit) {
           setAlterDisplay(true);
         } else {
           setOpen(true);
@@ -76,10 +73,13 @@ const AddAllFilesComponent = (props) => {
       >
         {title}
       </Button>
+      {tooltipCofig && (<ToolTipView {...props} />)}
       <AddToCartDialogView
         open={openAddDialog}
         onYesClick={addFilesToCart}
         onNoClick={toggleOpen}
+        DisplayCustomText={DisplayCustomText}
+        activeFilters={activeFilters}
       />
     </>
   );
