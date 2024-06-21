@@ -54,6 +54,8 @@ import FacetFilter from 'bento-core';
     facetsConfig={facetsConfig}
     CustomFacetSection={CustomFacetSection}
     CustomFacetView={CustomFacetView}
+    enableClearSection // add additional clear button on facet Section
+    enableFacetCollapse // collapse facet Section when clear
   />
 </FacetFilterThemeProvider>
 ```
@@ -144,6 +146,8 @@ const CustomFacetSection = ({ section }) => {
   facetsConfig={facetsConfig}
   CustomFacetSection={CustomFacetSection}
   CustomFacetView={CustomFacetView}
+  enableClearSection // add additional clear button on facet Section
+  enableFacetCollapse // collapse facet Section when clear
 />
 ```
 
@@ -169,6 +173,8 @@ const CustomFacetView = ({ facet, facetClasses }) => {
   facetsConfig={facetsConfig}
   CustomFacetSection={CustomFacetSection}
   CustomFacetView={CustomFacetView}
+  enableClearSection // add additional clear button on facet Section
+  enableFacetCollapse // collapse facet Section when clear
 />
 ```
 
