@@ -1,15 +1,11 @@
 import React from 'react';
-import {
-  AccordionSummary,
-  withStyles,
-} from '@material-ui/core';
-import {
-  ExpandMore as ExpandMoreIcon,
-} from '@material-ui/icons';
+import { AccordionSummary, withStyles } from '@material-ui/core';
+import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import style from './AccordionSummaryStyle';
 
 const Summary = withStyles({
   root: {
+    width: '307px',
     marginBottom: -1,
     minHeight: 48,
     paddingLeft: 14,
@@ -27,10 +23,7 @@ const Summary = withStyles({
   expanded: {},
 })(AccordionSummary);
 
-const CustomAccordionSummary = ({
-  children,
-  classes,
-}) => (
+const CustomAccordionSummary = ({ children, classes }) => (
   <Summary
     expandIcon={(
       <ExpandMoreIcon

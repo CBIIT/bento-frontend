@@ -4,6 +4,7 @@
 /* eslint-disable object-curly-newline */
 import React, { useEffect, useState } from 'react';
 import { withStyles, Slider, Typography, Box } from '@material-ui/core';
+import clsx from 'clsx';
 import styles from './SliderStyle';
 import { silderTypes } from '../Types';
 import InputMinMaxView from './InputMinMaxView';
@@ -53,8 +54,8 @@ const SliderView = ({
   return (
     <>
       <div className={classes.sliderRoot}>
-        <div className={classes.minMaxInputs}>
-          <div className={classes.minValue}>
+        <div className={clsx(classes.minMaxInputs, 'minMaxInputs')}>
+          <div className={clsx(classes.minValue, 'min_input_box')}>
             <Typography className={classes.minInputLabel}>
               Min:
             </Typography>
@@ -67,7 +68,7 @@ const SliderView = ({
               onInputChange={handleChangeCommittedSlider}
             />
           </div>
-          <div className={classes.maxValue}>
+          <div className={clsx(classes.maxValue, 'max_input_box')}>
             <Typography className={classes.maxInputLabel}>
               Max:
             </Typography>
@@ -81,7 +82,7 @@ const SliderView = ({
             />
           </div>
         </div>
-        <div className={classes.slider}>
+        <div className={clsx(classes.slider, 'slider')}>
           {/* Change to red if invalid range */}
           <Slider
             disableSwap

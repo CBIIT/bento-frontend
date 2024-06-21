@@ -30,7 +30,7 @@ export const onClearFacetSection = ({
   if (updatedState[datafield]) {
     updatedState[datafield] = {};
   }
-  return updatedState;
+  return { updatedState, datafield };
 };
 
 export const onClearSliderSection = ({
@@ -64,36 +64,48 @@ export function sideBarReducerGenerator() {
       switch (type) {
         case sideBarActionTypes.FACET_VALUE_CHANGED:
           updateState = onToggleStateUpdate({ ...state, ...payload });
+          const { actionType = sideBarActionTypes.FACET_VALUE_CHANGED } = payload;
           return {
             ...state,
             filterState: { ...updateState },
+            currentActionType: actionType,
           };
         case sideBarActionTypes.ON_TOGGLE_SLIDER:
           updateState = updateSiderValue({ ...state, ...payload });
           return {
             ...state,
             filterState: { ...updateState },
+            currentActionType: sideBarActionTypes.ON_TOGGLE_SLIDER,
           };
         case sideBarActionTypes.CLEAR_ALL_FILTERS:
           return {
             ...state,
             filterState: {},
+            currentActionType: sideBarActionTypes.CLEAR_ALL_FILTERS,
           };
         case sideBarActionTypes.CLEAR_FACET_SECTION:
-          updateState = onClearFacetSection({ ...payload, ...state });
+          const {
+            updatedState: updtState,
+            datafield,
+          } = onClearFacetSection({ ...payload, ...state });
+          updateState = updtState;
+          const currentActionType = { [datafield]: sideBarActionTypes.CLEAR_FACET_SECTION };
           return {
             ...state,
             filterState: { ...updateState },
+            currentActionType,
           };
         case sideBarActionTypes.CLEAR_SLIDER_SECTION:
           updateState = onClearSliderSection({ ...payload, ...state });
           return {
             ...state,
             filterState: { ...updateState },
+            currentActionType: sideBarActionTypes.CLEAR_SLIDER_SECTION,
           };
         case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
           return {
             filterState: payload,
+            currentActionType: sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE,
           };
         default:
           return state;
