@@ -35,7 +35,6 @@ export default () => ({
     marginBottom: '5px',
     borderTop: '1px solid #B1B1B1',
     textAlign: 'left',
-    // marginLeft: '-5px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -44,14 +43,11 @@ export default () => ({
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
-    // marginRight: '12px',
-    // marginLeft: '16px',
   },
   sortGroupItem: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
-    // marginRight: '32px',
   },
   NonSortGroup: {
     marginBottom: '5px',
@@ -68,9 +64,6 @@ export default () => ({
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
-    // float: 'right',
-    // marginRight: '10px',
-    // marginTop: '5px',
   },
   highlight: {
     color: '#b2c6d6',
