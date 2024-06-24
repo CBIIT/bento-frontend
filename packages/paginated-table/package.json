@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/paginated-table",
-  "version": "1.0.1-ccdihub.89",
+  "version": "1.0.1-ccdihub.90",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@bento-core/cart": "1.0.1-ccdihub.7",
-    "@bento-core/table": "1.0.1-ccdihub.67",
+    "@bento-core/table": "1.0.1-ccdihub.68",
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.0"
   },
