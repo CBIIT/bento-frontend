@@ -16,7 +16,7 @@ const addFilesResponseHandler = (response, responseKeys = []) => {
         }
         return acc;
       }, []);
-      return ids;
+      return [...new Set(ids)];
     }
     return [];
   }
