@@ -26,7 +26,6 @@ const FacetView = ({
   currentActionType = {},
   enableFacetCollapse,
 }) => {
-  console.log(enableClearSection);
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
 
