@@ -24,6 +24,9 @@ export {
   clearAllAndSelectFacet,
 } from './store/actions/Actions';
 export {
+  sideBarActionTypes,
+} from './store/actions/ActionTypes';
+export {
   generateFacetSectionView,
 } from './generator/component';
 export {
