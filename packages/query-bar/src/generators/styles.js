@@ -3,7 +3,7 @@
  */
 export default () => ({
   queryWrapper: {
-    height: '120px',
+    minHeight: '77px',
     backgroundColor: '#f1f1f1',
     padding: '14px 14px 0px 35px',
     overflowY: 'auto',
