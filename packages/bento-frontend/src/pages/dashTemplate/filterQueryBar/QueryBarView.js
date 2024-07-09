@@ -26,7 +26,7 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
     return {
       ...config,
       items: statusReducer[facet],
-      data: data[config.apiForFiltering],
+      data: config ? data[config.apiForFiltering] : [],
     }
   });
   mappedFilterState.sort((a, b) => sectionOrder.indexOf(a.datafield) - sectionOrder.indexOf(b.datafield));

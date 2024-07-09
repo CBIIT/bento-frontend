@@ -1,10 +1,13 @@
 
 import {
-  clearAllAndSelectFacet,
-  updateAutocompleteData,
-  updateUploadData,
-  updateUploadMetadata,
+  clearAllAndSelectFacet
  } from '@bento-core/facet-filter';
+
+import {
+  updateAutocompleteData, 
+  updateUploadData, 
+  updateUploadMetadata,
+} from '@bento-core/local-find';
 import {
   GET_IDS_BY_TYPE, GET_SUBJECT_IDS,
 } from '../../../bento/localSearchData';
