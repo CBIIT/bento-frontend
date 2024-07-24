@@ -1,7 +1,8 @@
 # PAGINATED TABLE COMPONENT DESIGN
 
 ```diff
-- After updating to latest version remove transform: 'rotateX(180deg)) in red
+- After updating to latest version remove transform: 'rotateX(180deg)
+- rotateX(180deg) is copied over from Bento 3.0 table which flips the table. So to correct all the bento project is currently adding rotateX(180deg) to flip back to correct position.
 ```
 ### Bento core paginated table design:
 
