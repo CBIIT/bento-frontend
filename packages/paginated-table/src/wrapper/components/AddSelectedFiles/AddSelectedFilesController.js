@@ -41,20 +41,36 @@ const AddSelectedFilesController = (props) => {
 
   // add selected files id
   const addSelectedFiles = () => {
-    const fileIds = getFilesID({
-      client,
-      variables,
-      fileIds: selectedRows,
-      query: addFileQuery,
-    });
-    let filesInCart = 0;
-    if (localStorage.getItem('CartFileIds')) {
-      const filesId = JSON.parse(localStorage.getItem('CartFileIds')) || [];
-      filesInCart = filesId.length;
-    }
+    if (addFileQuery) {
+      const fileIds = getFilesID({
+        client,
+        variables,
+        fileIds: selectedRows,
+        query: addFileQuery,
+      });
+      let filesInCart = 0;
+      if (localStorage.getItem('CartFileIds')) {
+        const filesId = JSON.parse(localStorage.getItem('CartFileIds')) || [];
+        filesInCart = filesId.length;
+      }
 
-    fileIds().then((response) => {
-      const ids = addFilesResponseHandler(response, responseKeys);
+      fileIds().then((response) => {
+        const ids = addFilesResponseHandler(response, responseKeys);
+        if (ids.length + filesInCart >= maxFileLimit) {
+          setAlterDisplay(true);
+        } else {
+          addFiles(ids);
+          setOpenSnackbar(true);
+          dispatch(onRowSeclect([]));
+        }
+      });
+    } else {
+      const ids = variables[dataKey];
+      let filesInCart = 0;
+      if (localStorage.getItem('CartFileIds')) {
+        const filesId = JSON.parse(localStorage.getItem('CartFileIds')) || [];
+        filesInCart = filesId.length;
+      }
       if (ids.length + filesInCart >= maxFileLimit) {
         setAlterDisplay(true);
       } else {
@@ -62,7 +78,7 @@ const AddSelectedFilesController = (props) => {
         setOpenSnackbar(true);
         dispatch(onRowSeclect([]));
       }
-    });
+    }
   };
 
   return (
