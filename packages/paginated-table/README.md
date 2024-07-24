@@ -244,7 +244,7 @@ Wrapper component around table compnent.
 * Configuration display component based on index
 * CAUTION: If table is in wrapper component provide position of table component
 */
- export const tableLayout = [{
+ export const wrapperConfig = [{
   container: 'buttons',
   size: 'xl',
   clsName: 'container_header',
@@ -323,7 +323,7 @@ headerConfig - upper component on the table
 | tooltipCofig | FALSE | appears on side of the refers button | dashboardTabData/ tooltipContent |
 
 
-#### 
+####
 
 ## 5 Customize Pagination Action:
 Customize paginated action is provided to add event in addition to  update of the table state. It will override default paginated action.  

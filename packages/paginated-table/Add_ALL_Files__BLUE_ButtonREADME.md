@@ -1,22 +1,10 @@
-
-### 1 Use latest or bento-core/paginated-table package version publish by ICDC
-Alternative configuratoin for BLUE button
-```
-// 1.0.1-icdc.3
-npm i @bento-core/paginated-table@1.0.1-icdc.3
-
-or in package.json
-{
-    @bento-core/paginated-table: '1.0.1-icdc.3'
-}
-```
 **NOTE: Create a new dashboard page using bento-core components before removing old dashboard page**
 <br>
 <span style="color:yellow">
 Assuming New Dashboard page have Filter component and table component from bento-core
 </span>.
 
-### 2 Configure Add_All_Button Or BLUE Button in Dashboard
+### 1 Configure Add_All_Button Or BLUE Button in Dashboard
 
 ```
 import React, { useCallback } from 'react';
@@ -56,7 +44,7 @@ import { ButtonView, btnTypes, TableContextProvider } from '@bento-core/paginate
 | activeFilters | TRUE | filtes the case or sample based on the active filters | graphQL query |
 
 
-### 3 Configure Add_All_Button Or BLUE Button in Dashboard
+### 2 Configure Add_All_Button Or BLUE Button in Dashboard
 
 ```
     const customTheme = {
