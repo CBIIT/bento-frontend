@@ -17,10 +17,11 @@ const ToolTipView = (props) => {
     alt,
     arrow = false,
     clsName,
+    toolTipText,
   } = tooltipCofig;
   return (
     <ToolTip
-      title={tooltipCofig[section]}
+      title={toolTipText || tooltipCofig[section]}
       arrow={arrow}
       classes={{
         tooltip: classes.customTooltip,

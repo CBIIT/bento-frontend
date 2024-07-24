@@ -7,6 +7,9 @@ export const actionTypes = {
   ON_ROW_SELECT: 'ON_ROW_SELECT',
   SET_TOTAL_ROW_COUNT: 'SET_TOTAL_ROW_COUNT',
   ON_PAGE_AND_TOTAL_COUNT_CHANGE: 'ON_PAGE_AND_TOTAL_COUNT_CHANGE',
+  CUSTOMIZE_PAGINATION_ACTION: 'CUSTOMIZE_PAGINATION_ACTION',
+  ON_ROWS_DELETE: 'ON_ROWS_DELETE',
+  ON_ROW_DELETE: 'ON_ROW_DELETE',
 };
 
 export const onColumnViewChange = (columns) => ({
@@ -47,4 +50,19 @@ export const onRowSeclect = (rows) => ({
 export const setTotalRowCount = (count) => ({
   type: actionTypes.SET_TOTAL_ROW_COUNT,
   payload: count,
+});
+
+export const customPaginationAction = (value) => ({
+  type: actionTypes.CUSTOMIZE_PAGINATION_ACTION,
+  payload: value,
+});
+
+export const onClearCart = (value) => ({
+  type: actionTypes.ON_ROWS_DELETE,
+  payload: value,
+});
+
+export const onRowDelete = (value) => ({
+  type: actionTypes.ON_ROW_DELETE,
+  payload: value,
 });
