@@ -1,10 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable react/jsx-indent */
-/* eslint-disable object-curly-newline */
-/* eslint-disable object-shorthand */
-/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-useless-escape */
 
 import React from 'react';
@@ -33,7 +26,12 @@ const CheckBoxView = ({
   onToggle,
   facet,
 }) => {
-  const { isChecked = false, index, section, tooltip } = checkboxItem;
+  const {
+    isChecked = false,
+    index,
+    section,
+    tooltip,
+  } = checkboxItem;
   const {
     field = 'group',
     count = 'subjects',
@@ -47,8 +45,8 @@ const CheckBoxView = ({
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
-      name: name,
-      datafield: datafield,
+      name,
+      datafield,
       isChecked: !isChecked,
       actionType: {
         [datafield]: sideBarActionTypes.FACET_VALUE_CHANGED,
@@ -84,22 +82,22 @@ const CheckBoxView = ({
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
-          icon={
+          icon={(
             <CheckBoxBlankIcon
               style={{ fontSize: 18 }}
               className={checkedSection}
             />
-          }
+          )}
           onClick={handleToggle}
           checked={isChecked}
-          checkedIcon={
+          checkedIcon={(
             <CheckBoxIcon
               style={{
                 fontSize: 18,
               }}
               className={`${checkedSection}CheckedIcon`}
             />
-          }
+          )}
           disableRipple
           color="secondary"
           classes={{ root: classes.checkboxRoot }}
