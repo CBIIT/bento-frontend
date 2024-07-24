@@ -54,6 +54,8 @@ import FacetFilter from 'bento-core';
     facetsConfig={facetsConfig}
     CustomFacetSection={CustomFacetSection}
     CustomFacetView={CustomFacetView}
+    enableClearSection // add additional clear button on facet Section
+    enableFacetCollapse // collapse facet Section when clear
   />
 </FacetFilterThemeProvider>
 ```
@@ -77,7 +79,9 @@ export const facetsConfig = [{
   label: 'Program', 
   apiForFiltering: 'filterSubjectCountByProgram', 
   datafield: 'programs', 
-  field: GROUP, 
+  field: 'group', // field for label
+  count: 'subject' // field for count
+  customCount: (text) => `${text || 0}`, // custom count view add parentheses or change text as required
   type: InputTypes.CHECKBOX, 
   sort_type: sortType.ALPHABET,
   show: true, 
@@ -144,6 +148,8 @@ const CustomFacetSection = ({ section }) => {
   facetsConfig={facetsConfig}
   CustomFacetSection={CustomFacetSection}
   CustomFacetView={CustomFacetView}
+  enableClearSection // add additional clear button on facet Section
+  enableFacetCollapse // collapse facet Section when clear
 />
 ```
 
@@ -169,6 +175,8 @@ const CustomFacetView = ({ facet, facetClasses }) => {
   facetsConfig={facetsConfig}
   CustomFacetSection={CustomFacetSection}
   CustomFacetView={CustomFacetView}
+  enableClearSection // add additional clear button on facet Section
+  enableFacetCollapse // collapse facet Section when clear
 />
 ```
 
