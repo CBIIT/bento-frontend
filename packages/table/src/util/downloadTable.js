@@ -1,7 +1,7 @@
 import { formatBytes, formatColumnValues } from './Dataformat';
 import { actionCellTypes } from './Types';
 
-export function createFileName(fileName) {
+export function createFileName(fileName, type) {
   const date = new Date();
   const yyyy = date.getFullYear();
   let dd = date.getDate();
@@ -22,8 +22,7 @@ export function createFileName(fileName) {
   if (minutes < 10) { minutes = `0${minutes}`; }
 
   if (seconds < 10) { seconds = `0${seconds}`; }
-
-  return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
+  return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${type}`;
 }
 
 export function convertToCSV(jsonse, keysToInclude, header) {
@@ -59,7 +58,7 @@ export function convertToCSV(jsonse, keysToInclude, header) {
   return str;
 }
 
-export function downloadJson(tableData, table, downloadFileName) {
+export function downloadCSV(tableData, table, downloadFileName) {
   const { columns = [] } = table;
   const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
   const formatDataVal = formatColumnValues(filterColumns, tableData);
@@ -74,8 +73,28 @@ export function downloadJson(tableData, table, downloadFileName) {
   let tempLink = '';
   tempLink = document.createElement('a');
   tempLink.setAttribute('href', JsonURL);
-  tempLink.setAttribute('download', createFileName(downloadFileName || ''));
+  tempLink.setAttribute('download', createFileName(downloadFileName || '', 'csv'));
   document.body.appendChild(tempLink);
   tempLink.click();
   document.body.removeChild(tempLink);
+}
+
+export function downloadJson(tableData, table, downloadFileName) {
+  const { columns = [] } = table;
+  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
+  let formatDataVal = formatColumnValues(filterColumns, tableData);
+  filterColumns.forEach((column) => {
+    formatDataVal = JSON.parse(
+      JSON.stringify(formatDataVal).split(`"${column.dataField}":`).join(`"${column.header}":`),
+    );
+  });
+  const jsonse = JSON.stringify(formatDataVal);
+  const exportData = new Blob([jsonse], { type: 'application/json' });
+  const JsonURL = window.URL.createObjectURL(exportData);
+  let tempLink = '';
+  tempLink = document.createElement('a');
+  tempLink.setAttribute('href', JsonURL);
+  tempLink.setAttribute('download', createFileName(downloadFileName || '', 'json'));
+  document.body.appendChild(tempLink);
+  tempLink.click();
 }
