@@ -21,7 +21,7 @@ jobs:
       run: npm install
 
     - name: Install dependency lerna
-      run: npm install lerna@6
+      run: npm install -g lerna@6.6.2
 
     - name: Run ESLint
       run: lerna run lint
