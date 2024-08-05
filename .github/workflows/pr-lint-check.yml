@@ -1,0 +1,28 @@
+name: PR Lint Checks
+
+on:
+  pull_request:
+    branches:
+      - expriment/pr-action
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install dependencies lerna
+      run: npm install lerna@6
+
+    - name: Run ESLint
+      run: lerna run lint
