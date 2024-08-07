@@ -7,6 +7,7 @@ export const DEFAULT = 'DEFAULT';
 export const FORMAT_DATA = 'FORMAT_DATA';
 export const FORMAT_BYTES = 'FORMAT_BYTES';
 export const TRANSFORM = 'TRANSFORM';
+export const STUDY_DOWNLOAD = 'STUDY_DOWNLOAD';
 export const EXPAND = 'EXPAND';
 export const DBGAP = 'DBGAP';
 
@@ -24,9 +25,12 @@ export const cellStyles = {
   TRANSFORM,
   EXPAND,
   DBGAP,
+  STUDY_DOWNLOAD,
 };
 
 export const actionCellTypes = [CHECKBOX, DELETE];
+
+export const notIncludedCellStyle = [STUDY_DOWNLOAD];
 
 export const FORMAT_DATA_CELLS = [FORMAT_BYTES];
 
