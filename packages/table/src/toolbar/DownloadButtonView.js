@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import { CloudDownload } from '@material-ui/icons';
-import { downloadCSV, downloadJson } from '../util/downloadTable';
+import { downloadData } from '../util/downloadTable';
 
 // const downloadButtonStyle = {
 //   color: '#d1d2d3',
@@ -69,7 +69,8 @@ const DownloadButton = ({
         }
         return response.data;
       });
-    downloadCSV(result, table, table.downloadFileName);
+    // downloadCSV(result, table, table.downloadFileName);
+    downloadData(result, table, table.downloadFileName, 'csv');
   }
 
   async function downloadJsonFile() {
@@ -94,7 +95,8 @@ const DownloadButton = ({
         }
         return response.data;
       });
-    downloadJson(result, table, table.downloadFileName);
+    // downloadJson(result, table, table.downloadFileName);
+    downloadData(result, table, table.downloadFileName, 'json');
   }
 
   const downloadTableCSV = useCallback(() => {

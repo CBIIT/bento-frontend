@@ -98,3 +98,42 @@ export function downloadJson(tableData, table, downloadFileName) {
   document.body.appendChild(tempLink);
   tempLink.click();
 }
+
+export function downloadData(tableData, table, downloadFileName, format = 'csv') {
+  const { columns = [] } = table;
+  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
+  let formatDataVal = formatColumnValues(filterColumns, tableData);
+
+  let fileContent;
+  let fileType;
+  let fileExtension;
+
+  if (format === 'json') {
+    filterColumns.forEach((column) => {
+      formatDataVal = JSON.parse(
+        JSON.stringify(formatDataVal).split(`"${column.dataField}":`).join(`"${column.header}":`),
+      );
+    });
+    fileContent = JSON.stringify(formatDataVal);
+    fileType = 'application/json';
+    fileExtension = 'json';
+  } else {
+    const jsonse = JSON.stringify(formatDataVal);
+    const keysToInclude = columns.filter(({ dataField }) => dataField)
+      .map(({ dataField }) => dataField);
+    const headers = columns.filter(({ dataField }) => dataField)
+      .map(({ header, downloadHeader }) => (downloadHeader || header));
+    fileContent = convertToCSV(jsonse, keysToInclude, headers);
+    fileType = 'text/csv';
+    fileExtension = 'csv';
+  }
+
+  const exportData = new Blob([fileContent], { type: fileType });
+  const fileURL = window.URL.createObjectURL(exportData);
+  const tempLink = document.createElement('a');
+  tempLink.setAttribute('href', fileURL);
+  tempLink.setAttribute('download', createFileName(downloadFileName || '', fileExtension));
+  document.body.appendChild(tempLink);
+  tempLink.click();
+  document.body.removeChild(tempLink);
+}
