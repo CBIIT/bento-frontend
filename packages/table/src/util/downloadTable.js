@@ -1,7 +1,7 @@
 import { formatBytes, formatColumnValues } from './Dataformat';
 import { actionCellTypes } from './Types';
 
-export function createFileName(fileName) {
+export function createFileName(fileName, type) {
   const date = new Date();
   const yyyy = date.getFullYear();
   let dd = date.getDate();
@@ -22,8 +22,7 @@ export function createFileName(fileName) {
   if (minutes < 10) { minutes = `0${minutes}`; }
 
   if (seconds < 10) { seconds = `0${seconds}`; }
-
-  return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
+  return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${type}`;
 }
 
 export function convertToCSV(jsonse, keysToInclude, header) {
@@ -59,22 +58,40 @@ export function convertToCSV(jsonse, keysToInclude, header) {
   return str;
 }
 
-export function downloadJson(tableData, table, downloadFileName) {
+export function downloadData(tableData, table, downloadFileName, format = 'csv') {
   const { columns = [] } = table;
   const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
-  const formatDataVal = formatColumnValues(filterColumns, tableData);
-  const jsonse = JSON.stringify(formatDataVal);
-  const keysToInclude = columns.filter(({ dataField }) => dataField)
-    .map(({ dataField }) => dataField);
-  const headers = columns.filter(({ dataField }) => dataField)
-    .map(({ header, downloadHeader }) => (downloadHeader || header));
-  const csv = convertToCSV(jsonse, keysToInclude, headers);
-  const exportData = new Blob([csv], { type: 'text/csv' });
-  const JsonURL = window.URL.createObjectURL(exportData);
-  let tempLink = '';
-  tempLink = document.createElement('a');
-  tempLink.setAttribute('href', JsonURL);
-  tempLink.setAttribute('download', createFileName(downloadFileName || ''));
+  let formatDataVal = formatColumnValues(filterColumns, tableData);
+
+  let fileContent;
+  let fileType;
+  let fileExtension;
+
+  if (format === 'json') {
+    filterColumns.forEach((column) => {
+      formatDataVal = JSON.parse(
+        JSON.stringify(formatDataVal).split(`"${column.dataField}":`).join(`"${column.header}":`),
+      );
+    });
+    fileContent = JSON.stringify(formatDataVal);
+    fileType = 'application/json';
+    fileExtension = 'json';
+  } else {
+    const jsonse = JSON.stringify(formatDataVal);
+    const keysToInclude = columns.filter(({ dataField }) => dataField)
+      .map(({ dataField }) => dataField);
+    const headers = columns.filter(({ dataField }) => dataField)
+      .map(({ header, downloadHeader }) => (downloadHeader || header));
+    fileContent = convertToCSV(jsonse, keysToInclude, headers);
+    fileType = 'text/csv';
+    fileExtension = 'csv';
+  }
+
+  const exportData = new Blob([fileContent], { type: fileType });
+  const fileURL = window.URL.createObjectURL(exportData);
+  const tempLink = document.createElement('a');
+  tempLink.setAttribute('href', fileURL);
+  tempLink.setAttribute('download', createFileName(downloadFileName || '', fileExtension));
   document.body.appendChild(tempLink);
   tempLink.click();
   document.body.removeChild(tempLink);

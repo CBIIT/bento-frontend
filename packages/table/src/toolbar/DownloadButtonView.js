@@ -1,46 +1,48 @@
-import React, { useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
 import { useApolloClient } from '@apollo/client';
 import {
   IconButton,
   Tooltip,
-  Button,
+  makeStyles,
 } from '@material-ui/core';
-// import ToolTip from '@bento-core/tool-tip';
+import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import { CloudDownload } from '@material-ui/icons';
-import { downloadJson } from '../util/downloadTable';
+import { downloadData } from '../util/downloadTable';
 
-const downloadButtonStyle = {
-  color: '#d1d2d3',
-  marginTop: '7px',
-};
-
-// Default style for Download Button with Text.
-const DEFAULT_BUTTON_STYLE = {
-  width: '223px',
-  height: '41px',
-  borderRadius: '5px',
-  backgroundColor: '#2A6E93',
-  color: '#fff',
-  marginTop: '10px',
-  fontFamily: 'poppins',
-  '& #cloudIcon': {
-    margin: '10px',
-    marginTop: '6px',
-  },
-};
+// const downloadButtonStyle = {
+//   color: '#d1d2d3',
+//   marginTop: '7px',
+// };
 
 const DownloadButton = ({
   count,
   queryVariables,
   table,
-  buttonConfig = {},
-  isIcon = false,
 }) => {
+  const [listDisplay, setListDisplay] = useState('none');
+  const dropdownSelection = useRef(null);
+  const useOutsideAlerter = (ref) => {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (!(event.target.getAttribute('id') && event.target.getAttribute('id').includes('dropdownListItem'))) {
+          setListDisplay('none');
+        }
+      }
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  };
+  useOutsideAlerter(dropdownSelection);
+
   if (table.paginationAPIField === 'filesInList') {
     return <></>;
-  }
-  if (count === 0) {
-    return <CloudDownload className="disableButton" style={downloadButtonStyle} />;
   }
 
   const client = useApolloClient();
@@ -57,6 +59,8 @@ const DownloadButton = ({
         ...queryVariables,
         page: 0,
         first: 10000,
+        order_by: table.sortBy,
+        sort_direction: table.sortOrder,
       },
     })
       .then((response) => {
@@ -65,37 +69,122 @@ const DownloadButton = ({
         }
         return response.data;
       });
-    downloadJson(result, table, table.downloadFileName);
+    downloadData(result, table, table.downloadFileName, 'csv');
+  }
+
+  async function downloadJsonFile() {
+    const {
+      query,
+      paginationAPIField,
+    } = table;
+
+    const result = await client.query({
+      query,
+      variables: {
+        ...queryVariables,
+        page: 0,
+        first: 10000,
+        order_by: table.sortBy,
+        sort_direction: table.sortOrder,
+      },
+    })
+      .then((response) => {
+        if (paginationAPIField && response && response.data) {
+          return response.data[paginationAPIField];
+        }
+        return response.data;
+      });
+    downloadData(result, table, table.downloadFileName, 'json');
   }
 
   const downloadTableCSV = useCallback(() => {
     downloadSCSVFile();
-  }, [queryVariables]);
+    setListDisplay('none');
+  }, [queryVariables, table]);
 
-  const {
-    buttonStyle, title = 'DOWNLOAD CSV', cloudIcon = false,
-  } = buttonConfig;
+  const downloadTableJson = useCallback(() => {
+    downloadJsonFile();
+    setListDisplay('none');
+  }, [queryVariables, table]);
 
-  return isIcon ? (
-    <Tooltip title="Download filtered results as a CSV">
-      <IconButton
-        onClick={downloadTableCSV}
-      >
-        <CloudDownload />
-      </IconButton>
-    </Tooltip>
-  ) : (
-    <>
-      <Button
-        onClick={downloadTableCSV}
-        style={buttonStyle || DEFAULT_BUTTON_STYLE}
-        disableRipple
-      >
-        {title}
-        {' '}
-        {cloudIcon ? <CloudDownload style={{ margin: '6px 0px 10px 10px' }} /> : ''}
-      </Button>
-    </>
+  const handleClickButton = () => {
+    if (listDisplay === 'none') {
+      setListDisplay('block');
+    } else {
+      setListDisplay('none');
+    }
+  };
+
+  const useStyles = makeStyles({
+    dropdown: {
+      width: '60px',
+      height: '25px',
+      marginTop: '8px',
+      paddingLeft: '5px',
+      border: '0.75px solid #606060',
+      borderRadius: '5px',
+      display: 'inline-block',
+      position: 'relative',
+    },
+    dropdownList: {
+      display: 'block',
+      position: 'absolute',
+      width: '60px',
+      marginTop: '3px',
+      marginLeft: '-5px',
+      overflow: 'auto',
+      zIndex: '5',
+      border: '1.5px solid #41545E',
+      borderRadius: '5px',
+      background: '#ffffff',
+    },
+    dropdownListItem: {
+      padding: '2px 4px',
+      font: 'Poppins',
+      fontSize: '14px',
+      fontWeight: 400,
+      lineHeight: '21px',
+      '&:hover': {
+        background: '#D7D7D7',
+        cursor: 'pointer',
+      },
+    },
+    arrowdownIcon: {
+      marginLeft: '5px',
+      fill: '#606060',
+    },
+    arrowdownIconDisabled: {
+      marginLeft: '5px',
+      fill: '#00000042',
+    },
+  });
+
+  const classes = useStyles();
+
+  return (
+    <div className={classes.dropdown}>
+      <Tooltip title="Download filtered results">
+        {
+          count !== 0
+            ? (
+              <IconButton onClick={handleClickButton}>
+                <CloudDownload />
+                <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIcon} />
+              </IconButton>
+            )
+            : (
+              <IconButton disabled>
+                <CloudDownload />
+                <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIconDisabled} />
+              </IconButton>
+            )
+        }
+      </Tooltip>
+      <div className={classes.dropdownList} style={{ display: listDisplay }}>
+        <div id="dropdownListItemCSV" className={classes.dropdownListItem} onClick={downloadTableCSV}>CSV</div>
+        <div id="dropdownListItemJSON" className={classes.dropdownListItem} onClick={downloadTableJson}>JSON</div>
+      </div>
+    </div>
   );
 };
 
