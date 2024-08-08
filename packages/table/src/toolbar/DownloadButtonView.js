@@ -69,7 +69,6 @@ const DownloadButton = ({
         }
         return response.data;
       });
-    // downloadCSV(result, table, table.downloadFileName);
     downloadData(result, table, table.downloadFileName, 'csv');
   }
 
@@ -95,7 +94,6 @@ const DownloadButton = ({
         }
         return response.data;
       });
-    // downloadJson(result, table, table.downloadFileName);
     downloadData(result, table, table.downloadFileName, 'json');
   }
 

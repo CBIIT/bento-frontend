@@ -58,47 +58,6 @@ export function convertToCSV(jsonse, keysToInclude, header) {
   return str;
 }
 
-export function downloadCSV(tableData, table, downloadFileName) {
-  const { columns = [] } = table;
-  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
-  const formatDataVal = formatColumnValues(filterColumns, tableData);
-  const jsonse = JSON.stringify(formatDataVal);
-  const keysToInclude = columns.filter(({ dataField }) => dataField)
-    .map(({ dataField }) => dataField);
-  const headers = columns.filter(({ dataField }) => dataField)
-    .map(({ header, downloadHeader }) => (downloadHeader || header));
-  const csv = convertToCSV(jsonse, keysToInclude, headers);
-  const exportData = new Blob([csv], { type: 'text/csv' });
-  const JsonURL = window.URL.createObjectURL(exportData);
-  let tempLink = '';
-  tempLink = document.createElement('a');
-  tempLink.setAttribute('href', JsonURL);
-  tempLink.setAttribute('download', createFileName(downloadFileName || '', 'csv'));
-  document.body.appendChild(tempLink);
-  tempLink.click();
-  document.body.removeChild(tempLink);
-}
-
-export function downloadJson(tableData, table, downloadFileName) {
-  const { columns = [] } = table;
-  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
-  let formatDataVal = formatColumnValues(filterColumns, tableData);
-  filterColumns.forEach((column) => {
-    formatDataVal = JSON.parse(
-      JSON.stringify(formatDataVal).split(`"${column.dataField}":`).join(`"${column.header}":`),
-    );
-  });
-  const jsonse = JSON.stringify(formatDataVal);
-  const exportData = new Blob([jsonse], { type: 'application/json' });
-  const JsonURL = window.URL.createObjectURL(exportData);
-  let tempLink = '';
-  tempLink = document.createElement('a');
-  tempLink.setAttribute('href', JsonURL);
-  tempLink.setAttribute('download', createFileName(downloadFileName || '', 'json'));
-  document.body.appendChild(tempLink);
-  tempLink.click();
-}
-
 export function downloadData(tableData, table, downloadFileName, format = 'csv') {
   const { columns = [] } = table;
   const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));

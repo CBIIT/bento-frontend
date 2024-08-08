@@ -63,12 +63,16 @@ const ExtendedView = ({
               queryVariables={queryVariables}
               table={table}
             />
-            <DownloadButton
-              count={table.totalRowCount || 0}
-              queryVariables={queryVariables}
-              table={table}
-              buttonConfig={downloadButtonConfig}
-            />
+            {table.showDownloadIcon !== false
+              && (
+              <DownloadButton
+                count={table.totalRowCount || 0}
+                queryVariables={queryVariables}
+                table={table}
+                buttonConfig={downloadButtonConfig}
+              />
+              )}
+
           </div>
         )
       }
