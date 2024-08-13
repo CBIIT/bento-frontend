@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
+import ToolTip from '@bento-core/tool-tip/src/ToolTip';
 import clsx from 'clsx';
 import { getFilesID } from '../../WrapperService';
 import AddToCartDialogView from '../AddToCartDialog/AddToCartDialogView';
@@ -10,6 +11,7 @@ const AddAllFilesComponent = (props) => {
   const {
     title,
     clsName,
+    classes,
     section,
     addFileQuery,
     responseKeys,
@@ -19,9 +21,12 @@ const AddAllFilesComponent = (props) => {
     setOpenSnackbar,
     client,
     tooltipCofig,
+    buttonTooltipConfig,
     maxFileLimit = 1000,
     DisplayCustomText,
   } = props;
+
+  const { title: tooltipTitle, ...tooltipProps } = buttonTooltipConfig || {};
   /**
   * conditionally display dialog view
   */
@@ -72,13 +77,22 @@ const AddAllFilesComponent = (props) => {
 
   return (
     <>
-      <Button
-        onClick={addAllFiles}
-        className={clsx(clsName, `${clsName}_${section}`)}
-        disableRipple
+      <ToolTip
+        title={tooltipTitle || ''}
+        classes={{
+          tooltip: classes.customTooltip,
+          arrow: classes.customArrow,
+        }}
+        {...tooltipProps}
       >
-        {title}
-      </Button>
+        <Button
+          onClick={addAllFiles}
+          className={clsx(clsName, `${clsName}_${section}`)}
+          disableRipple
+        >
+          {title}
+        </Button>
+      </ToolTip>
       {tooltipCofig && (<ToolTipView {...props} />)}
       <AddToCartDialogView
         open={openAddDialog}
