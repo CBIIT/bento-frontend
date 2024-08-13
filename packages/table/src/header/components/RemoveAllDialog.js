@@ -13,10 +13,12 @@ function RemoveAllDialogView(props) {
     toggleDisplay,
     count,
     removeAllFiles,
+    onDeleteAllFiles,
   } = props;
   const deleteAllFiles = () => {
     removeAllFiles();
     toggleDisplay();
+    onDeleteAllFiles();
   };
   return (
     <>
