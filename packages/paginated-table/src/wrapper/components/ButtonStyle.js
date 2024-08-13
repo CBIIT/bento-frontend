@@ -1,9 +1,4 @@
-const tabsStyle = {
-  tabsContainer: {},
-  muiTabs: {},
-  muiTab: {},
-  tabsLabel: {},
-  tabsPanel: {},
+export default () => ({
   customTooltip: {
     border: '#03A383 1px solid',
   },
@@ -12,6 +7,4 @@ const tabsStyle = {
       border: '#03A383 1px solid',
     },
   },
-};
-
-export default tabsStyle;
+});
