@@ -15,7 +15,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     searchFields: [],
     placeholder: 'SEARCH INS',
     expandText: 'Press ENTER for more search results',
-    searchRoute: '/search',
+    searchRoute: '/globalsearch',
     minimumInputLength: 3,
     maxSuggestions: 6,
   },
