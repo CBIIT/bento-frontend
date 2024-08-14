@@ -40,24 +40,37 @@ const AddSelectedFileComponent = (props) => {
     eventHandler,
     title,
     clsName,
+    classes,
     disabled,
     tooltipCofig,
+    buttonTooltipConfig,
   } = props;
+  const { title: tooltipTitle, ...tooltipProps } = buttonTooltipConfig || {};
 
   const addFiles = () => {
     eventHandler();
   };
+
   return (
     <>
-      <Button
-        onClick={addFiles}
-        className={clsName}
-        disableRipple
-        disabled={disabled}
+      <ToolTip
+        title={tooltipTitle || ''}
+        classes={{
+          tooltip: classes.customTooltip,
+          arrow: classes.customArrow,
+        }}
+        {...tooltipProps}
       >
-        {title}
-      </Button>
-      {tooltipCofig && (<ToolTipView {...props} />)}
+        <Button
+          onClick={addFiles}
+          className={clsName}
+          disableRipple
+          disabled={disabled}
+        >
+          {title}
+        </Button>
+      </ToolTip>
+      {tooltipCofig && (<ToolTipView classes={classes} {...props} />)}
     </>
   );
 };

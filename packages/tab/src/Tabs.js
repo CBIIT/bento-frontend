@@ -1,11 +1,14 @@
 import React from 'react';
+import ToolTip from '@bento-core/tool-tip/src/ToolTip';
 import {
   Tab,
   Tabs,
   createTheme,
   ThemeProvider,
+  makeStyles,
 } from '@material-ui/core';
 import { defaultTheme } from './defaultTheme';
+import generateStyle from './utils/generateStyle';
 
 const TabItems = ({
   tabItems,
@@ -14,7 +17,11 @@ const TabItems = ({
   orientation,
   customTheme = {},
 }) => {
-  const getTabLalbel = ({
+  const generatedStyle = generateStyle();
+  const useStyles = makeStyles(generatedStyle);
+  const classes = useStyles();
+
+  const getTabLabel = ({
     name, count, clsName, index,
   }) => (
     <>
@@ -31,17 +38,30 @@ const TabItems = ({
     </>
   );
 
-  const TABs = tabItems.map((tab, index) => (
-    <Tab
-      index={index}
-      label={
-        getTabLalbel({ ...tab, index })
-      }
-      key={index}
-      className={tab.clsName}
-      disableRipple
-    />
-  ));
+  const CustomTab = tabItems.map((tab, index) => {
+    const { title: tooltipTitle, ...tooltipProps } = tab.tooltipConfig || {};
+
+    return (
+      (
+        <ToolTip
+          key={`tab_${index}_${tab.name}`}
+          title={tooltipTitle || ''}
+          classes={{
+            tooltip: classes.customTooltip,
+            arrow: classes.customArrow,
+          }}
+          {...tooltipProps}
+        >
+          <Tab
+            index={index}
+            label={getTabLabel({ ...tab, index })}
+            className={tab.clsName}
+            disableRipple
+          />
+        </ToolTip>
+      )
+    );
+  });
 
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
@@ -52,7 +72,7 @@ const TabItems = ({
         TabIndicatorProps={{ style: { background: 'none' } }}
         orientation={orientation}
       >
-        {TABs}
+        {CustomTab}
       </Tabs>
     </ThemeProvider>
   );
