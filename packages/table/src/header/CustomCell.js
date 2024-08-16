@@ -43,7 +43,7 @@ const CustomHeaderCell = ({
     }
     // return default view
     return <>{children}</>;
-  }, []);
+  }, [components, tooltipText]);
 
   return (
     <TableCell
