@@ -163,7 +163,8 @@ const DownloadButton = ({
 
   return (
     <div className={classes.dropdown}>
-      <Tooltip title="Download filtered results">
+
+      <Tooltip title={table.downloadButtonTooltipText || 'Download filtered results'}>
         {
           count !== 0
             ? (
