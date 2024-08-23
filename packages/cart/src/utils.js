@@ -50,7 +50,8 @@ export function downloadJson({
 }) {
   const jsonse = JSON.stringify(tableData);
   const csv = convertToCSV(jsonse, comment, manifestData.keysToInclude, manifestData.header);
-  const exportData = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
+  const blobPart = csv && csv.length > 0 ? `\uFEFF${csv}` : '';
+  const exportData = new Blob([blobPart], { type: 'text/csv;charset=utf-8' });
   const JsonURL = window.URL.createObjectURL(exportData);
   let tempLink = '';
   tempLink = document.createElement('a');
