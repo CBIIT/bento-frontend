@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/profile",
-  "version": "1.0.1-CDS.7",
+  "version": "1.0.1-CDS.8",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/paginated-table": "^1.0.1-CDS.7",
+    "@bento-core/paginated-table": "^1.0.1-CDS.8",
     "@bento-core/util": "^1.0.0"
   },
   "peerDependencies": {
