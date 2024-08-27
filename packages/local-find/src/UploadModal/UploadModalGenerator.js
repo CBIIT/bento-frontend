@@ -24,6 +24,30 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     config, functions,
   } = uiConfig;
 
+  const matchLocalFindId = config && config.matchedId && typeof config.matchedId === 'string'
+    ? config.matchedId
+    : DEFAULT_CONFIG.config.matchedId;
+
+  const matchedLabel = config && config.matchedLabel && typeof config.matchedLabel === 'string'
+    ? config.matchedLabel
+    : DEFAULT_CONFIG.config.matchedLabel;
+
+  const associateId = config && config.associateId && typeof config.associateId === 'string'
+    ? config.associateId
+    : DEFAULT_CONFIG.config.associateId;
+
+  const associateLabel = config && config.associateLabel && typeof config.associateLabel === 'string'
+    ? config.associateLabel
+    : DEFAULT_CONFIG.config.associateLabel;
+
+  const projectName = config && config.projectName && typeof config.projectName === 'string'
+    ? config.projectName
+    : DEFAULT_CONFIG.config.projectName;
+
+  const caseIds = config && config.caseIds && typeof config.caseIds === 'string'
+    ? config.caseIds
+    : DEFAULT_CONFIG.config.caseIds;
+
   const modalClosed = functions && typeof functions.modalClosed === 'function'
     ? functions.modalClosed
     : DEFAULT_CONFIG.functions.modalClosed;
@@ -76,7 +100,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
       const {
         FileUploader: uploaderClasses,
-        SummaryTable: summaryClasses,
+        // SummaryTable: summaryClasses,
       } = classes;
 
       const [filename, setUploadedFileName] = useState(metadata.filename || '');
@@ -85,7 +109,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const [unmatchedIds, setUnmatchedIds] = useState(metadata.unmatched || []);
 
       const overMaxTerms = matchIds.length > maxTerms;
-      const errorText = `Total number of cases exceeds the maximum of ${maxTerms} cases.`;
+      const errorText = `Total number of participants exceeds the maximum of ${maxTerms} participants.`;
 
       const clearData = () => {
         setFileContent('');
@@ -173,7 +197,12 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
               <div className={classes.textSection}>
                 <div className={classes.inputLabel}>
                   <Typography>
-                    <p className={classes.listTitle}>Add a list of Case IDs:</p>
+                    <p className={classes.listTitle}>
+                      Add a list of
+                      {' '}
+                      {caseIds}
+                      :
+                    </p>
                   </Typography>
                   {inputTooltip ? generateToolTip(inputTooltip) : null}
                 </div>
@@ -205,9 +234,15 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
             </div>
             {fileContent && (
               <SummaryTable
-                classes={summaryClasses}
+                classes={classes}
                 matched={matchIds}
                 unmatched={unmatchedIds}
+                matchLocalFindId={matchLocalFindId}
+                associateId={associateId}
+                matchedLabel={matchedLabel}
+                associateLabel={associateLabel}
+                projectName={projectName}
+                caseIds={caseIds}
                 error={overMaxTerms ? errorText : null}
               />
             )}
@@ -226,7 +261,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 variant="contained"
                 color="blueGrey"
                 onClick={clearData}
-                style={{ backgroundColor: '#437BBE' }}
+                style={{ backgroundColor: '#566672' }}
                 className={classes.button}
                 id="local_find_upload_clear"
               >
