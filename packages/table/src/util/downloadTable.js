@@ -1,7 +1,7 @@
 import { formatBytes, formatColumnValues } from './Dataformat';
 import { actionCellTypes } from './Types';
 
-export function createFileName(fileName, type) {
+export function createFileName(fileName) {
   const date = new Date();
   const yyyy = date.getFullYear();
   let dd = date.getDate();
@@ -22,7 +22,7 @@ export function createFileName(fileName, type) {
   if (minutes < 10) { minutes = `0${minutes}`; }
 
   if (seconds < 10) { seconds = `0${seconds}`; }
-  return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${type}`;
+  return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}`;
 }
 
 export function convertToCSV(jsonse, keysToInclude, header) {
@@ -60,12 +60,20 @@ export function convertToCSV(jsonse, keysToInclude, header) {
 
 export function downloadData(tableData, table, downloadFileName, format = 'csv') {
   const { columns = [] } = table;
-  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
+  const filterColumns = columns.filter(({ cellType, doNotDownload }) => (
+    !actionCellTypes.includes(cellType) && !doNotDownload));
   let formatDataVal = formatColumnValues(filterColumns, tableData);
+
+  formatDataVal = formatDataVal.map((item) => {
+    const updatedItem = {};
+    filterColumns.forEach(({ dataField }) => {
+      updatedItem[dataField] = item[dataField];
+    });
+    return updatedItem;
+  });
 
   let fileContent;
   let fileType;
-  let fileExtension;
 
   if (format === 'json') {
     filterColumns.forEach((column) => {
@@ -75,23 +83,21 @@ export function downloadData(tableData, table, downloadFileName, format = 'csv')
     });
     fileContent = JSON.stringify(formatDataVal);
     fileType = 'application/json';
-    fileExtension = 'json';
   } else {
     const jsonse = JSON.stringify(formatDataVal);
-    const keysToInclude = columns.filter(({ dataField }) => dataField)
+    const keysToInclude = filterColumns.filter(({ dataField }) => dataField)
       .map(({ dataField }) => dataField);
-    const headers = columns.filter(({ dataField }) => dataField)
+    const headers = filterColumns.filter(({ dataField }) => dataField)
       .map(({ header, downloadHeader }) => (downloadHeader || header));
     fileContent = convertToCSV(jsonse, keysToInclude, headers);
     fileType = 'text/csv';
-    fileExtension = 'csv';
   }
 
   const exportData = new Blob([fileContent], { type: fileType });
   const fileURL = window.URL.createObjectURL(exportData);
   const tempLink = document.createElement('a');
   tempLink.setAttribute('href', fileURL);
-  tempLink.setAttribute('download', createFileName(downloadFileName || '', fileExtension));
+  tempLink.setAttribute('download', createFileName(downloadFileName || ''));
   document.body.appendChild(tempLink);
   tempLink.click();
   document.body.removeChild(tempLink);
