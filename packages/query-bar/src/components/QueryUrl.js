@@ -34,7 +34,7 @@ const QueryUrl = ({
     ...pathFilterParams,
     ...localFind,
   });
-  const url = encodeURI(rootPath.concat(query));
+  const url = rootPath.concat(encodeURIComponent(query));
 
   const copyUrl = async () => {
     toggleOpen();
