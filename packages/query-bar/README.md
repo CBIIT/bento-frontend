@@ -64,6 +64,16 @@ const CONFIG = {
      */
     displayAllActiveFilters: false,
     /**
+     * set root path for copy url (COPYURL_README)
+     * @var {boolean}
+     */
+    rootPath: `${window.location.href}/`,
+    /**
+     * display copy url button (COPYURL_README)
+     * @var {boolean}
+     */
+    viewQueryURL: true,
+    /**
      * key to access label text
      * @var {boolean}
      */

@@ -13,6 +13,16 @@ export default {
      */
     displayAllActiveFilters: false,
     /**
+    * set root path for copy url
+    * @var {boolean}
+    */
+    rootPath: `${window.location.href}/`,
+    /**
+    * display copy url button
+    * @var {boolean}
+    */
+    viewQueryURL: false,
+    /**
      * key to access label text
      * @var {string}
      */
