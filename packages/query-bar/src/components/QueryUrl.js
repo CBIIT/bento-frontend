@@ -19,9 +19,10 @@ const QueryUrl = ({
   rootPath,
 }) => {
   const [display, setDisplay] = useState(false);
-  const toggleDisplay = () => setDisplay(!display);
+  const toggleDisplay = () => setDisplay((prevDisplay) => !prevDisplay);
 
-  const [open, toggleOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const toggleOpen = () => setOpen((prevOpen) => !prevOpen);
 
   const pathFilterParams = filterItems.reduce((acc, item) => {
     const { datafield, items = [] } = item;
@@ -36,7 +37,7 @@ const QueryUrl = ({
   const url = encodeURI(rootPath.concat(query));
 
   const copyUrl = async () => {
-    toggleOpen(!open);
+    toggleOpen();
     await navigator.clipboard.writeText(url);
   };
 
