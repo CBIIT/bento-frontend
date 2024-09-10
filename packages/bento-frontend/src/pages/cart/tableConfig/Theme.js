@@ -121,14 +121,12 @@ export const tblContainer = {
     root: {
       width: '100%',
       overflowX: 'auto',
-      transform: 'rotateX(180deg)',
       boxShadow: 'none',
       borderRadius: '0',
     }
   },
   MuiTable: {
     root: {
-      transform: 'rotateX(180deg)',
       width: '100%',
       display: 'table',
       borderSpacing: '0',
