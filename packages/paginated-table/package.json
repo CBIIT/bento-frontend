@@ -20,7 +20,7 @@
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1",
     "@bento-core/cart": "^1.0.0",
-    "@bento-core/table": "1.0.1-icdc.0",
+    "@bento-core/table": "^1.0.0",
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.0"
   },
