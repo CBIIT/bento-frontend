@@ -50,21 +50,21 @@ const DropdownMenu = ({
 
 const styles = () => ({
   logotype: (props) => ({
-    whiteSpace: 'nowrap',
-    color: props.navBarstyling.global.fontColor ? props.navBarstyling.global.fontColor : '#FFFFFF',
-    fontFamily: props.navBarstyling.global.fontFamily ? props.navBarstyling.global.fontFamily : 'Nunito',
-    fontSize: '13px',
-    fontWeight: '600',
-    letterSpacing: '0.9px',
-    // [theme.breakpoints.down('xs')]: {
-    //   display: 'none',
-    // },
-    '&:hover, &:focus': {
-      borderRadius: '0',
-    },
+    ...(props.navBarstyling.dropDownMenuButton || {
+      whiteSpace: 'nowrap',
+      color: props.navBarstyling.global.fontColor ? props.navBarstyling.global.fontColor : '#FFFFFF',
+      fontFamily: props.navBarstyling.global.fontFamily ? props.navBarstyling.global.fontFamily : 'Nunito',
+      fontSize: '13px',
+      fontWeight: '600',
+      letterSpacing: '0.9px',
+      '&:hover, &:focus': {
+        borderRadius: '0',
+      },
+    }),
   }),
   buttonRoot: (props) => ({
-    padding: props.navBarstyling.global.padding ? props.navBarstyling.global.padding : '9px 20px 0px 20px',
+    ...(props.navBarstyling.dropdownButtonRoot ? props.navBarstyling.dropdownButtonRoot : { padding: props.navBarstyling.global.padding ? props.navBarstyling.global.padding : '9px 20px 0px 20px' }),
+
   }),
   buttonRootClicked: {
     borderBottom: '2px solid #FFFFFF',
@@ -73,9 +73,10 @@ const styles = () => ({
     fontSize: props.navBarstyling.dropDownIcon.fontSize ? props.navBarstyling.dropDownIcon.fontSize : '18px',
     margin: props.navBarstyling.dropDownIcon.margin ? props.navBarstyling.dropDownIcon.margin : '0px 0px 0px 0px',
   }),
-  aboutMenu: {
+  aboutMenu: (props) => ({
     display: 'inline-block',
-  },
+    ...(props.navBarstyling.aboutMenu ? props.navBarstyling.aboutMenu : {}),
+  }),
 });
 
 DropdownMenu.defaultProps = {
