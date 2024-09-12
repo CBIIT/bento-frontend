@@ -25,23 +25,21 @@ export default () => ({
   },
   sortGroup: {
     paddingTop: '10px',
-    marginBottom: '5px',
     borderTop: '1px solid #B1B1B1',
-    textAlign: 'left',
-    marginLeft: '-5px',
+    padding: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   sortGroupIcon: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
-    marginRight: '12px',
-    marginLeft: '16px',
   },
   sortGroupItem: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
-    marginRight: '32px',
   },
   NonSortGroup: {
     marginBottom: '5px',
@@ -59,8 +57,6 @@ export default () => ({
     fontFamily: 'Nunito',
     fontSize: '10px',
     float: 'right',
-    marginRight: '10px',
-    marginTop: '5px',
   },
   highlight: {
     color: '#b2c6d6',

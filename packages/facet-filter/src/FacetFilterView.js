@@ -13,6 +13,7 @@ const BentoFacetFilter = ({
   sideBarSections,
   CustomFacetSection,
   CustomFacetView,
+  clearIcon,
 }) => {
   return (
     <>
@@ -31,6 +32,7 @@ const BentoFacetFilter = ({
                 <FacetView
                   facet={facet}
                   CustomView={CustomFacetView}
+                  clearIcon={clearIcon}
                 />
               ))}
             </FacetSectionView>

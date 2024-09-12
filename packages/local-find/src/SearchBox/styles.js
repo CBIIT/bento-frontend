@@ -80,15 +80,15 @@ export default () => ({
   },
   deleteIcon: {
     cursor: 'pointer',
-    marginTop: -4,
   },
   closeRoot: {
     height: 10,
   },
   listItemGutters: {
-    padding: '0px 15px 0px 18px !important',
+    padding: '0px 15px !important',
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   searchResultDetailText: {
     color: '#0D8662',
