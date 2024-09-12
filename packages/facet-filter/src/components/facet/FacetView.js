@@ -11,7 +11,7 @@ import { InputTypes } from '../inputs/Types';
 import styles from './FacetStyle';
 import FilterItems from '../inputs/FilterItems';
 import { sortType } from '../../utils/Sort';
-import clearIcon from './assets/clearIcon.svg';
+import clearIconLocal from './assets/clearIcon.svg';
 
 const FacetView = ({
   classes,
@@ -21,6 +21,7 @@ const FacetView = ({
   CustomView,
   autoComplete,
   upload,
+  clearIcon,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
@@ -113,7 +114,7 @@ const FacetView = ({
                 onClick={onClearSection}
               >
                 <img
-                  src={clearIcon}
+                  src={clearIcon || clearIconLocal}
                   height={12}
                   width={12}
                   alt="clear-icon"
