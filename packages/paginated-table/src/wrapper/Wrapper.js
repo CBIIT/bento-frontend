@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Container,
   createTheme,
@@ -8,7 +8,6 @@ import {
 import ButtonView from './components/ButtonView';
 import TextFieldView from './components/TextFieldView';
 import ToolTipView from './components/TooltipView';
-import { TableContext } from '../table/ContextProvider';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -35,15 +34,6 @@ export const LinkComponent = (props) => {
       </Link>
     </>
   );
-};
-
-const GetCheckedItems = () => {
-  const tableContext = useContext(TableContext);
-  const { context } = tableContext;
-  const {
-    hiddenSelectedRows = [],
-  } = context;
-  return hiddenSelectedRows;
 };
 
 const Img = ({ src, alt, clsName }) => <img src={src} alt={alt} className={clsName} />;
@@ -81,7 +71,7 @@ export const ViewComponent = (props) => {
     case types.CUSTOM_ELEM:
       return (
         <>
-          <CustomViewElem callBack={GetCheckedItems} />
+          <CustomViewElem />
           {tooltipCofig && (<ToolTipView {...props} />)}
         </>
       );

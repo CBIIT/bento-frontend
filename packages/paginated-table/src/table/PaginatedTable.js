@@ -84,20 +84,29 @@ const PaginatedTable = ({
   const onRowSelectHandler = (event, row) => {
     event.stopPropagation();
     let selectedIds = [...table.selectedRows];
-    const hiddenSelectedIds = [...table.hiddenSelectedRows];
+    let hiddenSelectedIds = [...table.hiddenSelectedRows];
 
     const selectedId = row[table.dataKey];
     let hiddenSelectedId = selectedId;
-    if (table.dataKey === 'treatment_response_id' || table.dataKey === 'treatment_id') {
-      hiddenSelectedId = row.participant_id;
+    if (table.hiddenDataKey) {
+      hiddenSelectedId = row[table.hiddenDataKey];
     }
 
     if (!row.isChecked) {
       selectedIds.push(selectedId);
-      hiddenSelectedIds.push(hiddenSelectedId);
+      if (!hiddenSelectedIds.includes(hiddenSelectedId)) {
+        hiddenSelectedIds.push(hiddenSelectedId);
+      }
     } else {
       selectedIds = selectedIds.reduce((acc, id) => {
         if (selectedId !== id) {
+          acc.push(id);
+        }
+        return acc;
+      }, []);
+
+      hiddenSelectedIds = hiddenSelectedIds.reduce((acc, id) => {
+        if (hiddenSelectedId !== id) {
           acc.push(id);
         }
         return acc;
