@@ -14,7 +14,15 @@ const SliderView = ({
   onSliderToggle,
   filterState,
 }) => {
-  const { minLowerBound, maxUpperBound, quantifier, datafield, facetValues } = facet;
+  const {
+    minLowerBound,
+    maxUpperBound,
+    quantifier,
+    datafield,
+    facetValues,
+    CustomLowerUpperBound,
+    CustomSliderValue,
+  } = facet;
   const lowerBoundValue = facetValues[0];
   const upperBoundValue = facetValues[1];
 
@@ -99,24 +107,26 @@ const SliderView = ({
             }}
           />
         </div>
-        <Box className={classes.lowerUpperBound}>
-          <Typography className={classes.lowerBound}>
-            {minLowerBound}
-          </Typography>
-          <Typography className={classes.upperBound}>
-            {maxUpperBound}
-          </Typography>
-        </Box>
+        {typeof CustomLowerUpperBound === 'function' ? (
+          CustomLowerUpperBound({ minLowerBound, maxUpperBound, classes })
+        ) : (
+          <Box className={classes.lowerUpperBound}>
+            <Typography className={classes.lowerBound}>
+              {minLowerBound}
+            </Typography>
+            <Typography className={classes.upperBound}>
+              {maxUpperBound}
+            </Typography>
+          </Box>
+        )}
       </div>
       {/* Change to red if invalid range */}
-      {
-        (sliderValue[0] > minLowerBound || sliderValue[1] < maxUpperBound)
-        && (
-          <Typography
-            className={isValid()
-              ? classes.sliderText
-              : classes.invalidSliderText}
-          >
+      {typeof CustomSliderValue === 'function' ? (
+        CustomSliderValue({
+          sliderValue, minLowerBound, maxUpperBound, isValid, quantifier, classes })
+      ) : (
+        (sliderValue[0] > minLowerBound || sliderValue[1] < maxUpperBound) && (
+          <Typography className={isValid() ? classes.sliderText : classes.invalidSliderText}>
             {sliderValue[0]}
             {' - '}
             {sliderValue[1]}
@@ -124,7 +134,7 @@ const SliderView = ({
             {quantifier}
           </Typography>
         )
-      }
+      )}
     </>
   );
 };
