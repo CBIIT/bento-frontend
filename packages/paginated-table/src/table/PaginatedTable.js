@@ -9,6 +9,7 @@ import {
   onColumnSort,
   onPageAndTotalCountChange,
   onColumnViewChange,
+  onRowSelectHidden,
 } from './state/Actions';
 import { TableContext } from './ContextProvider';
 import reducer from './state/Reducer';
@@ -83,9 +84,19 @@ const PaginatedTable = ({
   const onRowSelectHandler = (event, row) => {
     event.stopPropagation();
     let selectedIds = [...table.selectedRows];
+    let hiddenSelectedIds = [...table.hiddenSelectedRows];
+
     const selectedId = row[table.dataKey];
+    let hiddenSelectedId = selectedId;
+    if (table.hiddenDataKey) {
+      hiddenSelectedId = row[table.hiddenDataKey];
+    }
+
     if (!row.isChecked) {
       selectedIds.push(selectedId);
+      if (!hiddenSelectedIds.includes(hiddenSelectedId)) {
+        hiddenSelectedIds.push(hiddenSelectedId);
+      }
     } else {
       selectedIds = selectedIds.reduce((acc, id) => {
         if (selectedId !== id) {
@@ -93,8 +104,16 @@ const PaginatedTable = ({
         }
         return acc;
       }, []);
+
+      hiddenSelectedIds = hiddenSelectedIds.reduce((acc, id) => {
+        if (hiddenSelectedId !== id) {
+          acc.push(id);
+        }
+        return acc;
+      }, []);
     }
     dispatch(onRowSeclect(selectedIds));
+    dispatch(onRowSelectHidden(hiddenSelectedIds));
   };
 
   const handleToggleSelectAll = (event, Ids, includeIds) => {
