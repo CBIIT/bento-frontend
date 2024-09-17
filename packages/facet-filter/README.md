@@ -95,6 +95,8 @@ export const facetsConfig = [{
     minLowerBound: 0,  
     maxUpperBound: 100,   
     quantifier: 'Years',
+    CustomLowerUpperBound: CustomLowerUpperBound, // Custom component for displaying lower and upper bounds
+    CustomSliderValue: CustomSliderValue, // Custom component for displaying slider value
 ].
 ```
 1. **apiForFiltering** refers to object key for retrieving name and subjects count from query response (DASHBOARD_QUERY)
