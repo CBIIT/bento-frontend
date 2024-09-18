@@ -17,19 +17,23 @@ const CheckboxView = ({
   toggleSelectAll,
   Ids,
 }) => {
-  const classes = useStyles();
+  const { label } = useStyles();
+
   return (
     <TableCell padding="checkbox" component="td">
       <FormControlLabel
         label="checkbox"
         classes={{
-          label: classes.label,
+          label,
         }}
         control={(
           <Checkbox
             color="primary"
             indeterminate={includeSelectedIds}
             checked={includeSelectedIds}
+            inputProps={{
+              'aria-label': 'checkbox',
+            }}
             onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
           />
             )}
