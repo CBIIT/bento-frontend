@@ -84,19 +84,24 @@ const PaginatedTable = ({
   const onRowSelectHandler = (event, row) => {
     event.stopPropagation();
     let selectedIds = [...table.selectedRows];
-    let hiddenSelectedIds = [...table.hiddenSelectedRows];
+    let hiddenSelectedRows = [...table.hiddenSelectedRows];
 
     const selectedId = row[table.dataKey];
-    let hiddenSelectedId = selectedId;
-    if (table.hiddenDataKey) {
-      hiddenSelectedId = row[table.hiddenDataKey];
+
+    let hiddenNewObject = {};
+
+    if (table.hiddenDataKeys && table.hiddenDataKeys.length > 0) {
+      table.hiddenDataKeys.forEach((dataK) => {
+        hiddenNewObject = {
+          ...hiddenNewObject,
+          [dataK]: row[dataK],
+        };
+      });
     }
 
     if (!row.isChecked) {
       selectedIds.push(selectedId);
-      if (!hiddenSelectedIds.includes(hiddenSelectedId)) {
-        hiddenSelectedIds.push(hiddenSelectedId);
-      }
+      hiddenSelectedRows.push(hiddenNewObject);
     } else {
       selectedIds = selectedIds.reduce((acc, id) => {
         if (selectedId !== id) {
@@ -105,18 +110,37 @@ const PaginatedTable = ({
         return acc;
       }, []);
 
-      hiddenSelectedIds = hiddenSelectedIds.reduce((acc, id) => {
-        if (hiddenSelectedId !== id) {
-          acc.push(id);
+      hiddenSelectedRows = hiddenSelectedRows.reduce((acc, hiddenObject) => {
+        if (JSON.stringify(hiddenNewObject) !== JSON.stringify(hiddenObject)) {
+          acc.push(hiddenObject);
         }
         return acc;
       }, []);
     }
     dispatch(onRowSeclect(selectedIds));
-    dispatch(onRowSelectHidden(hiddenSelectedIds));
+    dispatch(onRowSelectHidden(hiddenSelectedRows));
   };
 
-  const handleToggleSelectAll = (event, Ids, includeIds) => {
+  const handleToggleSelectAll = (event, Ids, includeIds, rows) => {
+    if (event.target.checked) {
+      dispatch(onRowSelectHidden([]));
+      const filteredRows = [];
+      let hiddenNewObject = {};
+      rows.forEach((row) => {
+        hiddenNewObject = {};
+        table.hiddenDataKeys.forEach((dataK) => {
+          hiddenNewObject = {
+            ...hiddenNewObject,
+            [dataK]: row[dataK],
+          };
+        });
+        filteredRows.push(hiddenNewObject);
+      });
+      dispatch(onRowSelectHidden(filteredRows));
+    } else {
+      dispatch(onRowSelectHidden([]));
+    }
+
     if (event.target.checked && !includeIds) {
       const selecedIds = Ids.concat(table.selectedRows);
       dispatch(onRowSeclect(selecedIds));
