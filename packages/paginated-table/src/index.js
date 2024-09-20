@@ -13,7 +13,6 @@ export {
   onRowSeclect,
   setTotalRowCount,
 } from './table/state/Actions';
-export { default as paginatedTableReducer } from './table/state/Reducer';
 export { default as Wrapper, types } from './wrapper/Wrapper';
 export { btnTypes } from './wrapper/components/AddFiles';
 export { getQueryVariables } from './wrapper/WrapperService';
