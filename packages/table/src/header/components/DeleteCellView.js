@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   TableCell,
   Typography,
   IconButton,
   Tooltip,
+  withStyles,
 } from '@material-ui/core';
+import MuiTooltip from '@material-ui/core/Tooltip';
 import {
   ArrowDropDown as ArrowDropDownIcon,
 } from '@material-ui/icons';
@@ -23,6 +25,7 @@ const TooltipContent = () => (
 );
 
 const DeleteCellView = ({
+  classes,
   column,
   count,
   onDeleteAllFiles,
@@ -30,6 +33,29 @@ const DeleteCellView = ({
   const [displayDialog, setDisplay] = useState(false);
   const toggleDialogDisplay = () => setDisplay(!displayDialog);
   const { customColHeaderRender } = column;
+
+  const CustomTooltip = useCallback(({ children }) => {
+    // return custom tooltips
+    if (column && column.Tooltip) {
+      const CustomToolTip = column.Tooltip;
+      return (
+        <CustomToolTip>
+          {children}
+        </CustomToolTip>
+      );
+    }
+    // return default tooltip
+    if (column && column.tooltipText) {
+      return (
+        <MuiTooltip id="header-tooltip" title={column.tooltipText}>
+          {children}
+        </MuiTooltip>
+      );
+    }
+    // return default view
+    return <>{children}</>;
+  }, [column]);
+
   return (
     <>
       <TableCell
@@ -42,10 +68,12 @@ const DeleteCellView = ({
               {customColHeaderRender(toggleDialogDisplay)}
             </>
           ) : (
-            <>
-              <Typography className="del_all_row_text">
-                Remove
-              </Typography>
+            <span className={classes.cellContentWrapper}>
+              <CustomTooltip>
+                <Typography component="span" className={`del_all_row_text ${classes.delAllRowText}`}>
+                  Remove
+                </Typography>
+              </CustomTooltip>
               <Tooltip
                 id="del_all_row_tooltip"
                 className="del_all_row_tooltip"
@@ -59,7 +87,7 @@ const DeleteCellView = ({
                   />
                 </IconButton>
               </Tooltip>
-            </>
+            </span>
           )
         }
         <RemoveAllDialogView
@@ -74,4 +102,17 @@ const DeleteCellView = ({
   );
 };
 
-export default DeleteCellView;
+const styles = () => ({
+  cellContentWrapper: {
+    display: 'inline-flex',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  delAllRowText: {
+    lineHeight: '24px',
+  },
+});
+
+export default withStyles(styles)(DeleteCellView);
