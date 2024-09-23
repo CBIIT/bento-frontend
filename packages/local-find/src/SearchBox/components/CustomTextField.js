@@ -36,7 +36,12 @@ export const CustomTextField = ({ ...params }) => {
       placeholder={placeholder}
       variant="outlined"
       size="small"
-      InputProps={InputProps}
+      InputProps={{
+        ...InputProps,
+        inputProps: {
+          title: 'local find search input',
+        },
+      }}
     />
   );
 };
