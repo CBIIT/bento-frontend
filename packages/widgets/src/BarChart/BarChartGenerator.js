@@ -226,6 +226,17 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         return null;
       };
 
+      const renderTick = (tickProps) => {
+        const { x, y, payload } = tickProps;
+        return (
+          <g transform={`translate(${x},${y})`}>
+            <text x={10} y={0} dy={16} textAnchor="end" fill="#666" fontSize="11px" transform="rotate(-25)">
+              {payload.value}
+            </text>
+          </g>
+        );
+      };
+
       return (
         <ResponsiveContainer width={width} height={height}>
           <BarChart
@@ -238,7 +249,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
             // }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="group" interval={0} tick={{ fontSize: '11px' }} />
+            <XAxis dataKey="group" interval={0} tick={renderTick} />
             <YAxis />
             <Tooltip cursor={false} content={<CustomTooltip />} />
             {/* <Legend /> */}
