@@ -87,6 +87,7 @@ const SliderView = ({
           <Slider
             disableSwap
             getAriaValueText={valuetext}
+            getAriaLabel={(index) => (index === 0 ? 'Minimum Thumb' : 'Maximum Thumb')}
             onChange={handleChangeSlider}
             onChangeCommitted={(event, value) => handleChangeCommittedSlider(value)}
             value={[...sliderValue]}

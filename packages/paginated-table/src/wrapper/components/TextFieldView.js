@@ -7,6 +7,7 @@ import {
 const TextFieldView = ({
   clsName,
   placeholder,
+  ariaLabel,
 }) => {
   const [text, setText] = useState('');
   const cartContext = useContext(CartContext);
@@ -24,6 +25,7 @@ const TextFieldView = ({
       }}
       className={clsName}
       placeholder={placeholder}
+      aria-label={ariaLabel}
       id="multiline-user-coments"
     />
   );

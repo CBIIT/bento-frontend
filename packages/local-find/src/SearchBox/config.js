@@ -8,6 +8,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     inputPlaceholder: 'e.g. BENTO-CASE-06, BENTO-CASE-22',
     noOptionsText: 'No matching items found',
     searchType: 'subjectIds',
+    ariaLabel: 'Search',
   },
 
   // Helper functions used by the component

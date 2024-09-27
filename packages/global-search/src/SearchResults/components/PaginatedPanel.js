@@ -125,7 +125,12 @@ const PaginatedPanel = (props) => {
       </Grid>
       {Math.ceil(count / pageSize) > 1 && (
       <div className={classes.paginationContainer}>
-        <Button id="global_search_paginate_prev" onClick={onPrevious} className={classes.prevButton}>
+        <Button
+          id="global_search_paginate_prev"
+          onClick={onPrevious}
+          className={classes.prevButton}
+          aria-label="Go to previous page"
+        >
           <span>
             <img
               className={classes.prevIcon}
@@ -147,15 +152,23 @@ const PaginatedPanel = (props) => {
           hideNextButton
           hidePrevButton
           onChange={handleChangePage}
+          getItemAriaLabel={(_, pageNumber, selected) => (selected
+            ? `Page ${pageNumber} of ${Math.ceil(count / pageSize)}`
+            : `Go to page ${pageNumber} of ${Math.ceil(count / pageSize)}`)}
         />
 
-        <Button id="global_search_paginate_next" onClick={onNext} className={classes.nextButton}>
+        <Button
+          id="global_search_paginate_next"
+          onClick={onNext}
+          className={classes.nextButton}
+          aria-label="Go to next page"
+        >
           next
           <span>
             <img
               className={classes.nextIcon}
               src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchNext.svg"
-              alt="previous button"
+              alt="next button"
             />
           </span>
         </Button>

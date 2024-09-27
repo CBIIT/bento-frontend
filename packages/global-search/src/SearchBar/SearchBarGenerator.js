@@ -54,6 +54,14 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
     ? config.maxSuggestions
     : DEFAULT_CONFIG_SEARCHBAR.config.maxSuggestions;
 
+  const placeholder = config && typeof config.placeholder === 'string'
+    ? config.placeholder
+    : DEFAULT_CONFIG_SEARCHBAR.config.placeholder;
+
+  const ariaLabel = config && typeof config.ariaLabel === 'string'
+    ? config.ariaLabel
+    : DEFAULT_CONFIG_SEARCHBAR.config.ariaLabel;
+
   return {
     SearchBar: ({ ...props }) => {
       const {
@@ -141,7 +149,8 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
               loading={showLoading ? loading : false}
               classes={classes}
               iconType={config.iconType}
-              placeholder={typeof config.placeholder === 'string' ? config.placeholder : DEFAULT_CONFIG_SEARCHBAR.config.placeholder}
+              placeholder={placeholder}
+              ariaLabel={ariaLabel}
               onClick={(val) => onChange(val, searchRoute, history)}
               onEnter={(val) => onChange(val, searchRoute, history)}
             />
