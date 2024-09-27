@@ -5,6 +5,7 @@ import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
 import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
+import { setActiveFilterByPathQuery } from './sideBar/BentoFilterUtils';
 
 const getDashData = (states) => {
   const {
@@ -45,6 +46,13 @@ const getDashData = (states) => {
 };
 
 const DashTemplateController = ((props) => {
+  // redirect
+  const { match, history } = props;
+  if (match.params.filterQuery) {
+    setActiveFilterByPathQuery(match);
+    const redirectUrl = '/explore';
+    history.push(redirectUrl);
+  }
   const { dashData, activeFilters } = getDashData(props);
 
   if (!dashData) {

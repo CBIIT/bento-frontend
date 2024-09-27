@@ -25,12 +25,10 @@ const TooltipContent = () => (
 const DeleteCellView = ({
   column,
   count,
+  onDeleteAllFiles,
 }) => {
   const [displayDialog, setDisplay] = useState(false);
   const toggleDialogDisplay = () => setDisplay(!displayDialog);
-  const testTrigger = () => {
-    setDisplay(true);
-  };
   const { customColHeaderRender } = column;
   return (
     <>
@@ -41,7 +39,7 @@ const DeleteCellView = ({
         {
           customColHeaderRender ? (
             <>
-              {customColHeaderRender(testTrigger)}
+              {customColHeaderRender(toggleDialogDisplay)}
             </>
           ) : (
             <>
@@ -69,6 +67,7 @@ const DeleteCellView = ({
           removeAllFiles={column.headerEventHandler}
           count={count}
           toggleDisplay={toggleDialogDisplay}
+          onDeleteAllFiles={onDeleteAllFiles}
         />
       </TableCell>
     </>

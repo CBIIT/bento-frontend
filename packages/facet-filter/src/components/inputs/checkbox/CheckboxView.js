@@ -1,10 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable react/jsx-indent */
-/* eslint-disable object-curly-newline */
-/* eslint-disable object-shorthand */
-/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-useless-escape */
 
 import React from 'react';
@@ -20,9 +13,11 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
-  CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon,
+  CheckBox as CheckBoxIcon,
+  CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
 import styles from './CheckboxStyle';
+import { sideBarActionTypes } from '../../../store/actions/ActionTypes';
 
 const CheckBoxView = ({
   classes,
@@ -50,9 +45,13 @@ const CheckBoxView = ({
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
-      name: name,
-      datafield: datafield,
+      name,
+      datafield,
       isChecked: !isChecked,
+      actionType: {
+        [datafield]: sideBarActionTypes.FACET_VALUE_CHANGED,
+        isFacetOrigin: true,
+      },
     };
     onToggle(toggleCheckBoxItem);
   };
@@ -65,9 +64,7 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      <Typography className={classes.checkboxName}>
-        {name}
-      </Typography>
+      <Typography className={classes.checkboxName}>{name}</Typography>
     </Box>
   );
 
@@ -79,16 +76,18 @@ const CheckBoxView = ({
         alignItems="flex-start"
         onClick={handleToggle}
         classes={{ gutters: classes.listItemGutters }}
-        className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
+        className={clsx({
+          [`${checkedSection}Checked${indexType}`]: isChecked,
+        })}
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
-          icon={
+          icon={(
             <CheckBoxBlankIcon
               style={{ fontSize: 18 }}
               className={checkedSection}
             />
-          }
+          )}
           onClick={handleToggle}
           checked={isChecked}
           checkedIcon={(
@@ -103,11 +102,9 @@ const CheckBoxView = ({
           color="secondary"
           classes={{ root: classes.checkboxRoot }}
         />
-        { tooltip ? (
+        {tooltip ? (
           <Tooltip id={datafield} title={tooltip}>
-            <div className={datafield}>
-              {name}
-            </div>
+            <div className={datafield}>{name}</div>
           </Tooltip>
         ) : (
           <LabelComponent />

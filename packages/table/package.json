@@ -12,9 +12,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@bento-core/util": "^1.0.0"
-  },
   "peerDependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.9.1",
@@ -23,7 +20,8 @@
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1",
     "@apollo/client": "^3.6.9",
-    "clsx": "^1.2.1"
+    "clsx": "^1.2.1",
+    "@bento-core/util": "^1.0.0"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"

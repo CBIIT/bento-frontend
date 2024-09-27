@@ -4,6 +4,8 @@ import { clearAllFilters, clearFacetSection, clearSliderSection, toggleCheckBox 
 import { resetAllData, resetUploadData, updateAutocompleteData } from '@bento-core/local-find';
 import { QueryBarGenerator } from '@bento-core/query-bar';
 import { facetsConfig } from '../../../bento/dashTemplate';
+import { Container, createTheme, ThemeProvider } from '@material-ui/core';
+import theme from './QueryBarTheme';
 
 /**
  * Generate the Explore Tab Query Bar
@@ -24,7 +26,7 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
     return {
       ...config,
       items: statusReducer[facet],
-      data: data[config.apiForFiltering],
+      data: config ? data[config.apiForFiltering] : [],
     }
   });
   mappedFilterState.sort((a, b) => sectionOrder.indexOf(a.datafield) - sectionOrder.indexOf(b.datafield));
@@ -32,6 +34,8 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
   const { QueryBar } = QueryBarGenerator({
     config: {
       displayAllActiveFilters: true,
+      rootPath: `${window.location.href}/`,
+      viewQueryURL: true
     },
     functions: {
       clearAll: () => {
@@ -71,10 +75,17 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
   });
 
   return (
-    <QueryBar
-      statusReducer={mappedFilterState}
-      localFind={localFind}
-    />
+    <ThemeProvider theme={createTheme(theme)}>
+      <Container
+        maxWidth="xl"
+        className="icdc_query_bar"
+      >
+        <QueryBar
+          statusReducer={mappedFilterState}
+          localFind={localFind}
+        />
+      </Container>
+    </ThemeProvider>
   );
 };
 

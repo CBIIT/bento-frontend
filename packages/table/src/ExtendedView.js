@@ -19,7 +19,7 @@ const ExtendedView = ({
   queryVariables,
   server,
 }) => {
-  const { extendedViewConfig } = table;
+  const { extendedViewConfig, rowsPerPageOptions } = table;
   if (!extendedViewConfig) {
     return null;
   }
@@ -56,7 +56,7 @@ const ExtendedView = ({
         (pagination) && (
           <CustomPagination
             customTheme={customTheme.tblTopPgn}
-            rowsPerPageOptions={[10, 25, 50, 100]}
+            rowsPerPageOptions={rowsPerPageOptions || [10, 25, 50, 100]}
             component="div"
             count={table.totalRowCount || 0}
             rowsPerPage={table.rowsPerPage || 10}

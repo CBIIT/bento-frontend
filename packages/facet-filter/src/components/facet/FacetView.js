@@ -1,37 +1,69 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Accordion,
-  List,
-  withStyles,
-  Icon,
+  Accordion, List, withStyles, Icon,
 } from '@material-ui/core';
 import clsx from 'clsx';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import IconButton from '@material-ui/core/IconButton';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
 import { InputTypes } from '../inputs/Types';
 import styles from './FacetStyle';
 import FilterItems from '../inputs/FilterItems';
 import { sortType } from '../../utils/Sort';
 import clearIconLocal from './assets/clearIcon.svg';
+import { sideBarActionTypes } from '../../store/actions/ActionTypes';
 
 const FacetView = ({
   classes,
   facet,
+  enableClearSection,
   onClearFacetSection,
   onClearSliderSection,
   CustomView,
   autoComplete,
   upload,
   clearIcon,
+  filterState,
+  currentActionType = {},
+  enableFacetCollapse,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
 
+  const { datafield } = facet;
   /**
-  * expand section incase of active local search
-  */
+   * Collapse expanded facet or facets
+   * 1. on clear facet section
+   * 2. on clear all
+   * 3. on uncheck facet from DQB
+   */
   useEffect(() => {
-    if ((autoComplete && autoComplete.length > 0)
-      || (upload && upload.length > 0)) {
+    if (enableFacetCollapse) {
+      const actionType = currentActionType[datafield];
+      // collapse facet if uncheck from DQB
+      if (actionType && actionType === sideBarActionTypes.FACET_VALUE_CHANGED) {
+        const { isFacetOrigin } = currentActionType;
+        if (!isFacetOrigin) {
+          if (Object.keys(filterState[datafield] || {}).length === 0) {
+            setExpand(false);
+          }
+        }
+      }
+      if ((actionType && actionType === sideBarActionTypes.CLEAR_FACET_SECTION)
+        || currentActionType === sideBarActionTypes.CLEAR_ALL_FILTERS) {
+        setExpand(false);
+      }
+    }
+  }, [filterState]);
+
+  /**
+   * expand section incase of active local search
+   */
+  useEffect(() => {
+    if (
+      (autoComplete && autoComplete.length > 0)
+      || (upload && upload.length > 0)
+    ) {
       setExpand(true);
     }
   }, [autoComplete, upload]);
@@ -43,10 +75,13 @@ const FacetView = ({
 
   const onClearSection = () => {
     setSortBy(null);
-    if (facet.type === InputTypes.SLIDER) {
-      onClearSliderSection(facet);
-    } else {
-      onClearFacetSection(facet);
+    const activeFilterItems = filterState[datafield];
+    if (activeFilterItems && Object.keys(activeFilterItems).length > 0) {
+      if (facet.type === InputTypes.SLIDER) {
+        onClearSliderSection(facet);
+      } else {
+        onClearFacetSection(facet);
+      }
     }
   };
   /**
@@ -58,6 +93,7 @@ const FacetView = ({
   displayFacet.facetValues = selectedItems;
   const isActiveFacet = [...selectedItems].length > 0;
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
+
   return (
     <>
       <Accordion
@@ -69,41 +105,56 @@ const FacetView = ({
         }}
         id={facet.section}
       >
-        { CustomView ? (
+        {CustomView ? (
           <CustomView
+            clearFacetSectionValues={onClearSection}
+            hasSelections={selectedItems.length > 0}
             facet={facet}
             facetClasses={
-            isActiveFacet ? `activeFacet${facet.section}`
-              : `inactiveFacet${facet.section}`
+              isActiveFacet
+                ? `activeFacet${facet.section}`
+                : `inactiveFacet${facet.section}`
             }
           />
         ) : (
           <CustomAccordionSummary>
-            <div
-              id={
-                `filterGroup_ ${facet.datafield}
-                ${facet.label}`
-              }
-              className={clsx(classes.subSectionSummaryText, {
-                [`activeFacet${facet.section}`]: isActiveFacet,
-              })}
-            >
-              {facet.label}
-            </div>
+            {!enableClearSection ? (
+              <div
+                id={`filterGroup_ ${facet.datafield}
+                ${facet.label}`}
+                className={clsx(classes.subSectionSummaryText, {
+                  [`activeFacet${facet.section}`]: isActiveFacet,
+                })}
+              >
+                {facet.label}
+              </div>
+            ) : (
+              <div className={classes.subSectionSummaryTextWrapper}>
+                <div
+                  id={`filterGroup_ ${facet.datafield}
+                ${facet.label}`}
+                  className={clsx(classes.subSectionSummaryText, {
+                    [`activeFacet${facet.section}`]: isActiveFacet,
+                  })}
+                >
+                  {facet.label}
+                </div>
+                {selectedItems.length ? (
+                  <IconButton onClick={onClearSection}>
+                    <RefreshIcon />
+                  </IconButton>
+                ) : null}
+              </div>
+            )}
           </CustomAccordionSummary>
         )}
-        {
-          (facet.type === InputTypes.SLIDER || facetValues.length === 0)
-          && (
+        {(facet.type === InputTypes.SLIDER || facetValues.length === 0) && (
           <div className={classes.NonSortGroup}>
-            <span
-              className={classes.NonSortGroupItem}
-            >
+            <span className={classes.NonSortGroupItem}>
               No data for this field
             </span>
           </div>
-          )
-        }
+        )}
         {
           (facet.type === InputTypes.SLIDER || facetValues.length > 0)
           && (

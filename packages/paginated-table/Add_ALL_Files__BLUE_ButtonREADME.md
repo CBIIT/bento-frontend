@@ -1,48 +1,32 @@
-
-### 1 Use bento-core/paginated-table package version publish by ICDC
-Alternative configuratoin for BLUE button
-```
-// 1.0.1-icdc.3
-npm i @bento-core/paginated-table@1.0.1-icdc.3
-
-or in package.json
-{
-    @bento-core/paginated-table: '1.0.1-icdc.3'
-}
-```
 **NOTE: Create a new dashboard page using bento-core components before removing old dashboard page**
 <br>
-<span style="color:red">
+<span style="color:yellow">
 Assuming New Dashboard page have Filter component and table component from bento-core
 </span>.
 
-
-
-### 2 Configure Add_All_Button Or BLUE Button in Dashboard
+### 1 Configure Add_All_Button Or BLUE Button in Dashboard
 
 ```
 import React, { useCallback } from 'react';
-import { ButtonView, btnTypes } from '@bento-core/paginated-table';
+import { ButtonView, btnTypes, TableContextProvider } from '@bento-core/paginated-table';
 
-const AddAllBlueButton = useCallback(() => (
-    <ButtonView
-      btnType={btnTypes.ADD_ALL_FILES}
-      title="Add All Files Btn"
-      clsName="add_all_button"
-      maxFileLimit={10000}
-      addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
-      responseKeys={['caseOverview', 'files']}
-      activeFilters={activeFilters}
-      classes={classes}
-      section="toolTipText"
-      tooltipCofig={{
-        arrow: true,
-        clsName: 'addAllTooltip',
-        toolTipText: 'Add filtered files associated with all cases',
-        icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
-      }}
-    />
-  ), []);
+<ButtonView
+  btnType={btnTypes.ADD_ALL_FILES}
+  title="Add all files Btn"
+  clsName="add_all_button"
+  maxFileLimit={10000}
+  activeFilters={activeFilters}
+  addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
+  responseKeys={['caseOverview', 'files']}
+  classes={classes}
+  section="toolTipText"
+  tooltipCofig={{
+    arrow: true,
+    clsName: 'addAllTooltip',
+    toolTipText: 'Add filtered files associated with all cases',
+    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
+    }}
+/>
 ```
 
 **Add All Button Component or Configuration Properties**
@@ -60,7 +44,7 @@ const AddAllBlueButton = useCallback(() => (
 | activeFilters | TRUE | filtes the case or sample based on the active filters | graphQL query |
 
 
-### 3 Configure Add_All_Button Or BLUE Button in Dashboard
+### 2 Configure Add_All_Button Or BLUE Button in Dashboard
 
 ```
     const customTheme = {
@@ -78,9 +62,51 @@ const AddAllBlueButton = useCallback(() => (
     };
 
     const btnTheme = createTheme({ overrides: { ...customTheme } });
-    <ThemeProvider theme={btnTheme}>
-      <Container>
-        <AddAllBlueButton /> // from step 2
-      </Container>
-    </ThemeProvider>
+      <ThemeProvider theme={btnTheme}>
+        <Container
+          maxWidth="xl"
+        >
+          <ButtonView
+            btnType={btnTypes.ADD_ALL_FILES}
+            title="Add all files Btn"
+            clsName="add_all_button"
+            maxFileLimit={10000}
+            activeFilters={activeFilters}
+            addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
+            responseKeys={['caseOverview', 'files']}
+            classes={classes}
+            section="toolTipText"
+            tooltipCofig={{
+              arrow: true,
+              clsName: 'addAllTooltip',
+              toolTipText: 'Add filtered files associated with all cases',
+              icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
+            }}
+          />
+          <ButtonView
+            btnType={btnTypes.ADD_SELECTED_FILES}
+            title="ADD SELECTED FILES Btn"
+            clsName="add_selected_button"
+            dataKey="case_ids"
+            addFileQuery={GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL}
+            responseKeys={['caseOverview', 'files']}
+            classes={classes}
+            tooltipCofig={{
+              arrow: true,
+              clsName: 'addSelectedFileTooltip',
+              tooltipText: 'Add files associated selected cases',
+              icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
+            }}
+          />
+        </Container>
+      </ThemeProvider>
+
+      <Grid container>
+        <Grid item xs={12} id={config.tableID}>
+          <TableView
+            initState={initTblState}
+            ...
+          />
+        </Grid>
+      </Grid>
 ```

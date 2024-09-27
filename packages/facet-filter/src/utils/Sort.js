@@ -41,7 +41,7 @@ export const sortBySection = ({
   facetValues,
   sort_type,
   sortBy,
-  field,
+  field = 'group',
   count = 'subjects',
 }) => {
   const sortfacetValues = [...facetValues];

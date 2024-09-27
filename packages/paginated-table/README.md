@@ -1,5 +1,9 @@
 # PAGINATED TABLE COMPONENT DESIGN
 
+```diff
+- After updating to latest version remove transform: 'rotateX(180deg)
+- rotateX(180deg) is copied over from Bento 3.0 table which flips the table. So to correct all the bento project is currently adding rotateX(180deg) to flip back to correct position.
+```
 ### Bento core paginated table design:
 
 * Use of UseReducer to track table state and local state to display dialog component
@@ -13,6 +17,67 @@
 
 ### Generate and integrate redux dispatch actions
 ```
+const config = {
+  title: 'program',
+  dataField: 'studiesByProgram',
+  extendedViewConfig: { // display download button and manage view column
+    download: {
+      downloadFileName: 'ICDC_Studies_download',
+      downloadCsv: 'Download Table Contents As CSV',
+    },
+    manageViewColumns: {
+      title: 'View Columns',
+    },
+  }
+  columns: [
+    {
+      cellType: cellTypes.CHECKBOX,
+      display: true,
+      role: cellTypes.CHECKBOX,
+    },
+    {
+      dataField: 'program_id',
+      header: 'Program',
+      cellType: cellTypes.LINK,
+      linkAttr: {
+        rootPath: '/program',
+        pathParams: ['program_id'],
+      },
+      role: cellTypes.DISPLAY,
+      display: true,
+    },
+    {
+      dataField: 'clinical_study_name',
+      header: 'Study Name',
+      display: true,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY, // to display column in managecolumn view 
+    },
+    {
+      dataField: 'numberOfStudyFiles',
+      header: 'Study File(s)',
+      display: true,
+      columnDefaultValues: {
+        '0': 'Not Applicable', // replaces 0 with other text value in a column
+      },
+      role: cellTypes.DISPLAY, 
+    }
+  ],
+  columnGroups: {
+    {
+      clsName: 'col_group_1',
+      title: 'column group title',
+      columnIndexes: [startColIndex, endColIndex],
+    },
+    {
+      clsName: 'col_group_2',
+      title: 'column group title',
+      customViewRender: () => <h2>'custom Text'</h2>, // customize element (takes priority over title)
+      columnIndexes: [startColIndex, endColIndex],
+    },
+  }
+}
+
 const initTblState = (initailState) => ({
     ...initailState,
     title: config.name,
@@ -25,6 +90,7 @@ const initTblState = (initailState) => ({
     paginationAPIField: config.paginationAPIField,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
+    columnGroups: config.columnGroups
     rowsPerPage: 10,
     page: 0,
   });
@@ -45,7 +111,9 @@ const initTblState = (initailState) => ({
 | sortOrder | FALSE | default sort column 'ASC' | ```defaultSortDirection: 'asc',```|
 | rowsPerPage | FALSE | default 10 | |
 | page | FALSE | 0 | |
-| extendedViewConfig | FALSE | extended view of table header component | refer bento-frontend tabContainers, dashboardTabData.js |
+| extendedViewConfig | FALSE | extended view of table header component | refer bento-frontend / bento-icdc-frontend tabContainers, dashboardTabData.js |
+| ColumnGroups | FALSE | ColumnGrouping Component | refer bento-icdc-frontend tabContainers, StudiesData.js |
+
 
 
 ### 2 Importing Component and Configuration
@@ -125,13 +193,14 @@ const initTblState = (initailState) => ({
   sortBy: config.defaultSortField,
   sortOrder: config.defaultSortDirection,
   extendedViewConfig: config.extendedViewConfig,
+  columnGroups: config.columnGroups,
   rowsPerPage: 10,
   page: 0,
 });
 
 <TableContextProvider>
   <Wrapper
-    wrapConfig={configWrapper(config, wrapperConfig)}
+    wrapConfig={configWrapper(tableLayout)} // tableLayout - refer to step #4
     customTheme={customTheme}
     classes={classes}
     section={config.name}
@@ -144,6 +213,7 @@ const initTblState = (initailState) => ({
           queryVariables={activeFilters}
           totalRowCount={dashboardStats[config.count]}
           activeTab={activeTab}
+          paginationOptions={paginationOptions}
         />
       </Grid>
     </Grid>
@@ -162,6 +232,9 @@ TableContextProvider provides table state to Wrapper Component or it can be used
 #### 
 
 ## 4 Wrapper Configuration:
+
+**NOTE: Alternative option to configure Blue and Orange button refer to [ADD_ALL_FILES_BLUE_BUTTON_ReadME](Add_ALL_Files__BLUE_ButtonREADME.md) and [ADD_SELECTED_FILES_Orange_button_ReadMe](Add_Selected_Files_Orange_button_README.md). (Note: No Wrapper conponent required)**
+
 Wrapper component around table compnent. 
 1. ADD ALL FILES button
 2. ADD SELECTED ROWS button
@@ -251,3 +324,58 @@ headerConfig - upper component on the table
 | tooltipCofig | FALSE | appears on side of the refers button | dashboardTabData/ tooltipContent |
 
 
+####
+
+## 5 Customize Pagination Action:
+Customize paginated action is provided to add event in addition to  update of the table state. It will override default paginated action.  
+```
+import {
+  TableContext,
+  onColumnViewChange, // dispact action
+  onColumnSort, // dispact action
+  onChangeSortDirection, // dispact action
+  onRowsPerPageChange, // dispact action
+  onPageAndTotalCountChange, // dispact action
+  onPageChange, // dispact action
+  onRowSeclect, // dispact action
+  setTotalRowCount, // dispact action
+  customPaginationAction, // dispact action
+} from '@bento-core/paginated-table';
+
+  const tableContext = useContext(TableContext);
+  const { context } = tableContext;
+  const { dispatch } = context;
+
+  const customPaginationOptions = {
+    customizeOnRowSelect: (event, row) => {
+      const payload = {
+        page: 2,
+        rowPerPage: 10,
+        ...
+      };
+      // updates table state, 
+      dispatch(customPaginationAction(payload));
+    },
+    customizeToggleSelectAll: (event, Ids, includeIds) => {}, // Ids - selected ids
+    customizeSortByColumn: (column, order) => {},
+    customizeChangePage: (event, newPage) => {},
+    customizeChangeRowsPerPage: (event) => {},
+    customizeColumnViewChange: (column) => {},
+  };
+  
+  <TableView
+    initState={initTblState}
+    themeConfig={themeConfig}
+    queryVariables={activeFilters}
+    totalRowCount={dashboardStats[config.count]}
+    activeTab={activeTab}
+    paginationOptions={customPaginationOptions}
+  />
+```
+
+***More reference***
+```
+https://github.com/CBIIT/bento-icdc-frontend/tree/Bento-4.0/src/components/PaginatedTable
+```
+
+**Code for table view under bento-core/table - please refer to source code for more information**

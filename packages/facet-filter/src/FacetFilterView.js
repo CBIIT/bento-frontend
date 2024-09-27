@@ -14,31 +14,30 @@ const BentoFacetFilter = ({
   CustomFacetSection,
   CustomFacetView,
   clearIcon,
+  enableClearSection,
+  enableFacetCollapse,
 }) => {
   return (
     <>
-      {
-        sideBarSections.map((section, index) => (
-          <>
-            <Divider
-              variant="middle"
-              className={`divider${index}`}
-            />
-            <FacetSectionView
-              section={section}
-              CustomSection={CustomFacetSection}
-            >
-              {section.items.map((facet) => (
-                <FacetView
-                  facet={facet}
-                  CustomView={CustomFacetView}
-                  clearIcon={clearIcon}
-                />
-              ))}
-            </FacetSectionView>
-          </>
-        ))
-      }
+      {sideBarSections.map((section, index) => (
+        <>
+          <Divider variant="middle" className={`divider${index}`} />
+          <FacetSectionView
+            section={section}
+            CustomSection={CustomFacetSection}
+          >
+            {section.items.map((facet) => (
+              <FacetView
+                facet={facet}
+                CustomView={CustomFacetView}
+                enableClearSection={enableClearSection}
+                enableFacetCollapse={enableFacetCollapse}
+                clearIcon={clearIcon}
+              />
+            ))}
+          </FacetSectionView>
+        </>
+      ))}
     </>
   );
 };

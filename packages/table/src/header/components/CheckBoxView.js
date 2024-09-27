@@ -36,7 +36,7 @@ const CheckboxView = ({
             }}
             onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
           />
-            )}
+        )}
       />
     </TableCell>
   );
