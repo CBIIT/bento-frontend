@@ -41,7 +41,7 @@ const ColumnGrouping = ({
         const colSpan = getColSpan(columnIndexes);
         if (colSpan > 0) {
           return (
-            <TableCell colSpan={colSpan} className={clsName}>
+            <TableCell colSpan={colSpan} className={clsName} component={!title || !customViewRender ? 'td' : 'th'}>
               {customViewRender ? customViewRender() : title}
             </TableCell>
           );

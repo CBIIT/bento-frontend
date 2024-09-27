@@ -143,6 +143,7 @@ const styles = () => ({
     right: 0,
     display: 'flex',
     justifyContent: 'flex-end',
+    ...(props.styles.statsSection ? props.styles.statsSection : {}),
   }),
   box: (props) => ({
     display: 'inline-flex',

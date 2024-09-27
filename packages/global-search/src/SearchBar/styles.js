@@ -52,6 +52,14 @@ export const DEFAULT_STYLES = makeStyles({
     height: '12px',
     margin: '0px 18px 0px 6px',
   },
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  inputLabel: {
+    opacity: '0',
+    width: '0%',
+  },
   inputRoot: {
     borderRadius: '8px',
     color: '#4A8ECB',

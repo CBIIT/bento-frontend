@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import {
   AccordionSummary,
   Button,
+  IconButton,
   withStyles,
 } from '@material-ui/core';
 import {
@@ -20,6 +21,7 @@ import {
   resetAllData, chunkSplit,
   SearchView, SearchBoxGenerator, UploadModalGenerator,
 } from '@bento-core/local-find';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
 import { FacetFilter, ClearAllFiltersBtn } from '@bento-core/facet-filter';
@@ -180,7 +182,12 @@ const BentoFacetFilter = ({
   * 1. Config local search input for Case
   * 2. Facet Section Name
   */
-  const CustomFacetView = ({ facet, facetClasses }) => {
+  const CustomFacetView = ({
+    facet, 
+    hasSelections, 
+    facetClasses,
+    clearFacetSectionValues
+  }) => {
     return (
       <>
         <CustomExpansionPanelSummary
@@ -200,6 +207,11 @@ const BentoFacetFilter = ({
             }
           >
             {facet.label}
+            {hasSelections ? (
+                <IconButton onClick={clearFacetSectionValues}>
+                  <RefreshIcon />
+                </IconButton>
+              ) : null}
           </div>
         </CustomExpansionPanelSummary>
       </>
@@ -219,6 +231,8 @@ const BentoFacetFilter = ({
           facetsConfig={facetsConfig}
           CustomFacetSection={CustomFacetSection}
           CustomFacetView={CustomFacetView}
+          enableClearSection
+          enableFacetCollapse
         />
       </FacetFilterThemeProvider>
     </div>

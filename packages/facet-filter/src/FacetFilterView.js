@@ -1,7 +1,10 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable padded-blocks */
 import React from 'react';
-import { Divider, withStyles } from '@material-ui/core';
+import {
+  Divider,
+  withStyles,
+} from '@material-ui/core';
 import styles from './FacetFilterStyle';
 import FacetSectionView from './components/section/FacetSectionView';
 import FacetView from './components/facet/ReduxFacetView';
@@ -10,6 +13,7 @@ const BentoFacetFilter = ({
   sideBarSections,
   CustomFacetSection,
   CustomFacetView,
+  clearIcon,
   enableClearSection,
   enableFacetCollapse,
 }) => {
@@ -28,6 +32,7 @@ const BentoFacetFilter = ({
                 CustomView={CustomFacetView}
                 enableClearSection={enableClearSection}
                 enableFacetCollapse={enableFacetCollapse}
+                clearIcon={clearIcon}
               />
             ))}
           </FacetSectionView>

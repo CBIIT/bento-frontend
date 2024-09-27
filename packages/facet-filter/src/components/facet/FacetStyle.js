@@ -14,13 +14,6 @@ export default () => ({
       position: 'initial',
     },
   },
-  subSectionSummaryTextWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingRight: '15px',
-  },
   subSectionSummaryText: {
     marginLeft: '10px',
     lineHeight: 0,
@@ -32,12 +25,11 @@ export default () => ({
   },
   sortGroup: {
     paddingTop: '10px',
-    marginBottom: '5px',
     borderTop: '1px solid #B1B1B1',
-    textAlign: 'left',
+    padding: '10px',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   sortGroupIcon: {
     cursor: 'pointer',
@@ -64,6 +56,7 @@ export default () => ({
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
+    float: 'right',
   },
   highlight: {
     color: '#b2c6d6',
