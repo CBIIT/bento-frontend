@@ -14,6 +14,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     searchKeys: [],
     searchFields: [],
     placeholder: 'SEARCH BENTO',
+    ariaLabel: 'Search Bento',
     expandText: 'Press ENTER for more search results',
     searchRoute: '/search',
     minimumInputLength: 3,

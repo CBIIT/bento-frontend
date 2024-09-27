@@ -87,6 +87,7 @@ const ManageColumnView = ({
                 disableRipple
                 color="secondary"
                 className="checkBox"
+                inputProps={{ 'aria-label': 'checkbox' }}
               />
               {column.icon && (
                 <img src={column.icon} alt={column.header} className={column.dataField} />

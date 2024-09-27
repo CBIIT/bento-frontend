@@ -11,7 +11,7 @@ import { CustomSearchIcon } from './CustomSearchIcon';
 export const CustomTextField = ({ ...params }) => {
   const {
     classes, placeholder, loading,
-    onClick, onEnter, iconType,
+    onClick, onEnter, iconType, ariaLabel,
   } = params;
 
   const InputProps = {
@@ -32,6 +32,7 @@ export const CustomTextField = ({ ...params }) => {
         />
       </>
     ),
+    inputProps: { ...params.inputProps, 'aria-label': ariaLabel },
   };
 
   const keyDown = (event) => {

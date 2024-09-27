@@ -89,6 +89,7 @@ const CheckBoxView = ({
               className={checkedSection}
             />
           }
+          inputProps={{ 'aria-label': 'checkbox' }}
           onClick={handleToggle}
           checked={isChecked}
           checkedIcon={(
