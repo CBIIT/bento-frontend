@@ -123,7 +123,6 @@ const PaginatedTable = ({
 
   const handleToggleSelectAll = (event, Ids, includeIds, rows) => {
     if (event.target.checked) {
-      dispatch(onRowSelectHidden([]));
       const filteredRows = [];
       let hiddenNewObject = {};
       rows.forEach((row) => {
@@ -136,9 +135,14 @@ const PaginatedTable = ({
         });
         filteredRows.push(hiddenNewObject);
       });
-      dispatch(onRowSelectHidden(filteredRows));
+      const finalHiddenRowData = [...table.hiddenSelectedRows, ...filteredRows];
+      dispatch(onRowSelectHidden(finalHiddenRowData));
     } else {
-      dispatch(onRowSelectHidden([]));
+      const filteredHiddenRows = table.hiddenSelectedRows.filter((hiddenRow) => (
+        !rows.some((row) => (
+          table.hiddenDataKeys.every((dataK) => hiddenRow[dataK] === row[dataK])))));
+
+      dispatch(onRowSelectHidden(filteredHiddenRows));
     }
 
     if (event.target.checked && !includeIds) {
