@@ -46,6 +46,14 @@ export function convertToCSV(jsonse, keysToInclude, header) {
         } else {
           line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
         }
+      } else if (keyName === 'last_known_survival_status') {
+        if (entry[keyName] === '[]') {
+          line += '';
+        } else if (entry[keyName].toString().charAt(0) === '[' && entry[keyName].toString().charAt(entry[keyName].toString().length - 1) === ']') {
+          line += entry[keyName].toString().substring(1, entry[keyName].length - 1);
+        } else {
+          line += entry[keyName];
+        }
       } else {
         line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
       }
@@ -88,6 +96,20 @@ export function downloadJson(tableData, table, downloadFileName) {
   const { columns = [] } = table;
   const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
   let formatDataVal = formatColumnValues(filterColumns, tableData);
+  formatDataVal = formatDataVal.map((entry) => {
+    const survivalStatus = entry.last_known_survival_status;
+    if (survivalStatus === '[]') {
+      return { ...entry, last_known_survival_status: '' };
+    }
+    if (survivalStatus.toString().charAt(0) === '[' && survivalStatus.toString().charAt(survivalStatus.toString().length - 1) === ']') {
+      return {
+        ...entry,
+        last_known_survival_status:
+          survivalStatus.toString().substring(1, survivalStatus.length - 1),
+      };
+    }
+    return entry;
+  });
   filterColumns.forEach((column) => {
     formatDataVal = JSON.parse(
       JSON.stringify(formatDataVal).split(`"${column.dataField}":`).join(`"${column.header}":`),
