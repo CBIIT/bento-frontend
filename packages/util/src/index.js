@@ -44,4 +44,5 @@ export {
   setSelectedFilterValues,
   customSort,
   sortPreference,
+  generateQueryStr,
 } from './dashboardUtilFunctions';
