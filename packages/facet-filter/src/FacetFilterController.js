@@ -25,6 +25,7 @@ const FacetFilterController = (props) => {
     data,
     facetsConfig,
     facetSectionConfig,
+    queryParams,
   } = props;
 
   const filterState = {};

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import {
   Modal, Button, Typography,
   TextareaAutosize, IconButton, withStyles,
 } from '@material-ui/core';
@@ -52,6 +56,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? functions.modalClosed
     : DEFAULT_CONFIG.functions.modalClosed;
 
+  const updateBrowserUrl = functions && typeof functions.updateBrowserUrl === 'function'
+    ? functions.updateBrowserUrl
+    : DEFAULT_CONFIG.functions.updateBrowserUrl;
+
   const searchMatches = functions && typeof functions.searchMatches === 'function'
     ? functions.searchMatches
     : DEFAULT_CONFIG.functions.searchMatches;
@@ -98,6 +106,9 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
         onApplySearch, updateMetadata,
       } = props;
 
+      const query = new URLSearchParams(useLocation().search);
+      const navigate = useNavigate();
+
       const {
         FileUploader: uploaderClasses,
         // SummaryTable: summaryClasses,
@@ -127,6 +138,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       };
 
       const applySearchWrapper = () => {
+        updateBrowserUrl(query, navigate, filename, fileContent, matchIds, unmatchedIds);
         onApplySearch(matchIds);
         updateMetadata({
           filename,

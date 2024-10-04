@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import { generateQueryStr } from '@bento-core/util';
 import { Button } from '@material-ui/core';
 import SearchList from './SearchBox/components/SearchList';
 import { resetUploadData } from './store/actions/Actions';
@@ -21,8 +26,11 @@ import { resetUploadData } from './store/actions/Actions';
 const SearchView = (props) => {
   const {
     classes, hidden, state, resetUpload,
-    UploadModal, SearchBox, config,
+    UploadModal, SearchBox, config, queryParams,
   } = props;
+
+  const query = new URLSearchParams(useLocation().search);
+  const navigate = useNavigate();
 
   const [showCasesModal, setShowCasesModal] = useState(false);
   const matchedFiles = state && state.upload ? state.upload : [];
@@ -35,6 +43,18 @@ const SearchView = (props) => {
   const searchLabel = config && config.searchLabel && typeof config.searchLabel === 'string'
     ? config.searchLabel
     : null;
+
+  /**
+       * Handles the deletion of upload set
+       */
+  const onDelete = () => {
+    const paramValue = {
+      participant_upload: '',
+    };
+    const queryStr = generateQueryStr(query, queryParams, paramValue);
+    navigate(`/explore${queryStr}`);
+    resetUpload();
+  };
 
   return (
     <div
@@ -56,7 +76,7 @@ const SearchView = (props) => {
           classes={{ divider: classes.customDivider, listPadding: classes.customListPadding }}
           items={['INPUT SET']}
           id="localFindCaseUploadSet"
-          onDelete={resetUpload}
+          onDelete={onDelete}
         />
       ) : null}
       <SearchBox classes={classes} />

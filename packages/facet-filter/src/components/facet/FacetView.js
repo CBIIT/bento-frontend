@@ -19,6 +19,7 @@ const FacetView = ({
   onClearFacetSection,
   onClearSliderSection,
   CustomView,
+  queryParams,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
@@ -152,6 +153,7 @@ const FacetView = ({
 }
         <FilterItems
           facet={facet}
+          queryParams={queryParams}
           sortBy={sortBy}
         />
       </Accordion>
@@ -161,6 +163,7 @@ const FacetView = ({
             <List id="filter_Items">
               <FilterItems
                 facet={displayFacet}
+                queryParams={queryParams}
               />
             </List>
           </>

@@ -22,6 +22,7 @@ export {
   clearFacetSection,
   clearSliderSection,
   clearAllAndSelectFacet,
+  updateFilterState,
 } from './store/actions/Actions';
 export {
   generateFacetSectionView,

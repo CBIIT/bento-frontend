@@ -30,3 +30,8 @@ export const clearAllAndSelectFacet = (facetValue) => ({
   type: sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE,
   payload: facetValue,
 });
+
+export const updateFilterState = (filterState) => ({
+  type: sideBarActionTypes.UPDATE_FILTER_STATE,
+  payload: filterState,
+});

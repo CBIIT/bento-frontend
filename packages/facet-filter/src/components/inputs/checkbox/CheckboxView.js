@@ -6,6 +6,11 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
+import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import { generateQueryStr } from '@bento-core/util';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Checkbox,
@@ -33,6 +38,7 @@ const CheckBoxView = ({
   datafield,
   onToggle,
   facet,
+  queryParams,
 }) => {
   const {
     name,
@@ -43,6 +49,10 @@ const CheckBoxView = ({
     tooltip,
     label,
   } = checkboxItem;
+
+  const query = new URLSearchParams(useLocation().search);
+  const navigate = useNavigate();
+
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
   const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
 
@@ -54,6 +64,28 @@ const CheckBoxView = ({
       datafield: datafield,
       isChecked: !isChecked,
     };
+    const checkedValues = query.get(datafield);
+    const paramValue = {};
+    if (toggleCheckBoxItem.isChecked) {
+      if (checkedValues) {
+        const newValues = checkedValues.split('|');
+        newValues.push(name);
+        paramValue[datafield] = newValues.join('|');
+      } else {
+        paramValue[datafield] = name;
+      }
+    } else if (checkedValues) {
+      const newValues = checkedValues.split('|');
+      const idx = newValues.indexOf(name);
+      if (idx > -1) {
+        newValues.splice(idx, 1);
+      }
+      paramValue[datafield] = newValues.length > 0 ? newValues.join('|') : '';
+    } else {
+      paramValue[datafield] = '';
+    }
+    const queryStr = generateQueryStr(query, queryParams, paramValue);
+    navigate(`/explore${queryStr}`);
     onToggle(toggleCheckBoxItem);
   };
 

@@ -22,6 +22,14 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     onChange: (newValue = [], reason, deleted) => {},
 
     /**
+     * A function that is called when the autocomplete selection changes
+     *
+     * @param void
+     * @return void
+     */
+    updateBrowserUrl: () => {},
+
+    /**
      * Perform autocomplete search on the API
      *
      * NOTE:

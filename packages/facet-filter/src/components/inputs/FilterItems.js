@@ -8,6 +8,7 @@ import { sortBySection } from '../../utils/Sort';
 
 const FilterItems = ({
   facet,
+  queryParams,
   sortBy,
 }) => {
   const { type, datafield, section } = facet;
@@ -21,10 +22,11 @@ const FilterItems = ({
             checkboxItem={{ ...item, index, section }}
             datafield={datafield}
             facet={facet}
+            queryParams={queryParams}
           />
         ));
       case InputTypes.SLIDER:
-        return (<ReduxSlider facet={facet} />);
+        return (<ReduxSlider facet={facet} queryParams={queryParams} />);
       default:
         return (<></>);
     }

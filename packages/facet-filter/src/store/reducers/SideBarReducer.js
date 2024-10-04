@@ -95,6 +95,10 @@ export function sideBarReducerGenerator() {
           return {
             filterState: payload,
           };
+        case sideBarActionTypes.UPDATE_FILTER_STATE:
+          return {
+            filterState: payload,
+          };
         default:
           return state;
       }
