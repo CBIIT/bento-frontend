@@ -43,11 +43,8 @@ export function convertToCSV(jsonse, keysToInclude, header) {
           line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
         }
       } else {
-        let newLine = entry[keyName];
-        if (entry[keyName].includes('"')) {
-          newLine = entry[keyName].replace(/"/g, '""');
-        }
-        line += entry[keyName] !== null ? `"${newLine}"` : ' ';
+        const newLine = entry[keyName] !== null ? String(entry[keyName]).replace(/"/g, '\\"') : '';
+        line += `"${newLine}"`;
       }
       return line;
     });
