@@ -46,13 +46,13 @@ export function convertToCSV(jsonse, keysToInclude, header) {
         } else {
           line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
         }
-      } else if (keyName === 'last_known_survival_status') {
-        if (entry[keyName] === '[]') {
+      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id') {
+        if (!entry[keyName] || entry[keyName] === '[]') {
           line += '';
         } else if (entry[keyName].toString().charAt(0) === '[' && entry[keyName].toString().charAt(entry[keyName].toString().length - 1) === ']') {
-          line += entry[keyName].toString().substring(1, entry[keyName].length - 1);
+          line += `"${entry[keyName].toString().substring(1, entry[keyName].length - 1)}"`;
         } else {
-          line += entry[keyName];
+          line += `"${entry[keyName]}"`;
         }
       } else {
         line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
@@ -97,18 +97,20 @@ export function downloadJson(tableData, table, downloadFileName) {
   const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
   let formatDataVal = formatColumnValues(filterColumns, tableData);
   formatDataVal = formatDataVal.map((entry) => {
-    const survivalStatus = entry.last_known_survival_status;
-    if (survivalStatus === '[]') {
-      return { ...entry, last_known_survival_status: '' };
+    let survivalStatus = entry.last_known_survival_status;
+    let sampleId = entry.sample_id;
+    if (!survivalStatus || survivalStatus === '[]') {
+      survivalStatus = '';
+    } else if (survivalStatus.toString().charAt(0) === '[' && survivalStatus.toString().charAt(survivalStatus.toString().length - 1) === ']') {
+      survivalStatus = survivalStatus.toString().substring(1, survivalStatus.length - 1);
     }
-    if (survivalStatus.toString().charAt(0) === '[' && survivalStatus.toString().charAt(survivalStatus.toString().length - 1) === ']') {
-      return {
-        ...entry,
-        last_known_survival_status:
-          survivalStatus.toString().substring(1, survivalStatus.length - 1),
-      };
+
+    if (!sampleId || sampleId === '[]') {
+      sampleId = '';
+    } else if (sampleId.toString().charAt(0) === '[' && sampleId.toString().charAt(sampleId.toString().length - 1) === ']') {
+      sampleId = sampleId.toString().substring(1, sampleId.length - 1);
     }
-    return entry;
+    return { ...entry, last_known_survival_status: survivalStatus, sample_id: sampleId };
   });
   filterColumns.forEach((column) => {
     formatDataVal = JSON.parse(
