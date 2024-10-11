@@ -16,6 +16,7 @@ const CheckboxView = ({
   includeSelectedIds,
   toggleSelectAll,
   Ids,
+  rows,
 }) => {
   const { label } = useStyles();
 
@@ -35,6 +36,7 @@ const CheckboxView = ({
               'aria-label': 'checkbox',
             }}
             onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
+            onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds, rows)}
           />
         )}
       />
