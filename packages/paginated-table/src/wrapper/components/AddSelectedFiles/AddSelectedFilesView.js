@@ -61,14 +61,17 @@ const AddSelectedFileComponent = (props) => {
         }}
         {...tooltipProps}
       >
-        <Button
-          onClick={addFiles}
-          className={clsName}
-          disableRipple
-          disabled={disabled}
-        >
-          {title}
-        </Button>
+        <span className={classes.customTooltipSpan}>
+          <Button
+            onClick={addFiles}
+            className={clsName}
+            disableRipple
+            disabled={disabled}
+            style={{ margin: '0px' }}
+          >
+            {title}
+          </Button>
+        </span>
       </ToolTip>
       {tooltipCofig && (<ToolTipView classes={classes} {...props} />)}
     </>
