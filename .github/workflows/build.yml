@@ -32,7 +32,7 @@ jobs:
         IMAGE_TAG: build_test
       uses: aquasecurity/trivy-action@0.20.0
       with:
-        image-ref: '${{ ECR_REGISTRY }}/${{ ECR_REPOSITORY }}:${{ IMAGE_TAG }}'
+        image-ref: '${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}'
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
