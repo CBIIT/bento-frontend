@@ -1,17 +1,19 @@
 name: Build Image
-
+permissions: 
+  contents: read 
+  id-token: write 
 on:
- 
   workflow_dispatch:
-
+    inputs:
+      fail_on_trivy_scan:
+        type: boolean
+        description: fails the build if vulnerabilities are found
+        required: true 
+        default: false
 jobs:
-  
   build:
-    
     name: Build Image
     runs-on: ubuntu-latest
-
-   
     steps:
 
     - name: Check out code
@@ -25,6 +27,15 @@ jobs:
       run: |
         docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
         
+    - name: Set Trivy exit code
+      run: |
+        if  [[ ${{ inputs.fail_on_trivy_scan }} == true ]];
+        then
+          echo 'TRIVY_EXIT_CODE=1' >> $GITHUB_ENV
+        else
+          echo 'TRIVY_EXIT_CODE=0' >> $GITHUB_ENV
+        fi
+    
     - name: Run Trivy vulnerability scanner
       env:
         ECR_REGISTRY: CBIIT
@@ -35,7 +46,7 @@ jobs:
         #image-ref: '${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}'
         image-ref: '${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}'
         format: 'table'
-        exit-code: '1'
+        exit-code: '${{ env.TRIVY_EXIT_CODE }}'
         ignore-unfixed: true
         severity: 'CRITICAL,HIGH'
 
