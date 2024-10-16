@@ -7,23 +7,22 @@ on:
     inputs:
       fail_on_trivy_scan:
         type: boolean
-        description: fails the build if vulnerabilities are found
+        description: fail the build if vulnerabilities are found
         required: true 
         default: false
 jobs:
   build:
     name: Build Image
     runs-on: ubuntu-latest
+    env:
+        ECR_REPOSITORY: bento-frontend
+        IMAGE_TAG: build_test
     steps:
 
     - name: Check out code
       uses: actions/checkout@v2
 
     - name: Build
-      env:
-        ECR_REGISTRY: CBIIT
-        ECR_REPOSITORY: bento-frontend
-        IMAGE_TAG: build_test
       run: |
         docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
         
@@ -37,13 +36,8 @@ jobs:
         fi
     
     - name: Run Trivy vulnerability scanner
-      env:
-        ECR_REGISTRY: CBIIT
-        ECR_REPOSITORY: bento-frontend
-        IMAGE_TAG: build_test
       uses: aquasecurity/trivy-action@0.20.0
       with:
-        #image-ref: '${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}'
         image-ref: '${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}'
         format: 'table'
         exit-code: '${{ env.TRIVY_EXIT_CODE }}'
@@ -58,6 +52,12 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION }}
         role-session-name: ${{ github.actor }}
 
-    - name: Push
+    - name: Login to Amazon ECR
+      id: login-aws-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    
+    - name: Push to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-aws-ecr.outputs.registry }}
       run: |
-        echo "Push to ECR here"
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
