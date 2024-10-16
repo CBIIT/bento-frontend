@@ -24,3 +24,17 @@ jobs:
         IMAGE_TAG: build_test
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        
+    - name: Run Trivy vulnerability scanner
+      env:
+        ECR_REGISTRY: CBIIT
+        ECR_REPOSITORY: bento-frontend
+        IMAGE_TAG: build_test
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        image-ref: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        #vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
