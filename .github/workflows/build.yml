@@ -37,8 +37,15 @@ jobs:
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
-        #vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
+
+    - name: AWS OIDC Authentication
+      id: auth 
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        role-session-name: ${{ github.actor }}
 
     - name: Push
       run: |
