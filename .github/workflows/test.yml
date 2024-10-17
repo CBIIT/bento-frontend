@@ -18,5 +18,5 @@ jobs:
 
     - name: Get Tags
       run: |
-        tags=$(git tag -l)
+        tags=$(git tag -l $GITHUB_REF_NAME* | tail -1 | cut -d "-" -f2-)
         echo "$tags"
