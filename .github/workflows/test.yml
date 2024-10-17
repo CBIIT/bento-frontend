@@ -23,6 +23,7 @@ jobs:
         #tags=$(git tag -l nothing* | tail -1 | cut -d "-" -f2-)
         #echo "$tags"
         if $tags;
+        then
           echo "$tags"
         else
           echo "tag not found"
