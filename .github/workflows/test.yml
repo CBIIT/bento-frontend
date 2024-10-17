@@ -1,0 +1,22 @@
+name: Test
+permissions: 
+  contents: read 
+  id-token: write 
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+        ECR_REPOSITORY: bento-frontend
+        IMAGE_TAG: build_test
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Get Tags
+      run: |
+        tags=$(git describe --tags --all)
+        echo "$tags"
