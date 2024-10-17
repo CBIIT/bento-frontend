@@ -82,6 +82,9 @@ const CheckBoxView = ({
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
+          inputProps={{
+            'aria-label': 'facet filter checkbox',
+          }}
           icon={(
             <CheckBoxBlankIcon
               style={{ fontSize: 18 }}
