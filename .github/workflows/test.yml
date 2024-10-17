@@ -19,8 +19,11 @@ jobs:
     - name: Get Tags
       run: |
         git fetch --tags --force --quiet
-        tags=$(git tag -l ga_test1* | tail -1 | cut -d "-" -f2-)
-        tags2=$(git tag -l $GITHUB_REF_NAME* | tail -1 | cut -d "-" -f2-)
-        echo $GITHUB_REF_NAME
-        echo "$tags"
-        echo "$tags2"
+        tags=$(git tag -l $GITHUB_REF_NAME* | tail -1 | cut -d "-" -f2-)
+        #tags=$(git tag -l nothing* | tail -1 | cut -d "-" -f2-)
+        #echo "$tags"
+        if $tags;
+          echo "$tags"
+        else
+          echo "tag not found"
+        fi
