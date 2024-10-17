@@ -19,8 +19,8 @@ jobs:
     - name: Get Tags
       run: |
         git fetch --tags --force --quiet
-        tag=$(git tag -l $GITHUB_REF_NAME* | tail -1 | cut -d "-" -f2-)
-        #tag=$(git tag -l nothing* | tail -1 | cut -d "-" -f2-)
+        #tag=$(git tag -l $GITHUB_REF_NAME* | tail -1 | cut -d "-" -f2-)
+        tag=$(git tag -l nothing* | tail -1 | cut -d "-" -f2-)
         if  [ ! -z "$tag" ];
         then
           echo "$tag"
