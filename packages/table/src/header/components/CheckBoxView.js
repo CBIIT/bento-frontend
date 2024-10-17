@@ -35,7 +35,6 @@ const CheckboxView = ({
             inputProps={{
               'aria-label': 'checkbox',
             }}
-            onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
             onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds, rows)}
           />
         )}
