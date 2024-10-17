@@ -86,4 +86,4 @@ jobs:
       with:
         webhook-url: ${{ secrets.SLACK_URL }}
         status: ${{ job.status }}
-        message: Running testing
+        message: bento-frontend build - $IMAGE_TAG
