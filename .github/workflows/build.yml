@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
         ECR_REPOSITORY: bento-frontend
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
 
     - name: Check out code
@@ -80,10 +81,8 @@ jobs:
         docker tag  $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-    - name: slack - GitHub Actions Slack integration
-      if: always()
-      uses: act10ns/slack@v2.0.0
+    - uses: act10ns/slack@v1
       with:
-        webhook-url: ${{ secrets.SLACK_URL }}
         status: ${{ job.status }}
-        message: bento-frontend build - $IMAGE_TAG
+        steps: ${{ toJson(steps) }}
+      if: always()
