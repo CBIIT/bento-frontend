@@ -18,9 +18,9 @@ jobs:
 
     - name: Get Tags
       run: |
-        git fetch --tags --force
+        git fetch --tags --force --quiet
         tags=$(git tag -l ga_test1* | tail -1 | cut -d "-" -f2-)
-        tags2=$(git describe --tags --all)
+        tags2=$(git tag -l $GITHUB_REF_NAME* | tail -1 | cut -d "-" -f2-)
         echo $GITHUB_REF_NAME
         echo "$tags"
         echo "$tags2"
