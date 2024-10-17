@@ -19,5 +19,7 @@ jobs:
     - name: Get Tags
       run: |
         tags=$(git tag -l ga_test1* | tail -1 | cut -d "-" -f2-)
+        tags2=$(git describe --tags --all)
         echo $GITHUB_REF_NAME
         echo "$tags"
+        echo "$tags2"
