@@ -13,7 +13,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     query: null,
     searchKeys: [],
     searchFields: [],
-    placeholder: 'SEARCH INS',
+    placeholder: 'DOCUMENTATION SEARCH',
     expandText: 'Press ENTER for more search results',
     searchRoute: '/globalsearch',
     minimumInputLength: 3,
