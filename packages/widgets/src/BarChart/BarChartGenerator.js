@@ -228,10 +228,17 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
 
       const renderTick = (tickProps) => {
         const { x, y, payload } = tickProps;
+        const text = payload.value.split(' ');
         return (
           <g transform={`translate(${x},${y})`}>
-            <text x={10} y={0} dy={16} textAnchor="end" fill="#666" fontSize="11px" transform="rotate(-25)">
-              {payload.value}
+            <text x={0} y={0} dy={7} fill="#666" fontSize="10px" textAnchor="middle">
+              {text[0]}
+            </text>
+            <text x={0} y={9} dy={7} fill="#666" fontSize="10px" textAnchor="middle">
+              {text[1]}
+            </text>
+            <text x={0} y={20} dy={7} fill="#666" fontSize="10px" textAnchor="middle">
+              {text[2]}
             </text>
           </g>
         );
