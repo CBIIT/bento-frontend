@@ -152,7 +152,8 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               renderTags={() => null}
               renderInput={(params) => (
                 <TextField
-                  {...params}
+                  params={params}
+                  loading={loading}
                   classes={classes}
                   placeholder={inputPlaceholder}
                 />
