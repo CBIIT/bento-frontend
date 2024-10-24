@@ -11,13 +11,9 @@ import { CircularProgress, TextField } from '@material-ui/core';
  * @param {object} [props.InputProps]
  * @returns JSX.Element
  */
-export const CustomTextField = ({ ...params }) => {
-  const {
-    classes,
-    loading = false,
-    placeholder = '',
-  } = params;
-
+export const CustomTextField = ({
+  classes, placeholder = '', params, loading,
+}) => {
   const InputProps = {
     ...params.InputProps,
     classes: { root: classes.inputRoot },
@@ -40,6 +36,7 @@ export const CustomTextField = ({ ...params }) => {
         ...InputProps,
         inputProps: {
           title: 'local find search input',
+          ...params.inputProps,
         },
       }}
     />
