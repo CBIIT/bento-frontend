@@ -45,6 +45,7 @@ export const DEFAULT_STYLES = makeStyles({
   autocomplete: {
     margin: '0 auto',
     paddingTop: '32px',
+    width: '300px',
     height: '37px',
   },
   enterIcon: {
