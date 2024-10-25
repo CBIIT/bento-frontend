@@ -47,6 +47,27 @@ const DownloadButton = ({
 
   const client = useApolloClient();
 
+  function cleanData(result) {
+    function hasHTMLTags(str) {
+      const htmlTagPattern = /<\/?[a-z][\s\S]*>/i; // Regex to match HTML tags
+      return htmlTagPattern.test(str);
+    }
+    const cleanedResult = result.map((res) => {
+      const newObj = {};
+      Object.keys(res).forEach((key) => {
+        if (hasHTMLTags(res[key])) {
+          const div = document.createElement('div');
+          div.innerHTML = res[key];
+          newObj[key] = div.textContent || div.innerText || res[key];
+        } else {
+          newObj[key] = res[key];
+        }
+      });
+      return newObj;
+    });
+    return cleanedResult;
+  }
+
   async function downloadSCSVFile() {
     const {
       query,
@@ -69,7 +90,8 @@ const DownloadButton = ({
         }
         return response.data;
       });
-    downloadData(result, table, table.downloadFileName, 'csv');
+
+    downloadData(cleanData(result), table, table.downloadFileName, 'csv');
   }
 
   async function downloadJsonFile() {
@@ -94,7 +116,7 @@ const DownloadButton = ({
         }
         return response.data;
       });
-    downloadData(result, table, table.downloadFileName, 'json');
+    downloadData(cleanData(result), table, table.downloadFileName, 'json');
   }
 
   const downloadTableCSV = useCallback(() => {
