@@ -49,6 +49,11 @@ const ExtendedView = ({
       {
         (pagination) && (
           <div className="downloadArea" style={(table.paginationCustomStyle && table.paginationCustomStyle.topPagination) ? table.paginationCustomStyle.topPagination : downloadAreaStyle}>
+            {
+              (table.showSearchBox) && (
+                <table.SearchBox />
+              )
+            }
             <CustomPagination
               customTheme={customTheme.tblTopPgn}
               rowsPerPageOptions={[10, 25, 50, 100]}
