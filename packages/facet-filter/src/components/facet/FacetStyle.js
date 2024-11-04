@@ -1,3 +1,5 @@
+import SearchIcon from './assets/Search_Icon.svg';
+
 export default () => ({
   expansionPanelDetailsRoot: {
     display: 'block',
@@ -71,5 +73,28 @@ export default () => ({
     cursor: 'pointer',
     fontSize: '10px',
     width: '100%',
+  },
+  searchContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  searchBox: {
+    fontSize: '11px',
+    fontFamily: 'Nunito',
+    width: '222px',
+    height: '30px',
+    marginTop: '5px',
+    marginBottom: '5px',
+    borderRadius: '8px',
+    background: `url(${SearchIcon}) right 5px center no-repeat`,
+  },
+  expandedDisplayButton: {
+    background: '#4D889E',
+    color: 'white',
+    width: '222px',
+    height: '30px',
+    marginTop: '5px',
+    marginBottom: '5px',
+    borderRadius: '8px',
   },
 });

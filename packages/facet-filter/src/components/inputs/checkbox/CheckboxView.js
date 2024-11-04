@@ -33,6 +33,7 @@ const CheckBoxView = ({
   datafield,
   onToggle,
   facet,
+  searchText,
 }) => {
   const {
     name,
@@ -72,77 +73,80 @@ const CheckBoxView = ({
   );
 
   return (
-    <>
-      <ListItem
-        width={1}
-        button
-        alignItems="flex-start"
-        onClick={handleToggle}
-        classes={{ gutters: classes.listItemGutters }}
-        className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
-      >
-        <Checkbox
-          id={`checkbox_${facet.label}_${name}`}
-          {...labelCheckbox}
-          icon={
-            <Icon style={{
-              fontSize: '18px',
-              lineHeight: '22px',
-            }}
-            >
-              <img
-                src={emptyCheckBox}
-                alt="checkbox-icon"
-              />
-            </Icon>
-          }
+    isChecked || !facet.search
+    || (facet.search && name.toLowerCase().includes(searchText.toLowerCase()))
+      ? <>
+        <ListItem
+          width={1}
+          button
+          alignItems="flex-start"
           onClick={handleToggle}
-          checked={isChecked}
-          checkedIcon={(
-            <Icon
-              style={{
+          classes={{ gutters: classes.listItemGutters }}
+          className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
+        >
+          <Checkbox
+            id={`checkbox_${facet.label}_${name}`}
+            {...labelCheckbox}
+            icon={
+              <Icon style={{
                 fontSize: '18px',
                 lineHeight: '22px',
               }}
-              className={`${checkedSection}CheckedIcon`}
-            >
-              <img
-                src={checkedBox}
-                alt="checkedBox-icon"
-              />
-            </Icon>
+              >
+                <img
+                  src={emptyCheckBox}
+                  alt="checkbox-icon"
+                />
+              </Icon>
+            }
+            onClick={handleToggle}
+            checked={isChecked}
+            checkedIcon={(
+              <Icon
+                style={{
+                  fontSize: '18px',
+                  lineHeight: '22px',
+                }}
+                className={`${checkedSection}CheckedIcon`}
+              >
+                <img
+                  src={checkedBox}
+                  alt="checkedBox-icon"
+                />
+              </Icon>
+            )}
+            disableRipple
+            color="secondary"
+            classes={{ root: classes.checkboxRoot }}
+          />
+          { tooltip ? (
+            <Tooltip id={datafield} title={tooltip}>
+              <div className={datafield}>
+                <LabelComponent />
+              </div>
+            </Tooltip>
+          ) : (
+            <LabelComponent />
           )}
-          disableRipple
-          color="secondary"
-          classes={{ root: classes.checkboxRoot }}
+          <ListItemText />
+          <Typography
+            className={clsx(`${checkedSection}Subjects`, {
+              [`${checkedSection}SubjectUnChecked`]: !isChecked,
+              [`${checkedSection}SubjectChecked`]: isChecked,
+            })}
+          >
+            {`(${subjects})`}
+          </Typography>
+        </ListItem>
+        <Divider
+          style={{
+            backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
+            margin: '0px',
+            height: isChecked ? '2px' : '1px',
+          }}
         />
-        { tooltip ? (
-          <Tooltip id={datafield} title={tooltip}>
-            <div className={datafield}>
-              <LabelComponent />
-            </div>
-          </Tooltip>
-        ) : (
-          <LabelComponent />
-        )}
-        <ListItemText />
-        <Typography
-          className={clsx(`${checkedSection}Subjects`, {
-            [`${checkedSection}SubjectUnChecked`]: !isChecked,
-            [`${checkedSection}SubjectChecked`]: isChecked,
-          })}
-        >
-          {`(${subjects})`}
-        </Typography>
-      </ListItem>
-      <Divider
-        style={{
-          backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
-          margin: '0px',
-          height: isChecked ? '2px' : '1px',
-        }}
-      />
-    </>
+        </>
+      : <></>
   );
 };
 

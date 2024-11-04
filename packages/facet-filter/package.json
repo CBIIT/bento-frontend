@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/facet-filter",
-  "version": "1.0.1-ccdihub.22",
+  "version": "1.0.1-ccdihub.25",
   "description": "### Bento core sidebar design:",
   "main": "dist/index.js",
   "scripts": {
