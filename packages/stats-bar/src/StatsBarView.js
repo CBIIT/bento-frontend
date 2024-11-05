@@ -62,7 +62,7 @@ const StatsBar = ({
             {title}
           </div>
           <div className={countClasses} id={countId}>
-            {val}
+            {val.toLocaleString('en-US')}
           </div>
         </div>
       );
@@ -71,7 +71,7 @@ const StatsBar = ({
     return (
       <div>
         <div className={countClasses} id={countId}>
-          {val}
+          {val.toLocaleString('en-US')}
         </div>
         <div className={titleClasses} id={titleId}>
           {title || 0}
