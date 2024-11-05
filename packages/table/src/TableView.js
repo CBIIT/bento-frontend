@@ -38,6 +38,7 @@ const TableView = ({
   onColumnViewChange,
   onDeleteRow,
   onDeleteAllFiles,
+  onSearchQueryChange,
   themeConfig = {},
   queryVariables,
   server,
@@ -50,6 +51,7 @@ const TableView = ({
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
       onPageChange={onPageChange}
+      onSearchQueryChange={onSearchQueryChange}
       numSelected={table?.selectedRows?.length || 0}
       customTheme={themeConfig.extendedView}
       queryVariables={queryVariables}

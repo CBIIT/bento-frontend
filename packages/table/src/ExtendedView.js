@@ -8,6 +8,7 @@ import CustomPagination from './pagination/CustomPagination';
 import ManageColumnView from './toolbar/ManageColumnView';
 import defaultTheme from './DefaultThemConfig';
 import DownloadButton from './toolbar/DownloadButtonView';
+import SearchInputView from './toolbar/SearchInputView';
 
 const ExtendedView = ({
   table,
@@ -15,6 +16,7 @@ const ExtendedView = ({
   onColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
+  onSearchQueryChange,
   customTheme,
   queryVariables,
   server,
@@ -34,6 +36,10 @@ const ExtendedView = ({
 
   return (
     <ThemeProvider theme={themeConfig}>
+      <SearchInputView
+        onSearchQueryChange={onSearchQueryChange}
+        table={table}
+      />
       {(download || manageViewColumns) && (
         <Toolbar
           className="downloadAndColumnView"
