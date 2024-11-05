@@ -121,11 +121,9 @@ const TableController = ((props) => {
     if (!searchQuery) return rows;
     const query = searchQuery.toLowerCase();
     const viewRows = rows.filter((row) => {
-      if (row.length > 0) {
-        const rowText = row.join(' ').toLowerCase();
-        return rowText.includes(query);
-      }
-      return false;
+      const rowValues = Object.keys(row)
+        .map(key => `${row[key]}`.toLowerCase()).join(' ');
+      return rowValues.includes(query);
     });
     return viewRows;
   };
