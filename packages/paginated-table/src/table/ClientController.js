@@ -122,7 +122,7 @@ const TableController = ((props) => {
     const query = searchQuery.toLowerCase();
     const viewRows = rows.filter((row) => {
       const rowValues = Object.keys(row)
-        .map(key => `${row[key]}`.toLowerCase()).join(' ');
+        .map((key) => `${row[key]}`.toLowerCase()).join(' ');
       return rowValues.includes(query);
     });
     return viewRows;

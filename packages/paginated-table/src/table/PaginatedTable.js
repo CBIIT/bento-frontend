@@ -51,8 +51,6 @@ const PaginatedTable = ({
     */
     const { setContext } = tableContext;
     setContext({ ...table, dispatch });
-    console.log('test search input');
-    console.log(table);
   }, [table]);
 
   /**
@@ -189,8 +187,6 @@ const PaginatedTable = ({
   * Filter table rows based on Search query
   */
   const handleSeachQueryChange = (value) => {
-    console.log('update search query');
-    console.log(value);
     dispatch(onSearchQueryChange({
       searchQuery: value,
     }));

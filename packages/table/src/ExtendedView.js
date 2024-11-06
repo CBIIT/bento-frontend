@@ -30,16 +30,19 @@ const ExtendedView = ({
     download = false,
     manageViewColumns = false,
     pagination = false,
+    searchInput = false,
   } = extendedViewConfig;
 
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
 
   return (
     <ThemeProvider theme={themeConfig}>
-      <SearchInputView
-        onSearchQueryChange={onSearchQueryChange}
-        table={table}
-      />
+      { (searchInput) && (
+        <SearchInputView
+          onSearchQueryChange={onSearchQueryChange}
+          table={table}
+        />
+      )}
       {(download || manageViewColumns) && (
         <Toolbar
           className="downloadAndColumnView"
