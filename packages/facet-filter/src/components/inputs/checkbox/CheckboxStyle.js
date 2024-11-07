@@ -28,5 +28,6 @@ export default () => ({
     marginTop: '1.5px',
     fontFamily: 'Nunito',
     lineHeight: '120%',
+    wordBreak: 'break-word',
   },
 });
