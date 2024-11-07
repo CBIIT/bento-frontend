@@ -1,6 +1,30 @@
 import SearchIcon from './assets/Search_Icon.svg';
 
 export default () => ({
+  header: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButton: {
+    marginLeft: 'auto',
+  },
+  resetIcon: {
+    marginLeft: '10px',
+    minWidth: '5px',
+    width: '5px',
+    borderRadius: '9px',
+    height: '30px',
+  },
+  modalTitle: {
+    marginLeft: 'auto',
+    fontFamily: 'Poppins',
+    fontSize: '19px',
+    fontWeight: '400',
+    lineHeight: '21px',
+    letterSpacing: '0.02em',
+    textAlighn: 'center',
+  },
   modalBody: {
     position: 'absolute',
     top: '5%',
@@ -9,16 +33,31 @@ export default () => ({
     height: '671px',
     background: 'white',
     border: '2px solid #000',
+    borderRadius: '40px',
     boxShadow: 24,
   },
   searchContainer: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
+    borderTop: '3px solid #939393',
+    borderBottom: '3px solid #939393',
+    height: '51px',
+  },
+  searchDiagnosis: {
+    marginRight: '10px',
+    fontFamily: 'Poppins',
+    fontSize: '18px',
+    fontWeight: '600',
+    lineHeight: '27px',
+    letterSpacing: '-0.02em',
+    textAlign: 'left',
+    color: '#7A437A',
   },
   searchBox: {
     fontSize: '11px',
     fontFamily: 'Nunito',
-    width: '222px',
+    width: '437px',
     height: '30px',
     marginTop: '5px',
     marginBottom: '5px',
