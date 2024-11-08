@@ -1,5 +1,5 @@
 /* eslint-disable jsx-quotes */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   InputAdornment,
   TextField,
@@ -25,6 +25,13 @@ const SearchInputView = ({
     setSearchText('');
   };
 
+  // update input search query
+  useEffect(() => {
+    if (table?.searchQuery) {
+      setSearchText(table?.searchQuery);
+    }
+  }, [table?.searchQuery]);
+
   return (
     <Box id='table_serach_input'>
       <TextField
@@ -32,7 +39,7 @@ const SearchInputView = ({
         variant='outlined'
         onChange={handleChange}
         onKeyDown={handleChange}
-        value={searchText || table?.searchQuery}
+        value={searchText}
         InputProps={{
           endAdornment: (
             <>
