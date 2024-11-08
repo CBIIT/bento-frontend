@@ -15,6 +15,7 @@ import {
   onColumnViewChange,
   onRowDelete,
   onClearCart,
+  onInputSearchQueryChange,
 } from './state/Actions';
 import { TableContext } from './ContextProvider';
 import reducer from './state/Reducer';
@@ -91,6 +92,7 @@ const PaginatedTable = ({
     customizeColumnViewChange,
     customizeDeleteRow,
     customizeDeleteAllRows,
+    customizeSearchQueryChange,
   } = paginationOptions;
 
   /**
@@ -182,6 +184,15 @@ const PaginatedTable = ({
   };
 
   /**
+  * Filter table rows based on Search query
+  */
+  const handleSeachQueryChange = (value) => {
+    dispatch(onInputSearchQueryChange({
+      searchQuery: value,
+    }));
+  };
+
+  /**
   * A. client table
   * table data provide by bento app (tblRows)
   * Rows display & column sorting by ClientController
@@ -200,6 +211,7 @@ const PaginatedTable = ({
           onColumnViewChange={customizeColumnViewChange || handleColumnViewChange}
           onDeleteRow={customizeDeleteRow || onDeleteRow}
           onDeleteAllFiles={customizeDeleteAllRows || onDeleteAllRows}
+          onSearchQueryChange={customizeSearchQueryChange || handleSeachQueryChange}
           themeConfig={themeConfig}
         />
       </>
@@ -232,6 +244,7 @@ const PaginatedTable = ({
         onColumnViewChange={customizeColumnViewChange || handleColumnViewChange}
         onDeleteRow={customizeDeleteRow || onDeleteRow}
         onDeleteAllFiles={customizeDeleteAllRows || onDeleteAllRows}
+        onSearchQueryChange={customizeSearchQueryChange || handleSeachQueryChange}
         themeConfig={themeConfig}
       />
     </>

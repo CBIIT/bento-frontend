@@ -10,6 +10,7 @@ export const actionTypes = {
   CUSTOMIZE_PAGINATION_ACTION: 'CUSTOMIZE_PAGINATION_ACTION',
   ON_ROWS_DELETE: 'ON_ROWS_DELETE',
   ON_ROW_DELETE: 'ON_ROW_DELETE',
+  ON_SEARCH_QUERY_CHANGE: 'ON_SEARCH_QUERY_CHANGE',
 };
 
 export const onColumnViewChange = (columns) => ({
@@ -64,5 +65,10 @@ export const onClearCart = (value) => ({
 
 export const onRowDelete = (value) => ({
   type: actionTypes.ON_ROW_DELETE,
+  payload: value,
+});
+
+export const onInputSearchQueryChange = (value) => ({
+  type: actionTypes.ON_SEARCH_QUERY_CHANGE,
   payload: value,
 });

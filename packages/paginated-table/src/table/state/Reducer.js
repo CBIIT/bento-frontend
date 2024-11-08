@@ -58,6 +58,11 @@ const reducer = (state, action) => {
         deletedRows: payload.deleteRows,
         selectedRows: payload.selectedRows,
       };
+    case actionTypes.ON_SEARCH_QUERY_CHANGE:
+      return {
+        ...state,
+        searchQuery: payload.searchQuery,
+      };
     default:
       return state;
   }
