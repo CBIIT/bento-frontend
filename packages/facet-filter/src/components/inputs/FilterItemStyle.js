@@ -53,4 +53,18 @@ export default () => ({
       backgroundClip: 'content-box',
     },
   },
+  searchContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  expandedDisplayButton: {
+    background: '#4D889E',
+    color: 'white',
+    width: '222px',
+    height: '30px',
+    marginTop: '5px',
+    marginBottom: '5px',
+    borderRadius: '8px',
+    fontSize: '11px',
+  },
 });

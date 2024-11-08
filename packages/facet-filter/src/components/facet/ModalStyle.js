@@ -5,9 +5,11 @@ export default () => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    height: '55px',
   },
   closeButton: {
-    marginLeft: 'auto',
+    marginLeft: '769px',
+    position: 'absolute',
   },
   resetIcon: {
     marginLeft: '10px',
@@ -17,13 +19,13 @@ export default () => ({
     height: '30px',
   },
   modalTitle: {
-    marginLeft: 'auto',
     fontFamily: 'Poppins',
     fontSize: '19px',
     fontWeight: '400',
     lineHeight: '21px',
     letterSpacing: '0.02em',
-    textAlighn: 'center',
+    textAlign: 'center',
+    color: '#000000',
   },
   modalBody: {
     position: 'absolute',
@@ -31,10 +33,10 @@ export default () => ({
     left: '25%',
     width: '836px',
     height: '671px',
-    background: 'white',
-    border: '2px solid #000',
+    background: '#FFFFFF',
+    border: '1px solid #505050',
     borderRadius: '40px',
-    boxShadow: 24,
+    overflow: 'hidden',
   },
   searchContainer: {
     display: 'flex',
@@ -44,7 +46,7 @@ export default () => ({
     borderBottom: '3px solid #939393',
     height: '51px',
   },
-  searchDiagnosis: {
+  searchInputbox: {
     marginRight: '10px',
     fontFamily: 'Poppins',
     fontSize: '18px',
@@ -55,14 +57,16 @@ export default () => ({
     color: '#7A437A',
   },
   searchBox: {
-    fontSize: '11px',
+    fontSize: '12px',
+    fontWeight: '400',
     fontFamily: 'Nunito',
     width: '437px',
-    height: '30px',
+    height: '28px',
     marginTop: '5px',
     marginBottom: '5px',
     borderRadius: '8px',
     background: `url(${SearchIcon}) right 5px center no-repeat`,
+    border: '1.5px solid #646464',
   },
   highlight: {
     color: '#b2c6d6',
@@ -107,7 +111,5 @@ export default () => ({
     marginTop: '5px',
   },
   itemContainer: {
-    overflowY: 'scroll',
-    height: '582px',
   },
 });

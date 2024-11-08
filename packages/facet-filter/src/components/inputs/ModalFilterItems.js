@@ -14,27 +14,19 @@ import clearIcon from '../facet/assets/clearIcon.svg';
 const ModalFilterItems = ({
   facet,
   searchText,
+  sortBy,
+  onClearSection,
+  onSortChange,
   classes,
-  onClearFacetSection,
 }) => {
   const {
     datafield, section,
   } = facet;
   const initialItemSize = 27;
-  const [uncheckedFullList, setUncheckedFullList] = useState([]);
-  const [sortBy, setSortBy] = useState(null);
-  const onSortFacet = (type) => {
-    setSortBy(type);
-  };
-
-  const onClearSection = () => {
-    console.log('hi');
-    setSortBy(null);
-    onClearFacetSection(facet);
-  };
-
   const [total, setTotal] = useState(0);
-  const [displayList, setDisplayList] = useState([]);
+  const [displayCount, setDisplayCount] = useState(initialItemSize);
+  const contentRef = useRef(null);
+  const [height, setHeight] = useState(0);
   const scrollableRef = useRef(null);
   let sortFilters = sortBySection({ ...facet, sortBy });
 
@@ -44,40 +36,57 @@ const ModalFilterItems = ({
       datafield={datafield}
       facet={facet}
     />));
+  const makeupItemsLen = 3 - (checkedItems.length % 3);
+  const makeupItems = [];
+  if (makeupItemsLen < 3) {
+    for (let i = 0; i < makeupItemsLen; i += 1) {
+      makeupItems.push(<div className={classes.emptyItem} />);
+    }
+  }
 
-  const uncheckedItems = displayList.map((item, index) => (<ReduxModalCheckbox
-    checkboxItem={{ ...item, index, section }}
-    datafield={datafield}
-    facet={facet}
-  />));
-
-  // console.log('displayList size:', displayList.length);
+  const uncheckedItems = sortFilters.filter((item) => !item.isChecked)
+    .filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
+    .slice(0, displayCount).map((item, index) => (<ReduxModalCheckbox
+      checkboxItem={{ ...item, index, section }}
+      datafield={datafield}
+      facet={facet}
+    />));
+  const makeupUncheckedItemsLen = 3 - (uncheckedItems.length % 3);
+  const makeupUncheckedItems = [];
+  if (makeupUncheckedItemsLen < 3) {
+    for (let i = 0; i < makeupUncheckedItemsLen; i += 1) {
+      makeupUncheckedItems.push(<div className={classes.emptyItem} />);
+    }
+  }
 
   useEffect(() => {
-    // console.log('searchText:', searchText);
+    if (contentRef.current) {
+      setHeight(528 - contentRef.current.getBoundingClientRect().height);
+    }
+  }, [checkedItems.length]);
+
+  useEffect(() => {
     scrollableRef.current.scrollTo(0, 0);
     sortFilters = sortBySection({ ...facet, sortBy });
     const newUncheckedFullList = sortFilters.filter((item) => !item.isChecked)
       .filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
-    const uncheckedInitalList = newUncheckedFullList.slice(0, initialItemSize);
-    setUncheckedFullList(newUncheckedFullList);
-    setDisplayList(uncheckedInitalList);
+    setDisplayCount(initialItemSize);
     setTotal(newUncheckedFullList.length);
   }, [searchText, sortBy]);
 
   const handleScroll = (e) => {
-    if (displayList.length < total) {
+    if (displayCount < total) {
       const { scrollTop, scrollHeight, clientHeight } = e.target;
       const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
       // console.log('position:', position);
       if (position >= 90) {
-        setDisplayList(uncheckedFullList.slice(0, displayList.length + initialItemSize));
+        setDisplayCount(displayCount + initialItemSize);
       }
     }
   };
 
   return (
-    <div>
+    <>
       <div className={classes.sortingContainer}>
         <div>
           <span className={classes.selectionText}>{`${checkedItems.length} selections `}</span>
@@ -103,7 +112,7 @@ const ModalFilterItems = ({
             })
           }
           onClick={() => {
-            onSortFacet(sortType.ALPHABET);
+            onSortChange(facet.datafield, sortType.ALPHABET);
           }}
         >
           Sort alphabetically
@@ -115,19 +124,23 @@ const ModalFilterItems = ({
             })
           }
           onClick={() => {
-            onSortFacet(sortType.NUMERIC);
+            onSortChange(facet.datafield, sortType.NUMERIC);
           }}
         >
           Sort by count
         </span>
       </div>
-      <div className={classes.checkedContainer}>
-        {checkedItems}
+      <div className={classes.checkboxContainer}>
+        <div ref={contentRef} className={classes.checkedContainer}>
+          {checkedItems}
+          {makeupItems}
+        </div>
+        <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll} style={{ maxHeight: `${height}px` }}>
+          {uncheckedItems}
+          {makeupUncheckedItems}
+        </div>
       </div>
-      <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll}>
-        {uncheckedItems}
-      </div>
-    </div>
+    </>
   );
 };
 

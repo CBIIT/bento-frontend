@@ -19,52 +19,73 @@ export default () => ({
   sortGroupItem: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
-    fontSize: '10px',
+    fontSize: '11px',
+    fontWeight: '400',
     marginRight: '32px',
   },
   sortGroupItemCounts: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
-    fontSize: '10px',
+    fontSize: '11px',
+    fontWeight: '400',
     float: 'right',
-    marginRight: '10px',
+    marginRight: '18px',
+  },
+  checkboxContainer: {
+    height: '528px',
   },
   checkedContainer: {
     display: 'flex',
     flexWrap: 'wrap',
+    overflowY: 'scroll',
+    overflowX: 'hidden',
+    maxHeight: '200px',
+    '&>*:nth-child(-n+3)': {
+      borderTop: '0.5px solid #000000',
+    },
+    '&>*:nth-last-child(-n+3)': {
+      borderBottom: '0px',
+    },
+    '&::-webkit-scrollbar': {
+      width: '16px',
+      backgroundColor: '#E2E2E2',
+      borderLeft: '0.5px solid #1E1E1E',
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: '#E2E2E2',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#4D889E',
+    },
   },
   itemsContainer: {
-    maxHeight: '582px',
+    maxHeight: '528px',
     display: 'flex',
     flexWrap: 'wrap',
-    overflowY: 'auto',
+    overflowY: 'scroll',
     overflowX: 'hidden',
     borderTop: '2px solid #AEAEAE',
     borderBottom: '2px solid #AEAEAE',
-    marginRight: '-1px',
+    '&>*:nth-last-child(-n+3)': {
+      borderBottom: '0px',
+    },
     '&::-webkit-scrollbar': {
-      width: '12px',
-      backgroundColor: '#E9F0F4',
-      borderLeft: '0.5px solid #B1B1B1',
-      borderRight: '0.5px solid #B1B1B1',
+      width: '16px',
+      backgroundColor: '#E2E2E2',
+      borderLeft: '0.5px solid #1E1E1E',
     },
     '&::-webkit-scrollbar-track': {
-      backgroundColor: '#CECECE',
-      border: '3px solid transparent',
-      borderRadius: '20px',
-      backgroundClip: 'content-box',
+      backgroundColor: '#E2E2E2',
     },
     '&::-webkit-scrollbar-thumb': {
-      backgroundColor: '#477C90',
-      border: '3px solid transparent',
-      borderRadius: '20px',
-      backgroundClip: 'content-box',
+      backgroundColor: '#4D889E',
     },
   },
   sortingContainer: {
     display: 'flex',
     height: '36px',
     alignItems: 'center',
+    color: '#646464',
   },
   selectionText: {
     fontFamily: 'Nunito',
@@ -80,5 +101,10 @@ export default () => ({
     fontSize: '16px',
     lineHeight: '17px',
     color: '#7D267E',
+  },
+  emptyItem: {
+    width: '33.33%',
+    borderRight: '0.5px solid #000000',
+    borderBottom: '0.5px solid #000000',
   },
 });

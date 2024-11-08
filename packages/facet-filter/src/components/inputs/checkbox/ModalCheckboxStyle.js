@@ -1,7 +1,7 @@
 export default () => ({
   listItemGutters: {
     padding: '10px 10px 10px 0px',
-    width: '33%',
+    width: '33.33%',
     borderRight: '0.5px solid #000000',
     borderBottom: '0.5px solid #000000',
   },

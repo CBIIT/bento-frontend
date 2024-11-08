@@ -3,10 +3,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   withStyles,
+  Button,
 } from '@material-ui/core';
 import ReduxSearchCheckbox from './checkbox/ReduxSearchCheckbox';
 import { sortBySection } from '../../utils/Sort';
 import styles from './FilterItemStyle';
+import ReduxFacetModal from '../facet/ReduxFacetModal';
 
 const SearchFilterItems = ({
   facet,
@@ -18,9 +20,9 @@ const SearchFilterItems = ({
     datafield, section,
   } = facet;
   const initialItemSize = 15;
-  const [uncheckedFullList, setUncheckedFullList] = useState([]);
   const [total, setTotal] = useState(0);
-  const [displayList, setDisplayList] = useState([]);
+  const [displayCount, setDisplayCount] = useState(initialItemSize);
+  const [open, setOpen] = useState(false);
   const scrollableRef = useRef(null);
   const sortFilters = sortBySection({ ...facet, sortBy });
 
@@ -31,45 +33,53 @@ const SearchFilterItems = ({
       facet={facet}
     />));
 
-  const uncheckedItems = displayList.map((item, index) => (<ReduxSearchCheckbox
-    checkboxItem={{ ...item, index, section }}
-    datafield={datafield}
-    facet={facet}
-  />));
-
-  // console.log('displayList size:', displayList.length);
+  const uncheckedItems = sortFilters.filter((item) => !item.isChecked)
+    .filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
+    .slice(0, displayCount).map((item, index) => (<ReduxSearchCheckbox
+      checkboxItem={{ ...item, index, section }}
+      datafield={datafield}
+      facet={facet}
+    />));
 
   useEffect(() => {
-    // console.log('searchText:', searchText);
     scrollableRef.current.scrollTo(0, 0);
     const newUncheckedFullList = sortFilters.filter((item) => !item.isChecked)
       .filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
-    const uncheckedInitalList = newUncheckedFullList.slice(0, initialItemSize);
-    setUncheckedFullList(newUncheckedFullList);
-    setDisplayList(uncheckedInitalList);
+    setDisplayCount(initialItemSize);
     setTotal(newUncheckedFullList.length);
   }, [searchText]);
 
   const handleScroll = (e) => {
-    if (displayList.length < total) {
+    if (displayCount < total) {
       const { scrollTop, scrollHeight, clientHeight } = e.target;
       const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
-      // console.log('position:', position);
       if (position >= 90) {
-        setDisplayList(uncheckedFullList.slice(0, displayList.length + initialItemSize));
+        setDisplayCount(displayCount + initialItemSize);
       }
     }
   };
 
   return (
-    <div>
+    <>
+      <ReduxFacetModal
+        facet={facet}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
       <div>
-        {checkedItems}
+        <div>
+          {checkedItems}
+        </div>
+        <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll}>
+          {uncheckedItems}
+        </div>
       </div>
-      <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll}>
-        {uncheckedItems}
+      <div className={classes.searchContainer}>
+        <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
+          {`VIEW EXPANDED DISPLAY (${checkedItems.length + total})`}
+        </Button>
       </div>
-    </div>
+    </>
   );
 };
 
