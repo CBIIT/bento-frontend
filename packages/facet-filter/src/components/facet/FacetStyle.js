@@ -81,13 +81,15 @@ export default () => ({
   searchBox: {
     fontSize: '11px',
     fontFamily: 'Nunito',
-    width: '222px',
-    height: '30px',
+    width: '245px',
+    height: '24px',
     marginTop: '12px',
     marginBottom: '5px',
     borderRadius: '8px',
     background: `url(${SearchIcon}) right 5px center no-repeat`,
-    marginRight: '12px',
+    marginLeft: '6px',
+    border: '1px solid',
+    padding: '5px',
   },
   expandedDisplayButton: {
     background: '#4D889E',
