@@ -56,15 +56,17 @@ export default () => ({
   searchContainer: {
     display: 'flex',
     justifyContent: 'center',
+    height: '54px',
   },
   expandedDisplayButton: {
-    background: '#4D889E',
+    backgroundColor: '#4D889E !important',
     color: 'white',
     width: '222px',
-    height: '30px',
+    height: '24px',
     marginTop: '5px',
     marginBottom: '5px',
     borderRadius: '8px',
     fontSize: '11px',
+    top: '10px',
   },
 });

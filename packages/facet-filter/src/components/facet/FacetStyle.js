@@ -87,6 +87,7 @@ export default () => ({
     marginBottom: '5px',
     borderRadius: '8px',
     background: `url(${SearchIcon}) right 5px center no-repeat`,
+    marginRight: '10px',
   },
   expandedDisplayButton: {
     background: '#4D889E',
