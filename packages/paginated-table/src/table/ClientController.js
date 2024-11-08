@@ -26,6 +26,7 @@ const TableController = ((props) => {
     sortBy,
     sortOrder,
     groupBy,
+    searchQuery,
   } = table;
 
   /**
@@ -115,18 +116,38 @@ const TableController = ((props) => {
     return alphaNumericSort(b, a);
   };
 
+  // filter rows based on input serch query
+  const filterBySearchQuery = (rows) => {
+    if (!searchQuery) return rows;
+    const query = searchQuery.toLowerCase();
+    const viewRows = rows.filter((row) => {
+      const rowValues = Object.keys(row)
+        .map((key) => `${row[key]}`.toLowerCase()).join(' ');
+      return rowValues.includes(query);
+    });
+    return viewRows;
+  };
+
   // sort based on row grouping
   // groupBy column name
   const sortedRows = (groupBy) ? sortWithRowGrouping(updateRows)
     : [...updateRows].sort((a, b) => sortRows(a, b));
+
+  // filter by search Query
+  const filterRows = filterBySearchQuery(sortedRows);
+
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
-  const displayRows = [...sortedRows].slice(startIndex, endIndex);
+  const displayRows = [...filterRows].slice(startIndex, endIndex);
 
   return (
     <>
       <TableView
         {...props}
+        table={{
+          ...table,
+          totalRowCount: filterRows.length,
+        }}
         totalRows={tblRows}
         tableRows={displayRows}
       />

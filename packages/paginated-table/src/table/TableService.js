@@ -31,12 +31,14 @@ const getPaginatedQueryVariables = (queryVariables, table) => {
     rowsPerPage,
     sortBy,
     sortOrder,
+    searchQuery,
   } = table;
   const offset = page * rowsPerPage;
   variables.offset = offset;
   variables.order_by = sortBy;
   variables.first = rowsPerPage;
   variables.sort_direction = sortOrder;
+  variables.search_query = searchQuery;
   return variables;
 };
 
@@ -54,6 +56,7 @@ export const getTableData = ({ queryVariables, table }) => {
     sortOrder,
     query,
     sortBy,
+    searchQuery = '',
   } = table;
   async function getData() {
     const paginatedqueryVariable = getPaginatedQueryVariables(queryVariables, table);
@@ -78,6 +81,6 @@ export const getTableData = ({ queryVariables, table }) => {
       // cancel the request before component unmounts
       controller.abort();
     };
-  }, [queryVariables, page, rowsPerPage, sortOrder, sortBy]);
+  }, [queryVariables, page, rowsPerPage, sortOrder, sortBy, searchQuery]);
   return { tableData };
 };
