@@ -13,7 +13,7 @@ export {
   onRowSeclect,
   setTotalRowCount,
   customPaginationAction,
-  onSearchQueryChange,
+  onInputSearchQueryChange,
 } from './table/state/Actions';
 export { default as Wrapper, types } from './wrapper/Wrapper';
 export { btnTypes } from './wrapper/components/AddFiles';

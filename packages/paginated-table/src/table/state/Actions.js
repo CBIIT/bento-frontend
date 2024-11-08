@@ -68,7 +68,7 @@ export const onRowDelete = (value) => ({
   payload: value,
 });
 
-export const onSearchQueryChange = (value) => ({
+export const onInputSearchQueryChange = (value) => ({
   type: actionTypes.ON_SEARCH_QUERY_CHANGE,
   payload: value,
 });

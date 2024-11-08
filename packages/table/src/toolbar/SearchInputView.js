@@ -32,7 +32,7 @@ const SearchInputView = ({
         variant='outlined'
         onChange={handleChange}
         onKeyDown={handleChange}
-        value={searchText}
+        value={searchText || table?.searchQuery}
         InputProps={{
           endAdornment: (
             <>

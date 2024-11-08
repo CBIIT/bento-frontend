@@ -15,7 +15,7 @@ import {
   onColumnViewChange,
   onRowDelete,
   onClearCart,
-  onSearchQueryChange,
+  onInputSearchQueryChange,
 } from './state/Actions';
 import { TableContext } from './ContextProvider';
 import reducer from './state/Reducer';
@@ -187,7 +187,7 @@ const PaginatedTable = ({
   * Filter table rows based on Search query
   */
   const handleSeachQueryChange = (value) => {
-    dispatch(onSearchQueryChange({
+    dispatch(onInputSearchQueryChange({
       searchQuery: value,
     }));
   };
