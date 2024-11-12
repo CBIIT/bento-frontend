@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
+import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { isEqual } from 'lodash';
@@ -24,6 +28,10 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const onChange = functions && typeof functions.onChange === 'function'
     ? functions.onChange
     : DEFAULT_CONFIG.functions.onChange;
+
+  const updateBrowserUrl = functions && typeof functions.updateBrowserUrl === 'function'
+    ? functions.updateBrowserUrl
+    : DEFAULT_CONFIG.functions.updateBrowserUrl;
 
   const getSuggestions = functions && typeof functions.getSuggestions === 'function'
     ? functions.getSuggestions
@@ -56,6 +64,9 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const {
         classes, autocomplete, applySearch,
       } = props;
+
+      const query = new URLSearchParams(useLocation().search);
+      const navigate = useNavigate();
 
       const [open, setOpen] = useState(false);
       const [value, setValue] = useState(autocomplete || []);
@@ -100,6 +111,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
         // Call the onChange function if the selection has changed
         if (!isEqual(newUniqueValue, value)) {
           onChange(newUniqueValue, reason, deleted);
+          updateBrowserUrl(query, navigate, newUniqueValue);
           applySearch(newUniqueValue);
           setValue(newUniqueValue);
         }

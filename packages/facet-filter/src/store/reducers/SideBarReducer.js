@@ -130,6 +130,11 @@ export function sideBarReducerGenerator() {
             ...state,
             sortState: { ...updateState },
           };
+        case sideBarActionTypes.UPDATE_FILTER_STATE:
+          return {
+            ...state,
+            filterState: payload,
+          };
         default:
           return state;
       }

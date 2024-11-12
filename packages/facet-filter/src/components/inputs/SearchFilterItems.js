@@ -12,6 +12,7 @@ import ReduxFacetModal from '../facet/ReduxFacetModal';
 
 const SearchFilterItems = ({
   facet,
+  queryParams,
   sortBy,
   searchText,
   classes,
@@ -31,6 +32,7 @@ const SearchFilterItems = ({
       checkboxItem={{ ...item, index, section }}
       datafield={datafield}
       facet={facet}
+      queryParams={queryParams}
     />));
 
   const uncheckedItems = sortFilters.filter((item) => !item.isChecked)
@@ -39,6 +41,7 @@ const SearchFilterItems = ({
       checkboxItem={{ ...item, index, section }}
       datafield={datafield}
       facet={facet}
+      queryParams={queryParams}
     />));
 
   useEffect(() => {
@@ -63,6 +66,7 @@ const SearchFilterItems = ({
     <>
       <ReduxFacetModal
         facet={facet}
+        queryParams={queryParams}
         open={open}
         onClose={() => setOpen(false)}
       />

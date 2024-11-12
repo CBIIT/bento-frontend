@@ -16,6 +16,7 @@ const BentoFacetFilter = ({
   sideBarSections,
   CustomFacetSection,
   CustomFacetView,
+  queryParams,
 }) => {
   return (
     <>
@@ -35,6 +36,7 @@ const BentoFacetFilter = ({
                   return (
                     <SearchFacetView
                       facet={facet}
+                      queryParams={queryParams}
                       CustomView={CustomFacetView}
                     />
                   );
@@ -42,6 +44,7 @@ const BentoFacetFilter = ({
                 return (
                   <FacetView
                     facet={facet}
+                    queryParams={queryParams}
                     CustomView={CustomFacetView}
                   >
                     <List className={`List_${facet.label}`}>

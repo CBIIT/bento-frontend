@@ -1,5 +1,10 @@
 import React from 'react';
 import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import { generateQueryStr } from '@bento-core/util';
+import {
   Modal,
   Box,
   Button,
@@ -27,8 +32,17 @@ const ModalView = ({
   onClearFacetSection,
   onSearchTextChange,
   onSortChange,
+  queryParams,
 }) => {
+  const query = new URLSearchParams(useLocation().search);
+  const navigate = useNavigate();
+
   const onClearSection = () => {
+    const field = facet.datafield;
+    const paramValue = {};
+    paramValue[field] = '';
+    const queryStr = generateQueryStr(query, queryParams, paramValue);
+    navigate(`/explore${queryStr}`, { replace: true });
     onSortChange(null);
     onClearFacetSection(facet);
   };
@@ -81,6 +95,7 @@ const ModalView = ({
             sortBy={sortBy}
             onClearSection={onClearSection}
             onSortChange={onSortChange}
+            queryParams={queryParams}
           />
         </div>
       </Box>

@@ -46,3 +46,8 @@ export const sortChange = (datafield, sortBy) => ({
     sortBy,
   },
 });
+
+export const updateFilterState = (filterState) => ({
+  type: sideBarActionTypes.UPDATE_FILTER_STATE,
+  payload: filterState,
+});

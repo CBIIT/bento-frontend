@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import { generateQueryStr } from '@bento-core/util';
+import {
   Accordion,
   List,
   withStyles,
@@ -19,9 +24,12 @@ const FacetView = ({
   onClearFacetSection,
   onClearSliderSection,
   CustomView,
+  queryParams,
 }) => {
   const [expand, setExpand] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
+  const query = new URLSearchParams(useLocation().search);
+  const navigate = useNavigate();
 
   /**
   * expand section incase of active local search
@@ -39,6 +47,11 @@ const FacetView = ({
   };
 
   const onClearSection = () => {
+    const field = facet.datafield;
+    const paramValue = {};
+    paramValue[field] = '';
+    const queryStr = generateQueryStr(query, queryParams, paramValue);
+    navigate(`/explore${queryStr}`, { replace: true });
     setSortBy(null);
     if (facet.type === InputTypes.SLIDER) {
       onClearSliderSection(facet);
@@ -152,6 +165,7 @@ const FacetView = ({
 }
         <FilterItems
           facet={facet}
+          queryParams={queryParams}
           sortBy={sortBy}
         />
       </Accordion>
@@ -161,6 +175,7 @@ const FacetView = ({
             <List id="filter_Items">
               <FilterItems
                 facet={displayFacet}
+                queryParams={queryParams}
               />
             </List>
           </>

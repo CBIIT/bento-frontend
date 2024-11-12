@@ -14,6 +14,7 @@ import clearIcon from '../facet/assets/clearIcon.svg';
 const ModalFilterItems = ({
   facet,
   searchText,
+  queryParams,
   sortBy,
   onClearSection,
   onSortChange,
@@ -35,6 +36,7 @@ const ModalFilterItems = ({
       checkboxItem={{ ...item, index, section }}
       datafield={datafield}
       facet={facet}
+      queryParams={queryParams}
     />));
   const makeupItemsLen = 3 - (checkedItems.length % 3);
   const makeupItems = [];
@@ -50,6 +52,7 @@ const ModalFilterItems = ({
       checkboxItem={{ ...item, index, section }}
       datafield={datafield}
       facet={facet}
+      queryParams={queryParams}
     />));
   const makeupUncheckedItemsLen = 3 - (uncheckedItems.length % 3);
   const makeupUncheckedItems = [];

@@ -16,6 +16,14 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
   // Helper functions used by the component
   functions: {
     /**
+     * Callback function called when the submit button is clicked.
+     *
+     * @param void
+     * @return void
+     */
+    updateBrowserUrl: () => {},
+
+    /**
      * Callback function called when the modal is closed.
      *
      * @param void
