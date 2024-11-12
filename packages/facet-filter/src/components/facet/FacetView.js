@@ -26,7 +26,7 @@ const FacetView = ({
   CustomView,
   queryParams,
 }) => {
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
   const onExpandFacet = () => setExpand(!expand);
   const query = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
