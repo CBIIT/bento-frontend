@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/local-find",
-  "version": "1.0.1-ccdihub.9",
+  "version": "1.0.1-ccdihub.10",
   "description": "The Local Find package provides components relating to the Dashboard/Explore case search feature. There are two primary components provided by this package:",
   "main": "dist/index.js",
   "scripts": {
