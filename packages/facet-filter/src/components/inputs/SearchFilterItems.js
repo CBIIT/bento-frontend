@@ -10,6 +10,26 @@ import { sortBySection } from '../../utils/Sort';
 import styles from './FilterItemStyle';
 import ReduxFacetModal from '../facet/ReduxFacetModal';
 
+const searchItems = (items, searchText) => {
+  let matchedItems = [];
+  const keyList = searchText.toUpperCase().split(',').filter((item) => item.trim() !== '');
+  if (keyList.length === 0) {
+    matchedItems = items;
+  } else {
+    for (let i = 0; i < items.length; i += 1) {
+      const item = items[i];
+      for (let j = 0; j < keyList.length; j += 1) {
+        const key = keyList[j].trim();
+        if (key === '' || item.name.toUpperCase().includes(key)) {
+          matchedItems.push(item);
+          break;
+        }
+      }
+    }
+  }
+  return matchedItems;
+};
+
 const SearchFilterItems = ({
   facet,
   queryParams,
@@ -20,7 +40,7 @@ const SearchFilterItems = ({
   const {
     datafield, section,
   } = facet;
-  const initialItemSize = 15;
+  const initialItemSize = 20;
   const [total, setTotal] = useState(0);
   const [displayCount, setDisplayCount] = useState(initialItemSize);
   const [open, setOpen] = useState(false);
@@ -35,8 +55,8 @@ const SearchFilterItems = ({
       queryParams={queryParams}
     />));
 
-  const uncheckedItems = sortFilters.filter((item) => !item.isChecked)
-    .filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
+  const uncheckedItems = searchItems(sortFilters.filter((item) => !item.isChecked),
+    searchText)
     .slice(0, displayCount).map((item, index) => (<ReduxSearchCheckbox
       checkboxItem={{ ...item, index, section }}
       datafield={datafield}
@@ -46,8 +66,8 @@ const SearchFilterItems = ({
 
   useEffect(() => {
     scrollableRef.current.scrollTo(0, 0);
-    const newUncheckedFullList = sortFilters.filter((item) => !item.isChecked)
-      .filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
+    const newUncheckedFullList = searchItems(sortFilters.filter((item) => !item.isChecked),
+      searchText);
     setDisplayCount(initialItemSize);
     setTotal(newUncheckedFullList.length);
   }, [searchText]);
