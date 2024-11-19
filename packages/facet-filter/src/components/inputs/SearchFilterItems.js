@@ -41,7 +41,6 @@ const SearchFilterItems = ({
     datafield, section,
   } = facet;
   const initialItemSize = 20;
-  const [total, setTotal] = useState(0);
   const [displayCount, setDisplayCount] = useState(initialItemSize);
   const [open, setOpen] = useState(false);
   const scrollableRef = useRef(null);
@@ -55,9 +54,11 @@ const SearchFilterItems = ({
       queryParams={queryParams}
     />));
 
-  const uncheckedItems = searchItems(sortFilters.filter((item) => !item.isChecked),
-    searchText)
-    .slice(0, displayCount).map((item, index) => (<ReduxSearchCheckbox
+  const newUncheckedFullList = searchItems(sortFilters.filter((item) => !item.isChecked),
+    searchText);
+
+  const uncheckedItems = newUncheckedFullList.slice(0, displayCount)
+    .map((item, index) => (<ReduxSearchCheckbox
       checkboxItem={{ ...item, index, section }}
       datafield={datafield}
       facet={facet}
@@ -66,14 +67,11 @@ const SearchFilterItems = ({
 
   useEffect(() => {
     scrollableRef.current.scrollTo(0, 0);
-    const newUncheckedFullList = searchItems(sortFilters.filter((item) => !item.isChecked),
-      searchText);
     setDisplayCount(initialItemSize);
-    setTotal(newUncheckedFullList.length);
   }, [searchText]);
 
   const handleScroll = (e) => {
-    if (displayCount < total) {
+    if (displayCount < newUncheckedFullList.length) {
       const { scrollTop, scrollHeight, clientHeight } = e.target;
       const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
       if (position >= 90) {
@@ -100,7 +98,7 @@ const SearchFilterItems = ({
       </div>
       <div className={classes.searchContainer}>
         <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
-          {`VIEW EXPANDED DISPLAY (${checkedItems.length + total})`}
+          {`VIEW EXPANDED DISPLAY (${checkedItems.length + newUncheckedFullList.length})`}
         </Button>
       </div>
     </>
