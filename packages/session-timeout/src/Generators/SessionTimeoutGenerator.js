@@ -5,7 +5,6 @@ import {
 } from '@material-ui/core';
 import DEFAULT_STYLES from './styles';
 import DEFAULT_CONFIG from './config';
-import DialogTitle from '../components/DialogTitle';
 import DialogContent from '../components/DialogContent';
 import { Transition } from '../components/Transition';
 import { secondsToMinuteString, extendSession, getSessionTTL } from '../Utils/utils';
@@ -120,9 +119,9 @@ export const SessionTimeoutGenerator = ({ config, selectors } = DEFAULT_CONFIG) 
           open={open}
           keepMounted
         >
-          <DialogTitle id="session-timeout-title">
+          <h2 id="session-timeout-title">
             { title || 'Session Timeout Warning' }
-          </DialogTitle>
+          </h2>
           <DialogContent id="session-timeout-content">
             { body
               || (

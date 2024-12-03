@@ -50,7 +50,8 @@ const CustomPagination = ({
       page={page}
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
-      SelectProps={{ inputProps: { 'aria-label': 'rows per page dropdown selector' } }}
+      labelRowsPerPage={<span id="rows-per-page-label">Rows per page:</span>}
+      SelectProps={{ inputProps: { 'aria-label': 'rows per page dropdown selector', 'aria-labelledby': 'rows-per-page-label' } }}
     />
   </ThemeProvider>
 );
