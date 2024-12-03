@@ -13,13 +13,16 @@ const CheckboxView = ({
   <TableCell padding="checkbox">
     <FormControlLabel
       control={(
-        <Checkbox
-          color="primary"
-          indeterminate={includeSelectedIds}
-          checked={includeSelectedIds}
-          onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
-          inputProps={{ 'aria-label': 'select all checkbox' }}
-        />
+        <>
+          <span style={{ display: 'none' }}>select all checkbox</span>
+          <Checkbox
+            color="primary"
+            indeterminate={includeSelectedIds}
+            checked={includeSelectedIds}
+            onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
+            inputProps={{ 'aria-label': 'select all checkbox' }}
+          />
+        </>
       )}
     />
   </TableCell>
