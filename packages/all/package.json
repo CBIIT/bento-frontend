@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/all",
-  "version": "1.0.1-CDS.23",
+  "version": "1.0.1-CDS.24",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -25,13 +25,13 @@
     "@bento-core/header": "^1.0.0",
     "@bento-core/local-find": "^1.0.1-CDS.4",
     "@bento-core/nav-bar": "^1.0.1-CDS.3",
-    "@bento-core/paginated-table": "^1.0.1-CDS.12",
-    "@bento-core/profile": "^1.0.1-CDS.12",
+    "@bento-core/paginated-table": "^1.0.1-CDS.13",
+    "@bento-core/profile": "^1.0.1-CDS.13",
     "@bento-core/query-bar": "^1.0.1-CDS.5",
-    "@bento-core/session-timeout": "^1.0.0",
+    "@bento-core/session-timeout": "^1.0.1-CDS.0",
     "@bento-core/stats-bar": "^1.0.1-CDS.1",
     "@bento-core/tab": "^1.0.1-CDS.0",
-    "@bento-core/table": "^1.0.1-CDS.4",
+    "@bento-core/table": "^1.0.1-CDS.5",
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.0",
     "@bento-core/widgets": "^1.0.0"
