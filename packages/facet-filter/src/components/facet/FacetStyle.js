@@ -40,8 +40,8 @@ export default () => ({
   sortGroupItem: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
-    fontSize: '10px',
-    marginRight: '32px',
+    fontSize: '11px',
+    marginRight: '31px',
   },
   NonSortGroup: {
     marginBottom: '5px',
@@ -51,13 +51,13 @@ export default () => ({
   },
   NonSortGroupItem: {
     fontFamily: 'Nunito',
-    fontSize: '10px',
-    marginRight: '32px',
+    fontSize: '11px',
+    marginRight: '31px',
   },
   sortGroupItemCounts: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
-    fontSize: '10px',
+    fontSize: '11px',
     float: 'right',
     marginRight: '10px',
     marginTop: '5px',
