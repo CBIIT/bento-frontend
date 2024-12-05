@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/query-bar",
-  "version": "1.0.1-CDS.5",
+  "version": "1.0.1-CDS.6",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "react-redux": "^7.2.1"
   },
   "dependencies": {
-    "@bento-core/facet-filter": "^1.0.1-CDS.4",
+    "@bento-core/facet-filter": "^1.0.1-CDS.5",
     "lodash": "^4.17.20"
   },
   "author": "CTOS Bento Team",
