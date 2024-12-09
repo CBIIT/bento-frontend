@@ -29,7 +29,7 @@ const FacetSectionView = ({
       >
         {CustomSection ? (
           <>
-            <CustomSection section={section} />
+            <CustomSection section={section} expanded={expand} />
           </>
         ) : (
           <CustomAccordionSummary>
