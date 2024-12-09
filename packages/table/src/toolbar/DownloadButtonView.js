@@ -61,7 +61,7 @@ const DownloadButton = ({
       variables: {
         ...queryVariables,
         page: 0,
-        first: 10000,
+        first: 200000,
         order_by: table.sortBy,
         sort_direction: table.sortOrder,
       },
@@ -86,7 +86,7 @@ const DownloadButton = ({
       variables: {
         ...queryVariables,
         page: 0,
-        first: 10000,
+        first: 200000,
         order_by: table.sortBy,
         sort_direction: table.sortOrder,
       },

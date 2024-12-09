@@ -3,12 +3,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   withStyles,
-  Button,
 } from '@material-ui/core';
 import ReduxSearchCheckbox from './checkbox/ReduxSearchCheckbox';
 import { sortBySection } from '../../utils/Sort';
 import styles from './FilterItemStyle';
-import ReduxFacetModal from '../facet/ReduxFacetModal';
 
 const searchItems = (items, searchText) => {
   let matchedItems = [];
@@ -42,7 +40,6 @@ const SearchFilterItems = ({
   } = facet;
   const initialItemSize = 20;
   const [displayCount, setDisplayCount] = useState(initialItemSize);
-  const [open, setOpen] = useState(false);
   const scrollableRef = useRef(null);
   const sortFilters = sortBySection({ ...facet, sortBy });
 
@@ -82,12 +79,6 @@ const SearchFilterItems = ({
 
   return (
     <>
-      <ReduxFacetModal
-        facet={facet}
-        queryParams={queryParams}
-        open={open}
-        onClose={() => setOpen(false)}
-      />
       <div>
         <div>
           {checkedItems}
@@ -95,11 +86,6 @@ const SearchFilterItems = ({
         <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll}>
           {uncheckedItems}
         </div>
-      </div>
-      <div className={classes.searchContainer}>
-        <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
-          {`VIEW EXPANDED DISPLAY (${checkedItems.length + newUncheckedFullList.length})`}
-        </Button>
       </div>
     </>
   );
