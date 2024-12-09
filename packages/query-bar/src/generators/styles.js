@@ -105,46 +105,67 @@ export default () => ({
   facetSectionFilesBackground: {
     backgroundColor: '#F5C3F1',
   },
-  facetSectionDemographics: {
+  facetSectionDiagnosis: {
     color: '#357288',
   },
-  facetSectionDemographicsBackground: {
+  facetSectionDiagnosisBackground: {
     backgroundColor: '#E4ECE9',
     border: '1px solid #646464',
   },
-  facetSectionDiagnosis: {
+  facetSectionDemographics: {
     color: '#8C3F8D',
   },
-  facetSectionDiagnosisBackground: {
+  facetSectionDemographicsBackground: {
     backgroundColor: '#E1C9E140',
     border: '1px solid #646464',
   },
-  facetSectionSamples: {
+  facetSectionTreatment: {
+    color: '#4555AB',
+  },
+  facetSectionTreatmentBackground: {
+    backgroundColor: '#4555AB30',
+    border: '1px solid #646464',
+  },
+  facetSectionTreatmentresponse: {
     color: '#907642',
   },
-  facetSectionSamplesBackground: {
+  facetSectionTreatmentresponseBackground: {
     backgroundColor: '#F0DFBD40',
     border: '1px solid #646464',
   },
-  facetSectionDatacategory: {
+  facetSectionSurvival: {
     color: '#A85348',
   },
-  facetSectionDatacategoryBackground: {
+  facetSectionSurvivalBackground: {
     backgroundColor: '#F8D7D240',
     border: '1px solid #646464',
   },
-  facetSectionStudy: {
+  facetSectionSamples: {
     color: '#1F6BBF',
   },
-  facetSectionStudyBackground: {
+  facetSectionSamplesBackground: {
     backgroundColor: '#CEDEF040',
     border: '1px solid #646464',
   },
-  facetSectionSequencinglibrary: {
+  facetSectionDatacategory: {
     color: '#14A773',
   },
-  facetSectionSequencinglibraryBackground: {
+  facetSectionDatacategoryBackground: {
     backgroundColor: '#DDEAE540',
+    border: '1px solid #646464',
+  },
+  facetSectionStudy: {
+    color: '#357288',
+  },
+  facetSectionStudyBackground: {
+    backgroundColor: '#E4ECE9',
+    border: '1px solid #646464',
+  },
+  facetSectionSequencinglibrary: {
+    color: '#8C3F8D',
+  },
+  facetSectionSequencinglibraryBackground: {
+    backgroundColor: '#E1C9E140',
     border: '1px solid #646464',
   },
 });

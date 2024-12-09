@@ -46,7 +46,7 @@ export function convertToCSV(jsonse, keysToInclude, header) {
         } else {
           line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
         }
-      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id') {
+      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id' || keyName === 'data_category') {
         if (!entry[keyName] || entry[keyName] === '[]') {
           line += '';
         } else if (entry[keyName].toString().charAt(0) === '[' && entry[keyName].toString().charAt(entry[keyName].toString().length - 1) === ']') {
@@ -99,6 +99,8 @@ export function downloadJson(tableData, table, downloadFileName) {
   formatDataVal = formatDataVal.map((entry) => {
     let survivalStatus = entry.last_known_survival_status;
     let sampleId = entry.sample_id;
+    let dataCategory = entry.data_category;
+
     if (!survivalStatus || survivalStatus === '[]') {
       survivalStatus = '';
     } else if (survivalStatus.toString().charAt(0) === '[' && survivalStatus.toString().charAt(survivalStatus.toString().length - 1) === ']') {
@@ -110,7 +112,18 @@ export function downloadJson(tableData, table, downloadFileName) {
     } else if (sampleId.toString().charAt(0) === '[' && sampleId.toString().charAt(sampleId.toString().length - 1) === ']') {
       sampleId = sampleId.toString().substring(1, sampleId.length - 1);
     }
-    return { ...entry, last_known_survival_status: survivalStatus, sample_id: sampleId };
+
+    if (!dataCategory || dataCategory === '[]') {
+      dataCategory = '';
+    } else if (dataCategory.toString().charAt(0) === '[' && dataCategory.toString().charAt(dataCategory.toString().length - 1) === ']') {
+      dataCategory = dataCategory.toString().substring(1, dataCategory.length - 1);
+    }
+    return {
+      ...entry,
+      last_known_survival_status: survivalStatus,
+      sample_id: sampleId,
+      data_category: dataCategory,
+    };
   });
   filterColumns.forEach((column) => {
     formatDataVal = JSON.parse(
