@@ -42,6 +42,7 @@ const CheckBoxView = ({
     count = 'subjects',
     customCount = (text) => `(${text})`,
     defaultValue = '',
+    displayFacetCount = true,
   } = facet;
 
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
@@ -115,14 +116,16 @@ const CheckBoxView = ({
           <LabelComponent />
         )}
         <ListItemText className={`${checkedSection}_md_space`} />
-        <Typography
-          className={clsx(`${checkedSection}Subjects`, {
-            [`${checkedSection}SubjectUnChecked`]: !isChecked,
-            [`${checkedSection}SubjectChecked`]: isChecked,
-          })}
-        >
-          {customCount(checkboxItem[count] || 0)}
-        </Typography>
+        { displayFacetCount && (
+          <Typography
+            className={clsx(`${checkedSection}Subjects`, {
+              [`${checkedSection}SubjectUnChecked`]: !isChecked,
+              [`${checkedSection}SubjectChecked`]: isChecked,
+            })}
+          >
+            {customCount(checkboxItem[count] || 0)}
+          </Typography>
+        )}
       </ListItem>
       <Divider
         style={{
