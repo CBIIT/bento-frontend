@@ -26,7 +26,7 @@ const DownloadManifestView = (props) => {
   const getQueryVeriables = (queryVariables) => {
     const variables = { ...queryVariables };
     variables.offset = 0;
-    variables.first = 10000;
+    variables.first = 200000;
     return variables;
   };
 

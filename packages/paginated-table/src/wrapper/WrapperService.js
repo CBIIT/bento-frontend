@@ -3,7 +3,7 @@
 */
 export const getQueryVariables = (variables) => {
   const queryVariables = { ...variables };
-  queryVariables.first = 10000;
+  queryVariables.first = 200000;
   return queryVariables;
 };
 
