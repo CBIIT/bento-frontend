@@ -52,14 +52,15 @@ const AddSelectedFilesController = (props) => {
       const idsInitial = response[responseKeys[0]] || [];
       const ids = [...new Set(idsInitial)];
       const fileCount = ids.length;
-      if (fileCount <= 6000 && cartCount < 6000) {
-        if (cartCount + fileCount <= 6000) {
+      const upperLimit = 200000;
+      if (fileCount <= upperLimit && cartCount < upperLimit) {
+        if (cartCount + fileCount <= upperLimit) {
           addFiles(ids);
           setOpenSnackbar(true);
           dispatch(onRowSeclect([]));
         } else {
           const duplicate = checkDuplicate(cartFiles, ids);
-          if (cartCount + fileCount - duplicate <= 6000) {
+          if (cartCount + fileCount - duplicate <= upperLimit) {
             addFiles(ids);
             setOpenSnackbar(true);
             dispatch(onRowSeclect([]));

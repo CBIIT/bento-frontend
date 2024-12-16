@@ -76,8 +76,11 @@ const AddAllFilesComponent = (props) => {
       variables: activeFilters,
       query: addFileQuery,
     });
+    const upperLimit = 200000;
     const cartCount = cartFiles.length;
-    if (fileCount <= 6000 && cartCount < 6000) {
+    console.log(cartCount);
+    console.log(fileCount);
+    if (fileCount <= upperLimit && cartCount < upperLimit) {
       fileIds().then((response) => {
         const data = response[responseKeys[0]];
         if (data && data.length > 0) {
@@ -91,12 +94,12 @@ const AddAllFilesComponent = (props) => {
             return acc;
           }, []);
           const ids = [...new Set(idsInitial)];
-          if (cartCount + ids.length <= 6000) {
+          if (cartCount + ids.length <= upperLimit) {
             setOpen(true);
             setAddFilesId(ids);
           } else {
             const duplicate = checkDuplicate(cartFiles, ids);
-            if (cartCount + ids.length - duplicate <= 6000) {
+            if (cartCount + ids.length - duplicate <= upperLimit) {
               setOpen(true);
               setAddFilesId(ids);
             } else {
