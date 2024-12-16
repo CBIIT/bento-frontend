@@ -51,7 +51,7 @@ const FacetView = ({
   /**
    * display checked items on facet collapse
    */
-  const { type, facetValues } = facet;
+  const { type, facetValues, displayFacetCount = true } = facet;
   const selectedItems = facetValues && facetValues.filter((item) => item.isChecked);
   const displayFacet = { ...facet };
   displayFacet.facetValues = selectedItems;
@@ -135,18 +135,20 @@ const FacetView = ({
             >
               Sort alphabetically
             </span>
-            <span
-              className={
-                    clsx(classes.sortGroupItemCounts, {
-                      [classes.highlight]: sortBy === sortType.NUMERIC,
-                    })
-                  }
-              onClick={() => {
-                onSortFacet(sortType.NUMERIC);
-              }}
-            >
-              Sort by count
-            </span>
+            { displayFacetCount && (
+              <span
+                className={
+                      clsx(classes.sortGroupItemCounts, {
+                        [classes.highlight]: sortBy === sortType.NUMERIC,
+                      })
+                    }
+                onClick={() => {
+                  onSortFacet(sortType.NUMERIC);
+                }}
+              >
+                Sort by count
+              </span>
+            )}
           </>
           )}
           </div>
