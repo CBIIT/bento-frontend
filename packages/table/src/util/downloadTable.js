@@ -100,30 +100,21 @@ export function downloadJson(tableData, table, downloadFileName) {
     let survivalStatus = entry.last_known_survival_status;
     let sampleId = entry.sample_id;
     let dataCategory = entry.data_category;
+    const toReturn = { ...entry };
 
-    if (!survivalStatus || survivalStatus === '[]') {
-      survivalStatus = '';
-    } else if (survivalStatus.toString().charAt(0) === '[' && survivalStatus.toString().charAt(survivalStatus.toString().length - 1) === ']') {
+    if (survivalStatus && survivalStatus.toString().charAt(0) === '[' && survivalStatus.toString().charAt(survivalStatus.toString().length - 1) === ']') {
       survivalStatus = survivalStatus.toString().substring(1, survivalStatus.length - 1);
+      toReturn['Last Known Survival Status'] = survivalStatus;
     }
-
-    if (!sampleId || sampleId === '[]') {
-      sampleId = '';
-    } else if (sampleId.toString().charAt(0) === '[' && sampleId.toString().charAt(sampleId.toString().length - 1) === ']') {
+    if (sampleId && sampleId.toString().charAt(0) === '[' && sampleId.toString().charAt(sampleId.toString().length - 1) === ']') {
       sampleId = sampleId.toString().substring(1, sampleId.length - 1);
+      toReturn['Sample Id'] = sampleId;
     }
-
-    if (!dataCategory || dataCategory === '[]') {
-      dataCategory = '';
-    } else if (dataCategory.toString().charAt(0) === '[' && dataCategory.toString().charAt(dataCategory.toString().length - 1) === ']') {
+    if (dataCategory && dataCategory.toString().charAt(0) === '[' && dataCategory.toString().charAt(dataCategory.toString().length - 1) === ']') {
       dataCategory = dataCategory.toString().substring(1, dataCategory.length - 1);
+      toReturn['Data Category'] = dataCategory;
     }
-    return {
-      ...entry,
-      last_known_survival_status: survivalStatus,
-      sample_id: sampleId,
-      data_category: dataCategory,
-    };
+    return toReturn;
   });
   filterColumns.forEach((column) => {
     formatDataVal = JSON.parse(

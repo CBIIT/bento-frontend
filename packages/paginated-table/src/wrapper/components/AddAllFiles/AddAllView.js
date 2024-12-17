@@ -78,8 +78,6 @@ const AddAllFilesComponent = (props) => {
     });
     const upperLimit = 200000;
     const cartCount = cartFiles.length;
-    console.log(cartCount);
-    console.log(fileCount);
     if (fileCount <= upperLimit && cartCount < upperLimit) {
       fileIds().then((response) => {
         const data = response[responseKeys[0]];
