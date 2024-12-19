@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ToolTip from '@bento-core/tool-tip';
-import { Button } from '@material-ui/core';
+import { Button, Backdrop, CircularProgress } from '@material-ui/core';
 import clsx from 'clsx';
 import { getFilesID } from '../../WrapperService';
 import AddToCartDialogView from '../AddToCartDialog/AddToCartDialogView';
@@ -34,15 +34,17 @@ export const ToolTipView = (props) => {
   );
 };
 
-const checkDuplicate = (cartFiles, ids) => {
-  let duplicateCount = 0;
-  for (let i = 0; i < cartFiles.length; i += 1) {
-    if (ids.includes(cartFiles[i])) {
-      duplicateCount += 1;
-    }
-  }
-  return duplicateCount;
-};
+// const checkDuplicate = (cartFiles, ids) => {
+//   const newIds = [];
+//   for (let i = 0; i < ids.length; i += 1) {
+//     if (!cartFiles.includes(ids[i])) {
+//       newIds.push(ids[i]);
+//     }
+//   }
+//   return newIds;
+// };
+
+const checkDuplicate = (cartFiles, ids) => (ids.filter((id) => !cartFiles.includes(id)));
 
 const AddAllFilesComponent = (props) => {
   const {
@@ -66,6 +68,13 @@ const AddAllFilesComponent = (props) => {
   const [openAddDialog, setOpen] = useState(false);
   const toggleOpen = () => setOpen(!openAddDialog);
   const [addFilesId, setAddFilesId] = useState([]);
+  const [isDataloading, setIsDataloading] = useState(false);
+
+  const backdropCls = {
+    width: '100%',
+    zIndex: 99999,
+    background: 'rgba(0, 0, 0, 0.1)',
+  };
 
   /**
   * verify and set file ids
@@ -79,27 +88,39 @@ const AddAllFilesComponent = (props) => {
     const upperLimit = 200000;
     const cartCount = cartFiles.length;
     if (fileCount <= upperLimit && cartCount < upperLimit) {
+      setIsDataloading(true);
       fileIds().then((response) => {
         const data = response[responseKeys[0]];
         if (data && data.length > 0) {
           const isArray = Array.isArray(data[0][responseKeys[1]]);
-          const idsInitial = data.reduce((acc, id) => {
-            if (id && id[responseKeys[1]]) {
-              // if object convert to array
-              const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
-              acc.push(...items);
+          // const idsInitial = data.reduce((acc, id) => {
+          //   if (id && id[responseKeys[1]]) {
+          //     // if object convert to array
+          //     const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
+          //     acc.push(...items);
+          //   }
+          //   return acc;
+          // }, []);
+          const ids = [];
+          data.forEach((item) => {
+            if (item && item[responseKeys[1]]) {
+              const items = isArray ? item[responseKeys[1]] : [item[responseKeys[1]]];
+              items.forEach((it) => {
+                ids.push(it);
+              });
             }
-            return acc;
-          }, []);
-          const ids = [...new Set(idsInitial)];
+          });
+          // const ids = [...new Set(idsInitial)];
           if (cartCount + ids.length <= upperLimit) {
+            setIsDataloading(false);
             setOpen(true);
             setAddFilesId(ids);
           } else {
-            const duplicate = checkDuplicate(cartFiles, ids);
-            if (cartCount + ids.length - duplicate <= upperLimit) {
+            const newIds = checkDuplicate(cartFiles, ids);
+            setIsDataloading(false);
+            if (cartCount + newIds.length <= upperLimit) {
               setOpen(true);
-              setAddFilesId(ids);
+              setAddFilesId(newIds);
             } else {
               setAlterDisplay(true);
             }
@@ -136,6 +157,9 @@ const AddAllFilesComponent = (props) => {
         onYesClick={addFilesToCart}
         onNoClick={toggleOpen}
       />
+      <Backdrop className={backdropCls} style={backdropCls} open={isDataloading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 };
