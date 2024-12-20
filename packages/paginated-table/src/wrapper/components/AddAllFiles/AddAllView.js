@@ -44,7 +44,7 @@ export const ToolTipView = (props) => {
 //   return newIds;
 // };
 
-const checkDuplicate = (cartFiles, ids) => (ids.filter((id) => !cartFiles.includes(id)));
+const checkDuplicate = (cartFiles, ids) => (ids.filter((id) => !cartFiles[id]));
 
 const AddAllFilesComponent = (props) => {
   const {
@@ -69,6 +69,9 @@ const AddAllFilesComponent = (props) => {
   const toggleOpen = () => setOpen(!openAddDialog);
   const [addFilesId, setAddFilesId] = useState([]);
   const [isDataloading, setIsDataloading] = useState(false);
+
+  const cartFilesDict = {};
+  cartFiles.forEach((file) => { cartFilesDict[file] = true; });
 
   const backdropCls = {
     width: '100%',
@@ -101,22 +104,22 @@ const AddAllFilesComponent = (props) => {
           //   }
           //   return acc;
           // }, []);
-          const ids = [];
+          const idsInitial = [];
           data.forEach((item) => {
             if (item && item[responseKeys[1]]) {
               const items = isArray ? item[responseKeys[1]] : [item[responseKeys[1]]];
               items.forEach((it) => {
-                ids.push(it);
+                idsInitial.push(it);
               });
             }
           });
-          // const ids = [...new Set(idsInitial)];
+          const ids = [...new Set(idsInitial)];
           if (cartCount + ids.length <= upperLimit) {
             setIsDataloading(false);
             setOpen(true);
             setAddFilesId(ids);
           } else {
-            const newIds = checkDuplicate(cartFiles, ids);
+            const newIds = checkDuplicate(cartFilesDict, ids);
             setIsDataloading(false);
             if (cartCount + newIds.length <= upperLimit) {
               setOpen(true);
