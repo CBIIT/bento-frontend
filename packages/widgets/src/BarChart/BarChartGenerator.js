@@ -219,7 +219,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
           return (
             <div style={tooltipStyle}>
               <div>{`${label}`}</div>
-              <div>{`Participants : ${payload[0].value}`}</div>
+              <div>{`Participants : ${payload[0].value.toLocaleString()}`}</div>
             </div>
           );
         }

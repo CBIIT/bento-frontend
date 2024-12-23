@@ -116,10 +116,10 @@ const SliderView = ({
         </div>
         <Box className={classes.lowerUpperBound}>
           <Typography className={classes.lowerBound}>
-            {minLowerBound}
+            {minLowerBound.toLocaleString()}
           </Typography>
           <Typography className={classes.upperBound}>
-            {maxUpperBound}
+            {maxUpperBound.toLocaleString()}
           </Typography>
         </Box>
       </div>
@@ -130,9 +130,9 @@ const SliderView = ({
           <Typography
             className={isValid() ? classes.sliderText : classes.invalidSliderText}
           >
-            {sliderValue[0]}
+            {sliderValue[0].toLocaleString()}
             {' - '}
-            {sliderValue[1]}
+            {sliderValue[1].toLocaleString()}
             &nbsp;
             {quantifier}
           </Typography>

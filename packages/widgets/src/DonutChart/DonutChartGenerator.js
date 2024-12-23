@@ -95,7 +95,7 @@ export const DEFAULT_CONFIG_DONUT = {
             <title>{payload.name}</title>
           </text>
           <text x={cx} y={cy} dy={0} textAnchor="middle" fill={textColor} fontSize={fontSize || '12px'} fontWeight="bold" fontFamily={fontFamily || 'Nunito'}>
-            {`${faceValue}`}
+            {`${faceValue.toLocaleString()}`}
           </text>
           <text x={cx} y={cy} dy={12} textAnchor="middle" fill={textColor} fontSize={fontSize || '12px'} fontWeight="light" fontFamily={fontFamily || 'Nunito'}>
             {`${sliceTitle}`}

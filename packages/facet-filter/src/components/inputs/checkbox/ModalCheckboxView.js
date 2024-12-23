@@ -162,7 +162,7 @@ const CheckBoxView = ({
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {`(${subjects})`}
+          {`(${subjects.toLocaleString()})`}
         </Typography>
       </ListItem>
     </>
