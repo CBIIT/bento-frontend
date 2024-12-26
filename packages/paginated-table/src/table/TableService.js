@@ -38,7 +38,7 @@ const getPaginatedQueryVariables = (queryVariables, table) => {
   variables.order_by = sortBy;
   variables.first = rowsPerPage;
   variables.sort_direction = sortOrder;
-  variables.search_query = searchQuery;
+  variables.filter_text = searchQuery;
   return variables;
 };
 

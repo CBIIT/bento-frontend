@@ -13,6 +13,7 @@ const SearchInputView = ({
   table,
 }) => {
   const [searchText, setSearchText] = useState('');
+
   const handleChange = (event) => {
     setSearchText(event.target.value);
     if (event.key === 'Enter') {
@@ -20,7 +21,7 @@ const SearchInputView = ({
     }
   };
 
-  const handleClick = () => {
+  const handleClear = () => {
     onSearchQueryChange('');
     setSearchText('');
   };
@@ -40,6 +41,7 @@ const SearchInputView = ({
         onChange={handleChange}
         onKeyDown={handleChange}
         value={searchText}
+        className='filterTextInput'
         InputProps={{
           endAdornment: (
             <>
@@ -47,14 +49,21 @@ const SearchInputView = ({
                 (table?.searchQuery) && (
                   <InputAdornment
                     position='end'
-                    onClick={handleClick}
+                    onClick={handleClear}
+                    className='filterTextClearButton'
                   >
-                    <ClearIcon />
+                    <ClearIcon className='filterTextCrossIcon' />
                   </InputAdornment>
                 )
               }
-              <InputAdornment position='start'>
-                <SearchIcon onClick={handleChange} />
+              <InputAdornment
+                position='start'
+                className='filterTextSearchButton'
+              >
+                <SearchIcon
+                  onClick={() => onSearchQueryChange(searchText)}
+                  className='filterTextSearchIcon'
+                />
               </InputAdornment>
             </>
           ),
