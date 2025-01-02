@@ -52,6 +52,7 @@ const CustomPagination = ({
       page={page}
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
+      labelDisplayedRows={({ from, to }) => `${from}-${to} of ${count.toLocaleString()}`}
       SelectProps={{
         IconComponent: KeyboardArrowDownOutlinedIcon,
         inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
