@@ -5,8 +5,8 @@ import { validateObjects, validateProps } from '../validation/ValidateSchema';
 import { NodeSchema } from '../validation/NodeSchema';
 import { Required as isPropertyRequired, Tag, propertyType as propertyRequiredType } from '../constant/model';
 
-const DATA_MODEL = "https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model.yml";
-const DATA_MODEL_PROPS = "https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model-props.yml";
+const DATA_MODEL = "https://raw.githubusercontent.com/CBIIT/icdc-model-tool/master/model-desc/icdc-model.yml";
+const DATA_MODEL_PROPS = "https://raw.githubusercontent.com/CBIIT/icdc-model-tool/master/model-desc/icdc-model-props.yml";
 
 /**
  * http call - retive YAML file content
@@ -17,6 +17,7 @@ const getYAMLFileContent = async (url) => {
   try {
     const response = await axios.get(url);
     const data = yaml.load(response.data);
+    console.log(data);
     return data;
   } catch (error) {
     console.error(`model Url http error \n ${error}`);
@@ -54,17 +55,49 @@ const getNodePropertyDetails = (nodeName, yamlPropertyDetails, propertyItem) => 
     propertyItem = {};
   }
   
-  propertyItem.category = nodeName;
+  propertyItem.node = nodeName;
   propertyItem.description = yamlPropertyDetails.Desc;
   propertyItem.type = yamlPropertyDetails.Type || yamlPropertyDetails.Enum;
   propertyItem.enum = yamlPropertyDetails?.Enum || yamlPropertyDetails?.Type?.Enum;
   propertyItem.key = yamlPropertyDetails?.Key;
-  propertyItem.propertyType = getPropertyType(yamlPropertyDetails.Req)
+  propertyItem.propertyType = getPropertyType(yamlPropertyDetails.Req);
+  propertyItem.inclusion = propertyItem.propertyType;
   propertyItem.display = (yamlPropertyDetails.Tags && yamlPropertyDetails.Tags.Labeled) 
     ? isPropertyRequired.YES : isPropertyRequired.NO;
 
   return propertyItem;
 };
+
+/**
+* compute relations
+* @param {*} relationships 
+* @returns 
+*/
+const generateRelations = (relationships) => {
+  // crate links
+  const nodeReationships = {};
+  for (const node in relationships) {
+    /* CAUTION
+    * Dst - node/point where edge originates (source)
+    * Src - node/point where edge ends (target)
+    */
+    const nodeRelations = relationships[node] || [];
+    const { Ends, Mul } = nodeRelations;
+    Ends.forEach((item, index) => {
+      const linkItem = {};
+      const source = item.Dst;
+      const target = item.Src;
+      linkItem.source = source;
+      linkItem.target = target;
+      linkItem.relationType = Mul;
+      if (!nodeReationships[source]) {
+        nodeReationships[source] = [];
+      }
+      nodeReationships[source].push(linkItem);
+    });
+  }
+  return nodeReationships;
+}
 
 export const getDictionary = (
   dataModelUrl = DATA_MODEL,
@@ -72,9 +105,10 @@ export const getDictionary = (
 ) => {
 
   async function getModelData() {
-    const { Nodes: nodesDetails } = await getYAMLFileContent(dataModelUrl);
+    const { Nodes: nodesDetails, Relationships } = await getYAMLFileContent(dataModelUrl);
     const { PropDefinitions: yamlPropertiesDetails } = await getYAMLFileContent(dataModePropsUrl);
     // read YMAL file and format data value
+    const nodeReationships = generateRelations(Relationships);
     const modelData = {};
     for (const [key, value] of Object.entries(nodesDetails)) {
       // validate YAML content / node - limited to runtime
@@ -95,6 +129,7 @@ export const getDictionary = (
       item.description = item.desc || '';
       item.template = value.Tags?.Template || '';
 
+
       // add node properties
       if (value.Props !== null && value.Props.length > 0) {
         const propertiesName = value.Props;
@@ -103,11 +138,14 @@ export const getDictionary = (
             // add property details
             if (yamlPropertiesDetails[name]) {
               acc[name] = getNodePropertyDetails(key, yamlPropertiesDetails[name], acc[name]);
+              acc[name].propertyName = name;
             }
             return acc;
           }, {});
         item.properties = properties;
       }
+      // assign links
+      item.links = nodeReationships[key];
       modelData[key] = item;
     }
     return modelData;

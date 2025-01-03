@@ -20,6 +20,8 @@ const CheckBoxView = ({
   * use context access data model state
   */
   const { context } = useModelContext();
+  const { facetItemCount = {} } = context;
+
   const handleToggleCheckBox = () => {
     const { dispatch } = context;
     dispatch(onToggleCheckBox({
@@ -49,6 +51,9 @@ const CheckBoxView = ({
            <StyledLabelSpan>
               {facetItem}
            </StyledLabelSpan>
+           <span>
+             {`(${facetItemCount[facetItem]?.length || 0})`}
+           </span>
          </StyledLabelDiv>
        </StyledListItem>
        <StyledMuiDivider checkboxItem={true} />

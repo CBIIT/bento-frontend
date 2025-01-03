@@ -1,37 +1,98 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import reducer from './state/reducers/reducers';
-import { useModelContext } from './state/NavContextProvider';
-// import HeaderView from './components/header/HeaderView';
-import FacetSections from './components/filter/FacetController';
+import React,
+{
+  useLayoutEffect,
+  useRef,
+  useState,
+  useEffect
+} from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import FacetSections from './components/Filter/FacetController';
+import {
+  StyledContainer,
+  StyledSideBarContrainer,
+  StyledTabBtnContainer,
+  StyledTabContainer,
+  StyledTabPanelContainer,
+  StyledTabPanelOuterContainer,
+  TabPanelContrainer
+} from './Navigator.styled';
+
+const TabPanel = (props) => {
+  const { children, value, index } = props;
+
+  return (
+    <TabPanelContrainer
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
+    >
+      {value === index && (<>{children}</>)}
+    </TabPanelContrainer>
+  );
+};
 
 const NavigatorView = ({
   dictionary,
-  config
+  NavGraphView,
+  NavTableView
 }) => {
+  // garph tab / table tab
+  const [value, setValue] = useState(0);
   
-  const initModelState = () => ({ dictionary, ...config });
-  /**
-  * Initailize useReducer state
-  * 1. model: state
-  * 2. dispatch: dispatch action to update filter or any state value
-  */
-  const [modelState, dispatch] = useReducer(reducer, {}, initModelState);
-  /**
-  * use context access data model state
-  */
-  const modelContext = useModelContext();
-  useEffect(() => {
-    const { setContext } = modelContext;
-    setContext({ ...modelState, dispatch });
-    console.log(modelState);
-  }, [modelState]);
+  const handleChange = (event, tabIndex) => {
+    setValue(tabIndex);
+  };
 
+  /**
+   * get witdh of the tab to position nodes in the graph view
+   */
+  const ref = useRef(null);
+  const [tabViewWidth, setTabViewWidth] = useState(0);
+
+  const setCanvasWidth = () => {
+    setTabViewWidth(ref.current.offsetWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", setCanvasWidth);
+    return () => {
+      window.removeEventListener("resize", setCanvasWidth);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    setTabViewWidth(ref.current.offsetWidth);
+  }, []);
 
   return (
-    <>
-      <h2>Navigator View 123</h2>
-      <FacetSections />
-    </>
+    <StyledContainer ref={ref}>
+      <StyledSideBarContrainer>
+        <FacetSections />
+      </StyledSideBarContrainer>
+      <StyledTabContainer >
+        <StyledTabBtnContainer>
+          <Tabs value={value} onChange={handleChange} aria-label="nav_tabs">
+            <Tab label="graph"  />
+            <Tab label="table" />
+          </Tabs>
+        </StyledTabBtnContainer>
+        <StyledTabPanelOuterContainer >
+          <StyledTabPanelContainer>
+            <TabPanel value={value} index={0}>
+              <NavGraphView
+                dictionary={dictionary}
+                tabViewWidth={tabViewWidth}
+              />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <NavTableView dictionary={dictionary} />
+            </TabPanel>
+          </StyledTabPanelContainer>
+        </StyledTabPanelOuterContainer>
+    </StyledTabContainer>
+  </StyledContainer>
   );
 }
 

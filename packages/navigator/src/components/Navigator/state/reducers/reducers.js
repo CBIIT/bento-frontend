@@ -1,5 +1,5 @@
 import { actionTypes } from "../actions/Action";
-import { getFilterState } from "./filter";
+import { onFilterValueChange } from "../../components/Filter/util/filter";
 
 const reducer = (state, action) => {
     const { type, payload } = action;
@@ -11,7 +11,7 @@ const reducer = (state, action) => {
           ...payload
         };
       case actionTypes.ON_TOGGLE_CHECKBOX:
-        const updateState = getFilterState(cloneState, payload);
+        const updateState = onFilterValueChange(cloneState, payload);
         return updateState;
       default:
         return state;

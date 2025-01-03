@@ -8,7 +8,7 @@ const FacetSection = ({
   return (
     <>
       {
-        Object.keys(section).map(
+        Object.keys(section || {}).map(
           (sectionName) => (
             <div>
               {sectionName}

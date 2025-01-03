@@ -3,7 +3,7 @@ import {
   BrowserRouter,
 } from 'react-router-dom';
 import { CustomThemeProvider } from './ThemeContext';
-import Layout from './components/Layout/NavLayoutView';
+import Layout from './components/BentoAppLayout/NavLayoutView';
 
 const App = () => {
   return (

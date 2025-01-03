@@ -11,8 +11,6 @@ export const updateDictionary = (payload) => {
 };
 
 export const onToggleCheckBox = (payload) => {
-  console.log('onToggleCheckBox');
-  console.log(payload);
   return {
     type: actionTypes.ON_TOGGLE_CHECKBOX,
     payload: payload,

@@ -1,5 +1,15 @@
+import { initFacetItemCount } from "../components/Filter/util/filter";
 
-const isExploredNode = (key, object) => {
+const exclusionItems = [
+  'administrative',
+  'analysis',
+  'biospecimen',
+  'case',
+  'clinical',
+  'clinical_trial',
+];
+
+const isExploredObject = (key, object) => {
   if(object[key]) {
     return true;
   }
@@ -7,11 +17,79 @@ const isExploredNode = (key, object) => {
   return false;
 }
 
-const initializeFilterByNodes = (node, filterByNode = {}) => {
-  const facetSection = 'filterByNode';
-  Object.keys(filterByNode).forEach((facet) => {
-    const facetItem = node[facet];
-    filterByNode[facet][facetItem] = {
+export const facetSectionType = {
+  filterByNode: 'filterByNode',
+  filterByProperty: 'filterByProperty'
+};
+
+export const level = {
+  NODE: 'node',
+  PROPERTY: 'property'
+};
+
+export const filterByNode = ['category', 'assignment', 'class'];
+export const filterByProperty = ['inclusion', 'display'];
+
+/**
+ * dataset to track nodes count
+ */
+const node2FacetItems = (
+  facetFilterData
+) => {
+  let filterDataset = structuredClone(facetFilterData);
+  const node2FacetItem = [...filterByNode, ...filterByProperty].reduce(
+    (acc, facetItem) => {
+      filterDataset.forEach(item => {
+        if (item[facetItem]) {
+          if(!acc[item[facetItem]]) {
+            acc[item[facetItem]] = [];
+          }
+          if(!acc[item[facetItem]].includes(item.nodeName)) {
+            acc[item[facetItem]].push(item.nodeName);
+          }
+        }
+      });
+      return acc;
+  }, {});
+  console.log('node2Facet Items');
+  console.log(node2FacetItem);
+  return node2FacetItem;
+};
+
+/**
+ * dataset to track properties count
+ */
+const property2FacetItems = (
+  facetFilterData
+) => {
+  let filterDataset = structuredClone(facetFilterData);
+  const property2FacetItem = [...filterByNode, ...filterByProperty].reduce(
+    (acc, facetItem) => {
+      filterDataset.forEach(item => {
+        if (item[facetItem]) {
+          if(!acc[item[facetItem]]) {
+            acc[item[facetItem]] = [];
+          }
+          if(item.propertyName && !acc[item[facetItem]].includes(item.propertyName)) {
+            acc[item[facetItem]].push(item.propertyName);
+          }
+        }
+      });
+      return acc;
+  }, {});
+  console.log('property2FacetItem Items');
+  console.log(property2FacetItem);
+  return property2FacetItem;
+} 
+
+const initializeFilterSectionState = (
+  object,
+  filterSection = {},
+  facetSection
+) => {
+  Object.keys(filterSection).forEach((facet) => {
+    const facetItem = object[facet];
+    filterSection[facet][facetItem] = {
       isChecked: false,
       facetSection,
       facet,
@@ -20,18 +98,37 @@ const initializeFilterByNodes = (node, filterByNode = {}) => {
   });
 };
 
-const initializeFilterByProperty = (properties, filterByProperty = {}) => {
-  const facetSection = 'filterByProperty';
-  // console.log(properties);
-  Object.keys(filterByProperty).forEach((facet) => {
-    const facetItem = properties[facet];
-    filterByProperty[facet][facetItem] = {
-      isChecked: false,
-      facetSection,
-      facet,
-      facetItem,
-    }
-  });
+const getNodeDetails = ({
+  id: nodeName,
+  assignment,
+  category,
+  class: nodeClass
+}) => ({
+  nodeName,
+  assignment,
+  category,
+  class: nodeClass,
+  level: level.NODE
+})
+
+const getNodePropertyDetails = (node, property = {}) => {
+  const {
+    id: nodeName,
+    assignment,
+    category,
+    class: nodeClass,
+  } = node;
+  const { display, inclusion, propertyName } = property;
+  return {
+    nodeName,
+    propertyName,
+    assignment,
+    category,
+    class: nodeClass,
+    display,
+    inclusion,
+    level: level.PROPERTY
+  };
 };
 
 /**
@@ -40,9 +137,8 @@ const initializeFilterByProperty = (properties, filterByProperty = {}) => {
 * return 
 */
 export const getFilterItems = (dictionary) => {
-  // Filter by node
+  // limit exploring nodes or properties 
   const exploredObject = {};
-  const filterNodeProperties = [];
 
   const filterByNode = {
     category: {},
@@ -51,35 +147,70 @@ export const getFilterItems = (dictionary) => {
   };
 
   const filterByProperty = {
-    propertyType: {},
+    inclusion: {},
     display: {},
   };
 
   // filter items
   const nodes = Object.keys(dictionary);
-  const fitlerItems = nodes.reduce((acc, item, index) => {
-    const node = dictionary[item];
-    acc[item] = false;
-    // filter by node 
-    if (!isExploredNode(item, exploredObject)) {
-      initializeFilterByNodes(node, filterByNode);
-    }
 
+  // create data to filter (hide/display) nodes 
+  // based on node / properties / relation
+  const facetFilterData = nodes.reduce((acc, item, index) => {
+    const node = dictionary[item];
+    // filter by node 
+    if (!isExploredObject(item, exploredObject)) {
+      initializeFilterSectionState(
+        node, 
+        filterByNode, 
+        facetSectionType.filterByNode
+      );
+    }
+    acc.push(getNodeDetails(node));
+
+    // iterate over each properties
     const nodeProperties = Object.keys(node.properties || {});
     if (nodeProperties.length > 0) {
       nodeProperties.forEach((key) => {
-        const property = node.properties[key];
+        // property
+        const property = {
+          propertyName: key,
+          ...node.properties[key]
+        };
+        // console.log()
         const { display, propertyType } = property;
-        if (!isExploredNode(display, exploredObject)
-          || !isExploredNode(propertyType, exploredObject)){
-          initializeFilterByProperty(property, filterByProperty)
+        if (!isExploredObject(display, exploredObject)
+          || !isExploredObject(propertyType, exploredObject)){
+          initializeFilterSectionState(
+            property, 
+            filterByProperty, 
+            facetSectionType.filterByProperty
+          );
         }
+        // list of data to filter
+        acc.push(getNodePropertyDetails(node, property));
       });
     }
 
     //filter by property
     return acc;
-  }, {});
+  }, []);
 
-  return { filterByNode, filterByProperty };
+  // facet item count 
+  if (!facetFilterData) {
+    return {};
+  }
+
+  const facetItemCount = initFacetItemCount(facetFilterData);
+  const node2FacetItem = node2FacetItems(facetFilterData);
+  const props2FacetItem = property2FacetItems(facetFilterData);
+
+  return {
+    filterByNode, 
+    filterByProperty, 
+    facetFilterData, 
+    facetItemCount,
+    node2FacetItem,
+    props2FacetItem
+  };
 };

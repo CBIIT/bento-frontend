@@ -4,13 +4,14 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { getDataModel, getDictionary, getModelData } from '../Navigator/controller/Navigator';
-import HeaderView from '../Navigator/components/header/HeaderView';
+import { getDictionary } from '../Navigator/controller/Dictionary';
+import HeaderView from '../Navigator/components/Header/HeaderView';
 import { ModelContextProvider, useModelContext } from '../Navigator/state/NavContextProvider';
-import reducer from '../Navigator/state/reducers/reducers';
-import { updateDictionary } from '../Navigator/state/actions/Action';
-import NavigatorView from '../Navigator/NavigatorView';
+import NavigatorView from '../Navigator/NavigatorController';
 import { getFilterItems } from '../Navigator/controller/Filter';
+import TableView from '../Navigator/components/Table/TableView';
+import GraphView from '../Navigator/components/xyFlowGraph/GraphView';
+import { generateNodeTree } from '../Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
 
 const readMeConfig =  {
   readMeUrl: 'https://raw.githubusercontent.com/rana22/category_partition/main/README.md',
@@ -28,13 +29,12 @@ const graphConfig = {
       xInterval: 250,
       yInterval: 90,
     },
-    // nodeTree: customNodeTree,
   }
-}
+};
 
 const DataModelNavigatorView = () => {
   const { dictionary } = getDictionary();
-
+  console.log(dictionary);
   if(!dictionary) {
     return (
       <>
@@ -42,22 +42,54 @@ const DataModelNavigatorView = () => {
       </>
     )
   }
-  const filterSections = getFilterItems(dictionary);
+  /**
+   * create node tree
+   */
+  const nodeTree = generateNodeTree(dictionary);
+  console.log(nodeTree);
+
+  const {
+    filterByNode,
+    filterByProperty,
+    facetFilterData,
+    facetItemCount,
+    facetSectionCount,
+    node2FacetItem,
+    props2FacetItem
+  } = getFilterItems(dictionary);
+
+  const filterSections = {filterByNode, filterByProperty};
 
   const config = {
+    nodeTree,
     readMeConfig,
     graphConfig,
-    filterSections
+    filterSections,
+    facetFilterData,
+    facetSectionCount,
+    node2FacetItem,
+    props2FacetItem,
+    facetSectionCount,
+    facetItemCount,
   }
 
+  // configuretable
+  const NavTableView = (props) => (<TableView {...props} config={config} />);
+
+  // configure graph
+  const NavGraphView = (props) => (<GraphView {...props} />);
+  
   return (
     <>
       <HeaderView />
       <NavigatorView
         dictionary={dictionary}
+        facetSectionCount={facetSectionCount}
+        facetItemCount={facetItemCount}
         config={config}
+        NavTableView={NavTableView}
+        NavGraphView={NavGraphView}
       />
-      <p>{JSON.stringify(dictionary)}</p>
     </>
   );
 }

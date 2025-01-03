@@ -1,6 +1,7 @@
 import React from 'react';
 import { useModelContext } from '../../state/NavContextProvider';
 import FacetSection from './FacetSection';
+import { facetSectionType } from '../../controller/Filter';
 
 const FacetSections = () => {
   /**
@@ -16,7 +17,7 @@ const FacetSections = () => {
   return (
     <>
       {
-        (Object.keys(filterSections))
+        (Object.keys(facetSectionType))
           .map((section) => (
             <div>
               <p>{section}</p>
