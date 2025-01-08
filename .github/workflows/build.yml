@@ -29,7 +29,7 @@ jobs:
         # Get all tags for the repo and find the latest tag for the branch being built
         git fetch --tags --force --quiet
         # tag=$(git tag -l $GITHUB_REF_NAME* | tail -1 | cut -d "-" -f2-)
-        build_num=$(git tag -l $BRANCH_NAME* | tail -1 | cut -d "-" -f2-)
+        build_num=$(git tag -l $BRANCH_NAME* | tail -1 | cut -d "." -f2-)
         echo "BUILD_NUM = $build_num"
         ((build_num++))
         echo "IMAGE_TAG=$GITHUB_REF_NAME.$build_num" >> $GITHUB_ENV
