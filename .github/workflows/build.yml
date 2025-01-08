@@ -66,12 +66,13 @@ jobs:
     #     ignore-unfixed: true
     #     severity: 'CRITICAL,HIGH'
 
-    # - name: Create Git tag for Image
-    #   run: |
-    #     git config user.name "GitHub Actions"
-    #     git config user.email "github-actions@users.noreply.github.com"
-    #     git tag ${{ env.IMAGE_TAG }}
-    #     git push origin ${{ env.IMAGE_TAG }}
+    - name: Create Git tag for Image
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "github-actions@users.noreply.github.com"
+        git tag ${{ env.IMAGE_TAG }}
+        git push origin ${{ env.IMAGE_TAG }}
+
     # - name: AWS OIDC Authentication
     #   uses: aws-actions/configure-aws-credentials@v4
     #   with:
@@ -90,6 +91,7 @@ jobs:
     #   run: |
     #     docker tag  $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
     #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
     # - name: Slack Notification
     #   uses: act10ns/slack@v1
     #   with:
