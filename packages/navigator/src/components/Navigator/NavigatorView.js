@@ -74,8 +74,8 @@ const NavigatorView = ({
       <StyledTabContainer >
         <StyledTabBtnContainer>
           <Tabs value={value} onChange={handleChange} aria-label="nav_tabs">
-            <Tab label="graph"  />
-            <Tab label="table" />
+            <Tab label="Graph View"  />
+            <Tab label="Table View" />
           </Tabs>
         </StyledTabBtnContainer>
         <StyledTabPanelOuterContainer >

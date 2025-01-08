@@ -1,9 +1,5 @@
 import styled from '@emotion/styled';
 import { Button, ButtonGroup } from '@mui/material';
-import MuiMenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
-import Paper from '@mui/material/Paper';
-import Grow from '@mui/material/Grow';
 
 export const Container =  styled('div')({
   display: "flex",
@@ -20,20 +16,20 @@ export const TitleAndDescContainer =  styled('div')({
 });
 
 export const NodeTitle =  styled('span')({
-  width: "260px",
-  flexGrow: "0",
-  flexShrink: "0",
-  "-moz-user-select": "none",
-  "-webkit-user-select": "none",
-  fontWeight: "700",
-  "-ms-user-select": "none",
-  userSelect: "none",
-  fontSize: "15px",
-  fontFamily: "Nunito",
-  lineHeight: "14px",
-  "&:hover": {
-    color: "#3283c8",
-  },
+      width: "260px",
+      flexGrow: "0",
+      flexShrink: "0",
+      "-moz-user-select": "none",
+      "-webkit-user-select": "none",
+      fontWeight: "700",
+      "-ms-user-select": "none",
+      userSelect: "none",
+      fontSize: "15px",
+      fontFamily: "Nunito",
+      lineHeight: "14px",
+      "&:hover": {
+        color: "#3283c8",
+      },
 });
 
 export const TagsAndDescriptionContainer =  styled('div')({

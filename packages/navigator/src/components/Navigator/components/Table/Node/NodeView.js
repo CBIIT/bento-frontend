@@ -19,11 +19,11 @@ const NodeView = ({
   return (
     <Styled.Container className={`${category}_${title}`}>
       <Styled.TitleAndDescContainer className="titleAndDescContainer">
-        <Styled.NodeTitle className="nodeTitle">
+        <Styled.NodeTitle className={`nodeTitle_${title}`}>
           {title}
         </Styled.NodeTitle>
         <Styled.TagsAndDescriptionContainer className="tagsAndDescriptionContainer">
-          <Styled.NodeDescription className="nodeDescription">
+          <Styled.NodeDescription className={`nodeDescription_${title}`}>
             {description}
           </Styled.NodeDescription>
           <Styled.TagsAndBtnContainer className="tagsAndBtnContainer">

@@ -32,31 +32,37 @@ const CheckBoxView = ({
 
   return (
      <>
-       <StyledListItem
-          width={1}
-          button
-          alignItems={alignment}
-          selected={true}
-          onClick={() => console.log('on check')}
-       >
-         <StyledMuiCheckBox
-           onClick={handleToggleCheckBox}
-           checkedIcon={ <StyledCheckBoxIcon /> }
-           checked={isChecked}
-           tabIndex={-1}
-           disableRipple
-           color="secondary"
-         />
-         <StyledLabelDiv>
-           <StyledLabelSpan>
-              {facetItem}
-           </StyledLabelSpan>
-           <span>
-             {`(${facetItemCount[facetItem]?.length || 0})`}
-           </span>
-         </StyledLabelDiv>
-       </StyledListItem>
-       <StyledMuiDivider checkboxItem={true} />
+     {
+      facetItemCount[facetItem]?.length > 0 && (
+        <>
+          <StyledListItem
+            width={1}
+            button
+            alignItems={alignment}
+            selected={true}
+            onClick={handleToggleCheckBox}
+          >
+            <StyledMuiCheckBox
+              onClick={handleToggleCheckBox}
+              checkedIcon={ <StyledCheckBoxIcon /> }
+              checked={isChecked}
+              tabIndex={-1}
+              disableRipple
+              color="secondary"
+            />
+            <StyledLabelDiv>
+              <StyledLabelSpan>
+                  {facetItem}
+              </StyledLabelSpan>
+              <span>
+                {`(${facetItemCount[facetItem]?.length || 0})`}
+              </span>
+            </StyledLabelDiv>
+          </StyledListItem>
+          <StyledMuiDivider checkboxItem={true} />
+        </>
+      )
+     }
      </>
   );
 }

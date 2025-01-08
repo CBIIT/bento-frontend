@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import renderSvgElement from './RenderSvg';
-import { getCategoryColor, pdfNodeCategoryList } from '../../Category/helper';
+import { getCategoryColor } from '../../Category/helper';
 import { FontRegistry, capitalizeFirstLetter } from './util';
 
 const styles = StyleSheet.create({

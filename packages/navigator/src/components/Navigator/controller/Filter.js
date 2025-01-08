@@ -77,10 +77,26 @@ const property2FacetItems = (
       });
       return acc;
   }, {});
-  console.log('property2FacetItem Items');
   console.log(property2FacetItem);
   return property2FacetItem;
-} 
+}
+
+/**
+ * dataset to track properties count
+ */
+const facet2FacetItems = (
+  filterSections
+) => {
+  console.log('facet 2 facet item');
+  // let filterDataset = structuredClone(facetFilterData);
+  console.log(filterSections);
+
+  const facet2FacetItem = {};
+  for (let [facet, facetItem] of Object.entries(filterSections)) {
+    facet2FacetItem[facet] = Object.keys(facetItem);
+  }
+  return facet2FacetItem;
+};
 
 const initializeFilterSectionState = (
   object,
@@ -204,6 +220,7 @@ export const getFilterItems = (dictionary) => {
   const facetItemCount = initFacetItemCount(facetFilterData);
   const node2FacetItem = node2FacetItems(facetFilterData);
   const props2FacetItem = property2FacetItems(facetFilterData);
+  const facet2FacetItem = facet2FacetItems({ ...filterByNode, ...filterByProperty});
 
   return {
     filterByNode, 
@@ -211,6 +228,7 @@ export const getFilterItems = (dictionary) => {
     facetFilterData, 
     facetItemCount,
     node2FacetItem,
+    facet2FacetItem,
     props2FacetItem
   };
 };

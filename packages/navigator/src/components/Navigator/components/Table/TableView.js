@@ -1,8 +1,10 @@
 import React from 'react';
 import {
+  StyledTableContainer,
   StyledTableSummary
 } from './Table.styled';
 import CategoryView from './Category/CategoryView';
+import { useModelContext } from '../../state/NavContextProvider';
 /**
  * node list based on category
  * @param {Object} dictionary
@@ -47,9 +49,10 @@ const getNodePropertyCount = (dictionary) => {
 const TableView = ({
   dictionary
 }) => {
-
-  const node2Category = category2NodeList(dictionary);
-  const { nodesCount, propertiesCount } = getNodePropertyCount(dictionary);
+  const { context = {}} = useModelContext();
+  const { filterDictionary } = context;
+  const node2Category = category2NodeList(filterDictionary || dictionary);
+  const { nodesCount, propertiesCount } = getNodePropertyCount(filterDictionary || dictionary);
   return (
     <>
       <StyledTableSummary>

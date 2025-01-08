@@ -1,14 +1,13 @@
 import React from 'react';
 import NodeView from '../node/NodeView';
 import {
-  defaultCategory,
-  getCategoryStyle,
-  tableNodeCategoryList
+  categoryColorAndIcon,
 } from '../../Category/helper';
 import {
   StyleCategoryTitle,
   StyledCategoryContainer,
   StyledCategoryIcon,
+  StyledCatergoryOuterContainer,
   StyledLeftBorder
 } from './Category.styled';
 
@@ -16,16 +15,30 @@ const CategoryView = ({
   category,
   nodes
 }) => {
-
-  const categoryStyles = getCategoryStyle(category);
-  const iconURL = tableNodeCategoryList[category].icon || defaultCategory.icon;
+  const categoryIconAndColor = categoryColorAndIcon[category];
+  const iconURL = categoryIconAndColor.tableIcon;
   return (
-    <div>
-      <StyledCategoryContainer categoryStyles={categoryStyles} >
-        <StyledCategoryIcon src={iconURL} alt="icon" />
-        <StyleCategoryTitle>{category}</StyleCategoryTitle>
+    <StyledCatergoryOuterContainer
+      categoryStyles={categoryIconAndColor}
+      className={`catergoryOuterContainer_${category}`}
+    >
+      <StyledCategoryContainer
+        categoryStyles={categoryIconAndColor}
+        className={`categoryIconAndColor_${category}`}
+      >
+        <StyledCategoryIcon
+          src={iconURL}
+          alt="icon"
+          className="categoryIcon"
+        />
+        <StyleCategoryTitle className={`categoryTitle_${category}`}>
+          {category}
+        </StyleCategoryTitle>
       </StyledCategoryContainer>
-      <StyledLeftBorder categoryStyles={categoryStyles} />
+      <StyledLeftBorder
+        categoryStyles={categoryIconAndColor}
+        className={`leftBorder_${category}`}
+      />
       {
         nodes.map((node) => (
           <NodeView
@@ -38,7 +51,7 @@ const CategoryView = ({
           />
         ))
       }
-    </div>
+    </StyledCatergoryOuterContainer>
   );
 } 
 

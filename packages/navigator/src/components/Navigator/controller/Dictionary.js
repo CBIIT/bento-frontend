@@ -17,7 +17,6 @@ const getYAMLFileContent = async (url) => {
   try {
     const response = await axios.get(url);
     const data = yaml.load(response.data);
-    console.log(data);
     return data;
   } catch (error) {
     console.error(`model Url http error \n ${error}`);

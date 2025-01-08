@@ -1,7 +1,7 @@
 {
   "homepage": ".",
-  "name": "ICDC-Frontend",
-  "version": "0.1.0",
+  "name": "@bento-core/navigator",
+  "version": "0.0.1",
   "dependencies": {
     "@bento-core/about": "^0.3.0",
     "@bento-core/all": "^0.2.0",
@@ -134,13 +134,15 @@
       "last 1 safari version"
     ]
   },
+
+  "main": "dist/index.js",
   "scripts": {
     "build_": "node scripts/build.js",
-    "test": "jest",
-    "lint": "eslint src",
     "lint-fix": "eslint src --fix",
     "dev": "NODE_ENV=development webpack-dev-server --config ./webpack/dev.js",
-    "build": "NODE_ENV=production webpack --config ./webpack/prod.js"
+    "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src" 
   },
   "eslintConfig": {
     "extends": "react-app"

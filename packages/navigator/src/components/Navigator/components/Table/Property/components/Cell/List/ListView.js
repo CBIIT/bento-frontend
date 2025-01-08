@@ -45,7 +45,7 @@ const ListView = ({
         <Styled.AcceptValueLabel className="acptValLabel">
           Acceptable Values:
         </Styled.AcceptValueLabel>{" "}
-        {(!display) ? (
+        {(!display && items.length > maxItem) ? (
             <>
               <DisplayListItem items={listItems} />
               <Button onClick={() => setDisplay(!display)}>

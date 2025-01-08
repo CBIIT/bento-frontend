@@ -1,8 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-// import { getCategoryColor, pdfNodeCategoryList } from '../NodeCategories/helper';
 import { FontRegistry, capitalizeFirstLetter } from './util';
-import { getCategoryColor, pdfNodeCategoryList } from '../../Category/helper';
 
 const styles = StyleSheet.create({
   row: {
@@ -132,14 +130,23 @@ const styles = StyleSheet.create({
 });
 
 const createStyle = (classes, categoryColor) => ({ ...classes, ...{ borderLeft: `5px solid ${categoryColor}` } });
-const PdfTitle = (node) => {
-  const { category, desc, title, assignment, nodeClass } = node;
-  const categoryColor = getCategoryColor(category);
+
+const PdfTitle = (props) => {
+  const { 
+    category, 
+    desc, 
+    title, 
+    assignment, 
+    nodeClass, 
+    categoryColor, 
+    categoryIcon
+  } = props;
+
   return (
     <View>
       <View style={createStyle(styles.categoryStyle, categoryColor)}>
         {/* {SvgIcon} */}
-        <Image style={styles.icon} src={pdfNodeCategoryList[category]?.icon} />
+        <Image style={styles.icon} src={categoryIcon} />
         <Text style={{ color: categoryColor, ...styles.categoryHeader }}>
           {capitalizeFirstLetter(category)}
         </Text>

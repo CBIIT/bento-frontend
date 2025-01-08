@@ -4,7 +4,7 @@ import FacetView from './FacetView';
 const FacetSection = ({
   section
 }) => {
-  console.log()
+
   return (
     <>
       {

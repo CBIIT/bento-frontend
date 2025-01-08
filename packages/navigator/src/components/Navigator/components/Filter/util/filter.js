@@ -5,19 +5,7 @@ import {
   level
  } from "../../../controller/Filter";
 import { updateNestedObject } from "../../../utils/UpdateObject";
-import { getFacetItemCount } from "./FacetItemCount";
-
-const selectFacetItemCounts = (
-  currFacetItemsCount,
-  exclusiveCount,
-  inclusiveCount
-) => {
-  console.log('selectFacetItemCounts');
-  console.log(currFacetItemsCount);
-  console.log(exclusiveCount);
-  console.log(inclusiveCount);
-
-}
+import { getCommonItems, getFacetItemCount } from "./FacetItemCount";
 
 export const initFacetItemCount = (
   facetFilterData
@@ -44,136 +32,6 @@ export const initFacetItemCount = (
   return facetItemCount;
 }
 
-// const getFacetItemCounts = (
-//   currFacetItemsCount,
-//   activeFilters,
-//   facetFilterData
-// ) => {
-//   let filterDataset = structuredClone(facetFilterData);
-
-//   // reset the filter
-//   const activeFacetSections = Object.keys(activeFilters).map((section) => {
-//     if (Object.keys(activeFilters[section]).length > 0) {
-//       return section;
-//     }
-//     return undefined;
-//   }).filter(item => item);
-
-//   if (activeFacetSections.length === 0) {
-//     return initFacetItemCount(filterDataset);
-//   }
-
-//   // Step 1
-//   // exclusion filter count 
-//   // active filterByNode should define proptery count
-//   // const nodes = new Set();
-//   // const exclusiveResultSet = [];
-//   // const activeNodeFilter = activeFilters[facetSectionType.filterByNode] || {};
-//   // if (Object.keys(activeNodeFilter || {}).length > 0) {
-//   //   filterDataset.forEach(item => {
-//   //     let isMatched = true;
-//   //     for (let [facetItem, facet] of Object.entries(activeNodeFilter)) {
-//   //       if (item[facet] !== facetItem) {
-//   //         isMatched = false;
-//   //         break;
-//   //       }
-//   //     }
-//   //     if(isMatched) {
-//   //       nodes.add(item.nodeName);
-//   //       exclusiveResultSet.push(item);
-//   //     }
-//   //   });
-//   // }
-
-//   // generateNodeInclusion(
-//   //   nodeList,
-//   //   activeNodeFilter,
-//   //   filterDataset,
-//   // );
-
-//   // const exclusiveCount = {};
-//   // exclusiveResultSet.forEach((item, index) => {
-//   //   filterByNode.forEach((facet) => {
-//   //     if (!exclusiveCount[item[facet]]) {
-//   //       exclusiveCount[item[facet]] = [];
-//   //     }
-//   //     if (!exclusiveCount[item[facet]].includes(item.nodeName)) {
-//   //       exclusiveCount[item[facet]].push(item.nodeName);
-//   //     }
-//   //   });
-//   //   filterByProperty.forEach((facet) => {
-//   //     if (!exclusiveCount[item[facet]]) {
-//   //       exclusiveCount[item[facet]] = [];
-//   //     }
-//   //     if (!exclusiveCount[item[facet]].includes(item.propertyName)) {
-//   //       exclusiveCount[item[facet]].push(item.propertyName);
-//   //     }
-//   //   });
-//   // });
-
-//   const { nodeList, filterByNodeCount  } = getFilterByNodeCount(activeFilters, filterDataset);
-
-//   // Step 2
-//   // inclusion count
-//   // FilterByNode facetIem count should be determine by FilterByProperty
-//   const activePropertyFilter = activeFilters[facetSectionType.filterByProperty] || {};
-  
-//   const inclusiveResultSet = [];
-//   if (Object.keys(activePropertyFilter || {}).length > 0) {
-//     filterDataset.forEach((item, index) => {
-//       let isMatched = true;
-//       for (let [facetItem, facet] of Object.entries(activePropertyFilter)) {
-//         if (item[facet] !== facetItem) {
-//           isMatched = false;
-//           break;
-//         }
-//       }
-//       if (isMatched) {
-//         if (nodeList.length > 0) {
-//           if (nodeList.includes(item.nodeName)) {
-//             inclusiveResultSet.push(item);
-//           }
-//         } else {
-//           inclusiveResultSet.push(item);
-//         }
-//       }
-//     });
-//   };
-
-//   const inclusiveCount = {};
-//   inclusiveResultSet.forEach((item, index) => {
-//     filterByNode.forEach((facet) => {
-//       if (!inclusiveCount[item[facet]]) {
-//         inclusiveCount[item[facet]] = [];
-//       }
-//       if (!inclusiveCount[item[facet]].includes(item.nodeName)) {
-//         inclusiveCount[item[facet]].push(item.nodeName);
-//       }
-//     });
-//     filterByProperty.forEach((facet) => {
-//       if (!inclusiveCount[item[facet]]) {
-//         inclusiveCount[item[facet]] = [];
-//       }
-//       if (!inclusiveCount[item[facet]].includes(item.propertyName)) {
-//         inclusiveCount[item[facet]].push(item.propertyName);
-//       }
-//     });
-//   });
-
-//   console.log(currFacetItemsCount);
-
-//   if (Object.keys(filterByNodeCount).length === 0
-//     && Object.keys(inclusiveCount).length > 0) {
-//     return { ...inclusiveCount, ...currFacetItemsCount };
-//   }
-
-//   if (Object.keys(inclusiveCount).length === 0
-//     &&  Object.keys(filterByNodeCount).length > 0) {
-//     return { ...filterByNodeCount, ...currFacetItemsCount };
-//   }
-
-//   selectFacetItemCounts(currFacetItemsCount, exclusiveCount, inclusiveCount);
-// };
 
 export const onFilterValueChange = (
   currState,
@@ -186,15 +44,19 @@ export const onFilterValueChange = (
     isChecked
   } = filterItem;
 
-  const selectedFacetItem = {
-    filterSections: {
-      [facetSection]: {
-        [facet]: {
-          [facetItem]: {
-            isChecked: isChecked,
-          }
+  const currSelectedFacet = {
+    [facetSection]: {
+      [facet]: {
+        [facetItem]: {
+          isChecked: isChecked,
         }
       }
+    }
+  }
+
+  const selectedFacetItem = {
+    filterSections: {
+      ...currSelectedFacet
     }
   };
 
@@ -204,7 +66,7 @@ export const onFilterValueChange = (
     facetFilterData,
     filterSections,
     facetItemCount: currFICount,
-
+    dictionary,
     node2FacetItem,
     props2FacetItem
   } = currState;
@@ -230,21 +92,27 @@ export const onFilterValueChange = (
   }, {});
 
   // attempt 2
-  getFacetItemCount(
+  const { facetItemCount, filterNodes } = getFacetItemCount(
+    currSelectedFacet,
+    facet,
     currState,
     activeFilters,
     node2FacetItem,
     props2FacetItem
   );
-
-  // const facetItemCount = getFacetItemCounts(
-  //   currFacetItemsCount,
-  //   activeFilters, 
-  //   facetFilterData
-  // );
+  
+  const filterDictionary = Object.keys(dictionary).reduce(
+    (acc, item) => {
+      if (filterNodes.includes(item)) {
+        acc[item] = dictionary[item];
+      }
+      return acc;
+    }, {});
 
   return {
     ...updatedObject,
     activeFilters,
+    facetItemCount,
+    filterDictionary
   };
 }

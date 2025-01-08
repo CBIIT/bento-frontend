@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React from 'react';
 import {
   HashRouter,
   Route,
@@ -6,12 +6,14 @@ import {
 } from 'react-router-dom';
 import { getDictionary } from '../Navigator/controller/Dictionary';
 import HeaderView from '../Navigator/components/Header/HeaderView';
-import { ModelContextProvider, useModelContext } from '../Navigator/state/NavContextProvider';
+import { ModelContextProvider } from '../Navigator/state/NavContextProvider';
 import NavigatorView from '../Navigator/NavigatorController';
 import { getFilterItems } from '../Navigator/controller/Filter';
 import TableView from '../Navigator/components/Table/TableView';
 import GraphView from '../Navigator/components/xyFlowGraph/GraphView';
 import { generateNodeTree } from '../Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
+import NavTableTheme from './NavTableTheme';
+import NavGraphTheme from './NavGraphTheme';
 
 const readMeConfig =  {
   readMeUrl: 'https://raw.githubusercontent.com/rana22/category_partition/main/README.md',
@@ -46,7 +48,6 @@ const DataModelNavigatorView = () => {
    * create node tree
    */
   const nodeTree = generateNodeTree(dictionary);
-  console.log(nodeTree);
 
   const {
     filterByNode,
@@ -55,7 +56,8 @@ const DataModelNavigatorView = () => {
     facetItemCount,
     facetSectionCount,
     node2FacetItem,
-    props2FacetItem
+    props2FacetItem,
+    facet2FacetItem
   } = getFilterItems(dictionary);
 
   const filterSections = {filterByNode, filterByProperty};
@@ -71,13 +73,22 @@ const DataModelNavigatorView = () => {
     props2FacetItem,
     facetSectionCount,
     facetItemCount,
+    facet2FacetItem
   }
 
   // configuretable
-  const NavTableView = (props) => (<TableView {...props} config={config} />);
+  const NavTableView = (props) => (
+    <NavTableTheme>
+      <TableView {...props} config={config} />
+    </NavTableTheme>
+  );
 
   // configure graph
-  const NavGraphView = (props) => (<GraphView {...props} />);
+  const NavGraphView = (props) => (
+    <NavGraphTheme>
+      <GraphView {...props} />
+    </NavGraphTheme>
+  );
   
   return (
     <>

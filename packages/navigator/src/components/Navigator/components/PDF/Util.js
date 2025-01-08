@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import { tableNodeCategoryList } from '../Category/helper';
+import { categoryColorAndIcon } from '../Category/helper';
 import logo from './assets/icdc_nih_logo.png'
 import LandscapePDFDoc from './landscape/Pdf';
 import PortraitPdfDoc from './portrait/Pdf';
@@ -12,13 +12,10 @@ export const generatePdfDocument = async (
   fileName = '',
   isLandscape = true,
 ) => {
-  const categoryIcon = tableNodeCategoryList[category];
   const PdfView = isLandscape ? LandscapePDFDoc : PortraitPdfDoc;
-
   const blob = await pdf((
     <PdfView
       nodes={nodes}
-      icon={categoryIcon} 
       pdfDownloadConfig={{
         iconSrc: logo
       }}

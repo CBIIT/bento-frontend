@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import { saveAs } from 'file-saver';
-import { pdf } from '@react-pdf/renderer';
 import IconDownloadPDF from "./assets/icon_download_PDF.svg";
 import IconDownloadTSV from "./assets/icon_download_TSV.svg";
 import * as Styled from './Download.styled';
-import LandscapePDFDoc from './landscape/Pdf';
-import { tableNodeCategoryList } from '../Category/helper';
 import { downloadTSV, generatePdfDocument } from './Util';
 
 const DownloadButtonView = ({
