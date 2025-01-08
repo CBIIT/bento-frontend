@@ -44,27 +44,26 @@ jobs:
     - name: Build
       id: build-image
       run: |
-        echo $IMAGE_TAG
-    #     docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
         
-    # - name: Set Trivy exit code
-    #   run: |
-    #     if  [[ ${{ inputs.fail_on_trivy_scan }} == true ]];
-    #     then
-    #       echo 'TRIVY_EXIT_CODE=1' >> $GITHUB_ENV
-    #     else
-    #       echo 'TRIVY_EXIT_CODE=0' >> $GITHUB_ENV
-    #     fi
+    - name: Set Trivy exit code
+      run: |
+        if  [[ ${{ inputs.fail_on_trivy_scan }} == true ]];
+        then
+          echo 'TRIVY_EXIT_CODE=1' >> $GITHUB_ENV
+        else
+          echo 'TRIVY_EXIT_CODE=0' >> $GITHUB_ENV
+        fi
     
-    # - name: Run Trivy vulnerability scanner
-    #   id: trivy-scan
-    #   uses: aquasecurity/trivy-action@0.20.0
-    #   with:
-    #     image-ref: '${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}'
-    #     format: 'table'
-    #     exit-code: '${{ env.TRIVY_EXIT_CODE }}'
-    #     ignore-unfixed: true
-    #     severity: 'CRITICAL,HIGH'
+    - name: Run Trivy vulnerability scanner
+      id: trivy-scan
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        image-ref: '${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}'
+        format: 'table'
+        exit-code: '${{ env.TRIVY_EXIT_CODE }}'
+        ignore-unfixed: true
+        severity: 'CRITICAL,HIGH'
 
     - name: Create Git tag for Image
       run: |
@@ -73,28 +72,28 @@ jobs:
         git tag ${{ env.IMAGE_TAG }}
         git push origin ${{ env.IMAGE_TAG }}
 
-    # - name: AWS OIDC Authentication
-    #   uses: aws-actions/configure-aws-credentials@v4
-    #   with:
-    #     role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-    #     aws-region: ${{ secrets.AWS_REGION }}
-    #     role-session-name: ${{ github.actor }}
+    - name: AWS OIDC Authentication
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        role-session-name: ${{ github.actor }}
 
-    # - name: Login to Amazon ECR
-    #   id: login-aws-ecr
-    #   uses: aws-actions/amazon-ecr-login@v1
+    - name: Login to Amazon ECR
+      id: login-aws-ecr
+      uses: aws-actions/amazon-ecr-login@v1
     
-    # - name: Push to Amazon ECR
-    #   id: push-image
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-aws-ecr.outputs.registry }}
-    #   run: |
-    #     docker tag  $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Push to Amazon ECR
+      id: push-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-aws-ecr.outputs.registry }}
+      run: |
+        docker tag  $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-    # - name: Slack Notification
-    #   uses: act10ns/slack@v1
-    #   with:
-    #     status: ${{ job.status }}
-    #     steps: ${{ toJson(steps) }}
-    #   if: always()
+    - name: Slack Notification
+      uses: act10ns/slack@v1
+      with:
+        status: ${{ job.status }}
+        steps: ${{ toJson(steps) }}
+      if: always()
