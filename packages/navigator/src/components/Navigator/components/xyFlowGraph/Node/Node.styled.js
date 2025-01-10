@@ -149,6 +149,7 @@ export const CategoryIcon = styled('img')({
 export const FlowHandle = styled(Handle)({
   background: "transparent",
   border: "none",
+  top: '27px'
 });
 
 export const Summary = styled('div')(
