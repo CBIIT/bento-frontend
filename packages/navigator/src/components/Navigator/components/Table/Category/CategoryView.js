@@ -8,15 +8,20 @@ import {
   StyledCategoryContainer,
   StyledCategoryIcon,
   StyledCatergoryOuterContainer,
+  StyledCloseButton,
+  StyledCloseIcon,
   StyledLeftBorder
 } from './Category.styled';
 
 const CategoryView = ({
   category,
-  nodes
+  nodes,
+  isOverLayTable,
+  onCloseOverlayTable
 }) => {
   const categoryIconAndColor = categoryColorAndIcon[category];
   const iconURL = categoryIconAndColor.tableIcon;
+
   return (
     <StyledCatergoryOuterContainer
       categoryStyles={categoryIconAndColor}
@@ -34,6 +39,11 @@ const CategoryView = ({
         <StyleCategoryTitle className={`categoryTitle_${category}`}>
           {category}
         </StyleCategoryTitle>
+        { isOverLayTable && (
+          <StyledCloseButton onClick={onCloseOverlayTable}>
+            <StyledCloseIcon />
+          </StyledCloseButton>
+        )}
       </StyledCategoryContainer>
       <StyledLeftBorder
         categoryStyles={categoryIconAndColor}
@@ -48,6 +58,7 @@ const CategoryView = ({
             category={category}
             categoryIcon={iconURL}
             description={node.description}
+            isOverLayTable={isOverLayTable}
           />
         ))
       }

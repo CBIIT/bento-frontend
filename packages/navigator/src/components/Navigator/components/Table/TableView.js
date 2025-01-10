@@ -52,7 +52,10 @@ const TableView = ({
   const { context = {}} = useModelContext();
   const { filterDictionary } = context;
   const node2Category = category2NodeList(filterDictionary || dictionary);
-  const { nodesCount, propertiesCount } = getNodePropertyCount(filterDictionary || dictionary);
+  const {
+    nodesCount,
+    propertiesCount
+  } = getNodePropertyCount(filterDictionary || dictionary);
   return (
     <>
       <StyledTableSummary>

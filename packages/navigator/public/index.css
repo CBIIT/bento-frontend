@@ -16,7 +16,7 @@
 /* Nunito Extra Light */
 @font-face {
   font-family: 'Nunito';
-  src: url('/fonts/Numito-ExtraLight.ttf') format('truetype');
+  src: url('/fonts/Nunito-ExtraLight.ttf') format('truetype');
   font-weight: 200; /* Bold weight is typically 700 */
   font-style: normal;
 }
@@ -24,7 +24,7 @@
 /* Nunito Light */
 @font-face {
   font-family: 'Nunito';
-  src: url('/fonts/Numito-Light.ttf') format('truetype');
+  src: url('/fonts/Nunito-Light.ttf') format('truetype');
   font-weight: 300; /* Bold weight is typically 700 */
   font-style: normal;
 }
@@ -64,7 +64,7 @@
 /* Nunito Extra-Bold */
 @font-face {
   font-family: 'Nunito';
-  src: url('/fonts/Numito-ExtraBold.ttf') format('truetype');
+  src: url('/fonts/Nunito-ExtraBold.ttf') format('truetype');
   font-weight: 800; /* Bold weight is typically 700 */
   font-style: normal;
 }

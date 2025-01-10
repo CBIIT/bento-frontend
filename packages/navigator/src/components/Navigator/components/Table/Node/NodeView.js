@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PropertyView from '../Property/PropertyView';
 import * as Styled from './Node.styled';
 import DownloadButtonView from '../../PDF/DownloadBtn';
@@ -10,10 +8,10 @@ const NodeView = ({
   title,
   category,
   description,
-  isExpand = false
+  isOverLayTable = false
 }) => {
 
-  const [expand, setExpand] = useState(isExpand);
+  const [expand, setExpand] = useState(isOverLayTable);
   const propertiesCount = Object.keys(node.properties || {}).length;
 
   return (
@@ -32,11 +30,21 @@ const NodeView = ({
                 className="displayPropertyTableButton"
                 onClick={() => setExpand(!expand)}
                 variant="contained"
+                disabled={isOverLayTable}
                 startIcon={
-                  expand ? (<ExpandLessIcon />) : (<ExpandMoreIcon />)
+                  expand ? (
+                    <Styled.MuiCollapseIcon isOverLayTable={isOverLayTable} />
+                  ) : (
+                    <Styled.MuiExpandIcon isOverLayTable={isOverLayTable} />
+                  )
                 }
               >
-                {propertiesCount} {' Properties'}
+                <Styled.ButtonCountLabel className="buttonCountLabel">
+                  {propertiesCount}
+                </Styled.ButtonCountLabel>
+                <Styled.ButtonTextLabel className="buttonTextLabel">
+                  { propertiesCount === 1 ? ' property' : ' properties' }
+                </Styled.ButtonTextLabel>
               </Styled.DisplayPropertyTableButton>
             </div>
             <Styled.AssignmentAndClassTags className="assignmentAndClassTags">

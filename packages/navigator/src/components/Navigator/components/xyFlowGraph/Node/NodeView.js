@@ -6,6 +6,8 @@ import React,
 } from 'react';
 import * as Styled from './Node.styled';
 import { Handle, Position } from '@xyflow/react';
+import { useModelContext } from '../../../state/NavContextProvider';
+import { showOverlayTable } from '../../../state/actions/Action';
 
 const NodeView = ({
   id,
@@ -23,6 +25,9 @@ const NodeView = ({
   focusedNodeId,
   highlightParentNodes,
 }) => {
+
+  const { context = {}} = useModelContext();
+  const { dispatch } = context;
 
   const [display, setDisplay] = useState(false);
   /**
@@ -48,9 +53,7 @@ const NodeView = ({
 
   //dispatch event - on table view
   const displayOverviewTable = () => {
-    console.log('display overview property table');
-    // onClickNode(id);
-    // onViewTable(false);
+    dispatch(showOverlayTable(id));
   };
 
   /**

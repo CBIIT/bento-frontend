@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const StyledCategoryContainer = styled('div')(
   ({ categoryStyles }) => {
@@ -29,6 +31,16 @@ export const StyleCategoryTitle = styled('div')({
   letterSpacing: '0',
 });
 
+export const StyledCloseButton = styled(IconButton)({
+  marginLeft: 'auto',
+  order: 2,
+});
+
+export const StyledCloseIcon = styled(CloseIcon)({
+  color: "#ffffff",
+  fontSize: "20px"
+});
+
 export const StyledLeftBorder = styled('div')(
   ({ categoryStyles }) => {
     const categoryColor = categoryStyles.color;
@@ -43,7 +55,7 @@ export const StyledCatergoryOuterContainer = styled('div')(
     const categoryColor = categoryStyles.color;
     return {
       borderLeft: `5px solid ${categoryColor}`,
-      ...theme.styles.customClass
+      ...theme?.styles?.customClass
     };
   }
 );

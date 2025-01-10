@@ -1,4 +1,6 @@
-import { initFacetItemCount } from "../components/Filter/util/filter";
+// import { initFacetItemCount } from "../components/Filter/util/filter";
+
+import { initFacetItemCount } from "../state/reducers/filter";
 
 const exclusionItems = [
   'administrative',

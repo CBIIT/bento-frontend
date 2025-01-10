@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, Typography } from '@mui/material';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const Container =  styled('div')({
   display: "flex",
@@ -16,20 +18,20 @@ export const TitleAndDescContainer =  styled('div')({
 });
 
 export const NodeTitle =  styled('span')({
-      width: "260px",
-      flexGrow: "0",
-      flexShrink: "0",
-      "-moz-user-select": "none",
-      "-webkit-user-select": "none",
-      fontWeight: "700",
-      "-ms-user-select": "none",
-      userSelect: "none",
-      fontSize: "15px",
-      fontFamily: "Nunito",
-      lineHeight: "14px",
-      "&:hover": {
-        color: "#3283c8",
-      },
+  width: "260px",
+  flexGrow: "0",
+  flexShrink: "0",
+  "-moz-user-select": "none",
+  "-webkit-user-select": "none",
+  fontWeight: "700",
+  "-ms-user-select": "none",
+  userSelect: "none",
+  fontSize: "15px",
+  fontFamily: "Nunito",
+  lineHeight: "14px",
+  "&:hover": {
+    color: "#3283c8",
+  },
 });
 
 export const TagsAndDescriptionContainer =  styled('div')({
@@ -60,18 +62,56 @@ export const TagsAndBtnContainer = styled('div') ({
   width: "100%",
 });
 
-export const DisplayPropertyTableButton = styled(Button)({
-  width: "150px",
-  height: "26px",
-  backgroundColor: "#EEF5F7",
-  textTransform: "capitalize",
-  color: "#000000",
-  borderRadius: "0px",
-  fontSize: "14px",
-  fontWeight: "700",
-  color: "#42779a",
+export const ButtonCountLabel = styled(Typography)({
+  fontSize: "14px", 
+  fontWeight: "700", 
+  color: "#42779a", 
   fontFamily: "Open Sans"
 });
+
+export const ButtonTextLabel = styled(Typography)({
+  fontSize: "11px", 
+  marginLeft: '5px',
+  color: '#000000'
+});
+
+export const DisplayPropertyTableButton = styled(Button)(
+  ({ isOverLayTable }) => {
+    return {
+      width: "150px",
+      height: "26px",
+      backgroundColor: "#EEF5F7",
+      textTransform: "capitalize",
+      color: "#000000",
+      borderRadius: "0px",
+      fontSize: "14px",
+      fontWeight: "700",
+      color: "#42779a",
+      fontFamily: "Open Sans"
+    }
+});
+
+export const MuiExpandIcon = styled(ExpandMoreIcon)(
+  ({ isOverLayTable }) => {
+    if (isOverLayTable) {
+      return {
+        display: 'none',
+      }
+    }
+    return {};
+  }
+);
+
+export const MuiCollapseIcon = styled(ExpandLessIcon)(
+  ({ isOverLayTable }) => {
+    if (isOverLayTable) {
+      return {
+        display: 'none',
+      }
+    }
+    return {};
+  }
+);
 
 export const AssignmentAndClassTags = styled('div')({
   display: "flex",
@@ -111,4 +151,4 @@ export const DownloadContainer = styled('div')({
 
 export const MuiButtonGroup = styled(ButtonGroup)({
   
-})
+});

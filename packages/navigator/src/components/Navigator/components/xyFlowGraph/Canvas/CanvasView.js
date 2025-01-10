@@ -24,6 +24,7 @@ import { getMinZoom } from './util';
 import resetIcon from './assets/Reset.svg';
 import ZoomInIcon from './assets/ZoomIn.svg';
 import ZoomOutIcon from './assets/ZoomOut.svg';
+import OverlayPropertyTable from '../Overlay/OverlayTableView';
 
 const nodeTypes = {
   custom: NodeView,
@@ -90,6 +91,7 @@ const CustomFlowView = ({
       maxZoom={fit?.maxZoom ? fit.maxZoom : 3}
       fitView
     >
+      <OverlayPropertyTable />
       <Styled.Controls>
         <Styled.ControlBtn onClick={handleTransform} title="reset">
           <Styled.ControlBtnIcon src={resetIcon} alt="reset_icon" />
@@ -109,7 +111,6 @@ const CustomFlowView = ({
       </Styled.Controls>
       <Styled.CanvasBackground
         highlightedNodes={highlightedNodes}
-        color="#aaa"
         gap={12}
       /> 
     </ReactFlow>

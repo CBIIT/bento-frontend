@@ -33,7 +33,7 @@ const CheckBoxView = ({
   return (
      <>
      {
-      facetItemCount[facetItem]?.length > 0 && (
+      (facetItemCount[facetItem]?.length > 0 || isChecked) && (
         <>
           <StyledListItem
             width={1}
