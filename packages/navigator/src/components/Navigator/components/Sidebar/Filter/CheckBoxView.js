@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useModelContext } from '../../state/NavContextProvider';
-import { onToggleCheckBox } from '../../state/actions/Action';
+import { useModelContext } from '../../../state/NavContextProvider';
+import { onToggleCheckBox } from '../../../state/actions/Action';
 import {
   StyledCheckBoxIcon,
   StyledLabelDiv,

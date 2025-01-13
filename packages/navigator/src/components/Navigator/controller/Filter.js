@@ -127,7 +127,7 @@ const getNodeDetails = ({
   category,
   class: nodeClass,
   level: level.NODE
-})
+});
 
 const getNodePropertyDetails = (node, property = {}) => {
   const {

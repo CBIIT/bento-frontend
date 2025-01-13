@@ -54,7 +54,6 @@ const DataModelNavigatorView = () => {
     filterByProperty,
     facetFilterData,
     facetItemCount,
-    facetSectionCount,
     node2FacetItem,
     props2FacetItem,
     facet2FacetItem
@@ -68,10 +67,8 @@ const DataModelNavigatorView = () => {
     graphConfig,
     filterSections,
     facetFilterData,
-    facetSectionCount,
     node2FacetItem,
     props2FacetItem,
-    facetSectionCount,
     facetItemCount,
     facet2FacetItem
   }
@@ -95,8 +92,6 @@ const DataModelNavigatorView = () => {
       <HeaderView />
       <NavigatorView
         dictionary={dictionary}
-        facetSectionCount={facetSectionCount}
-        facetItemCount={facetItemCount}
         config={config}
         NavTableView={NavTableView}
         NavGraphView={NavGraphView}

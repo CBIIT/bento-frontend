@@ -7,7 +7,6 @@ import React,
 } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import FacetSections from './components/Filter/FacetController';
 import {
   StyledContainer,
   StyledSideBarContrainer,
@@ -17,6 +16,7 @@ import {
   StyledTabPanelOuterContainer,
   TabPanelContrainer
 } from './Navigator.styled';
+import SearchAndFilterView from './components/Sidebar/SidebarController';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -69,7 +69,7 @@ const NavigatorView = ({
   return (
     <StyledContainer ref={ref}>
       <StyledSideBarContrainer>
-        <FacetSections />
+        <SearchAndFilterView />
       </StyledSideBarContrainer>
       <StyledTabContainer >
         <StyledTabBtnContainer>

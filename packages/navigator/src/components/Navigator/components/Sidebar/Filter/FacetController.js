@@ -1,9 +1,9 @@
 import React from 'react';
-import { useModelContext } from '../../state/NavContextProvider';
+import { useModelContext } from '../../../state/NavContextProvider';
 import FacetSection from './FacetSection';
-import { facetSectionType } from '../../controller/Filter';
+import { facetSectionType } from '../../../controller/Filter';
 
-const FacetSections = () => {
+const FacetController = () => {
   /**
   * use context access data model state
   */
@@ -31,4 +31,4 @@ const FacetSections = () => {
   );
 };
 
-export default FacetSections;
+export default FacetController;

@@ -1,9 +1,9 @@
 import { actionTypes } from "../actions/Action";
-import { onFilterValueChange } from "./filter";
-
+import { getInitState, onFilterValueChange } from "./filter";
+  
 const reducer = (state, action) => {
   const { type, payload } = action;
-  const cloneState = structuredClone(state);
+  let updateState = structuredClone(state);
   switch (type) {
     case actionTypes.UPDATE_DICTIONARY:
       return {
@@ -11,10 +11,15 @@ const reducer = (state, action) => {
         ...payload
       };
     case actionTypes.ON_TOGGLE_CHECKBOX:
-      const updateState = onFilterValueChange(cloneState, payload);
+      updateState = onFilterValueChange(updateState, payload);
       return updateState;
     case actionTypes.ON_CLEAR_FILTER:
-      return state;
+      console.log('ON CLEAR FILTERs');
+      updateState = getInitState(state);
+      return {
+        ...state,
+        ...updateState
+      };
     case actionTypes.ON_NODE_FOCUS:
       return state;
     case actionTypes.SHOW_OVERLAY_TABLE:

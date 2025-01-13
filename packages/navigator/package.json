@@ -29,7 +29,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@material-ui/styles": "^4.11.5",
     "@mui/material": "^6.3.0",
-    "@react-pdf/renderer": "^4.1.6",
+    "@react-pdf/renderer": "3.0.2",
     "@reduxjs/toolkit": "^2.2.3",
     "@tanstack/react-query": "^5.35.1",
     "@tanstack/react-query-devtools": "^5.40.0",
@@ -37,6 +37,7 @@
     "antd": "^5.9.4",
     "axios": "^1.6.8",
     "bento-jbrowse": "^1.0.1",
+    "breeze-client": "^2.1.5",
     "clsx": "^1.2.1",
     "data-model-navigator": "^1.1.32",
     "fuse.js": "^7.0.0",
@@ -134,7 +135,6 @@
       "last 1 safari version"
     ]
   },
-
   "main": "dist/index.js",
   "scripts": {
     "build_": "node scripts/build.js",
@@ -142,7 +142,7 @@
     "dev": "NODE_ENV=development webpack-dev-server --config ./webpack/dev.js",
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src" 
+    "lint": "eslint src"
   },
   "eslintConfig": {
     "extends": "react-app"

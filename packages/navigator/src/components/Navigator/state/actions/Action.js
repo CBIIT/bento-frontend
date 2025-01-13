@@ -31,8 +31,7 @@ export const onToggleCheckBox = (payload) => {
 export const onClearFilter = () => {
   return {
     type: actionTypes.ON_CLEAR_FILTER,
-    payload: payload,
-  }
+  };
 };
 
 /**

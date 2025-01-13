@@ -22,3 +22,17 @@ export function updateNestedObject(original, updates) {
     }
     return original;
 };
+
+export function updateNestedValue(obj, value, targetKey = 'isChecked') {
+  // Iterate over each key in the object
+  for (const key in obj) {
+    // Check if the current property is an object
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      // Recursively call the function for nested objects
+      updateNestedValue(obj[key], false, targetKey);
+    } else if (key === targetKey) {
+      // Update the isChecked property to true
+      obj[targetKey] = value;
+    }
+  }
+};

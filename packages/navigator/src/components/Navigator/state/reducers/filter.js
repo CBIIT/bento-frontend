@@ -4,7 +4,10 @@ import {
   filterByProperty,
   level
  } from "../../controller/Filter";
-import { updateNestedObject } from "../../utils/UpdateObject";
+import {
+  updateNestedObject,
+  updateNestedValue
+} from "../../utils/UpdateObject";
 
 const facetType = {
   CATEGORY: 'category'
@@ -68,6 +71,7 @@ export const getFacetItemCount = (
       facet2FacetItem,
       facetFilterData,
     } = currState;
+    console.log('on toggle checkbox');
     const selectedFacetItems = facet2FacetItem[facet] || [];
 
     /**
@@ -286,9 +290,8 @@ export const onFilterValueChange = (
   // set active filters
   const {
     activeFilters = {},
-    facetFilterData,
     filterSections,
-    facetItemCount: currFICount,
+    facetItemCount: currFacetItemCount,
     dictionary,
     node2FacetItem,
     props2FacetItem
@@ -308,13 +311,13 @@ export const onFilterValueChange = (
 
   const currFacetItemsCount = Object.keys(filterSections[facetSection][facet])
   .reduce((acc, item) => {
-    if (currFICount) {
-      acc[item] = currFICount[item];
+    if (currFacetItemCount) {
+      acc[item] = currFacetItemCount[item];
     }
     return acc;
   }, {});
 
-  // attempt 2
+  
   const { facetItemCount, filterNodes } = getFacetItemCount(
     currSelectedFacet,
     facet,
@@ -337,5 +340,32 @@ export const onFilterValueChange = (
     activeFilters,
     facetItemCount,
     filterDictionary
+  };
+};
+
+export const getInitState = (state) => {
+  const cloneState = structuredClone(state);
+  const { 
+    dictionary, 
+    filterSections,
+    node2FacetItem, 
+    props2FacetItem
+  } = cloneState;
+
+  /**
+  * uncheck all filters
+  * reset active filters
+  */
+  updateNestedValue(filterSections, false, 'isChecked');
+
+  return {
+    ...cloneState,
+    activeFilters: {},
+    filterDictionary: dictionary,
+    facetItemCount: {
+      ...node2FacetItem,
+      ...props2FacetItem
+    },
+    filterSections
   };
 };
