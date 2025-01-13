@@ -38,7 +38,7 @@ const ManageColumnView = ({
   return (
     <>
       <Tooltip title={manageViewColumns.title}>
-        <IconButton variant="contained" onClick={handleClick} style={{ marginLeft: '10px' }}>
+        <IconButton variant="contained" onClick={handleClick} style={{ marginLeft: '10px', marginTop: '9px', height: '24px' }}>
           <ViewColumn />
         </IconButton>
       </Tooltip>
