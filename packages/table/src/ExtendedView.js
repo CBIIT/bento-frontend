@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   ThemeProvider,
-  Toolbar,
   createTheme,
 } from '@material-ui/core';
 import CustomPagination from './pagination/CustomPagination';
@@ -20,7 +19,6 @@ const ExtendedView = ({
   onColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
-  numSelected = 0,
   customTheme,
   queryVariables,
 }) => {
@@ -29,7 +27,6 @@ const ExtendedView = ({
     return null;
   }
   const {
-    download = false,
     manageViewColumns = false,
     pagination = false,
   } = extendedViewConfig;
@@ -37,18 +34,13 @@ const ExtendedView = ({
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
-      {(numSelected === 0 && (download || manageViewColumns)) && (
+      {/* {(numSelected === 0 && (download || manageViewColumns)) && (
       <Toolbar className="downloadColumnView">
-        {/* <DownloadButton
+         <DownloadButton
           download={download}
-        /> */}
-        <ManageColumnView
-          table={table}
-          manageViewColumns={manageViewColumns}
-          onColumnViewChange={onColumnViewChange}
         />
       </Toolbar>
-      )}
+      )} */}
       {
           (pagination) && (
             <div className="downloadArea" style={downloadAreaStyle}>
@@ -68,6 +60,11 @@ const ExtendedView = ({
                 count={table.totalRowCount || 0}
                 queryVariables={queryVariables}
                 table={table}
+              />
+              <ManageColumnView
+                table={table}
+                manageViewColumns={manageViewColumns}
+                onColumnViewChange={onColumnViewChange}
               />
             </div>
           )

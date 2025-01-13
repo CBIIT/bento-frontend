@@ -13,6 +13,7 @@ import CustomToolbar from './toolbar/CustomToolbar';
 import DisplayErrMsg from './errMsg/DisplayErrMsg';
 import ExtendedView from './ExtendedView';
 import DownloadButton from './toolbar/DownloadButtonView';
+import ManageColumnView from './toolbar/ManageColumnView';
 
 const CustomTableContainer = (props) => {
   const { children, customTheme } = props;
@@ -81,7 +82,10 @@ const TableView = ({
       addScrollContainer.style.height = '0px';
     }
   });
-
+  const { extendedViewConfig } = table;
+  const {
+    manageViewColumns = false,
+  } = extendedViewConfig;
   return (
     <>
       <ExtendedView
@@ -143,6 +147,11 @@ const TableView = ({
           count={table.totalRowCount || 0}
           queryVariables={queryVariables}
           table={table}
+        />
+        <ManageColumnView
+          table={table}
+          manageViewColumns={manageViewColumns}
+          onColumnViewChange={onColumnViewChange}
         />
       </div>
     </>

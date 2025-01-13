@@ -73,7 +73,8 @@ export function convertToCSV(jsonse, keysToInclude, header) {
 export function downloadCSV(tableData, table, downloadFileName) {
   const { columns = [] } = table;
   const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType))
-    .filter(({ cellStyle }) => !notIncludedCellStyle.includes(cellStyle));
+    .filter(({ cellStyle }) => !notIncludedCellStyle.includes(cellStyle))
+    .filter(({ display }) => display);
   const formatDataVal = formatColumnValues(filterColumns, tableData);
   const jsonse = JSON.stringify(formatDataVal);
   const keysToInclude = filterColumns.filter(({ dataField }) => dataField)
@@ -94,7 +95,9 @@ export function downloadCSV(tableData, table, downloadFileName) {
 
 export function downloadJson(tableData, table, downloadFileName) {
   const { columns = [] } = table;
-  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType));
+  const toDelete = columns.filter((e) => !e.display);
+  const filterColumns = columns.filter(({ cellType }) => !actionCellTypes.includes(cellType))
+    .filter(({ display }) => display);
   let formatDataVal = formatColumnValues(filterColumns, tableData);
   formatDataVal = formatDataVal.map((entry) => {
     let survivalStatus = entry.last_known_survival_status;
@@ -114,6 +117,7 @@ export function downloadJson(tableData, table, downloadFileName) {
       dataCategory = dataCategory.toString().substring(1, dataCategory.length - 1);
       toReturn['Data Category'] = dataCategory;
     }
+    toDelete.forEach((column) => delete toReturn[column.dataField]);
     return toReturn;
   });
   filterColumns.forEach((column) => {
