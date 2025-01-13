@@ -66,6 +66,9 @@ export const DEFAULT_STYLES = makeStyles({
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
         borderColor: '#4A8ECB',
+        '& legend': {
+          visibility: 'hidden',
+        },
       },
       '&:hover fieldset': {
         borderColor: '#4A8ECB',
