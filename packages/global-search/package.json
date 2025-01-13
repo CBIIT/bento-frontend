@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/global-search",
-  "version": "1.0.1-CDS.0",
+  "version": "1.0.1-CDS.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
