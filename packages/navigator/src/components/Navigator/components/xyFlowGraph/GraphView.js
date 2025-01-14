@@ -6,16 +6,16 @@ const GraphView = ({
   dictionary,
   tabViewWidth
 }) => {
-    const { context = {}} = useModelContext();
-    const { filterDictionary } = context;
-    return (
-      <>
-        <CanvasView
-          dictionary={filterDictionary || dictionary}
-          tabViewWidth={tabViewWidth}
-        />
-      </>
-    );
+  const { context = {}} = useModelContext();
+  const { filterDictionary } = context;
+  return (
+    <>
+      <CanvasView
+        dictionary={filterDictionary || dictionary}
+        tabViewWidth={tabViewWidth}
+      />
+    </>
+  );
 } 
 
 export default GraphView;

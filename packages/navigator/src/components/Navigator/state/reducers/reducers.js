@@ -14,14 +14,21 @@ const reducer = (state, action) => {
       updateState = onFilterValueChange(updateState, payload);
       return updateState;
     case actionTypes.ON_CLEAR_FILTER:
-      console.log('ON CLEAR FILTERs');
       updateState = getInitState(state);
       return {
         ...state,
         ...updateState
       };
     case actionTypes.ON_NODE_FOCUS:
-      return state;
+      return {
+        ...updateState,
+        focusedNodeId: payload,
+      };
+    case actionTypes.ON_CANVAS_CLICK:
+      return {
+        ...updateState,
+        focusedNodeId: null,
+      };
     case actionTypes.SHOW_OVERLAY_TABLE:
       const overlayNodeId = payload;
       return {

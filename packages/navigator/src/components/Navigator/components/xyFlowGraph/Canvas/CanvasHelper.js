@@ -141,8 +141,6 @@ export const getNodePosition = ({
     xInterval = 250,
     yInterval = 90,
 }) => {
-    console.log('get table width');
-    console.log(tabViewWidth);
     const subtree = generateSubTree(dictionary, nodeTree);
     const position = {};
     let x = tabViewWidth/2;

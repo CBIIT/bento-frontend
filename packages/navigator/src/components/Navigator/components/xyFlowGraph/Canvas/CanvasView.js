@@ -48,7 +48,8 @@ const CustomFlowView = ({
   onNodesChange,
   onEdgesChange,
   highlightedNodes,
-  graphViewConfig
+  graphViewConfig,
+  onGraphPanelClick
 }) => {
   const { setViewport, zoomIn, zoomOut } = useReactFlow();
 
@@ -63,20 +64,21 @@ const CustomFlowView = ({
   }, [width]);
 
   const handleTransform = useCallback(() => {
+    console.log(fit);
     setViewport({
-      x: fit?.x,
-      y: fit?.y,
+      x: 0,
+      y: 0,
       zoom: getMinZoom({width, fit}) }, { duration: 200 });
   }, [setViewport, width]);
 
-  /**
-   * collapse all property dialog box
-   * @param {*} event 
-   */
-  const onPanelClick = (event) => {
-    // onGraphPanelClick();
-    console.log('graph click')
-  };
+  // /**
+  //  * collapse all property dialog box
+  //  * @param {*} event 
+  //  */
+  // const handlePanelClick = (event) => {
+  //   // onGraphPanelClick();
+  //   onGraphPanelClick();
+  // };
 
   return (
     <ReactFlow
@@ -89,6 +91,7 @@ const CustomFlowView = ({
       edgeTypes={edgeTypes}
       minZoom={minZoom}
       maxZoom={fit?.maxZoom ? fit.maxZoom : 3}
+      onPaneClick={onGraphPanelClick}
       fitView
     >
       <OverlayPropertyTable />
@@ -123,6 +126,7 @@ const CanvasView = ({
   onConnect,
   onNodesChange,
   onEdgesChange,
+  onGraphPanelClick
 }) => {
   return (
     <Styled.CanvasContariner>
@@ -133,6 +137,7 @@ const CanvasView = ({
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          onGraphPanelClick={onGraphPanelClick}
         />
       </ReactFlowProvider>
     </Styled.CanvasContariner>

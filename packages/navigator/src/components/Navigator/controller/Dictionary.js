@@ -35,6 +35,22 @@ const getCategoryTag = (value) => {
   }
 }
 
+/**
+ *
+ * @param {*} properties 
+ * @returns 
+ */
+const getInclusionCount = (properties = {}) => {
+  return Object.keys(properties).reduce((acc, key) => {
+    const { inclusion } = properties[key];
+      if (!acc[inclusion]) {
+        acc[inclusion] = 0;
+      }
+      acc[inclusion] += 1;
+      return acc;
+    }, {});
+}
+
 // set required propertyType
 const getPropertyType = (required) => {
   const req = `${required}`.toLowerCase(); 
@@ -53,7 +69,6 @@ const getNodePropertyDetails = (nodeName, yamlPropertyDetails, propertyItem) => 
   if (!propertyItem) {
     propertyItem = {};
   }
-  
   propertyItem.node = nodeName;
   propertyItem.description = yamlPropertyDetails.Desc;
   propertyItem.type = yamlPropertyDetails.Type || yamlPropertyDetails.Enum;
@@ -128,7 +143,6 @@ export const getDictionary = (
       item.description = item.desc || '';
       item.template = value.Tags?.Template || '';
 
-
       // add node properties
       if (value.Props !== null && value.Props.length > 0) {
         const propertiesName = value.Props;
@@ -136,12 +150,15 @@ export const getDictionary = (
           .reduce((acc, name, index) => {
             // add property details
             if (yamlPropertiesDetails[name]) {
-              acc[name] = getNodePropertyDetails(key, yamlPropertiesDetails[name], acc[name]);
+              const propertyDetail = getNodePropertyDetails(key, yamlPropertiesDetails[name], acc[name]);
+              acc[name] = propertyDetail;
               acc[name].propertyName = name;
             }
+            
             return acc;
           }, {});
         item.properties = properties;
+        item.inclusionCount = getInclusionCount(properties);
       }
       // assign links
       item.links = nodeReationships[key];

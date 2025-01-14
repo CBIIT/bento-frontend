@@ -7,27 +7,23 @@ import React,
 import * as Styled from './Node.styled';
 import { Handle, Position } from '@xyflow/react';
 import { useModelContext } from '../../../state/NavContextProvider';
-import { showOverlayTable } from '../../../state/actions/Action';
+import {
+  onNodeFocus,
+  showOverlayTable
+} from '../../../state/actions/Action';
 
 const NodeView = ({
   id,
-  handleId,
   data,
-  onViewTable,
   isSearchMode,
-  ddgraph,
   currentSearchKeyword,
-  onClickNode,
   expandNodeView,
-  onCollapseNodeView,
   highlightingNode,
-  onNodeFocus,
-  focusedNodeId,
   highlightParentNodes,
 }) => {
 
   const { context = {}} = useModelContext();
-  const { dispatch } = context;
+  const { dispatch, focusedNodeId } = context;
 
   const [display, setDisplay] = useState(false);
   /**
@@ -35,11 +31,9 @@ const NodeView = ({
    * use view option to adjust the fontSize on property dialog
    */
   const toggleNode = () => {
-    // onClickNode(id);
     setDisplay(!display);
-    if (display) {
-      // onCollapseNodeView();
-    }
+    const focusNode = !display ? id : null;
+    dispatch(onNodeFocus(focusNode));
   };
 
   const {
@@ -59,30 +53,23 @@ const NodeView = ({
   /**
    * light node based on reasult of search query
    */
-  useEffect(() => {
-    if (!expandNodeView) {
-      setDisplay(false);
-    } else {
-      if (`${label}`.toLowerCase() === highlightingNode?.id) {
-        setDisplay(true);
-      } else {
-        setDisplay(false);
-      }
-    }
-  }, [expandNodeView, highlightingNode]);
+  // useEffect(() => {
+  //   if (!expandNodeView) {
+  //     setDisplay(false);
+  //   } else {
+  //     if (`${label}`.toLowerCase() === highlightingNode?.id) {
+  //       setDisplay(true);
+  //     } else {
+  //       setDisplay(false);
+  //     }
+  //   }
+  // }, [expandNodeView, highlightingNode]);
 
   useEffect(() => {
     if (`${label}`.toLowerCase() !== focusedNodeId?.id) {
-      setDisplay(false);
+      setDisplay(focusedNodeId === id);
     }
   }, [focusedNodeId]);
-
-  /**
-   * button on focus
-   */
-  const nodeFocusEvent = () => {
-    onNodeFocus(id);
-  };
 
   return (
     <Styled.NodeOuterDiv className="nodeOuterDiv" display={display} >

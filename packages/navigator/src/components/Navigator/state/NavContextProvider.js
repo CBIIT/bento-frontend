@@ -13,8 +13,8 @@ export const ModelContextProvider = ({
   children,
 }) => {
   const [context, setContext] = useState({});
-  const setContextHandler = (tblContext) => {
-    setContext(tblContext);
+  const setContextHandler = (modelContext) => {
+    setContext(modelContext);
   };
 
   return (

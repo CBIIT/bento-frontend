@@ -14,6 +14,7 @@ import CanvasView from './CanvasView';
 import { getNodePosition } from './CanvasHelper';
 import { createNodesAndEdges } from '../Util/utils';
 import { useModelContext } from '../../../state/NavContextProvider';
+import { onCanvasClick } from '../../../state/actions/Action';
 
 const CanvasController = ({
   dictionary,
@@ -95,6 +96,11 @@ const CanvasController = ({
     return <CircularProgress />;
   }
 
+  const onGraphPanelClick = () => {
+    const { dispatch } = context;
+    dispatch(onCanvasClick());
+  };
+
   return (
     <CanvasView
       nodes={nodes}
@@ -103,6 +109,7 @@ const CanvasController = ({
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       canvasWidth={tabViewWidth}
+      onGraphPanelClick={onGraphPanelClick}
     />
   );
 };

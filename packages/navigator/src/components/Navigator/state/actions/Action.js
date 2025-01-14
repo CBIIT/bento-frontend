@@ -5,7 +5,8 @@ export const actionTypes = {
     ON_NODE_FOCUS: 'ON_NODE_FOCUS',
     ON_CANVAS_CLICK: 'ON_CANVAS_CLICK',
     SHOW_OVERLAY_TABLE: 'SHOW_OVERLAY_TABLE',
-    CLOSE_OVERLAY_TABLE: 'CLOSE_OVERLAY_TABLE'
+    CLOSE_OVERLAY_TABLE: 'CLOSE_OVERLAY_TABLE',
+    ON_PANEL_FOCUS: 'ON_PANEL_FOCUS'
 };
 
 export const updateDictionary = (payload) => {

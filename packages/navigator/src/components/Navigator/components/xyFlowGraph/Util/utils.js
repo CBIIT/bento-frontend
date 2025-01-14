@@ -66,6 +66,7 @@ const getSubgroupLinks = (link, nameToNode, sourceId) => {
  */
 const generateNodes = (nodes) => {
   const generatedNodes = nodes.map((node, index) => {
+    const { inclusionCount } = node;
     return {
       type: "custom",
       position: { x: 0, y: 0 },
@@ -79,9 +80,9 @@ const generateNodes = (nodes) => {
         summary: {
           Assignment: `${node.assignment}`,
           Class: `${node.class}`,
-          Required_Properties: node.required || 0,
-          Preferred_Properties: node.preferred || 0,
-          Optional_Properties: node.optional || 0,
+          Required_Properties: inclusionCount?.required || 0,
+          Preferred_Properties: inclusionCount?.preferred || 0,
+          Optional_Properties: inclusionCount?.optional || 0,
         }
       },
     };

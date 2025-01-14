@@ -53,8 +53,6 @@ const node2FacetItems = (
       });
       return acc;
   }, {});
-  console.log('node2Facet Items');
-  console.log(node2FacetItem);
   return node2FacetItem;
 };
 
@@ -79,7 +77,6 @@ const property2FacetItems = (
       });
       return acc;
   }, {});
-  console.log(property2FacetItem);
   return property2FacetItem;
 }
 
@@ -89,10 +86,6 @@ const property2FacetItems = (
 const facet2FacetItems = (
   filterSections
 ) => {
-  console.log('facet 2 facet item');
-  // let filterDataset = structuredClone(facetFilterData);
-  console.log(filterSections);
-
   const facet2FacetItem = {};
   for (let [facet, facetItem] of Object.entries(filterSections)) {
     facet2FacetItem[facet] = Object.keys(facetItem);
