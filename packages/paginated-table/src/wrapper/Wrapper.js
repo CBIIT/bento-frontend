@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import ButtonView from './components/ButtonView';
 import TextFieldView from './components/TextFieldView';
+import ToolTipView from './components/TooltipView';
 
 export const types = {
   BUTTON: 'BUTTON',
@@ -55,7 +56,9 @@ const Text = ({
 * @returns custom component based on configuration
 */
 export const ViewComponent = (props) => {
-  const { type, customViewElem } = props;
+  const {
+    type, customViewElem, CohortViewElem, tooltipCofig,
+  } = props;
   switch (type) {
     case types.BUTTON:
       return (<ButtonView {...props} />);
@@ -69,6 +72,13 @@ export const ViewComponent = (props) => {
       return <TextFieldView {...props} />;
     case types.CUSTOM_ELEM:
       return customViewElem();
+    case types.COHORT_ELEM:
+      return (
+        <>
+          <CohortViewElem />
+          {tooltipCofig && (<ToolTipView {...props} />)}
+        </>
+      );
     default:
       return <></>;
   }
