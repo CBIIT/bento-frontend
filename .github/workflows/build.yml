@@ -20,7 +20,7 @@ jobs:
     steps:
 
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5
 
     - name: Set Image Tag
       env:
@@ -57,7 +57,7 @@ jobs:
     
     - name: Run Trivy vulnerability scanner
       id: trivy-scan
-      uses: aquasecurity/trivy-action@0.20.0
+      uses: aquasecurity/trivy-action@b2933f565dbc598b29947660e66259e3c7bc8561
       with:
         image-ref: '${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}'
         format: 'table'
@@ -73,7 +73,7 @@ jobs:
         git push origin ${{ env.IMAGE_TAG }}
 
     - name: AWS OIDC Authentication
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
       with:
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
         aws-region: ${{ secrets.AWS_REGION }}
@@ -81,7 +81,7 @@ jobs:
 
     - name: Login to Amazon ECR
       id: login-aws-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      uses: aws-actions/amazon-ecr-login@5a88a04c91d5c6f97aae0d9be790e64d9b1d47b7
     
     - name: Push to Amazon ECR
       id: push-image
@@ -92,7 +92,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     - name: Slack Notification
-      uses: act10ns/slack@v1
+      uses: act10ns/slack@87c73aef9f8838eb6feae81589a6b1487a4a9e08
       with:
         status: ${{ job.status }}
         steps: ${{ toJson(steps) }}
