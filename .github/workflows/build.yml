@@ -20,6 +20,9 @@ jobs:
     env:
         ECR_REPOSITORY: bento-frontend
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        
     steps:
 
     - name: Check out code
@@ -78,8 +81,8 @@ jobs:
     - name: AWS OIDC Authentication
       uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
       with:
-        role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
+        aws-region: ${{ env.AWS_REGION }}
         role-session-name: ${{ github.actor }}
 
     - name: Login to Amazon ECR
