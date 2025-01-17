@@ -9,6 +9,7 @@ import {
   onColumnSort,
   onPageAndTotalCountChange,
   onColumnViewChange,
+  onRowSelectHidden,
 } from './state/Actions';
 import { TableContext } from './ContextProvider';
 import reducer from './state/Reducer';
@@ -83,9 +84,24 @@ const PaginatedTable = ({
   const onRowSelectHandler = (event, row) => {
     event.stopPropagation();
     let selectedIds = [...table.selectedRows];
+    let hiddenSelectedRows = [...table.hiddenSelectedRows];
+
     const selectedId = row[table.dataKey];
+
+    let hiddenNewObject = {};
+
+    if (table.hiddenDataKeys && table.hiddenDataKeys.length > 0) {
+      table.hiddenDataKeys.forEach((dataK) => {
+        hiddenNewObject = {
+          ...hiddenNewObject,
+          [dataK]: row[dataK],
+        };
+      });
+    }
+
     if (!row.isChecked) {
       selectedIds.push(selectedId);
+      hiddenSelectedRows.push(hiddenNewObject);
     } else {
       selectedIds = selectedIds.reduce((acc, id) => {
         if (selectedId !== id) {
@@ -93,11 +109,42 @@ const PaginatedTable = ({
         }
         return acc;
       }, []);
+
+      hiddenSelectedRows = hiddenSelectedRows.reduce((acc, hiddenObject) => {
+        if (JSON.stringify(hiddenNewObject) !== JSON.stringify(hiddenObject)) {
+          acc.push(hiddenObject);
+        }
+        return acc;
+      }, []);
     }
     dispatch(onRowSeclect(selectedIds));
+    dispatch(onRowSelectHidden(hiddenSelectedRows));
   };
 
-  const handleToggleSelectAll = (event, Ids, includeIds) => {
+  const handleToggleSelectAll = (event, Ids, includeIds, rows) => {
+    if (event.target.checked) {
+      const filteredRows = [];
+      let hiddenNewObject = {};
+      rows.forEach((row) => {
+        hiddenNewObject = {};
+        table.hiddenDataKeys.forEach((dataK) => {
+          hiddenNewObject = {
+            ...hiddenNewObject,
+            [dataK]: row[dataK],
+          };
+        });
+        filteredRows.push(hiddenNewObject);
+      });
+      const finalHiddenRowData = [...table.hiddenSelectedRows, ...filteredRows];
+      dispatch(onRowSelectHidden(finalHiddenRowData));
+    } else {
+      const filteredHiddenRows = table.hiddenSelectedRows.filter((hiddenRow) => (
+        !rows.some((row) => (
+          table.hiddenDataKeys.every((dataK) => hiddenRow[dataK] === row[dataK])))));
+
+      dispatch(onRowSelectHidden(filteredHiddenRows));
+    }
+
     if (event.target.checked && !includeIds) {
       const selecedIds = Ids.concat(table.selectedRows);
       dispatch(onRowSeclect(selecedIds));
@@ -106,7 +153,6 @@ const PaginatedTable = ({
       dispatch(onRowSeclect(filterIds));
     }
   };
-
   const handleSortByColumn = (column, order) => {
     const { sortBy } = table;
     const sort = (order === 'asc' && sortBy === column) ? 'desc' : 'asc';
