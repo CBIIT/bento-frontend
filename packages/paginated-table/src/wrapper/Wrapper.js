@@ -57,7 +57,7 @@ const Text = ({
 */
 export const ViewComponent = (props) => {
   const {
-    type, customViewElem, CohortViewElem, tooltipCofig,
+    type, customViewElem, CohortViewElem, tooltipCofig, section,
   } = props;
   switch (type) {
     case types.BUTTON:
@@ -73,6 +73,11 @@ export const ViewComponent = (props) => {
     case types.CUSTOM_ELEM:
       return customViewElem();
     case types.COHORT_ELEM:
+      if (section !== 'Participants') {
+        return (
+          <></>
+        );
+      }
       return (
         <>
           <CohortViewElem />
