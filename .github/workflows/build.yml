@@ -5,6 +5,9 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'Which account the ECR repository is in'
+        type: environment
       fail_on_trivy_scan:
         type: boolean
         description: fail the build if vulnerabilities are found
