@@ -4,6 +4,11 @@ import { Background } from '@xyflow/react';
 export const CanvasContariner = styled('div')({
   height: '100%',
   display: 'block',
+
+  '& div [data-id="program"]': {
+    color: 'purple',
+    zIndex: '95 !important'
+  }
 });
 
 export const CanvasBackground = styled(Background)(

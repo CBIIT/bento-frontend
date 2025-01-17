@@ -8,6 +8,7 @@ const GraphView = ({
 }) => {
   const { context = {}} = useModelContext();
   const { filterDictionary } = context;
+
   return (
     <>
       <CanvasView

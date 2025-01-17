@@ -16,7 +16,7 @@ import {
   StyledTabPanelOuterContainer,
   TabPanelContrainer
 } from './Navigator.styled';
-import SearchAndFilterView from './components/Sidebar/SidebarController';
+import SideBarView from './components/Sidebar/SidebarController';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -69,7 +69,7 @@ const NavigatorView = ({
   return (
     <StyledContainer ref={ref}>
       <StyledSideBarContrainer>
-        <SearchAndFilterView />
+        <SideBarView />
       </StyledSideBarContrainer>
       <StyledTabContainer >
         <StyledTabBtnContainer>

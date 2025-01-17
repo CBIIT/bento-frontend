@@ -18,6 +18,11 @@ const inclusiveNodeFacet = {
   extended: 'extended',
   primary: 'primary',
   secondary: 'secondary'
+};
+
+const inclusivePropertyFacet = {
+  inclusion: 'inclusion',
+  display: 'display',
 }
 
 /**
@@ -58,8 +63,296 @@ export const getCommonItems = (arrays = []) => {
   return commonItems;
 };
 
+const getActiveFiltersBySection = (filterItems) => {
+  const activeFacetItems = Object.keys(filterItems || {})
+    .reduce((acc, key) => {
+      if (filterItems[key]) {
+        const facet = filterItems[key];
+        if(facet && !acc[facet]){
+          acc[facet] = [];
+        }
+        acc[facet].push(key);
+      }
+      return acc;
+    }, {});
+  return activeFacetItems;
+};
+
+const filterData = (data, activeFilters) => {
+  if (Object.keys(activeFilters) === 0) {
+    return data;
+  }
+  const filterData = data.filter(row => {
+    const facets = Object.keys(activeFilters);
+    let match = true;
+    facets.forEach(facet => {
+      const selectedItems = activeFilters[facet];
+      if (!selectedItems.includes(row[facet])) {
+        match = false;
+      }
+    });
+    return match;
+  });
+
+  return filterData;
+};
+
+const getNonCategoryFacetItem = (facetItems) => {
+  const items = Object.keys(facetItems || {})
+    .reduce((acc, key) => {
+      if (key !== facetType.CATEGORY) {
+        acc[key] = facetItems[key];
+      }
+      return acc;
+  }, {});
+  return items;
+}
+
+const filterNode2FacetItems = (node2FacetItem, filterNodes) => {
+  const node2FacetItems = nonActiveCategoryItem.reduce((acc, facet) => {
+    const nodes = node2FacetItem[facet];
+    const filtered = nodes.filter(item => filterNodes.includes(item));
+    acc[facet] = filtered;
+    return acc;
+  }, {});
+  return node2FacetItems;
+}
+
+export const getFacetItemCount1 = (
+  isChecked,
+  facet,
+  currState,
+  activeFilters,
+  node2FacetItem,
+  props2FacetItem
+) => {
+  const {
+    facetItemCount: currFacetItemCount, 
+    facet2FacetItem,
+    facetFilterData: dataset,
+    filterDictionary,
+  } = currState;
+  const selectedFacetItems = facet2FacetItem[facet] || [];
+  let facetFilterData = dataset;
+  let resultSetData = dataset;
+  /**
+  * active facet items by sections
+  * 
+  */
+  const activeFiltersByNode = getActiveFiltersBySection(activeFilters?.filterByNode);
+  const activeFiltersByProperty = getActiveFiltersBySection(activeFilters?.filterByProperty);
+
+  const allActiveFacetItems = {
+    ...activeFiltersByNode,
+    ...activeFiltersByProperty
+  };
+
+  const activeCategoryFilters = activeFiltersByNode.category || [];
+  const nonCategoryActiveFilters = getNonCategoryFacetItem(allActiveFacetItems);
+
+  /**
+   * all non category filters
+   */
+  const allNonCategoryFilters = getNonCategoryFacetItem(facet2FacetItem);
+  console.log(allNonCategoryFilters);
+  // const allNonCategoryFilters = Object.keys(getNonCategoryFacetItem(facet2FacetItem))
+  // .reduce((acc, face) => {
+
+  // }, []);
+
+
+  /**
+  * filter data by property
+  */
+  const propertyFilterData = filterData(facetFilterData, activeFiltersByProperty);
+  facetFilterData = propertyFilterData;
+
+  /**
+  * STEP 1. PREVIOUS / CURR STATE
+  * Preserve Current Count for selected non active Facet items
+  * Recount active filter item of the selected facet 
+  * If facet item is toggle the count of all the Facet Items
+  * for selected facet should remain same
+  */
+  const prevFacetItemCount = {};
+  selectedFacetItems.forEach(facetItem => {
+    if (currFacetItemCount[facetItem]) {
+      const excludeFacetItems = allActiveFacetItems[facet] || [];
+      if(!excludeFacetItems.includes(facetItem)) {
+        prevFacetItemCount[facetItem] = currFacetItemCount[facetItem];
+      }
+    } else {
+      prevFacetItemCount[facetItem] = [];
+    }
+  });
+
+  /**
+  * STEP 2. CATEGORY / NON CATEGORY FILTER
+  * Create two datasets 1. apply category filter 2. apply non category filter
+  * A. Dataset 1 used for count to all non category facet items 
+  * B. Dataset 2 use to display all possible non active category facet items
+  * Note - filter should show non active category facet items
+  */
+
+  /* Dataset 1 */
+  const categoryNodeFilterData = activeCategoryFilters.length === 0 ? facetFilterData
+    : facetFilterData.filter((item) => activeCategoryFilters.includes(item.category));
+  
+  const filterNonCatData = filterData(categoryNodeFilterData, nonCategoryActiveFilters);
+  console.log('nonCategoryActiveFilters');
+
+  console.log(nonCategoryActiveFilters);
+  console.log(filterNonCatData)
+  const nonCategoryFiltersNode = filterNonCatData.map(item => item.nodeName);
+  const nonCategoryFilterNodes = Array.from(new Set(nonCategoryFiltersNode));
+  /*** Filter should display all possible non active category facet items ***/
+  const nonActiveCategoryItem = facet2FacetItem.category
+    .filter(item => !activeCategoryFilters.includes(item));
+
+  /** non active category facet items count */
+  const nonCategoryNode2FaceItem = nonActiveCategoryItem.reduce((acc, facet) => {
+    const nodes = node2FacetItem[facet];
+    const filtered = nodes.filter(item => nonCategoryFilterNodes.includes(item));
+    acc[facet] = filtered;
+    return acc;
+  }, {});
+
+  /* Dataset 2 - get possible category facet item*/
+  const filterDataByNonCategoryFilter = filterData(facetFilterData, nonCategoryActiveFilters);
+  // const filterDataByNonCategoryFilter = categoryNodeFilterData;
+  const inclusiveCategoryNodes = filterDataByNonCategoryFilter.map(item => item.nodeName);
+  const distinctNodes = Array.from(new Set(inclusiveCategoryNodes));
+  console.log(facet2FacetItem);
+  const categoryNode2FaceItem = nonActiveCategoryItem.reduce((acc, facet) => {
+    const nodes = node2FacetItem[facet];
+    const filtered = nodes.filter(item => distinctNodes.includes(item));
+    acc[facet] = filtered;
+    return acc;
+  }, {});
+  // console.log('nonCategory Node2FaceItem');
+  // console.log(nonCategoryNode2FaceItem);
+  // console.log('non active category filter ');
+  // console.log(categoryNode2FaceItem);
+
+  const inclusiveNonCategoryFilter = categoryNodeFilterData.map(item => item.nodeName);
+  const distinctNonCategoryNodes = Array.from(new Set(inclusiveNonCategoryFilter));
+
+  // const nonCategoryNode2FaceItem2 = node2FacetItem.reduce((acc, facet) => {
+  //   const nodes = node2FacetItem[facet];
+  //   const filtered = nodes.filter(item => distinctNonCategoryNodes.includes(item));
+  //   acc[facet] = filtered;
+  //   return acc;
+  // }, {});
+  // console.log('nonCategoryNode2FaceItem2');
+  // console.log(nonCategoryNode2FaceItem2);
+
+  /**
+  * STEP 3. SELECTED FACET ITEM 
+  * A. Dataset 1 filter data based on current selected facet  
+  * B. Dataset 2 - filter dataset 1 by all active filters 
+  */
+  const selectedFacetFilters = allActiveFacetItems[facet];
+  /** Dataset 1 */
+  const inclusiveNodeFilterData =  (selectedFacetFilters || []).length === 0 ? facetFilterData
+    : facetFilterData.filter((item) => selectedFacetFilters.includes(item[facet]));
+
+  const inclusiveNodes = inclusiveNodeFilterData.map(item => item.nodeName);
+  /** inclusion count */
+  const inclusiveNode2FaceItem = Object.keys(node2FacetItem)
+    .reduce((acc, facet) => {
+      const nodes = node2FacetItem[facet];
+      const filtered = nodes.filter(item => inclusiveNodes.includes(item));
+      acc[facet] = filtered;
+      return acc;
+    }, {});
+
+  /** Dataset 2 */
+  const exclusiveNodeFilterData = filterData(inclusiveNodeFilterData, allActiveFacetItems);
+  
+  /**
+  * STEP 4 - find the nodes to be displayed
+  * filter nodes to display graph and table view
+  */
+  let exclusiveNodes = exclusiveNodeFilterData.map(item => item.nodeName);
+  let filteredNodes = Array.from(new Set(exclusiveNodes));
+
+  const allActiveFacetItemsKeys = Object.keys(allActiveFacetItems);
+
+  const exclusiveNode2FaceItem1 = allActiveFacetItemsKeys
+    .reduce((acc, facet) => {
+      (allActiveFacetItems[facet] || []).forEach(facetItem => {
+        const nodes = node2FacetItem[facetItem] || [];
+        const filtered = nodes.filter(item => filteredNodes.includes(item));
+        acc[facetItem] = filtered;
+      });
+      return acc;
+    }, {});
+  
+  console.log('exclusiveNode2FaceItem1');
+  console.log(exclusiveNode2FaceItem1);
+  /**
+   * when combine filters yields no matching node
+   * 1. UNCHECK - return current count or state 
+   * 2. CHECK - refer to category node filter Data
+   * recalculate item count for checked items
+  */
+  let activeCategoryFilterCount = {};
+  if (filteredNodes.length === 0) {
+    // on uncheck return current count 
+    if (!isChecked) {
+      const includeNodes = Object.keys(filterDictionary);
+      const prevFilterDictionary = facetFilterData
+        .filter(item => includeNodes.includes(item.nodeName));
+      filteredNodes = prevFilterDictionary.map(item => item.nodeName);
+      console.log('unchecked');
+      return {
+        ...currState,
+        filterNodes: filteredNodes,
+      };
+    } else {
+
+      // on check return category filter count
+      filteredNodes = categoryNodeFilterData.map(item => item.nodeName);
+    }
+    const facetItems = [...activeCategoryFilters, ...Object.keys(inclusiveNodeFacet)];
+    activeCategoryFilterCount = facetItems.reduce((acc, facet) => {
+      const nodes = node2FacetItem[facet];
+      const filtered = nodes.filter(item => filteredNodes.includes(item));
+      acc[facet] = filtered;
+      return acc;
+    }, {});
+  }
+
+  // count properties
+  console.log(inclusiveNode2FaceItem);
+  console.log(exclusiveNode2FaceItem1);
+  console.log(nonCategoryNode2FaceItem);
+  console.log(prevFacetItemCount);
+  console.log(activeCategoryFilterCount);
+  const nodeCount = {
+    ...inclusiveNode2FaceItem,
+    ...exclusiveNode2FaceItem1,
+    ...nonCategoryNode2FaceItem,
+    ...prevFacetItemCount,
+    ...activeCategoryFilterCount
+  };
+  console.log(nodeCount);
+
+  return {
+    facetItemCount: {
+      ...inclusiveNode2FaceItem,
+      ...exclusiveNode2FaceItem1,
+      ...nonCategoryNode2FaceItem,
+      ...categoryNode2FaceItem,
+      ...prevFacetItemCount,
+      ...activeCategoryFilterCount
+    },
+    filterNodes: filteredNodes,
+  };
+};
+
 export const getFacetItemCount = (
-    selectedFacet,
+    isChecked,
     facet,
     currState,
     activeFilters,
@@ -70,23 +363,38 @@ export const getFacetItemCount = (
       facetItemCount: currFacetItemCount, 
       facet2FacetItem,
       facetFilterData,
+      filterDictionary
     } = currState;
-    console.log('on toggle checkbox');
     const selectedFacetItems = facet2FacetItem[facet] || [];
 
     /**
     * all facet filter
     * calculate exclusion count
     */
+    const sections = Object.keys(activeFilters);
+    // const activeFacetItems1 = sections.reduce(
+    //   (acc, section) => {
+    //     Object.keys(activeFilters[section]).forEach(
+    //       (item) => {
+    //         const facet = activeFilters[section][item];
+    //         if(!acc[facet]){
+    //           acc[facet] = [];
+    //         }
+    //         acc[facet].push(item);
+    //       }
+    //     )
+    //     return acc;
+    //   }, {});
+    // console.log(activeFacetItems1);
     const activeFacetItems = Object.keys(activeFilters.filterByNode)
-    .reduce((acc, key) => {
-      const facet = activeFilters.filterByNode[key];
-      if(!acc[facet]){
-        acc[facet] = [];
-      }
-      acc[facet].push(key);
-      return acc;
-    }, {});
+      .reduce((acc, key) => {
+        const facet = activeFilters.filterByNode[key];
+        if(!acc[facet]){
+          acc[facet] = [];
+        }
+        acc[facet].push(key);
+        return acc;
+      }, {});
 
     /**
     * STEP 1. 
@@ -112,6 +420,9 @@ export const getFacetItemCount = (
     * 
     */
     let nodeDataFilter = facetFilterData.filter(item => item.level === 'node');
+    let nonNodeDataFilter = facetFilterData.filter(item => item.level !== 'node');
+    console.log('nonNodeDataFilter');
+    console.log(nonNodeDataFilter);
     /**
     * top level filter - category
     */
@@ -208,12 +519,25 @@ export const getFacetItemCount = (
     
     /**
      * when combine filters yields no matching node
-     * refer to category node filter Data
+     * 1. UNCHECK - return current count or state 
+     * 2. CHECK - refer to category node filter Data
      * recalculate item count for checked items
     */
     let activeCategoryFilterCount = {};
     if (exclusiveNodes.length === 0) {
-      exclusiveNodes = categoryNodeFilterData.map(item => item.nodeName);
+      // on uncheck return current count 
+      if (!isChecked) {
+        const includeNodes = Object.keys(filterDictionary);
+        const prevFilterDictionary = facetFilterData
+          .filter(item => item.level === 'node' && includeNodes.includes(item.nodeName));
+        exclusiveNodes = prevFilterDictionary.map(item => item.nodeName);
+        // console.log('unchange any state');
+        // return currState;
+      } else {
+
+        // on check return category filter count
+        exclusiveNodes = categoryNodeFilterData.map(item => item.nodeName);
+      }
       const facetItems = [...categoryFilters, ...Object.keys(inclusiveNodeFacet)];
       activeCategoryFilterCount = facetItems.reduce((acc, facet) => {
         const nodes = node2FacetItem[facet];
@@ -222,6 +546,8 @@ export const getFacetItemCount = (
         return acc;
       }, {});
     }
+    console.log('return ')
+    // count properties
 
     return {
       facetItemCount: {
@@ -309,17 +635,17 @@ export const onFilterValueChange = (
   // update active state
   const updatedObject = updateNestedObject(currState, selectedFacetItem);
 
-  const currFacetItemsCount = Object.keys(filterSections[facetSection][facet])
-  .reduce((acc, item) => {
-    if (currFacetItemCount) {
-      acc[item] = currFacetItemCount[item];
-    }
-    return acc;
-  }, {});
+  // const currFacetItemsCount = Object.keys(filterSections[facetSection][facet])
+  // .reduce((acc, item) => {
+  //   if (currFacetItemCount) {
+  //     acc[item] = currFacetItemCount[item];
+  //   }
+  //   return acc;
+  // }, {});
 
   
-  const { facetItemCount, filterNodes } = getFacetItemCount(
-    currSelectedFacet,
+  const { facetItemCount, filterNodes } = getFacetItemCount1(
+    isChecked,
     facet,
     currState,
     activeFilters,

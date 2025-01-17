@@ -12,7 +12,9 @@ const OverlayPropertyTable = ({
   const {
     dictionary,
     overlayNodeId = null,
-    dispatch
+    dispatch,
+    isSearchMode = false,
+    matches = {}
   } = context;
   const showOverlayTable = Object.keys(dictionary).includes(overlayNodeId);
 
@@ -45,6 +47,8 @@ const OverlayPropertyTable = ({
                   nodes={node2Category[category]}
                   category={category}
                   isOverLayTable={true}
+                  isSearchMode={isSearchMode}
+                  matches={isSearchMode ? matches : {}}
                   onCloseOverlayTable={handleCloseOverlayTable}
                 />
               ))}

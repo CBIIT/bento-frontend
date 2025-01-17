@@ -2,27 +2,36 @@ import React, { useState } from 'react';
 import PropertyView from '../Property/PropertyView';
 import * as Styled from './Node.styled';
 import DownloadButtonView from '../../PDF/DownloadBtn';
+import HighlightText from '../../Sidebar/Search/HighlightText';
 
 const NodeView = ({
   node,
   title,
   category,
   description,
-  isOverLayTable = false
+  isOverLayTable = false,
+  textSearchDetail,
 }) => {
 
   const [expand, setExpand] = useState(isOverLayTable);
   const propertiesCount = Object.keys(node.properties || {}).length;
+  const searchTerm = textSearchDetail?.searchText || '';
 
   return (
     <Styled.Container className={`${category}_${title}`}>
       <Styled.TitleAndDescContainer className="titleAndDescContainer">
         <Styled.NodeTitle className={`nodeTitle_${title}`}>
-          {title}
+          <HighlightText
+            text={title}
+            searchTerm={textSearchDetail?.title ? searchTerm : ''}
+          />
         </Styled.NodeTitle>
         <Styled.TagsAndDescriptionContainer className="tagsAndDescriptionContainer">
           <Styled.NodeDescription className={`nodeDescription_${title}`}>
-            {description}
+            <HighlightText
+              text={description}
+              searchTerm={textSearchDetail?.description ? searchTerm : ''}
+            />
           </Styled.NodeDescription>
           <Styled.TagsAndBtnContainer className="tagsAndBtnContainer">
             <div>
@@ -79,7 +88,9 @@ const NodeView = ({
         
       </Styled.TitleAndDescContainer>
       {expand && (
-        <PropertyView properties={node.properties || {}} />
+        <PropertyView
+          properties={node.properties || {}}
+        />
       )}
     </Styled.Container>
   );

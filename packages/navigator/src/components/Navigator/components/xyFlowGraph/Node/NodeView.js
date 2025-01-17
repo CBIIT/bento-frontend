@@ -26,6 +26,7 @@ const NodeView = ({
   const { dispatch, focusedNodeId } = context;
 
   const [display, setDisplay] = useState(false);
+
   /**
    * expand node in normal mode (when search mode is false)
    * use view option to adjust the fontSize on property dialog

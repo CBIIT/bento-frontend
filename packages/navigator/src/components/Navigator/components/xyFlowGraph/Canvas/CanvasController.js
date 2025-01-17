@@ -28,6 +28,7 @@ const CanvasController = ({
 
   const { context } = useModelContext();
   if (Object.keys(context || {}).length === 0) {
+    console.log('circle');
     return <CircularProgress />;
   };
 
@@ -100,6 +101,15 @@ const CanvasController = ({
     const { dispatch } = context;
     dispatch(onCanvasClick());
   };
+  console.log('reload graph');
+  
+  // handle node drag
+  const handleNodeDragStop = (event, node) => {
+    const updatedNodes = nodes.map((n) =>
+      n.id === node.id ? { ...n, position: node.position } : n
+    );
+    setNodes(updatedNodes);
+  } 
 
   return (
     <CanvasView
@@ -110,6 +120,7 @@ const CanvasController = ({
       onConnect={onConnect}
       canvasWidth={tabViewWidth}
       onGraphPanelClick={onGraphPanelClick}
+      handleNodeDragStop={handleNodeDragStop}
     />
   );
 };

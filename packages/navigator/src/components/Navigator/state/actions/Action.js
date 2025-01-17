@@ -6,7 +6,8 @@ export const actionTypes = {
     ON_CANVAS_CLICK: 'ON_CANVAS_CLICK',
     SHOW_OVERLAY_TABLE: 'SHOW_OVERLAY_TABLE',
     CLOSE_OVERLAY_TABLE: 'CLOSE_OVERLAY_TABLE',
-    ON_PANEL_FOCUS: 'ON_PANEL_FOCUS'
+    ON_PANEL_FOCUS: 'ON_PANEL_FOCUS',
+    ON_SEARCH_TEXT: 'ON_SEARCH_TEXT',
 };
 
 export const updateDictionary = (payload) => {
@@ -66,4 +67,12 @@ export const closeOverlayTable = () => {
   return {
     type: actionTypes.CLOSE_OVERLAY_TABLE,
   }
-}
+};
+
+export const onTextSearch = (payload) => {
+  console.log(payload);
+  return {
+    type: actionTypes.ON_SEARCH_TEXT,
+    payload
+  }
+};

@@ -6,24 +6,55 @@ import { TableCell } from "@mui/material";
 import KeyIconSvg from "../../../assets/key_icon.svg";
 import { PropertyKeyIcon } from "./Cell.styled";
 import ListView from './List/ListView';
+import { useModelContext } from '../../../../../state/NavContextProvider';
+import HighlightText from '../../../../Sidebar/Search/HighlightText';
 
 const CellView = ({
   column,
   row
 }) => {
   const { field } = column;
+
+  /**
+  * highlight search text
+  */
+  const { context = {}} = useModelContext();
+  const {
+    isSearchMode = false,
+    matches = {}
+  } = context;
+
+  const { node, propertyName } = row;
+  const matchedProperties = matches[node]?.properties || {};
+  const matchedProperty = matchedProperties[propertyName] || {};
+
+  const highligtSearchText = (text, key) => {
+    if (!isSearchMode) {
+      return text;
+    }
+    if (matchedProperty[key]) {
+      return (
+        <HighlightText
+          text={text}
+          searchTerm = {matches?.searchText}
+        />
+      );
+    }
+    return text;
+  };
+
   if (field === columnField.PROPERTY_NAME) {
     const { key: isKey = false } = row;
     return (
       <TableCell>
-        {row[field]} {isKey && (<PropertyKeyIcon src={KeyIconSvg} alt="key_icon" />)}
+        {highligtSearchText(row[field], field)} {isKey && (<PropertyKeyIcon src={KeyIconSvg} alt="key_icon" />)}
       </TableCell>
     );
   };
 
   /**
-   * type column
-   */
+  * type column
+  */
 
   if (field === columnField.TYPE) {
     /***
@@ -31,12 +62,14 @@ const CellView = ({
     */
     const enumValue = row[columnField.ENUM] || row?.Enum;
     const isEnum = Array.isArray(enumValue);
-
     if (isEnum) {
+      const matchingItems = matchedProperty[columnField.ENUM] || {};
       return (
         <TableCell>
           <ListView
             items={enumValue}
+            matchingItems={matchingItems}
+            searchTerm={matches?.searchText}
           />
         </TableCell>
       );
@@ -60,7 +93,7 @@ const CellView = ({
   if ( typeof row[field] === 'string') {
     return (
       <TableCell>
-        {row[field]}
+        {highligtSearchText(row[field], field)}
       </TableCell>
     );
   }

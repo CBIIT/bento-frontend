@@ -7,11 +7,15 @@ import {
   ListItemIcon
 } from '@mui/material';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import HighlightText from '../../../../../Sidebar/Search/HighlightText';
 
 const maxItem = 10;
 const ListView = ({
   items = [],
+  matchingItems = {},
+  searchTerm
 }) => {
+  console.log(matchingItems);
   const [display, setDisplay] = useState(false);
   const listItems = items.slice(0, maxItem);
 
@@ -31,7 +35,17 @@ const ListView = ({
               <FiberManualRecordIcon style={{ fontSize: 8 }} />
             </ListItemIcon>
             <Styled.MuiListItemText>
-              {item}
+              {matchingItems[index] ?
+                (
+                  <HighlightText
+                    text={item}
+                    searchTerm={searchTerm}
+                  />
+                ) : (
+                  <>{item}</>
+                )
+              }
+              
             </Styled.MuiListItemText>
           </Styled.MuiListItem>
         ))

@@ -10,7 +10,7 @@ import { columns } from './tableConfig';
 import CellView from './components/Cell/CellView';
 
 const PropertyView = ({
-  properties
+  properties,
 }) => {
     return (
       <TableContainer component={Paper}>
@@ -32,7 +32,9 @@ const PropertyView = ({
                   <TableRow>
                     {columns.map(col => {
                       return (
-                        <CellView column={col} row={properties[pName]} />
+                        <CellView
+                          column={col} row={properties[pName]}
+                        />
                       )
                     })}
                   </TableRow>

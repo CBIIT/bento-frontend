@@ -17,7 +17,8 @@ const CategoryView = ({
   category,
   nodes,
   isOverLayTable,
-  onCloseOverlayTable
+  onCloseOverlayTable,
+  matches = {}
 }) => {
   const categoryIconAndColor = categoryColorAndIcon[category];
   const iconURL = categoryIconAndColor.tableIcon;
@@ -59,6 +60,10 @@ const CategoryView = ({
             categoryIcon={iconURL}
             description={node.description}
             isOverLayTable={isOverLayTable}
+            textSearchDetail={{
+              ...matches[node.id],
+              searchText: matches?.searchText
+            }}
           />
         ))
       }

@@ -12,12 +12,16 @@ const reducer = (state, action) => {
       };
     case actionTypes.ON_TOGGLE_CHECKBOX:
       updateState = onFilterValueChange(updateState, payload);
-      return updateState;
+      return {
+        ...updateState,
+        focusedNodeId: null,
+      };
     case actionTypes.ON_CLEAR_FILTER:
       updateState = getInitState(state);
       return {
         ...state,
-        ...updateState
+        ...updateState,
+        focusedNodeId: null,
       };
     case actionTypes.ON_NODE_FOCUS:
       return {
@@ -40,6 +44,12 @@ const reducer = (state, action) => {
         ...state,
         overlayNodeId: null,
       };
+    case actionTypes.ON_SEARCH_TEXT:
+      return {
+        ...updateState,
+        isSearchMode: true,
+        matches: payload
+      }
     default:
       return state;
   }

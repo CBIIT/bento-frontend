@@ -2,7 +2,7 @@ import React,
 { 
   useCallback, 
   useEffect, 
-  useState
+  useState,
 } from 'react';
 import {
   ReactFlowProvider,
@@ -49,7 +49,8 @@ const CustomFlowView = ({
   onEdgesChange,
   highlightedNodes,
   graphViewConfig,
-  onGraphPanelClick
+  onGraphPanelClick,
+  handleNodeDragStop
 }) => {
   const { setViewport, zoomIn, zoomOut } = useReactFlow();
 
@@ -79,44 +80,46 @@ const CustomFlowView = ({
   //   // onGraphPanelClick();
   //   onGraphPanelClick();
   // };
-
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      minZoom={minZoom}
-      maxZoom={fit?.maxZoom ? fit.maxZoom : 3}
-      onPaneClick={onGraphPanelClick}
-      fitView
-    >
-      <OverlayPropertyTable />
-      <Styled.Controls>
-        <Styled.ControlBtn onClick={handleTransform} title="reset">
-          <Styled.ControlBtnIcon src={resetIcon} alt="reset_icon" />
-        </Styled.ControlBtn>
-        <Styled.ControlBtn
-          title="zoom in"
-          onClick={() => zoomIn({ duration: 200 })}
-        >
-          <Styled.ControlBtnIcon src={ZoomInIcon} alt="ZoomInIcon" />
-        </Styled.ControlBtn>
-        <Styled.ControlBtn
-          title="zoom out"
-          onClick={() => zoomOut({ duration: 200 })}
-        >
-          <Styled.ControlBtnIcon src={ZoomOutIcon} alt="ZoomOutIcon" />
-        </Styled.ControlBtn>
-      </Styled.Controls>
-      <Styled.CanvasBackground
-        highlightedNodes={highlightedNodes}
-        gap={12}
-      /> 
-    </ReactFlow>
+    <>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        minZoom={minZoom}
+        maxZoom={fit?.maxZoom ? fit.maxZoom : 3}
+        onPaneClick={onGraphPanelClick}
+        onNodeDragStop={handleNodeDragStop}
+        fitView
+      >
+        <OverlayPropertyTable />
+        <Styled.Controls>
+          <Styled.ControlBtn onClick={handleTransform} title="reset">
+            <Styled.ControlBtnIcon src={resetIcon} alt="reset_icon" />
+          </Styled.ControlBtn>
+          <Styled.ControlBtn
+            title="zoom in"
+            onClick={() => zoomIn({ duration: 200 })}
+          >
+            <Styled.ControlBtnIcon src={ZoomInIcon} alt="ZoomInIcon" />
+          </Styled.ControlBtn>
+          <Styled.ControlBtn
+            title="zoom out"
+            onClick={() => zoomOut({ duration: 200 })}
+          >
+            <Styled.ControlBtnIcon src={ZoomOutIcon} alt="ZoomOutIcon" />
+          </Styled.ControlBtn>
+        </Styled.Controls>
+        <Styled.CanvasBackground
+          highlightedNodes={highlightedNodes}
+          gap={12}
+        /> 
+      </ReactFlow>
+    </>
   );
 }
 
@@ -126,10 +129,11 @@ const CanvasView = ({
   onConnect,
   onNodesChange,
   onEdgesChange,
-  onGraphPanelClick
+  onGraphPanelClick,
+  handleNodeDragStop
 }) => {
   return (
-    <Styled.CanvasContariner>
+    <Styled.CanvasContariner className='canvasContariner'>
       <ReactFlowProvider>
         <CustomFlowView
           nodes={nodes}
@@ -138,6 +142,7 @@ const CanvasView = ({
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onGraphPanelClick={onGraphPanelClick}
+          handleNodeDragStop={handleNodeDragStop}
         />
       </ReactFlowProvider>
     </Styled.CanvasContariner>
