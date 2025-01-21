@@ -63,8 +63,8 @@ const SuggestionListView = ({
   dictionary,
   textSearch,
 }) => {
-  console.log(dictionary);
-  console.log(textSearch);
+  // console.log(dictionary);
+  // console.log(textSearch);
   if (textSearch) {
     const suggestionList = getSuggestionList(dictionary, textSearch);
     console.log(suggestionList);
