@@ -1,5 +1,8 @@
 import { actionTypes } from "../actions/Action";
-import { getInitState, onFilterValueChange } from "./filter";
+import {
+  getInitState,
+  onToggleFacetFilter,
+} from "./filter";
   
 const reducer = (state, action) => {
   const { type, payload } = action;
@@ -11,7 +14,7 @@ const reducer = (state, action) => {
         ...payload
       };
     case actionTypes.ON_TOGGLE_CHECKBOX:
-      updateState = onFilterValueChange(updateState, payload);
+      updateState = onToggleFacetFilter(updateState, payload);
       return {
         ...updateState,
         focusedNodeId: null,

@@ -107,17 +107,7 @@ const getNonCategoryFacetItem = (facetItems) => {
       return acc;
   }, {});
   return items;
-}
-
-// const filterNode2FacetItems = (node2FacetItem, filterNodes) => {
-//   const node2FacetItems = nonActiveCategoryItem.reduce((acc, facet) => {
-//     const nodes = node2FacetItem[facet];
-//     const filtered = nodes.filter(item => filterNodes.includes(item));
-//     acc[facet] = filtered;
-//     return acc;
-//   }, {});
-//   return node2FacetItems;
-// }
+};
 
 const getDistinctNode = (data) => {
   const distinctNodes = data.reduce(
@@ -217,7 +207,7 @@ export const getFacetItemCount2 = (
   
   let exclusiveNodes = step0Dataset.map(item => item.nodeName);
   let filteredNodes = Array.from(new Set(exclusiveNodes));
-  console.log(filteredNodes);
+  // console.log(filteredNodes);
   if (step0Dataset.length === 0) {
     if (!isChecked) {
       return {
@@ -229,9 +219,6 @@ export const getFacetItemCount2 = (
 
   console.log('STEP 1. filter by property - dataset 1');
   const step1Dataset = filterData(facetFilterData, activeFiltersByProperty);
-  const nodesByFilterProperty = getDistinctNode(step1Dataset);
-  console.log(nodesByFilterProperty);
-
   facetFilterData = step1Dataset;
 
   console.log('STEP 2. filter by NODE - dataset 2');
@@ -322,7 +309,6 @@ export const getFacetItemCount2 = (
     ...step7Count,
     ...prevFacetItemCount
   }
-
   console.log("************************ FACET ITEM COUNT 2 ************************");
   
   return {
@@ -355,7 +341,7 @@ export const initFacetItemCount = (
   return facetItemCount;
 };
 
-export const onFilterValueChange = (
+export const onToggleFacetFilter = (
   currState,
   filterItem
 ) => {
@@ -439,8 +425,22 @@ export const getInitState = (state) => {
     dictionary, 
     filterSections,
     node2FacetItem, 
-    props2FacetItem
+    props2FacetItem,
   } = cloneState;
+
+  /**
+   * init count
+   */
+  const { 
+    facetItemCount
+  } = getFacetItemCount2(
+    false,
+    null,
+    cloneState,
+    [],
+    node2FacetItem,
+    props2FacetItem
+  );
 
   /**
   * uncheck all filters
@@ -452,10 +452,7 @@ export const getInitState = (state) => {
     ...cloneState,
     activeFilters: {},
     filterDictionary: dictionary,
-    facetItemCount: {
-      ...node2FacetItem,
-      ...props2FacetItem
-    },
+    facetItemCount,
     filterSections
   };
 };

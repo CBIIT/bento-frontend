@@ -70,7 +70,6 @@ export const closeOverlayTable = () => {
 };
 
 export const onTextSearch = (payload) => {
-  console.log(payload);
   return {
     type: actionTypes.ON_SEARCH_TEXT,
     payload

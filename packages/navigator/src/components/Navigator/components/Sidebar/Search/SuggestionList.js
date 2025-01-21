@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Fuse from 'fuse.js';
 
 const suggestionKeys = [
@@ -9,7 +9,7 @@ const suggestionKeys = [
   'properties.type',
 ];
 
-const limit = 50;
+const limit = 10;
 
 const getSuggestionList = (dictionary, searchText) => {
   const flattened = Object.keys(dictionary || {}).reduce((acc, key) => {
@@ -63,15 +63,19 @@ const SuggestionListView = ({
   dictionary,
   textSearch,
 }) => {
-  // console.log(dictionary);
-  // console.log(textSearch);
-  if (textSearch) {
-    const suggestionList = getSuggestionList(dictionary, textSearch);
-    console.log(suggestionList);
-  }
+  const [items, setItems] = useState([]);
+  useEffect( () => {
+    if (textSearch) {
+      const suggestionList = getSuggestionList(dictionary, textSearch);
+      console.log(suggestionList);
+      setItems(suggestionList);
+    }
+  }, [textSearch]);
+
   return (
-    <>
-    </>
+    <ul>
+      {items.map(listItem => <li>{listItem}</li>)}
+    </ul>
   )
 }
 
