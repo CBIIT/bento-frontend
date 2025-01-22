@@ -165,7 +165,8 @@ export const getFacetItemCount2 = (
     facetItemCount: currFacetItemCount, 
     facet2FacetItem,
     facetFilterData: dataset,
-    filterSections
+    filterSections,
+    filterDictionary
   } = currState;
   const selectedFacetItems = facet2FacetItem[facet] || [];
   let facetFilterData = structuredClone(dataset);
@@ -209,6 +210,7 @@ export const getFacetItemCount2 = (
   let filteredNodes = Array.from(new Set(exclusiveNodes));
   // console.log(filteredNodes);
   if (step0Dataset.length === 0) {
+    filteredNodes = Object.keys(filterDictionary);
     if (!isChecked) {
       return {
         facetItemCount: currFacetItemCount,
