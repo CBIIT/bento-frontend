@@ -12,56 +12,6 @@ import {
 const facetType = {
   CATEGORY: 'category',
   ASSIGNMENT: 'assignment'
-}
-
-// const inclusiveNodeFacet = {
-//   core: 'core',
-//   extended: 'extended',
-//   primary: 'primary',
-//   secondary: 'secondary'
-// };
-
-// const inclusivePropertyFacet = {
-//   inclusion: 'inclusion',
-//   display: 'display',
-// }
-
-/**
- * identify the common items node or property
- */
-export const getCommonItems = (arrays = []) => {
-  if (arrays.length === 0) {
-    return [];
-  }
-  if (arrays.length === 1) {
-    return arrays[0];
-  }
-  const sorted = arrays
-    .filter(item => item.length > 0)
-    .sort((a, b) => a.length - b.length);
-  // const minNodeArray = list.splice(0, 1);
-  const commonItems = (sorted || []).reduce((common, array) =>
-    {
-      return common.filter(item => array.includes(item));
-    }
-  );
-
-  // item atleast common two facets 
-  if (commonItems.length === 0) {
-    const combineArrays = sorted.reduce((acc, arry) => {
-      acc.push(...arry);
-      return acc;
-    }, []);
-    const elementCount = combineArrays.reduce((count, item) => {
-      count[item] = (count[item] || 0) + 1;
-      return count;
-    }, {});
-    // count repeated items
-    const repeatedItems = Object.keys(elementCount)
-      .filter(item => elementCount[item] > 1);
-    return repeatedItems;
-  }
-  return commonItems;
 };
 
 const getActiveFiltersBySection = (filterItems) => {
@@ -153,7 +103,7 @@ const getItemCount = (facetItems2Objects, facetItemList, objectList) => {
   return count;
 }
 
-export const getFacetItemCount2 = (
+export const getFacetItemCount = (
   isChecked,
   facet,
   currState,
@@ -172,43 +122,36 @@ export const getFacetItemCount2 = (
   let facetFilterData = structuredClone(dataset);
   /**
   * active facet items by sections
-  * 
   */
-  console.log("************************ FACET ITEM COUNT 2 ************************");
+  // active filters by node
   const activeFiltersByNode = getActiveFiltersBySection(activeFilters?.filterByNode);
-  console.log('activeFiltersByNode');
-  console.log(activeFiltersByNode);
+  // active filters by property
   const activeFiltersByProperty = getActiveFiltersBySection(activeFilters?.filterByProperty);
-  console.log('activeFiltersByProperty');
-  console.log(activeFiltersByProperty);
 
   const allActiveFacetItems = {
     ...activeFiltersByNode,
     ...activeFiltersByProperty
   };
   
+  // active filter by category
   const activeCategoryFilters = activeFiltersByNode.category || [];
-  console.log('activeCategoryFilters');
-  console.log(activeCategoryFilters);
-  const nonActiveCategoryFilters = (facet2FacetItem?.category || [])
-    .filter(item => !activeCategoryFilters.includes(item));
-  console.log("nonActiveCategoryFilters");
-  console.log(nonActiveCategoryFilters);
 
+  // active filter by none category 
   const nonCategoryActiveFilters = getNonCategoryFacetItem(allActiveFacetItems);
-  console.log('nonCategoryActiveFilters');
-  console.log(nonCategoryActiveFilters);
 
+  // active node filters without category 
   const nonCategoryActiveFiltersByNode = getNonCategoryFacetItem(activeFiltersByNode);
-  console.log('nonCategoryActiveFiltersByNode');
-  console.log(nonCategoryActiveFiltersByNode);
 
-  console.log("STEP - 0 - if filter yeilds no results");
+  // console.log("STEP - 0 - if filter yeilds no results");
+  /**
+   * STEP 0
+   * a. get filter nodes
+   * b. if matching node is zero return current state
+   */
   let step0Dataset = filterData(facetFilterData, allActiveFacetItems);
   
   let exclusiveNodes = step0Dataset.map(item => item.nodeName);
   let filteredNodes = Array.from(new Set(exclusiveNodes));
-  // console.log(filteredNodes);
   if (step0Dataset.length === 0) {
     filteredNodes = Object.keys(filterDictionary);
     if (!isChecked) {
@@ -219,49 +162,53 @@ export const getFacetItemCount2 = (
     }
   }
 
-  console.log('STEP 1. filter by property - dataset 1');
+  // console.log('STEP 1. filter by property - dataset 1');
+  /**
+   * STEP 1
+   * a. apply filterByProperty - step1Dataset
+   */
   const step1Dataset = filterData(facetFilterData, activeFiltersByProperty);
   facetFilterData = step1Dataset;
 
-  console.log('STEP 2. filter by NODE - dataset 2');
-  console.log("apply category filter to dataset 1");
-
+  /**
+   * STEP 2
+   * a. apply any filterByCategory on step1Dataset
+   */
   let step2Dataset = step1Dataset;
   if (activeCategoryFilters.length > 0) {
     step2Dataset = filterData(step1Dataset, {category: activeCategoryFilters});
   }
 
-  console.log('STEP 3. dataset 1 -(filterDataByCategory)-> dataset 2 - Compute Node count -> Non Category - count1');
+  /**
+   * STEP 3
+   * a. getDistinctNode from step2Dataset
+   * b. getNodeCount for non category facet (assignment, class)
+   */
   let step3NodeList = getDistinctNode(step2Dataset);
   const step3Facet2Count = [...facet2FacetItem.assignment, ...facet2FacetItem.class]; 
   let step3Count = getNodeCount(node2FacetItem, step3Facet2Count, step3NodeList);
-  console.log(step3Count);
 
-  console.log(' STEP 4 - Use non category active facet category node count - use nonCategoryActiveFiltersByNode');
+  // console.log(' STEP 4 - Use non category active facet category node count - use nonCategoryActiveFiltersByNode');
   let step4Dataset = filterData(step1Dataset, nonCategoryActiveFiltersByNode);
   let step4NodeList = getDistinctNode(step4Dataset);
   let step4Count = getNodeCount(node2FacetItem, facet2FacetItem.category, step4NodeList);
-  console.log(step4Count);
 
-  console.log(' STEP 5 - count - nodeNonCategoryFacets');
+  // console.log(' STEP 5 - count - nodeNonCategoryFacets');
   let step5Dataset = filterData(step2Dataset, nonCategoryActiveFiltersByNode);
   let step5NodeList = getDistinctNode(step5Dataset);
-  console.log(step5NodeList);
   let step5Count = getNodeCount(node2FacetItem, step3Facet2Count, step5NodeList);
-  console.log(step5Count);
 
   let step6Dataset = []; 
   let step6Count = {};
   if (facet === facetType.ASSIGNMENT && isChecked) {
-    console.log('STEP - 6 - count item base on selected facet item');
+    // console.log('STEP - 6 - count item base on selected facet item');
     step6Dataset = filterData(step1Dataset,{[facet]: nonCategoryActiveFilters[facet] });
     let step6NodeList = getDistinctNode(step6Dataset);
     let step6Facet2Count = step3Facet2Count.filter(item => !(nonCategoryActiveFilters[facet] || []).includes(item))
     step6Count = getNodeCount(node2FacetItem, step6Facet2Count, step6NodeList);
-    console.log(step6Count);
   }
 
-  console.log('STEP - 7 - count property facet item');
+  // console.log('STEP - 7 - count property facet item');
   const propertyFacets = [...facet2FacetItem.display, ...facet2FacetItem.inclusion];
   let step7Dataset = filterData(dataset, activeFiltersByNode);
   let step7PropertyList = getDistinctObjects(step7Dataset, 'propertyName');
@@ -282,7 +229,6 @@ export const getFacetItemCount2 = (
           }
           return acc;
         }, []);
-      // const countItem = facetItem === 'display' ? 'inclusion' : 'display';
       let step7PropertyCount = getItemCount(props2FacetItem, propFaceItemsCount, step7FilterPropertyList);
       console.log(step7PropertyCount);
       step7Count = {
@@ -292,7 +238,6 @@ export const getFacetItemCount2 = (
     });
   }
 
-  console.log("STEP n - SELECTED FACET");
   const prevFacetItemCount = {};
   selectedFacetItems.forEach(facetItem => {
     if (currFacetItemCount[facetItem]) {
@@ -301,7 +246,6 @@ export const getFacetItemCount2 = (
       prevFacetItemCount[facetItem] = [];
     }
   });
-  console.log(prevFacetItemCount);
 
   const facetItemCount = {
     ...step3Count,
@@ -311,7 +255,7 @@ export const getFacetItemCount2 = (
     ...step7Count,
     ...prevFacetItemCount
   }
-  console.log("************************ FACET ITEM COUNT 2 ************************");
+  // console.log("************************ FACET ITEM COUNT 2 ************************");
   
   return {
     facetItemCount, filteredNodes
@@ -396,7 +340,7 @@ export const onToggleFacetFilter = (
   const { 
     filteredNodes,
     facetItemCount
-  } = getFacetItemCount2(
+  } = getFacetItemCount(
     isChecked,
     facet,
     currState,
@@ -435,7 +379,7 @@ export const getInitState = (state) => {
    */
   const { 
     facetItemCount
-  } = getFacetItemCount2(
+  } = getFacetItemCount(
     false,
     null,
     cloneState,
