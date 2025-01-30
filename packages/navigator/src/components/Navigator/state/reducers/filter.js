@@ -215,7 +215,7 @@ export const getFacetItemCount = (
   let step7Count = getItemCount(props2FacetItem, propertyFacets, step7PropertyList);
 
   if (Object.keys(activeFiltersByProperty).length > 0) {
-    console.log(activeFiltersByProperty);
+    // console.log(activeFiltersByProperty);
     Object.keys(activeFiltersByProperty).forEach(facetItem => {
       const item = activeFiltersByProperty[facetItem];
       let step7PropertyDataset = filterData(step7Dataset, {[facetItem]: item});
@@ -230,7 +230,7 @@ export const getFacetItemCount = (
           return acc;
         }, []);
       let step7PropertyCount = getItemCount(props2FacetItem, propFaceItemsCount, step7FilterPropertyList);
-      console.log(step7PropertyCount);
+      // console.log(step7PropertyCount);
       step7Count = {
         ...step7Count,
         ...step7PropertyCount

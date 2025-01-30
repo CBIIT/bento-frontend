@@ -5,7 +5,6 @@ import {
   Switch,
 } from 'react-router-dom';
 import { getDictionary } from '../Navigator/controller/Dictionary';
-import HeaderView from '../Navigator/components/Header/HeaderView';
 import { ModelContextProvider } from '../Navigator/state/NavContextProvider';
 import NavigatorView from '../Navigator/NavigatorController';
 import { getFilterItems } from '../Navigator/controller/Filter';
@@ -14,9 +13,10 @@ import GraphView from '../Navigator/components/xyFlowGraph/GraphView';
 import { generateNodeTree } from '../Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
 import NavTableTheme from './NavTableTheme';
 import NavGraphTheme from './NavGraphTheme';
+import HeaderView from '../Navigator/components/Header/HeaderView';
 
 const readMeConfig =  {
-  readMeUrl: 'https://raw.githubusercontent.com/rana22/category_partition/main/README.md',
+  readMeUrl: 'https://raw.githubusercontent.com/CBIIT/icdc-readMe-content/dev/Data_Model_Navigator_README.md',
   readMeTitle: 'Understanding the ICDC Data Model',
 };
 
@@ -89,7 +89,7 @@ const DataModelNavigatorView = () => {
   
   return (
     <>
-      <HeaderView />
+      <HeaderView readMeConfig={readMeConfig} />
       <NavigatorView
         dictionary={dictionary}
         config={config}
