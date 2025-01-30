@@ -12,13 +12,13 @@ const ActionHeaderCell = ({
   column,
 }) => {
   const { cellType } = column;
-
   if (cellTypes.CHECKBOX === cellType) {
     return (
       <CheckboxView
         includeSelectedIds={includeSelectedIds}
         toggleSelectAll={toggleSelectAll}
         Ids={Ids}
+        rows={rows}
       />
     );
   }

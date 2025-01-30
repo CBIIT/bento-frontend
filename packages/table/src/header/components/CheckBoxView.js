@@ -10,6 +10,7 @@ const CheckboxView = ({
   includeSelectedIds,
   toggleSelectAll,
   Ids,
+  rows,
 }) => (
   <TableCell padding="checkbox">
     <span style={{ display: 'none' }}>Select all</span>
@@ -18,7 +19,7 @@ const CheckboxView = ({
       color="primary"
       indeterminate={includeSelectedIds}
       checked={includeSelectedIds}
-      onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
+      onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds, rows)}
     />
   </TableCell>
 );
