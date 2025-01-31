@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import ReactMarkdown from "react-markdown";
 import { marked } from "marked";
 import html2pdf from "html2pdf.js";
-import { createFileName } from '../../utils/file'
-import * as Styled from './ReadMeDialog.styled';
+import { createFileName } from '../../../../utils/file'
+import * as Styled from './Dialog.styled';
 import PdfDownloadIcon from "./assets/icon_download_PDF.svg";
 import footerLine from "./assets/two-pixel-footer-line.png";
 import nihLogo from "./assets/icdc_nih_logo.png";

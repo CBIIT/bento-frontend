@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import * as Styled from './ReadMe.styled';
-import ReadMeDialogView from "../../ReadMe/ReadMeDialogView";
+import ReadMeDialogView from "./Dialog/DialogView";
 
 const ReadMeView = ({
   config

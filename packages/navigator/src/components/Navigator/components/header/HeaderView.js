@@ -21,11 +21,11 @@ const HeaderView = ({
         <Styled.HeaderLogo src={headerLogo} alt="header-logo" />
         <Styled.Title>{title}</Styled.Title>
       </Styled.LogoAndTitle>
-      {/* <DropDownView /> */}
       <Styled.ButtonContainer>
         <ReadMeView
           config={readMeConfig}
         />
+        <DropDownView />
       </Styled.ButtonContainer>
     </Styled.TitleContainer>
   );
