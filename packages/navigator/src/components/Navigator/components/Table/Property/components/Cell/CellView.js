@@ -8,6 +8,7 @@ import { PropertyKeyIcon } from "./Cell.styled";
 import ListView from './List/ListView';
 import { useModelContext } from '../../../../../state/NavContextProvider';
 import HighlightText from '../../../../Sidebar/Search/HighlightText';
+import * as Styled from './Cell.styled';
 
 const CellView = ({
   column,
@@ -43,12 +44,22 @@ const CellView = ({
     return text;
   };
 
+  if (field === columnField.INCLUSION) {
+    const { inclusion } = row;
+    return (
+      <Styled.InclusionCellView inclusion={inclusion}>
+        {inclusion}
+      </Styled.InclusionCellView>
+    );
+  }
+
   if (field === columnField.PROPERTY_NAME) {
     const { key: isKey = false } = row;
     return (
-      <TableCell>
-        {highligtSearchText(row[field], field)} {isKey && (<PropertyKeyIcon src={KeyIconSvg} alt="key_icon" />)}
-      </TableCell>
+      <Styled.PropertyName isKey={isKey}>
+        {highligtSearchText(row[field], field)}
+        {isKey && (<PropertyKeyIcon src={KeyIconSvg} alt="key_icon" />)}
+      </Styled.PropertyName>
     );
   };
 
@@ -65,13 +76,13 @@ const CellView = ({
     if (isEnum) {
       const matchingItems = matchedProperty[columnField.ENUM] || {};
       return (
-        <TableCell>
+        <Styled.ListCell>
           <ListView
             items={enumValue}
             matchingItems={matchingItems}
             searchTerm={matches?.searchText}
           />
-        </TableCell>
+        </Styled.ListCell>
       );
     }
 
@@ -79,22 +90,22 @@ const CellView = ({
     const isArray = Array.isArray(typeValue);
     if (isArray) {
       return (
-        <TableCell>
+        <Styled.TypeCell>
           <List>
             {typeValue.map(item => (
               <ListItem>{item}</ListItem>
             ))}
           </List>
-        </TableCell>
+        </Styled.TypeCell>
       );
     }
   }
 
   if ( typeof row[field] === 'string') {
     return (
-      <TableCell>
+      <Styled.MuiCellView>
         {highligtSearchText(row[field], field)}
-      </TableCell>
+      </Styled.MuiCellView>
     );
   }
 };

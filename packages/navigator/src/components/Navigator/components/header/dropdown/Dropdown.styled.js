@@ -64,7 +64,7 @@ export const MenuItem = styled(MuiMenuItem)(
     textAlign: 'left',
     cursor: isDropDownDisabled && 'not-allowed',
     fontSize: '15px',
-    paddingLeft: '29px',
+    padding: '10px 10px 10px 29px',
     fontFamily: 'Lato',
     fontWeight: '500',
     marginTop: '1px',
