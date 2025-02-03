@@ -1,53 +1,15 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
 
-const MAX_STATS_ALLOWED = 7; // Maximum number of stats allowed
+const MAX_STATS_ALLOWED = 7;
 
-/**
- * The StatsBar component is a horizontal bar that shows some quick stats
- *
- * @param {object} classes Classes
- * @param {object} stats Statistics to show
- * @param {object} styles Customized configurations used by both `styles` and withStyles(), below
- *
- * @returns {object} A React subcomponent
- */
 const StatsBar = ({
   classes, stats, styles,
 }) => {
   const countClasses = classes.statCount;
-  const iconClasses = classes.statsIcon;
   const titleClasses = classes.statTitle;
   const truncatedListOfStats = stats.slice(0, MAX_STATS_ALLOWED);
 
-  /**
-   * An icon for a stat
-   *
-   * @param {string} alt The alt text
-   * @param {string} src The image's source media
-   *
-   * @returns {object} A React subcomponent
-   */
-  const StatsBarIcon = ({
-    alt, src,
-  }) => (
-    <div className={iconClasses}>
-      <img src={src} alt={alt} />
-    </div>
-  );
-
-  /**
-   * The title and count for a single stat
-   *
-   * @param {number} countId DOM id for the count
-   * @param {boolean} isTitleFirst Whether to show the title before the count
-   * @param {string} title Name of the stat
-   * @param {string} titleId DOM id for the title
-   * @param {number} val The value to show
-   *
-   * @param {number} titleId DOM id for the title
-   * @returns {object} A React subcomponent
-   */
   const StatsBarTitleAndCount = ({
     countId,
     isTitleFirst,
@@ -80,14 +42,6 @@ const StatsBar = ({
     );
   };
 
-  /**
-   * A group of things to show for a single stat
-   *
-   * @param {number} index Numbering assigned to this stats group
-   * @param {object} stat Statistic to show
-   *
-   * @returns {object} A React subcomponent
-   */
   const StatsBarGroup = ({
     index, stat,
   }) => {
@@ -97,10 +51,6 @@ const StatsBar = ({
 
     return (
       <div className={classes.statsGroup}>
-        <StatsBarIcon
-          alt={stat.statIconAlt}
-          src={stat.statIconSrc}
-        />
         <StatsBarTitleAndCount
           countId={countId}
           isTitleFirst={isTitleFirst}
@@ -128,19 +78,12 @@ const StatsBar = ({
   );
 };
 
-/**
- * Used by withStyles(), below
- */
 const styles = () => ({
   statsSection: (props) => ({
     top: props.styles.global.top ? props.styles.global.top : '139px',
     width: '100%',
-    zIndex: 999,
-    position: 'fixed',
     background: props.styles.global.background ? props.styles.global.background : '#8DCAFF',
     textAlign: 'center',
-    left: 0,
-    right: 0,
     display: 'flex',
     justifyContent: 'flex-end',
   }),
@@ -193,7 +136,6 @@ const styles = () => ({
     ...props.styles.statCount,
   }),
   statsGroup: (props) => ((props.styles.global && props.styles.global.horizontalStyle) ? {
-    // spacing between stats
     margin: props.styles.statsGroup ? props.styles.statsGroup.margin ? props.styles.statsGroup.margin : '4px 32px' : '4px 32px',
   } : {
     margin: props.styles.statsGroup ? props.styles.statsGroup.margin ? props.styles.statsGroup.margin : '4px 0px' : '4px 0px',
@@ -228,6 +170,5 @@ StatsBar.defaultProps = {
   styles: {},
 };
 
-// TODO: need to change it to injectStyle sheet
 const StyledStatsBar = withStyles(styles)(StatsBar);
 export default StyledStatsBar;
