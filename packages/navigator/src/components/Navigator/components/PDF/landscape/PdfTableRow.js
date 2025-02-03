@@ -180,18 +180,13 @@ const PdfTableRow = ({ propInfo, node, thisProperty }) => {
     return property;
   };
 
-  const required = (key) => {
-    if (node.required.includes(key)) {
+  const required = (value) => {
+    if (value === "required") {
       return (
         <Text style={{ ...styles.tableCell, ...styles.required }}>Required</Text>
       );
     }
-    if (node.preferred.includes(key)) {
-      return (
-        <Text style={styles.tableCell}>Preferred</Text>
-      );
-    }
-    return <Text style={styles.tableCell}>Optional</Text>;
+    return <Text style={styles.tableCell}>{value}</Text>;
   };
 
   const displayKeyPropsDiscription = (description) => {
@@ -268,7 +263,7 @@ const PdfTableRow = ({ propInfo, node, thisProperty }) => {
         <Text
           style={styles.horizontalTableCell}
         >
-          {required(thisProperty)}
+          {required(propInfo.inclusion)}
 
         </Text>
 

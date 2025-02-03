@@ -1,6 +1,8 @@
 import FileSaver from 'file-saver';
 import PropTypes from 'prop-types';
 import JSZip from 'jszip';
+import { category2NodeList } from '../components/Table/TableView';
+import { convertToTSV } from '../components/PDF/Util';
 // import { dataDictionaryTemplatePath, appname } from '../localconf';
 
 const dataDictionaryTemplatePath = 'FIXME';
@@ -31,6 +33,7 @@ export function createFileName(fileName, filePreFix) {
   return filePreFix ? `${filePreFix}${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}`
     : `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}`;
 }
+
 
 
 const concatTwoWords = (w1, w2) => {
@@ -128,6 +131,80 @@ export const downloadTemplate = (format, nodeId) => {
   if (format === 'tsv' || format === 'json') {
     const templatePath = `${dataDictionaryTemplatePath}${nodeId}?format=${format}`;
     window.open(templatePath);
+  }
+};
+
+export const downloadAllTemplates = (fullDictionary, prefix = "ICDC_") => {
+  // eslint-disable-next-line no-unused-vars
+  const fullDictionaryTemplates = Object.fromEntries(Object.entries(fullDictionary));
+  const nodesValueArray = Object.values(fullDictionaryTemplates);
+  const nodesKeyArray = Object.keys(fullDictionaryTemplates);
+  const nodesTSV = nodesValueArray.map(
+    (elem) => ({
+      type: 'template',
+      content: convertToTSV(elem),
+    }),
+  );
+
+  const zip = new JSZip();
+  const titlePrefix = (nodeTSV) => (nodeTSV.type === 'file-manifest'
+    ? prefix + 'File_Transfer_Manifest' : prefix + 'Data_Loading_Template-');
+  const nodeName = (name) => (name === 'file' ? '' : name);
+  nodesTSV.forEach((nodeTSV, index) => zip.file(`${createFileName(nodeName(nodesKeyArray[index]), titlePrefix(nodeTSV))}.tsv`, nodeTSV.content));
+
+  zip.generateAsync({ type: 'blob' }).then((thisContent) => {
+    saveAs(thisContent, createFileName('', prefix + 'Data_Loading_Templates'));
+  });
+};
+
+export const generateVocabFullDownload = (fullDictionary, format, prefix = "ICDC_") => {
+  const c2nl = category2NodeList(fullDictionary);
+  const enumArr = [];
+  const zip = new JSZip();
+
+  Object.keys(c2nl).forEach((category) => {
+    const nodes = c2nl[category];
+    nodes.forEach(({ title, properties = {} }) => {
+      const propertyKeyList = Object.keys(properties);
+      propertyKeyList.forEach((propertyKey) => {
+        const property = properties[propertyKey];
+        if (property.enum) {
+          enumArr.push({ title, enums: property.enum, propertyKey });
+        }
+      });
+    });
+  });
+
+  const zipFileName = createFileName(prefix + 'Controlled_Vocabularies', '');
+  const getFileName = (title, propertyKey, format) => `${createFileName(`${title}-${propertyKey}`, prefix + 'Controlled_Vocabulary-')}.${format}`
+  switch (format) {
+    case 'TSV': {
+      const vocabTSVArr = enumArr.map(({ enums, title, propertyKey }) => {
+        let content = '';
+        if (enums && enums.length) {
+          enums.forEach((item, index) => {
+            content += (index === 0) ? item : `${'\n'}${item}`;
+          });
+        }
+        return { content, title, propertyKey };
+      });
+
+      vocabTSVArr.forEach(({ title, propertyKey, content }) => zip.file(getFileName(title, propertyKey, 'tsv'), content));
+      zip.generateAsync({ type: 'blob' }).then((thisContent) => {
+        saveAs(thisContent, zipFileName);
+      });
+    }
+      break;
+    // eslint-disable-next-line no-lone-blocks
+    case 'JSON': {
+      enumArr.forEach(({ title, enums, propertyKey }) => zip.file(getFileName(title, propertyKey, 'json'), JSON.stringify(enums)));
+      zip.generateAsync({ type: 'blob' }).then((thisContent) => {
+        saveAs(thisContent, zipFileName);
+      });
+    }
+      break;
+    default:
+      break;
   }
 };
 

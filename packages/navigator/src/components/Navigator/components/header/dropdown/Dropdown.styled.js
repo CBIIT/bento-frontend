@@ -1,9 +1,15 @@
 import styled from '@emotion/styled';
-import { Button } from '@mui/material';
+import { Button, Menu } from '@mui/material';
 import MuiMenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Grow from '@mui/material/Grow';
+
+export const SelectButton = styled(Button)({
+  width: '258px',
+  height: '38px',
+  backgroundColor: '#F2F2F2'
+});
 
 export const DownloadButton = styled(Button)(
   ({ disabled }) => ({
@@ -30,6 +36,7 @@ export const MuiStyledGrow = styled(Grow)(
 export const DropDownMenuList = styled(MenuList)({
   paddingTop: '0px',
   paddingBottom: '0px',
+  width: '257px',
   color: '#ffffff',
   borderBottomRightRadius: '8px',
   borderBottomLeftRadius: '8px',
@@ -43,13 +50,26 @@ export const MuiPaper = styled(Paper)({
   zIndex: '100',
 });
 
+export const MuiMenu = styled(Menu)({
+  '& .MuiList-root': {
+    width: '257px',
+    border: '1px solid #d3d4d5',
+    borderTopRightRadius: '0px',
+    borderTopLeftRadius: '0px',
+  },
+});
+
 export const MenuItem = styled(MuiMenuItem)(
   ({ isDropDownDisabled }) => ({
     textAlign: 'left',
     cursor: isDropDownDisabled && 'not-allowed',
-    backgroundColor: '#3C597C',
+    fontSize: '15px',
+    paddingLeft: '29px',
+    fontFamily: 'Lato',
+    fontWeight: '500',
     marginTop: '1px',
     '&: hover': {
-      backgroundColor: '#1A3D69',
+      backgroundColor: '#0D71A3',
+      color: '#fff'
     },
 }));

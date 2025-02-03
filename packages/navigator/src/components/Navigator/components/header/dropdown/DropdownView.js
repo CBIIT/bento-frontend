@@ -1,13 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   ButtonGroup,
   Menu,
   MenuItem,
-  Popper
 } from '@mui/material';
+import axios from 'axios';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {
   FILE_TYPE_README,
   FILE_TYPE_FULL_DICTIONARY,
@@ -17,8 +18,18 @@ import {
   FILE_TYPE_LOADING_EXAMPLE,
 } from './Constants';
 import * as Styled from './Dropdown.styled';
+import { downloadMarkdownPdf } from '../readMe/Dialog/DialogView';
+import { useModelContext } from '../../../state/NavContextProvider';
+import { convertToTSV, generatePdfDocument } from '../../PDF/Util';
+import { category2NodeList } from '../../Table/TableView';
+import { createFileName, downloadAllTemplates, generateVocabFullDownload } from '../../../utils/file';
 
-const DropDownView = () => {
+const DropDownView = ({
+  readMeConfig
+}) => {
+
+  const { context = {}} = useModelContext();
+  const [isLoading, setLoading] = useState(false);
 
   const [selectedMenuItem, setSelect] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,11 +47,55 @@ const DropDownView = () => {
     setAnchorEl(null);
     setSelect(value);
   };
+
+  const download = () => {
+    const { dictionary } = context;
+    switch (selectedMenuItem) {
+      case FILE_TYPE_README:
+        axios.get(readMeConfig.readMeUrl)
+          .then((response) => response)
+          .then((resp) => {
+          if (resp.data) {
+            downloadMarkdownPdf('', resp.data);
+          }
+        });
+        break;
+      case FILE_TYPE_FULL_DICTIONARY:
+        const categoryNodes = category2NodeList(dictionary);
+        const nodes = Object.keys(categoryNodes).reduce(
+          (acc, item) => {
+            acc.push(...categoryNodes[item]);
+            return acc;
+          }, []);
+        setLoading(true);
+        generatePdfDocument(nodes)
+          .then((response) => {
+            if(response) {
+              setLoading(false);
+            }
+        });
+        break;
+      case FILE_TYPE_TEMPLATES:
+        downloadAllTemplates(dictionary);
+        break;
+
+      case FILE_TYPE_CONTROLLED_VOCAB_TSV:
+        generateVocabFullDownload(dictionary, 'TSV');
+        break;
+      
+      case FILE_TYPE_CONTROLLED_VOCAB_JSON:
+        generateVocabFullDownload(dictionary, 'JSON');
+        break;
+
+      default:
+        return null;
+    }
+  }
   
   return (
     <>
       <ButtonGroup>
-        <Button
+        <Styled.SelectButton
           id="basic-button"
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
@@ -48,10 +103,15 @@ const DropDownView = () => {
           onClick={handleClick}
           startIcon={<KeyboardArrowDownOutlinedIcon />}
         >
-          {selectedMenuItem ? selectedMenuItem : 'Available Downloads'}
-        </Button>
+          {isLoading ? (<p>Loading...</p>) : (
+            <>
+              {selectedMenuItem ? selectedMenuItem : 'Available Downloads'}
+            </>
+          )}
+        </Styled.SelectButton>
         <Styled.DownloadButton
           disabled={selectedMenuItem === null}
+          onClick={download}
         >
           <Styled.DownloadIcon
             alt="download icon"
@@ -59,7 +119,7 @@ const DropDownView = () => {
           />
         </Styled.DownloadButton>
       </ButtonGroup>
-      <Menu
+      <Styled.MuiMenu
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
@@ -75,16 +135,15 @@ const DropDownView = () => {
             FILE_TYPE_TEMPLATES,
             FILE_TYPE_CONTROLLED_VOCAB_TSV,
             FILE_TYPE_CONTROLLED_VOCAB_JSON,
-            FILE_TYPE_LOADING_EXAMPLE,
           ].map((item) => (
-            <MenuItem
+            <Styled.MenuItem
               onClick={() => handleSelectMenu(item)}
             >
               {item}
-            </MenuItem>
+            </Styled.MenuItem>
           ))
         }
-      </Menu>
+      </Styled.MuiMenu>
     </>
   );
 }

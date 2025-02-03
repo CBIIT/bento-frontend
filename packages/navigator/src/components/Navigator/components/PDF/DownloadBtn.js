@@ -4,6 +4,8 @@ import IconDownloadTSV from "./assets/icon_download_TSV.svg";
 import * as Styled from './Download.styled';
 import { downloadTSV, generatePdfDocument } from './Util';
 
+
+
 const DownloadButtonView = ({
   nodes,
   category,
@@ -13,7 +15,7 @@ const DownloadButtonView = ({
 
   const downloadPdf = async () => {
     setLoading(true);
-    generatePdfDocument(category, nodes)
+    generatePdfDocument(nodes)
       .then((response) => {
         if(response) {
           setLoading(false);

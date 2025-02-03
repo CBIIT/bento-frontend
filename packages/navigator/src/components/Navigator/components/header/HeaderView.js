@@ -25,7 +25,9 @@ const HeaderView = ({
         <ReadMeView
           config={readMeConfig}
         />
-        <DropDownView />
+        <DropDownView
+          readMeConfig={readMeConfig}
+        />
       </Styled.ButtonContainer>
     </Styled.TitleContainer>
   );

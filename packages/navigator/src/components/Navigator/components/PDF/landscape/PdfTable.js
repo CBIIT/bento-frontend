@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 });
 
 const PdfTable = ({ node, categoryColor }) => {
-  const { properties } = node;
+  const { properties = [] } = node;
   const propKeys = Object.keys(properties);
   const count = propKeys.length;
   return (

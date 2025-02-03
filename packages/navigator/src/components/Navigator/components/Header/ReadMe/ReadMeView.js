@@ -20,7 +20,6 @@ const ReadMeView = ({
   }, []);
 
   const displayReadMeHandler = () => {
-    console.log('read me');
     setDisplayReadMe(!displayReadMe);
   }
 

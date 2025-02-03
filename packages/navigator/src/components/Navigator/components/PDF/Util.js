@@ -5,9 +5,9 @@ import { categoryColorAndIcon } from '../Category/helper';
 import logo from './assets/icdc_nih_logo.png'
 import LandscapePDFDoc from './landscape/Pdf';
 import PortraitPdfDoc from './portrait/Pdf';
+import { createFileName } from '../../utils/file';
 
 export const generatePdfDocument = async (
-  category,
   nodes,
   fileName = '',
   isLandscape = true,
@@ -21,8 +21,19 @@ export const generatePdfDocument = async (
       }}
     />
   )).toBlob();
-  saveAs(blob, `test.pdf`);
+  const pdfFileName = createFileName(fileName);
+  saveAs(blob, `${pdfFileName}.pdf`);
   return true;
+};
+
+export const convertToTSV = (node) => {
+  let line = tsvMiddleware(node);
+  const propertyKeys = Object.keys(node.properties || {});
+  propertyKeys.forEach((key) => {
+    line += ('\t').concat(`${key}`);
+  });
+  const text = `${line}\r\n${node.title}`;
+  return text;
 };
 
 const tsvMiddleware = (node) => {

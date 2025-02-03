@@ -15,10 +15,16 @@ import NavTableTheme from './NavTableTheme';
 import NavGraphTheme from './NavGraphTheme';
 import HeaderView from '../Navigator/components/Header/HeaderView';
 
+const dogIconSrc = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/4a3fb8e201e6ba2a858d7ec1226d2fd6ea2b5298/icdc/images/svgs/Icon-DMNav.85x85.svg';
+
 const readMeConfig =  {
   readMeUrl: 'https://raw.githubusercontent.com/CBIIT/icdc-readMe-content/dev/Data_Model_Navigator_README.md',
   readMeTitle: 'Understanding the ICDC Data Model',
 };
+
+const imagesConfig = {
+  headerLogo: dogIconSrc,
+}
 
 const graphConfig = {
   canvas: {
@@ -89,7 +95,10 @@ const DataModelNavigatorView = () => {
   
   return (
     <>
-      <HeaderView readMeConfig={readMeConfig} />
+      <HeaderView
+        headerLogo={imagesConfig.headerLogo}
+        readMeConfig={readMeConfig}
+      />
       <NavigatorView
         dictionary={dictionary}
         config={config}
