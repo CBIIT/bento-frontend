@@ -31,9 +31,9 @@ const ListView = ({
             className='acptValListItem'
             display={display} 
           >
-            <ListItemIcon>
+            <Styled.MuiListItemIcon>
               <FiberManualRecordIcon style={{ fontSize: 8 }} />
-            </ListItemIcon>
+            </Styled.MuiListItemIcon>
             <Styled.MuiListItemText>
               {matchingItems[index] ?
                 (
@@ -70,7 +70,8 @@ const ListView = ({
             <Styled.MuiDialog
               open={display}
               onClose={() => setDisplay(false)}
-              maxWidth={'md'}
+              maxWidth={'sm'}
+              PaperProps={{ sx: { padding: '1rem' } }}
             >
               <Styled.DialogTitleContent>
                 <Styled.DialogTitle>

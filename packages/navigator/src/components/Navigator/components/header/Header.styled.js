@@ -5,7 +5,7 @@ export const CancerGenomicsCloudLink = styled('a')({
 });
 
 export const TitleContainer = styled('div')({
-  height: "85px",
+  height: "65px",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -38,4 +38,13 @@ export const Title = styled('h2')({
 export const ButtonContainer = styled('div')({
   display: "flex",
   gap: "15px",
+});
+
+export const Divider = styled('hr')({
+  position: "relative",
+  bottom: "13px",
+  zIndex: "1",
+  borderColor: "#686F7F",
+  height: "2px",
+  backgroundColor: "#686F7F",
 });

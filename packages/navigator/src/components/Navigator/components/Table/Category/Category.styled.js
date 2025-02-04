@@ -14,7 +14,7 @@ export const StyledCategoryContainer = styled('div')(
       alignItems: 'center',
       color: "#ffffff",
       paddingLeft: '20px',
-      gap: '8px'
+      gap: '8px',
     };
   }
 );

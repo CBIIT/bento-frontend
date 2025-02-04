@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { Button } from '@mui/material';
 
-export const PdfDownlaodButton = styled(Button)({
-
+export const DownLoadBtn = styled(Button)({
+  border: 'none',
 });
 
-export const PdfDownloadIcon = styled('img')({
+export const DownloadIcon = styled('img')({
   width: '35px',
 });

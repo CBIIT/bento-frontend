@@ -15,6 +15,7 @@ export const Container =  styled('div')({
 
 export const TitleAndDescContainer =  styled('div')({
   display: "flex",
+  padding: '15px 5px 14px 22px',
 });
 
 export const NodeTitle =  styled('span')({

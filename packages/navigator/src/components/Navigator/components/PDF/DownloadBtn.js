@@ -31,30 +31,30 @@ const DownloadButtonView = ({
 
   return (
     <>
-      <Styled.PdfDownlaodButton
+      <Styled.DownLoadBtn
         className='tsvDownloadBtn'
         onClick={downloadTSVTemplate}
       >
-        <Styled.PdfDownloadIcon
+        <Styled.DownloadIcon
           className='tsvDownloadIcon'
           src={IconDownloadTSV}
           alt='tsvIcon'
         />
-      </Styled.PdfDownlaodButton>
-      <Styled.PdfDownlaodButton
+      </Styled.DownLoadBtn>
+      <Styled.DownLoadBtn
         className='pdfDownloadBtn'
         onClick={downloadPdf}
       >
         {isLoading ? ' Loading document... ' : 
           (
-            <Styled.PdfDownloadIcon
+            <Styled.DownloadIcon
               className='pdfDownloadIcon'
               src={IconDownloadPDF}
               alt='pdfIcon'
             />
           )
         }
-      </Styled.PdfDownlaodButton>
+      </Styled.DownLoadBtn>
     </>
   );
 };

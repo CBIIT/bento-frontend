@@ -16,20 +16,23 @@ const HeaderView = ({
   // const { context } = useModelContext();
   // console.log(context.readMeConfig);
   return (
-    <Styled.TitleContainer>
-      <Styled.LogoAndTitle>
-        <Styled.HeaderLogo src={headerLogo} alt="header-logo" />
-        <Styled.Title>{title}</Styled.Title>
-      </Styled.LogoAndTitle>
-      <Styled.ButtonContainer>
-        <ReadMeView
-          config={readMeConfig}
-        />
-        <DropDownView
-          readMeConfig={readMeConfig}
-        />
-      </Styled.ButtonContainer>
-    </Styled.TitleContainer>
+    <>
+      <Styled.TitleContainer>
+        <Styled.LogoAndTitle>
+          <Styled.HeaderLogo src={headerLogo} alt="header-logo" />
+          <Styled.Title>{title}</Styled.Title>
+        </Styled.LogoAndTitle>
+        <Styled.ButtonContainer>
+          <ReadMeView
+            config={readMeConfig}
+          />
+          <DropDownView
+            readMeConfig={readMeConfig}
+          />
+        </Styled.ButtonContainer>
+      </Styled.TitleContainer>
+      <Styled.Divider />
+    </>
   );
 }
 

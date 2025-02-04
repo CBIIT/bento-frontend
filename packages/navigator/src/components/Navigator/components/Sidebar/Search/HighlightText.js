@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 const HighlightText = ({ text, searchTerm }) => {
-    console.log(searchTerm);
   if (!searchTerm) return text;
   const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
   return (
