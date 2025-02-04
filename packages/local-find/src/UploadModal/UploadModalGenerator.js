@@ -169,7 +169,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
         const searchTokens = content
           .split(/[,\n]/g)
           .map((e) => e.trim().replace('\r', '').toUpperCase())
-          .filter((e) => e && e.length > 1);
+          .filter((e) => e && e.length > 0);
 
         const { matched, unmatched } = await searchMatches(searchTokens);
         setMatchIds(matched);
