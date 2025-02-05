@@ -3,12 +3,16 @@ import { useModelContext } from '../../../state/NavContextProvider';
 import { onToggleCheckBox } from '../../../state/actions/Action';
 import {
   StyledCheckBoxIcon,
+  StyledCountDiv,
+  StyledCountSpan,
+  StyledLabelAndCount,
   StyledLabelDiv,
   StyledLabelSpan,
   StyledListItem,
   StyledMuiCheckBox,
   StyledMuiDivider
 } from './CheckBox.styled';
+import { Box } from '@mui/material';
 
 const alignment = "flex-start";
 
@@ -50,14 +54,18 @@ const CheckBoxView = ({
               disableRipple
               color="secondary"
             />
-            <StyledLabelDiv>
-              <StyledLabelSpan>
+            <StyledLabelAndCount>
+              <StyledLabelDiv>
+                <StyledLabelSpan>
                   {facetItem}
-              </StyledLabelSpan>
-              <span>
-                {`(${facetItemCount[facetItem]?.length || 0})`}
-              </span>
-            </StyledLabelDiv>
+                </StyledLabelSpan>
+              </StyledLabelDiv>
+              <StyledCountDiv>
+                <StyledCountSpan>
+                  {`${facetItemCount[facetItem]?.length || 0}`}
+                </StyledCountSpan>
+              </StyledCountDiv>
+            </StyledLabelAndCount>
           </StyledListItem>
           <StyledMuiDivider checkboxItem={true} />
         </>

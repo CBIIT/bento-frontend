@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button, Checkbox, Divider, ListItem } from '@mui/material';
+import { Box, Button, Checkbox, Divider, ListItem } from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import MuiMenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
@@ -48,4 +48,13 @@ export const StyledCountDiv = styled('div')({
 
 export const StyledCountSpan = styled('span')({
 
+});
+
+export const StyledLabelAndCount = styled(Box)({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+  p: 1,
+  m: 1,
+  bgcolor: 'background.paper',
 });

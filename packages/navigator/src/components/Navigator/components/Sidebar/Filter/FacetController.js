@@ -3,6 +3,10 @@ import { useModelContext } from '../../../state/NavContextProvider';
 import FacetSection from './FacetSection';
 import { facetSectionType } from '../../../controller/Filter';
 
+import * as Styled from './FacetSection.styled';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 const FacetController = () => {
   /**
   * use context access data model state
@@ -19,12 +23,18 @@ const FacetController = () => {
       {
         (Object.keys(facetSectionType))
           .map((section) => (
-            <div>
-              <p>{section}</p>
-              <FacetSection
-                section={filterSections[section]}
-              />
-            </div>
+            <Styled.FacetSectionContainer section={section}>
+              <Styled.SectionAccordian defaultExpanded={true}>
+                <Styled.SectionAccordianSummary
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  {section}
+                </Styled.SectionAccordianSummary>
+                <FacetSection
+                  section={filterSections[section]}
+                />
+              </Styled.SectionAccordian>
+            </Styled.FacetSectionContainer>
         ))
       }
     </>

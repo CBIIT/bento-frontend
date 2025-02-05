@@ -1,6 +1,8 @@
 import React from 'react';
 import FacetView from './FacetView';
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import * as Styled from './FacetSection.styled';
 const FacetSection = ({
   section
 }) => {
@@ -10,13 +12,17 @@ const FacetSection = ({
       {
         Object.keys(section || {}).map(
           (sectionName) => (
-            <div>
-              {sectionName}
+            <Styled.FacetAccordian defaultExpanded={true}>
+              <Styled.FacetAccordianSummary
+                expandIcon={<ExpandMoreIcon />}
+              >
+                {sectionName}
+              </Styled.FacetAccordianSummary>
               <FacetView
                 checkBoxItems={section[sectionName]}
               />
               <br />
-            </div>
+            </Styled.FacetAccordian>
           )
         )
       }
