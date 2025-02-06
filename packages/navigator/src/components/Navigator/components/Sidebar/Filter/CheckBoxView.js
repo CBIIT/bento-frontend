@@ -17,7 +17,8 @@ import { Box } from '@mui/material';
 const alignment = "flex-start";
 
 const CheckBoxView = ({
-  checkBoxItem
+  checkBoxItem,
+  display
 }) => {
   const { isChecked, facetItem } = checkBoxItem;
   /**
@@ -33,7 +34,7 @@ const CheckBoxView = ({
       isChecked: !isChecked,
     }));
   }
-
+  console.log(display);
   return (
      <>
      {
@@ -67,7 +68,7 @@ const CheckBoxView = ({
               </StyledCountDiv>
             </StyledLabelAndCount>
           </StyledListItem>
-          <StyledMuiDivider checkboxItem={true} />
+          {display && (<StyledMuiDivider checkboxItem={true} />) }
         </>
       )
      }

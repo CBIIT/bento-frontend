@@ -14,8 +14,12 @@ const SidebarView = ({
           Filter & Search
         </Styled.SearchBarTitleText>
       </Styled.SearchBarTitle>
-      <SearchTextView />
-      <button onClick={handleClearFilter}> Clear All </button>
+      <Styled.SearchInputContrainer>
+        <SearchTextView />
+        <button onClick={handleClearFilter}>
+          Clear All
+        </button>
+      </Styled.SearchInputContrainer>
       <FacetSections />
     </Styled.SidebarContainer>
   );

@@ -32,7 +32,7 @@ export const generateNodeTree = (dictionary, nextLevel = 2, intervel = 2) => {
         links.forEach((link, linkIndex) => {
             const source = link.source;
             const target = link.target;
-            if (target && source){
+            if (target && source && target !== source){
                 // check for circular relation (adverse_event/case)
                 if (distinctLinks[source] === target) {
                     node2Level[source] -= nextLevel;

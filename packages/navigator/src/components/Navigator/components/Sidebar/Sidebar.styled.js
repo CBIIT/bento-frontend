@@ -7,7 +7,6 @@ export const SidebarContainer = styled('div')({
   height: "100%",
   marginTop: "-3px",
   overflowY: "auto",
-  boxShadow: "inset -10px -1px 10px -7px rgb(50 50 50 / 25%)",
   borderTopRightRadius: "7px",
 });
 
@@ -25,4 +24,17 @@ export const SearchBarTitleText = styled('span')({
   fontfamily: "Lato",
   fontSize: "18px",
   fontWeight: "bold",
+});
+
+export const SearchInputContrainer = styled('div') ({
+  gap: '4px',
+  width: '100%',
+  border: '1px solid #000000',
+  height: '120px',
+  display: 'flex',
+  textAlign: 'right',
+  paddingTop: '15px',
+  paddingLeft: '10px',
+  flexDirection: 'column',
+  backgroundColor: '#0f4c91',
 });

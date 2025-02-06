@@ -4,13 +4,18 @@ import CheckBoxView from './CheckBoxView';
 const FacetView = ({
   checkBoxItems,
 }) => {
+  const itemCount = Object.keys(checkBoxItems || {}).length;
   return (
     <>
       {
         Object.keys(checkBoxItems).map(
-          (item) => (
+          (item, index) => (
             <div>
-              <CheckBoxView checkBoxItem={checkBoxItems[item]} />
+              <CheckBoxView
+                checkBoxItem={checkBoxItems[item]}
+                key={index}
+                display={itemCount > (index + 1)}
+              />
             </div>
           )
         )

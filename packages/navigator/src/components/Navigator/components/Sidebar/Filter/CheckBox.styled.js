@@ -8,13 +8,13 @@ import Grow from '@mui/material/Grow';
 
 export const StyledListItem = styled(ListItem)({
   color: '#165F83',
+  padding: '5px 0px'
 });
 
 export const StyledMuiDivider = styled(Divider)(
   ({ checkboxItem }) => ({
     backgroundColor: checkboxItem.isChecked ? "#FFFFFF" : "#B1B1B1",
     margin: "0px",
-    height: checkboxItem.isChecked ? "2px" : "1px",
   })
 );
 
@@ -25,6 +25,9 @@ export const StyledCheckBoxIcon = styled(CheckBoxIcon)({
 export const StyledMuiCheckBox = styled(Checkbox)(
   ({ checkBoxBorderColor }) => ({
     color: checkBoxBorderColor || "#137fbe",
+    '& svg':{
+      fontSize: '18px',
+    }
   })
 );
 
@@ -52,6 +55,7 @@ export const StyledCountSpan = styled('span')({
 
 export const StyledLabelAndCount = styled(Box)({
   width: '100%',
+  padding: '8px 10px 8px 0px',
   display: 'flex',
   justifyContent: 'space-between',
   p: 1,
