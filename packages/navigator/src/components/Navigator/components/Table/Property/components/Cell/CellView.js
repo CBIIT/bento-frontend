@@ -26,7 +26,7 @@ const CellView = ({
   } = context;
 
   const { node, propertyName } = row;
-  const matchedProperties = matches[node]?.properties || {};
+  const matchedProperties = (matches || {})[node]?.properties || {};
   const matchedProperty = matchedProperties[propertyName] || {};
 
   const highligtSearchText = (text, key) => {

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Fuse from 'fuse.js';
 
+import HighlightText from './HighlightText';
+import * as Styled from './SuggestionList.styled';
+
 const suggestionKeys = [
   'title',
   'description',
@@ -62,21 +65,43 @@ const getSuggestionList = (dictionary, searchText) => {
 const SuggestionListView = ({
   dictionary,
   textSearch,
+  searchTextQuery
 }) => {
   const [items, setItems] = useState([]);
   useEffect( () => {
     if (textSearch) {
       const suggestionList = getSuggestionList(dictionary, textSearch);
-      console.log(suggestionList);
+      // console.log(suggestionList);
       setItems(suggestionList);
+    } else {
+      setItems([]);
     }
   }, [textSearch]);
 
+  const onSearchSuggestedItem = (value) => {
+    searchTextQuery(value);
+  };
+
   return (
-    <ul>
-      {items.map(listItem => <li>{listItem}</li>)}
-    </ul>
-  )
-}
+    <>
+      {
+        (items.length > 0) && (
+          <Styled.SuggestListContainer>
+            {items.map(listItem => (
+              <Styled.SuggestListItem
+                onClick={() => onSearchSuggestedItem(listItem)}
+              >
+                <HighlightText
+                  text={listItem}
+                  searchTerm={textSearch}
+                />
+              </Styled.SuggestListItem>
+            ))}
+          </Styled.SuggestListContainer>
+        )
+      }
+    </>
+  );
+};
 
 export default SuggestionListView;

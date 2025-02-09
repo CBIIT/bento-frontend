@@ -402,3 +402,53 @@ export const getInitState = (state) => {
     filterSections
   };
 };
+
+export const clearActiveFacetSection = (section, facet, state) => {
+  const { 
+    dictionary, 
+    filterSections,
+    node2FacetItem, 
+    props2FacetItem,
+    activeFilters
+  } = state;
+  /**
+  * uncheck all filters
+  * reset active filters
+  */
+  updateNestedValue(filterSections[section][facet], false, 'isChecked');
+  console.log(filterSections);
+  console.log(activeFilters);
+  for (const [key, value] of Object.entries(activeFilters[section])) {
+
+    console.log(`${key} ${value} ${facet}`);
+    if (value === facet) {
+      console.log('delete');
+      console.log(key + ' '+ value);
+      delete activeFilters[section][key];
+    }
+  }
+
+  console.log('update state');
+  console.log(activeFilters);
+  /**
+   * init count
+   */
+  const {
+    filteredNodes,
+    facetItemCount
+  } = getFacetItemCount(
+    false,
+    facet,
+    state,
+    activeFilters,
+    node2FacetItem,
+    props2FacetItem
+  );
+  console.log('filteredNodes');
+  console.log(filteredNodes);
+  return {
+    ...state,
+    filteredNodes,
+    facetItemCount
+  };
+}

@@ -4,17 +4,31 @@ import FacetSection from './FacetSection';
 import { facetSectionType } from '../../../controller/Filter';
 
 import * as Styled from './FacetSection.styled';
+import { onClearSection } from '../../../state/actions/Action';
+
+const unCamelCase = (str) => {
+  return str
+    // insert a space before all caps
+    .replace(/([A-Z])/g, ' $1')
+    // uppercase the first character
+    .replace(/^./, function(str){ return str.toUpperCase(); })
+};
 
 const FacetController = () => {
   /**
   * use context access data model state
   */
   const { context } = useModelContext();
-  const { filterSections } = context;
+  const { filterSections, facetItemCount, activeFilters = {} } = context;
 
-  if (!filterSections) {
+  if (!filterSections || !facetItemCount) {
     return (<> loading... </>)
   }
+
+  const handleClearSection = (section, facet) => {
+    const { dispatch } = context;
+    dispatch(onClearSection({section, facet}));
+  };
 
   return (
     <>
@@ -26,10 +40,13 @@ const FacetController = () => {
                 <Styled.SectionAccordianSummary
                   expandIcon={<Styled.MuiArrowDrowdownIcon />}
                 >
-                  {section}
+                  {unCamelCase(section)}
                 </Styled.SectionAccordianSummary>
                 <FacetSection
                   section={filterSections[section]}
+                  facetItemCount={facetItemCount}
+                  activeFacet={activeFilters[section]}
+                  handleClearSection={(sectionName) => handleClearSection(section, sectionName)}
                 />
               </Styled.SectionAccordian>
             </Styled.FacetSectionContainer>

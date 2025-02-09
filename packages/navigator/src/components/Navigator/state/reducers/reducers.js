@@ -1,5 +1,6 @@
 import { actionTypes } from "../actions/Action";
 import {
+  clearActiveFacetSection,
   getInitState,
   onToggleFacetFilter,
 } from "./filter";
@@ -53,6 +54,18 @@ const reducer = (state, action) => {
         isSearchMode: true,
         matches: payload
       }
+    case actionTypes.ON_SEARCH_TEXT_CLEAR:
+      return {
+        ...updateState,
+        isSearchMode: false,
+        matches: null
+      };
+    case actionTypes.ON_CLEAR_SECTION:
+      const { section, facet } = payload;
+      updateState = clearActiveFacetSection(section, facet, updateState);
+      return {
+        ...updateState
+      };
     default:
       return state;
   }

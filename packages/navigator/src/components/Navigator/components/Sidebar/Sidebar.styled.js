@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 export const SidebarContainer = styled('div')({
   width: "320px",
@@ -28,13 +28,30 @@ export const SearchBarTitleText = styled('span')({
 
 export const SearchInputContrainer = styled('div') ({
   gap: '4px',
-  width: '100%',
+  // width: '100%',
+  height: '90px',
   border: '1px solid #000000',
-  height: '120px',
   display: 'flex',
   textAlign: 'right',
   paddingTop: '15px',
   paddingLeft: '10px',
+  paddingRight: '10px',
+  paddingBottom: '20px',
   flexDirection: 'column',
   backgroundColor: '#0f4c91',
+});
+
+export const ClearAllBtn = styled(Button)({
+  marginTop: '20px',
+  width: '75px',
+  height: '22px',
+  padding: '2px',
+  fontSize: '9px',
+  alignSelf: 'end',
+  background: '#fff',
+  minHeight: '20px',
+  fontFamily: 'Open Sans',
+  borderRadius: '100px',
+  textTransform: 'none',
+  marginRight: '5px',
 });

@@ -8,7 +8,10 @@ import Grow from '@mui/material/Grow';
 
 export const StyledListItem = styled(ListItem)({
   color: '#165F83',
-  padding: '5px 0px'
+  padding: '5px 0px',
+  '& :hover': {
+    cursor: 'pointer',
+  }
 });
 
 export const StyledMuiDivider = styled(Divider)(
@@ -27,6 +30,7 @@ export const StyledMuiCheckBox = styled(Checkbox)(
     color: checkBoxBorderColor || "#137fbe",
     '& svg':{
       fontSize: '18px',
+      color: checkBoxBorderColor || "#137fbe",
     }
   })
 );

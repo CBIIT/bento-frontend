@@ -15,7 +15,6 @@ import {
 const NodeView = ({
   id,
   data,
-  isSearchMode,
   currentSearchKeyword,
   expandNodeView,
   highlightingNode,
@@ -23,7 +22,7 @@ const NodeView = ({
 }) => {
 
   const { context = {}} = useModelContext();
-  const { dispatch, focusedNodeId } = context;
+  const { dispatch, focusedNodeId, matches = {}, isSearchMode } = context;
 
   const [display, setDisplay] = useState(false);
 
@@ -51,6 +50,8 @@ const NodeView = ({
     dispatch(showOverlayTable(id));
   };
 
+  console.log(isSearchMode);
+
   /**
    * light node based on reasult of search query
    */
@@ -73,8 +74,16 @@ const NodeView = ({
   }, [focusedNodeId]);
 
   return (
-    <Styled.NodeOuterDiv className="nodeOuterDiv" display={display} >
-      <Styled.NodeContainer className="nodeContainer" display={display}>
+    <Styled.NodeOuterDiv
+      className="nodeOuterDiv"
+      display={display && !isSearchMode}
+    >
+      <Styled.NodeContainer
+        className="nodeContainer"
+        display={display}
+        match={(matches || {})[label]}
+        isSearchMode={isSearchMode}
+      >
         {
           (display) && (
             <Styled.CloseIconBar className="closeIconBar">
@@ -85,7 +94,11 @@ const NodeView = ({
         <Styled.ContentWrapper className="contentWrapper">
           <Styled.NodeTitle className="nodeTitle" display={display}>
             <Styled.NodeButton className="nodeButton" onClick={toggleNode}>
-              <Styled.NodeButtonInnerWrapper className="nodeButtonInnerWrapper">
+              <Styled.NodeButtonInnerWrapper
+                className="nodeButtonInnerWrapper"
+                match={(matches || {})[label]}
+                isSearchMode={isSearchMode}
+              >
                 <Styled.NodeBackground className="nodeBackground" catgoryColor={iconColor}>
                   <Styled.IconWrapper
                     className="iconWrapper"

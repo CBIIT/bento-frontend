@@ -5,7 +5,7 @@ import SearchTextView from "./Search/SearchView";
 import * as Styled from './Sidebar.styled';
 
 const SidebarView = ({
-  handleClearFilter
+  handleClearFilter,
 }) => {
   return (
     <Styled.SidebarContainer>
@@ -16,9 +16,9 @@ const SidebarView = ({
       </Styled.SearchBarTitle>
       <Styled.SearchInputContrainer>
         <SearchTextView />
-        <button onClick={handleClearFilter}>
+        <Styled.ClearAllBtn onClick={handleClearFilter}>
           Clear All
-        </button>
+        </Styled.ClearAllBtn>
       </Styled.SearchInputContrainer>
       <FacetSections />
     </Styled.SidebarContainer>

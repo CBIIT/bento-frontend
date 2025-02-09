@@ -19,21 +19,21 @@ export const LabelWrapper = styled('div')({
 
 export const NodeOuterDiv = styled('div')(
   ({ display }) => {
+    
     if (display) {
       return {
         backgroundColor: "#2D4455",
         borderRadius: "5px",
         marginTop: "-10px",
         marginLeft: "-22px",
-        border: "5px solid #0c3759",
-        zIndex: "1000",
+        zIndex: "1000"
       }
     }
   }
 );
 
 export const NodeContainer = styled('div')(
-  ({ display }) => {
+  ({ display, match = {}, isSearchMode }) => {
     // node expand
     if (display) {
       return {
@@ -46,6 +46,11 @@ export const NodeContainer = styled('div')(
         backgroundColor: "#2d4455",
       }
     }
+    
+    const isTitleMatch = Object.keys(match.title || {}).length > 0;
+    const isDescMatch = Object.keys(match.description || {}).length > 0;
+    const isPropertyMatch = Object.keys(match.properties || {}).length > 0;
+    const opacity = !isSearchMode ? 1 : (isTitleMatch || isDescMatch || isPropertyMatch) ? 1 : 0.4;
     // node collapse
     return {
       fontSize: "10px",
@@ -53,6 +58,7 @@ export const NodeContainer = styled('div')(
       borderRadius: "2px",
       padding: "0",
       background: "transparent",
+      opacity,
     }
   }
 );
@@ -99,7 +105,7 @@ export const NodeButton = styled('button')(
       styles = {
         borderRadius: "15px",
         border: '0',
-        padding: '0'
+        padding: '0',
       };
     }
     if (display) {
@@ -112,15 +118,21 @@ export const NodeButton = styled('button')(
   }
 );
 
-export const NodeButtonInnerWrapper = styled('div')({
-  border: "3px solid #2E2E2E",
-    display: "grid",
-    gridTemplateColumns: "60px 1fr",
-    zIndex: "1",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    borderRadius: "15px",
-});
+export const NodeButtonInnerWrapper = styled('div')(
+  ({ match = {}, isSearchMode }) => {
+    const isPropertyMatch = Object.keys(match.properties || {}).length > 0;
+    const border = (isSearchMode && isPropertyMatch) ? "2.5px dashed #2E2E2E" : "3px solid #2E2E2E" ;
+    return {
+      border,
+      display: "grid",
+      gridTemplateColumns: "60px 1fr",
+      zIndex: "1",
+      backgroundColor: "#fff",
+      cursor: "pointer",
+      borderRadius: "15px",
+    }
+  }
+);
 
 export const NodeBackground = styled('div')(
   ({ catgoryColor = '#fff' }) => {

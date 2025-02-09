@@ -20,6 +20,7 @@ const CheckBoxView = ({
   checkBoxItem,
   display
 }) => {
+  // console.log(checkBoxItem);
   const { isChecked, facetItem } = checkBoxItem;
   /**
   * use context access data model state
@@ -33,8 +34,8 @@ const CheckBoxView = ({
       ...checkBoxItem,
       isChecked: !isChecked,
     }));
-  }
-  console.log(display);
+  };
+
   return (
      <>
      {

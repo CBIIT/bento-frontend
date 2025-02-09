@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Accordion, AccordionSummary, Divider } from '@mui/material';
+import { Accordion, AccordionSummary, Box, Divider } from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp';
@@ -34,6 +34,7 @@ export const FacetAccordian = styled(Accordion)({
 });
 
 export const FacetAccordianSummary = styled(AccordionSummary)({
+  // minHeight: '58px',
   flexDirection: "row-reverse",
   paddingLeft: 0,
   fontSize: '13px',
@@ -43,10 +44,9 @@ export const FacetAccordianSummary = styled(AccordionSummary)({
   marginLeft: '10px',
   letterSpacing: '0.25px',
   textTransform: 'capitalize',
-  borderBottom: '1px solid',
   margin: '0',
-  '&.Mui-expanded':{
-    minHeight: '48px',
+  '& .Mui-expanded':{
+    margin: '0',
   }
 });
 
@@ -59,3 +59,54 @@ export const MuiArrowDrowdownIcon = styled(ArrowDropDownSharpIcon)({
     fontSize: '35px',
   }
 });
+
+export const FacetLabelAndResetBtn = styled(Box)({
+  width: '100%',
+  height: '58px',
+  // padding: '8px 10px 8px 0px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  p: 1,
+  m: 1,
+  bgcolor: 'background.paper',
+});
+
+export const ResetBtnDiv = styled('div')({
+  color: "#323232",
+  fontFamily: "Nunito",
+  fontSize: "14px",
+  marginRight: "0px",
+  paddingTop: '15px',
+});
+
+export const FacetLabelDiv = styled('div')({
+  color: "#323232",
+  fontFamily: "Nunito",
+  fontSize: "14px",
+  fontWeight: "700",
+});
+
+export const ResetIcon = styled('img')({
+  width: '12px',
+});
+
+export const SortGroup = styled('div')({
+  display: "flex",
+  paddingTop: 5,
+  alignItems: "center",
+  justifyContent: "space-between",
+  borderTop: "1px solid #B1B1B1",
+  paddingLeft: '20px'
+});
+  
+export const SortGroupItem = styled('span')(
+  ({ highlight }) => {
+      return {
+        cursor: "pointer",
+        fontFamily: "Nunito",
+        fontSize: "10px",
+        marginRight: "20px",
+        color: highlight ? '#B2C6D6' : '',
+      }
+  }
+);

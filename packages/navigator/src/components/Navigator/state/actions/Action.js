@@ -1,13 +1,15 @@
 export const actionTypes = {
-    UPDATE_DICTIONARY: 'UPDATE_DICTIONARY',
-    ON_TOGGLE_CHECKBOX: 'ON_TOGGLE_CHECKBOX',
-    ON_CLEAR_FILTER: 'ON_CLEAR_FILTER',
-    ON_NODE_FOCUS: 'ON_NODE_FOCUS',
-    ON_CANVAS_CLICK: 'ON_CANVAS_CLICK',
-    SHOW_OVERLAY_TABLE: 'SHOW_OVERLAY_TABLE',
-    CLOSE_OVERLAY_TABLE: 'CLOSE_OVERLAY_TABLE',
-    ON_PANEL_FOCUS: 'ON_PANEL_FOCUS',
-    ON_SEARCH_TEXT: 'ON_SEARCH_TEXT',
+  UPDATE_DICTIONARY: 'UPDATE_DICTIONARY',
+  ON_TOGGLE_CHECKBOX: 'ON_TOGGLE_CHECKBOX',
+  ON_CLEAR_FILTER: 'ON_CLEAR_FILTER',
+  ON_NODE_FOCUS: 'ON_NODE_FOCUS',
+  ON_CANVAS_CLICK: 'ON_CANVAS_CLICK',
+  SHOW_OVERLAY_TABLE: 'SHOW_OVERLAY_TABLE',
+  CLOSE_OVERLAY_TABLE: 'CLOSE_OVERLAY_TABLE',
+  ON_PANEL_FOCUS: 'ON_PANEL_FOCUS',
+  ON_SEARCH_TEXT: 'ON_SEARCH_TEXT',
+  ON_SEARCH_TEXT_CLEAR: 'ON_SEARCH_TEXT_CLEAR',
+  ON_CLEAR_SECTION: 'ON_CLEAR_SECTION'
 };
 
 export const updateDictionary = (payload) => {
@@ -75,3 +77,16 @@ export const onTextSearch = (payload) => {
     payload
   }
 };
+
+export const onSearchTextClear = () => {
+  return {
+    type: actionTypes.ON_SEARCH_TEXT_CLEAR
+  }
+};
+
+export const onClearSection = (payload) => {
+  return {
+    type: actionTypes.ON_CLEAR_SECTION,
+    payload
+  }
+}
