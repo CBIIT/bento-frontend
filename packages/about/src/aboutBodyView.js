@@ -70,8 +70,10 @@ const AboutBody = ({
                       { contentObj.paragraph.split('$$').map((splitedParagraph) => {
                         // Checking for regex ()[] pattern
                         if (splitedParagraph != null && ((/\[(.+)\]\((.+)\)/g.test(splitedParagraph)) || (/\((.+)\)\[(.+)\]/g.test(splitedParagraph)))) {
-                          const title = splitedParagraph.match(/\[(.*)\]/).pop();
+                          const defaultTitle = splitedParagraph.match(/\[(.*)\]/).pop();
                           const linkAttrs = splitedParagraph.match(/\((.*)\)/).pop().split(' ');
+                          const titleMatch = splitedParagraph.match(/title:\s*'([^']+)'/);
+                          const title = titleMatch ? titleMatch[1].trim() : defaultTitle;
                           const target = linkAttrs.find((link) => link.includes('target:'));
                           const url = linkAttrs.find((link) => link.includes('url:'));
                           const href = splitedParagraph.match(/\((.*)\)/).pop();
@@ -85,7 +87,7 @@ const AboutBody = ({
                               color="inherit"
                               className={classes.link}
                             >
-                              {title}
+                              {defaultTitle}
                             </Link>
                           );
 
