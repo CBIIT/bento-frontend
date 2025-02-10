@@ -27,6 +27,7 @@ const DeleteCellView = ({
           <IconButton
             disableRipple
             className="del_row_btn"
+            aria-label="Delete row"
             onClick={() => column.cellEventHandler(row)}
           >
             <DeleteOutlineIcon
