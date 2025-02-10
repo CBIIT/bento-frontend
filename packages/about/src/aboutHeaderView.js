@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core';
 const AboutHeader = ({ classes, title }) => (
   <div className={classes.container}>
     <div className={classes.header}>
-      <div id="about_title" className={classes.titleBody}><span className={classes.titleText}>{title}</span></div>
+      <div id="about_title" className={classes.titleBody}><h1 className={classes.titleText}>{title}</h1></div>
     </div>
     <div className={classes.whitePadding} />
   </div>
@@ -33,6 +33,7 @@ const styles = () => ({
     fontFamily: 'Lato',
     fontSize: '35px',
     fontWeight: 'bold',
+    display: 'inline',
   }),
 });
 
