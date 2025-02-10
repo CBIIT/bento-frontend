@@ -63,6 +63,7 @@ const reducer = (state, action) => {
     case actionTypes.ON_CLEAR_SECTION:
       const { section, facet } = payload;
       updateState = clearActiveFacetSection(section, facet, updateState);
+      console.log(updateState);
       return {
         ...updateState
       };

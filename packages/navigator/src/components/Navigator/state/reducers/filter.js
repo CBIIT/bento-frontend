@@ -103,6 +103,17 @@ const getItemCount = (facetItems2Objects, facetItemList, objectList) => {
   return count;
 }
 
+const getFilterDictionary = (dictionary, filteredNodes) => {
+  const filterDictionary = Object.keys(dictionary).reduce(
+    (acc, item) => {
+      if (filteredNodes && filteredNodes.includes(item)) {
+        acc[item] = dictionary[item];
+      }
+      return acc;
+    }, {});
+  return filterDictionary;
+}
+
 export const getFacetItemCount = (
   isChecked,
   facet,
@@ -416,20 +427,11 @@ export const clearActiveFacetSection = (section, facet, state) => {
   * reset active filters
   */
   updateNestedValue(filterSections[section][facet], false, 'isChecked');
-  console.log(filterSections);
-  console.log(activeFilters);
   for (const [key, value] of Object.entries(activeFilters[section])) {
-
-    console.log(`${key} ${value} ${facet}`);
     if (value === facet) {
-      console.log('delete');
-      console.log(key + ' '+ value);
       delete activeFilters[section][key];
     }
   }
-
-  console.log('update state');
-  console.log(activeFilters);
   /**
    * init count
    */
@@ -444,11 +446,12 @@ export const clearActiveFacetSection = (section, facet, state) => {
     node2FacetItem,
     props2FacetItem
   );
-  console.log('filteredNodes');
-  console.log(filteredNodes);
+
+  const filterDictionary = getFilterDictionary(dictionary, filteredNodes);
+  
   return {
     ...state,
-    filteredNodes,
+    filterDictionary,
     facetItemCount
   };
 }
