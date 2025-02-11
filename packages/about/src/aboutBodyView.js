@@ -76,7 +76,7 @@ const AboutBody = ({
                           const title = titleMatch ? titleMatch[1].trim() : defaultTitle;
                           const target = linkAttrs.find((link) => link.includes('target:'));
                           const url = linkAttrs.find((link) => link.includes('url:'));
-                          const href = splitedParagraph.match(/\((.*)\)/).pop();
+                          const href = linkAttrs[0];
 
                           const link = (
                             <Link
