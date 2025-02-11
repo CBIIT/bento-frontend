@@ -99,7 +99,6 @@ const FacetSection = ({
                       checkBoxItems={getCeckedItems(section[sectionName])}
                       facetItemCount={facetItemCount}
                     />
-                    <hr />
                   </>
                 )
               }

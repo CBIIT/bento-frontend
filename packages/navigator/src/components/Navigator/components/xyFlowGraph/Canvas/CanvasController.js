@@ -2,7 +2,6 @@ import React,
 {
   useCallback,
   useEffect,
-  useState
 } from 'react';
 import { CircularProgress } from '@mui/material';
 import {
@@ -19,7 +18,6 @@ import { onCanvasClick } from '../../../state/actions/Action';
 const CanvasController = ({
   dictionary,
   tabViewWidth,
-  isSearchMode
 }) => {
 
   if (!tabViewWidth || tabViewWidth === 0) {
@@ -34,7 +32,6 @@ const CanvasController = ({
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [categories, setCategories] = useState([]);
   /** node
     * 1. position (x, y)
     * 2. title
@@ -101,7 +98,6 @@ const CanvasController = ({
     const { dispatch } = context;
     dispatch(onCanvasClick());
   };
-  console.log('reload graph');
   
   // handle node drag
   const handleNodeDragStop = (event, node) => {

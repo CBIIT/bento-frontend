@@ -13,6 +13,10 @@ export const SearchTextInput = styled(TextField)({
     borderRadius: '20px',
     background: '#ffffff',
     padding: '0px 5px',
+    marginLeft: '5px',
+  },
+  '& input:-internal-autofill-selected': {
+    background: '#ffffff',
   }
 });
 

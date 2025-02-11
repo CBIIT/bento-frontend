@@ -25,6 +25,8 @@ import resetIcon from './assets/Reset.svg';
 import ZoomInIcon from './assets/ZoomIn.svg';
 import ZoomOutIcon from './assets/ZoomOut.svg';
 import OverlayPropertyTable from '../Overlay/OverlayTableView';
+import ClearSearchBtn from '../Action/ClearSearchBtn';
+import LegendView from '../Legend/LegendView';
 
 const nodeTypes = {
   custom: NodeView,
@@ -65,21 +67,12 @@ const CustomFlowView = ({
   }, [width]);
 
   const handleTransform = useCallback(() => {
-    console.log(fit);
     setViewport({
       x: 0,
       y: 0,
       zoom: getMinZoom({width, fit}) }, { duration: 200 });
   }, [setViewport, width]);
 
-  // /**
-  //  * collapse all property dialog box
-  //  * @param {*} event 
-  //  */
-  // const handlePanelClick = (event) => {
-  //   // onGraphPanelClick();
-  //   onGraphPanelClick();
-  // };
   return (
     <>
       <ReactFlow
@@ -134,6 +127,8 @@ const CanvasView = ({
 }) => {
   return (
     <Styled.CanvasContariner className='canvasContariner'>
+      <LegendView />
+      <ClearSearchBtn />
       <ReactFlowProvider>
         <CustomFlowView
           nodes={nodes}

@@ -15,3 +15,7 @@ export const SortGroupItem = styled('span')({
   fontSize: "10px",
   marginRight: "20px",
 });
+
+export const SectionDivider = styled('hr')({
+  margin: '0',
+});

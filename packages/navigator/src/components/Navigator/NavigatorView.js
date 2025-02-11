@@ -5,8 +5,6 @@ import React,
   useState,
   useEffect
 } from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import {
   StyledContainer,
   StyledSideBarContrainer,
@@ -14,7 +12,9 @@ import {
   StyledTabContainer,
   StyledTabPanelContainer,
   StyledTabPanelOuterContainer,
-  TabPanelContrainer
+  TabPanelContrainer,
+  StyledTabView,
+  StyledTabs
 } from './Navigator.styled';
 import SideBarView from './components/Sidebar/SidebarController';
 
@@ -73,10 +73,14 @@ const NavigatorView = ({
       </StyledSideBarContrainer>
       <StyledTabContainer >
         <StyledTabBtnContainer>
-          <Tabs value={value} onChange={handleChange} aria-label="nav_tabs">
-            <Tab label="Graph View"  />
-            <Tab label="Table View" />
-          </Tabs>
+          <StyledTabs
+            value={value}
+            onChange={handleChange}
+            aria-label="nav_tabs"
+          >
+            <StyledTabView label="Graph View" />
+            <StyledTabView label="Table View" />
+          </StyledTabs>
         </StyledTabBtnContainer>
         <StyledTabPanelOuterContainer >
           <StyledTabPanelContainer>

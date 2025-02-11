@@ -3,8 +3,6 @@ import CheckBoxView from './CheckBoxView';
 
 import * as Styled from './Facet.styled';
 
-
-
 const FacetView = ({
   checkBoxItems,
   facetItemCount,

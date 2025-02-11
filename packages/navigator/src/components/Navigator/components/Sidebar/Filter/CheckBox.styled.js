@@ -6,17 +6,21 @@ import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Grow from '@mui/material/Grow';
 
-export const StyledListItem = styled(ListItem)({
-  color: '#165F83',
-  padding: '5px 0px',
-  '& :hover': {
-    cursor: 'pointer',
-  }
+export const StyledListItem = styled(ListItem)(
+  ({ isChecked }) => {
+    return {
+      background: isChecked ? '#e3f4fd' : '#fff',
+      color: '#165F83',
+      padding: '5px 0px',
+      '& :hover': {
+        cursor: 'pointer',
+      }
+    }
 });
 
 export const StyledMuiDivider = styled(Divider)(
   ({ checkboxItem }) => ({
-    backgroundColor: checkboxItem.isChecked ? "#FFFFFF" : "#B1B1B1",
+    backgroundColor: checkboxItem.isChecked ? "#B1B1B1" : "#B1B1B1",
     margin: "0px",
   })
 );

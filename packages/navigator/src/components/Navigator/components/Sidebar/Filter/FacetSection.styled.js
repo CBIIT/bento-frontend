@@ -24,12 +24,19 @@ export const SectionAccordian = styled(Accordion)({
 
 export const SectionAccordianSummary = styled(AccordionSummary)({
     background: "#EAEAEA",
+    color: '#323232',
+    fontSize: '15px',
+    fontFamily: 'Raleway',
+    fontWeight: 'bold',
+    lineHeight: '26px',
+    paddingLeft: '9px',
+    letterSpacing: '0.25px',
 });
 
 export const FacetAccordian = styled(Accordion)({
   '&.MuiPaper-root': {
     margin: '0',
-    borderBottom: '1px solid #B1B1B1'
+    borderTop: '1px solid #B1B1B1'
   }
 });
 
@@ -87,7 +94,7 @@ export const FacetLabelDiv = styled('div')({
 });
 
 export const ResetIcon = styled('img')({
-  width: '12px',
+  width: '17px',
 });
 
 export const SortGroup = styled('div')({
@@ -101,12 +108,12 @@ export const SortGroup = styled('div')({
   
 export const SortGroupItem = styled('span')(
   ({ highlight }) => {
-      return {
-        cursor: "pointer",
-        fontFamily: "Nunito",
-        fontSize: "10px",
-        marginRight: "20px",
-        color: highlight ? '#B2C6D6' : '',
-      }
+    return {
+      cursor: "pointer",
+      fontFamily: "Nunito",
+      fontSize: "10px",
+      marginRight: "20px",
+      color: highlight ? '#B2C6D6' : '',
+    }
   }
 );

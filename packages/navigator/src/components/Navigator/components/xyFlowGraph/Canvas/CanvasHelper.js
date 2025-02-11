@@ -13,8 +13,8 @@ import _ from 'lodash';
 export const generateNodeTree = (dictionary, nextLevel = 2, intervel = 2) => {
     const nodes = Object.keys(dictionary);
     /**
-     * initialize level to zero for all the nodes
-     */
+    * initialize level to zero for all the nodes
+    */
     const node2Level = nodes.reduce((acc, node) => {acc[node] = 0; return acc}, {});
     /**
      * check only distinct links are processed
@@ -27,7 +27,7 @@ export const generateNodeTree = (dictionary, nextLevel = 2, intervel = 2) => {
     nodes.forEach((node, index) => {
         const links = dictionary[node]?.links;
         if (!links) {
-            return [];
+          return [];
         }
         links.forEach((link, linkIndex) => {
             const source = link.source;
@@ -173,4 +173,3 @@ export const getNodePosition = ({
     }
     return position;
 }
-

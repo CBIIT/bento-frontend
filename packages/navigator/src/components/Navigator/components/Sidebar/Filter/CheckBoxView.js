@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useModelContext } from '../../../state/NavContextProvider';
 import { onToggleCheckBox } from '../../../state/actions/Action';
 import {
@@ -45,6 +45,7 @@ const CheckBoxView = ({
             width={1}
             button
             alignItems={alignment}
+            isChecked={isChecked}
             selected={true}
             onClick={handleToggleCheckBox}
           >

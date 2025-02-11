@@ -26,16 +26,6 @@ const NodeView = ({
 
   const [display, setDisplay] = useState(false);
 
-  /**
-   * expand node in normal mode (when search mode is false)
-   * use view option to adjust the fontSize on property dialog
-   */
-  const toggleNode = () => {
-    setDisplay(!display);
-    const focusNode = !display ? id : null;
-    dispatch(onNodeFocus(focusNode));
-  };
-
   const {
     label,
     icon,
@@ -51,6 +41,20 @@ const NodeView = ({
   };
 
   console.log(isSearchMode);
+
+  /**
+   * expand node in normal mode (when search mode is false)
+   * use view option to adjust the fontSize on property dialog
+   */
+  const toggleNode = () => {
+    if(isSearchMode) {
+      displayOverviewTable();
+    } else {
+      setDisplay(!display);
+      const focusNode = !display ? id : null;
+      dispatch(onNodeFocus(focusNode));
+    }
+  };
 
   /**
    * light node based on reasult of search query
@@ -93,11 +97,14 @@ const NodeView = ({
         }
         <Styled.ContentWrapper className="contentWrapper">
           <Styled.NodeTitle className="nodeTitle" display={display}>
-            <Styled.NodeButton className="nodeButton" onClick={toggleNode}>
+            <Styled.NodeButton
+              className="nodeButton"
+              match={(matches || {})[label]}
+              isSearchMode={isSearchMode}
+              onClick={toggleNode}
+            >
               <Styled.NodeButtonInnerWrapper
                 className="nodeButtonInnerWrapper"
-                match={(matches || {})[label]}
-                isSearchMode={isSearchMode}
               >
                 <Styled.NodeBackground className="nodeBackground" catgoryColor={iconColor}>
                   <Styled.IconWrapper

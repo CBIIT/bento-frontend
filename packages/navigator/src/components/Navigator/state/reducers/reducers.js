@@ -49,21 +49,23 @@ const reducer = (state, action) => {
         overlayNodeId: null,
       };
     case actionTypes.ON_SEARCH_TEXT:
+      const { matches, summary } = payload;
       return {
         ...updateState,
         isSearchMode: true,
-        matches: payload
-      }
+        matches,
+        summary,
+        focusedNodeId: null,
+      };
     case actionTypes.ON_SEARCH_TEXT_CLEAR:
       return {
         ...updateState,
         isSearchMode: false,
-        matches: null
+        matches: null,
       };
     case actionTypes.ON_CLEAR_SECTION:
       const { section, facet } = payload;
       updateState = clearActiveFacetSection(section, facet, updateState);
-      console.log(updateState);
       return {
         ...updateState
       };

@@ -13,8 +13,6 @@ const HeaderView = ({
   /**
   * use context access data model state
   */
-  // const { context } = useModelContext();
-  // console.log(context.readMeConfig);
   return (
     <>
       <Styled.TitleContainer>

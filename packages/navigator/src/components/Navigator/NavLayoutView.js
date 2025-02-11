@@ -4,16 +4,16 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { getDictionary } from '../Navigator/controller/Dictionary';
-import { ModelContextProvider } from '../Navigator/state/NavContextProvider';
-import NavigatorView from '../Navigator/NavigatorController';
-import { getFilterItems } from '../Navigator/controller/Filter';
-import TableView from '../Navigator/components/Table/TableView';
-import GraphView from '../Navigator/components/xyFlowGraph/GraphView';
-import { generateNodeTree } from '../Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
-import NavTableTheme from './NavTableTheme';
-import NavGraphTheme from './NavGraphTheme';
-import HeaderView from '../Navigator/components/Header/HeaderView';
+import { getDictionary } from './controller/Dictionary';
+import { ModelContextProvider } from './state/NavContextProvider';
+import NavigatorView from './NavigatorController';
+import { getFilterItems } from './controller/Filter';
+import TableView from './components/Table/TableView';
+import GraphView from './components/xyFlowGraph/GraphView';
+import { generateNodeTree } from './components/xyFlowGraph/Canvas/CanvasHelper';
+import NavTableTheme from '../BentoAppLayout/NavTableTheme';
+import NavGraphTheme from '../BentoAppLayout/NavGraphTheme';
+import HeaderView from './components/Header/HeaderView';
 
 const dogIconSrc = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/4a3fb8e201e6ba2a858d7ec1226d2fd6ea2b5298/icdc/images/svgs/Icon-DMNav.85x85.svg';
 
@@ -42,7 +42,6 @@ const graphConfig = {
 
 const DataModelNavigatorView = () => {
   const { dictionary } = getDictionary();
-  console.log(dictionary);
   if(!dictionary) {
     return (
       <>

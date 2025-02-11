@@ -99,40 +99,46 @@ export const NodeTitle = styled('div')(
 );
 
 export const NodeButton = styled('button')(
-  ({display, isSearchMode, expandNodeView}) => {
-    let styles = {};
+  ({isSearchMode, expandNodeView, match = {} }) => {
+    const isTitleMatch = Object.keys(match.title || {}).length > 0;
+    const isDescMatch = Object.keys(match.description || {}).length > 0;
+
+    if (isTitleMatch || isDescMatch) {
+      return {
+        padding: '0',
+        border: '0',
+        borderRadius: "15px",
+      };
+    }
+
+    const isPropertyMatch = Object.keys(match.properties || {}).length > 0;
+    if (isSearchMode && isPropertyMatch) {
+      return {
+        border: "2.5px dashed #2E2E2E",
+        padding: '0',
+        borderRadius: "15px",
+      }
+    }
+
     if (!isSearchMode || !expandNodeView) {
-      styles = {
+      return {
         borderRadius: "15px",
         border: '0',
         padding: '0',
       };
     }
-    if (display) {
-      styles = { 
-        ...style,
-        border: "2px solid #fff"
-      }
-    }
-    return styles;
   }
 );
 
-export const NodeButtonInnerWrapper = styled('div')(
-  ({ match = {}, isSearchMode }) => {
-    const isPropertyMatch = Object.keys(match.properties || {}).length > 0;
-    const border = (isSearchMode && isPropertyMatch) ? "2.5px dashed #2E2E2E" : "3px solid #2E2E2E" ;
-    return {
-      border,
-      display: "grid",
-      gridTemplateColumns: "60px 1fr",
-      zIndex: "1",
-      backgroundColor: "#fff",
-      cursor: "pointer",
-      borderRadius: "15px",
-    }
-  }
-);
+export const NodeButtonInnerWrapper = styled('div')({
+  border: "3px solid #2E2E2E" ,
+  display: "grid",
+  gridTemplateColumns: "60px 1fr",
+  zIndex: "1",
+  backgroundColor: "#fff",
+  cursor: "pointer",
+  borderRadius: "15px",
+});
 
 export const NodeBackground = styled('div')(
   ({ catgoryColor = '#fff' }) => {

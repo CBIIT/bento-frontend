@@ -3,6 +3,8 @@ import FacetSections from "./Filter/FacetController";
 import SearchTextView from "./Search/SearchView";
 
 import * as Styled from './Sidebar.styled';
+import SummaryView from "./Search/summary/SummaryView";
+import SearchHistoryView from "./Search/history/HistoryView";
 
 const SidebarView = ({
   handleClearFilter,
@@ -20,6 +22,8 @@ const SidebarView = ({
           Clear All
         </Styled.ClearAllBtn>
       </Styled.SearchInputContrainer>
+      <SummaryView />
+      <SearchHistoryView />
       <FacetSections />
     </Styled.SidebarContainer>
   );

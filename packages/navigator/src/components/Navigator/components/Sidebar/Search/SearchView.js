@@ -1,25 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  TextField,
   Box,
   InputAdornment,
-  IconButton
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
 import { useModelContext } from "../../../state/NavContextProvider";
 import { findMatchingText } from "./Util";
 import { onSearchTextClear, onTextSearch } from "../../../state/actions/Action";
-import SuggestionListView from "./SuggestionList";
+import SuggestionListView from "./Suggestion/SuggestionList";
 
 import * as Styled from './Search.styled';
+import useSearchHistory from "./SearhResultStore";
 
 const SearchTextView = () => {
   const { context } = useModelContext();
-  const { dictionary } = context;
+  const { dictionary, isSearchMode } = context;
 
   const [searchTerm, setSearchTerm] = useState('');
   const [displaySuggList, setDisplay] = useState(false);
+  const [state, actions] = useSearchHistory();
+
+  useEffect(() => {
+    if (!isSearchMode) {
+      setSearchTerm('');
+    } else {
+      const { searchText = '' } = state;
+      const text = `${searchText}`.length > 0 ? `${searchText}`: '';
+      setSearchTerm(text);
+    }
+  }, [isSearchMode])
 
   const handleTextChange = (value) => {
     const text = `${value}`;
@@ -31,10 +40,18 @@ const SearchTextView = () => {
     if (value !== searchTerm) {
       setSearchTerm(value);
     }
-    const { dispatch } = context;
-    const matches = findMatchingText(value, context);
-    // console.log(matches);
-    dispatch(onTextSearch(matches));
+    if (state && state[searchTerm]) {
+      const result = state[searchTerm] || {};
+      const { matches, summary } = result;
+      dispatch(onTextSearch({matches, summary}));
+    } else {
+      const { dispatch } = context;
+      const { matches, summary} = findMatchingText(value, context);
+      if(Object.keys(summary).length > 0) {
+        actions.setSearchResults(searchTerm, summary, matches);
+      }
+      dispatch(onTextSearch({matches, summary}));
+    }
     setDisplay(false);
   }
 
