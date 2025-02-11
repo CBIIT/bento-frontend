@@ -29,21 +29,50 @@ const SearchList = (props) => {
 
   return (
     <List classes={{ padding: classes.listPadding }} id={id}>
-      {(items || []).reverse().map((item, index) => (
+      {(items || []).length > 3 ? (
         <>
+          {/* Display first three items */}
+          {items.slice(0, 3).map((item, index) => (
+            <>
+              <Divider className={classes.divider} />
+              <ListItem classes={{ gutters: classes.listItemGutters }} key={index}>
+                <div className={classes.searchResultDetailText}>
+                  <span>
+                    {item}
+                  </span>
+                </div>
+                <div className={classes.deleteIcon} onClick={() => deleteWrapper(item)}>
+                  <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
+                </div>
+              </ListItem>
+            </>
+          ))}
+          {/* Add an ellipsis after the third item */}
           <Divider className={classes.divider} />
-          <ListItem classes={{ gutters: classes.listItemGutters }} key={index}>
+          <ListItem classes={{ gutters: classes.listItemGutters }}>
             <div className={classes.searchResultDetailText}>
-              <span>
-                {item}
-              </span>
-            </div>
-            <div className={classes.deleteIcon} onClick={() => deleteWrapper(item)}>
-              <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
+              <span>...</span>
             </div>
           </ListItem>
         </>
-      ))}
+      ) : (
+        // Display all items if there are 3 or fewer
+        (items || []).map((item, index) => (
+          <>
+            <Divider className={classes.divider} />
+            <ListItem classes={{ gutters: classes.listItemGutters }} key={index}>
+              <div className={classes.searchResultDetailText}>
+                <span>
+                  {item}
+                </span>
+              </div>
+              <div className={classes.deleteIcon} onClick={() => deleteWrapper(item)}>
+                <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
+              </div>
+            </ListItem>
+          </>
+        ))
+      )}
     </List>
   );
 };
