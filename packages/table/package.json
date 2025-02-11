@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/table",
-  "version": "1.0.1-CDS.6",
+  "version": "1.0.1-CDS.7",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/util": "^1.0.0"
+    "@bento-core/util": "^1.0.1-CDS.0"
   },
   "peerDependencies": {
     "@apollo/client": "^3.6.9",

@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/paginated-table",
-  "version": "1.0.1-CDS.14",
+  "version": "1.0.1-CDS.15",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@bento-core/cart": "^1.0.1-CDS.1",
-    "@bento-core/table": "^1.0.1-CDS.6",
+    "@bento-core/table": "^1.0.1-CDS.7",
     "@bento-core/tool-tip": "^1.0.0",
-    "@bento-core/util": "^1.0.0"
+    "@bento-core/util": "^1.0.1-CDS.0"
   },
   "peerDependencies": {
     "@apollo/client": "^3.6.9",
