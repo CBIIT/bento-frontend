@@ -49,7 +49,7 @@ const SearchList = (props) => {
           ))}
           {/* Add an ellipsis after the third item */}
           <Divider className={classes.divider} />
-          <ListItem classes={{ gutters: classes.listItemGutters }}>
+          <ListItem classes={{ gutters: classes.listItemGutters }} key={3}>
             <div className={classes.searchResultDetailText}>
               <span>...</span>
             </div>
