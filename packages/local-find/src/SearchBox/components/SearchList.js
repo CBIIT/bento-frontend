@@ -29,7 +29,7 @@ const SearchList = (props) => {
 
   return (
     <List classes={{ padding: classes.listPadding }} id={id}>
-      {(items || []).reverse().map((item, index) => (
+      {items.slice(0, 3).map((item, index) => (
         <>
           <Divider className={classes.divider} />
           <ListItem classes={{ gutters: classes.listItemGutters }} key={index}>
@@ -44,6 +44,16 @@ const SearchList = (props) => {
           </ListItem>
         </>
       ))}
+      {items.length > 3 && (
+        <>
+          <Divider className={classes.divider} />
+          <ListItem classes={{ gutters: classes.listItemGutters }} key="ellipsis">
+            <div className={classes.searchResultDetailText}>
+              <span>...</span>
+            </div>
+          </ListItem>
+        </>
+      )}
     </List>
   );
 };
