@@ -46,7 +46,7 @@
     "test": "jest",
     "lint": "eslint src",
     "lint-fix": "eslint src --fix",
-    "dev": "NODE_ENV=development webpack-dev-server --config ./webpack/dev.js",
+    "start": "NODE_ENV=development webpack-dev-server --config ./webpack/dev.js",
     "build": "NODE_ENV=production webpack --config ./webpack/prod.js"
   },
   "eslintConfig": {
