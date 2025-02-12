@@ -5,7 +5,7 @@ window.injectedEnv = {
   REACT_APP_APPLICATION_VERSION: 'YYYY_MM_DD/HH:MM',
 
   // Services API End Points:
-  REACT_APP_BACKEND_API: 'http://localhost:3000/v1/graphql/',
+  REACT_APP_BACKEND_API: 'https://bento-dev.bento-tools.org/v1/graphql/',
   REACT_APP_BACKEND_PUBLIC_API: 'http://localhost:3000/v1/public-graphql/',
   REACT_APP_FILE_SERVICE_API: 'http://localhost:3000/api/files/',
   REACT_APP_AUTH_SERVICE_API: 'http://localhost:3000/api/auth/',

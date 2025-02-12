@@ -1,7 +1,6 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import ReduxThunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+import logger from 'redux-logger';
 import { sideBarReducerGenerator } from '@bento-core/facet-filter';
 import layout from '../components/Layout/LayoutState';
 import stats from '../components/Stats/StatsState';
@@ -16,23 +15,18 @@ const { cartReducer } = cartReducerGenerator();
 const { login } = LoginReducerGenerator(getFromLocalStorage);
 
 const reducers = {
+  layout,
   localFind,
   cartReducer,
   statusReducer,
   login,
-  layout,
   stats,
 };
-const loggerMiddleware = createLogger();
 
-const store = createStore(
-  combineReducers(reducers),
-  composeWithDevTools(applyMiddleware(ReduxThunk, loggerMiddleware)),
-);
-
-store.injectReducer = (key, reducer) => {
-  reducers[key] = reducer;
-  store.replaceReducer(combineReducers(reducers));
-};
+const store = configureStore({
+  reducer: combineReducers(reducers),
+  devTools: process.env.NODE_ENV !== 'production',
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
+});
 
 export default store;

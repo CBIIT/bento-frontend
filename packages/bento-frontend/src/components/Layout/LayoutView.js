@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useEffect, useRef } from 'react';
 import { withStyles, CssBaseline } from '@material-ui/core';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import aboutPageRoutes from '../../bento/aboutPagesRoutes';
@@ -34,6 +34,7 @@ import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
+import ShutdownBanner from '../ShutdownBanner/ShutdownBanner';
 
 const ScrollToTop = () => {
   window.scrollTo(0, 0);
@@ -41,6 +42,31 @@ const ScrollToTop = () => {
 };
 
 const Layout = ({ classes, isSidebarOpened }) => {
+  const headerRef = useRef(null);
+  const contentRef = useRef(null);
+
+  if (contentRef && contentRef.current) {
+    contentRef.current.scrollTo(0, 0);
+  }
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+      entries.forEach(entry => {
+        // Access the new size information from entry.contentRect
+        contentRef.current.style.height = `calc(100% - ${entry.contentRect.height}px)`;
+      });
+    });
+
+    // Attach the ResizeObserver to the target element (in this case, the containerRef)
+    if (headerRef.current) {
+      resizeObserver.observe(headerRef.current);
+    }
+
+    // Cleanup function to disconnect the ResizeObserver when the component unmounts
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
   // Access control imports
   const { LoginRoute, MixedRoute, PrivateRoute, AdminRoute} = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
 
@@ -51,9 +77,14 @@ const Layout = ({ classes, isSidebarOpened }) => {
       <>
         <Notifactions />
         <AuthSessionTimeoutController />
-        <Header />
         <OverlayWindow />
-        <NavBar />
+        <div className={classes.container}>
+          <div id="headerSection" ref={headerRef} className={classes.header}>
+            <ShutdownBanner src="https://cbiit.github.io/crdc-alert-elements/banners/government-shutdown.html" />
+            <Header />
+            <NavBar />
+          </div>
+        </div>
         {/* Reminder: Ajay need to replace the ICDC with env variable and
           change build npm to read env variable */}
         <div
@@ -131,6 +162,15 @@ const styles = (theme) => ({
     display: 'flex',
     maxWidth: '100vw',
     overflowX: 'hidden',
+  },
+  container: {
+    top: "20px",
+    width: "100%",
+    height: "100%",
+  },
+  header: {
+    width: "100%",
+    zIndex: "9999",
   },
   content: {
     flexGrow: 1,
