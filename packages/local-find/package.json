@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/local-find",
-  "version": "1.0.1-CDS.4",
+  "version": "1.0.1-CDS.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
