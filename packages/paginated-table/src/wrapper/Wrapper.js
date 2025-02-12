@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Box,
   Container,
   createTheme,
   Link,
@@ -41,12 +42,13 @@ const Text = ({
   text,
   clsName,
   tag,
+  component = 'span',
   Component,
 }) => (
-  <span className={clsName} type={tag}>
+  <Box component={component} className={clsName} type={tag}>
     {text}
     { Component && <Component /> }
-  </span>
+  </Box>
 );
 
 /**
