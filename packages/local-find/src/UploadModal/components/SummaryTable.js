@@ -1,3 +1,6 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable padded-blocks */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useState } from 'react';
 import { Divider, Typography, withStyles } from '@material-ui/core';
 import ArrowRight from '@material-ui/icons/ArrowRight';
