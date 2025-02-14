@@ -1,10 +1,10 @@
 /**
  * Default Modal Styles
  */
-export default (theme) => ({
+export default () => ({
   modal: {
     display: 'flex',
-    padding: theme.spacing(1),
+    padding: '8px',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -12,8 +12,8 @@ export default (theme) => ({
     minWidth: '32%',
     borderRadius: '10px',
     border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    backgroundColor: theme.palette.background.paper,
+    boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12)',
+    backgroundColor: '#fff',
   },
   closeIcon: {
     cursor: 'pointer',
@@ -140,5 +140,14 @@ export default (theme) => ({
   },
   helpIconButton: {
     marginBottom: 10,
+  },
+  submitBtn: {
+    backgroundColor: '#03A383',
+  },
+  clearBtn: {
+    backgroundColor: '#437BBE',
+  },
+  cancelBtn: {
+    backgroundColor: '#566672',
   },
 });

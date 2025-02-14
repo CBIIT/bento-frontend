@@ -20,6 +20,7 @@ const ActionHeaderCell = ({
         includeSelectedIds={includeSelectedIds}
         toggleSelectAll={toggleSelectAll}
         Ids={Ids}
+        rows={rows}
       />
     );
   }

@@ -10,7 +10,7 @@ import { InputTypes } from '../inputs/Types';
 import styles from './FacetStyle';
 import FilterItems from '../inputs/FilterItems';
 import { sortType } from '../../utils/Sort';
-import clearIcon from './assets/clearIcon.svg';
+import clearIconLocal from './assets/clearIcon.svg';
 import { sideBarActionTypes } from '../../store/actions/ActionTypes';
 
 const FacetView = ({
@@ -22,6 +22,7 @@ const FacetView = ({
   CustomView,
   autoComplete,
   upload,
+  clearIcon,
   filterState,
   currentActionType = {},
   enableFacetCollapse,
@@ -154,53 +155,84 @@ const FacetView = ({
             </span>
           </div>
         )}
-        {(facet.type === InputTypes.SLIDER || facetValues.length > 0) && (
+        {
+          (facet.type === InputTypes.SLIDER || facetValues.length > 0)
+          && (
           <div className={classes.sortGroup}>
             <span className={classes.sortGroupIcon}>
-              <Icon style={{ fontSize: 10 }} onClick={onClearSection}>
-                <img src={clearIcon} height={12} width={12} alt="clear-icon" />
+              <Icon
+                style={{ fontSize: 10 }}
+                onClick={onClearSection}
+              >
+                <img
+                  src={clearIcon || clearIconLocal}
+                  height={12}
+                  width={12}
+                  alt="clear-icon"
+                />
               </Icon>
             </span>
-            {facet.type === InputTypes.CHECKBOX && facetValues.length > 0 && (
-              <>
-                <span
-                  className={clsx(classes.sortGroupItem, {
-                    [classes.highlight]: sortBy === sortType.ALPHABET,
-                  })}
-                  onClick={() => {
-                    onSortFacet(sortType.ALPHABET);
-                  }}
-                >
-                  Sort alphabetically
-                </span>
-                <span
-                  className={clsx(classes.sortGroupItemCounts, {
-                    [classes.highlight]: sortBy === sortType.NUMERIC,
-                  })}
-                  onClick={() => {
-                    onSortFacet(sortType.NUMERIC);
-                  }}
-                >
-                  Sort by count
-                </span>
-              </>
-            )}
+            { (facet.type === InputTypes.CHECKBOX && facetValues.length > 0)
+          && (
+          <>
+            <span
+              className={
+                    clsx(classes.sortGroupItem, {
+                      [classes.highlight]: sortBy === sortType.ALPHABET,
+                    })
+                  }
+              onClick={() => {
+                onSortFacet(sortType.ALPHABET);
+              }}
+            >
+              Sort alphabetically
+            </span>
+            <span
+              className={
+                    clsx(classes.sortGroupItemCounts, {
+                      [classes.highlight]: sortBy === sortType.NUMERIC,
+                    })
+                  }
+              onClick={() => {
+                onSortFacet(sortType.NUMERIC);
+              }}
+            >
+              Sort by count
+            </span>
+          </>
+          )}
           </div>
-        )}
-        {expand && <FilterItems facet={facet} sortBy={sortBy} />}
+          )
+}
+        {(expand)
+          && (
+          <FilterItems
+            facet={facet}
+            sortBy={sortBy}
+          />
+          )}
       </Accordion>
-      {!expand && type === InputTypes.CHECKBOX && selectedItems.length > 0 && (
-        <>
-          <List id="filter_Items">
-            <FilterItems facet={displayFacet} />
-          </List>
-        </>
-      )}
-      {!expand && selectedItems.length > limitCheckBoxCount && (
-        <div className={classes.showMore} onClick={onExpandFacet}>
-          ...expand to see all selections
-        </div>
-      )}
+      {
+        (!expand && type === InputTypes.CHECKBOX && selectedItems.length > 0) && (
+          <>
+            <List id="filter_Items">
+              <FilterItems
+                facet={displayFacet}
+              />
+            </List>
+          </>
+        )
+      }
+      {
+        (!expand && selectedItems.length > limitCheckBoxCount) && (
+          <div
+            className={classes.showMore}
+            onClick={onExpandFacet}
+          >
+            ...expand to see all selections
+          </div>
+        )
+      }
     </>
   );
 };
