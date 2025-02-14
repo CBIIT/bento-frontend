@@ -14,7 +14,7 @@ import DropdownMenu from './components/DropdownMenu';
 const drawerWidth = 240;
 
 const NavBar = ({
-  classes, isSidebarOpened, navBarData,
+  classes, isSidebarOpened, navBarData, externalLinksFirst,
   navBarCartData, navBarstyling, numberOfCases, components = {},
   externalLinksFlag, externalLinks, LoginComponent,
 }) => {
@@ -78,6 +78,7 @@ const NavBar = ({
                   navBarstyling={navBarstyling}
                   externalLinksFlag={externalLinksFlag}
                   externalLinks={externalLinks}
+                  externalLinksFirst={externalLinksFirst}
                 />
               )
               : (
@@ -134,10 +135,13 @@ const NavBar = ({
 };
 
 const styles = () => ({
-  myCasesPosition: {
-    position: 'absolute',
-    right: '20px',
-  },
+  myCasesPosition: (props) => ({
+    ...(props.navBarstyling.myCasesPosition ? props.navBarstyling.myCasesPosition : {
+      position: 'absolute',
+      right: '20px',
+    }),
+
+  }),
   logotype: (props) => ({
     whiteSpace: 'nowrap',
     color: '#FFFFFF',
@@ -149,9 +153,10 @@ const styles = () => ({
       borderRadius: '0',
     },
   }),
-  buttonContainer: {
+  buttonContainer: (props) => ({
     margin: '0 auto',
-  },
+    ...(props.navBarstyling.buttonContainer || {}),
+  }),
   appBar: (props) => ({
     backgroundColor: props.navBarstyling.global.backgroundColor ? props.navBarstyling.global.backgroundColor : '#142D64',
     marginTop: props.navBarstyling.global.marginTop ? props.navBarstyling.global.marginTop : '100px',
@@ -159,20 +164,24 @@ const styles = () => ({
   }),
   cartIcon: (props) => ({
     height: props.navBarstyling.cart && props.navBarstyling.cart.iconSize ? props.navBarstyling.cart.iconSize : '22px',
+    width: props.navBarstyling.cart && props.navBarstyling.cart.iconSize ? props.navBarstyling.cart.iconSize : '22px',
     margin: '0px 0px 0px 6px',
   }),
   labelText: (props) => ({
+    ...(props.navBarstyling.labelText || {}),
     textDecoration: 'none',
     color: props.navBarstyling.global.fontColor ? props.navBarstyling.global.fontColor : '#FFFFFF',
     fontFamily: props.navBarstyling.global.fontFamily ? props.navBarstyling.global.fontFamily : 'Nunito',
-    fontSize: '13px',
+    fontSize: props.navBarstyling.global.labelTextFontSize ? props.navBarstyling.global.labelTextFontSize : '13px',
   }),
   cartLabelText: (props) => ({
     textDecoration: 'none',
     color: props.navBarstyling.global.fontColor ? props.navBarstyling.global.fontColor : '#FFFFFF',
     fontFamily: props.navBarstyling.global.fontFamily ? props.navBarstyling.global.fontFamily : 'Nunito',
     textTransform: props.navBarstyling.global.textTransform ? props.navBarstyling.global.textTransform : 'UPPERCASE',
-    fontSize: '13px',
+    fontSize: props.navBarstyling.global.cartLabelFontSize ? props.navBarstyling.global.cartLabelFontSize : '13px',
+    fontWeight: props.navBarstyling.global.cartLabelFontWeight ? props.navBarstyling.global.cartLabelFontWeight : '600',
+    letterSpacing: props.navBarstyling.global.cartLabelLetterSpacing ? props.navBarstyling.global.cartLabelLetterSpacing : '1px',
   }),
   activeLabel: (props) => ({
     borderBottom: props.navBarstyling.global.activeLabel ? props.navBarstyling.global.activeLabel : '1px solid  #FFFFFF',
@@ -190,51 +199,63 @@ const styles = () => ({
     minHeight: props.navBarstyling.global.height ? props.navBarstyling.global.height : '39px',
     paddingRight: props.navBarstyling.global.paddingRight ? props.navBarstyling.global.paddingRight : '45px',
     paddingLeft: props.navBarstyling.global.paddingLeft ? props.navBarstyling.global.paddingLeft : '45px',
-    alignItems: 'flex-start',
+    alignItems: props.navBarstyling.global.alignItems ? props.navBarstyling.global.alignItems : 'flex-start',
+    paddingTop: props.navBarstyling.global.paddingTop ? props.navBarstyling.global.paddingTop : '0px',
+    paddingBottom: props.navBarstyling.global.paddingBottom ? props.navBarstyling.global.paddingBottom : '0px',
   }),
   buttonRoot: (props) => ({
-    padding: props.navBarstyling.global.padding ? props.navBarstyling.global.padding : '9px 20px 0px 20px',
-    border: '0',
-    cursor: 'pointer',
-    margin: '0',
-    display: 'inline-flex',
-    position: 'relative',
-    alignItems: 'center',
-    verticalAlign: 'middle',
-    justifyContent: 'center',
-    textDecoration: 'none',
-    backgroundColor: 'transparent',
-    textTransform: 'uppercase',
-    lineHeight: '1.75',
+    padding: props.navBarstyling.global.padding ? props.navBarstyling.global.buttonRootPadding : '9px 20px 0px 20px',
+    ...(props.navBarstyling.buttonRoot ? props.navBarstyling.buttonRoot : {
+      border: '0',
+      cursor: 'pointer',
+      margin: '0',
+      display: 'inline-flex',
+      position: 'relative',
+      alignItems: 'center',
+      verticalAlign: 'middle',
+      justifyContent: 'center',
+      textDecoration: 'none',
+      backgroundColor: 'transparent',
+      textTransform: 'uppercase',
+      lineHeight: '1.75',
+    }),
+
   }),
   buttonRootNoRightPadding: (props) => ({
-    padding: props.navBarstyling.cart.padding || props.navBarstyling.global.padding || '9px 20px 0px 20px',
-    border: '0',
-    cursor: 'pointer',
-    margin: '0',
-    display: 'inline-flex',
-    position: 'relative',
-    alignItems: 'center',
-    verticalAlign: 'middle',
-    justifyContent: 'center',
-    textDecoration: 'none',
-    backgroundColor: 'transparent',
-    textTransform: 'uppercase',
-    lineHeight: '1.75',
+    ...(props.navBarstyling.buttonRootNoRightPadding
+      ? props.navBarstyling.buttonRootNoRightPadding
+      : {
+        padding: props.navBarstyling.cart.padding || props.navBarstyling.global.padding || '9px 20px 0px 20px',
+        border: '0',
+        cursor: 'pointer',
+        margin: '0',
+        display: 'inline-flex',
+        position: 'relative',
+        alignItems: 'center',
+        verticalAlign: 'middle',
+        justifyContent: 'center',
+        textDecoration: 'none',
+        backgroundColor: 'transparent',
+        textTransform: 'uppercase',
+        lineHeight: '1.75',
+      }),
+
   }),
   badge: {
     display: 'inline-flex',
     position: 'relative',
     verticalAlign: 'middle',
   },
-  cartCounter: {
+  cartCounter: (props) => ({
     height: '16px',
     minWidth: '16px',
-    fontFamily: 'inter',
-    fontWeight: '600',
-    letterSpacing: '0.8px',
     transform: 'scale(1) translate(0%, -50%)',
-  },
+    ...(props.navBarstyling.cartCounter || {
+      fontFamily: 'inter',
+      fontWeight: '600',
+      letterSpacing: '0.8px',
+    }),
+  }),
   cartCounter2Wrapper: {
     marginTop: '-6px',
     marginLeft: '6px',

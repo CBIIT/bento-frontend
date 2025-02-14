@@ -93,6 +93,7 @@ const FacetFilterController = (props) => {
    * Construct filter object
    * 1. add facet values to facets
    * 2. add 'name' key to each facet value
+   * 3. add '
    */
   const addFacetValues = (facets) => {
     const updateFacets = [];

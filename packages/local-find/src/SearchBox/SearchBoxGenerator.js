@@ -18,9 +18,12 @@ import DEFAULT_CONFIG from './config';
  */
 export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const {
-    config, functions,
+    config, functions, customStyles = {},
   } = uiConfig;
 
+  const styles = () => (
+    { ...DEFAULT_STYLES(), ...customStyles }
+  );
   const onChange = functions && typeof functions.onChange === 'function'
     ? functions.onChange
     : DEFAULT_CONFIG.functions.onChange;
@@ -52,7 +55,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
   return {
     // @ts-ignore
     // eslint-disable-next-line max-len
-    SearchBox: withStyles(DEFAULT_STYLES, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
+    SearchBox: withStyles(styles, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
       const {
         classes, autocomplete, applySearch,
       } = props;
@@ -149,7 +152,8 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               renderTags={() => null}
               renderInput={(params) => (
                 <TextField
-                  {...params}
+                  params={params}
+                  loading={loading}
                   classes={classes}
                   placeholder={inputPlaceholder}
                 />
