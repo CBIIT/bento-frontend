@@ -1,5 +1,5 @@
 import React from 'react';
-import { CircularProgress, TextField } from '@material-ui/core';
+import { CircularProgress, InputLabel, TextField } from '@material-ui/core';
 import { CustomSearchIcon } from './CustomSearchIcon';
 
 /**
@@ -41,15 +41,23 @@ export const CustomTextField = ({ ...params }) => {
   };
 
   return (
-    <TextField
-      {...params}
-      hiddenLabel
-      classes={{ root: classes.textFieldRoot }}
-      placeholder={placeholder}
-      variant="outlined"
-      onKeyDown={keyDown}
-      InputProps={InputProps}
-    />
+    <div
+      className={classes.container}
+    >
+      <InputLabel htmlFor="global_search_input" className={classes.inputLabel}>
+        label
+      </InputLabel>
+      <TextField
+        {...params}
+        hiddenLabel
+        id="global_search_input"
+        classes={{ root: classes.textFieldRoot }}
+        placeholder={placeholder}
+        variant="outlined"
+        onKeyDown={keyDown}
+        InputProps={InputProps}
+      />
+    </div>
   );
 };
 

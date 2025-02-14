@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button } from '@material-ui/core';
+import clsx from 'clsx';
 import SearchList from './SearchBox/components/SearchList';
 import { resetUploadData } from './store/actions/Actions';
 
@@ -15,12 +16,13 @@ import { resetUploadData } from './store/actions/Actions';
  * @param {function} props.resetUpload - redux action to reset upload data
  * @param {object} props.SearchBox - Generated SearchBox component
  * @param {object} props.UploadModal - Generated UploadModal component
+ * @param {object} props.config - configuration object
  * @returns {JSX.Element}
  */
 const SearchView = (props) => {
   const {
     classes, hidden, state, resetUpload,
-    UploadModal, SearchBox,
+    UploadModal, SearchBox, config,
   } = props;
 
   const [showCasesModal, setShowCasesModal] = useState(false);
@@ -30,9 +32,11 @@ const SearchView = (props) => {
     e.stopPropagation();
   };
 
+  const uploadText = config && config.title ? config.title : 'Case';
+
   return (
     <div
-      className={classes.searchContainer}
+      className={clsx(classes.searchContainer, 'searchContainer')}
       onFocus={eventHandler}
       onClick={eventHandler}
       hidden={hidden}
@@ -50,13 +54,13 @@ const SearchView = (props) => {
         variant="contained"
         disableElevation
         onClick={() => setShowCasesModal(true)}
-        className={classes.uploadButton}
+        className={clsx(classes.uploadButton, 'uploadButton')}
         id="local_find_upload_open"
       >
-        { matchedFiles.length !== 0 ? 'View Case Set' : 'Upload Case Set' }
-        <span className={classes.iconSpan}>
+        { matchedFiles.length !== 0 ? `View ${uploadText} Set` : `Upload ${uploadText} Set` }
+        <span className={clsx(classes.iconSpan, 'iconSpan')}>
           <img
-            className={classes.uploadIcon}
+            className={clsx(classes.uploadIcon, 'uploadIcon')}
             src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
             alt="upload icon"
           />
