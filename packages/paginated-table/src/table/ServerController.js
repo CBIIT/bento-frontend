@@ -13,7 +13,17 @@ import {
 * Updates table row when table state is changed 1. (paginated action) and 2. filter action
 */
 const TableController = ((props) => {
-  const { queryVariables, table } = props;
+  const { queryVariables, table, totalRowCount } = props;
+
+  /** if empty return table */
+  if (totalRowCount < 1) {
+    return (
+      <TableView
+        {...props}
+      />
+    );
+  }
+
   const { tableData } = getTableData({ queryVariables, table });
   if (!tableData) {
     return (
