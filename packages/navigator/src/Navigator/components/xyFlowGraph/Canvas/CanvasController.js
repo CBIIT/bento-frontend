@@ -116,10 +116,13 @@ const CanvasController = ({
     setNodes(updatedNodes);
   };
 
+  const { focusedNodeId = '' } = context;
+
   return (
     <CanvasView
       nodes={nodes}
       edges={edges}
+      focusedNodeId={focusedNodeId}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}

@@ -34,7 +34,6 @@ export const SearchBarTitleText = styled('span')({
 export const SearchInputContrainer = styled('div') ({
   gap: '4px',
   // width: '100%',
-  height: '90px',
   border: '1px solid #000000',
   display: 'flex',
   textAlign: 'right',
@@ -59,4 +58,7 @@ export const ClearAllBtn = styled(Button)({
   borderRadius: '100px',
   textTransform: 'none',
   marginRight: '5px',
+  '&:hover': {
+    background: '#fff',
+  },
 });

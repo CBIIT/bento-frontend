@@ -3,15 +3,20 @@
 import styled from '@emotion/styled';
 import { Background } from '@xyflow/react';
 
-export const CanvasContariner = styled('div')({
-  height: '100%',
-  display: 'block',
-
-  '& div [data-id="program"]': {
-    color: 'purple',
-    zIndex: '95 !important'
-  }
-});
+export const CanvasContariner = styled('div')(
+  ({ focusedNodeId }) => {
+    console.log(focusedNodeId);
+    const targetId = `& div [data-id=${focusedNodeId}]`;
+    return {
+      height: '100%',
+      display: 'block',
+      [targetId]: {
+        color: 'purple',
+        zIndex: '95 !important',
+      },
+    };
+  },
+);
 
 export const CanvasBackground = styled(Background)(
   (highlightedNodes) => {

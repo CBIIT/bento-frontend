@@ -168,13 +168,13 @@ const generateRelations = (relationships) => {
 }
 
 export const getDictionary = (
-  dataModelUrl = DATA_MODEL,
-  dataModePropsUrl = DATA_MODEL_PROPS,
+  nodesYamlFilePath = DATA_MODEL, 
+  propertiesYamlFilePath = DATA_MODEL_PROPS
 ) => {
 
   async function getModelData() {
-    const { Nodes: nodesDetails, Relationships } = await getYAMLFileContent(dataModelUrl);
-    const { PropDefinitions: yamlPropertiesDetails } = await getYAMLFileContent(dataModePropsUrl);
+    const { Nodes: nodesDetails, Relationships } = await getYAMLFileContent(nodesYamlFilePath);
+    const { PropDefinitions: yamlPropertiesDetails } = await getYAMLFileContent(propertiesYamlFilePath);
     // read YMAL file and format data value
     const nodeReationships = generateRelations(Relationships);
     const modelData = {};

@@ -33,8 +33,11 @@ const graphConfig = {
   },
 };
 
-const DataModelNavigatorView = () => {
-  const { dictionary } = getDictionary();
+const DataModelNavigatorView = ({
+  propertiesYamlFilePath,
+  nodesYamlFilePath,
+}) => {
+  const { dictionary } = getDictionary(nodesYamlFilePath, propertiesYamlFilePath);
   if (!dictionary) {
     return (
       <>

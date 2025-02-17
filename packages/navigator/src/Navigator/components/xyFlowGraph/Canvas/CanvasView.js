@@ -112,13 +112,17 @@ const CustomFlowView = ({
 const CanvasView = ({
   nodes,
   edges,
+  focusedNodeId,
   onConnect,
   onNodesChange,
   onEdgesChange,
   onGraphPanelClick,
   handleNodeDragStop,
 }) => (
-  <Styled.CanvasContariner className="canvasContariner">
+  <Styled.CanvasContariner
+    className="canvasContariner"
+    focusedNodeId={focusedNodeId}
+  >
     <LegendView />
     <ClearSearchBtn />
     <ReactFlowProvider>

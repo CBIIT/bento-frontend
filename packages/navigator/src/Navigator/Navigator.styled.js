@@ -4,6 +4,7 @@ import { Box, Tab, Tabs } from '@mui/material';
 export const StyledContainer = styled('div')({
   display: 'flex',
   height: 'calc(100vh)',
+  background: '#fff',
 });
 
 export const StyledSideBarContrainer = styled('div')({
@@ -27,6 +28,7 @@ export const StyledTabBtnContainer = styled(Box)({
 
 export const StyledTabPanelOuterContainer = styled('div')({
   height: '100%',
+  background: '#fff',
 });
 
 export const StyledTabPanelContainer = styled('div')({
