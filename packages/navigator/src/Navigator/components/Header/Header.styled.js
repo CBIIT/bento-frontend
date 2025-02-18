@@ -11,7 +11,6 @@ export const TitleContainer = styled('div')({
   justifyContent: 'space-between',
   paddingLeft: '27px',
   paddingRight: '38px',
-  paddingTop: '21px',
   marginBottom: '13px',
 });
 

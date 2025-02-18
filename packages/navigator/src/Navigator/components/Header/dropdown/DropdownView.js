@@ -5,7 +5,7 @@ import {
 import axios from 'axios';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import {
   FILE_TYPE_README,
   FILE_TYPE_FULL_DICTIONARY,

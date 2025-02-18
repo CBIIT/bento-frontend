@@ -83,6 +83,7 @@ const CustomFlowView = ({
         fitView
       >
         <OverlayPropertyTable />
+        <LegendView />
         <Styled.Controls>
           <Styled.ControlBtn onClick={handleTransform} title="reset">
             <Styled.ControlBtnIcon src={resetIcon} alt="reset_icon" />
@@ -123,7 +124,6 @@ const CanvasView = ({
     className="canvasContariner"
     focusedNodeId={focusedNodeId}
   >
-    <LegendView />
     <ClearSearchBtn />
     <ReactFlowProvider>
       <CustomFlowView

@@ -54,10 +54,6 @@ const CanvasController = ({
       });
       updateNodeItems = nodeItems.map((node) => {
         const position = nodePosition[node.id];
-        // node.position = {
-        //   x: position[0],
-        //   y: position[1]
-        // };
         return {
           ...node,
           position: {
@@ -76,7 +72,6 @@ const CanvasController = ({
   * 2. toggle between on/off for serach mode
   */
   useEffect(() => {
-    // console.log(provider);
     const flowData = createNodesAndEdges(dictionary);
     const {
       nodes: layoutedNodes,

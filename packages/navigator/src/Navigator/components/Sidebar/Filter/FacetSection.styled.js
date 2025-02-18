@@ -58,6 +58,11 @@ export const FacetAccordianSummary = styled(AccordionSummary)({
 
 export const MuiExpandMoreIcon = styled(ExpandMoreIcon)({
   padding: '12px',
+  '&.MuiSvgIcon-root': {
+    width: '1em',
+    fontSize: '55px',
+    height: '1em',
+  },
 });
 
 export const MuiArrowDrowdownIcon = styled(ArrowDropDownSharpIcon)({

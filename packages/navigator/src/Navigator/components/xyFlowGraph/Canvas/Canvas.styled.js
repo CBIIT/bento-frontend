@@ -5,13 +5,11 @@ import { Background } from '@xyflow/react';
 
 export const CanvasContariner = styled('div')(
   ({ focusedNodeId }) => {
-    console.log(focusedNodeId);
     const targetId = `& div [data-id=${focusedNodeId}]`;
     return {
       height: '100%',
       display: 'block',
       [targetId]: {
-        color: 'purple',
         zIndex: '95 !important',
       },
     };

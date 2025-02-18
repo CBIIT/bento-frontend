@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 /* eslint-disable-next-line */
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Button,
   IconButton,
