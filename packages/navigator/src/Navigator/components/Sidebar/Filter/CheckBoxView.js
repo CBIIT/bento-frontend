@@ -33,11 +33,11 @@ const CheckBoxView = ({
       isChecked: !isChecked,
     }));
   };
-
+  const matchedNodeCount = facetItemCount[facetItem]?.length || 0;
   return (
     <>
       {
-        (facetItemCount[facetItem]?.length > 0 || isChecked) && (
+        (matchedNodeCount > 0 || isChecked) && (
           <>
             <StyledListItem
               width={1}
@@ -45,6 +45,7 @@ const CheckBoxView = ({
               alignItems={alignment}
               isChecked={isChecked}
               selected={isTrue}
+              matchedNodeCount={matchedNodeCount}
               onClick={handleToggleCheckBox}
             >
               <StyledMuiCheckBox
@@ -63,7 +64,7 @@ const CheckBoxView = ({
                 </StyledLabelDiv>
                 <StyledCountDiv>
                   <StyledCountSpan>
-                    {`${facetItemCount[facetItem]?.length || 0}`}
+                    {matchedNodeCount}
                   </StyledCountSpan>
                 </StyledCountDiv>
               </StyledLabelAndCount>

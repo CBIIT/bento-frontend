@@ -8,12 +8,14 @@ import {
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 export const StyledListItem = styled(ListItem)(
-  ({ isChecked }) => ({
-    background: isChecked ? '#e3f4fd' : '#fff',
+  ({ isChecked, matchedNodeCount }) => ({
+    background: isChecked && (matchedNodeCount > 0)
+      ? '#e3f4fd' : (isChecked && matchedNodeCount === 0) ? '#EAEAEA' : '#fff',
     color: '#165F83',
     padding: '5px 0px',
     '& :hover': {
       cursor: 'pointer',
+      background: 'transparent',
     },
   }),
 );

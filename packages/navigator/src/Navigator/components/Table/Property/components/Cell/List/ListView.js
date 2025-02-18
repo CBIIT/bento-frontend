@@ -18,7 +18,6 @@ const ListView = ({
 }) => {
   const [display, setDisplay] = useState(false);
   const listItems = items.slice(0, maxItem);
-
   const DisplayListItem = ({ displayItems = [] }) => (
     <Styled.MuiList
       className="acptValList"
@@ -58,13 +57,11 @@ const ListView = ({
           Acceptable Values:
         </Styled.AcceptValueLabel>
         {' '}
+        {(!display) && (<DisplayListItem displayItems={listItems} />)}
         {(!display && items.length > maxItem) ? (
-          <>
-            <DisplayListItem items={listItems} />
-            <Button onClick={() => setDisplay(!display)}>
-              ...show More
-            </Button>
-          </>
+          <Button onClick={() => setDisplay(!display)}>
+            ...show More
+          </Button>
         ) : (
           <Styled.MuiDialog
             open={display}
@@ -82,7 +79,7 @@ const ListView = ({
                 </IconButton>
               </Styled.ActionBtn>
             </Styled.DialogTitleContent>
-            <DisplayListItem items={items} />
+            <DisplayListItem displayItems={items} />
           </Styled.MuiDialog>
         )}
       </Styled.OuterContainer>
