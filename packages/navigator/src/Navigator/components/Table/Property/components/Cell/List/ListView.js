@@ -19,7 +19,7 @@ const ListView = ({
   const [display, setDisplay] = useState(false);
   const listItems = items.slice(0, maxItem);
 
-  const DisplayListItem = ({ displayItems }) => (
+  const DisplayListItem = ({ displayItems = [] }) => (
     <Styled.MuiList
       className="acptValList"
       display={display}
