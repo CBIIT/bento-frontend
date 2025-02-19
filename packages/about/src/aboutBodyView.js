@@ -344,14 +344,14 @@ const styles = () => ({
     fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
     fontSize: '15px',
     lineHeight: '22px',
-    maxWidth: '1440px',
+    maxWidth: '1400px',
   },
   tabbedParag: {
     paddingLeft: '40px',
   },
   maxWidthContainer: {
     margin: '0px auto 0px auto',
-    maxWidth: '1440px',
+    maxWidth: '1400px',
   },
   secondayTitle: {
     display: 'block',

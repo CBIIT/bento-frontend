@@ -133,14 +133,11 @@ const StatsBar = ({
  */
 const styles = () => ({
   statsSection: (props) => ({
-    top: props.styles.global.top ? props.styles.global.top : '139px',
     width: '100%',
     zIndex: 999,
-    position: 'fixed',
+    position: 'static',
     background: props.styles.global.background ? props.styles.global.background : '#8DCAFF',
     textAlign: 'center',
-    left: 0,
-    right: 0,
     display: 'flex',
     justifyContent: 'flex-end',
   }),

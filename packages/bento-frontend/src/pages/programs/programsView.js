@@ -79,9 +79,9 @@ const styles = (theme) => ({
   },
   container: {
     margin: 'auto',
-    maxWidth: '1440px',
-    paddingLeft: '36px',
-    paddingRight: '36px',
+    maxWidth: '1400px',
+    paddingLeft: '0',
+    paddingRight: '0',
   },
   paper: {
     textAlign: 'center',
