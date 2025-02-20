@@ -50,7 +50,7 @@ const styles = () => ({
       minHeight: '60px',
       maxHeight: '80px',
       maxWidth: '460px',
-      cursor: 'pointer',
+      cursor: props.noLink ? 'auto' : 'pointer',
       marginLeft: '45px',
     };
     return Object.assign(defaultProps, props.customStyle.nihLogoImg);
@@ -59,18 +59,28 @@ const styles = () => ({
 
 const Header = ({ classes, ...props }) => {
   const {
-    logo, alt, homeLink, SearchComponent,
+    logo, alt, homeLink, SearchComponent, noLink,
   } = props;
   return (
     <div id="header" className={classes.headerBar}>
       <div className={classes.nihLogoContainer}>
-        <RouteLinks to={homeLink}>
-          <img
-            className={classes.nihLogoImg}
-            src={logo}
-            alt={alt}
-          />
-        </RouteLinks>
+        {
+          noLink ? (
+            <img
+              className={classes.nihLogoImg}
+              src={logo}
+              alt={alt}
+            />
+          ) : (
+            <RouteLinks to={homeLink || '/'}>
+              <img
+                className={classes.nihLogoImg}
+                src={logo}
+                alt={alt}
+              />
+            </RouteLinks>
+          )
+        }
       </div>
       <div className={classes.icdcLogoContainer}>
         <div className={classes.grow} />
@@ -83,7 +93,6 @@ const Header = ({ classes, ...props }) => {
 Header.defaultProps = {
   logo: nihLogo,
   alt: 'NCI CTDC Logo - Clinical Trials Data Commons',
-  homeLink: '/',
   customStyle: {},
   SearchComponent: () => <></>,
 };
