@@ -1,10 +1,10 @@
-FROM node:16-bullseye  as build
+FROM node:20-bullseye  as build
 
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN NODE_OPTIONS="--max-old-space-size=4096" npm install
+RUN NODE_OPTIONS="--max-old-space-size=4096" npm install --legacy-peer-deps
 
 RUN NODE_OPTIONS="--max-old-space-size=4096" npx lerna run build
 
