@@ -16,6 +16,7 @@ export const InclusionCellView = styled(TableCell)(
   ({ inclusion }) => {
     if (inclusion === 'required') {
       return {
+        verticalAlign: 'top',
         color: '#ff5a20',
         fontSize: '13px',
         fontWeight: '900',
@@ -23,6 +24,7 @@ export const InclusionCellView = styled(TableCell)(
       };
     }
     return {
+      verticalAlign: 'top',
       borderBottom: 'none',
     };
   },
@@ -30,6 +32,7 @@ export const InclusionCellView = styled(TableCell)(
 
 export const PropertyName = styled(TableCell)(
   ({ isKey }) => ({
+    verticalAlign: 'top',
     color: isKey && '#0d71a3',
     display: 'inline-block',
     minWidth: '220px',
@@ -39,13 +42,16 @@ export const PropertyName = styled(TableCell)(
 );
 
 export const ListCell = styled(TableCell)({
+  verticalAlign: 'top',
   borderBottom: 'none',
 });
 
 export const TypeCell = styled(TableCell)({
+  verticalAlign: 'top',
   borderBottom: 'none',
 });
 
 export const MuiCellView = styled(TableCell)({
+  verticalAlign: 'top',
   borderBottom: 'none',
 });

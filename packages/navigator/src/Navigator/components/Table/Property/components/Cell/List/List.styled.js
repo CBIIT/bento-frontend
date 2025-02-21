@@ -40,10 +40,15 @@ export const MuiListItemIcon = styled(ListItemIcon)({
   minWidth: '10px',
   flexShrink: '0',
   paddingLeft: '0',
+  height: '13px',
 });
 
 export const MuiListItem = styled(ListItem)({
   padding: '0',
+  color: '#00002dd9',
+  display: 'inline-flex',
+  minWidth: '10px',
+  flexShrink: '0',
 });
 
 export const MuiListItemText = styled(ListItemText)({
@@ -62,7 +67,6 @@ export const MuiDialog = styled(Dialog)({
 
 export const ActionBtn = styled('div')({
   width: '225px',
-  padding: '20px',
   textAlign: 'right',
   float: 'right',
 });

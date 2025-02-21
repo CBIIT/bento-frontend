@@ -52,6 +52,7 @@ const CheckBoxView = ({
                 onClick={handleToggleCheckBox}
                 checkedIcon={<StyledCheckBoxIcon />}
                 checked={isChecked}
+                matchedNodeCount={matchedNodeCount}
                 tabIndex={-1}
                 disableRipple
                 color="secondary"

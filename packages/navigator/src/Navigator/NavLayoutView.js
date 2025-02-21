@@ -1,4 +1,5 @@
 import React from 'react';
+import { createRoot } from 'react-dom/client';
 import { getDictionary } from './controller/Dictionary';
 import { ModelContextProvider } from './state/NavContextProvider';
 import NavigatorView from './NavigatorController';
@@ -37,6 +38,7 @@ const DataModelNavigatorView = ({
   propertiesYamlFilePath,
   nodesYamlFilePath,
 }) => {
+  
   const { dictionary } = getDictionary(nodesYamlFilePath, propertiesYamlFilePath);
   if (!dictionary) {
     return (
@@ -109,3 +111,7 @@ const LayoutView = () => (
 );
 
 export default LayoutView;
+
+const root = createRoot(document.getElementById('root'));
+
+root.render(<LayoutView />);

@@ -32,11 +32,13 @@ export const StyledCheckBoxIcon = styled(CheckBoxIcon)({
 });
 
 export const StyledMuiCheckBox = styled(Checkbox)(
-  ({ checkBoxBorderColor }) => ({
-    color: checkBoxBorderColor || '#137fbe',
+  ({ checkBoxBorderColor, matchedNodeCount }) => ({
+    color: (matchedNodeCount === 0) ? '#EAEAEA'
+      : (checkBoxBorderColor || '#137fbe'),
     '& svg': {
       fontSize: '18px',
-      color: checkBoxBorderColor || '#137fbe',
+      color: (matchedNodeCount === 0) ? '#EAEAEA'
+        : (checkBoxBorderColor || '#137fbe'),
     },
   }),
 );

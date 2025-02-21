@@ -98,6 +98,14 @@ const CellView = ({
         </Styled.TypeCell>
       );
     }
+
+    if (typeof row[field] === 'object') {
+      return (
+        <Styled.TypeCell>
+          {highligtSearchText(JSON.stringify(row[field]), field)}
+        </Styled.TypeCell>
+      );
+    }
   }
 
   if (typeof row[field] === 'string') {
