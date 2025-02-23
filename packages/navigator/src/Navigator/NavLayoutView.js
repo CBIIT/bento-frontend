@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { Alert } from '@mui/material';
 import { getDictionary } from './controller/Dictionary';
 import { ModelContextProvider } from './state/NavContextProvider';
 import NavigatorView from './NavigatorController';
@@ -9,36 +9,28 @@ import GraphView from './components/xyFlowGraph/GraphView';
 import { generateNodeTree } from './components/xyFlowGraph/Canvas/CanvasHelper';
 import HeaderView from './components/Header/HeaderView';
 
-const dogIconSrc = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/4a3fb8e201e6ba2a858d7ec1226d2fd6ea2b5298/icdc/images/svgs/Icon-DMNav.85x85.svg';
-
-const readMeConfig = {
-  readMeUrl: 'https://raw.githubusercontent.com/CBIIT/icdc-readMe-content/dev/Data_Model_Navigator_README.md',
-  readMeTitle: 'Understanding the ICDC Data Model',
-};
-
-const imagesConfig = {
-  headerLogo: dogIconSrc,
-};
-
-const graphConfig = {
-  canvas: {
-    fit: {
-      x: 0,
-      y: 0,
-      zoom: 0.5,
-      minZoom: 0.5,
-      maxZoom: 2,
-      xInterval: 250,
-      yInterval: 90,
-    },
-  },
-};
-
 const DataModelNavigatorView = ({
   propertiesYamlFilePath,
   nodesYamlFilePath,
+  node2DPosition,
+  headerConfig,
+  graphConfig,
+  readMeConfig,
 }) => {
-  
+  /**
+   * model / properties end points
+   */
+  if (!propertiesYamlFilePath || !nodesYamlFilePath) {
+    return (
+      <Alert severity="error">
+        Error. Provide valide YMAL Url !!!
+      </Alert>
+    );
+  }
+
+  /**
+   * generate dictionary
+   */
   const { dictionary } = getDictionary(nodesYamlFilePath, propertiesYamlFilePath);
   if (!dictionary) {
     return (
@@ -50,7 +42,7 @@ const DataModelNavigatorView = ({
   /**
    * create node tree
    */
-  const nodeTree = generateNodeTree(dictionary);
+  const nodeTree = node2DPosition || generateNodeTree(dictionary);
 
   const {
     filterByNode,
@@ -89,7 +81,7 @@ const DataModelNavigatorView = ({
   return (
     <>
       <HeaderView
-        headerLogo={imagesConfig.headerLogo}
+        headerLogo={headerConfig.headerLogo}
         readMeConfig={readMeConfig}
       />
       <NavigatorView
@@ -102,16 +94,27 @@ const DataModelNavigatorView = ({
   );
 };
 
-const LayoutView = () => (
+const NavaigatorLayoutView = ({
+  headerConfig,
+  graphConfig,
+  propertiesYamlFilePath,
+  nodesYamlFilePath,
+  readMeConfig,
+  node2DPosition
+}) => (
   <>
     <ModelContextProvider>
-      <DataModelNavigatorView />
+      <DataModelNavigatorView
+        headerConfig={headerConfig}
+        graphConfig={graphConfig}
+        propertiesYamlFilePath={propertiesYamlFilePath}
+        nodesYamlFilePath={nodesYamlFilePath}
+        readMeConfig={readMeConfig}
+        node2DPosition={node2DPosition}
+
+      />
     </ModelContextProvider>
   </>
 );
 
-export default LayoutView;
-
-const root = createRoot(document.getElementById('root'));
-
-root.render(<LayoutView />);
+export default NavaigatorLayoutView;

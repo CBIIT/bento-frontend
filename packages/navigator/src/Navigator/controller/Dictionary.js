@@ -59,8 +59,6 @@ import {
   propertyType as propertyRequiredType,
 } from '../constant/model';
 
-const DATA_MODEL = 'https://raw.githubusercontent.com/CBIIT/icdc-model-tool/master/model-desc/icdc-model.yml';
-const DATA_MODEL_PROPS = 'https://raw.githubusercontent.com/CBIIT/icdc-model-tool/master/model-desc/icdc-model-props.yml';
 
 /**
  * http call - retive YAML file content
@@ -168,8 +166,8 @@ const generateRelations = (relationships) => {
 }
 
 export const getDictionary = (
-  nodesYamlFilePath = DATA_MODEL, 
-  propertiesYamlFilePath = DATA_MODEL_PROPS
+  nodesYamlFilePath, 
+  propertiesYamlFilePath
 ) => {
 
   async function getModelData() {

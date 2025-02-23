@@ -44,13 +44,14 @@ const CanvasController = ({
      * 2. xIntervel & yIntervel
      */
     let updateNodeItems = {};
-    const { nodeTree } = context;
+    const { nodeTree,  graphConfig } = context;
+
     if (dictionary && nodeTree) {
       const nodePosition = getNodePosition({
         dictionary,
         nodeTree,
         tabViewWidth,
-        // ...canvas?.fit,
+        ...graphConfig?.canvas?.fit,
       });
       updateNodeItems = nodeItems.map((node) => {
         const position = nodePosition[node.id];
@@ -111,7 +112,7 @@ const CanvasController = ({
     setNodes(updatedNodes);
   };
 
-  const { focusedNodeId = '' } = context;
+  const { focusedNodeId = '', graphConfig } = context;
 
   return (
     <CanvasView
@@ -121,6 +122,7 @@ const CanvasController = ({
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
+      graphConfig={graphConfig}
       canvasWidth={tabViewWidth}
       onGraphPanelClick={onGraphPanelClick}
       handleNodeDragStop={handleNodeDragStop}

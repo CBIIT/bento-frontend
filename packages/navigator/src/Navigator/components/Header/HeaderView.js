@@ -15,9 +15,13 @@ const HeaderView = ({
         <Styled.Title>{title}</Styled.Title>
       </Styled.LogoAndTitle>
       <Styled.ButtonContainer>
-        <ReadMeView
-          config={readMeConfig}
-        />
+        {
+          readMeConfig && (
+            <ReadMeView
+              config={readMeConfig}
+            />
+          )
+        }
         <DropDownView
           readMeConfig={readMeConfig}
         />

@@ -70,8 +70,6 @@ const NodeView = ({
     dispatch(showOverlayTable(id));
   };
 
-  console.log(isSearchMode);
-
   /**
    * expand node in normal mode (when search mode is false)
    * use view option to adjust the fontSize on property dialog
@@ -89,18 +87,6 @@ const NodeView = ({
   /**
    * light node based on reasult of search query
    */
-  // useEffect(() => {
-  //   if (!expandNodeView) {
-  //     setDisplay(false);
-  //   } else {
-  //     if (`${label}`.toLowerCase() === highlightingNode?.id) {
-  //       setDisplay(true);
-  //     } else {
-  //       setDisplay(false);
-  //     }
-  //   }
-  // }, [expandNodeView, highlightingNode]);
-
   useEffect(() => {
     if (`${label}`.toLowerCase() !== focusedNodeId?.id) {
       setDisplay(focusedNodeId === id);

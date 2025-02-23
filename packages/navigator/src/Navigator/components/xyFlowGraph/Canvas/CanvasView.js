@@ -45,12 +45,14 @@ const CustomFlowView = ({
   highlightedNodes,
   onGraphPanelClick,
   handleNodeDragStop,
+  canvasWidth,
+  graphConfig = {}
 }) => {
   const { setViewport, zoomIn, zoomOut } = useReactFlow();
 
-  // const { fit, width } = graphViewConfig.canvas;
-  const fit = 0.75;
-  const width = 1200;
+  const { canvas = {} } = graphConfig;
+  const { fit = 0.75 } = canvas;
+  const width = canvasWidth / 2 || 1200;
   const [minZoom, setMinZoom] = useState(0.75);
 
   useEffect(() => {
@@ -119,6 +121,8 @@ const CanvasView = ({
   onEdgesChange,
   onGraphPanelClick,
   handleNodeDragStop,
+  canvasWidth,
+  graphConfig
 }) => (
   <Styled.CanvasContariner
     className="canvasContariner"
@@ -127,6 +131,7 @@ const CanvasView = ({
     <ClearSearchBtn />
     <ReactFlowProvider>
       <CustomFlowView
+        canvasWidth={canvasWidth}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -134,6 +139,7 @@ const CanvasView = ({
         onConnect={onConnect}
         onGraphPanelClick={onGraphPanelClick}
         handleNodeDragStop={handleNodeDragStop}
+        graphConfig={graphConfig}
       />
     </ReactFlowProvider>
   </Styled.CanvasContariner>
