@@ -26,7 +26,7 @@ const NavigatorController = (props) => {
   useEffect(() => {
     const { setContext } = modelContext;
     setContext({ ...modelState, dispatch });
-    console.log(modelState);
+    // console.log(modelState);
   }, [modelState]);
 
   return (
