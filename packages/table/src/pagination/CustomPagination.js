@@ -1,37 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  createTheme,
+  createMuiTheme,
   TablePagination,
   ThemeProvider,
+  IconButton,
+  makeStyles,
 } from '@material-ui/core';
-import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
+import {
+  ArrowDropDown,
+} from '@material-ui/icons';
+import rightArrow from '../assets/rightArrow.svg';
+import leftArrow from '../assets/leftArrow.svg';
 
-const defaultTheme = {
-  MuiTablePagination: {
-    root: {
-      paddingRight: '50px',
-      borderTop: '3px solid #42779a',
+const useStyles = makeStyles(() => ({
+  paginationRoot: {
+    display: 'flex',
+    justifyContent: 'flex-end', // Moves pagination to the right
+    paddingRight: '10px', // Optional spacing
+  },
+  actionsContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end', // Align pagination buttons to the right
+  },
+}));
+
+const defaultTheme = createMuiTheme({
+  overrides: {
+    MuiTablePagination: {
+      root: {
+        paddingRight: '50px',
+        width: '100%',
+      },
+      toolbar: {
+        minHeight: '45px',
+        display: 'flex',
+        alignItems: 'center',
+      },
     },
-    toolbar: {
-      minHeight: '45px',
+    MuiTypography: {
+      body2: {
+        fontSize: '14px',
+        textTransform: 'uppercase',
+      },
+      root: {
+        fontSize: '14px',
+      },
+    },
+    MuiIconButton: {
+      root: {
+        padding: '2px',
+      },
     },
   },
-  MuiTypography: {
-    body2: {
-      fontSize: '14px',
-      textTransform: 'uppercase',
-    },
-    root: {
-      fontSize: '14px',
-    },
-  },
-  MuiIconButton: {
-    root: {
-      padding: '2px',
-    },
-  },
-};
+});
 
 const CustomPagination = ({
   rowsPerPageOptions,
@@ -40,25 +62,54 @@ const CustomPagination = ({
   page,
   onPageChange,
   onRowsPerPageChange,
-  customTheme = {},
-}) => (
-  <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
-    <TablePagination
-      labelRowsPerPage="Results per Page:"
-      rowsPerPageOptions={rowsPerPageOptions}
-      component="div"
-      count={count}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={onPageChange}
-      onRowsPerPageChange={onRowsPerPageChange}
-      SelectProps={{
-        IconComponent: KeyboardArrowDownOutlinedIcon,
-        inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
-      }}
-    />
-  </ThemeProvider>
-);
+}) => {
+  const classes = useStyles();
+  return (
+    <ThemeProvider
+      theme={createMuiTheme({ overrides: { ...defaultTheme.overrides } })}
+    >
+      <TablePagination
+        labelRowsPerPage="Results per Page:"
+        rowsPerPageOptions={rowsPerPageOptions}
+        component="div"
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+        SelectProps={{
+          IconComponent: ArrowDropDown,
+          inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
+        }}
+        nextIconButtonProps={{
+          'aria-label': 'Next page',
+        }}
+        backIconButtonProps={{
+          'aria-label': 'Previous page',
+        }}
+        ActionsComponent={() => (
+          <div className={classes.actionsContainer}>
+            <IconButton
+              onClick={(event) => onPageChange(event, page - 1)}
+              disabled={page === 0}
+              aria-label="Previous page"
+            >
+              <ArrowDropDown />
+              <img src={leftArrow} style={{ opacity: page === 0 ? 0.2 : 1 }} alt="Left Arrow" />
+            </IconButton>
+            <IconButton
+              onClick={(event) => onPageChange(event, page + 1)}
+              disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+              aria-label="Next page"
+            >
+              <img src={rightArrow} style={{ opacity: page >= Math.ceil(count / rowsPerPage) - 1 ? 0.2 : 1 }} alt="Right Arrow" />
+            </IconButton>
+          </div>
+        )}
+      />
+    </ThemeProvider>
+  );
+};
 
 CustomPagination.propTypes = {
   rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number).isRequired,
