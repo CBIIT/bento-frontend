@@ -94,7 +94,6 @@ const CustomPagination = ({
               disabled={page === 0}
               aria-label="Previous page"
             >
-              <ArrowDropDown />
               <img src={leftArrow} style={{ opacity: page === 0 ? 0.2 : 1 }} alt="Left Arrow" />
             </IconButton>
             <IconButton
