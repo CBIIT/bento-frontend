@@ -147,6 +147,7 @@ const DownloadButton = ({
       borderRadius: '5px',
       display: 'inline-block',
       position: 'relative',
+      alignSelf: 'center',
     },
     dropdownList: {
       display: 'block',
