@@ -5,6 +5,7 @@ export const LINK = 'LINK';
 export const DISPLAY = 'DISPLAY';
 export const DEFAULT = 'DEFAULT';
 export const FORMAT_DATA = 'FORMAT_DATA';
+export const CPI = 'CPI';
 export const FORMAT_BYTES = 'FORMAT_BYTES';
 export const TRANSFORM = 'TRANSFORM';
 export const STUDY_DOWNLOAD = 'STUDY_DOWNLOAD';
@@ -19,6 +20,7 @@ export const cellTypes = {
   DELETE,
   DEFAULT,
   FORMAT_DATA,
+  CPI,
 };
 
 export const cellStyles = {

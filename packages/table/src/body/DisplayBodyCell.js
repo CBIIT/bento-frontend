@@ -6,6 +6,7 @@ import {
 import { cellTypes } from '../util/Types';
 import CustomLinkView from './components/CustomLinkView';
 import DataFormatView from './components/DataFormatView';
+import CPIView from './components/CPIView';
 
 /**
 * Custom Column reneder
@@ -31,6 +32,7 @@ const ViewCell = ({
   row,
 }) => {
   const { cellType } = column;
+  console.log(row);
   switch (cellType) {
     case cellTypes.FORMAT_DATA:
       return (
@@ -49,6 +51,13 @@ const ViewCell = ({
     case cellTypes.CUSTOM_ELEM:
       return (
         <CustomComponent
+          row={row}
+          column={column}
+        />
+      );
+    case cellTypes.CPI:
+      return (
+        <CPIView
           row={row}
           column={column}
         />
