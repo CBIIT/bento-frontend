@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { Grid, Link, withStyles } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
@@ -47,12 +48,51 @@ const AboutBody = ({
                     </div>
                   )}
                   {contentObj.listWithBullets && (
-                    <div className={classes.text}>
-                      {/* Alphabetised ordered list */}
-                      <ul>
-                        { contentObj.listWithBullets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
-                      </ul>
-                    </div>
+                  <div className={classes.text}>
+                    <ul>
+                      {contentObj.listWithBullets.map((listObj) => {
+                        // Split the list item by '$$' to detect bolded text or other inline patterns
+                        const parts = listObj.split('$$').map((splitedItem) => {
+                          // Check for links using regex pattern: [title](url) or (url)[title]
+                          if (splitedItem != null && (/\[(.+)\]\((.+)\)/g.test(splitedItem) || /\((.+)\)\[(.+)\]/g.test(splitedItem))) {
+                            const title = splitedItem.match(/\[(.*)\]/).pop();
+                            const linkAttrs = splitedItem.match(/\((.*)\)/).pop().split(' ');
+                            const target = linkAttrs.find((link) => link.includes('target:'));
+                            const url = linkAttrs.find((link) => link.includes('url:'));
+                            const href = splitedItem.match(/\((.*)\)/).pop();
+
+                            return (
+                              <Link
+                                title={title}
+                                target={target ? target.replace('target:', '') : '_blank'}
+                                rel="noreferrer"
+                                href={url ? url.replace('url:', '') : (href && href.includes('@') ? `mailto:${href}` : href)}
+                                color="inherit"
+                                className={classes.link}
+                              >
+                                {title}
+                              </Link>
+                            );
+                          }
+
+                          // Check for bolding inline words using regex
+                          if (splitedItem != null && (/\*(.*)\*/.test(splitedItem))) {
+                            return <span className={classes.title}>{splitedItem.match(/\*(.*)\*/).pop()}</span>;
+                          }
+
+                          // For email
+                          if (splitedItem != null && (/@(.*)@/.test(splitedItem))) {
+                            return <span className={classes.email}>{splitedItem.match(/@(.*)@/).pop()}</span>;
+                          }
+
+                          // Return the regular text if no special formatting is needed
+                          return splitedItem;
+                        });
+
+                        return <li>{parts}</li>;
+                      })}
+                    </ul>
+                  </div>
                   )}
                   {/* Ordered List with Alphabets logic */}
                   {contentObj.listWithAlpahbets && (
