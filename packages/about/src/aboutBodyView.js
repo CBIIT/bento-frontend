@@ -62,16 +62,26 @@ const AboutBody = ({
                             const href = splitedItem.match(/\((.*)\)/).pop();
 
                             return (
-                              <Link
-                                title={title}
-                                target={target ? target.replace('target:', '') : '_blank'}
-                                rel="noreferrer"
-                                href={url ? url.replace('url:', '') : (href && href.includes('@') ? `mailto:${href}` : href)}
-                                color="inherit"
-                                className={classes.link}
-                              >
-                                {title}
-                              </Link>
+                              <>
+                                <Link
+                                  title={title}
+                                  target={target ? target.replace('target:', '') : '_blank'}
+                                  rel="noreferrer"
+                                  href={url ? url.replace('url:', '') : (href && href.includes('@') ? `mailto:${href}` : href)}
+                                  color="inherit"
+                                  className={classes.link}
+                                >
+                                  {title}
+                                </Link>
+                                {href.includes('@') || !href.includes('http') ? '' : (
+                                  <img
+                                    src={externalIconImage}
+                                    // externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
+                                    alt="outbounnd web site icon"
+                                    className={classes.linkIcon}
+                                  />
+                                )}
+                              </>
                             );
                           }
 
