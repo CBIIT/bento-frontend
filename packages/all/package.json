@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/all",
-  "version": "1.0.1-CDS.29",
+  "version": "1.0.1-CDS.30",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/about": "^1.0.1-CDS.9",
+    "@bento-core/about": "^1.0.1-CDS.10",
     "@bento-core/admin": "^1.0.0",
     "@bento-core/authentication": "^1.0.0",
     "@bento-core/cart": "^1.0.1-CDS.1",
