@@ -18,6 +18,7 @@ import CPIModal from './CPIModal';
 const CPIView = ({
   column,
   row,
+  themeConfig,
 }) => {
   const useStyles = makeStyles(() => ({
     arrow: {
@@ -74,9 +75,9 @@ const CPIView = ({
     <Typography className={cellTypes.CPI}>
       <CPIModal
         row={row}
-        column={column}
         open={modalOpen}
         onClose={handleModalClose}
+        themeConfig={themeConfig}
       />
       {row[column?.dataField]}
       {cpiData.length

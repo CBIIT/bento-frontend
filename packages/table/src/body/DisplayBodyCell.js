@@ -30,9 +30,9 @@ const CustomComponent = ({
 const ViewCell = ({
   column,
   row,
+  themeConfig,
 }) => {
   const { cellType } = column;
-  console.log(row);
   switch (cellType) {
     case cellTypes.FORMAT_DATA:
       return (
@@ -60,6 +60,7 @@ const ViewCell = ({
         <CPIView
           row={row}
           column={column}
+          themeConfig={themeConfig}
         />
       );
     default:
@@ -74,11 +75,13 @@ const ViewCell = ({
 const DisplayCell = ({
   row,
   column,
+  themeConfig,
 }) => (
   <TableCell className={column.dataField}>
     <ViewCell
       row={row}
       column={column}
+      themeConfig={themeConfig}
     />
   </TableCell>
 );

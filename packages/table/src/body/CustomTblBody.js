@@ -50,6 +50,7 @@ const CustomTableBody = ({
                     <DisplayCell
                       column={column}
                       row={row}
+                      themeConfig={themeConfig}
                     />
                   );
                 })

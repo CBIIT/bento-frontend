@@ -1,24 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Modal,
   Typography,
   IconButton,
+  Paper,
   Table,
+  TableContainer,
+  ThemeProvider,
+  createTheme,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from '@material-ui/core';
+// import CustomTableBody from '../../body/CustomTblBody';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './ModalStyle';
+// import TableHeader from '../../header/CustomTblHeader';
+import HeaderCell from '../../header/CustomCell';
+
+const CustomTableContainer = (props) => {
+  const { children, customTheme } = props;
+  const themeConfig = createTheme({ overrides: { ...customTheme } });
+  return (
+    <ThemeProvider theme={themeConfig}>
+      <TableContainer id="tableContainer" component={Paper}>
+        {children}
+      </TableContainer>
+    </ThemeProvider>
+  );
+};
 
 const CPIModal = ({
   open,
   onClose,
   row,
+  themeConfig = {},
 }) => {
+  const [sortBy, setSortBy] = useState('associated_id');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [data, setData] = useState(() => {
+    const result = row.cpi_data;
+    return result;
+  });
+
+  const sortingData = (column, newOrder) => {
+    //doing the sorting for cpi_data
+    return [];
+  };
+
+  const handleSortByColumn = (column, order) => {
+    const newOrder = (order === 'asc' && sortBy === column) ? 'desc' : 'asc';
+    const newData = sortingData(column, newOrder);
+    setData(newData);
+    setSortBy(column);
+    setSortOrder(newOrder);
+  };
+
   const modalBody = {
     position: 'absolute',
     top: '5%',
@@ -63,26 +103,31 @@ const CPIModal = ({
   };
 
   const participantId = row.participant_id;
-  const columns = [
+  const displayColumns = [
     {
-      field: 'associated_id',
+      dataField: 'associated_id',
       header: 'Participant ID',
+      tooltipText: 'sort',
     },
     {
-      field: 'repository_of_synonym_id',
+      dataField: 'repository_of_synonym_id',
       header: 'Name',
+      tooltipText: 'sort',
     },
     {
-      field: 'domain_description',
+      dataField: 'domain_description',
       header: 'Description',
+      tooltipText: 'sort',
     },
     {
-      field: 'domain_category',
+      dataField: 'domain_category',
       header: 'Category',
+      tooltipText: 'sort',
     },
     {
-      field: 'data_location',
+      dataField: 'data_location',
       header: 'Location',
+      tooltipText: 'sort',
     },
   ];
 
@@ -109,7 +154,42 @@ const CPIModal = ({
         <div className="container" style={countContainer}>
           test
         </div>
-        <Table>
+        <CustomTableContainer
+          customTheme={themeConfig.tblContainer || {}}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                {
+                  displayColumns.map((column) => (
+                    <HeaderCell
+                      column={column}
+                      sortBy={sortBy}
+                      sortOrder={sortOrder}
+                      toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
+                    />
+                  ))
+                }
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>testing</TableCell>
+                {/* {
+                  data.map((column) => (
+                    <HeaderCell
+                      column={column}
+                      sortBy={sortBy}
+                      sortOrder={sortOrder}
+                      toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
+                    />
+                  ))
+                } */}
+              </TableRow>
+            </TableBody>
+          </Table>
+        </CustomTableContainer>
+        {/* <Table>
           <TableHead>
             <TableRow>
               <TableCell>{columns[0].header}</TableCell>
@@ -121,7 +201,7 @@ const CPIModal = ({
               <TableCell>testing</TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </Table> */}
       </Box>
     </Modal>
   );
