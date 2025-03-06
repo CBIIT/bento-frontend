@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import {
   Typography,
   Tooltip,
-  IconButton,
-  Button,
-  ClickAwayListener,
   makeStyles,
 } from '@material-ui/core';
 import { cellTypes } from '../../util/Types';
@@ -40,19 +37,10 @@ const CPIView = ({
 
   const classes = useStyles();
 
-  const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const cpiData = row.cpi_data;
   const internalData = cpiData.filter((e) => (e.data_type === 'internal'));
   const externalData = cpiData.filter((e) => (e.data_type === 'external'));
-
-  const handleTooltipClose = () => {
-    setOpen(false);
-  };
-
-  const handleTooltipOpen = () => {
-    setOpen(true);
-  };
 
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -63,71 +51,79 @@ const CPIView = ({
   };
 
   const button = {
-    background: 'none',
-    border: 'none',
-    padding: '0',
-    color: '#069',
+    color: '#07679C',
     textDecoration: 'underline',
+    fontWeight: 700,
+    cursor: 'pointer',
+    padding: 0,
+    marginLeft: '3px',
+  };
+
+  const icon = {
+    marginLeft: '10px',
+    position: 'relative',
+    top: '5px',
     cursor: 'pointer',
   };
 
   return (
     <Typography className={cellTypes.CPI}>
-      <CPIModal
-        row={row}
-        open={modalOpen}
-        onClose={handleModalClose}
-        themeConfig={themeConfig}
-      />
       {row[column?.dataField]}
       {cpiData.length
         ? (
-          <ClickAwayListener onClickAway={handleTooltipClose}>
+          <>
+            <CPIModal
+              row={row}
+              open={modalOpen}
+              onClose={handleModalClose}
+              themeConfig={themeConfig}
+            />
             <Tooltip
-              open={open}
               interactive
               placement="top-end"
               arrow
               disableFocusListener
-              disableHoverListener
               disableTouchListener
               style={{
                 pointerEvents: 'auto',
                 backgroundColor: 'transparent',
+                font: 'Poppins',
+                fontSize: '13px',
               }}
               classes={{ arrow: classes.arrow, tooltip: classes.tooltip }}
               title={
                 (externalData.length && internalData.length === 0
                   ? (
                     <div>
-                      All mapped identifiers in the CCDI Participant Index (CPI) are available here
+                      All mapped identifiers in the CCDI Participant Index (CPI) are available
+                      <span role="button" onClick={handleModalOpen} tabIndex={0} style={button}>here.</span>
                     </div>
                   )
                   : (
                     <div>
-                      <div>Identifier mapped in CCDI Hub:</div>
+                      <div style={{ marginBottom: '3px' }}>Identifier mapped in CCDI Hub:</div>
                       {internalData.map((e) => (
                         <div>{`${e.associated_id}, ${e.repository_of_synonym_id}`}</div>
                       ))}
                       <p>
                         All mapped identifiers in the CCDI Participant Index (CPI) are available
-                        <Button onClick={handleModalOpen} style={button}>here</Button>
+                        <span role="button" onClick={handleModalOpen} tabIndex={0} style={button}>here.</span>
                       </p>
                     </div>
                   )
                 )
               }
             >
-              <IconButton onClick={handleTooltipOpen}>
+              <span style={icon}>
                 <img
                   src={cpiIcon}
                   height={21}
                   width={23}
                   alt="cpi-icon"
                 />
-              </IconButton>
+              </span>
             </Tooltip>
-          </ClickAwayListener>
+          </>
         )
         : <></>}
     </Typography>

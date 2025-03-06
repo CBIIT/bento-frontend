@@ -40,15 +40,19 @@ const CPIModal = ({
   themeConfig = {},
 }) => {
   const [sortBy, setSortBy] = useState('associated_id');
-  const [sortOrder, setSortOrder] = useState('desc');
+  const [sortOrder, setSortOrder] = useState('asc');
   const [data, setData] = useState(() => {
     const result = row.cpi_data;
     return result;
   });
 
   const sortingData = (column, newOrder) => {
-    //doing the sorting for cpi_data
-    return [];
+    const sortedData = data.sort((a, b) => a[column].localeCompare(b[column]));
+
+    if (newOrder === 'desc') {
+      return sortedData.reverse();
+    }
+    return sortedData;
   };
 
   const handleSortByColumn = (column, order) => {
@@ -78,6 +82,24 @@ const CPIModal = ({
     height: '55px',
   };
 
+  const footer = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '55px',
+    color: '#7D267E',
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    fontWeight: '400',
+  };
+
+  const link = {
+    color: '#7D267E',
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    fontWeight: '700',
+  };
+
   const modalTitle = {
     fontFamily: 'Poppins',
     fontSize: '19px',
@@ -91,15 +113,17 @@ const CPIModal = ({
   const closeButton = {
     marginLeft: '769px',
     position: 'absolute',
+    backgroundColor: 'transparent',
   };
 
   const countContainer = {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'left',
     alignItems: 'center',
     borderTop: '3px solid #939393',
     borderBottom: '3px solid #939393',
     height: '51px',
+    paddingLeft: '16px',
   };
 
   const participantId = row.participant_id;
@@ -152,7 +176,7 @@ const CPIModal = ({
           </IconButton>
         </div>
         <div className="container" style={countContainer}>
-          test
+          {`${data.length} mapped identifiers`}
         </div>
         <CustomTableContainer
           customTheme={themeConfig.tblContainer || {}}
@@ -173,35 +197,28 @@ const CPIModal = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>testing</TableCell>
-                {/* {
-                  data.map((column) => (
-                    <HeaderCell
-                      column={column}
-                      sortBy={sortBy}
-                      sortOrder={sortOrder}
-                      toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
-                    />
-                  ))
-                } */}
-              </TableRow>
+              {
+                data.map((currRow) => (
+                  <TableRow>
+                    {
+                      displayColumns.map((column) => (
+                        (
+                          column.dataField !== 'data_location'
+                            ? <TableCell>{currRow[column.dataField]}</TableCell>
+                            : <TableCell><a href={currRow[column.dataField]} target="_blank" rel="noopener noreferrer">{currRow[column.dataField]}</a></TableCell>
+                        )
+                      ))
+                    }
+                  </TableRow>
+                ))
+              }
             </TableBody>
           </Table>
         </CustomTableContainer>
-        {/* <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>{columns[0].header}</TableCell>
-              <TableCell>Test2</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>testing</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table> */}
+        <div className="footer" style={footer}>
+          To learn more about CPI click&nbsp;
+          <a style={link} href="https://participantindex-docs.ccdi.cancer.gov/" target="_blank" rel="noopener noreferrer">here</a>
+        </div>
       </Box>
     </Modal>
   );
