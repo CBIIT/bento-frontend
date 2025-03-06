@@ -60,6 +60,17 @@ const CONFIG = {
     maxItems: 2,
   },
 
+  /**
+   * set root path for copy url (COPYURL_README)
+   * @var {boolean}
+   */
+  rootPath: `${window.location.href}/`,
+  /**
+   * display copy url button (COPYURL_README)
+   * @var {boolean}
+   */
+  viewQueryURL: true,
+
   /* Component Helper Functions */
   functions: {
     /**
