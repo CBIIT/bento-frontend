@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/global-search",
-  "version": "1.0.1-ins.9",
+  "version": "1.0.1-ins.10",
   "description": "Global Search is a component that provides a implementation of a site-wide search. These components provide easy-to-use implementations for the Global Search feature. The two primary components provided by this package are:",
   "main": "dist/index.js",
   "scripts": {

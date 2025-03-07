@@ -8,9 +8,15 @@ import nihLogo from './CTDC_Logo.svg';
 const styles = () => ({
   grow: {
     flexGrow: 3,
+    '@media (max-width: 990px)': {
+      flexGrow: 0,
+    },
   },
   searchComp: {
     marginRight: '45px',
+    '@media (max-width: 990px)': {
+      marginRight: '0',
+    },
   },
   headerBar: (props) => {
     const defaultProps = {
@@ -25,6 +31,11 @@ const styles = () => ({
       top: '0px',
       zIndex: '1201',
       background: '#ffffff',
+      '@media (max-width: 990px)': {
+        height: '160px',
+        flexDirection: 'column',
+        justifyContent: 'normal',
+      },
     };
     return Object.assign(defaultProps, props.customStyle.headerBar);
   },
@@ -42,6 +53,10 @@ const styles = () => ({
     '@media (min-width: 2400px)': {
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
+    },
+    '@media (max-width: 990px)': {
+      paddingBottom: '5px',
+      paddingLeft: '96px',
     },
   },
   nihLogoImg: (props) => {

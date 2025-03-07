@@ -47,6 +47,9 @@ export const DEFAULT_STYLES = makeStyles({
     paddingTop: '32px',
     width: '300px',
     height: '37px',
+    '@media (max-width: 990px)': {
+      paddingTop: '0px',
+    },
   },
   enterIcon: {
     height: '12px',
