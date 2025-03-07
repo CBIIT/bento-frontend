@@ -80,7 +80,7 @@ const CPIView = ({
             />
             <Tooltip
               interactive
-              placement="top-end"
+              placement="top"
               arrow
               disableFocusListener
               disableTouchListener

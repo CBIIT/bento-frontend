@@ -14,6 +14,7 @@ const CustomHeaderCell = ({
   column,
   components = {},
   toggleSort,
+  style,
 }) => {
   const {
     dataField,
@@ -61,6 +62,7 @@ const CustomHeaderCell = ({
       scope="col"
       active={sortBy === dataField}
       direction={sortOrder}
+      style={style}
     >
       <Tooltip>
         <TableSortLabel

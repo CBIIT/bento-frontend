@@ -66,6 +66,7 @@ const CustomTableHeader = ({
                   sortBy={sortBy}
                   sortOrder={sortOrder}
                   toggleSort={() => sortByColumn(column.dataField, sortOrder)}
+                  style={column.dataField === 'participant_id' ? { minWidth: '230px' } : {}}
                 />
               );
             })

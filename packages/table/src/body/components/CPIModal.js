@@ -26,7 +26,7 @@ const CustomTableContainer = (props) => {
   const themeConfig = createTheme({ overrides: { ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
-      <TableContainer id="tableContainer" component={Paper}>
+      <TableContainer id="tableContainer" component={Paper} style={{ height: '510px' }}>
         {children}
       </TableContainer>
     </ThemeProvider>
@@ -67,7 +67,7 @@ const CPIModal = ({
     position: 'absolute',
     top: '5%',
     left: '25%',
-    width: '836px',
+    width: '840px',
     height: '671px',
     background: '#FFFFFF',
     border: '1px solid #505050',
@@ -80,6 +80,11 @@ const CPIModal = ({
     justifyContent: 'center',
     alignItems: 'center',
     height: '55px',
+  };
+
+  const cell = {
+    paddingLeft: '3px',
+    paddingRight: '3px',
   };
 
   const footer = {
@@ -191,6 +196,7 @@ const CPIModal = ({
                       sortBy={sortBy}
                       sortOrder={sortOrder}
                       toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
+                      style={{ paddingLeft: '3px', paddingRight: '3px' }}
                     />
                   ))
                 }
@@ -204,8 +210,8 @@ const CPIModal = ({
                       displayColumns.map((column) => (
                         (
                           column.dataField !== 'data_location'
-                            ? <TableCell>{currRow[column.dataField]}</TableCell>
-                            : <TableCell><a href={currRow[column.dataField]} target="_blank" rel="noopener noreferrer">{currRow[column.dataField]}</a></TableCell>
+                            ? <TableCell style={cell}>{currRow[column.dataField]}</TableCell>
+                            : <TableCell style={cell}><a href={currRow[column.dataField]} target="_blank" rel="noopener noreferrer">{currRow[column.dataField]}</a></TableCell>
                         )
                       ))
                     }
