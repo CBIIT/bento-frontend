@@ -29,12 +29,26 @@ export default () => ({
     position: 'absolute',
     top: '5%',
     left: '25%',
-    width: '836px',
+    width: '840px',
     height: '671px',
     background: '#FFFFFF',
     border: '1px solid #505050',
     borderRadius: '40px',
     overflow: 'hidden',
+  },
+  tableContainer: {
+    '&::-webkit-scrollbar': {
+      width: '6px',
+      borderWidth: '0px 1px 1px 1px',
+      borderStyle: 'solid',
+      borderColor: '#B0B0B0',
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: '#CECECE',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#003F74',
+    },
   },
   searchContainer: {
     display: 'flex',

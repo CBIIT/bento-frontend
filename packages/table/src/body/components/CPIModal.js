@@ -8,7 +8,6 @@ import {
   Table,
   TableContainer,
   ThemeProvider,
-  createTheme,
   TableHead,
   TableRow,
   TableCell,
@@ -22,11 +21,14 @@ import styles from './ModalStyle';
 import HeaderCell from '../../header/CustomCell';
 
 const CustomTableContainer = (props) => {
-  const { children, customTheme } = props;
-  const themeConfig = createTheme({ overrides: { ...customTheme } });
+  const { children, themeConfig, className } = props;
+  const tableStyle = {
+    height: '510px',
+    overflowX: 'hidden',
+  };
   return (
     <ThemeProvider theme={themeConfig}>
-      <TableContainer id="tableContainer" component={Paper} style={{ height: '510px' }}>
+      <TableContainer className={className} id="tableContainer" component={Paper} style={tableStyle}>
         {children}
       </TableContainer>
     </ThemeProvider>
@@ -34,6 +36,7 @@ const CustomTableContainer = (props) => {
 };
 
 const CPIModal = ({
+  classes,
   open,
   onClose,
   row,
@@ -84,7 +87,13 @@ const CPIModal = ({
 
   const cell = {
     paddingLeft: '3px',
-    paddingRight: '3px',
+    paddingRight: '5px',
+  };
+
+  const cellLast = {
+    paddingLeft: '3px',
+    paddingRight: '10px',
+    wordBreak: 'break-word',
   };
 
   const footer = {
@@ -166,7 +175,7 @@ const CPIModal = ({
       onClose={onClose}
       aria-labelledby={`${row.id}-modal`}
     >
-      <Box className="modalBody" style={modalBody}>
+      <Box className={classes.modalBody} style={modalBody}>
         <div className="header" style={header}>
           <Typography id="modal-modal-title" className="modalTitle" style={modalTitle}>
             {`Participant ID ${participantId} : CPI Mappings`}
@@ -184,7 +193,8 @@ const CPIModal = ({
           {`${data.length} mapped identifiers`}
         </div>
         <CustomTableContainer
-          customTheme={themeConfig.tblContainer || {}}
+          className={classes.tableContainer}
+          themeConfig={themeConfig}
         >
           <Table>
             <TableHead>
@@ -196,7 +206,7 @@ const CPIModal = ({
                       sortBy={sortBy}
                       sortOrder={sortOrder}
                       toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
-                      style={{ paddingLeft: '3px', paddingRight: '3px' }}
+                      style={{ paddingLeft: '3px', paddingRight: '3px', fontWeight: '700' }}
                     />
                   ))
                 }
@@ -211,7 +221,7 @@ const CPIModal = ({
                         (
                           column.dataField !== 'data_location'
                             ? <TableCell style={cell}>{currRow[column.dataField]}</TableCell>
-                            : <TableCell style={cell}><a href={currRow[column.dataField]} target="_blank" rel="noopener noreferrer">{currRow[column.dataField]}</a></TableCell>
+                            : <TableCell style={cellLast}><a href={currRow[column.dataField]} target="_blank" rel="noopener noreferrer">{currRow[column.dataField]}</a></TableCell>
                         )
                       ))
                     }
