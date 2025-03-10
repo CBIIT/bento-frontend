@@ -44,7 +44,7 @@ const CanvasController = ({
      * 2. xIntervel & yIntervel
      */
     let updateNodeItems = {};
-    const { nodeTree,  graphConfig } = context;
+    const { nodeTree, graphConfig } = context;
 
     if (dictionary && nodeTree) {
       const nodePosition = getNodePosition({

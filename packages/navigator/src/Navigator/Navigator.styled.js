@@ -1,4 +1,4 @@
-  import styled from '@emotion/styled';
+import styled from '@emotion/styled';
 import { Box, Tab, Tabs } from '@mui/material';
 
 export const StyledContainer = styled('div')({

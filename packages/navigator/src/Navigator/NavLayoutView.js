@@ -100,7 +100,7 @@ const NavaigatorLayoutView = ({
   propertiesYamlFilePath,
   nodesYamlFilePath,
   readMeConfig,
-  node2DPosition
+  node2DPosition,
 }) => (
   <>
     <ModelContextProvider>

@@ -46,7 +46,7 @@ const CustomFlowView = ({
   onGraphPanelClick,
   handleNodeDragStop,
   canvasWidth,
-  graphConfig = {}
+  graphConfig = {},
 }) => {
   const { setViewport, zoomIn, zoomOut } = useReactFlow();
 
@@ -122,7 +122,7 @@ const CanvasView = ({
   onGraphPanelClick,
   handleNodeDragStop,
   canvasWidth,
-  graphConfig
+  graphConfig,
 }) => (
   <Styled.CanvasContariner
     className="canvasContariner"

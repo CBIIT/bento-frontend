@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route, Link, Outlet  } from "react-router-dom";
 import { NavaigatorLayoutView } from '../src';
 
 const dogIconSrc = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/4a3fb8e201e6ba2a858d7ec1226d2fd6ea2b5298/icdc/images/svgs/Icon-DMNav.85x85.svg';
@@ -30,14 +31,92 @@ const graphViewConfig = {
   },
 };
 
-const root = createRoot(document.getElementById('root'));
 
+function Layout() {
+  return (
+    <div>
+      <h1>My React App</h1>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/standalone">Navigator Standalone</Link>
+          </li>
+          <li>
+            <Link to="/component">component</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <hr />
+      {/* Nested routes will be rendered here */}
+      <Outlet />
+    </div>
+  );
+}
+
+function StandaloneNavView() {
+  const [componentLoaded, setComponentLoaded] = useState(false);
+  useEffect(() => {
+    // Dynamically load the script (if not using it via a script tag)
+    const script = document.createElement("script");
+    script.src = "./Navigator.bundle.js";
+    script.onload = () => setComponentLoaded(true);
+    document.body.appendChild(script);
+    
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+  return (
+    <div>
+      <ul>
+          <li>
+            <Link to="/standalone">Navigator Standalone</Link>
+          </li>
+          <li>
+            <Link to="/component">component</Link>
+          </li>
+        </ul>
+      <h1>Host App</h1>
+      {componentLoaded ? (
+        <div id="component-container">
+        </div>  // Where the React component will render
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+
+const root = createRoot(document.getElementById('root'));
 root.render(
-  <NavaigatorLayoutView
-    headerConfig={headerConfiguration}
-    graphConfig={graphViewConfig}
-    propertiesYamlFilePath={DATA_MODEL_PROPS}
-    nodesYamlFilePath={DATA_MODEL}
-    readMeConfig={exampleReadMeConfig}
-  />
+  <>
+    <Router>
+      <Routes>
+        {/* The main layout route */}
+        <Route path="/" element={<Layout />}>
+          {/* Nested routes */}
+          <Route index element={
+             <NavaigatorLayoutView
+             headerConfig={headerConfiguration}
+             graphConfig={graphViewConfig}
+             propertiesYamlFilePath={DATA_MODEL_PROPS}
+             nodesYamlFilePath={DATA_MODEL}
+             readMeConfig={exampleReadMeConfig}
+           />
+          } />
+          <Route path="component" element={
+             <NavaigatorLayoutView
+             headerConfig={headerConfiguration}
+             graphConfig={graphViewConfig}
+             propertiesYamlFilePath={DATA_MODEL_PROPS}
+             nodesYamlFilePath={DATA_MODEL}
+             readMeConfig={exampleReadMeConfig}
+           />
+          } />
+          <Route path="standalone" element={<StandaloneNavView />} />
+        </Route>
+      </Routes>
+    </Router>
+  </>
 );
