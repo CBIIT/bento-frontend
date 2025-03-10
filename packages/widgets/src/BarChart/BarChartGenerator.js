@@ -231,13 +231,13 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         const text = payload.value.split(' ');
         return (
           <g transform={`translate(${x},${y})`}>
-            <text x={0} y={0} dy={7} fill="#485C5E" fontSize="10px" textAnchor="middle">
+            <text x={0} y={0} dy={7} fill="#4A5C5E" fontSize="10px" textAnchor="middle">
               {text[0]}
             </text>
-            <text x={0} y={9} dy={7} fill="#485C5E" fontSize="10px" textAnchor="middle">
+            <text x={0} y={9} dy={7} fill="#4A5C5E" fontSize="10px" textAnchor="middle">
               {text[1]}
             </text>
-            <text x={0} y={20} dy={7} fill="#485C5E" fontSize="10px" textAnchor="middle">
+            <text x={0} y={20} dy={7} fill="#4A5C5E" fontSize="10px" textAnchor="middle">
               {text[2]}
             </text>
           </g>
@@ -257,7 +257,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="group" interval={0} tick={renderTick} />
-            <YAxis tick={{ fill: '#485C5E' }} />
+            <YAxis tick={{ fill: '#4A5C5E' }} />
             <Tooltip cursor={false} content={<CustomTooltip />} />
             {/* <Legend /> */}
             <Bar dataKey="subjects">
