@@ -10,10 +10,12 @@ import { accessLevelTypes } from '@bento-core/authentication';
 
 const customStyle = {
   nihLogoImg: {
-    height: '54px',
-    width: '463px',
-    marginLeft: '29px',
-    minHeight: '54px',
+    cursor: 'pointer',
+    maxWidth: '460px',
+    minWidth: '200px',
+    maxHeight: '80px',
+    minHeight: '60px',
+    marginLeft: '45px',
   },
   headerBar: {
     top: '0px',
