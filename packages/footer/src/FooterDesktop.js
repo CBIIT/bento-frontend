@@ -281,10 +281,10 @@ const FooterDesktop = ({ classes, data }) => {
               id="topic_id"
               value="USNIHNCI_255"
             />
-            <div className={classes.signUpTitle}>Sign up for email updates</div>
+            <div className={classes.signUpTitle}>{data.signUpTitle}</div>
             <div className={classes.enterTitle}>
               <label htmlFor="email">
-                Sign up for the newsletter
+                {data.signUpEnterTitle}
                 <input
                   ref={emailInput}
                   id="email"
@@ -297,7 +297,7 @@ const FooterDesktop = ({ classes, data }) => {
               </label>
             </div>
             <button type="submit" className={classes.signUpButton}>
-              Sign up
+              {data.signUpButtonLabel}
             </button>
           </form>
         </div>

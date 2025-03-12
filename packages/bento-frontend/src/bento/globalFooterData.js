@@ -13,6 +13,9 @@ export default {
   footerStaticText: 'NIH … Turning Discovery Into Health®',
   version: env.REACT_APP_FE_VERSION,
   BEversion: env.REACT_APP_BE_VERSION,
+  signUpTitle: "Sign up for email updates",
+  signUpEnterTitle: "Sign up for the newsletter",
+  signUpButtonLabel: "Sign up",
   // A maximum of 3 Subsections (link_sections) are allowed
   // A maximum of 4 Subsection Links ('items' under link_sections) are allowed
   // A maximum of 4 Anchor Links (global_footer_links) are allowed
