@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/all",
-  "version": "1.0.1-CDS.30",
+  "version": "1.0.1-CDS.31",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,14 +13,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/about": "^1.0.1-CDS.10",
+    "@bento-core/about": "^1.0.1-CDS.11",
     "@bento-core/admin": "^1.0.0",
     "@bento-core/authentication": "^1.0.0",
     "@bento-core/cart": "^1.0.1-CDS.1",
     "@bento-core/data-access-request": "^1.0.0",
     "@bento-core/data-table": "^1.0.1-CDS.0",
     "@bento-core/facet-filter": "^1.0.1-CDS.5",
-    "@bento-core/footer": "^1.0.1-CDS.1",
+    "@bento-core/footer": "^1.0.1-CDS.2",
     "@bento-core/global-search": "^1.0.1-CDS.2",
     "@bento-core/header": "^1.0.1-CDS.0",
     "@bento-core/local-find": "^1.0.1-CDS.5",
@@ -34,7 +34,7 @@
     "@bento-core/table": "^1.0.1-CDS.8",
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.1-CDS.0",
-    "@bento-core/widgets": "^1.0.0"
+    "@bento-core/widgets": "^1.0.1-CDS.0"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"
