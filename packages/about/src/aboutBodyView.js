@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { Grid, Link, withStyles } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
@@ -47,12 +48,63 @@ const AboutBody = ({
                     </div>
                   )}
                   {contentObj.listWithBullets && (
-                    <div className={classes.text}>
-                      {/* Alphabetised ordered list */}
-                      <ul>
-                        { contentObj.listWithBullets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
-                      </ul>
-                    </div>
+                  <div className={classes.text}>
+                    <ul>
+                      {contentObj.listWithBullets.map((listObj) => {
+                        // Split the list item by '$$' to detect bolded text or other inline patterns
+                        const parts = listObj.split('$$').map((splitedItem) => {
+                          // Check for links using regex pattern: [title](url) or (url)[title]
+                          if (splitedItem != null && (/\[(.+)\]\((.+)\)/g.test(splitedItem) || /\((.+)\)\[(.+)\]/g.test(splitedItem))) {
+                            const defaultTitle = splitedItem.match(/\[(.*)\]/).pop();
+                            const linkAttrs = splitedItem.match(/\((.*)\)/).pop().split(' ');
+                            const titleMatch = splitedItem.match(/title:\s*'([^']+)'/);
+                            const title = titleMatch ? titleMatch[1].trim() : defaultTitle;
+                            const target = linkAttrs.find((link) => link.includes('target:'));
+                            const url = linkAttrs.find((link) => link.includes('url:'));
+                            const href = linkAttrs[0];
+
+                            return (
+                              <>
+                                <Link
+                                  title={title}
+                                  target={target ? target.replace('target:', '') : '_blank'}
+                                  rel="noreferrer"
+                                  href={url ? url.replace('url:', '') : (href && href.includes('@') ? `mailto:${href}` : href)}
+                                  color="inherit"
+                                  className={classes.link}
+                                >
+                                  {defaultTitle}
+                                </Link>
+                                {href.includes('@') || !href.includes('http') ? '' : (
+                                  <img
+                                    src={externalIconImage}
+                                    // externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
+                                    alt="outbounnd web site icon"
+                                    className={classes.linkIcon}
+                                  />
+                                )}
+                              </>
+                            );
+                          }
+
+                          // Check for bolding inline words using regex
+                          if (splitedItem != null && (/\*(.*)\*/.test(splitedItem))) {
+                            return <span className={classes.title}>{splitedItem.match(/\*(.*)\*/).pop()}</span>;
+                          }
+
+                          // For email
+                          if (splitedItem != null && (/@(.*)@/.test(splitedItem))) {
+                            return <span className={classes.email}>{splitedItem.match(/@(.*)@/).pop()}</span>;
+                          }
+
+                          // Return the regular text if no special formatting is needed
+                          return splitedItem;
+                        });
+
+                        return <li>{parts}</li>;
+                      })}
+                    </ul>
+                  </div>
                   )}
                   {/* Ordered List with Alphabets logic */}
                   {contentObj.listWithAlpahbets && (
@@ -317,7 +369,7 @@ const AboutBody = ({
                     {...(data.actionLink && data.actionLink.includes('http')
                       ? { href: data.actionLink, target: '_blank', rel: 'noreferrer' }
                       : { component: RouterLink, to: data.actionLink })}
-                    title={data.actionButtonLabel}
+                    title={data.actionButtonTitle || `Visit ${data.actionButtonLabel}`}
                     color="inherit"
                     underline="none"
                     className={classes.actionLink}
@@ -401,7 +453,7 @@ const styles = () => ({
     marginTop: '19px',
   },
   actionTitle: {
-    color: '#7A9BB1',
+    color: '#51718A',
     textAlign: 'center',
     fontFamily: 'Lato',
     fontSize: '19px',
