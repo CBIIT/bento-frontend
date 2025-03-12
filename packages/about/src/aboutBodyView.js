@@ -55,11 +55,13 @@ const AboutBody = ({
                         const parts = listObj.split('$$').map((splitedItem) => {
                           // Check for links using regex pattern: [title](url) or (url)[title]
                           if (splitedItem != null && (/\[(.+)\]\((.+)\)/g.test(splitedItem) || /\((.+)\)\[(.+)\]/g.test(splitedItem))) {
-                            const title = splitedItem.match(/\[(.*)\]/).pop();
+                            const defaultTitle = splitedItem.match(/\[(.*)\]/).pop();
                             const linkAttrs = splitedItem.match(/\((.*)\)/).pop().split(' ');
+                            const titleMatch = splitedItem.match(/title:\s*'([^']+)'/);
+                            const title = titleMatch ? titleMatch[1].trim() : defaultTitle;
                             const target = linkAttrs.find((link) => link.includes('target:'));
                             const url = linkAttrs.find((link) => link.includes('url:'));
-                            const href = splitedItem.match(/\((.*)\)/).pop();
+                            const href = linkAttrs[0];
 
                             return (
                               <>
@@ -71,7 +73,7 @@ const AboutBody = ({
                                   color="inherit"
                                   className={classes.link}
                                 >
-                                  {title}
+                                  {defaultTitle}
                                 </Link>
                                 {href.includes('@') || !href.includes('http') ? '' : (
                                   <img
@@ -367,7 +369,7 @@ const AboutBody = ({
                     {...(data.actionLink && data.actionLink.includes('http')
                       ? { href: data.actionLink, target: '_blank', rel: 'noreferrer' }
                       : { component: RouterLink, to: data.actionLink })}
-                    title={data.actionButtonLabel}
+                    title={data.actionButtonTitle || `Visit ${data.actionButtonLabel}`}
                     color="inherit"
                     underline="none"
                     className={classes.actionLink}
@@ -451,7 +453,7 @@ const styles = () => ({
     marginTop: '19px',
   },
   actionTitle: {
-    color: '#7A9BB1',
+    color: '#51718A',
     textAlign: 'center',
     fontFamily: 'Lato',
     fontSize: '19px',
