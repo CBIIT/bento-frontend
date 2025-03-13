@@ -18,18 +18,21 @@ const TabItems = ({
   const getTabLalbel = ({
     name, count, clsName, index,
   }) => (
-    <>
-      <span>
-        {name}
-        {count && (
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <span style={{ display: 'flex', flexDirection: 'column' }}>
+        {name.split(' ').map((word, index2) => (
+          <span key={index2}>{word}</span>
+        ))}
+      </span>
+      {count && (
         <span
           className={`index_${index} ${clsName}_count`}
+          style={{ paddingLeft: '4px' }}
         >
           {count}
         </span>
-        )}
-      </span>
-    </>
+      )}
+    </div>
   );
 
   const TABs = tabItems.map((tab, index) => (
