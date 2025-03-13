@@ -13,6 +13,7 @@ const styles = () => ({
   headerContainer: {
     margin: '0 auto',
     paddingLeft: '16px',
+    paddingRight: '16px',
     boxShadow: '-0.1px 6px 9px -6px rgba(0, 0, 0, 0.5)',
     '& .headerLowerContainer': {
       display: 'flex',
@@ -111,10 +112,15 @@ const styles = () => ({
     '& .action': {
       cursor: 'pointer',
     },
+    '& .endComponent': {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
   },
 });
 
-const Header = ({ config = {}, classes }) => {
+const Header = ({ config = {}, endComponent, classes }) => {
   const { HeaderLinks, HeaderSubLinks } = config || {};
   const [navMobileDisplay, setNavMobileDisplay] = useState('none');
   const [selectedList, setSelectedList] = useState(HeaderLinks);
@@ -131,7 +137,7 @@ const Header = ({ config = {}, classes }) => {
         data-testid="navigation-header-mobile"
       >
         <div className={classes.headerContainer}>
-          <Logo />
+          <Logo headerData={config.headerData} />
           <div className="headerLowerContainer">
             <div
               role="button"
@@ -249,6 +255,12 @@ const Header = ({ config = {}, classes }) => {
                     )}
                   </React.Fragment>
                 ))}
+
+              {endComponent && (
+                <div className={`${classes.endComponentWrapper} navMobileItem endComponent`}>
+                  {endComponent}
+                </div>
+              )}
             </div>
           </div>
           <div

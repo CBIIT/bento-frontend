@@ -19,7 +19,7 @@ const Header = ({ config, endComponent, classes }) => {
     <header className={classes.header}>
       <USABanner />
       {tabletAndMobile ? (
-        <HeaderTabletAndMobile config={config} />
+        <HeaderTabletAndMobile config={config} endComponent={endComponent} />
       ) : (
         <HeaderDesktop config={config} endComponent={endComponent} />
       )}
