@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useImperativeHandle, forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { ExpandElement } from './components/ExpandElement';
@@ -62,102 +62,115 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
     ? config.ariaLabel
     : DEFAULT_CONFIG_SEARCHBAR.config.ariaLabel;
 
-  return {
-    SearchBar: ({ ...props }) => {
-      const {
-        clearable = false,
-        showLoading = false,
-        style = {},
-        value = '',
-      } = props;
+  const SearchBarComponent = forwardRef((props, ref) => {
+    const {
+      clearable = false,
+      showLoading = false,
+      style = {},
+      value = '',
+    } = props;
 
-      const history = useHistory();
-      const [inputValue, setInputValue] = useState(value);
-      const [results, setResults] = useState([]);
-      const [loading, setLoading] = useState(false);
+    const history = useHistory();
+    const [inputValue, setInputValue] = useState(value);
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-      /**
-       * Handles the autocomplete search
-       *
-       * Note:
-       * - This function wraps the getSuggestions helper function
-       *
-       * @async
-       * @param {object} event source of the event
-       * @param {string} newValue new value of the input
-       * @param {string} reason reason for the event
-       * @returns void
-       */
-      async function fetchAutocomplete(event, newValue, reason) {
-        setInputValue(newValue);
+    /**
+     * Handles the autocomplete search
+     *
+     * Note:
+     * - This function wraps the getSuggestions helper function
+     *
+     * @async
+     * @param {object} event source of the event
+     * @param {string} newValue new value of the input
+     * @param {string} reason reason for the event
+     * @returns void
+     */
+    async function fetchAutocomplete(event, newValue, reason) {
+      setInputValue(newValue);
 
-        if (!event) {
-          return;
-        }
-        if (minimumInputLength > 0 && newValue && newValue.length < minimumInputLength) {
-          return;
-        }
-
-        setLoading(true);
-        const result = await suggestionFunction(config, newValue, reason).catch(() => []);
-
-        const resultOpts = !result || !(result instanceof Array) || result.length === 0 ? [] : [
-          ...(maximumSuggestions > 0 && result.length > maximumSuggestions
-            ? result.slice(0, maximumSuggestions)
-            : result),
-        ];
-
-        if (maximumSuggestions > 0 && result.length > maximumSuggestions) {
-          resultOpts.push(
-            <ExpandElement
-              classes={classes}
-              text={config.expandText || DEFAULT_CONFIG_SEARCHBAR.config.expandText}
-            />,
-          );
-        }
-
-        setLoading(false);
-        setResults(resultOpts);
+      if (!event) {
+        return;
+      }
+      if (minimumInputLength > 0 && newValue && newValue.length < minimumInputLength) {
+        return;
       }
 
-      return (
-        <Autocomplete
-          id="global_search_input"
-          freeSolo
-          options={results}
-          loading={showLoading ? loading : false}
-          disableClearable={!clearable}
-          closeIcon={(
-            <img
-              className={classes.clearIcon}
-              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchDelete.svg"
-              alt="clear icon"
-            />
-          )}
-          style={style}
-          className={classes.autocomplete}
-          value={value}
-          inputValue={inputValue}
-          onInputChange={fetchAutocomplete}
-          filterOptions={filterFunction}
-          getOptionLabel={labelFunction}
-          onChange={(event, val) => onChange(val, searchRoute, history, event)}
-          PopperComponent={(params) => (<CustomPopper {...params} classes={classes} />)}
-          renderInput={(params) => (
-            <CustomTextField
-              {...params}
-              loading={showLoading ? loading : false}
-              classes={classes}
-              iconType={config.iconType}
-              placeholder={placeholder}
-              ariaLabel={ariaLabel}
-              onClick={(val) => onChange(val, searchRoute, history)}
-              onEnter={(val) => onChange(val, searchRoute, history)}
-            />
-          )}
-        />
-      );
-    },
+      setLoading(true);
+      const result = await suggestionFunction(config, newValue, reason).catch(() => []);
+
+      const resultOpts = !result || !(result instanceof Array) || result.length === 0 ? [] : [
+        ...(maximumSuggestions > 0 && result.length > maximumSuggestions
+          ? result.slice(0, maximumSuggestions)
+          : result),
+      ];
+
+      if (maximumSuggestions > 0 && result.length > maximumSuggestions) {
+        resultOpts.push(
+          <ExpandElement
+            classes={classes}
+            text={config.expandText || DEFAULT_CONFIG_SEARCHBAR.config.expandText}
+          />,
+        );
+      }
+
+      setLoading(false);
+      setResults(resultOpts);
+    }
+
+    useImperativeHandle(ref, () => ({
+      triggerSearch: () => {
+        // Only trigger if the input meets the minimum length requirement
+        if (minimumInputLength > 0 && inputValue.length < minimumInputLength) {
+          return;
+        }
+
+        onChange(inputValue, searchRoute, history, null);
+      },
+    }));
+
+    return (
+      <Autocomplete
+        id="global_search_input"
+        freeSolo
+        options={results}
+        loading={showLoading ? loading : false}
+        disableClearable={!clearable}
+        closeIcon={(
+          <img
+            className={classes.clearIcon}
+            src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchDelete.svg"
+            alt="clear icon"
+          />
+        )}
+        style={style}
+        className={classes.autocomplete}
+        value={value}
+        inputValue={inputValue}
+        onInputChange={fetchAutocomplete}
+        filterOptions={filterFunction}
+        getOptionLabel={labelFunction}
+        onChange={(event, val) => onChange(val, searchRoute, history, event)}
+        PopperComponent={(params) => (<CustomPopper {...params} classes={classes} />)}
+        renderInput={(params) => (
+          <CustomTextField
+            {...params}
+            loading={showLoading ? loading : false}
+            classes={classes}
+            iconType={config.iconType}
+            placeholder={placeholder}
+            ariaLabel={ariaLabel}
+            onClick={(val) => onChange(val, searchRoute, history)}
+            onEnter={(val) => onChange(val, searchRoute, history)}
+          />
+        )}
+      />
+    );
+  });
+
+  return {
+    SearchBar: SearchBarComponent,
   };
 };
 
