@@ -58,7 +58,7 @@ import TableView from 'bento-core/PaginationTable/PaginatedTable';
   activeFilters={activeFilters}
   totalRowCount={dashboardStats[config.count]}
   activeTab={activeTab}
-  TableHeaderRenderer={TableHeaderRenderer}
+  customTableHeader={CustomTableHeader}
 /> 
 ```
 
@@ -70,7 +70,7 @@ import TableView from 'bento-core/PaginationTable/PaginatedTable';
 | themeConfig | FALSE | override style with themeprovider use ClassName provided by bento-core table to apply style (refer to class name table) | |
 | totalRowCount | TRUE | Total row cound for (Cases, Samples, Files), update based on filter event | |
 | activeTab | TRUE | prevents http call for inactive tabs (dashboard) /set true to myFile cart | |
-| TableHeaderRenderer | FALSE | Customizable table header that replaces the default `TableHeader` | |
+| customTableHeader | FALSE | Customizable table header that replaces the default `TableHeader` | |
 
 ## 3 Table component themeConfig Configuration
 ```

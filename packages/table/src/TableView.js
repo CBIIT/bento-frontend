@@ -39,7 +39,7 @@ const TableView = ({
   themeConfig = {},
   queryVariables,
   server,
-  TableHeaderRenderer,
+  customTableHeader: CustomTableHeader = TableHeader,
 }) => (
   <>
     <ExtendedView
@@ -64,8 +64,8 @@ const TableView = ({
     >
       <Table>
         {
-          TableHeaderRenderer ? (
-            <TableHeaderRenderer
+          CustomTableHeader ? (
+            <CustomTableHeader
               customTheme={themeConfig.tblHeader}
               table={table}
               rows={tableRows}
