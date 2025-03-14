@@ -12,29 +12,34 @@ const styles = () => ({
   },
 });
 
-const Header = ({ config, endComponent, classes }) => {
+const Header = ({
+  config, endComponent, SearchComponent, classes,
+}) => {
   const tabletAndMobile = useMediaQuery('(max-width: 1024px)');
 
   return (
     <header className={classes.header}>
       <USABanner />
       {tabletAndMobile ? (
-        <HeaderTabletAndMobile config={config} endComponent={endComponent} />
+        <HeaderTabletAndMobile
+          config={config}
+          endComponent={endComponent}
+          SearchComponent={SearchComponent}
+        />
       ) : (
-        <HeaderDesktop config={config} endComponent={endComponent} />
+        <HeaderDesktop
+          config={config}
+          endComponent={endComponent}
+          SearchComponent={SearchComponent}
+        />
       )}
     </header>
   );
 };
 
-// TODO: Adjust to prop drilling
 Header.defaultProps = {
   config: HeaderConfig,
-  // logo: nihLogo,
-  // alt: 'NCI CTDC Logo - Clinical Trials Data Commons',
-  // homeLink: '/',
-  // customStyle: {},
-  // SearchComponent: () => <></>,
+  SearchComponent: () => <></>,
 };
 
 export default withStyles(styles)(Header);

@@ -120,7 +120,9 @@ const styles = () => ({
   },
 });
 
-const Header = ({ config = {}, endComponent, classes }) => {
+const Header = ({
+  config = {}, endComponent, SearchComponent, classes,
+}) => {
   const { HeaderLinks, HeaderSubLinks } = config || {};
   const [navMobileDisplay, setNavMobileDisplay] = useState('none');
   const [selectedList, setSelectedList] = useState(HeaderLinks);
@@ -153,6 +155,8 @@ const Header = ({ config = {}, endComponent, classes }) => {
             >
               Menu
             </div>
+
+            {SearchComponent}
           </div>
         </div>
       </div>

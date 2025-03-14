@@ -13,12 +13,33 @@ const styles = () => ({
     maxWidth: '1400px',
     display: 'flex',
   },
+  headerLowerContainer: {
+    display: 'flex',
+    marginLeft: 'auto',
+
+    '& .searchBarArea': {
+      padding: '5px 7.5px 0 0',
+      marginTop: '35px',
+    },
+  },
 });
 
-const Header = ({ config = {}, endComponent, classes }) => (
-  <div className={classes.headerBanner} data-testid="navigation-header-desktop">
+const Header = ({
+  config = {}, endComponent, SearchComponent, classes,
+}) => (
+  <div
+    className={classes.headerBanner}
+    data-testid="navigation-header-desktop"
+  >
     <div className={classes.headerContainer}>
       <Logo headerData={config.headerData} />
+      <div className={classes.headerLowerContainer}>
+        {SearchComponent && (
+        <div className="searchBarArea">
+          {SearchComponent}
+        </div>
+        )}
+      </div>
     </div>
     <div className="navbarContainer">
       <NavBar config={config} endComponent={endComponent} />
