@@ -18,8 +18,10 @@ const styles = () => ({
     marginLeft: 'auto',
 
     '& .searchBarArea': {
-      padding: '5px 7.5px 0 0',
+      padding: '0px 7.5px 0 0',
       marginTop: '35px',
+      display: 'flex',
+      alignItems: 'center',
     },
   },
 });

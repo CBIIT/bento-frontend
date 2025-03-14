@@ -7,12 +7,13 @@ const styles = () => ({
     display: 'flex',
     '& img': {
       width: 'fit-content',
-      height: '56px',
+      height: '47px',
       maxWidth: '100%',
     },
     '& .logoContainer': {
       marginTop: '35px',
       maxWidth: '440px',
+      height: '47px',
     },
   },
 });

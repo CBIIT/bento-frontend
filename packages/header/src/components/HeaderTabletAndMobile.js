@@ -254,14 +254,46 @@ const Header = ({
                         {navMobileItem.name}
                       </div>
                       ) : null}
+                    {navMobileItem.className === 'navMobileSubItem' && (
+                      <a
+                        id={navMobileItem.id}
+                        href={navMobileItem.link}
+                        rel="noopener noreferrer"
+                        target={
+                          navMobileItem.link.startsWith('https://')
+                          || navMobileItem.link.endsWith('.pdf')
+                            ? '_blank'
+                            : '_self'
+                        }
+                      >
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          className="navMobileItem SubItem"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              setNavMobileDisplay('none');
+                            }
+                          }}
+                          onClick={() => {
+                            setNavMobileDisplay('none');
+                          }}
+                        >
+                          {navMobileItem.name}
+                        </div>
+                      </a>
+                    )}
                     {navMobileItem.className === 'navMobileSubTitle' && (
                       <div className="navMobileItem">{navMobileItem.name}</div>
                     )}
                   </React.Fragment>
                 ))}
 
-              {endComponent && (
-                <div className={`${classes.endComponentWrapper} navMobileItem endComponent`}>
+              {endComponent && selectedList === HeaderLinks && (
+                <div
+                  className={`${classes.endComponentWrapper} navMobileItem endComponent`}
+                  onClick={() => setNavMobileDisplay('none')}
+                >
                   {endComponent}
                 </div>
               )}
