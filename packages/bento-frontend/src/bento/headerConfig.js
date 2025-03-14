@@ -78,7 +78,7 @@ export const HeaderSubLinks = {
       id: "about-releases",
       className: "navMobileSubItem",
     },
-    { // TODO: Fix download link
+    {
       name: "CDS Portal User Guide",
       link: "/",
       id: "about-user-guide",
