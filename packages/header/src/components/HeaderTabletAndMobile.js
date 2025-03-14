@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import Logo from './LogoMobile';
 import menuClearIcon from '../assets/Menu_Cancel_Icon.svg';
 import rightArrowIcon from '../assets/Right_Arrow.svg';
@@ -255,33 +255,49 @@ const Header = ({
                       </div>
                       ) : null}
                     {navMobileItem.className === 'navMobileSubItem' && (
-                      <a
-                        id={navMobileItem.id}
-                        href={navMobileItem.link}
-                        rel="noopener noreferrer"
-                        target={
-                          navMobileItem.link.startsWith('https://')
-                          || navMobileItem.link.endsWith('.pdf')
-                            ? '_blank'
-                            : '_self'
-                        }
-                      >
-                        <div
-                          role="button"
-                          tabIndex={0}
-                          className="navMobileItem SubItem"
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              setNavMobileDisplay('none');
-                            }
-                          }}
-                          onClick={() => {
-                            setNavMobileDisplay('none');
-                          }}
-                        >
-                          {navMobileItem.name}
-                        </div>
-                      </a>
+                      navMobileItem.link.startsWith('https://') || navMobileItem.link.endsWith('.pdf')
+                        ? (
+                          <a
+                            id={navMobileItem.id}
+                            href={navMobileItem.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setNavMobileDisplay('none')}
+                          >
+                            <div
+                              role="button"
+                              tabIndex={0}
+                              className="navMobileItem SubItem"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  setNavMobileDisplay('none');
+                                }
+                              }}
+                            >
+                              {navMobileItem.name}
+                            </div>
+                          </a>
+                        ) : (
+                          <Link
+                            id={navMobileItem.id}
+                            to={navMobileItem.link}
+                            target="_self"
+                            onClick={() => setNavMobileDisplay('none')}
+                          >
+                            <div
+                              role="button"
+                              tabIndex={0}
+                              className="navMobileItem SubItem"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  setNavMobileDisplay('none');
+                                }
+                              }}
+                            >
+                              {navMobileItem.name}
+                            </div>
+                          </Link>
+                        )
                     )}
                     {navMobileItem.className === 'navMobileSubTitle' && (
                       <div className="navMobileItem">{navMobileItem.name}</div>
