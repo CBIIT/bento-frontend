@@ -34,6 +34,15 @@ export default () => ({
     justifyContent: 'flex-start',
     gap: '8px',
   },
+  sortGroupSlider: {
+    marginBottom: '5px',
+    textAlign: 'left',
+    marginLeft: '-4px',
+    display: 'flex',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    gap: '8px',
+  },
   sortGroupIcon: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
