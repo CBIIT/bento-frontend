@@ -62,11 +62,12 @@ const CustomPagination = ({
   page,
   onPageChange,
   onRowsPerPageChange,
+  customTheme = {},
 }) => {
   const classes = useStyles();
   return (
     <ThemeProvider
-      theme={createMuiTheme({ overrides: { ...defaultTheme.overrides } })}
+      theme={createMuiTheme({ overrides: { ...defaultTheme.overrides, ...customTheme } })}
     >
       <TablePagination
         labelRowsPerPage="Results per Page:"
