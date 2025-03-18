@@ -156,6 +156,7 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
         renderInput={(params) => (
           <CustomTextField
             {...params}
+            type="search"
             loading={showLoading ? loading : false}
             classes={classes}
             iconType={config.iconType}
