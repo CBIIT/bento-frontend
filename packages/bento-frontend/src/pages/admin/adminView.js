@@ -241,7 +241,7 @@ const styles = (theme) => ({
   },
   container: {
     margin: 'auto',
-    maxWidth: '1440px',
+    maxWidth: '1400px',
     paddingLeft: '36px',
     paddingRight: '36px',
     paddingBottom: '80px',
@@ -278,7 +278,7 @@ const styles = (theme) => ({
     width: '200px',
   },
   headerTitle: {
-    maxWidth: '1440px',
+    maxWidth: '1400px',
     margin: 'auto',
     float: 'left',
     marginLeft: '90px',
