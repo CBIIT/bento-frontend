@@ -10,6 +10,7 @@ import TableHeader from './header/CustomTblHeader';
 import CustomPagination from './pagination/CustomPagination';
 import CustomTableBody from './body/CustomTblBody';
 import CustomToolbar from './toolbar/CustomToolbar';
+import DownloadButton from './toolbar/DownloadButtonView';
 import DisplayErrMsg from './errMsg/DisplayErrMsg';
 import ExtendedView from './ExtendedView';
 
@@ -104,6 +105,15 @@ const TableView = ({
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
       />
+      {table.showDownloadIcon !== false
+  && (
+    <DownloadButton
+      count={table.totalRowCount || 0}
+      queryVariables={queryVariables}
+      table={table}
+      buttonConfig={table.extendedViewConfig.downloadButtonConfig}
+    />
+  )}
     </div>
   </>
 );

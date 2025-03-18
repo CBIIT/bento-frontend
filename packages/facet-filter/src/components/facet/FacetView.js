@@ -104,7 +104,10 @@ const FacetView = ({
         {
           (facet.type === InputTypes.SLIDER || facetValues.length > 0)
           && (
-          <div className={classes.sortGroup}>
+          <div className={
+            facet.type === InputTypes.SLIDER ? classes.sortGroupSlider : classes.sortGroup
+            }
+          >
             <span className={classes.sortGroupIcon}>
               <Icon
                 style={{ fontSize: 10 }}

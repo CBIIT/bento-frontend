@@ -156,7 +156,7 @@ const DownloadButton = ({
       marginTop: '3px',
       marginLeft: '-5px',
       overflow: 'auto',
-      zIndex: '5',
+      zIndex: '20',
       border: '1.5px solid #41545E',
       borderRadius: '5px',
       background: '#ffffff',
@@ -191,7 +191,7 @@ const DownloadButton = ({
         {
           count !== 0
             ? (
-              <IconButton onClick={handleClickButton}>
+              <IconButton onClick={handleClickButton} style={{ padding: '0' }}>
                 <CloudDownload />
                 <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIcon} />
               </IconButton>
