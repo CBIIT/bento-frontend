@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/stats-bar",
-  "version": "1.0.1-CDS.1",
+  "version": "1.0.1-CDS.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
