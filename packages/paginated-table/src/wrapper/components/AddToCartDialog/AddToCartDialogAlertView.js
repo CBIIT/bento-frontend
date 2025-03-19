@@ -15,7 +15,6 @@ function AddToCartDialogAlertView(props) {
     <>
       <Dialog
         open={open}
-        aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogContent className="alter-content">
