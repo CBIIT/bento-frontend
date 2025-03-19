@@ -63,7 +63,7 @@ const defaultTheme = () => ({
         width: '133px',
         height: '45px',
         cursor: 'pointer',
-        background: '#98a19e',
+        background: '#6E7776',
       },
       '&.cancelBtn': {
         width: '133px',

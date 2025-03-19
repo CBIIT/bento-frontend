@@ -24,11 +24,10 @@ function RemoveAllDialogView(props) {
     <>
       <Dialog
         open={open}
-        aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description" style={{ color: 'black' }}>
             Remove
             {' '}
             <b>
