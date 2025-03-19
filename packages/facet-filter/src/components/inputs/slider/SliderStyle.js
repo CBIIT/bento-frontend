@@ -82,7 +82,7 @@ export default () => ({
     marginBottom: '15px',
   },
   sliderText: {
-    color: '#10a075',
+    color: '#0D825F',
     lineHeight: '120%',
     fontFamily: 'Nunito',
     fontSize: '14px',

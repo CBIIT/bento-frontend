@@ -30,7 +30,6 @@ function AddToCartDialogView(props) {
     <>
       <Dialog
         open={open}
-        aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
@@ -42,7 +41,7 @@ function AddToCartDialogView(props) {
                 activeFilters={activeFilters}
               />
             ) : (
-              <DialogContentText id="alert-dialog-description">
+              <DialogContentText id="alert-dialog-description" style={{ color: 'black' }}>
                 Are you sure to add All Files
                 {' '}
                 {numberOfFilesSelected}
