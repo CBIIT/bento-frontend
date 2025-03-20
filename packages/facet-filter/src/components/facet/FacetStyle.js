@@ -96,5 +96,6 @@ export default () => ({
     marginTop: '5px',
     marginBottom: '5px',
     borderRadius: '8px',
+    fontSize: '11px',
   },
 });

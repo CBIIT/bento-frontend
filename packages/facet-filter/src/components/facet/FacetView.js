@@ -64,7 +64,7 @@ const FacetView = ({
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
   return (
     <>
-      <ModalView open={open} onClose={() => setOpen(false)} />
+      <ModalView facet={facet} open={open} onClose={() => setOpen(false)} />
       <Accordion
         square
         expanded={expand}
@@ -178,7 +178,9 @@ const FacetView = ({
                 (facet.search)
                 && (
                   <div className={classes.searchContainer}>
-                    <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>VIEW EXPANDED DISPLAY</Button>
+                    <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
+                      {`VIEW EXPANDED DISPLAY (${facetValues.length})`}
+                    </Button>
                   </div>
                 )
               }
