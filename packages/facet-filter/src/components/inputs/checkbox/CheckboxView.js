@@ -32,6 +32,7 @@ const CheckBoxView = ({
   datafield,
   onToggle,
   facet,
+  searchText,
 }) => {
   const {
     isChecked = false,
@@ -89,69 +90,72 @@ const CheckBoxView = ({
   );
 
   return (
-    <>
-        <ListItem
-          component="div"
-          width={1}
-          alignItems="flex-start"
-          onClick={handleToggle}
-          onMouseDown={handleRippleStart}
-          onMouseUp={handleRippleStop}
-          onMouseLeave={handleRippleStop}
-          classes={{ gutters: classes.listItemGutters, root: classes.listItemRoot }}
-          className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
-        >
-          <Checkbox
-            id={checkboxId}
-            icon={(
-              <CheckBoxBlankIcon
-                style={{ fontSize: 18 }}
-                className={checkedSection}
-              />
-            )}
-            inputProps={{ 'aria-label': 'checkbox', tabIndex: -1, 'aria-hidden': true }}
-            checked={isChecked}
-            checkedIcon={(
-              <CheckBoxIcon
-                style={{
-                  fontSize: 18,
-                }}
-                className={`${checkedSection}CheckedIcon`}
-              />
-            )}
-            disableRipple
-            color="secondary"
-            classes={{ root: classes.checkboxRoot }}
-            style={{ pointerEvents: 'none' }}
-          />
-          { tooltip ? (
-            <Tooltip id={datafield} title={tooltip}>
-              <div className={datafield}>
-                {name}
-              </div>
-            </Tooltip>
-          ) : (
-            <LabelComponent />
-          )}
-          <ListItemText className={`${checkedSection}_md_space`} />
-          <Typography
-            className={clsx(`${checkedSection}Subjects`, {
-              [`${checkedSection}SubjectUnChecked`]: !isChecked,
-              [`${checkedSection}SubjectChecked`]: isChecked,
-            })}
+    isChecked || !facet.search
+    || (facet.search && name.toLowerCase().includes(searchText.toLowerCase()))
+      ? <>
+          <ListItem
+            component="div"
+            width={1}
+            alignItems="flex-start"
+            onClick={handleToggle}
+            onMouseDown={handleRippleStart}
+            onMouseUp={handleRippleStop}
+            onMouseLeave={handleRippleStop}
+            classes={{ gutters: classes.listItemGutters, root: classes.listItemRoot }}
+            className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
           >
-            {customCount(checkboxItem[count] || 0)}
-          </Typography>
-          <TouchRipple ref={rippleRef} center />
-        </ListItem>
-        <Divider
-          style={{
-            backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
-            margin: '0px',
-            height: isChecked ? '2px' : '1px',
-          }}
-        />
-    </>
+            <Checkbox
+              id={checkboxId}
+              icon={(
+                <CheckBoxBlankIcon
+                  style={{ fontSize: 18 }}
+                  className={checkedSection}
+                />
+              )}
+              inputProps={{ 'aria-label': 'checkbox', tabIndex: -1, 'aria-hidden': true }}
+              checked={isChecked}
+              checkedIcon={(
+                <CheckBoxIcon
+                  style={{
+                    fontSize: 18,
+                  }}
+                  className={`${checkedSection}CheckedIcon`}
+                />
+              )}
+              disableRipple
+              color="secondary"
+              classes={{ root: classes.checkboxRoot }}
+              style={{ pointerEvents: 'none' }}
+            />
+            { tooltip ? (
+              <Tooltip id={datafield} title={tooltip}>
+                <div className={datafield}>
+                  {name}
+                </div>
+              </Tooltip>
+            ) : (
+              <LabelComponent />
+            )}
+            <ListItemText className={`${checkedSection}_md_space`} />
+            <Typography
+              className={clsx(`${checkedSection}Subjects`, {
+                [`${checkedSection}SubjectUnChecked`]: !isChecked,
+                [`${checkedSection}SubjectChecked`]: isChecked,
+              })}
+            >
+              {customCount(checkboxItem[count] || 0)}
+            </Typography>
+            <TouchRipple ref={rippleRef} center />
+          </ListItem>
+          <Divider
+            style={{
+              backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
+              margin: '0px',
+              height: isChecked ? '2px' : '1px',
+            }}
+          />
+        </>
+      : <></>
   );
 };
 

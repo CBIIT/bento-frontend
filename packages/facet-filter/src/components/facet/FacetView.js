@@ -4,6 +4,7 @@ import {
   List,
   withStyles,
   Icon,
+  Button,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
@@ -12,6 +13,7 @@ import styles from './FacetStyle';
 import FilterItems from '../inputs/FilterItems';
 import { sortType } from '../../utils/Sort';
 import clearIcon from './assets/clearIcon.svg';
+import ModalView from './FacetModal';
 
 const FacetView = ({
   classes,
@@ -23,6 +25,8 @@ const FacetView = ({
   upload,
 }) => {
   const [expand, setExpand] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [searchText, setSearch] = useState('');
   const onExpandFacet = () => setExpand(!expand);
 
   /**
@@ -42,6 +46,7 @@ const FacetView = ({
 
   const onClearSection = () => {
     setSortBy(null);
+    setSearch('');
     if (facet.type === InputTypes.SLIDER) {
       onClearSliderSection(facet);
     } else {
@@ -59,6 +64,7 @@ const FacetView = ({
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
   return (
     <>
+      <ModalView open={open} onClose={() => setOpen(false)} />
       <Accordion
         square
         expanded={expand}
@@ -101,6 +107,14 @@ const FacetView = ({
               No data for this field
             </span>
           </div>
+          )
+        }
+        {
+          (facet.search)
+          && (
+            <div className={classes.searchContainer}>
+              <input className={classes.searchBox} value={searchText} type="text" placeholder="e.g. Sarcoma, Neoplasm" onChange={(e) => setSearch(e.target.value)} />
+            </div>
           )
         }
         {
@@ -154,10 +168,21 @@ const FacetView = ({
 }
         {(expand)
           && (
-          <FilterItems
-            facet={facet}
-            sortBy={sortBy}
-          />
+            <>
+              <FilterItems
+                searchText={searchText}
+                facet={facet}
+                sortBy={sortBy}
+              />
+              { // This structure is different from CCDIHUB
+                (facet.search)
+                && (
+                  <div className={classes.searchContainer}>
+                    <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>VIEW EXPANDED DISPLAY</Button>
+                  </div>
+                )
+              }
+            </>
           )}
       </Accordion>
       {
@@ -165,6 +190,7 @@ const FacetView = ({
           <>
             <List id="filter_Items">
               <FilterItems
+                searchText={searchText}
                 facet={displayFacet}
               />
             </List>
