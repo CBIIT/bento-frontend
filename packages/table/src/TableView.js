@@ -39,6 +39,7 @@ const TableView = ({
   themeConfig = {},
   queryVariables,
   server,
+  customTableHeader: CustomTableHeader = TableHeader,
 }) => (
   <>
     <ExtendedView
@@ -62,14 +63,27 @@ const TableView = ({
       customTheme={themeConfig.tblContainer || {}}
     >
       <Table>
-        <TableHeader
-          customTheme={themeConfig.tblHeader}
-          table={table}
-          rows={tableRows}
-          count={totalRowCount}
-          toggleSelectAll={onToggleSelectAll}
-          sortByColumn={onSortByColumn}
-        />
+        {
+          CustomTableHeader ? (
+            <CustomTableHeader
+              customTheme={themeConfig.tblHeader}
+              table={table}
+              rows={tableRows}
+              count={totalRowCount}
+              toggleSelectAll={onToggleSelectAll}
+              sortByColumn={onSortByColumn}
+            />
+          ) : (
+            <TableHeader
+              customTheme={themeConfig.tblHeader}
+              table={table}
+              rows={tableRows}
+              count={totalRowCount}
+              toggleSelectAll={onToggleSelectAll}
+              sortByColumn={onSortByColumn}
+            />
+          )
+        }
         <CustomTableBody
           customTheme={themeConfig.tblBody}
           rows={tableRows}

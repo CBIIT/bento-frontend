@@ -23,6 +23,7 @@ const PaginatedTable = ({
   server = true,
   tblRows = [],
   paginationOptions = {},
+  customTableHeader,
 }) => {
   /**
   * Initailize useReducer state
@@ -165,6 +166,7 @@ const PaginatedTable = ({
           onSortByColumn={customizeSortByColumn || handleSortByColumn}
           onColumnViewChange={customizeColumnViewChange || handleColumnViewChange}
           themeConfig={themeConfig}
+          customTableHeader={customTableHeader}
         />
       </>
     );
@@ -195,6 +197,7 @@ const PaginatedTable = ({
         onSortByColumn={customizeSortByColumn || handleSortByColumn}
         onColumnViewChange={customizeColumnViewChange || handleColumnViewChange}
         themeConfig={themeConfig}
+        customTableHeader={customTableHeader}
       />
     </>
   );
