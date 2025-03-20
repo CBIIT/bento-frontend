@@ -8,13 +8,13 @@ import nihLogo from './CTDC_Logo.svg';
 const styles = () => ({
   grow: {
     flexGrow: 3,
-    '@media (max-width: 990px)': {
+    '@media (max-width: 480px)': {
       flexGrow: 0,
     },
   },
   searchComp: {
     marginRight: '45px',
-    '@media (max-width: 990px)': {
+    '@media (max-width: 480px)': {
       marginRight: '0',
     },
   },
@@ -31,7 +31,7 @@ const styles = () => ({
       top: '0px',
       zIndex: '1201',
       background: '#ffffff',
-      '@media (max-width: 990px)': {
+      '@media (max-width: 480px)': {
         height: '160px',
         flexDirection: 'column',
         justifyContent: 'normal',
@@ -54,7 +54,7 @@ const styles = () => ({
       backgroundRepeat: 'no-repeat',
       backgroundSize: '100% 100%',
     },
-    '@media (max-width: 990px)': {
+    '@media (max-width: 480px)': {
       paddingBottom: '5px',
       paddingLeft: '96px',
     },

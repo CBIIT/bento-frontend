@@ -47,7 +47,7 @@ export const DEFAULT_STYLES = makeStyles({
     paddingTop: '32px',
     width: '300px',
     height: '37px',
-    '@media (max-width: 990px)': {
+    '@media (max-width: 480px)': {
       paddingTop: '0px',
     },
   },
