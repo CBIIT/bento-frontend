@@ -4,7 +4,9 @@ import {
   List,
   withStyles,
   Icon,
+  IconButton,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
 import { InputTypes } from '../inputs/Types';
@@ -88,7 +90,32 @@ const SearchFacetView = ({
           )
         }
         <div className={classes.searchContainer}>
-          <input className={classes.searchBox} value={searchText} type="text" placeholder="e.g. Sarcoma, Neoplasm" onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)} />
+          <input
+            className={searchText && searchText.trim() !== '' ? classes.searchBoxWithText : classes.searchBox}
+            value={searchText}
+            type="text"
+            placeholder={facet.searchPlaceholder ? facet.searchPlaceholder : 'e.g. Sarcoma, Neoplasm'}
+            onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)}
+          />
+          {
+            searchText
+            && searchText.trim() !== ''
+            && (
+            <IconButton
+              aria-label="close"
+              onClick={() => onSearchTextChange(facet.datafield, '')}
+              className={classes.clearTextButton}
+              sx={(theme) => ({
+                position: 'absolute',
+                right: 7,
+                top: 7,
+                color: theme.palette.grey[500],
+              })}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+            )
+          }
         </div>
         <div className={classes.sortGroup}>
           <span className={classes.sortGroupIcon}>
@@ -114,7 +141,7 @@ const SearchFacetView = ({
                     })
                   }
               onClick={() => {
-                onSortChange(sortType.ALPHABET);
+                onSortChange(facet.datafield, sortType.ALPHABET);
               }}
             >
               Sort alphabetically
@@ -126,7 +153,7 @@ const SearchFacetView = ({
                     })
                   }
               onClick={() => {
-                onSortChange(sortType.NUMERIC);
+                onSortChange(facet.datafield, sortType.NUMERIC);
               }}
             >
               Sort by count

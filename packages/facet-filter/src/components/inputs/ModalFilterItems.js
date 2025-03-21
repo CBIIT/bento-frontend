@@ -43,12 +43,11 @@ const ModalFilterItems = ({
     datafield, section,
   } = facet;
   const initialItemSize = 40;
-  const [total, setTotal] = useState(0);
   const [displayCount, setDisplayCount] = useState(initialItemSize);
   const contentRef = useRef(null);
   const [height, setHeight] = useState(0);
   const scrollableRef = useRef(null);
-  let sortFilters = sortBySection({ ...facet, sortBy });
+  const sortFilters = sortBySection({ ...facet, sortBy });
 
   const checkedItems = sortFilters.filter((item) => item.isChecked)
     .map((item, index) => (<ReduxModalCheckbox
@@ -64,9 +63,11 @@ const ModalFilterItems = ({
     }
   }
 
-  const uncheckedItems = searchItems(sortFilters.filter((item) => !item.isChecked),
-    searchText, facet)
-    .slice(0, displayCount).map((item, index) => (<ReduxModalCheckbox
+  const newUncheckedFullList = searchItems(sortFilters.filter((item) => !item.isChecked),
+    searchText, facet);
+
+  const uncheckedItems = newUncheckedFullList.slice(0, displayCount)
+    .map((item, index) => (<ReduxModalCheckbox
       checkboxItem={{ ...item, index, section }}
       datafield={datafield}
       facet={facet}
@@ -87,15 +88,11 @@ const ModalFilterItems = ({
 
   useEffect(() => {
     scrollableRef.current.scrollTo(0, 0);
-    sortFilters = sortBySection({ ...facet, sortBy });
-    const newUncheckedFullList = searchItems(sortFilters.filter((item) => !item.isChecked),
-      searchText, facet);
     setDisplayCount(initialItemSize);
-    setTotal(newUncheckedFullList.length);
   }, [searchText, sortBy]);
 
   const handleScroll = (e) => {
-    if (displayCount < total) {
+    if (displayCount < newUncheckedFullList.length) {
       const { scrollTop, scrollHeight, clientHeight } = e.target;
       const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
       // console.log('position:', position);
@@ -110,7 +107,7 @@ const ModalFilterItems = ({
     <div className={classes.sortingContainer}>
       <div>
         <span className={classes.selectionText}>{`${checkedItems.length} selections `}</span>
-        <span className={classes.totalText}>{`of ${total} search results`}</span>
+        <span className={classes.totalText}>{`of ${checkedItems.length + newUncheckedFullList.length}} search results`}</span>
       </div>
       <span className={classes.sortGroupIcon}>
         <Icon

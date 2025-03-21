@@ -60,7 +60,7 @@ const ModalView = ({
         </div>
         <div className={classes.searchContainer}>
           <div className={classes.searchInputbox}>{`Search ${facet.label}`}</div>
-          <input className={classes.searchBox} value={searchText} type="text" placeholder="e.g. A1CF, CREB3L1, PIK3CA" onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)} />
+          <input className={classes.searchBox} value={searchText} type="text" placeholder={facet.searchPlaceholder ? facet.searchPlaceholder : 'e.g. Sarcoma, Neoplasm'} onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)} />
           <Button
             variant="outlined"
             onClick={() => onSearchTextChange(facet.datafield, '')}
