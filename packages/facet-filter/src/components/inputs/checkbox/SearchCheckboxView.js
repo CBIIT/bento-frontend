@@ -22,7 +22,8 @@ import {
 import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple';
 import clsx from 'clsx';
 import {
-  CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon,
+  CheckBox as CheckBoxIcon,
+  CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
 import styles from './CheckboxStyle';
 
@@ -32,13 +33,9 @@ const CheckBoxView = ({
   datafield,
   onToggle,
   facet,
+  searchText,
 }) => {
-  const {
-    isChecked = false,
-    index,
-    section,
-    tooltip,
-  } = checkboxItem;
+  const { isChecked = false, index, section, tooltip } = checkboxItem;
   const {
     field = 'group',
     count = 'subjects',
@@ -82,9 +79,7 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      <Typography className={classes.checkboxName}>
-        {name}
-      </Typography>
+      <Typography className={classes.checkboxName}>{name}</Typography>
     </Box>
   );
 
@@ -98,37 +93,44 @@ const CheckBoxView = ({
         onMouseDown={handleRippleStart}
         onMouseUp={handleRippleStop}
         onMouseLeave={handleRippleStop}
-        classes={{ gutters: classes.listItemGutters, root: classes.listItemRoot }}
-        className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
+        classes={{
+          gutters: classes.listItemGutters,
+          root: classes.listItemRoot,
+        }}
+        className={clsx({
+          [`${checkedSection}Checked${indexType}`]: isChecked,
+        })}
       >
         <Checkbox
           id={checkboxId}
-          icon={(
+          icon={
             <CheckBoxBlankIcon
               style={{ fontSize: 18 }}
               className={checkedSection}
             />
-          )}
-          inputProps={{ 'aria-label': 'checkbox', tabIndex: -1, 'aria-hidden': true }}
+          }
+          inputProps={{
+            'aria-label': 'checkbox',
+            tabIndex: -1,
+            'aria-hidden': true,
+          }}
           checked={isChecked}
-          checkedIcon={(
+          checkedIcon={
             <CheckBoxIcon
               style={{
                 fontSize: 18,
               }}
               className={`${checkedSection}CheckedIcon`}
             />
-          )}
+          }
           disableRipple
           color="secondary"
           classes={{ root: classes.checkboxRoot }}
           style={{ pointerEvents: 'none' }}
         />
-        { tooltip ? (
+        {tooltip ? (
           <Tooltip id={datafield} title={tooltip}>
-            <div className={datafield}>
-              {name}
-            </div>
+            <div className={datafield}>{name}</div>
           </Tooltip>
         ) : (
           <LabelComponent />
@@ -152,7 +154,6 @@ const CheckBoxView = ({
         }}
       />
     </>
-
   );
 };
 

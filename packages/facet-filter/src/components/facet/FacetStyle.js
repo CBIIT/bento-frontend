@@ -1,3 +1,5 @@
+import SearchIcon from './assets/Search_Icon.svg';
+
 export default () => ({
   expansionPanelDetailsRoot: {
     display: 'block',
@@ -26,9 +28,9 @@ export default () => ({
   sortGroup: {
     paddingTop: '10px',
     marginBottom: '5px',
-    borderTop: '1px solid #B1B1B1',
     textAlign: 'left',
     marginLeft: '-5px',
+    borderTop: 'none',
   },
   sortGroupIcon: {
     cursor: 'pointer',
@@ -71,5 +73,50 @@ export default () => ({
     cursor: 'pointer',
     fontSize: '10px',
     width: '100%',
+  },
+  searchContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  searchBox: {
+    fontSize: '11px',
+    fontFamily: 'Nunito',
+    width: 'calc(100% - 26px)',
+    height: '24px',
+    marginTop: '12px',
+    borderRadius: '8px',
+    background: `url(${SearchIcon}) right 5px center no-repeat`,
+    marginLeft: '6px',
+    border: '1px solid',
+    padding: '5px',
+  },
+  searchBoxWithText: {
+    fontSize: '11px',
+    fontFamily: 'Nunito',
+    width: 'calc(100% - 26px)',
+    height: '24px',
+    marginTop: '12px',
+    borderRadius: '8px',
+    marginLeft: '6px',
+    border: '1px solid',
+    padding: '5px',
+  },
+  expandedDisplayButton: {
+    background: '#4D889E',
+    color: 'white',
+    width: '222px',
+    height: '30px',
+    marginTop: '5px',
+    marginBottom: '5px',
+    borderRadius: '8px',
+    fontSize: '11px',
+  },
+  clearTextButton: {
+    padding: '0px',
+    height: '20px',
+    position: 'absolute',
+    right: '14px',
+    top: '14px',
   },
 });
