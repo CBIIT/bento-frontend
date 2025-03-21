@@ -10,7 +10,6 @@ export default () => ({
     background: 'white',
     border: '2px solid #000',
     boxShadow: 24,
-    overflowY: 'scroll',
   },
   searchContainer: {
     display: 'flex',
@@ -70,5 +69,6 @@ export default () => ({
   },
   itemContainer: {
     overflowY: 'scroll',
+    height: '582px',
   },
 });

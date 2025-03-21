@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './ModalStyle';
 import { sortType } from '../../utils/Sort';
-import FilterItems from '../inputs/FilterItems';
+import ModalFilterItems from '../inputs/ModalFilterItems';
 
 const ModalView = ({
   classes,
@@ -64,7 +64,7 @@ const ModalView = ({
           </span>
         </>
         <div className={classes.itemContainer}>
-          <FilterItems
+          <ModalFilterItems
             searchText={search}
             facet={facet}
             sortBy={sortBy}
