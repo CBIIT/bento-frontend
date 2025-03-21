@@ -30,3 +30,19 @@ export const clearAllAndSelectFacet = (facetValue) => ({
   type: sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE,
   payload: facetValue,
 });
+
+export const searchTextChange = (datafield, searchText) => ({
+  type: sideBarActionTypes.SEARCH_TEXT_CHANGED,
+  payload: {
+    datafield,
+    searchText,
+  },
+});
+
+export const sortChange = (datafield, sortBy) => ({
+  type: sideBarActionTypes.SORT_CHANGED,
+  payload: {
+    datafield,
+    sortBy,
+  },
+});

@@ -2,23 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   clearFacetSection,
-  clearSliderSection,
   searchTextChange,
   sortChange,
 } from '../../store/actions/Actions';
 // import FacetView from './FacetView';
-import SearchFacetView from './SearchFacetView';
+import FacetModal from './FacetModal';
 
-const ReduxSearchFacetView = ((props) => <SearchFacetView {...props} />);
+const ReduxFacetModal = ((props) => <FacetModal {...props} />);
 
 const mapStateToProps = (state, ownProps) => ({
-  searchText: state.statusReducer?.searchState[ownProps.facet.datafield] || '',
+  searchText: state.statusReducer.searchState[ownProps.facet.datafield] || '',
   sortBy: state.statusReducer.sortState[ownProps.facet.datafield] || null,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onClearFacetSection: (facet) => { dispatch(clearFacetSection(facet)); },
-  onClearSliderSection: (facet) => { dispatch(clearSliderSection(facet)); },
   onSearchTextChange: (datafield, searchText) => {
     dispatch(searchTextChange(datafield, searchText));
   },
@@ -27,4 +25,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReduxSearchFacetView);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxFacetModal);

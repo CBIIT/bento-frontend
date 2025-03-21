@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Accordion,
   List,
   withStyles,
   Icon,
-  Button,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
@@ -14,46 +13,25 @@ import FilterItems from '../inputs/FilterItems';
 import SearchFilterItems from '../inputs/SearchFilterItems';
 import { sortType } from '../../utils/Sort';
 import clearIcon from './assets/clearIcon.svg';
-import ModalView from './FacetModal';
 
 const SearchFacetView = ({
   classes,
   facet,
+  searchText,
+  sortBy,
   onClearFacetSection,
-  onClearSliderSection,
+  onSearchTextChange,
+  onSortChange,
   CustomView,
-  autoComplete,
-  upload,
 }) => {
   const [expand, setExpand] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [searchText, setSearch] = useState('');
   const onExpandFacet = () => setExpand(!expand);
 
-  /**
-  * expand section incase of active local search
-  */
-  useEffect(() => {
-    if ((autoComplete && autoComplete.length > 0)
-      || (upload && upload.length > 0)) {
-      setExpand(true);
-    }
-  }, [autoComplete, upload]);
-
-  const [sortBy, setSortBy] = useState(null);
-  const onSortFacet = (type) => {
-    setSortBy(type);
-  };
-
   const onClearSection = () => {
-    setSortBy(null);
-    setSearch('');
-    if (facet.type === InputTypes.SLIDER) {
-      onClearSliderSection(facet);
-    } else {
-      onClearFacetSection(facet);
-    }
+    onSortChange(facet.datafield, null);
+    onClearFacetSection(facet);
   };
+
   /**
    * display checked items on facet collapse
    */
@@ -65,12 +43,6 @@ const SearchFacetView = ({
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
   return (
     <>
-      <ModalView
-        onClearFacetSection={onClearFacetSection}
-        facet={facet}
-        open={open}
-        onClose={() => setOpen(false)}
-      />
       <Accordion
         square
         expanded={expand}
@@ -116,7 +88,7 @@ const SearchFacetView = ({
           )
         }
         <div className={classes.searchContainer}>
-          <input className={classes.searchBox} value={searchText} type="text" placeholder="e.g. Sarcoma, Neoplasm" onChange={(e) => setSearch(e.target.value)} />
+          <input className={classes.searchBox} value={searchText} type="text" placeholder="e.g. Sarcoma, Neoplasm" onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)} />
         </div>
         <div className={classes.sortGroup}>
           <span className={classes.sortGroupIcon}>
@@ -142,7 +114,7 @@ const SearchFacetView = ({
                     })
                   }
               onClick={() => {
-                onSortFacet(sortType.ALPHABET);
+                onSortChange(sortType.ALPHABET);
               }}
             >
               Sort alphabetically
@@ -154,7 +126,7 @@ const SearchFacetView = ({
                     })
                   }
               onClick={() => {
-                onSortFacet(sortType.NUMERIC);
+                onSortChange(sortType.NUMERIC);
               }}
             >
               Sort by count
@@ -171,16 +143,6 @@ const SearchFacetView = ({
                 facet={facet}
                 sortBy={sortBy}
               />
-              { // This structure is different from CCDIHUB
-                (facet.search)
-                && (
-                  <div className={classes.searchContainer}>
-                    <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
-                      {`VIEW EXPANDED DISPLAY (${facetValues.length})`}
-                    </Button>
-                  </div>
-                )
-              }
             </>
           )}
       </Accordion>

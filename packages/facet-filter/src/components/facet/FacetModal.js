@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Modal,
   Box,
@@ -20,24 +20,29 @@ const resetIcon = {
 const ModalView = ({
   classes,
   facet,
+  sortBy,
+  searchText,
   open,
   onClose,
   onClearFacetSection,
+  onSearchTextChange,
+  onSortChange,
 }) => {
-  const title = 'Diagnosis Facet Search';
-  const [search, setSearch] = useState('');
+  const onClearSection = () => {
+    onSortChange(null);
+    onClearFacetSection(facet);
+  };
 
-  console.log(facet);
   return (
     <Modal
       open={open}
       onClose={onClose}
-      aria-labelledby="diagnosis-search-modal"
+      aria-labelledby={`${facet.datafield}-search-modal`}
     >
       <Box className={classes.modalBody}>
         <div className={classes.header}>
           <Typography id="modal-modal-title" className={classes.modalTitle}>
-            {title}
+            {`${facet.label} Facet Search`}
           </Typography>
           <IconButton
             aria-label="close"
@@ -50,15 +55,15 @@ const ModalView = ({
               color: theme.palette.grey[500],
             })}
           >
-            <CloseIcon />
+            <CloseIcon fontSize="small" />
           </IconButton>
         </div>
         <div className={classes.searchContainer}>
-          <div className={classes.searchDiagnosis}>Search Diagnosis</div>
-          <input className={classes.searchBox} value={search} type="text" placeholder="e.g. A1CF, CREB3L1, PIK3CA" onChange={(e) => setSearch(e.target.value)} />
+          <div className={classes.searchInputbox}>{`Search ${facet.label}`}</div>
+          <input className={classes.searchBox} value={searchText} type="text" placeholder="e.g. A1CF, CREB3L1, PIK3CA" onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)} />
           <Button
             variant="outlined"
-            onClick={() => setSearch('')}
+            onClick={() => onSearchTextChange(facet.datafield, '')}
             className={classes.resetIcon}
           >
             <img
@@ -71,9 +76,11 @@ const ModalView = ({
         </div>
         <div className={classes.itemContainer}>
           <ModalFilterItems
-            onClearFacetSection={onClearFacetSection}
-            searchText={search}
+            searchText={searchText}
             facet={facet}
+            sortBy={sortBy}
+            onClearSection={onClearSection}
+            onSortChange={onSortChange}
           />
         </div>
       </Box>

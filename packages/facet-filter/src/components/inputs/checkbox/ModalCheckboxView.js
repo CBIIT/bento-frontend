@@ -146,13 +146,6 @@ const CheckBoxView = ({
         </Typography>
         <TouchRipple ref={rippleRef} center />
       </ListItem>
-      <Divider
-        style={{
-          backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
-          margin: '0px',
-          height: isChecked ? '2px' : '1px',
-        }}
-      />
     </>
   );
 };
