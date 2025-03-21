@@ -8,6 +8,7 @@ import {
 import styles from './FacetFilterStyle';
 import FacetSectionView from './components/section/FacetSectionView';
 import FacetView from './components/facet/ReduxFacetView';
+import SearchFacetView from './components/facet/ReduxSearchFacetView';
 
 const BentoFacetFilter = ({
   sideBarSections,
@@ -27,12 +28,22 @@ const BentoFacetFilter = ({
               section={section}
               CustomSection={CustomFacetSection}
             >
-              {section.items.map((facet) => (
-                <FacetView
-                  facet={facet}
-                  CustomView={CustomFacetView}
-                />
-              ))}
+              {section.items.map((facet) => {
+                if (facet.search) {
+                  return (
+                    <SearchFacetView
+                      facet={facet}
+                      CustomView={CustomFacetView}
+                    />
+                  );
+                }
+                return (
+                  <FacetView
+                    facet={facet}
+                    CustomView={CustomFacetView}
+                  />
+                );
+              })}
             </FacetSectionView>
           </>
         ))
