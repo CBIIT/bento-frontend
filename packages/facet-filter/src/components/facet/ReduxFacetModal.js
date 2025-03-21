@@ -11,8 +11,8 @@ import FacetModal from './FacetModal';
 const ReduxFacetModal = ((props) => <FacetModal {...props} />);
 
 const mapStateToProps = (state, ownProps) => ({
-  searchText: state.statusReducer.searchState[ownProps.facet.datafield] || '',
-  sortBy: state.statusReducer.sortState[ownProps.facet.datafield] || null,
+  searchText: state?.statusReducer?.searchState?.[ownProps.facet.datafield] || '',
+  sortBy: state?.statusReducer?.sortState?.[ownProps.facet.datafield] || null,
 });
 
 const mapDispatchToProps = (dispatch) => ({
