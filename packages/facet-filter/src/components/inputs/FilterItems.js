@@ -9,7 +9,6 @@ import { sortBySection } from '../../utils/Sort';
 const FilterItems = ({
   facet,
   sortBy,
-  searchText,
 }) => {
   const { type, datafield, section } = facet;
   const sortFilters = sortBySection({ ...facet, sortBy });
@@ -22,7 +21,6 @@ const FilterItems = ({
             checkboxItem={{ ...item, index, section }}
             datafield={datafield}
             facet={facet}
-            searchText={searchText}
           />
         ));
       case InputTypes.SLIDER:
