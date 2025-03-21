@@ -22,7 +22,7 @@ const FacetView = ({
   autoComplete,
   upload,
 }) => {
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
   const onExpandFacet = () => setExpand(!expand);
 
   /**
