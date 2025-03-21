@@ -28,9 +28,9 @@ export default () => ({
   sortGroup: {
     paddingTop: '10px',
     marginBottom: '5px',
-    borderTop: '1px solid #B1B1B1',
     textAlign: 'left',
     marginLeft: '-5px',
+    borderTop: 'none',
   },
   sortGroupIcon: {
     cursor: 'pointer',
@@ -83,11 +83,11 @@ export default () => ({
     fontFamily: 'Nunito',
     width: '222px',
     height: '30px',
-    marginTop: '5px',
+    marginTop: '12px',
     marginBottom: '5px',
     borderRadius: '8px',
     background: `url(${SearchIcon}) right 5px center no-repeat`,
-    marginRight: '10px',
+    marginRight: '12px',
   },
   expandedDisplayButton: {
     background: '#4D889E',
