@@ -92,11 +92,15 @@ const SearchFilterItems = ({
           {uncheckedItems}
         </div>
       </div>
-      <div className={classes.searchContainer}>
-        <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
-          {`VIEW EXPANDED DISPLAY (${checkedItems.length + newUncheckedFullList.length})`}
-        </Button>
-      </div>
+      {
+        !facet.disableSearchModal && (
+        <div className={classes.searchContainer}>
+          <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
+            {`VIEW EXPANDED DISPLAY (${checkedItems.length + newUncheckedFullList.length})`}
+          </Button>
+        </div>
+        )
+      }
     </>
   );
 };
