@@ -65,7 +65,12 @@ const SearchFacetView = ({
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
   return (
     <>
-      <ModalView facet={facet} open={open} onClose={() => setOpen(false)} />
+      <ModalView
+        onClearFacetSection={onClearFacetSection}
+        facet={facet}
+        open={open}
+        onClose={() => setOpen(false)}
+      />
       <Accordion
         square
         expanded={expand}

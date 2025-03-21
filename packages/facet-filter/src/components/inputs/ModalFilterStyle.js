@@ -6,12 +6,15 @@ export default () => ({
     textAlign: 'left',
     marginLeft: '-5px',
   },
+  highlight: {
+    color: '#b2c6d6',
+  },
   sortGroupIcon: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
     marginRight: '12px',
-    marginLeft: '16px',
+    marginLeft: 'auto',
   },
   sortGroupItem: {
     cursor: 'pointer',
@@ -25,7 +28,6 @@ export default () => ({
     fontSize: '10px',
     float: 'right',
     marginRight: '10px',
-    marginTop: '5px',
   },
   checkedContainer: {
     display: 'flex',
@@ -58,5 +60,25 @@ export default () => ({
       borderRadius: '20px',
       backgroundClip: 'content-box',
     },
+  },
+  sortingContainer: {
+    display: 'flex',
+    height: '36px',
+    alignItems: 'center',
+  },
+  selectionText: {
+    fontFamily: 'Nunito',
+    fontWeight: '600',
+    fontSize: '16px',
+    lineHeight: '17px',
+    color: '#7D267E',
+    marginLeft: '20px',
+  },
+  totalText: {
+    fontFamily: 'Nunito',
+    fontWeight: '300',
+    fontSize: '16px',
+    lineHeight: '17px',
+    color: '#7D267E',
   },
 });
