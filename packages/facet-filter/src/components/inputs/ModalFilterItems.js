@@ -106,8 +106,8 @@ const ModalFilterItems = ({
     <>
     <div className={classes.sortingContainer}>
       <div>
-        <span className={classes.selectionText}>{`${checkedItems.length} selections `}</span>
-        <span className={classes.totalText}>{`of ${checkedItems.length + newUncheckedFullList.length}} search results`}</span>
+        <span className={classes.selectionText}>{`${checkedItems.length} ${checkedItems.length === 1 ? 'selection' : 'selections'} `}</span>
+        <span className={classes.totalText}>{`of ${checkedItems.length + newUncheckedFullList.length} search results`}</span>
       </div>
       <span className={classes.sortGroupIcon}>
         <Icon
