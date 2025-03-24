@@ -1,7 +1,10 @@
 /* eslint-disable no-case-declarations */
 import { sideBarActionTypes } from '../actions/ActionTypes';
 
-const initFilterState = {};
+const initFilterState = {
+  searchState: {},
+  sortState: {},
+};
 
 export const onToggleStateUpdate = ({
   filterState,
@@ -55,6 +58,26 @@ export const updateSiderValue = ({
   return updatedState;
 };
 
+export const onSearchTextChange = ({
+  datafield,
+  searchText,
+  searchState,
+}) => {
+  const updatedState = { ...searchState };
+  updatedState[datafield] = searchText;
+  return updatedState;
+};
+
+export const onSortChange = ({
+  datafield,
+  sortBy,
+  sortState,
+}) => {
+  const updatedState = { ...sortState };
+  updatedState[datafield] = sortBy;
+  return updatedState;
+};
+
 export function sideBarReducerGenerator() {
   return {
     actionTypes: sideBarActionTypes,
@@ -94,6 +117,18 @@ export function sideBarReducerGenerator() {
         case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
           return {
             filterState: payload,
+          };
+        case sideBarActionTypes.SEARCH_TEXT_CHANGED:
+          updateState = onSearchTextChange({ ...payload, ...state });
+          return {
+            ...state,
+            searchState: { ...updateState },
+          };
+        case sideBarActionTypes.SORT_CHANGED:
+          updateState = onSortChange({ ...payload, ...state });
+          return {
+            ...state,
+            sortState: { ...updateState },
           };
         default:
           return state;
