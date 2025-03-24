@@ -42,6 +42,8 @@ export function convertToCSV(jsonse, keysToInclude, header) {
         } else {
           line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
         }
+      } else if (keyName === 'participant') {
+        line += entry[keyName].id;
       } else {
         const newLine = entry[keyName] !== null ? String(entry[keyName]).replace(/"/g, '""') : '';
         line += `"${newLine}"`;
