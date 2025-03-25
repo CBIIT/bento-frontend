@@ -639,3 +639,33 @@ export function setSelectedFilterValues(checkboxData, Filters) {
   });
   return result;
 }
+
+/**
+ *  genarate new browser url queries based on the update of the paramters.
+ *  * @param {object} query
+ *  * @param {object} params
+ *  * @param {object} param2Update
+ * @return {string}
+ */
+
+export function generateQueryStr(
+  query,
+  params,
+  params2Update,
+) {
+  let str = '';
+  let paramValue = '';
+  params.forEach((param) => {
+    paramValue = query.get(param);
+    const updateValue = params2Update[param];
+    if (updateValue !== undefined) {
+      if (updateValue !== '') {
+        str += `&${param}=${updateValue}`;
+      }
+    } else if (paramValue) {
+      str += `&${param}=${paramValue}`;
+    }
+  });
+
+  return str === '' ? str : `?${str.substring(1)}`;
+}
