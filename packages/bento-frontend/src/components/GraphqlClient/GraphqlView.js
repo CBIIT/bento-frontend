@@ -10,7 +10,7 @@ function graphQLFetcher(graphQLParams) {
   return fetch(BACKEND, {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(graphQLParams),
+    body: JSON.stringify({...graphQLParams, variables: graphQLParams.variables ?? {}}),
   }).then((response) => response.json());
 }
 
