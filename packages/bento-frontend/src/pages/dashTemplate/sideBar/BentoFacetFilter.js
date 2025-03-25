@@ -79,6 +79,12 @@ const { UploadModal } = UploadModalGenerator({
 
         // Combine the results and remove duplicates
         const unmatched = new Set(inputArray);
+        //If there are any that weren't originally in inputArray, delete it from matched
+        matched.forEach((obj) => {
+          if (!inputArray.includes(obj.subject_id)) {
+            matched.splice(matched.indexOf(obj), 1);
+          }
+        });
         matched.forEach((obj) => unmatched.delete(obj.subject_id));
         return { matched, unmatched: [...unmatched] };
       } catch (e) {
