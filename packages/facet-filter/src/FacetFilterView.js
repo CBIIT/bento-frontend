@@ -10,6 +10,7 @@ import styles from './FacetFilterStyle';
 import FacetSectionView from './components/section/FacetSectionView';
 import FacetView from './components/facet/ReduxFacetView';
 import FilterItems from './components/inputs/FilterItems';
+import SearchFacetView from './components/facet/ReduxSearchFacetView';
 
 const BentoFacetFilter = ({
   sideBarSections,
@@ -29,18 +30,28 @@ const BentoFacetFilter = ({
               section={section}
               CustomSection={CustomFacetSection}
             >
-              {section.items.map((facet) => (
-                <FacetView
-                  facet={facet}
-                  CustomView={CustomFacetView}
-                >
-                  <List className={`List_${facet.label}`}>
-                    <FilterItems
+              {section.items.map((facet) => {
+                if (facet.search) {
+                  return (
+                    <SearchFacetView
                       facet={facet}
+                      CustomView={CustomFacetView}
                     />
-                  </List>
-                </FacetView>
-              ))}
+                  );
+                }
+                return (
+                  <FacetView
+                    facet={facet}
+                    CustomView={CustomFacetView}
+                  >
+                    <List className={`List_${facet.label}`}>
+                      <FilterItems
+                        facet={facet}
+                      />
+                    </List>
+                  </FacetView>
+                );
+              })}
             </FacetSectionView>
           </>
         ))

@@ -32,4 +32,35 @@ export default () => ({
     // marginTop: '5px',
     // float: 'right',
   },
+  itemsContainer: {
+    maxHeight: '400px',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    borderTop: '2px solid #AEAEAE',
+    borderBottom: '2px solid #AEAEAE',
+    marginRight: '-1px',
+    '&::-webkit-scrollbar': {
+      width: '12px',
+      backgroundColor: '#E9F0F4',
+      borderLeft: '0.5px solid #B1B1B1',
+      borderRight: '0.5px solid #B1B1B1',
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: '#CECECE',
+      border: '3px solid transparent',
+      borderRadius: '20px',
+      backgroundClip: 'content-box',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#477C90',
+      border: '3px solid transparent',
+      borderRadius: '20px',
+      backgroundClip: 'content-box',
+    },
+  },
+  searchContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    height: '54px',
+  },
 });
