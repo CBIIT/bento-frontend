@@ -3,6 +3,7 @@ import { withStyles, Button } from '@material-ui/core';
 import { InputTypes } from '@bento-core/facet-filter';
 import clsx from 'clsx';
 import { Filter } from '../components/FilterMap';
+import QueryUrl from '../components/QueryUrl';
 import DEFAULT_STYLES from './styles';
 import DEFAULT_CONFIG from './config';
 
@@ -19,6 +20,14 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const maxItems = config && typeof config.maxItems === 'number'
     ? config.maxItems
     : DEFAULT_CONFIG.config.maxItems;
+
+  const queryURLRootPath = config && typeof config.rootPath === 'string'
+    ? config.rootPath
+    : DEFAULT_CONFIG.config.rootPath;
+
+  const viewQueryURL = config && typeof config.viewQueryURL === 'boolean'
+    ? config.viewQueryURL
+    : DEFAULT_CONFIG.config.viewQueryURL;
 
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
@@ -179,6 +188,16 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
               />
             ))}
           </span>
+          {
+            (viewQueryURL && queryURLRootPath) && (
+              <QueryUrl
+                classes={classes}
+                localFind={localFind}
+                filterItems={mappedInputs}
+                rootPath={queryURLRootPath}
+              />
+            )
+          }
         </div>
       );
     }),

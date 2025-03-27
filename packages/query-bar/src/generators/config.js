@@ -9,6 +9,17 @@ export default {
     maxItems: 2,
   },
 
+  /**
+   * set root path for copy url
+   * @var {boolean}
+   */
+  rootPath: `${window.location.href}/`,
+  /**
+   * display copy url button
+   * @var {boolean}
+   */
+  viewQueryURL: false,
+
   /* Component Helper Functions */
   functions: {
     /**
