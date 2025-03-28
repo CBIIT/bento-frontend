@@ -135,9 +135,13 @@ jobs:
                     "type": "mrkdwn",
                     "text": "*Commit*\n${{ github.sha }}"
                   },
+                  # {
+                  #   "type": "mrkdwn",
+                  #   "text": "*Author*\n${{ github.event.head_commit.author.name }}"
+                  # },
                   {
                     "type": "mrkdwn",
-                    "text": "*Author*\n${{ github.event.head_commit.author.name }}"
+                    "text": "*Run By*\n${{ github.actor }}"
                   },
                   {
                     "type": "mrkdwn",
