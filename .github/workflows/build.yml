@@ -129,7 +129,11 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Commit*\n<${{ github.event.head_commit.url }}|${{ env.SHORT_SHA }}>"
+                    "text": "*Branch*\n${{ github.ref }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Commit*\n${{ github.sha }}"
                   },
                   {
                     "type": "mrkdwn",
