@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Box,
+  Checkbox,
   Modal,
   Typography,
   IconButton,
@@ -19,6 +20,28 @@ import { withStyles } from '@material-ui/core/styles';
 import styles from './ModalStyle';
 // import TableHeader from '../../header/CustomTblHeader';
 import HeaderCell from '../../header/CustomCell';
+import AddFileButtonView from '../../wrapper/components/ReduxAddFile';
+import questionIcon from './assets/Question_Icon.svg';
+
+const tooltipContentAddAll = {
+  icon: questionIcon,
+  alt: 'tooltipIcon',
+  Participants: 'Click button to add all files associated with the filtered row(s).',
+  arrow: true,
+  styles: {
+    border: '#03A383 1px solid',
+  },
+};
+
+const tooltipContent = {
+  icon: questionIcon,
+  alt: 'tooltipIcon',
+  Participants: 'Click button to add files associated with the selected row(s).',
+  arrow: true,
+  styles: {
+    border: '#03A383 1px solid',
+  },
+};
 
 const CustomTableContainer = (props) => {
   const { children, themeConfig, className } = props;
@@ -49,6 +72,37 @@ const CPIModal = ({
     return result;
   });
 
+  const [selectedIds, setIds] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  const wrapperConfig = {
+    container: 'buttons',
+    size: 'xl',
+    clsName: 'container_header',
+    items: [
+      {
+        cartFiles: selectedIds,
+        title: 'ADD ALL FILTERED FILES',
+        clsName: 'add_all_button',
+        role: 'ADD_ALL_FILES',
+        btnType: 'ADD_ALL_FILES',
+        tooltipCofig: tooltipContentAddAll,
+        conditional: false,
+        alertMessage: 'The cart is limited to 200,000 files. Please narrow the search criteria or remove some files from the cart to add more.',
+      },
+      {
+        cartFiles: selectedIds,
+        title: 'ADD SELECTED FILES',
+        clsName: 'add_selected_button',
+        role: 'ADD_SELECTED_FILES',
+        btnType: 'ADD_SELECTED_FILES',
+        tooltipCofig: tooltipContent,
+        conditional: true,
+        alertMessage: 'The cart is limited to 200,000 files. Please narrow the search criteria or remove some files from the cart to add more.',
+      },
+    ],
+  };
+
   const sortingData = (column, newOrder) => {
     const sortedData = data.sort((a, b) => a[column].localeCompare(b[column]));
 
@@ -56,6 +110,32 @@ const CPIModal = ({
       return sortedData.reverse();
     }
     return sortedData;
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectAll(false);
+      setIds([]);
+    } else {
+      setSelectAll(true);
+      let toAdd = [];
+
+      data.forEach((e) => {
+        if (e.data_type === 'internal' && e.p_id) {
+          toAdd = toAdd.concat(e.p_id);
+        }
+      });
+      setIds(toAdd);
+    }
+  };
+
+  const handleSelect = (id) => {
+    if (selectedIds.indexOf(id) !== -1) {
+      setIds(selectedIds.filter((e) => e !== id));
+    } else {
+      const toAdd = selectedIds.concat(id);
+      setIds(toAdd);
+    }
   };
 
   const handleSortByColumn = (column, order) => {
@@ -199,6 +279,14 @@ const CPIModal = ({
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell padding="checkbox">
+                  <span style={{ display: 'none' }}>Select all</span>
+                  <Checkbox
+                    color="primary"
+                    checked={selectAll}
+                    onChange={() => handleSelectAll()}
+                  />
+                </TableCell>
                 {
                   displayColumns.map((column) => (
                     <HeaderCell
@@ -216,6 +304,14 @@ const CPIModal = ({
               {
                 data.map((currRow) => (
                   <TableRow>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="primary"
+                        checked={selectedIds.includes(currRow.p_id)}
+                        disabled={currRow.data_type === 'external'}
+                        onChange={() => handleSelect(currRow.p_id)}
+                      />
+                    </TableCell>
                     {
                       displayColumns.map((column) => (
                         (
@@ -230,6 +326,7 @@ const CPIModal = ({
               }
             </TableBody>
           </Table>
+          <AddFileButtonView {...wrapperConfig.items[0]} />
         </CustomTableContainer>
         <div className="footer" style={footer}>
           To learn more about CPI click&nbsp;
