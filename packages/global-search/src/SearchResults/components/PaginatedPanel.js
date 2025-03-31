@@ -1,4 +1,6 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   withStyles, Button, Grid, CircularProgress, Typography,
 } from '@material-ui/core';
@@ -40,7 +42,6 @@ const PaginatedPanel = (props) => {
   const [loading, setLoading] = useState(false);
 
   async function onChange(newPage = 1) {
-    // Reset data if search text is empty or there are no results
     if (!count || !searchText || searchText.length <= 0) {
       setData([]);
       return;
@@ -92,8 +93,19 @@ const PaginatedPanel = (props) => {
       );
     }
 
-    if (!data || data.length <= 0) return <div>No data</div>;
-
+    if (!data || data.length <= 0) {
+      return (
+        <div>
+          No results within documentation pages.
+          <br />
+          Looking for Programs, Projects, or Research Outputs? Please explore the
+          <Link to="/programs" className={classes.internalLink}><strong> Programs </strong></Link>
+          or
+          <Link to="/datasets" className={classes.internalLink}><strong> Datasets </strong></Link>
+          pages.
+        </div>
+      );
+    }
     return data.map((d, index) => (
       <ResultCard
         data={d}
@@ -112,54 +124,52 @@ const PaginatedPanel = (props) => {
   return (
     <>
       {Math.ceil(count / pageSize) !== 0 && (
-      <div className={classes.totalResults}>
-        <span id="global_search_results_count" className={classes.totalCount}>{count}</span>
-        {' '}
-        Results
-      </div>
-      ) }
+        <div className={classes.totalResults}>
+          <span id="global_search_results_count" className={classes.totalCount}>{count}</span>
+          {' '}
+          Results
+        </div>
+      )}
       <Grid className={classes.subsection}>
         <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
           {renderCards()}
         </Grid>
       </Grid>
       {Math.ceil(count / pageSize) > 1 && (
-      <div className={classes.paginationContainer}>
-        <Button id="global_search_paginate_prev" onClick={onPrevious} className={classes.prevButton}>
-          <span>
-            <img
-              className={classes.prevIcon}
-              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchPrevious.svg"
-              alt="previous button"
-            />
-          </span>
-          previous
-        </Button>
-
-        <Pagination
-          classes={{ ul: classes.paginationUl }}
-          className={classes.paginationRoot}
-          count={Math.ceil(count / pageSize)}
-          page={page}
-          siblingCount={2}
-          boundaryCount={1}
-          shape="rounded"
-          hideNextButton
-          hidePrevButton
-          onChange={handleChangePage}
-        />
-
-        <Button id="global_search_paginate_next" onClick={onNext} className={classes.nextButton}>
-          next
-          <span>
-            <img
-              className={classes.nextIcon}
-              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchNext.svg"
-              alt="previous button"
-            />
-          </span>
-        </Button>
-      </div>
+        <div className={classes.paginationContainer}>
+          <Button id="global_search_paginate_prev" onClick={onPrevious} className={classes.prevButton}>
+            <span>
+              <img
+                className={classes.prevIcon}
+                src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchPrevious.svg"
+                alt="previous button"
+              />
+            </span>
+            previous
+          </Button>
+          <Pagination
+            classes={{ ul: classes.paginationUl }}
+            className={classes.paginationRoot}
+            count={Math.ceil(count / pageSize)}
+            page={page}
+            siblingCount={2}
+            boundaryCount={1}
+            shape="rounded"
+            hideNextButton
+            hidePrevButton
+            onChange={handleChangePage}
+          />
+          <Button id="global_search_paginate_next" onClick={onNext} className={classes.nextButton}>
+            next
+            <span>
+              <img
+                className={classes.nextIcon}
+                src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchNext.svg"
+                alt="previous button"
+              />
+            </span>
+          </Button>
+        </div>
       )}
     </>
   );
@@ -244,6 +254,9 @@ const styles = {
   },
   loadingMessageWrapper: {
     textAlign: 'center',
+  },
+  internalLink: {
+    textDecoration: 'none',
   },
 };
 
