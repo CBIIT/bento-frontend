@@ -29,7 +29,11 @@
   },
   "homepage": "https://github.com/CBIIT/bento-frontend#readme",
   "dependencies": {
-    "@apollo/client": "^3.8.3"
+    "@apollo/client": "^3.8.3",
+    "@bento-core/cart": "^1.0.1-ccdihub.9",
+    "@bento-core/tool-tip": "^1.0.0",
+    "@bento-core/util": "^1.0.1-ccdihub.1",
+    "clsx": "^2.1.1"
   },
   "description": ""
 }
