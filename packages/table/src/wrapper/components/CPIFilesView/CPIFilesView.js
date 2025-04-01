@@ -16,6 +16,12 @@ const customArrow = {
   },
 };
 
+const iconStyle = {
+  paddingRight: '20px',
+  paddingBottom: '20px',
+  paddingLeft: '5px',
+};
+
 export const ToolTipView = (props) => {
   const {
     section,
@@ -27,11 +33,10 @@ export const ToolTipView = (props) => {
     alt,
     arrow = false,
     tooltipText,
-    placement,
   } = tooltipCofig;
   return (
     <ToolTip
-      placement={placement}
+      placement="top"
       title={tooltipText || `${tooltipCofig[section]}`}
       arrow={arrow}
       classes={{
@@ -39,7 +44,7 @@ export const ToolTipView = (props) => {
         arrow: customArrow,
       }}
     >
-      <img src={icon || src} alt={alt} />
+      <img src={icon || src} alt={alt} style={iconStyle} />
     </ToolTip>
   );
 };
@@ -80,6 +85,7 @@ const CPIFilesComponent = (props) => {
     cartFiles,
     participantIds,
     buttonStyle,
+    rowID,
   } = props;
   /**
   * conditionally display dialog view
@@ -98,7 +104,6 @@ const CPIFilesComponent = (props) => {
   //   zIndex: 99999,
   //   background: 'rgba(0, 0, 0, 0.1)',
   // };
-  console.log(props);
   /**
   * verify and set file ids
   */
@@ -109,12 +114,11 @@ const CPIFilesComponent = (props) => {
         if (e.data_type === 'internal' && e.p_id) {
           toAdd = toAdd.concat(e.p_id);
         }
-        // toAdd = toAdd.concat(pid);
+        toAdd = toAdd.concat(rowID);
       });
     } else {
-      toAdd = participantIds;
+      toAdd = participantIds.concat(rowID);
     }
-    console.log(toAdd);
     const fileIds = getFilesID({
       client,
       variables: { participant_ids: toAdd },
@@ -122,7 +126,6 @@ const CPIFilesComponent = (props) => {
     });
     const upperLimit = 200000;
     const cartCount = cartFiles.length;
-    console.log(responseKeys);
     if (cartCount < upperLimit) {
       fileIds().then((response) => {
         const idsInitial = response[responseKeys[0]] || [];
@@ -146,7 +149,6 @@ const CPIFilesComponent = (props) => {
         }
       });
     } else {
-      console.log('setalterdisplaytrue');
       setAlterDisplay(true);
     }
   };
@@ -167,6 +169,7 @@ const CPIFilesComponent = (props) => {
         className={clsx(clsName, `${clsName}_${section}`)}
         disableRipple
         style={buttonStyle}
+        disabled={btnType === 'ADD_SELECTED_FILES' && participantIds.length === 0}
       >
         {title}
       </Button>
