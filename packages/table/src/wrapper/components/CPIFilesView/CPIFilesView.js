@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ToolTip from '@bento-core/tool-tip';
-import { Button, Backdrop, CircularProgress } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import clsx from 'clsx';
 import gql from 'graphql-tag';
 import { getFilesID } from '../../WrapperService';
@@ -87,17 +87,17 @@ const CPIFilesComponent = (props) => {
   const [openAddDialog, setOpen] = useState(false);
   const toggleOpen = () => setOpen(!openAddDialog);
   const [addFilesId, setAddFilesId] = useState([]);
-  const [isDataloading, setIsDataloading] = useState(false);
+  // const [isDataloading, setIsDataloading] = useState(false);
   const responseKeys = ['fileIDsFromList'];
 
   const cartFilesDict = {};
   cartFiles.forEach((file) => { cartFilesDict[file] = true; });
 
-  const backdropCls = {
-    width: '100%',
-    zIndex: 99999,
-    background: 'rgba(0, 0, 0, 0.1)',
-  };
+  // const backdropCls = {
+  //   width: '100%',
+  //   zIndex: 99999,
+  //   background: 'rgba(0, 0, 0, 0.1)',
+  // };
   console.log(props);
   /**
   * verify and set file ids
@@ -109,6 +109,7 @@ const CPIFilesComponent = (props) => {
         if (e.data_type === 'internal' && e.p_id) {
           toAdd = toAdd.concat(e.p_id);
         }
+        // toAdd = toAdd.concat(pid);
       });
     } else {
       toAdd = participantIds;
@@ -123,37 +124,16 @@ const CPIFilesComponent = (props) => {
     const cartCount = cartFiles.length;
     console.log(responseKeys);
     if (cartCount < upperLimit) {
-      setIsDataloading(true);
       fileIds().then((response) => {
-        const data = response[responseKeys[0]];
-        if (data && data.length > 0) {
-          const isArray = Array.isArray(data[0][responseKeys[1]]);
-          // const idsInitial = data.reduce((acc, id) => {
-          //   if (id && id[responseKeys[1]]) {
-          //     // if object convert to array
-          //     const items = isArray ? id[responseKeys[1]] : [id[responseKeys[1]]];
-          //     acc.push(...items);
-          //   }
-          //   return acc;
-          // }, []);
-          const idsInitial = [];
-          data.forEach((item) => {
-            if (item && item[responseKeys[1]]) {
-              const items = isArray ? item[responseKeys[1]] : [item[responseKeys[1]]];
-              items.forEach((it) => {
-                idsInitial.push(it);
-              });
-            }
-          });
-          const ids = [...new Set(idsInitial)];
+        const idsInitial = response[responseKeys[0]] || [];
+        const ids = [...new Set(idsInitial)];
+        const fileCount = ids.length;
+        if (fileCount <= upperLimit && cartCount < upperLimit) {
           if (cartCount + ids.length <= upperLimit) {
-            console.log('hi');
-            setIsDataloading(false);
             setOpen(true);
             setAddFilesId(ids);
           } else {
-            const newIds = checkDuplicate(cartFilesDict, ids);
-            setIsDataloading(false);
+            const newIds = checkDuplicate(cartFiles, ids);
             if (cartCount + newIds.length <= upperLimit) {
               setOpen(true);
               setAddFilesId(newIds);
@@ -161,8 +141,9 @@ const CPIFilesComponent = (props) => {
               setAlterDisplay(true);
             }
           }
+        } else {
+          setAlterDisplay(true);
         }
-        return [];
       });
     } else {
       console.log('setalterdisplaytrue');
@@ -195,9 +176,9 @@ const CPIFilesComponent = (props) => {
         onYesClick={addFilesToCart}
         onNoClick={toggleOpen}
       />
-      <Backdrop className={backdropCls} style={backdropCls} open={isDataloading}>
+      {/* <Backdrop className={backdropCls} style={backdropCls} open={isDataloading}>
         <CircularProgress color="inherit" />
-      </Backdrop>
+      </Backdrop> */}
     </>
   );
 };
