@@ -19,6 +19,11 @@ export default {
    * @var {boolean}
    */
   viewQueryURL: false,
+  /**
+   * display copy url button
+   * @var {boolean}
+   */
+  queryUrlCharacterLimit: 70,
 
   /* Component Helper Functions */
   functions: {
