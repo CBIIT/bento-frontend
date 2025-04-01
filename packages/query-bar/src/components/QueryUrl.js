@@ -17,6 +17,7 @@ const QueryUrl = ({
   filterItems,
   localFind = {},
   rootPath,
+  queryUrlCharacterLimit = 70,
 }) => {
   const [display, setDisplay] = useState(false);
   const toggleDisplay = () => setDisplay((prevDisplay) => !prevDisplay);
@@ -59,7 +60,7 @@ const QueryUrl = ({
                 type="button"
                 className={clsx(classes.viewLink)}
               >
-                {url}
+                {url.length > queryUrlCharacterLimit ? `${url.substring(0, queryUrlCharacterLimit)}...` : url}
               </div>
               <Tooltip
                 arrow

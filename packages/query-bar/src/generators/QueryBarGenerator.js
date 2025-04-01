@@ -29,6 +29,10 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.viewQueryURL
     : DEFAULT_CONFIG.config.viewQueryURL;
 
+  const queryUrlCharacterLimit = config && typeof config.queryUrlCharacterLimit === 'number'
+    ? config.queryUrlCharacterLimit
+    : DEFAULT_CONFIG.config.queryUrlCharacterLimit;
+
   const clearAll = functions && typeof functions.clearAll === 'function'
     ? functions.clearAll
     : DEFAULT_CONFIG.functions.clearAll;
@@ -195,6 +199,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 localFind={localFind}
                 filterItems={mappedInputs}
                 rootPath={queryURLRootPath}
+                queryUrlCharacterLimit={queryUrlCharacterLimit}
               />
             )
           }
