@@ -23,8 +23,10 @@ import styles from './ModalStyle';
 import HeaderCell from '../../header/CustomCell';
 import AddFileButtonView from '../../wrapper/components/ReduxAddFile';
 import questionIcon from './assets/Question_Icon.svg';
+import cartIcon from './assets/Cart_Icon.svg';
 
 const tooltipContentAddAll = {
+  tooltipText: 'Click button to add all Hub files associated with this participant to the cart.',
   icon: questionIcon,
   alt: 'tooltipIcon',
   Participants: 'Click button to add all files associated with the filtered row(s).',
@@ -35,6 +37,7 @@ const tooltipContentAddAll = {
 };
 
 const tooltipContent = {
+  tooltipText: 'Click button to add all selected files associated with this participant to the cart.',
   icon: questionIcon,
   alt: 'tooltipIcon',
   Participants: 'Click button to add files associated with the selected row(s).',
@@ -72,7 +75,6 @@ const CPIModal = ({
     const result = row.cpi_data;
     return result;
   });
-
   const [selectedIds, setIds] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
 
@@ -83,7 +85,7 @@ const CPIModal = ({
     items: [
       {
         participantIds: data,
-        title: 'ADD ALL FILTERED FILES',
+        title: 'ADD ALL FILES FOR PARTICIPANT',
         clsName: 'add_all_button',
         role: 'ADD_ALL_FILES',
         btnType: 'ADD_ALL_FILES',
@@ -93,7 +95,7 @@ const CPIModal = ({
       },
       {
         participantIds: selectedIds,
-        title: 'ADD SELECTED FILES',
+        title: 'ADD SELECTED FILES FOR PARTICIPANT',
         clsName: 'add_selected_button',
         role: 'ADD_SELECTED_FILES',
         btnType: 'ADD_SELECTED_FILES',
@@ -147,6 +149,12 @@ const CPIModal = ({
     setSortOrder(newOrder);
   };
 
+  const buttonContainer = {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '10px',
+  };
+
   const addAllFilesButton = {
     width: '174px',
     height: '41px',
@@ -156,17 +164,19 @@ const CPIModal = ({
     fontWeight: '600',
     fontSize: '12px',
     color: 'white',
+    lineHeight: '14px',
   };
 
   const addSelectedFilesButton = {
     width: '174px',
     height: '41px',
     borderRadius: '5px',
-    backgroundColor: '#2A6E93',
+    backgroundColor: selectedIds.length ? '#2A6E93' : '#B3D6EA',
     fontFamily: 'Poppins',
     fontWeight: '600',
     fontSize: '12px',
     color: 'white',
+    lineHeight: '14px',
   };
 
   const goToCartButton = {
@@ -334,13 +344,13 @@ const CPIModal = ({
                 }
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody style={{ borderBottom: '3px solid rgb(147, 147, 147)' }}>
               {
                 data.map((currRow) => (
                   <TableRow>
                     <TableCell padding="checkbox">
                       <Checkbox
-                        color="primary"
+                        color="#2A6E93"
                         checked={selectedIds.includes(currRow.p_id)}
                         disabled={currRow.data_type === 'external'}
                         onChange={() => handleSelect(currRow.p_id)}
@@ -360,17 +370,28 @@ const CPIModal = ({
               }
             </TableBody>
           </Table>
-          <AddFileButtonView {...wrapperConfig.items[0]} buttonStyle={addAllFilesButton} />
-          <AddFileButtonView {...wrapperConfig.items[1]} buttonStyle={addSelectedFilesButton} />
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/fileCentricCart';
-            }}
-            style={goToCartButton}
-          >
-            GO TO CART
-          </Button>
+          <div style={buttonContainer}>
+            <AddFileButtonView
+              {...wrapperConfig.items[0]}
+              buttonStyle={addAllFilesButton}
+              rowID={row.id}
+            />
+            <AddFileButtonView
+              {...wrapperConfig.items[1]}
+              buttonStyle={addSelectedFilesButton}
+              rowID={row.id}
+            />
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/fileCentricCart';
+              }}
+              style={goToCartButton}
+            >
+              GO TO CART
+              <img src={cartIcon} alt="cart" style={{ paddingLeft: '30px' }} />
+            </Button>
+          </div>
         </CustomTableContainer>
         <div className="footer" style={footer}>
           To learn more about CPI click&nbsp;
