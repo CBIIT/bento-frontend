@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useApolloClient } from '@apollo/client';
-import AddAllFilesView from './AddAllFiles/AddAllView';
-import AddSelectedFilesView from './AddSelectedFiles/AddSelectedFilesController';
+import CPIFilesView from './CPIFilesView/CPIFilesView';
 import SnackbarView from './Snackbar/Snackbar';
 import AlertView from './AddToCartDialog/AddToCartDialogAlertView';
 
@@ -16,10 +15,10 @@ export const btnTypes = {
 */
 const AddFilesView = (props) => {
   const {
-    btnType,
     count,
     alertMessage,
     cartFiles,
+    buttonStyle,
   } = props;
   /**
   * snackbar state
@@ -34,31 +33,16 @@ const AddFilesView = (props) => {
   * acess bento app client via ApolloProvider
   */
   const client = useApolloClient();
-  console.log(props);
   return (
     <>
-      {
-        (btnTypes.ADD_SELECTED_FILES === btnType) && (
-          <AddSelectedFilesView
-            {...props}
-            client={client}
-            setAlterDisplay={setAlterDisplay}
-            setOpenSnackbar={setOpenSnackbar}
-            cartFiles={cartFiles}
-          />
-        )
-      }
-      {
-        (btnTypes.ADD_ALL_FILES === btnType) && (
-          <AddAllFilesView
-            {...props}
-            client={client}
-            setAlterDisplay={setAlterDisplay}
-            setOpenSnackbar={setOpenSnackbar}
-            cartFiles={cartFiles}
-          />
-        )
-      }
+      <CPIFilesView
+        {...props}
+        client={client}
+        setAlterDisplay={setAlterDisplay}
+        setOpenSnackbar={setOpenSnackbar}
+        cartFiles={cartFiles}
+        buttonStyle={buttonStyle}
+      />
       <SnackbarView
         open={openSnackbar}
         count={count}

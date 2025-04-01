@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ToolTip from '@bento-core/tool-tip';
 import { Button, Backdrop, CircularProgress } from '@material-ui/core';
 import clsx from 'clsx';
+import gql from 'graphql-tag';
 import { getFilesID } from '../../WrapperService';
 import AddToCartDialogView from '../AddToCartDialog/AddToCartDialogView';
 
@@ -55,21 +56,30 @@ export const ToolTipView = (props) => {
 
 const checkDuplicate = (cartFiles, ids) => (ids.filter((id) => !cartFiles[id]));
 
-const AddAllFilesComponent = (props) => {
+const addFileQuery = gql`
+query search (          
+  $participant_ids: [String],
+){
+  fileIDsFromList (          
+      participant_ids: $participant_ids,
+  ) 
+}
+  `;
+
+const CPIFilesComponent = (props) => {
   const {
     title,
+    btnType,
     clsName,
     section,
-    addFileQuery,
-    responseKeys,
-    activeFilters,
     addFiles,
     setAlterDisplay,
     setOpenSnackbar,
     client,
     tooltipCofig,
-    fileCount,
     cartFiles,
+    participantIds,
+    buttonStyle,
   } = props;
   /**
   * conditionally display dialog view
@@ -78,6 +88,7 @@ const AddAllFilesComponent = (props) => {
   const toggleOpen = () => setOpen(!openAddDialog);
   const [addFilesId, setAddFilesId] = useState([]);
   const [isDataloading, setIsDataloading] = useState(false);
+  const responseKeys = ['fileIDsFromList'];
 
   const cartFilesDict = {};
   cartFiles.forEach((file) => { cartFilesDict[file] = true; });
@@ -87,19 +98,31 @@ const AddAllFilesComponent = (props) => {
     zIndex: 99999,
     background: 'rgba(0, 0, 0, 0.1)',
   };
-
+  console.log(props);
   /**
   * verify and set file ids
   */
   const addAllFiles = () => {
+    let toAdd = [];
+    if (btnType === 'ADD_ALL_FILES') {
+      participantIds.forEach((e) => {
+        if (e.data_type === 'internal' && e.p_id) {
+          toAdd = toAdd.concat(e.p_id);
+        }
+      });
+    } else {
+      toAdd = participantIds;
+    }
+    console.log(toAdd);
     const fileIds = getFilesID({
       client,
-      variables: activeFilters,
+      variables: { participant_ids: toAdd },
       query: addFileQuery,
     });
     const upperLimit = 200000;
     const cartCount = cartFiles.length;
-    if (fileCount <= upperLimit && cartCount < upperLimit) {
+    console.log(responseKeys);
+    if (cartCount < upperLimit) {
       setIsDataloading(true);
       fileIds().then((response) => {
         const data = response[responseKeys[0]];
@@ -124,6 +147,7 @@ const AddAllFilesComponent = (props) => {
           });
           const ids = [...new Set(idsInitial)];
           if (cartCount + ids.length <= upperLimit) {
+            console.log('hi');
             setIsDataloading(false);
             setOpen(true);
             setAddFilesId(ids);
@@ -141,6 +165,7 @@ const AddAllFilesComponent = (props) => {
         return [];
       });
     } else {
+      console.log('setalterdisplaytrue');
       setAlterDisplay(true);
     }
   };
@@ -160,6 +185,7 @@ const AddAllFilesComponent = (props) => {
         onClick={addAllFiles}
         className={clsx(clsName, `${clsName}_${section}`)}
         disableRipple
+        style={buttonStyle}
       >
         {title}
       </Button>
@@ -176,4 +202,4 @@ const AddAllFilesComponent = (props) => {
   );
 };
 
-export default AddAllFilesComponent;
+export default CPIFilesComponent;

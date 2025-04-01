@@ -13,6 +13,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Button,
 } from '@material-ui/core';
 // import CustomTableBody from '../../body/CustomTblBody';
 import CloseIcon from '@material-ui/icons/Close';
@@ -81,7 +82,7 @@ const CPIModal = ({
     clsName: 'container_header',
     items: [
       {
-        cartFiles: selectedIds,
+        participantIds: data,
         title: 'ADD ALL FILTERED FILES',
         clsName: 'add_all_button',
         role: 'ADD_ALL_FILES',
@@ -91,7 +92,7 @@ const CPIModal = ({
         alertMessage: 'The cart is limited to 200,000 files. Please narrow the search criteria or remove some files from the cart to add more.',
       },
       {
-        cartFiles: selectedIds,
+        participantIds: selectedIds,
         title: 'ADD SELECTED FILES',
         clsName: 'add_selected_button',
         role: 'ADD_SELECTED_FILES',
@@ -144,6 +145,39 @@ const CPIModal = ({
     setData(newData);
     setSortBy(column);
     setSortOrder(newOrder);
+  };
+
+  const addAllFilesButton = {
+    width: '174px',
+    height: '41px',
+    borderRadius: '5px',
+    backgroundColor: '#536D70',
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: '12px',
+    color: 'white',
+  };
+
+  const addSelectedFilesButton = {
+    width: '174px',
+    height: '41px',
+    borderRadius: '5px',
+    backgroundColor: '#2A6E93',
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: '12px',
+    color: 'white',
+  };
+
+  const goToCartButton = {
+    width: '174px',
+    height: '41px',
+    borderRadius: '5px',
+    backgroundColor: '#5666BD',
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: '12px',
+    color: 'white',
   };
 
   const modalBody = {
@@ -326,7 +360,17 @@ const CPIModal = ({
               }
             </TableBody>
           </Table>
-          <AddFileButtonView {...wrapperConfig.items[0]} />
+          <AddFileButtonView {...wrapperConfig.items[0]} buttonStyle={addAllFilesButton} />
+          <AddFileButtonView {...wrapperConfig.items[1]} buttonStyle={addSelectedFilesButton} />
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = '/fileCentricCart';
+            }}
+            style={goToCartButton}
+          >
+            GO TO CART
+          </Button>
         </CustomTableContainer>
         <div className="footer" style={footer}>
           To learn more about CPI click&nbsp;
