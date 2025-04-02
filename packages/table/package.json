@@ -20,7 +20,8 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
-    "react-redux": "^7.2.1"
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.1.2"
   },
   "author": "CTOS Bento Team",
   "license": "ISC",
@@ -34,8 +35,7 @@
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.1-ccdihub.1",
     "clsx": "^2.1.1",
-    "graphql-tag": "^2.12.6",
-    "react-router-dom": "^5.1.2"
+    "graphql-tag": "^2.12.6"
   },
   "description": ""
 }
