@@ -34,7 +34,8 @@
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.1-ccdihub.1",
     "clsx": "^2.1.1",
-    "graphql-tag": "^2.12.6"
+    "graphql-tag": "^2.12.6",
+    "react-router-dom": "^5.1.2"
   },
   "description": ""
 }
