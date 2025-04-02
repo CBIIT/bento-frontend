@@ -24,6 +24,12 @@ const DEFAULT_CLASSES = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  noJustifyTitle: {
+    margin: '32px 32px 0px 64px',
+    display: 'flex',
+    justifyContent: 'normal',
+    alignItems: 'center',
+  },
   noPaddedTitle: {
     margin: '0px 0px 0px 0px',
     display: 'flex',
@@ -87,7 +93,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
       const {
         // Widget Options
         title, header, noBodyPadding, bodyClass,
-        customBackGround, bottomDivider, noPaddedTitle,
+        customBackGround, bottomDivider, noPaddedTitle, noJustifyTitle,
         // Chart Options
         chartType, sliceTitle, data, chartTitleLocation, chartTitleAlignment,
         children, width, height,
@@ -105,6 +111,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
               id={title}
               className={classnames(classes.widgetHeader, classes.paddedTitle, {
                 [classes.noPaddedTitle]: noPaddedTitle,
+                [classes.noJustifyTitle]: noJustifyTitle,
               })}
             >
               {header || title}
