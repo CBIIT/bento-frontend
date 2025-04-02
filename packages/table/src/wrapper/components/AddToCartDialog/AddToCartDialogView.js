@@ -12,6 +12,7 @@ function AddToCartDialogView(props) {
     onNoClick,
     cartWillFull = false,
     alertMessage,
+    dialogText,
   } = props;
 
   if (cartWillFull) {
@@ -33,7 +34,7 @@ function AddToCartDialogView(props) {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure to add All Files
+            {dialogText}
             {' '}
             {numberOfFilesSelected}
             {' '}

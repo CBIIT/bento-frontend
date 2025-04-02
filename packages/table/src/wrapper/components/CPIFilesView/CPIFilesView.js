@@ -178,6 +178,7 @@ const CPIFilesComponent = (props) => {
         open={openAddDialog}
         onYesClick={addFilesToCart}
         onNoClick={toggleOpen}
+        dialogText={btnType === 'ADD_SELECTED_FILES' ? 'Are you sure to add selected files' : 'Are you sure to add All Files'}
       />
       {/* <Backdrop className={backdropCls} style={backdropCls} open={isDataloading}>
         <CircularProgress color="inherit" />
