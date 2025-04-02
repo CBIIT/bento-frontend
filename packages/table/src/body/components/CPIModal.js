@@ -50,7 +50,7 @@ const tooltipContent = {
 const CustomTableContainer = (props) => {
   const { children, themeConfig, className } = props;
   const tableStyle = {
-    height: '510px',
+    height: '450px',
     overflowX: 'hidden',
   };
   return (
@@ -229,6 +229,7 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '400',
+    borderTop: '1px solid #505050',
   };
 
   const link = {
@@ -370,29 +371,29 @@ const CPIModal = ({
               }
             </TableBody>
           </Table>
-          <div style={buttonContainer}>
-            <AddFileButtonView
-              {...wrapperConfig.items[0]}
-              buttonStyle={addAllFilesButton}
-              rowID={row.id}
-            />
-            <AddFileButtonView
-              {...wrapperConfig.items[1]}
-              buttonStyle={addSelectedFilesButton}
-              rowID={row.id}
-            />
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = '/fileCentricCart';
-              }}
-              style={goToCartButton}
-            >
-              GO TO CART
-              <img src={cartIcon} alt="cart" style={{ paddingLeft: '30px' }} />
-            </Button>
-          </div>
         </CustomTableContainer>
+        <div style={buttonContainer}>
+          <AddFileButtonView
+            {...wrapperConfig.items[0]}
+            buttonStyle={addAllFilesButton}
+            rowID={row.id}
+          />
+          <AddFileButtonView
+            {...wrapperConfig.items[1]}
+            buttonStyle={addSelectedFilesButton}
+            rowID={row.id}
+          />
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = '/fileCentricCart';
+            }}
+            style={goToCartButton}
+          >
+            GO TO CART
+            <img src={cartIcon} alt="cart" style={{ paddingLeft: '30px' }} />
+          </Button>
+        </div>
         <div className="footer" style={footer}>
           To learn more about CPI click&nbsp;
           <a style={link} href="https://participantindex-docs.ccdi.cancer.gov/" target="_blank" rel="noopener noreferrer">here</a>
