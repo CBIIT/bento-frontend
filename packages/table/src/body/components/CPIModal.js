@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   Box,
   Checkbox,
@@ -383,16 +384,14 @@ const CPIModal = ({
             buttonStyle={addSelectedFilesButton}
             rowID={row.id}
           />
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/fileCentricCart';
-            }}
-            style={goToCartButton}
-          >
-            GO TO CART
-            <img src={cartIcon} alt="cart" style={{ paddingLeft: '30px' }} />
-          </Button>
+          <NavLink to="/fileCentricCart">
+            <Button
+              style={goToCartButton}
+            >
+              GO TO CART
+              <img src={cartIcon} alt="cart" style={{ paddingLeft: '30px' }} />
+            </Button>
+          </NavLink>
         </div>
         <div className="footer" style={footer}>
           To learn more about CPI click&nbsp;
