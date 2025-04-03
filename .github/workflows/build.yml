@@ -8,9 +8,9 @@ on:
       environment:
         description: 'Which account the ECR repository is in'
         type: environment
-      fail_on_trivy_scan:
+      ignore_trivy_scan:
         type: boolean
-        description: fail the build if vulnerabilities are found
+        description: ignore vulnerabilities if they are found
         required: true 
         default: false
 jobs:
@@ -55,11 +55,11 @@ jobs:
         
     - name: Set Trivy exit code
       run: |
-        if  [[ ${{ inputs.fail_on_trivy_scan }} == true ]];
+        if  [[ ${{ inputs.ignore_trivy_scan }} == true ]];
         then
-          echo 'TRIVY_EXIT_CODE=1' >> $GITHUB_ENV
-        else
           echo 'TRIVY_EXIT_CODE=0' >> $GITHUB_ENV
+        else
+          echo 'TRIVY_EXIT_CODE=1' >> $GITHUB_ENV
         fi
     
     - name: Run Trivy vulnerability scanner
