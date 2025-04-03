@@ -72,13 +72,15 @@ const { UploadModal } = UploadModalGenerator({
       try {
         // Split the search terms into chunks of 500
         const caseChunks = chunkSplit(inputArray, 500);
-        const matched = (await Promise.allSettled(caseChunks.map((chunk) => getAllSubjectIds(chunk))))
+        let matched = (await Promise.allSettled(caseChunks.map((chunk) => getAllSubjectIds(chunk))))
           .filter((result) => result.status === 'fulfilled')
           .map((result) => result.value || [])
           .flat(1);
 
         // Combine the results and remove duplicates
         const unmatched = new Set(inputArray);
+        //If there are any that weren't originally in inputArray, delete it from matched
+        matched = matched.filter((obj) => inputArray.includes(obj.subject_id));
         matched.forEach((obj) => unmatched.delete(obj.subject_id));
         return { matched, unmatched: [...unmatched] };
       } catch (e) {
