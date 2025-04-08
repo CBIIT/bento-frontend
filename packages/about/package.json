@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/about",
-  "version": "1.0.0",
+  "version": "1.0.1-c3dc.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/facet-filter": "^1.0.0",
+    "@bento-core/facet-filter": "^1.0.1-c3dc.3",
     "lodash": "^4.17.20",
     "react-zoom-pan-pinch": "*"
   },
