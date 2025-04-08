@@ -248,7 +248,7 @@ const styles = () => ({
   },
 });
 
-const FooterMobile = ({ classes, data }) => {
+const FooterMobile = ({ classes, data, handleExternalLinkClick }) => {
   const [emailContent, setEmailContent] = useState('');
   const emailForm = useRef(null);
   const emailInput = useRef(null);
@@ -326,7 +326,7 @@ const FooterMobile = ({ classes, data }) => {
                           className="footItemLink"
                           key={itemKey}
                           href={item.link}
-                          target="_blank"
+                          onClick={(e) => handleExternalLinkClick(e, item.link)}
                           rel="noopener noreferrer"
                         >
                           {item.text}

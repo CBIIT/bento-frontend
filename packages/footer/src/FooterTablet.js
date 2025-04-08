@@ -209,7 +209,7 @@ const styles = () => ({
   },
 });
 
-const FooterTablet = ({ classes, data }) => {
+const FooterTablet = ({ classes, data, handleExternalLinkClick }) => {
   const [emailContent, setEmailContent] = useState('');
   const emailForm = useRef(null);
   const emailInput = useRef(null);
@@ -259,7 +259,7 @@ const FooterTablet = ({ classes, data }) => {
                         <a
                           className="footItemLink"
                           href={item.link}
-                          target="_blank"
+                          onClick={(e) => handleExternalLinkClick(e, item.link)}
                           rel="noopener noreferrer"
                         >
                           {item.text}
