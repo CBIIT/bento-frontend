@@ -11,6 +11,7 @@ export default () => ({
     fontFamily: 'Nunito',
     fontSize: '14px',
     fontWeight: '200',
+    maxWidth: '60%',
   },
   panelSubjectText: {
     color: '#323232',
