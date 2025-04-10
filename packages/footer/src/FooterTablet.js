@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 
 const styles = () => ({
@@ -209,7 +208,7 @@ const styles = () => ({
   },
 });
 
-const FooterTablet = ({ classes, data }) => {
+const FooterTablet = ({ classes, data, handleExternalLinkClick }) => {
   const [emailContent, setEmailContent] = useState('');
   const emailForm = useRef(null);
   const emailInput = useRef(null);
@@ -259,15 +258,15 @@ const FooterTablet = ({ classes, data }) => {
                         <a
                           className="footItemLink"
                           href={item.link}
-                          target="_blank"
+                          onClick={(e) => handleExternalLinkClick(e, item.link)}
                           rel="noopener noreferrer"
                         >
                           {item.text}
                         </a>
                       ) : (
-                        <Link className="footItemLink" to={item.link}>
+                        <a className="footItemLink" href={item.link}>
                           {item.text}
-                        </Link>
+                        </a>
                       )}
                     </div>
                   );

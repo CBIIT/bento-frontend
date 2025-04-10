@@ -8,15 +8,26 @@ const FooterController = ({ data = {} }) => {
   const tablet = useMediaQuery('(min-width: 768px) and (max-width: 1024px)');
   const mobile = useMediaQuery('(max-width: 767px)');
 
+  let externalTab = null;
+  function handleExternalLinkClick(e, url) {
+    e.preventDefault();
+    if (!externalTab || externalTab.closed) {
+      externalTab = window.open(url, 'footerExternalURL');
+    } else {
+      externalTab.location.href = url;
+      externalTab.focus();
+    }
+  }
+
   if (mobile) {
-    return <FooterMobile data={data} />;
+    return <FooterMobile data={data} handleExternalLinkClick={handleExternalLinkClick} />;
   }
 
   if (tablet) {
-    return <FooterTablet data={data} />;
+    return <FooterTablet data={data} handleExternalLinkClick={handleExternalLinkClick} />;
   }
 
-  return <FooterDesktop data={data} />;
+  return <FooterDesktop data={data} handleExternalLinkClick={handleExternalLinkClick} />;
 };
 
 export default FooterController;
