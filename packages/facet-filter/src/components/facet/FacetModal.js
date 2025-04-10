@@ -37,7 +37,7 @@ const ModalView = ({
     <Modal
       open={open}
       onClose={onClose}
-      aria-labelledby={`${facet.datafield}-search-modal`}
+      aria-label={`${facet.datafield}-search-modal`}
     >
       <Box className={classes.modalBody}>
         <div className={classes.header}>
@@ -60,7 +60,14 @@ const ModalView = ({
         </div>
         <div className={classes.searchContainer}>
           <div className={classes.searchInputbox}>{`Search ${facet.label}`}</div>
-          <input className={classes.searchBox} value={searchText} type="text" placeholder={facet.searchPlaceholder ? facet.searchPlaceholder : 'e.g. Sarcoma, Neoplasm'} onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)} />
+          <input
+            className={classes.searchBox}
+            value={searchText}
+            type="text"
+            placeholder={facet.searchPlaceholder ? facet.searchPlaceholder : 'e.g. Sarcoma, Neoplasm'}
+            onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)}
+            aria-label={`Search within ${facet.section} facet`}
+          />
           <Button
             variant="outlined"
             onClick={() => onSearchTextChange(facet.datafield, '')}

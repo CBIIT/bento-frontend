@@ -58,15 +58,4 @@ export default () => ({
     justifyContent: 'center',
     height: '54px',
   },
-  expandedDisplayButton: {
-    backgroundColor: '#4D889E !important',
-    color: 'white',
-    width: '222px',
-    height: '24px',
-    marginTop: '5px',
-    marginBottom: '5px',
-    borderRadius: '8px',
-    fontSize: '11px',
-    top: '10px',
-  },
 });
