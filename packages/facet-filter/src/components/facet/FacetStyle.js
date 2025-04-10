@@ -103,7 +103,7 @@ export default () => ({
     padding: '5px',
   },
   expandedDisplayButton: {
-    backgroundColor: '#4D889E !important',
+    backgroundColor: '#477C90 !important',
     color: 'white',
     width: 'calc(100% - 26px)',
     height: '30px',

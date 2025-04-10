@@ -146,6 +146,7 @@ const SearchFacetView = ({
                   type="text"
                   placeholder={facet.searchPlaceholder ? facet.searchPlaceholder : 'e.g. Sarcoma, Neoplasm'}
                   onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)}
+                  aria-label={`Search within ${facet.section} facet`}
                 />
                 {
                   searchText
