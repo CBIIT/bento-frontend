@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 
 const styles = () => ({
@@ -255,9 +254,9 @@ const FooterDesktop = ({ classes, data, handleExternalLinkClick }) => {
                           {item.text}
                         </a>
                       ) : (
-                        <Link className={classes.footItemLink} to={item.link}>
+                        <a className={classes.footItemLink} href={item.link}>
                           {item.text}
-                        </Link>
+                        </a>
                       )}
                     </div>
                   );

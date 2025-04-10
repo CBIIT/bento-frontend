@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 
 const styles = () => ({
@@ -265,9 +264,9 @@ const FooterTablet = ({ classes, data, handleExternalLinkClick }) => {
                           {item.text}
                         </a>
                       ) : (
-                        <Link className="footItemLink" to={item.link}>
+                        <a className="footItemLink" href={item.link}>
                           {item.text}
-                        </Link>
+                        </a>
                       )}
                     </div>
                   );
