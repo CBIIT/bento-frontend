@@ -8,6 +8,7 @@ export const actionTypes = {
   ON_ROW_SELECT_HIDDEN: 'ON_ROW_SELECT_HIDDEN',
   SET_TOTAL_ROW_COUNT: 'SET_TOTAL_ROW_COUNT',
   ON_PAGE_AND_TOTAL_COUNT_CHANGE: 'ON_PAGE_AND_TOTAL_COUNT_CHANGE',
+  UNSELECT_ALL_ROWS: 'UNSELECT_ALL_ROWS',
 };
 
 export const onColumnViewChange = (columns) => ({
@@ -53,4 +54,8 @@ export const onRowSelectHidden = (rows) => ({
 export const setTotalRowCount = (count) => ({
   type: actionTypes.SET_TOTAL_ROW_COUNT,
   payload: count,
+});
+
+export const unselectAllRows = () => ({
+  type: actionTypes.UNSELECT_ALL_ROWS,
 });

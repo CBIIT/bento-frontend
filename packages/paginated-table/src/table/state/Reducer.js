@@ -46,6 +46,12 @@ const reducer = (state, action) => {
         ...state,
         totalRowCount: payload,
       };
+    case actionTypes.UNSELECT_ALL_ROWS:
+      return {
+        ...state,
+        selectedRows: [],
+        hiddenSelectedRows: [],
+      };
     default:
       return state;
   }

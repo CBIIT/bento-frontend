@@ -10,6 +10,7 @@ import {
   onPageAndTotalCountChange,
   onColumnViewChange,
   onRowSelectHidden,
+  unselectAllRows,
 } from './state/Actions';
 import { TableContext } from './ContextProvider';
 import reducer from './state/Reducer';
@@ -30,6 +31,9 @@ const PaginatedTable = ({
   * 3. Add all btn / Add file button also dispatch action to update table state
   */
   const [table, dispatch] = useReducer(reducer, {}, initState);
+  useEffect(() => {
+    dispatch(unselectAllRows());
+  }, [queryVariables]);
 
   /**
   * use context to provide table state to wrapper component
