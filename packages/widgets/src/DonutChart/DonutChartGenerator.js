@@ -3,6 +3,7 @@ import { isEqual } from 'lodash';
 import {
   PieChart, Pie, Sector, Cell, ResponsiveContainer,
 } from 'recharts';
+import FileSaver from 'file-saver';
 
 export const DEFAULT_COLORS_EVEN = [
   '#D4D4D4',
@@ -174,7 +175,7 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
     DonutChart: ({ data, ...props }) => {
       const {
         cx, cy,
-        titleLocation, titleAlignment, sliceTitle,
+        title, titleLocation, titleAlignment, sliceTitle,
         blendStroke, innerRadius, outerRadius, width, height,
       } = props;
 
@@ -191,6 +192,31 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         }
       }, [data]);
 
+      handleExportChart = () => {
+
+        let chartSVG = this.currentChart.children[0];
+        const width = chartSVG.clientWidth;
+        const height = chartSVG.clientHeight;
+        let svgURL = new XMLSerializer().serializeToString(chartSVG);
+        let svgBlob = new Blob([svgURL], { type: "image/svg+xml;charset=utf-8" });
+        let URL = window.URL || window.webkitURL || window;
+        let blobURL = URL.createObjectURL(svgBlob);
+
+        let image = new Image();
+        image.onload = () => {
+            let canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            let context = canvas.getContext('2d');
+            context.drawImage(image, 0, 0, context.canvas.width, context.canvas.height);
+            let png = canvas.toDataURL('image/png', 1.0);
+            FileSaver.saveAs(png, `${title}.png`);
+        };
+
+        image.src = blobURL;
+    };
+
+
       const defaultProps = {
         textColor,
         titleLocation,
@@ -206,7 +232,7 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
 
       return (
         <ResponsiveContainer width={width} height={height}>
-          <PieChart>
+          <PieChart ref={this.currentChart}>
             <Pie
               data={dataset}
               activeIndex={activeIndex}
