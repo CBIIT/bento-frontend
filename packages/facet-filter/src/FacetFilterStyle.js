@@ -19,7 +19,7 @@ export default () => ({
   sortGroupItem: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
-    fontSize: '10px',
+    fontSize: '11px',
     marginRight: '32px',
   },
 });

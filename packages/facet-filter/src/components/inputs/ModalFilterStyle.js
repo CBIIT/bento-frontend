@@ -16,7 +16,7 @@ export default () => ({
   sortGroupIcon: {
     cursor: 'pointer',
     fontFamily: 'Nunito',
-    fontSize: '10px',
+    fontSize: '11px',
     marginRight: '12px',
     marginLeft: 'auto',
   },
