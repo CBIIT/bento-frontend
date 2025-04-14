@@ -65,7 +65,7 @@ export default () => ({
   },
   upperBound: {
     fontFamily: 'Nunito',
-    fontSize: '10px',
+    fontSize: '11px',
     color: '#000000',
     float: 'right',
     marginLeft: 'Auto',
@@ -74,7 +74,7 @@ export default () => ({
   },
   lowerBound: {
     fontFamily: 'Nunito',
-    fontSize: '10px',
+    fontSize: '11px',
     color: '#000000',
     float: 'left',
     marginLeft: 'Auto',

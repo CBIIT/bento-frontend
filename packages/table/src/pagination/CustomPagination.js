@@ -70,7 +70,7 @@ const CustomPagination = ({
       theme={createMuiTheme({ overrides: { ...defaultTheme.overrides, ...customTheme } })}
     >
       <TablePagination
-        labelRowsPerPage="Results per Page:"
+        labelRowsPerPage={<span id="rows-per-page-label">Rows per page:</span>}
         rowsPerPageOptions={rowsPerPageOptions}
         component="div"
         count={count}
@@ -80,7 +80,13 @@ const CustomPagination = ({
         onRowsPerPageChange={onRowsPerPageChange}
         SelectProps={{
           IconComponent: ArrowDropDown,
-          inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
+          inputProps: {
+            'aria-label': 'Selection dropdown for displaying the number of results per page',
+            'aria-labelledby': 'rows-per-page-label',
+            style: {
+              visibility: 'hidden',
+            },
+          },
         }}
         nextIconButtonProps={{
           'aria-label': 'Next page',

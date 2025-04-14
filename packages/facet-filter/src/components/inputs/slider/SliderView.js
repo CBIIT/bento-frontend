@@ -242,7 +242,7 @@ const styles = () => ({
     ? props.facet.style.upperBound
     : {
       fontFamily: 'Nunito',
-      fontSize: '10px',
+      fontSize: '11px',
       color: '#000000',
       float: 'right',
       marginLeft: 'Auto',
@@ -253,7 +253,7 @@ const styles = () => ({
     ? props.facet.style.lowerBound
     : {
       fontFamily: 'Nunito',
-      fontSize: '10px',
+      fontSize: '11px',
       color: '#000000',
       float: 'left',
       marginLeft: 'Auto',
