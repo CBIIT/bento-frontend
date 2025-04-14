@@ -1,9 +1,12 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useRef } from 'react';
 // import { isEqual } from 'lodash';
 import {
   BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
+import { Button } from '@material-ui/core';
+import FileSaver from 'file-saver';
+import exportIcon from '../assets/Widget_Export.svg';
 
 export const DEFAULT_COLORS_EVEN = [
   '#4555AB',
@@ -175,7 +178,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
   return {
     BarChart: ({ data, ...props }) => {
       const {
-        width, height,
+        title, width, height,
         // cx, cy,
         // titleLocation, titleAlignment, sliceTitle,
         // blendStroke, innerRadius, outerRadius,
@@ -206,6 +209,8 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
       //   showTotalCount,
       //   textOverflowLength,
       // };
+
+      const currentChart = useRef(null);
 
       const tooltipStyle = {
         border: '1px solid #CCCCCC',
@@ -244,32 +249,66 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         );
       };
 
+      const handleExportChart = () => {
+        const chartSVG = currentChart.current.container.children[0];
+        const chartWidth = chartSVG.clientWidth;
+        const heightWidth = chartSVG.clientHeight;
+        const svgURL = new XMLSerializer().serializeToString(chartSVG);
+        const svgBlob = new Blob([svgURL], { type: 'image/svg+xml;charset=utf-8' });
+        const URL = window.URL || window.webkitURL || window;
+        const blobURL = URL.createObjectURL(svgBlob);
+
+        const image = new Image();
+        image.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = chartWidth;
+          canvas.height = heightWidth;
+          const context = canvas.getContext('2d');
+          context.fillStyle = 'white';
+          context.drawImage(image, 0, 0, context.canvas.width, context.canvas.height);
+          const png = canvas.toDataURL('image/png', 1.0);
+          FileSaver.saveAs(png, `${title}.png`);
+        };
+
+        image.src = blobURL;
+      };
+
       return (
-        <ResponsiveContainer width={width} height={height}>
-          <BarChart
-            data={data}
+        <>
+          <Button
+            onClick={() => handleExportChart()}
+            style={{ bottom: '25px', left: '275px' }}
+          >
+            <img src={exportIcon} alt="export" />
+          </Button>
+
+          <ResponsiveContainer width={width} height={height}>
+            <BarChart
+              data={data}
+              ref={currentChart}
             // margin={{
             //   top: 5,
             //   right: 30,
             //   left: 20,
             //   bottom: 5,
             // }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="group" interval={0} tick={renderTick} />
-            <YAxis tick={{ fill: '#4A5C5E' }} />
-            <Tooltip cursor={false} content={<CustomTooltip />} />
-            {/* <Legend /> */}
-            <Bar dataKey="subjects">
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={DEFAULT_COLORS_ODD[index % DEFAULT_COLORS_ODD.length]}
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="group" interval={0} tick={renderTick} />
+              <YAxis tick={{ fill: '#4A5C5E' }} />
+              <Tooltip cursor={false} content={<CustomTooltip />} />
+              {/* <Legend /> */}
+              <Bar dataKey="subjects">
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={DEFAULT_COLORS_ODD[index % DEFAULT_COLORS_ODD.length]}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </>
       );
     },
   };

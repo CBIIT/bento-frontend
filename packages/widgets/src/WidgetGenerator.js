@@ -30,7 +30,9 @@ const DEFAULT_CLASSES = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  widgetRoot: { },
+  widgetRoot: {
+    borderRadius: '20px',
+  },
   widgetBody: {
     margin: '0px auto',
     paddingRight: (theme) => (theme && theme.spacing ? theme.spacing.unit * 3 : 0),
@@ -118,6 +120,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
             >
               {chartType === 'donut' && (
                 <DonutChart
+                  title={title}
                   data={data}
                   sliceTitle={sliceTitle || 'Cases'}
                   width={185}
@@ -132,6 +135,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
               )}
               {chartType === 'bar' && (
                 <BarChart
+                  title={title}
                   data={data}
                   width={width}
                   height={height}

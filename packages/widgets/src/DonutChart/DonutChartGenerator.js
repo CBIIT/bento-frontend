@@ -3,7 +3,9 @@ import { isEqual } from 'lodash';
 import {
   PieChart, Pie, Sector, Cell, ResponsiveContainer,
 } from 'recharts';
+import { Button } from '@material-ui/core';
 import FileSaver from 'file-saver';
+import exportIcon from '../assets/Widget_Export.svg';
 
 export const DEFAULT_COLORS_EVEN = [
   '#D4D4D4',
@@ -159,10 +161,6 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
     ? functions.mergeProps
     : DEFAULT_CONFIG_DONUT.functions.mergeProps;
 
-  const lastIndex = functions && typeof functions.getLastIndex === 'function'
-    ? functions.getLastIndex
-    : DEFAULT_CONFIG_DONUT.functions.getLastIndex;
-
   const mapDataset = functions && typeof functions.mapData === 'function'
     ? functions.mapDatasetObject
     : DEFAULT_CONFIG_DONUT.functions.mapData;
@@ -182,40 +180,40 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
       const dataset = data.map(mapDataset);
       const totalCount = dataset.length || 0;
 
-      const [activeIndex, setActiveIndex] = useState(lastIndex(data));
+      const [activeIndex, setActiveIndex] = useState(0);
       const refHook = useRef(data);
+      const currentChart = useRef(null);
 
       useEffect(() => {
         if (isEqual(refHook.current, data) === false) {
           refHook.current = data;
-          setActiveIndex(lastIndex(data));
+          setActiveIndex(0);
         }
       }, [data]);
 
-      handleExportChart = () => {
+      const handleExportChart = () => {
+        const chartSVG = currentChart.current.container.children[0];
+        const chartWidth = chartSVG.clientWidth;
+        const heightWidth = chartSVG.clientHeight;
+        const svgURL = new XMLSerializer().serializeToString(chartSVG);
+        const svgBlob = new Blob([svgURL], { type: 'image/svg+xml;charset=utf-8' });
+        const URL = window.URL || window.webkitURL || window;
+        const blobURL = URL.createObjectURL(svgBlob);
 
-        let chartSVG = this.currentChart.children[0];
-        const width = chartSVG.clientWidth;
-        const height = chartSVG.clientHeight;
-        let svgURL = new XMLSerializer().serializeToString(chartSVG);
-        let svgBlob = new Blob([svgURL], { type: "image/svg+xml;charset=utf-8" });
-        let URL = window.URL || window.webkitURL || window;
-        let blobURL = URL.createObjectURL(svgBlob);
-
-        let image = new Image();
+        const image = new Image();
         image.onload = () => {
-            let canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            let context = canvas.getContext('2d');
-            context.drawImage(image, 0, 0, context.canvas.width, context.canvas.height);
-            let png = canvas.toDataURL('image/png', 1.0);
-            FileSaver.saveAs(png, `${title}.png`);
+          const canvas = document.createElement('canvas');
+          canvas.width = chartWidth;
+          canvas.height = heightWidth;
+          const context = canvas.getContext('2d');
+          context.fillStyle = 'white';
+          context.drawImage(image, 0, 0, context.canvas.width, context.canvas.height);
+          const png = canvas.toDataURL('image/png', 1.0);
+          FileSaver.saveAs(png, `${title}.png`);
         };
 
         image.src = blobURL;
-    };
-
+      };
 
       const defaultProps = {
         textColor,
@@ -231,32 +229,40 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
       };
 
       return (
-        <ResponsiveContainer width={width} height={height}>
-          <PieChart ref={this.currentChart}>
-            <Pie
-              data={dataset}
-              activeIndex={activeIndex}
-              blendStroke={blendStroke || true}
-              cx={cx || '50%'}
-              cy={cy || '50%'}
-              innerRadius={innerRadius}
-              outerRadius={outerRadius}
-              dataKey="value"
-              paddingAngle={cellPadding}
-              activeShape={(currentProps) => (mergeProps(currentProps, defaultProps, activeShape))}
-              onMouseEnter={(d, idx) => setActiveIndex(idx)}
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={data.length % 2 === 0
-                    ? COLORS_EVEN[index % COLORS_EVEN.length]
-                    : COLORS_ODD[index % COLORS_ODD.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        <>
+          <Button
+            onClick={() => handleExportChart()}
+            style={{ bottom: '27px', left: '135px', backgroundColor: 'transparent' }}
+          >
+            <img src={exportIcon} alt="export" />
+          </Button>
+          <ResponsiveContainer width={width} height={height}>
+            <PieChart ref={currentChart}>
+              <Pie
+                data={dataset}
+                activeIndex={activeIndex}
+                blendStroke={blendStroke || true}
+                cx={cx || '50%'}
+                cy={cy || '50%'}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius}
+                dataKey="value"
+                paddingAngle={cellPadding}
+                activeShape={(currProps) => (mergeProps(currProps, defaultProps, activeShape))}
+                onMouseEnter={(d, idx) => setActiveIndex(idx)}
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={data.length % 2 === 0
+                      ? COLORS_EVEN[index % COLORS_EVEN.length]
+                      : COLORS_ODD[index % COLORS_ODD.length]}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </>
       );
     },
   };
