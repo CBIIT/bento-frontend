@@ -21,7 +21,6 @@ const DEFAULT_CLASSES = makeStyles({
   paddedTitle: {
     margin: '32px 32px 0px 64px',
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   noPaddedTitle: {

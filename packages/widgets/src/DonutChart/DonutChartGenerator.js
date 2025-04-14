@@ -232,7 +232,7 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         <>
           <Button
             onClick={() => handleExportChart()}
-            style={{ bottom: '27px', left: '135px', backgroundColor: 'transparent' }}
+            style={{ bottom: '27px', left: '150px', backgroundColor: 'transparent' }}
           >
             <img src={exportIcon} alt="export" />
           </Button>

@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/widgets",
-  "version": "1.0.1-ccdihub.16",
+  "version": "1.0.1-ccdihub.17",
   "description": "This component provides an easy-to-use implementation of the DonutChart and SunburstChart components, and is ideal for implementation within a grid.",
   "main": "dist/index.js",
   "scripts": {
