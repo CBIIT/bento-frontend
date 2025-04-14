@@ -64,6 +64,7 @@ const TableView = ({
   onColumnViewChange,
   themeConfig = {},
   queryVariables,
+  navigation,
 }) => {
   useEffect(() => {
     const tableContainer = document.getElementById('tableContainer');
@@ -120,6 +121,7 @@ const TableView = ({
             rows={tableRows}
             table={table}
             onRowSelectChange={onRowSelectChange}
+            navigation={navigation}
           />
         </Table>
       </CustomTableContainer>

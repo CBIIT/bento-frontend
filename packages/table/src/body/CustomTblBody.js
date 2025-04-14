@@ -22,6 +22,7 @@ const CustomTableBody = ({
   table,
   onRowSelectChange,
   customTheme = {},
+  navigation,
 }) => {
   const { columns } = table;
   const displayColunms = columns.filter((col) => col.display);
@@ -51,6 +52,7 @@ const CustomTableBody = ({
                       column={column}
                       row={row}
                       themeConfig={themeConfig}
+                      navigation={navigation}
                     />
                   );
                 })
