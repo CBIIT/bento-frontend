@@ -80,7 +80,13 @@ const SearchFilterItems = ({
         <div>
           {checkedItems}
         </div>
-        <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll}>
+        <div
+          ref={scrollableRef}
+          className={classes.itemsContainer}
+          onScroll={handleScroll}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+          tabIndex={0}
+        >
           {uncheckedItems}
         </div>
       </div>
