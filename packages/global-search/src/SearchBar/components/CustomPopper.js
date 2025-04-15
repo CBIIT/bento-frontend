@@ -10,11 +10,13 @@ import { Popper } from '@material-ui/core';
 export const CustomPopper = (props) => {
   const {
     classes,
+    style,
   } = props;
 
   return (
     <Popper
       {...props}
+      style={{ ...style, zIndex: 1502 }}
       className={classes.root}
       placement="bottom"
     />
