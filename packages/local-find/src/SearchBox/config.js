@@ -9,6 +9,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     noOptionsText: 'No matching items found',
     searchType: 'subjectIds',
     ariaLabel: 'Search',
+    tooltipPlacement: 'top',
   },
 
   // Helper functions used by the component
