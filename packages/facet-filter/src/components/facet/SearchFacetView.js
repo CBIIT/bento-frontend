@@ -29,7 +29,7 @@ const searchItems = (items, searchText) => {
       const item = items[i];
       for (let j = 0; j < keyList.length; j += 1) {
         const key = keyList[j].trim();
-        if (key === '' || item.name.toUpperCase().includes(key)) {
+        if (key === '' || item.group.toUpperCase().includes(key)) {
           matchedItems.push(item);
           break;
         }
