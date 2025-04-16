@@ -180,13 +180,13 @@ const PaginatedPanel = (props) => {
 
 const styles = {
   prevButton: {
-    marginRight: '44px',
+    marginRight: 0,
     fontFamily: '"Open Sans", sans-serif',
     fontWeight: 'bold',
     fontSize: '12px',
   },
   nextButton: {
-    marginLeft: '44px',
+    marginLeft: 0,
     fontFamily: '"Open Sans", sans-serif',
     fontWeight: 'bold',
     fontSize: '12px',
@@ -201,7 +201,7 @@ const styles = {
   },
   paginationContainer: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     maxWidth: '680px',
     margin: '0 auto',
     paddingBottom: '20px',
