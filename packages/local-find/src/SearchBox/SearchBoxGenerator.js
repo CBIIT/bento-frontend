@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { isEqual } from 'lodash';
+import ToolTip from '@bento-core/tool-tip';
 import TextField from './components/CustomTextField';
 import SearchList from './components/SearchList';
 import { updateAutocompleteData } from '../store/actions/Actions';
@@ -48,6 +49,14 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.ariaLabel
     : DEFAULT_CONFIG.config.ariaLabel;
 
+  const tooltipText = config && typeof config.tooltipText === 'string'
+    ? config.tooltipText
+    : DEFAULT_CONFIG.config.tooltipText;
+
+  const tooltipPlacement = config && typeof config.tooltipPlacement === 'string'
+    ? config.tooltipPlacement
+    : DEFAULT_CONFIG.config.tooltipPlacement;
+
   const stateProps = (state) => ({
     autocomplete: state.localFind.autocomplete,
   });
@@ -67,9 +76,12 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const [open, setOpen] = useState(false);
       const [value, setValue] = useState(autocomplete || []);
       const [options, setOptions] = useState([]);
+      const [isHovered, setIsHovered] = useState(false);
+      const [isFocused, setIsFocused] = useState(false);
 
       const dataLoaded = useRef(false);
       const loading = open && (options.length === 0 || dataLoaded.current === false);
+      const tooltipOpen = isHovered && !isFocused;
 
       useEffect(() => {
         // Check if the data has already been loaded
@@ -122,6 +134,50 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
         onChangeWrapper(newValue, null, true);
       };
 
+      const autocompleteContainer = (
+        <div
+          className={classes.searchBoxRoot}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <Autocomplete
+            id="local_find_input"
+            multiple
+            disableClearable
+            className={classes.autocomplete}
+            classes={classes}
+            value={value}
+            open={open}
+            freeSolo={false}
+            noOptionsText={noOptionsText}
+            options={options}
+            loading={loading}
+            filterOptions={createFilterOptions({ trim: true })}
+            onOpen={() => setOpen(true)}
+            onClose={() => setOpen(false)}
+            onChange={(event, newValue, reason) => onChangeWrapper(newValue, reason)}
+            getOptionLabel={(option) => option.title}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            renderTags={() => null}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                classes={classes}
+                placeholder={inputPlaceholder}
+                InputProps={{
+                  ...params.InputProps,
+                  inputProps: {
+                    ...params.inputProps,
+                    'aria-label': ariaLabel,
+                  },
+                }}
+              />
+            )}
+          />
+        </div>
+      );
+
       return (
         <div>
           <div>
@@ -131,45 +187,22 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               onDelete={onDelete}
             />
           </div>
-          <div className={classes.searchBoxRoot}>
-            <Autocomplete
-              id="local_find_input"
-              multiple
-              disableClearable
-              className={classes.autocomplete}
-              classes={classes}
-              value={value}
-              open={open}
-              freeSolo={false}
-              noOptionsText={noOptionsText}
-              options={options}
-              loading={loading}
-              filterOptions={createFilterOptions({ trim: true })}
-              onOpen={() => {
-                setOpen(true);
+          {tooltipText ? (
+            <ToolTip
+              open={tooltipOpen}
+              title={tooltipText}
+              placement={tooltipPlacement}
+              classes={{
+                tooltip: classes.customTooltip,
+                arrow: classes.customArrow,
               }}
-              onClose={() => {
-                setOpen(false);
-              }}
-              onChange={(event, newValue, reason) => onChangeWrapper(newValue, reason)}
-              getOptionLabel={(option) => option.title}
-              renderTags={() => null}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  classes={classes}
-                  placeholder={inputPlaceholder}
-                  InputProps={{
-                    ...params.InputProps,
-                    inputProps: {
-                      ...params.inputProps,
-                      'aria-label': ariaLabel,
-                    },
-                  }}
-                />
-              )}
-            />
-          </div>
+              arrow
+            >
+              {autocompleteContainer}
+            </ToolTip>
+          ) : (
+            autocompleteContainer
+          )}
         </div>
       );
     })),
