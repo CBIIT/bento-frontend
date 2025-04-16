@@ -32,7 +32,9 @@ const PaginatedTable = ({
   */
   const [table, dispatch] = useReducer(reducer, {}, initState);
   useEffect(() => {
-    dispatch(unselectAllRows());
+    if (Object.keys(queryVariables).length > 0) {
+      dispatch(unselectAllRows());
+    }
   }, [queryVariables]);
 
   /**
