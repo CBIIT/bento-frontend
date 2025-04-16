@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/facet-filter",
-  "version": "1.0.1-CDS.8",
+  "version": "1.0.1-CDS.9",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
