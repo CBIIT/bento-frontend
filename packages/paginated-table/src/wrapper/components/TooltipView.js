@@ -16,12 +16,14 @@ const ToolTipView = (props) => {
     icon,
     alt,
     arrow = false,
+    maxWidth,
     clsName,
   } = tooltipCofig;
   return (
     <ToolTip
       title={tooltipCofig[section]}
       arrow={arrow}
+      maxWidth={maxWidth || '230px'}
       classes={{
         tooltip: classes.customTooltip,
         arrow: classes.customArrow,
