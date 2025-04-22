@@ -1,6 +1,7 @@
 
 import {
-  clearAllAndSelectFacet
+  clearAllAndSelectFacet,
+  InputTypes,
  } from '@bento-core/facet-filter';
 
 import {
@@ -13,6 +14,7 @@ import {
 } from '../../../bento/localSearchData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
+import { facetsConfig } from '../../../bento/dashTemplate';
 
 export const getFacetValues = (facet, facetValue) => ({[facet]: { [facetValue]: true }});
 
@@ -79,7 +81,20 @@ export const setActiveFilterByPathQuery = (match) => {
     }
     return curr;
   }, {});
-  store.dispatch(clearAllAndSelectFacet(activeFilterValues));
+  
+  const transformSliderFilters = (filters) => {
+    return Object.keys(filters).reduce((acc, key) => {
+      const isSlider = facetsConfig.some(facet => facet.datafield === key && facet.type === InputTypes.SLIDER);
+      if (isSlider) {
+        acc[key] = Object.keys(filters[key]).map(Number);
+      } else {
+        acc[key] = filters[key]; 
+      }
+      return acc;
+    }, {});
+  };
+
+  store.dispatch(clearAllAndSelectFacet(transformSliderFilters(activeFilterValues)));
   store.dispatch(updateAutocompleteData(autocomplete));
   store.dispatch(updateUploadData(upload));
   store.dispatch(updateUploadMetadata(uploadMetadata));
