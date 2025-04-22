@@ -307,6 +307,10 @@ const NavBar = ({ config, endComponent, classes }) => {
   const shouldBeUnderlined = (item) => {
     const linkName = item.name;
     const correctPath = window.location.hash.slice(1);
+
+    if (clickedTitle === linkName) {
+      return false;
+    }
     if (item.className === 'navMobileItem') {
       return correctPath === item.link;
     }
@@ -324,7 +328,7 @@ const NavBar = ({ config, endComponent, classes }) => {
       function handleClickOutside(event) {
         if (
           !event.target
-          || (event.target.getAttribute('class') !== 'dropdownList'
+          || (event.target.getAttribute('class') !== 'dropdownListWrapper'
             && ref1.current
             && !ref1.current.contains(event.target))
         ) {
@@ -422,74 +426,76 @@ const NavBar = ({ config, endComponent, classes }) => {
           clickedTitle === '' ? classes.invisible : ''
         }`}
       >
-        <Grid container className={classes.nameDropdownContainer}>
-          {clickedTitle !== ''
-            ? HeaderSubLinks[clickedTitle]?.map((dropItem) => {
-              if (dropItem.link) {
-                return (
-                  <Grid item xs={3} key={dropItem.id} className="gridItem">
-                    <ul className="dropdownList">
-                      <li className="dropdownListItem">
-                        {dropItem.link.startsWith('https://')
-                          || dropItem.link.endsWith('.pdf') ? (
-                            <a
-                              target="_blank"
-                              id={dropItem.id}
-                              href={dropItem.link}
-                              rel="noopener noreferrer"
-                              className="dropdownItem"
-                              onClick={() => setClickedTitle('')}
-                            >
-                              {dropItem.name}
-                              {dropItem.text && (
+        <div className="dropdownListWrapper">
+          <Grid container className={classes.nameDropdownContainer}>
+            {clickedTitle !== ''
+              ? HeaderSubLinks[clickedTitle]?.map((dropItem) => {
+                if (dropItem.link) {
+                  return (
+                    <Grid item xs={3} key={dropItem.id} className="gridItem">
+                      <ul className="dropdownList">
+                        <li className="dropdownListItem">
+                          {dropItem.link.startsWith('https://')
+                            || dropItem.link.endsWith('.pdf') ? (
+                              <a
+                                target="_blank"
+                                id={dropItem.id}
+                                href={dropItem.link}
+                                rel="noopener noreferrer"
+                                className="dropdownItem"
+                                onClick={() => setClickedTitle('')}
+                              >
+                                {dropItem.name}
+                                {dropItem.text && (
+                                  <div className="dropdownItemText">
+                                    {dropItem.text}
+                                  </div>
+                                )}
+                              </a>
+                            ) : (
+                              <Link
+                                target="_self"
+                                id={dropItem.id}
+                                to={dropItem.link}
+                                className="dropdownItem"
+                                onClick={() => setClickedTitle('')}
+                              >
+                                {dropItem.name}
+                                {dropItem.text && (
                                 <div className="dropdownItemText">
                                   {dropItem.text}
                                 </div>
-                              )}
-                            </a>
-                          ) : (
-                            <Link
-                              target="_self"
-                              id={dropItem.id}
-                              to={dropItem.link}
-                              className="dropdownItem"
-                              onClick={() => setClickedTitle('')}
-                            >
-                              {dropItem.name}
-                              {dropItem.text && (
-                              <div className="dropdownItemText">
-                                {dropItem.text}
-                              </div>
-                              )}
-                            </Link>
-                          )}
-                      </li>
-                    </ul>
-                  </Grid>
-                );
-              }
-              if (dropItem.onClick) {
-                return (
-                  <Grid item xs={3} key={dropItem.id} className="gridItem">
-                    <ul className="dropdownList">
-                      <li className="dropdownListItem">
-                        <Button
-                          id={dropItem.id}
-                          key={dropItem.id}
-                          className="dropdownItem dropdownItemButton"
-                          onClick={dropItem.onClick}
-                        >
-                          {dropItem.name}
-                        </Button>
-                      </li>
-                    </ul>
-                  </Grid>
-                );
-              }
-              return null;
-            })
-            : null}
-        </Grid>
+                                )}
+                              </Link>
+                            )}
+                        </li>
+                      </ul>
+                    </Grid>
+                  );
+                }
+                if (dropItem.onClick) {
+                  return (
+                    <Grid item xs={3} key={dropItem.id} className="gridItem">
+                      <ul className="dropdownList">
+                        <li className="dropdownListItem">
+                          <Button
+                            id={dropItem.id}
+                            key={dropItem.id}
+                            className="dropdownItem dropdownItemButton"
+                            onClick={dropItem.onClick}
+                          >
+                            {dropItem.name}
+                          </Button>
+                        </li>
+                      </ul>
+                    </Grid>
+                  );
+                }
+                return null;
+              })
+              : null}
+          </Grid>
+        </div>
       </div>
     </div>
   );
