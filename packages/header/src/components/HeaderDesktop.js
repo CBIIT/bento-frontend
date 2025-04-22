@@ -10,6 +10,7 @@ const styles = () => ({
   headerContainer: {
     margin: '0 auto',
     paddingLeft: '32px',
+    paddingRight: '32px',
     maxWidth: '1400px',
     display: 'flex',
   },
@@ -18,7 +19,7 @@ const styles = () => ({
     marginLeft: 'auto',
 
     '& .searchBarArea': {
-      padding: '0px 7.5px 0 0',
+      padding: 0,
       marginTop: '35px',
       display: 'flex',
       alignItems: 'center',

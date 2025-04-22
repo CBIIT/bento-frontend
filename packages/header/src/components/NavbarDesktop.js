@@ -51,7 +51,7 @@ const styles = {
     listStyle: 'none',
     margin: 0,
     paddingTop: '17px',
-    paddingLeft: '11px',
+    paddingLeft: '13px',
     display: 'flex',
     width: '100%',
   },
@@ -76,6 +76,7 @@ const styles = {
     },
     '&.end-dropdown-li': {
       marginLeft: 'auto',
+      marginRight: '32px',
     },
     '&.login-button': {
       lineHeight: '48px',
@@ -207,15 +208,14 @@ const styles = {
     margin: '0 auto',
     textAlign: 'left',
     position: 'relative',
-    maxWidth: '1440px',
+    maxWidth: '1400px',
     '& .dropdownList': {
       background: '#1F4671',
       display: 'grid',
       gridTemplateColumns: 'repeat(4, max-content)',
-      justifyContent: 'start',
-      columnGap: '200px',
+      justifyContent: 'space-between',
       rowGap: '48px',
-      padding: '35px 48px 76px',
+      padding: '35px 32px 76px',
     },
     '& .dropdownItem': {
       padding: '0',
