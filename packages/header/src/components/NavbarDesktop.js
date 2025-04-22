@@ -200,7 +200,8 @@ const styles = {
     backgroundColor: '#004971',
     display: 'block',
     left: 0,
-    paddingTop: '2rem',
+    paddingTop: '35px',
+    paddingBottom: '12px',
     position: 'absolute',
     right: 0,
     width: '100%',
@@ -215,7 +216,7 @@ const styles = {
     '& .dropdownList': {
       padding: 0,
       marginTop: 0,
-      marginBottom: '40px',
+      marginBottom: '45px',
       listStyle: 'none',
     },
     '& .gridItem': {
@@ -242,7 +243,7 @@ const styles = {
         textDecoration: 'underline',
       },
     },
-    '& .dropdownItem a': {
+    '& a.dropdownItem': {
       display: 'inline-block',
       padding: '0',
     },
