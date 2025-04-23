@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Button, withStyles } from '@material-ui/core';
+import { Button, Grid, withStyles } from '@material-ui/core';
 
 const styles = {
   nav: {
@@ -51,7 +51,7 @@ const styles = {
     listStyle: 'none',
     margin: 0,
     paddingTop: '17px',
-    paddingLeft: '11px',
+    paddingLeft: '15px',
     display: 'flex',
     width: '100%',
   },
@@ -76,6 +76,7 @@ const styles = {
     },
     '&.end-dropdown-li': {
       marginLeft: 'auto',
+      marginRight: '32px',
     },
     '&.login-button': {
       lineHeight: '48px',
@@ -196,26 +197,35 @@ const styles = {
     },
   },
   dropdown: {
-    top: '60.5px',
+    backgroundColor: '#004971',
+    display: 'block',
     left: 0,
-    width: '100%',
-    background: '#1F4671',
-    zIndex: 1100,
+    paddingTop: '35px',
+    paddingBottom: '12px',
     position: 'absolute',
+    right: 0,
+    width: '100%',
+    zIndex: 400,
   },
   nameDropdownContainer: {
     margin: '0 auto',
     textAlign: 'left',
     position: 'relative',
-    maxWidth: '1440px',
+    maxWidth: '1400px',
+    padding: '0 16px',
     '& .dropdownList': {
-      background: '#1F4671',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(4, max-content)',
-      justifyContent: 'start',
-      columnGap: '200px',
-      rowGap: '48px',
-      padding: '35px 48px 76px',
+      padding: 0,
+      marginTop: 0,
+      marginBottom: '45px',
+      listStyle: 'none',
+    },
+    '& .gridItem': {
+      paddingLeft: '16px',
+      paddingRight: '16px',
+    },
+    '& .dropdownListItem': {
+      padding: 0,
+      margin: 0,
     },
     '& .dropdownItem': {
       padding: '0',
@@ -233,14 +243,13 @@ const styles = {
         textDecoration: 'underline',
       },
     },
-    '& .dropdownItem a': {
+    '& a.dropdownItem': {
       display: 'inline-block',
       padding: '0',
     },
     '& .dropdownItemButton': {
       textTransform: 'none',
-      paddingLeft: '20px',
-      paddingRight: '20px',
+      paddingLeft: 0,
       '&:hover': {
         background: 'transparent',
       },
@@ -299,6 +308,10 @@ const NavBar = ({ config, endComponent, classes }) => {
   const shouldBeUnderlined = (item) => {
     const linkName = item.name;
     const correctPath = window.location.hash.slice(1);
+
+    if (clickedTitle === linkName) {
+      return false;
+    }
     if (item.className === 'navMobileItem') {
       return correctPath === item.link;
     }
@@ -316,7 +329,7 @@ const NavBar = ({ config, endComponent, classes }) => {
       function handleClickOutside(event) {
         if (
           !event.target
-          || (event.target.getAttribute('class') !== 'dropdownList'
+          || (event.target.getAttribute('class') !== 'dropdownListWrapper'
             && ref1.current
             && !ref1.current.contains(event.target))
         ) {
@@ -407,71 +420,82 @@ const NavBar = ({ config, endComponent, classes }) => {
           )}
         </ul>
       </div>
+
       <div
         ref={dropdownSelection}
         className={`${classes.dropdown} ${
           clickedTitle === '' ? classes.invisible : ''
         }`}
       >
-        <div className={classes.nameDropdownContainer}>
-          <div className="dropdownList">
+        <div className="dropdownListWrapper">
+          <Grid container className={classes.nameDropdownContainer}>
             {clickedTitle !== ''
               ? HeaderSubLinks[clickedTitle]?.map((dropItem) => {
                 if (dropItem.link) {
                   return (
-                    <span className="dropdownItem" key={dropItem.id}>
-                      {dropItem.link.startsWith('https://')
-                        || dropItem.link.endsWith('.pdf') ? (
-                          <a
-                            target="_blank"
-                            id={dropItem.id}
-                            href={dropItem.link}
-                            rel="noopener noreferrer"
-                            className="dropdownItem"
-                            onClick={() => setClickedTitle('')}
-                          >
-                            {dropItem.name}
-                            {dropItem.text && (
-                              <div className="dropdownItemText">
-                                {dropItem.text}
-                              </div>
+                    <Grid item xs={3} key={dropItem.id} className="gridItem">
+                      <ul className="dropdownList">
+                        <li className="dropdownListItem">
+                          {dropItem.link.startsWith('https://')
+                            || dropItem.link.endsWith('.pdf') ? (
+                              <a
+                                target="_blank"
+                                id={dropItem.id}
+                                href={dropItem.link}
+                                rel="noopener noreferrer"
+                                className="dropdownItem"
+                                onClick={() => setClickedTitle('')}
+                              >
+                                {dropItem.name}
+                                {dropItem.text && (
+                                  <div className="dropdownItemText">
+                                    {dropItem.text}
+                                  </div>
+                                )}
+                              </a>
+                            ) : (
+                              <Link
+                                target="_self"
+                                id={dropItem.id}
+                                to={dropItem.link}
+                                className="dropdownItem"
+                                onClick={() => setClickedTitle('')}
+                              >
+                                {dropItem.name}
+                                {dropItem.text && (
+                                <div className="dropdownItemText">
+                                  {dropItem.text}
+                                </div>
+                                )}
+                              </Link>
                             )}
-                          </a>
-                        ) : (
-                          <Link
-                            target="_self"
-                            id={dropItem.id}
-                            to={dropItem.link}
-                            className="dropdownItem"
-                            onClick={() => setClickedTitle('')}
-                          >
-                            {dropItem.name}
-                            {dropItem.text && (
-                              <div className="dropdownItemText">
-                                {dropItem.text}
-                              </div>
-                            )}
-                          </Link>
-                        )}
-                    </span>
+                        </li>
+                      </ul>
+                    </Grid>
                   );
                 }
                 if (dropItem.onClick) {
                   return (
-                    <Button
-                      id={dropItem.id}
-                      key={dropItem.id}
-                      className="dropdownItem dropdownItemButton"
-                      onClick={dropItem.onClick}
-                    >
-                      {dropItem.name}
-                    </Button>
+                    <Grid item xs={3} key={dropItem.id} className="gridItem">
+                      <ul className="dropdownList">
+                        <li className="dropdownListItem">
+                          <Button
+                            id={dropItem.id}
+                            key={dropItem.id}
+                            className="dropdownItem dropdownItemButton"
+                            onClick={dropItem.onClick}
+                          >
+                            {dropItem.name}
+                          </Button>
+                        </li>
+                      </ul>
+                    </Grid>
                   );
                 }
                 return null;
               })
               : null}
-          </div>
+          </Grid>
         </div>
       </div>
     </div>
