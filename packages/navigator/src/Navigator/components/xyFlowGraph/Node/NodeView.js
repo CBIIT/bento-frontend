@@ -1,71 +1,37 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
-/* eslint-disable space-infix-ops */
-/* eslint-disable prefer-template */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable quotes */
-/* eslint-disable no-undef */
-/* eslint-disable no-shadow */
-/* eslint-disable semi */
-/* eslint-disable object-curly-spacing */
-/* eslint-disable import/no-cycle */
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable indent */
-/* eslint-disable object-shorthand */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/order */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable react/jsx-indent */
-/* eslint-disable object-curly-newline */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable arrow-spacing */
-/* eslint-disable keyword-spacing */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-unused-vars */
-/* eslint-disable padded-blocks */
-/* eslint-disable spaced-comment */
-
 import React,
-{ 
-  useCallback, 
-  useEffect, 
-  useState
+{
+  useEffect,
+  useState,
 } from 'react';
+import { Position } from '@xyflow/react';
 import * as Styled from './Node.styled';
-import { Handle, Position } from '@xyflow/react';
 import { useModelContext } from '../../../state/NavContextProvider';
 import {
   onNodeFocus,
-  showOverlayTable
+  showOverlayTable,
 } from '../../../state/actions/Action';
 
 const NodeView = ({
   id,
   data,
-  currentSearchKeyword,
-  expandNodeView,
-  highlightingNode,
-  highlightParentNodes,
 }) => {
-
-  const { context = {}} = useModelContext();
-  const { dispatch, focusedNodeId, matches = {}, isSearchMode } = context;
-
+  const { context = {} } = useModelContext();
+  const {
+    dispatch,
+    focusedNodeId,
+    matches = {},
+    isSearchMode,
+  } = context;
   const [display, setDisplay] = useState(false);
 
   const {
     label,
     icon,
     iconColor,
-    category,
-    matchedNodeNameQuery,
-    summary
+    summary,
   } = data;
 
-  //dispatch event - on table view
+  // dispatch event - on table view
   const displayOverviewTable = () => {
     dispatch(showOverlayTable(id));
   };
@@ -75,7 +41,7 @@ const NodeView = ({
    * use view option to adjust the fontSize on property dialog
    */
   const toggleNode = () => {
-    if(isSearchMode) {
+    if (isSearchMode) {
       displayOverviewTable();
     } else {
       setDisplay(!display);
@@ -137,22 +103,23 @@ const NodeView = ({
                 <Styled.LabelWrapper className="labelWrapper">
                   {`${label}`.toLowerCase()}
                 </Styled.LabelWrapper>
-              </Styled.NodeButtonInnerWrapper> 
+              </Styled.NodeButtonInnerWrapper>
             </Styled.NodeButton>
           </Styled.NodeTitle>
         </Styled.ContentWrapper>
         <Styled.Summary className="nodeSummary" display={display}>
           <Styled.SummaryList className="nodeSummaryList">
             {
-              Object.keys(summary).map((key, index)=> (
-              <Styled.ListItem key={index} className="summaryListItem">
-                <Styled.ListItemLabel className="summaryListItemLabel">
-                  {`${key}: `}
-                </Styled.ListItemLabel>
-                <Styled.ListItemValue className="summaryListItemValue">
-                  {summary[key]}
-                </Styled.ListItemValue>
-              </Styled.ListItem>))
+              Object.keys(summary).map((key, index) => (
+                <Styled.ListItem key={index} className="summaryListItem">
+                  <Styled.ListItemLabel className="summaryListItemLabel">
+                    {`${key}: `}
+                  </Styled.ListItemLabel>
+                  <Styled.ListItemValue className="summaryListItemValue">
+                    {summary[key]}
+                  </Styled.ListItemValue>
+                </Styled.ListItem>
+              ))
             }
           </Styled.SummaryList>
         </Styled.Summary>

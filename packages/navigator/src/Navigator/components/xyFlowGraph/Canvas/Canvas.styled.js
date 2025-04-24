@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable comma-dangle */
 import styled from '@emotion/styled';
 import { Background } from '@xyflow/react';
 
@@ -20,13 +18,13 @@ export const CanvasBackground = styled(Background)(
   (highlightedNodes) => {
     if (highlightedNodes && !!highlightedNodes.length) {
       return {
-        backgroundColor: '#C5DEEA'
+        backgroundColor: '#C5DEEA',
       };
     }
     return {
-      backgroundColor: '#E7F3F7'
+      backgroundColor: '#E7F3F7',
     };
-  }
+  },
 );
 
 export const Controls = styled('div')({

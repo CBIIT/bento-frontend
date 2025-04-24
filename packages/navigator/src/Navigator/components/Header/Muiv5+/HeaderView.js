@@ -9,12 +9,12 @@ const HeaderView = ({
   readMeConfig,
 }) => (
   <>
-    <Styled.TitleContainer>
-      <Styled.LogoAndTitle>
-        <Styled.HeaderLogo src={headerLogo} alt="header-logo" />
-        <Styled.Title>{title}</Styled.Title>
+    <Styled.TitleContainer className="headerTitleContainer">
+      <Styled.LogoAndTitle className="logoAndTitle">
+        <Styled.HeaderLogo src={headerLogo} alt="header-logo" className="headerLogo" />
+        <Styled.Title className="headerTitle">{title}</Styled.Title>
       </Styled.LogoAndTitle>
-      <Styled.ButtonContainer>
+      <Styled.ButtonContainer className="headerButtonContainer">
         {
           readMeConfig && (
             <ReadMeView

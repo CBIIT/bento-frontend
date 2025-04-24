@@ -12,22 +12,22 @@ const SummaryView = () => {
   const noResults = Object.keys(summaryCount || {}).length < 1;
 
   return (
-    <Styled.ResultSummaryContain>
+    <Styled.ResultSummaryContain className="resultSummaryContain">
       {noResults ? (
-        <Styled.NoResult>
+        <Styled.NoResult className="noResultMsg">
           0 results found. Please try another keyword.
         </Styled.NoResult>
       ) : (
         <>
-          <Styled.LabelText>
+          <Styled.LabelText className="labelText">
             Search Results
           </Styled.LabelText>
-          <Styled.ResultList>
-            <Styled.ResultItem>
-              <Styled.ResultCountTitleDesc>
+          <Styled.ResultList className="resultList">
+            <Styled.ResultItem className="resultItem">
+              <Styled.ResultCountTitleDesc className="resultCountTitleDesc">
                 {summaryCount.title + summaryCount.desc}
               </Styled.ResultCountTitleDesc>
-              <span>
+              <span className="matchCounts">
                 Match(es) in nodes
                 <br />
                 (title and description)

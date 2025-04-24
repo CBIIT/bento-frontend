@@ -12,12 +12,12 @@ import {
   FILE_TYPE_TEMPLATES,
   FILE_TYPE_CONTROLLED_VOCAB_TSV,
   FILE_TYPE_CONTROLLED_VOCAB_JSON,
-} from './Constants';
+} from './DownloadType';
 import * as Styled from './Dropdown.styled';
 import { downloadMarkdownPdf } from '../ReadMe/Dialog/DialogView';
-import { useModelContext } from '../../../state/NavContextProvider';
-import { category2NodeList } from '../../Table/TableView';
-import { createFileName, downloadAllTemplates, generatePdfDocument } from '../../../utils/Util';
+import { useModelContext } from '../../../../state/NavContextProvider';
+import { category2NodeList } from '../../../Table/TableView';
+import { createFileName, downloadAllTemplates, generatePdfDocument } from '../../../../utils/Utils';
 
 export const generateVocabFullDownload = (fullDictionary, format, prefix = 'ICDC_') => {
   const c2nl = category2NodeList(fullDictionary);

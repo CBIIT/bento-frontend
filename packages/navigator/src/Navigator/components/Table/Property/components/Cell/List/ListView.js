@@ -10,14 +10,16 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import * as Styled from './List.styled';
 import HighlightText from '../../../../../Sidebar/Search/HighlightText';
 
-const maxItem = 10;
+const numbOfDefaultDisplayItems = 10;
+const exceedNumbOfItems = 30;
+
 const ListView = ({
   items = [],
   matchingItems = {},
   searchTerm,
 }) => {
   const [display, setDisplay] = useState(false);
-  const listItems = items.slice(0, maxItem);
+  const listItems = items.slice(0, numbOfDefaultDisplayItems);
   const DisplayListItem = ({ displayItems = [] }) => (
     <Styled.MuiList
       className="acptValList"
@@ -58,7 +60,7 @@ const ListView = ({
         </Styled.AcceptValueLabel>
         {' '}
         {(!display) && (<DisplayListItem displayItems={listItems} />)}
-        {(!display && items.length > maxItem) ? (
+        {(!display && items.length > numbOfDefaultDisplayItems) ? (
           <Button onClick={() => setDisplay(!display)}>
             ...show More
           </Button>
@@ -66,8 +68,13 @@ const ListView = ({
           <Styled.MuiDialog
             open={display}
             onClose={() => setDisplay(false)}
-            maxWidth="sm"
-            PaperProps={{ sx: { padding: '1rem' } }}
+            maxWidth={display && items?.length > exceedNumbOfItems ? 'lg' : 'sm'}
+            slotProps={{
+              paper: {
+                sx: { p: 4 },
+              },
+            }}
+            fullWidth
           >
             <Styled.DialogTitleContent>
               <Styled.DialogTitle>

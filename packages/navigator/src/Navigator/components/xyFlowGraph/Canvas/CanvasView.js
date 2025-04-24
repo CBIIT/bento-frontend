@@ -49,7 +49,6 @@ const CustomFlowView = ({
   graphConfig = {},
 }) => {
   const { setViewport, zoomIn, zoomOut } = useReactFlow();
-
   const { canvas = {} } = graphConfig;
   const { fit = 0.75 } = canvas;
   const width = canvasWidth / 2 || 1200;

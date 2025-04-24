@@ -17,6 +17,8 @@ import {
   StyledTabs,
 } from './Navigator.styled';
 import SideBarView from './components/Sidebar/SidebarController';
+import TableView from './components/Table/TableView';
+import GraphView from './components/xyFlowGraph/GraphView';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -35,8 +37,6 @@ const TabPanel = (props) => {
 
 const NavigatorView = ({
   dictionary,
-  NavGraphView,
-  NavTableView,
 }) => {
   // garph tab / table tab
   const [value, setValue] = useState(0);
@@ -85,13 +85,13 @@ const NavigatorView = ({
         <StyledTabPanelOuterContainer>
           <StyledTabPanelContainer>
             <TabPanel value={value} index={0}>
-              <NavGraphView
+              <GraphView
                 dictionary={dictionary}
                 tabViewWidth={tabViewWidth}
               />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <NavTableView dictionary={dictionary} />
+              <TableView dictionary={dictionary} />
             </TabPanel>
           </StyledTabPanelContainer>
         </StyledTabPanelOuterContainer>

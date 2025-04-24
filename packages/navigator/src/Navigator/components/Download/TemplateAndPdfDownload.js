@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import IconDownloadPDF from './assets/icon_download_PDF.svg';
-import IconDownloadTSV from './assets/icon_download_TSV.svg';
+import IconDownloadPDF from './icons/icon_download_PDF.svg';
+import IconDownloadTSV from './icons/icon_download_TSV.svg';
 import * as Styled from './Download.styled';
-import { downloadTSV, generatePdfDocument } from '../../utils/Util';
+import { downloadTSV, generatePdfDocument } from '../../utils/Utils';
 
-const DownloadButtonView = ({
+const TemplateAndPdfDownload = ({
   nodes,
+  pdfFileName,
+  tsvFileName,
 }) => {
   const [isLoading, setLoading] = useState(false);
 
   const downloadPdf = async () => {
     setLoading(true);
-    generatePdfDocument(nodes)
+    generatePdfDocument(nodes, pdfFileName)
       .then((response) => {
         if (response) {
           setLoading(false);
@@ -20,9 +22,8 @@ const DownloadButtonView = ({
   };
 
   const downloadTSVTemplate = () => {
-    nodes.forEach((node) => {
-      downloadTSV(node);
-    });
+    const tsvName = tsvFileName || nodes[0]?.title || '';
+    downloadTSV(nodes[0], tsvName);
   };
 
   return (
@@ -54,4 +55,4 @@ const DownloadButtonView = ({
   );
 };
 
-export default DownloadButtonView;
+export default TemplateAndPdfDownload;

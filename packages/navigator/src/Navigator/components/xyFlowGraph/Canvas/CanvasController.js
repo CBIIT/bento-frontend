@@ -53,13 +53,25 @@ const CanvasController = ({
         tabViewWidth,
         ...graphConfig?.canvas?.fit,
       });
+      // set node position
       updateNodeItems = nodeItems.map((node) => {
         const position = nodePosition[node.id];
+        if (position
+          && typeof position[0] === 'number'
+          && typeof position[1] === 'number') {
+          return {
+            ...node,
+            position: {
+              x: position[0],
+              y: position[1],
+            },
+          };
+        }
         return {
           ...node,
           position: {
-            x: position[0],
-            y: position[1],
+            x: 0,
+            y: 0,
           },
         };
       });
@@ -113,6 +125,9 @@ const CanvasController = ({
   };
 
   const { focusedNodeId = '', graphConfig } = context;
+  if (!nodes || nodes.length < 1) {
+    return <CircularProgress />;
+  }
 
   return (
     <CanvasView

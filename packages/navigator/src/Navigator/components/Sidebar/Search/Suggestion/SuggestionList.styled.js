@@ -3,11 +3,12 @@ import { ListItem, MenuList } from '@mui/material';
 
 export const SuggestListContainer = styled(MenuList)({
   paddingRight: '10px',
-  position: 'relative',
   zIndex: 1,
   background: '#fff',
   paddingTop: '0px',
   border: '1px solid #606060',
+  position: 'absolute',
+  width: '285px',
 });
 
 export const SuggestListItem = styled(ListItem)({

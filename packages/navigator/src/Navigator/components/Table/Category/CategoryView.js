@@ -2,7 +2,7 @@
 import React from 'react';
 import NodeView from '../Node/NodeView';
 import {
-  categoryColorAndIcon,
+  getCategoryColorAndIcon,
 } from '../../Category/helper';
 import {
   StyleCategoryTitle,
@@ -21,8 +21,8 @@ const CategoryView = ({
   onCloseOverlayTable,
   matches = {},
 }) => {
-  const categoryIconAndColor = categoryColorAndIcon[category];
-  const iconURL = categoryIconAndColor.tableIcon;
+  const categoryIconAndColor = getCategoryColorAndIcon(category);
+  const iconURL = categoryIconAndColor?.tableIcon;
 
   return (
     <StyledCatergoryOuterContainer
@@ -42,7 +42,10 @@ const CategoryView = ({
           {category}
         </StyleCategoryTitle>
         { isOverLayTable && (
-          <StyledCloseButton onClick={onCloseOverlayTable}>
+          <StyledCloseButton
+            onClick={onCloseOverlayTable}
+            className={`closeButton_${category}`}
+          >
             <StyledCloseIcon />
           </StyledCloseButton>
         )}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useModelContext } from '../../../state/NavContextProvider';
 import FacetSection from './FacetSection';
-import { facetSectionType } from '../../../controller/Filter';
 import * as Styled from './FacetSection.styled';
 import { onClearSection } from '../../../state/actions/Action';
+import { facetSectionType } from '../../../constant/Filter';
 
 const defaultExpansion = true;
 

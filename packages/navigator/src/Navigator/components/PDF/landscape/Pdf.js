@@ -9,7 +9,7 @@ import PdfTitle from './PdfTitle';
 import PdfTable from './PdfTable';
 import PdfHeader from './PdfHeader';
 import PdfFooter from './PdfFooter';
-import { categoryColorAndIcon } from '../../Category/helper';
+import { getCategoryColorAndIcon } from '../../Category/helper';
 
 const styles = StyleSheet.create({
   page: {
@@ -32,7 +32,7 @@ const PdfDocument = ({
   pdfDownloadConfig,
 }) => {
   const PdfNodeView = ({ node }) => {
-    const categoryIconAndColor = categoryColorAndIcon[node?.category];
+    const categoryIconAndColor = getCategoryColorAndIcon(node?.category);
     const categoryColor = categoryIconAndColor.color;
     const categoryIcon = categoryIconAndColor.pdfIcon;
     return (

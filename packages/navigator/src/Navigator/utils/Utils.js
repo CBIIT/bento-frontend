@@ -1,3 +1,8 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-continue */
+/* eslint-disable no-console */
 import _ from 'lodash';
 import React from 'react';
 import FileSaver, { saveAs } from 'file-saver';
@@ -47,7 +52,7 @@ export const downloadTSV = (
 const dataDictionaryTemplatePath = 'FIXME';
 const appname = 'Data Dictionary Vizualizations';
 
-export function createFileName(fileName, filePreFix) {
+export function createFileName(fileName, filePreFix, modelVersion = undefined, isTemplate = false) {
   const date = new Date();
   const yyyy = date.getFullYear();
   let dd = date.getDate();
@@ -68,20 +73,26 @@ export function createFileName(fileName, filePreFix) {
 
   if (seconds < 10) { seconds = `0${seconds}`; }
 
-  return filePreFix ? `${filePreFix}${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}`
-    : `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}`;
+  if (isTemplate && modelVersion) {
+    return filePreFix ? `${filePreFix}Data_Loading_Template_${fileName}_${modelVersion}`
+      : `${fileName}_${modelVersion}`;
+  }
+
+  return filePreFix ? `${filePreFix}${fileName}${modelVersion ? `_${modelVersion}` : `${todaysDate} ${hours}-${minutes}-${seconds}`}`
+    : `${fileName}${modelVersion ? `_${modelVersion}` : `${todaysDate} ${hours}-${minutes}-${seconds}`}`;
 }
 
 export const generatePdfDocument = async (
   nodes,
   fileName = '',
+  iconSrc = logo,
 ) => {
   const PdfView = LandscapePDFDoc;
   const blob = await pdf((
     <PdfView
       nodes={nodes}
       pdfDownloadConfig={{
-        iconSrc: logo,
+        iconSrc,
       }}
     />
   )).toBlob();
@@ -128,6 +139,26 @@ export const truncateLines = (str, maxCharInRow = 10, breakwordMinLength = 12) =
   }
   res.push(currentLine);
   return res;
+};
+
+/**
+ * Filters out properties that should not be included in the template.
+ *
+ * @param {Object} node DMN node object.
+ * @returns {Object} Property object with properties that should not be in the template removed.
+ */
+export const filterProperties = (node) => {
+  const { properties } = node;
+  const filteredProperties = {};
+
+  for (const key in properties) {
+    if (!properties[key].isIncludedInTemplate) {
+      continue;
+    }
+    filteredProperties[key] = properties[key];
+  }
+
+  return filteredProperties;
 };
 
 /**
@@ -379,3 +410,329 @@ export const highlightParentNodes = (edges = [], childIds = []) => {
   }
   return childIds;
 };
+
+/**
+ * Formats the node's property type for visual display.
+ *
+ * @param {*} property
+ * @returns {string} The formatted property type.
+ */
+export const formatPropertyType = (property) => {
+  const { type } = property || {};
+
+  if (!type) {
+    return 'Unknown';
+  }
+
+  if (typeof type === 'string') {
+    return type;
+  }
+
+  if (Array.isArray(type)) {
+    return 'string';
+  }
+
+  if (
+    typeof type === 'object'
+      && typeof type.value_type === 'string'
+      && type.value_type === 'list'
+  ) {
+    return 'list';
+  }
+
+  if (typeof type === 'object') {
+    return JSON.stringify(type);
+  }
+
+  return 'Unknown';
+};
+
+/**
+ * Escapes problematic characters for TSV.
+ *
+ * @param {string} text The text to escape.
+ * @returns {string} The escaped text.
+ */
+export const escapeForTSV = (text) => {
+  if (typeof text !== 'string' || !text) {
+    return '';
+  }
+
+  return text
+    .replace(/\t/g, '')
+    .replace(/\r\n/g, '')
+    .replace(/\n/g, '')
+    .replace(/\r/g, '')
+    .replace(/"/g, '""');
+};
+
+/**
+ * Creates a TSV of properties for a node.
+ *
+ * The properties it will extract are:
+ * - title (Label: Node)
+ * - property
+ * - $.type
+ * - $.CDEFullName
+ * - $.CDEVersion
+ * - $.CDECode
+ * - $.CDEOrigin
+ * - $.enum (Label: Acceptable Values)
+ * - $.propertyType (Label: required)
+ * - $.description
+ * - $.src
+ * - $.key (Label: Key Property)
+ *
+ * @param {*} node The node to generate a TSV for.
+ * @param {boolean} headerLine Whether to include the header line.
+ * @param {boolean} onlyRequired Whether to only include required properties.
+ * @returns {string} The TSV for the node.
+ */
+export const generateNodeTSV = (node, headerLine = true, onlyRequired = false) => {
+  let tsv = '';
+
+  if (headerLine) {
+    tsv += 'Node\tProperty\tType\tCDEFullName\tCDEVersion\tCDECode\tCDEOrigin\tAcceptable Values\tRequired\tDescription\tSrc\tKey Property\n';
+  }
+
+  Object.keys(node.properties).forEach((key) => {
+    const property = node.properties[key];
+    if (onlyRequired && !node?.required?.includes(key)) {
+      return;
+    }
+
+    tsv += `${node.title || ''}\t`;
+    tsv += `${key}\t`;
+    tsv += `${formatPropertyType(property)}\t`;
+    tsv += `${property.CDEFullName || ''}\t`;
+    tsv += `${property.CDEVersion || ''}\t`;
+    tsv += `${property.CDECode || ''}\t`;
+    tsv += `${property.CDEOrigin || ''}\t`;
+    tsv += `${property.enum ? JSON.stringify(property?.enum?.map((v) => escapeForTSV(v))) : ''}\t`;
+    tsv += `${property.propertyType || ''}\t`;
+    tsv += `${escapeForTSV(property.description) || ''}\t`;
+    tsv += `${property.src || ''}\t`;
+    tsv += `${property.key || 'FALSE'}\n`;
+  });
+
+  return tsv;
+};
+
+/**
+ * Generates a JSON object for a node.
+ *
+ * @see generateNodeTSV For the TSV variant of this utility.
+ * @param {*} node The node to generate a TSV for.
+ * @param {boolean} onlyRequired Whether to only include required properties.
+ * @returns {Array<Object>} An array of JSON objects for the node,
+ * where each object represents a property.
+ */
+export const generateNodeJSON = (node, onlyRequired = false) => {
+  const properties = [];
+
+  Object.keys(node.properties).forEach((key) => {
+    const property = node.properties[key];
+    if (onlyRequired && !node?.required?.includes(key)) {
+      return;
+    }
+
+    properties.push({
+      Node: node.title || '',
+      Property: key,
+      Type: formatPropertyType(property),
+      CDEFullName: property.CDEFullName || '',
+      CDEVersion: property.CDEVersion || '',
+      CDECode: property.CDECode || '',
+      CDEOrigin: property.CDEOrigin || '',
+      'Acceptable Values': property.enum ? property.enum : '',
+      Required: property.propertyType || '',
+      Description: escapeForTSV(property.description) || '',
+      Src: property.src || '',
+      'Key Property': property.key || false,
+    });
+  });
+
+  return properties;
+};
+
+/**
+* Convert a File node to a TSV data loading template.
+*
+* @param {*} node The node to convert to a TSV template.
+* @returns {string} The TSV template for the `file` node type.
+*/
+export const generateFileManifest = (node) => {
+  let line = tsvMiddleware(node);
+  const filteredNode = filterProperties(node);
+
+  const arr = Object.entries(filteredNode);
+  const mergedArr = arr.concat(fileManifestDownload);
+  mergedArr.forEach(([key, value]) => {
+    if (value.isIncludedInTemplate) {
+      line += ('\t').concat(`${key}`);
+    }
+  });
+
+  const text = `${line}\r\n${node.title}`;
+  return text;
+};
+
+export const isFileManifest = (node) => node.id === 'file';
+
+export function category2NodeList(dictionary) {
+  const res = Object.keys(dictionary).filter(
+    (id) => id.charAt(0) !== '_' && id === dictionary[id].id,
+  ).map(
+    (id) => dictionary[id],
+  ).filter(
+    (node) => node.category && node.id,
+  )
+    .reduce(
+      (lookup, node) => {
+        if (!lookup[node.category]) {
+          lookup[node.category] = [];
+        }
+        lookup[node.category].push(node);
+        return lookup;
+      }, {},
+    );
+  return res;
+}
+
+export const generateVocabFullDownload = (fullDictionary, format, prefix = 'ICDC_') => {
+  const c2nl = category2NodeList(fullDictionary);
+  const enumArr = [];
+  const zip = new JSZip();
+
+  Object.keys(c2nl).forEach((category) => {
+    const nodes = c2nl[category];
+    nodes.forEach(({ title, properties }) => {
+      const propertyKeyList = Object.keys(properties);
+      propertyKeyList.forEach((propertyKey) => {
+        const property = properties[propertyKey];
+        if (property.enum) {
+          enumArr.push({ title, enums: property.enum, propertyKey });
+        }
+      });
+    });
+  });
+
+  const zipFileName = createFileName(prefix.concat('Controlled_Vocabularies'), '');
+  const getFileName = (title, propertyKey, fileFormat) => `${createFileName(`${title}-${propertyKey}`, prefix.concat('Controlled_Vocabulary-'))}.${fileFormat}`;
+  switch (format) {
+    case 'TSV': {
+      const vocabTSVArr = enumArr.map(({ enums, title, propertyKey }) => {
+        let content = '';
+        if (enums && enums.length) {
+          enums.forEach((item, index) => {
+            content += (index === 0) ? item : `${'\n'}${item}`;
+          });
+        }
+        return { content, title, propertyKey };
+      });
+
+      vocabTSVArr.forEach(({ title, propertyKey, content }) => zip.file(getFileName(title, propertyKey, 'tsv'), content));
+      zip.generateAsync({ type: 'blob' }).then((thisContent) => {
+        saveAs(thisContent, zipFileName);
+      });
+    }
+      break;
+    // eslint-disable-next-line no-lone-blocks
+    case 'JSON': {
+      enumArr.forEach(({ title, enums, propertyKey }) => zip.file(getFileName(title, propertyKey, 'json'), JSON.stringify(enums)));
+      zip.generateAsync({ type: 'blob' }).then((thisContent) => {
+        saveAs(thisContent, zipFileName);
+      });
+    }
+      break;
+    default:
+      break;
+  }
+};
+
+export const generateLoadingExample = async (configUrl = 'https://raw.githubusercontent.com/CBIIT/icdc-data-loading-example-sets/main/config.json') => {
+  const zip = new JSZip();
+
+  // fetch config
+  const { loadingExamples, title } = await (await Axios.get(configUrl)).data;
+  try {
+    const titleArr = Object.keys(loadingExamples);
+    const res = await Promise.all(Object.values(loadingExamples)
+      .map((example) => Axios.get(example)));
+    const data = res.map((respose, index) => ({
+      title: titleArr[index],
+      content: respose.data,
+      format: titleArr[index].split('.')[1],
+    }));
+
+    data.forEach(({ title1, content, format }) => { zip.file(`${createFileName(title1)}.${format}`, content); });
+    zip.generateAsync({ type: 'blob' }).then((thisContent) => {
+      saveAs(thisContent, createFileName(title));
+    });
+  } catch {
+    throw Error('Failed to fetch example files');
+  }
+};
+
+export const downloadLoadingExample = async (zipUrl = '') => {
+  window.open(zipUrl, '_blank');
+};
+
+/**
+ * Generates a Data Dictionary file name.
+ *
+ * @param {string} prefix The prefix for the file name. Usually a Model name. (e.g. "ICDC_")
+ * @param {string|null} nodeName The name of the node to generate the file name for.
+ * If null, it's omitted
+ * @param {boolean} onlyRequired Whether the download included only required properties.
+ * @param {string|number|undefined} modelVersion The version of the model to
+ * include in the file name. If undefined, it's omitted.
+ */
+export const getDictionaryFilename = (prefix, nodeName, onlyRequired, modelVersion) => {
+  let filename = `${prefix || ''}Dictionary`;
+  if (nodeName) {
+    filename += `_${nodeName}`;
+  }
+  if (onlyRequired) {
+    filename += '_Required';
+  } else {
+    filename += '_All';
+  }
+  if (modelVersion) {
+    filename += `_${modelVersion}`;
+  }
+
+  return filename;
+};
+
+export function safeClone(obj) {
+  let cloneObj = {};
+  try {
+    cloneObj = structuredClone(obj);
+  } catch (error) {
+    console.warn('structuredClone failed, using fallback', error);
+    cloneObj = cloneDeep(obj); // Use Lodash fallback
+  }
+  return cloneObj;
+}
+
+export const getNodePropertyCount = (dictionary) => {
+  const res = parseDictionaryNodes(dictionary)
+    .reduce((acc, node) => {
+      acc.nodesCount += 1;
+      acc.propertiesCount += Object.keys(node.properties).length;
+      return acc;
+    }, {
+      nodesCount: 0,
+      propertiesCount: 0,
+    });
+  return {
+    nodesCount: res.nodesCount,
+    propertiesCount: res.propertiesCount,
+  };
+};
+
+export function sortByCategory(c2nl, dictionary) {
+  const keys = Object.keys(c2nl);
+  return Object.values(dictionary).sort((a, b) => keys.indexOf(`${a.category}`) - keys.indexOf(`${b.category}`));
+}

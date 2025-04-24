@@ -2,7 +2,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { marked } from 'marked';
 import html2pdf from 'html2pdf.js';
-import { createFileName } from '../../../../utils/Util';
+import { createFileName } from '../../../../../utils/Utils';
 import * as Styled from './Dialog.styled';
 import PdfDownloadIcon from './assets/icon_download_PDF.svg';
 import footerLine from './assets/two-pixel-footer-line.png';
@@ -108,36 +108,41 @@ const ReadMeDialogView = ({
   display,
   displayReadMeDialog,
   content = '',
-  title,
 }) => (
   <>
     <Styled.MuiDialog
       open={display}
       onClose={displayReadMeDialog}
       maxWidth="md"
+      className="readMeDialog"
     >
-      <Styled.TitleContent>
-        <Styled.Title>
-          {title}
+      <Styled.TitleContent className="readMeDialogTitleContent">
+        <Styled.Title className="readMeDialogTitle">
+          Understanding the Data Model
         </Styled.Title>
-        <Styled.BtnContainer>
+        <Styled.BtnContainer className="readMeDialogBtnContainer">
           <Styled.DownloadButton
             onClick={() => downloadMarkdownPdf(
-              title,
+              'Understanding the Data Model',
               content,
             )}
+            className="readMeDialogDownloadButton"
           >
             <Styled.DownloadIcon
               src={PdfDownloadIcon}
               alt="paf download icon"
+              className="readMeDialogDownloadButton"
             />
           </Styled.DownloadButton>
-          <Styled.MuiIconButton onClick={displayReadMeDialog}>
-            <Styled.ClsIcon fontSize="small" />
+          <Styled.MuiIconButton
+            onClick={displayReadMeDialog}
+            className="readMeDialogMuiIconButton"
+          >
+            <Styled.ClsIcon fontSize="small" className="readMeDialogClsIcon" />
           </Styled.MuiIconButton>
         </Styled.BtnContainer>
       </Styled.TitleContent>
-      <Styled.Content>
+      <Styled.Content className="readMeDialogContent">
         <ReactMarkdown>
           {content.replace(/<!-- PAGE BREAK -->/g, '')}
         </ReactMarkdown>

@@ -4,8 +4,8 @@ import CloseIcon from '@mui/icons-material/Close';
 
 export const StyledCategoryContainer = styled('div')(
   ({ categoryStyles }) => {
-    const categoryColor = categoryStyles.color;
-    const background = categoryStyles.background || categoryStyles.color;
+    const categoryColor = categoryStyles?.color;
+    const background = categoryStyles?.background;
     return {
       borderLeftColor: categoryColor,
       minHeight: '44px',

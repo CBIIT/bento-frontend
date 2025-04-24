@@ -37,6 +37,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable spaced-comment */
 import React from 'react';
+import { CircularProgress } from '@mui/material';
 import {
   StyledTableContainer,
   StyledTableSummary
@@ -85,18 +86,23 @@ const getNodePropertyCount = (dictionary) => {
  * @param {dictionary} params
  */
 const TableView = ({
-  dictionary
+  dictionary = {},
 }) => {
-  const { context = {}} = useModelContext();
+  const { context } = useModelContext();
+  if (!context) {
+    return <CircularProgress />;
+  }
   const { filterDictionary } = context;
   const node2Category = category2NodeList(filterDictionary || dictionary);
+
   const {
     nodesCount,
     propertiesCount
   } = getNodePropertyCount(filterDictionary || dictionary);
+
   return (
     <>
-      <StyledTableSummary>
+      <StyledTableSummary className="tableSummary">
         <span> Dictionary has </span>
         <span>{nodesCount}</span>
         <span> nodes and </span>

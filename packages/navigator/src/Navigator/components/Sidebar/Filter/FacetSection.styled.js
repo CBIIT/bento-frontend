@@ -7,18 +7,19 @@ export const FacetSectionContainer = styled('div')(
   ({ section }) => {
     if (section === 'filterByNode') {
       return {
+        boxShadow: 'inset -10px -1px 10px -7px rgb(17 77 224 / 25%)',
         borderTop: '7px solid #0d71a3',
       };
     }
 
     return {
+      boxShadow: 'inset -10px -1px 10px -7px rgb(17 77 224 / 25%)',
       borderTop: '7px solid #94c0ec',
     };
   },
 );
 
 export const SectionAccordian = styled(Accordion)({
-
 });
 
 export const SectionAccordianSummary = styled(AccordionSummary)({
@@ -34,6 +35,8 @@ export const SectionAccordianSummary = styled(AccordionSummary)({
 
 export const FacetAccordian = styled(Accordion)({
   '&.MuiPaper-root': {
+    boxShadow: 'inset -10px -1px 10px -7px rgb(100 102 106 / 40%)',
+    paddingRight: '10px',
     margin: '0',
     borderTop: '1px solid #B1B1B1',
   },
@@ -61,6 +64,7 @@ export const MuiExpandMoreIcon = styled(ExpandMoreIcon)({
   '&.MuiSvgIcon-root': {
     width: '35px',
     fontSize: '35px',
+    padding: '0',
   },
 });
 

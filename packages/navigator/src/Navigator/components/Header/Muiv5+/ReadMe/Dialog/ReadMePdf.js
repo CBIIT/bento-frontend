@@ -6,9 +6,9 @@ import {
   View,
   Text,
 } from '@react-pdf/renderer';
-import PdfHeader from '../../../PDF/protrait/PdfHeader';
-import PdfFooter from '../../../PDF/protrait/PdfFooter';
-import { FontRegistry } from '../../../PDF/util';
+import PdfHeader from '../../../../PDF/protrait/PdfHeader';
+import PdfFooter from '../../../../PDF/protrait/PdfFooter';
+import { FontRegistry } from '../../../../PDF/util';
 
 const styles = StyleSheet.create({
   page: {

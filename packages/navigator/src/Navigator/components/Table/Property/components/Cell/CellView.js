@@ -43,12 +43,28 @@ const CellView = ({
     return text;
   };
 
+  if (field === columnField.CUSTOMVIEW) {
+    const { customView: CustomView } = field;
+    return (
+      <CustomView
+        row={row}
+        highlightText={highligtSearchText(row[field], field)}
+      />
+    );
+  }
+
   if (field === columnField.INCLUSION) {
     const { inclusion } = row;
     return (
       <Styled.InclusionCellView inclusion={inclusion}>
         {inclusion}
       </Styled.InclusionCellView>
+    );
+  }
+
+  if (field === columnField.CDEInfo) {
+    return (
+      <>CDE Info</>
     );
   }
 

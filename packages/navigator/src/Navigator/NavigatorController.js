@@ -1,12 +1,13 @@
 import React, { useEffect, useReducer } from 'react';
 import reducer from './state/reducers/reducers';
 import { useModelContext } from './state/NavContextProvider';
-import NavigatorView from './NavigatorView';
+import DefaultNavigatorView from './NavigatorView';
 
 const NavigatorController = (props) => {
   const {
     dictionary,
     config,
+    CustomNavigatorView,
   } = props;
 
   const initModelState = () => ({
@@ -26,11 +27,24 @@ const NavigatorController = (props) => {
   useEffect(() => {
     const { setContext } = modelContext;
     setContext({ ...modelState, dispatch });
-    // console.log(modelState);
+    console.log(modelState);
   }, [modelState]);
 
+  if (!dictionary) {
+    return (<> loading </>);
+  }
+
+  if (CustomNavigatorView && modelState.dictionary) {
+    return (
+      <CustomNavigatorView
+        dictionary={modelState.dictionary}
+        {...props}
+      />
+    );
+  }
+
   return (
-    <NavigatorView
+    <DefaultNavigatorView
       dictionary={modelState.dictionary}
       {...props}
     />

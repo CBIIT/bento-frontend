@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { List, ListItem, Typography } from '@mui/material';
 
 export const ResultSummaryContain = styled('div')({
-
 });
 
 export const LabelText = styled('div')({

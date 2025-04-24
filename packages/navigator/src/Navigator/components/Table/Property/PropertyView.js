@@ -4,12 +4,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { columns } from './tableConfig';
+import { defaultColumnsConfig } from './tableConfig';
 import CellView from './components/Cell/CellView';
 import * as Styled from './Property.styled';
 
 const PropertyView = ({
   properties,
+  columns = defaultColumnsConfig,
 }) => (
   <TableContainer component={Paper} className="tableContainer">
     <Styled.MuiTable aria-label="property table">

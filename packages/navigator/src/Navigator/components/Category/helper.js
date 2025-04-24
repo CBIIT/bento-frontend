@@ -1,41 +1,3 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
-/* eslint-disable space-infix-ops */
-/* eslint-disable prefer-template */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable quotes */
-/* eslint-disable no-undef */
-/* eslint-disable no-shadow */
-/* eslint-disable semi */
-/* eslint-disable object-curly-spacing */
-/* eslint-disable import/no-cycle */
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable indent */
-/* eslint-disable object-shorthand */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/order */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable react/jsx-indent */
-/* eslint-disable object-curly-newline */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable arrow-spacing */
-/* eslint-disable keyword-spacing */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-case-declarations */
-/* eslint-disable space-before-blocks */
-/* eslint-disable arrow-parens */
-/* eslint-disable function-paren-newline */
-/* eslint-disable prefer-const */
-/* eslint-disable max-len */
-/* eslint-disable eqeqeq */
-/* eslint-disable spaced-comment */
 /**
  * pdf icon import
  */
@@ -60,7 +22,6 @@ import analysisIconTable from './icons/Table/analysis.svg';
 import dataFileIconTable from './icons/Table/data_file.svg';
 import clinicalIconTable from './icons/Table/clinical.svg';
 
-
 /**
  * legend icon import
  */
@@ -76,6 +37,13 @@ import clinicalIconLegend from './icons/Legend/lg_clinical.svg';
 import IconDefault from './icons/icon_default.svg';
 
 export const categoryColorAndIcon = {
+  default: {
+    color: '#9898b5',
+    background: '#bdbdc7',
+    tableIcon: adminIconTable,
+    pdfIcon: adminIconPdf,
+    legendIcon: adminIconLegend,
+  },
   administrative: {
     color: '#9C2E1F',
     background: '#691706',
@@ -88,14 +56,14 @@ export const categoryColorAndIcon = {
     background: '#4D31A2',
     tableIcon: studyIconTable,
     pdfIcon: studyIconPdf,
-    legendIcon: studyIconLegend
+    legendIcon: studyIconLegend,
   },
   clinical_trial: {
     color: '#00A0BA',
     background: '#043F55',
     tableIcon: clinicalTrialIconTable,
     pdfIcon: clinicalTrialIconPdf,
-    legendIcon: clinicalTrialIconLegend
+    legendIcon: clinicalTrialIconLegend,
   },
   case: {
     color: '#FF7E14',
@@ -131,10 +99,21 @@ export const categoryColorAndIcon = {
     tableIcon: analysisIconTable,
     pdfIcon: analysisIconPdf,
     legendIcon: analysisIconLegend,
+  },
+};
+
+export const getCategoryColorAndIcon = (category) => {
+  if (categoryColorAndIcon[category]) {
+    return categoryColorAndIcon[category];
   }
-}
+  return categoryColorAndIcon.default;
+};
 
 const nodeCategoryList = {
+  default: {
+    color: '#9898b5',
+    background: '#bdbdc7',
+  },
   administrative: {
     // icon: Administrative,
     color: '#9C2E1F',
@@ -178,7 +157,7 @@ const nodeCategoryList = {
     // icon: Analysis,
     color: '#B533A9',
     background: '#6F0065',
-  }
+  },
 };
 
 export const defaultCategory = {

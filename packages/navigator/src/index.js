@@ -1,11 +1,18 @@
+// functions
 export { default as NavigatorView } from './Navigator/NavigatorView';
 export { default as NavigatorViewController } from './Navigator/NavigatorController';
-export { getDictionary } from './Navigator/controller/Dictionary';
+export { getDictionary, getModelData } from './Navigator/controller/Dictionary';
 export { getFilterItems } from './Navigator/controller/Filter';
+export { getChangelog } from './Navigator/controller/Changelog';
 export { ModelContextProvider } from './Navigator/state/NavContextProvider';
+export { generateNodeTree } from './Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
 
+// views
+export { default as SideBarView } from './Navigator/components/Sidebar/SidebarView';
 export { default as TableView } from './Navigator/components/Table/TableView';
 export { default as GraphView } from './Navigator/components/xyFlowGraph/GraphView';
-export { generateNodeTree } from './Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
-export { default as HeaderView } from './Navigator/components/Header/HeaderView';
+export { default as ChangeLogView } from './Navigator/components/Changelog/Changelog.controller';
+export { default as HeaderViewMuiv4 } from './Navigator/components/Header/Muiv4/Header.component';
+export { default as HeaderView } from './Navigator/components/Header/Muiv5+/HeaderView';
 export { default as NavaigatorLayoutView } from './Navigator/NavLayoutView';
+export { default as PropertyTableView } from './Navigator/components/Table/Property/PropertyView';

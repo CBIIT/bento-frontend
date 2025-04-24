@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import toggleSvg from '../../Category/icons/Legend/lg_link.svg';
 import * as Styled from './Legend.styled';
 import { useModelContext } from '../../../state/NavContextProvider';
-import { categoryColorAndIcon } from '../../Category/helper';
+import { getCategoryColorAndIcon } from '../../Category/helper';
 
 const LegendView = () => {
   const [display, setDisplay] = useState(true);
@@ -12,11 +12,11 @@ const LegendView = () => {
   const { category = [] } = facet2FacetItem;
 
   const CategoryItems = category.map((categoryItem) => {
-    const item = categoryColorAndIcon[categoryItem];
+    const item = getCategoryColorAndIcon(categoryItem);
     return (
       <Styled.CategoryContainer>
         <Styled.ImgDiv>
-          <img src={item.legendIcon} alt="categoryIcon" />
+          <img src={item?.legendIcon} alt="categoryIcon" />
         </Styled.ImgDiv>
         <Styled.CategoryText>{categoryItem}</Styled.CategoryText>
       </Styled.CategoryContainer>

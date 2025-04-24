@@ -38,9 +38,9 @@ const OverlayPropertyTable = () => {
       {
         display && (
           <Styled.OverlayTableContainer className="overlayTableContainer">
-            <Styled.OverlayTableBackground>
-              <Styled.OverlayFixedContainer>
-                <Styled.OverlayContent>
+            <Styled.OverlayTableBackground className="overlayTableBackground">
+              <Styled.OverlayFixedContainer className="overlayFixedContainer">
+                <Styled.OverlayContent className="overlayContent">
                   {Object.keys(node2Category).map((category) => (
                     <CategoryView
                       key={category}

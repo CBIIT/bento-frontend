@@ -7,7 +7,7 @@ import { getFilterItems } from './controller/Filter';
 import TableView from './components/Table/TableView';
 import GraphView from './components/xyFlowGraph/GraphView';
 import { generateNodeTree } from './components/xyFlowGraph/Canvas/CanvasHelper';
-import HeaderView from './components/Header/HeaderView';
+import HeaderView from './components/Header/Muiv5+/HeaderView';
 
 const DataModelNavigatorView = ({
   propertiesYamlFilePath,
@@ -41,6 +41,8 @@ const DataModelNavigatorView = ({
   }
   /**
    * create node tree
+   * node2DPosition - 2D array of the node name
+   * generateNodeTree - will assign the default position
    */
   const nodeTree = node2DPosition || generateNodeTree(dictionary);
 
@@ -111,7 +113,6 @@ const NavaigatorLayoutView = ({
         nodesYamlFilePath={nodesYamlFilePath}
         readMeConfig={readMeConfig}
         node2DPosition={node2DPosition}
-
       />
     </ModelContextProvider>
   </>

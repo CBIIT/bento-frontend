@@ -1,10 +1,7 @@
-/* eslint-disable quotes */
-/* eslint-disable semi */
-
-import React from "react";
-import SidebarView from "./SidebarView";
-import { useModelContext } from "../../state/NavContextProvider";
-import { onClearFilter } from "../../state/actions/Action";
+import React from 'react';
+import SidebarView from './SidebarView';
+import { useModelContext } from '../../state/NavContextProvider';
+import { onClearAllFilter } from '../../state/actions/Action';
 
 const SidebarController = () => {
   const { context } = useModelContext();
@@ -15,8 +12,8 @@ const SidebarController = () => {
 
   const handleClearFilter = () => {
     const { dispatch } = context;
-    dispatch(onClearFilter());
-  }
+    dispatch(onClearAllFilter());
+  };
 
   return (
     <>
@@ -25,6 +22,6 @@ const SidebarController = () => {
       />
     </>
   );
-}
+};
 
 export default SidebarController;

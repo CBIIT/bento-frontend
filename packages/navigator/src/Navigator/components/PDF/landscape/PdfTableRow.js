@@ -155,6 +155,15 @@ const PdfTableRow = ({ propInfo }) => {
     return text;
   };
 
+  const getTableCell = (str) => {
+    if (!str) {
+      return '-';
+    }
+    return (
+      typeof str === 'string' && <Text style={styles.tableCell}>{str}</Text>
+    );
+  };
+
   const validateEnums = (enums) => {
     if (Array.isArray(enums)) {
       let concatEnums = '';
@@ -279,6 +288,30 @@ const PdfTableRow = ({ propInfo }) => {
           </>
           )
         }
+        {propInfo.CDECode && (
+          <>
+            <View style={styles.horizontalCells}>
+              <Text style={styles.cellHorizontalHeader}>CDE FULL NAME</Text>
+              <Text style={styles.horizontalTableCell}>
+                {getTableCell(propInfo.CDEFullName)}
+              </Text>
+              <Text style={styles.cellHeader}>VERSION</Text>
+              <Text style={styles.horizontalTableCell}>
+                {getTableCell(propInfo.CDEVersion)}
+              </Text>
+              <Text style={styles.cellHeader}>PUBLIC ID</Text>
+              <Text style={styles.horizontalTableCell}>
+                {getTableCell(propInfo.CDECode)}
+              </Text>
+            </View>
+            <View style={styles.horizontalCells}>
+              <Text style={styles.cellHorizontalHeader}>ORIGIN</Text>
+              <Text style={styles.horizontalTableCell}>
+                {getTableCell(propInfo.CDEOrigin)}
+              </Text>
+            </View>
+          </>
+        )}
       </View>
     </View>
   );

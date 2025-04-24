@@ -60,9 +60,6 @@ export const MuiListItemText = styled(ListItemText)({
 });
 
 export const MuiDialog = styled(Dialog)({
-  '&.MuiPaper-root': {
-    padding: '8px 16px',
-  },
 });
 
 export const ActionBtn = styled('div')({

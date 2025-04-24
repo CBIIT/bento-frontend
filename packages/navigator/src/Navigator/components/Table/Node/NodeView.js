@@ -2,8 +2,34 @@
 import React, { useState } from 'react';
 import PropertyView from '../Property/PropertyView';
 import * as Styled from './Node.styled';
-import DownloadButtonView from '../../PDF/DownloadBtn';
+import TemplateAndDocsDownload from '../../Download/TemplateAndDocsDownload';
 import HighlightText from '../../Sidebar/Search/HighlightText';
+import TemplateAndPdfDownload from '../../Download/TemplateAndPdfDownload';
+import { createFileName } from '../../../utils/Utils';
+
+const DownloadButton = ({
+  category,
+  node,
+}) => {
+  const {
+    isTemplateAndDocsDownlaod = true,
+  } = node;
+  if (isTemplateAndDocsDownlaod) {
+    return (
+      <TemplateAndDocsDownload
+        category={category}
+        node={node}
+      />
+    );
+  }
+  return (
+    <TemplateAndPdfDownload
+      nodes={[node]}
+      pdfFileName={createFileName('', '')}
+      tsvFileName={createFileName('', '')}
+    />
+  );
+};
 
 const NodeView = ({
   node,
@@ -77,10 +103,14 @@ const NodeView = ({
             <Styled.DownloadContainer className="downloadContainer">
               <Styled.MuiButtonGroup className="muiButtonGroup">
                 {/* <replace node required, preferred field val> */}
-                <DownloadButtonView
-                  category={category}
-                  nodes={[{ ...node, required: [], preferred: [] }]}
-                />
+                {
+                  (node.isTemplate) && (
+                    <DownloadButton
+                      category={category}
+                      node={node}
+                    />
+                  )
+                }
               </Styled.MuiButtonGroup>
             </Styled.DownloadContainer>
           </Styled.TagsAndBtnContainer>
