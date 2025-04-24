@@ -14,6 +14,12 @@ const downloadAreaStyle = {
   paddingRight: '41px',
 };
 
+const exportAreaStyle = {
+  display: 'flex',
+  marginTop: '20px',
+  paddingRight: '41px',
+};
+
 const ExtendedView = ({
   table,
   onColumnViewChange,
@@ -27,6 +33,7 @@ const ExtendedView = ({
     return null;
   }
   const {
+    hasExport = true,
     manageViewColumns = false,
     pagination = false,
   } = extendedViewConfig;
@@ -43,7 +50,7 @@ const ExtendedView = ({
       )} */}
       {
           (pagination) && (
-            <div className="downloadArea" style={downloadAreaStyle}>
+            <div className="downloadArea" style={hasExport ? downloadAreaStyle : exportAreaStyle}>
               <CustomPagination
                 customTheme={customTheme.tblTopPgn}
                 rowsPerPageOptions={[10, 25, 50, 100]}
@@ -56,11 +63,13 @@ const ExtendedView = ({
                 queryVariables={queryVariables}
                 table={table}
               />
-              <DownloadButton
-                count={table.totalRowCount || 0}
-                queryVariables={queryVariables}
-                table={table}
-              />
+              {hasExport && (
+                <DownloadButton
+                  count={table.totalRowCount || 0}
+                  queryVariables={queryVariables}
+                  table={table}
+                />
+              )}
               <ManageColumnView
                 table={table}
                 manageViewColumns={manageViewColumns}

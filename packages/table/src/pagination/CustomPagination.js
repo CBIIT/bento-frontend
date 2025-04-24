@@ -41,6 +41,7 @@ const CustomPagination = ({
   onPageChange,
   onRowsPerPageChange,
   customTheme = {},
+  hasExport = true,
 }) => (
   <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme, ...customTheme } })}>
     <TablePagination
@@ -57,6 +58,7 @@ const CustomPagination = ({
         IconComponent: KeyboardArrowDownOutlinedIcon,
         inputProps: { 'aria-label': 'Selection dropdown for displaying the number of results per page' },
       }}
+      style={!hasExport ? { position: 'relative', left: '50px' } : {}}
     />
   </ThemeProvider>
 );

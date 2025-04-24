@@ -64,6 +64,7 @@ const TableView = ({
   onColumnViewChange,
   themeConfig = {},
   queryVariables,
+  navigation,
 }) => {
   useEffect(() => {
     const tableContainer = document.getElementById('tableContainer');
@@ -85,6 +86,7 @@ const TableView = ({
   const { extendedViewConfig } = table;
   const {
     manageViewColumns = false,
+    hasExport = true,
   } = extendedViewConfig;
   return (
     <>
@@ -120,6 +122,7 @@ const TableView = ({
             rows={tableRows}
             table={table}
             onRowSelectChange={onRowSelectChange}
+            navigation={navigation}
           />
         </Table>
       </CustomTableContainer>
@@ -142,12 +145,15 @@ const TableView = ({
           page={table.page || 0}
           onPageChange={onPageChange}
           onRowsPerPageChange={onRowsPerPageChange}
+          hasExport={hasExport}
         />
-        <DownloadButton
-          count={table.totalRowCount || 0}
-          queryVariables={queryVariables}
-          table={table}
-        />
+        {hasExport && (
+          <DownloadButton
+            count={table.totalRowCount || 0}
+            queryVariables={queryVariables}
+            table={table}
+          />
+        )}
         <ManageColumnView
           table={table}
           manageViewColumns={manageViewColumns}

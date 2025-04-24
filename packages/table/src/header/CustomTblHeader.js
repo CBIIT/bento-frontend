@@ -37,6 +37,7 @@ const CustomTableHeader = ({
   */
   // const rootClsName = getClsName(table.title, tableCls.HEADER);
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
+
   return (
     <ThemeProvider theme={themeConfig}>
       <TableHead>
@@ -66,7 +67,11 @@ const CustomTableHeader = ({
                   sortBy={sortBy}
                   sortOrder={sortOrder}
                   toggleSort={() => sortByColumn(column.dataField, sortOrder)}
-                  style={column.dataField === 'participant_id' ? { minWidth: '230px' } : {}}
+                  style={{
+                    minWidth: column.dataField === 'participant_id' ? '230px' : '',
+                    width: column.dataField === 'study_name' ? '325px' : '',
+                    textWrapMode: 'nowrap',
+                  }}
                 />
               );
             })
