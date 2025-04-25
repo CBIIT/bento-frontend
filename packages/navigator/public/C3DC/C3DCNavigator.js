@@ -2,27 +2,15 @@ import React, { useEffect, useState } from 'react';
 // import { createRoot } from 'react-dom/client';
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
-  StyledContainer,
-  StyledSideBarContrainer,
-  StyledTabBtnContainer,
-  StyledTabContainer,
-  StyledTabPanelContainer,
-  StyledTabPanelOuterContainer,
-  TabPanelContrainer,
-  StyledTabView,
-  StyledTabs,
-} from './Navigator.styled';
-import {
   generateNodeTree,
   getChangelog,
   getFilterItems,
   getModelData,
-  HeaderView,
+  HeaderViewMuiv4,
   ModelContextProvider,
 } from '../../dist';
 import NavigatorController from '../../dist/Navigator/NavigatorController';
 import DemoNavigatorView from './NavigatorLayoutView';
-import { Tab, Tabs } from '@mui/material';
 
 const headerIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/4a3fb8e201e6ba2a858d7ec1226d2fd6ea2b5298/icdc/images/svgs/Icon-DMNav.85x85.svg';
 
@@ -34,24 +22,24 @@ const graphConfig = {
       zoom: 0.5,
       minZoom: 0.5,
       maxZoom: 2, 
-      xInterval: 250, // space x - axis
-      yInterval: 80, // space y-axis
+      xInterval: 300, // space x - axis
+      yInterval: 120, // space y-axis
     },
   },
 };
 
 const pdfDownloadConfig = {
   fileType: 'pdf',
-  prefix: 'ICDC_',
-  templatePrefix: 'ICDC_Data_Loading_Template-',
-  fileTransferManifestName: "ICDC_Data_Loading_Template-file-manifest",
+  prefix: 'CDS_',
+  templatePrefix: 'CDS_Data_Loading_Template-',
+  fileTransferManifestName: "CDS_Data_Loading_Template-file-manifest",
   landscape: 'true',
   footnote: 'test',
   enabled: true,
 };
 
 const readMeConfig = {
-  readMeUrl: 'https://raw.githubusercontent.com/CBIIT/icdc-readMe-content/dev/Data_Model_Navigator_README.md',
+  readMeUrl: 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/dev2/cache/CDS/6.0.2/README.md',
   readMeTitle: 'Understanding Data Model',
 };
 
@@ -69,46 +57,47 @@ export const loadingExampleConfig = {
   url: 'https://raw.githubusercontent.com/CBIIT/icdc-data-loading-example-sets/main/config.json', // premade ZIP for static, config.json for dynamic
 }
 
-// const node2DPosition = [
-//   ['program'],
-//   ['study'],
-//   ['participant'],
-//   ['diagnosis', 'treatment', 'sample'],
-//   ['file'],
-//   ['genomic_info', 'image', 'proteomic'],
-//   ['MultiplexMicroscopy', 'NonDICOMMRimages', 'NonDICOMPETimages'],
-//   ['NonDICOMCTimages', 'NonDICOMpathologyImages', 'NonDICOMradiologyAllModalities'],
-//   ['version']
-// ];
+const node2DPosition = [
+  ['program'],
+  ['study'],
+  ['participant'],
+  ['diagnosis', 'treatment', 'sample'],
+  ['file'],
+  ['genomic_info', 'image', 'proteomic'],
+  ['MultiplexMicroscopy', 'NonDICOMMRimages', 'NonDICOMPETimages'],
+  ['NonDICOMCTimages', 'NonDICOMpathologyImages', 'NonDICOMradiologyAllModalities'],
+  ['version']
+];
 
 /**
 * example layout setup and configuration
 */
-const DATA_MODEL = "https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model.yml";
-const DATA_MODEL_PROPS = "https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model-props.yml";
+const DATA_MODEL = 'https://raw.githubusercontent.com/CBIIT/c3dc-model/main/model-desc/c3dc-model.yml';
+const DATA_MODEL_PROPS = 'https://raw.githubusercontent.com/CBIIT/c3dc-model/main/model-desc/c3dc-model-props.yml';
 
 const nodesYamlFilePath = DATA_MODEL;
 const propertiesYamlFilePath = DATA_MODEL_PROPS;
 const changelogUrl = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/dev2/cache/CDS/6.0.2/version-history.md';
+const readMeUrl = "https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/dev2/cache/CDS/6.0.2/README.md";
 
-const ICDCNavigatorView = () => {
+const C3DCNavigatorView = () => {
   const [dictionary, setDictionary] = useState(null);
-  // const [versInfo, setVersionInfo] = useState(null);
-  // const [changelogData, setChangelogData] = useState(null);
+  const [versInfo, setVersionInfo] = useState(null);
+  const [changelogData, setChangelogData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // retrive all data for navigator
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [res1] = await Promise.all([
+        const [res1, res2] = await Promise.all([
           getModelData(nodesYamlFilePath, propertiesYamlFilePath),
-          // getChangelog(changelogUrl),
+          getChangelog(changelogUrl),
         ]);
-        const { dictionary: Dictionary } = res1;
+        const { dictionary: Dictionary, versionInfo } = res1;
         setDictionary(Dictionary);
-        // setVersionInfo(versionInfo);
-        // setChangelogData(res2);
+        setVersionInfo(versionInfo);
+        setChangelogData(res2);
       } catch (error) {
         console.error("Error fetching data", error);
       } finally {
@@ -135,9 +124,6 @@ const ICDCNavigatorView = () => {
   * 1. logic to display or hide element in node views
   * 2. any additional fields to display
   */
-  Object.keys(dictionary).forEach((key) => {
-    dictionary[key]['isTemplateAndDocsDownlaod'] = false;
-  });
 
   /**
   * create node tree
@@ -173,23 +159,25 @@ const ICDCNavigatorView = () => {
     props2FacetItem,
     facetItemCount,
     facet2FacetItem,
+    versionInfo: versInfo,
+    changelogInfo: {
+      changelogMD: changelogData,
+    },
   };
 
   return (
-    <>
     <ModelContextProvider>
-      <HeaderView readMeConfig={readMeConfig} />
+      <HeaderViewMuiv4 />
       <NavigatorController
         dictionary={dictionary}
         config={config}
         CustomNavigatorView={DemoNavigatorView}
       />
     </ModelContextProvider>
-    </>
   );
 }
 
-export default ICDCNavigatorView;
+export default C3DCNavigatorView;
 
 // const root = createRoot(document.getElementById('root'));
 // root.render(

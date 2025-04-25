@@ -72,7 +72,7 @@ module.exports = {
   appBuild: resolveApp("standalone_dist"),
   appPublic: resolveApp("public"),
   appHtml: resolveApp("public/index.html"),
-  appStdIndex: resolveModule(resolveApp, "public/Index.standalone"),
+  appStdIndex: resolveModule(resolveApp, "public/BentoAppsNavigator"),
   appIndex: resolveModule(resolveApp, "public/BentoAppsNavigator"),
   // hubIndex: resolveModule(resolveApp, "public/DataHub/DemoNavigatorLayout"),
   appPackageJson: resolveApp("package.json"),

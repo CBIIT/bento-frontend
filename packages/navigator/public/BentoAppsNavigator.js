@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import HubNavigatorView from './DataHub/HubNavigator';
 import ICDCNavigatorView from './ICDC/IcdcNavigator';
+import C3DCNavigatorView from './C3DC/C3DCNavigator';
 
 function Layout({
   children
@@ -16,9 +17,9 @@ function Layout({
   return (
     <div>
       <nav>
-        <Link to="/">Hub</Link> | {"   "}
         <Link to="/c3dc">C3DC</Link> | {"   "}
-        <Link to="/icdc">ICDC</Link>
+        <Link to="/hub">Hub</Link> | {"   "}
+        {/* <Link to="/icdc">ICDC</Link> */}
       </nav>
       <hr />
       <Outlet />
@@ -58,21 +59,17 @@ const router = createHashRouter([
     element: <Layout />,
     children: [
       {
-        index: true,
-        element: <HubNavigatorView />,
+        path: "c3dc",
+        element: <C3DCNavigatorView />,
       },
       {
         path: "hub",
         element: <HubNavigatorView />,
       },
-      {
-        path: "c3dc",
-        element: <HubNavigatorView />,
-      },
-      {
-        path: "icdc",
-        element: <ICDCNavigatorView />,
-      },
+      // {
+      //   path: "icdc",
+      //   element: <ICDCNavigatorView />,
+      // },
     ],
   },
 ]);

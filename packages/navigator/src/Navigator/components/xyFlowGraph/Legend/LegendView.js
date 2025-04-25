@@ -3,6 +3,7 @@ import toggleSvg from '../../Category/icons/Legend/lg_link.svg';
 import * as Styled from './Legend.styled';
 import { useModelContext } from '../../../state/NavContextProvider';
 import { getCategoryColorAndIcon } from '../../Category/helper';
+import relationshipSvg from '../../Category/icons/Legend/lg_relationship_links.svg';
 
 const LegendView = () => {
   const [display, setDisplay] = useState(true);
@@ -16,7 +17,7 @@ const LegendView = () => {
     return (
       <Styled.CategoryContainer>
         <Styled.ImgDiv>
-          <img src={item?.legendIcon} alt="categoryIcon" />
+          <img src={item?.legendIcon} alt="relationshipIcon" />
         </Styled.ImgDiv>
         <Styled.CategoryText>{categoryItem}</Styled.CategoryText>
       </Styled.CategoryContainer>
@@ -31,7 +32,17 @@ const LegendView = () => {
           <img src={toggleSvg} alt="icon" />
         </Styled.ToggleButton>
       </Styled.LegendTitle>
-      {display && CategoryItems}
+      {display && (
+        <>
+          <Styled.CategoryContainer>
+            <Styled.ImgDiv>
+              <img src={relationshipSvg} alt="categoryIcon" />
+            </Styled.ImgDiv>
+            <Styled.CategoryText>relationship links</Styled.CategoryText>
+          </Styled.CategoryContainer>
+          {CategoryItems}
+        </>
+      )}
     </Styled.LegendContainer>
   );
 };

@@ -19,6 +19,7 @@ import {
 import SideBarView from './components/Sidebar/SidebarController';
 import TableView from './components/Table/TableView';
 import GraphView from './components/xyFlowGraph/GraphView';
+import HeaderViewMuiV4 from './components/Header/Muiv4/Header.component';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -67,36 +68,39 @@ const NavigatorView = ({
   }, []);
 
   return (
-    <StyledContainer ref={ref}>
-      <StyledSideBarContrainer>
-        <SideBarView />
-      </StyledSideBarContrainer>
-      <StyledTabContainer>
-        <StyledTabBtnContainer>
-          <StyledTabs
-            value={value}
-            onChange={handleChange}
-            aria-label="nav_tabs"
-          >
-            <StyledTabView label="Graph View" />
-            <StyledTabView label="Table View" />
-          </StyledTabs>
-        </StyledTabBtnContainer>
-        <StyledTabPanelOuterContainer>
-          <StyledTabPanelContainer>
-            <TabPanel value={value} index={0}>
-              <GraphView
-                dictionary={dictionary}
-                tabViewWidth={tabViewWidth}
-              />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <TableView dictionary={dictionary} />
-            </TabPanel>
-          </StyledTabPanelContainer>
-        </StyledTabPanelOuterContainer>
-      </StyledTabContainer>
-    </StyledContainer>
+    <>
+      <HeaderViewMuiV4 />
+      <StyledContainer ref={ref}>
+        <StyledSideBarContrainer>
+          <SideBarView />
+        </StyledSideBarContrainer>
+        <StyledTabContainer>
+          <StyledTabBtnContainer>
+            <StyledTabs
+              value={value}
+              onChange={handleChange}
+              aria-label="nav_tabs"
+            >
+              <StyledTabView label="Graph View" />
+              <StyledTabView label="Table View" />
+            </StyledTabs>
+          </StyledTabBtnContainer>
+          <StyledTabPanelOuterContainer>
+            <StyledTabPanelContainer>
+              <TabPanel value={value} index={0}>
+                <GraphView
+                  dictionary={dictionary}
+                  tabViewWidth={tabViewWidth}
+                />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <TableView dictionary={dictionary} />
+              </TabPanel>
+            </StyledTabPanelContainer>
+          </StyledTabPanelOuterContainer>
+        </StyledTabContainer>
+      </StyledContainer>
+    </>
   );
 };
 
