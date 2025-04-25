@@ -22,6 +22,7 @@ const PaginatedTable = ({
   activeTab = true,
   server = true,
   tblRows = [],
+  navigation = () => {},
 }) => {
   /**
   * Initailize useReducer state
@@ -223,6 +224,7 @@ const PaginatedTable = ({
         onSortByColumn={handleSortByColumn}
         onColumnViewChange={handleColumnViewChange}
         themeConfig={themeConfig}
+        navigation={navigation}
       />
     </>
   );

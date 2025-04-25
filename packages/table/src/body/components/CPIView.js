@@ -16,6 +16,7 @@ const CPIView = ({
   column,
   row,
   themeConfig,
+  navigation,
 }) => {
   const useStyles = makeStyles(() => ({
     arrow: {
@@ -77,6 +78,7 @@ const CPIView = ({
               open={modalOpen}
               onClose={handleModalClose}
               themeConfig={themeConfig}
+              navigation={navigation}
             />
             <Tooltip
               interactive

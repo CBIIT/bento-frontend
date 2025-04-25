@@ -31,6 +31,7 @@ const ViewCell = ({
   column,
   row,
   themeConfig,
+  navigation,
 }) => {
   const { cellType } = column;
   switch (cellType) {
@@ -61,6 +62,7 @@ const ViewCell = ({
           row={row}
           column={column}
           themeConfig={themeConfig}
+          navigation={navigation}
         />
       );
     default:
@@ -76,12 +78,14 @@ const DisplayCell = ({
   row,
   column,
   themeConfig,
+  navigation,
 }) => (
   <TableCell className={column.dataField}>
     <ViewCell
       row={row}
       column={column}
       themeConfig={themeConfig}
+      navigation={navigation}
     />
   </TableCell>
 );
