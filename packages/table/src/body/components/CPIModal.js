@@ -23,7 +23,7 @@ import HeaderCell from '../../header/CustomCell';
 const CustomTableContainer = (props) => {
   const { children, themeConfig, className } = props;
   const tableStyle = {
-    height: '510px',
+    height: '470px',
     overflowX: 'hidden',
   };
   return (
@@ -105,6 +105,9 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '400',
+    padding: '45px',
+    paddingLeft: '35px',
+    paddingRight: '20px',
   };
 
   const link = {
@@ -112,6 +115,9 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '700',
+    position: 'relative',
+    top: '11.5px',
+    right: '39px',
   };
 
   const modalTitle = {
@@ -232,7 +238,10 @@ const CPIModal = ({
           </Table>
         </CustomTableContainer>
         <div className="footer" style={footer}>
-          To learn more about CPI click&nbsp;
+          All CPI mappings for a given study can be found in the "synonyms"
+          tab of the downloadable manifest,
+          available under the "Studies" tab in the Explore Dashboard.
+          For more information about CPI, click&nbsp;
           <a style={link} href="https://participantindex-docs.ccdi.cancer.gov/" target="_blank" rel="noopener noreferrer">here</a>
         </div>
       </Box>
