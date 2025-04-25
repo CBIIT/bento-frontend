@@ -80,13 +80,16 @@ export function downloadData(tableData, table, downloadFileName, format = 'csv')
 
   if (format === 'json') {
     filterColumns.forEach((column) => {
-      let jsonKey = column.dataField;
-
-      if (column.useKey) {
-        jsonKey = column.header;
-      }
+      const mapData = (data) => {
+        const dataObject = data;
+        if (dataObject?.[column.dataField]?.participant_id) {
+          dataObject[column.dataField] = dataObject?.[column.dataField]?.participant_id;
+        }
+        return dataObject;
+      };
+      formatDataVal = formatDataVal.map(mapData);
       formatDataVal = JSON.parse(
-        JSON.stringify(formatDataVal).split(`"${jsonKey}":`).join(`"${column.header}":`),
+        JSON.stringify(formatDataVal).split(`"${column.dataField}":`).join(`"${column.header}":`),
       );
     });
     fileContent = JSON.stringify(formatDataVal);
