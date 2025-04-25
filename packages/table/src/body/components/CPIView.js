@@ -97,7 +97,10 @@ const CPIView = ({
                 (externalData.length && internalData.length === 0
                   ? (
                     <div>
-                      All mapped identifiers in the CCDI Participant Index (CPI) are available
+                      All CPI mappings for a given study can be found
+                      in the "synonyms" tab of the downloadable manifest,
+                      available under the "Studies" tab in the Explore Dashboard.
+                      For more information about CPI, click
                       <span role="button" onClick={handleModalOpen} tabIndex={0} style={button}>here.</span>
                     </div>
                   )
@@ -108,7 +111,10 @@ const CPIView = ({
                         <div>{`${e.associated_id}, ${e.repository_of_synonym_id}`}</div>
                       ))}
                       <p>
-                        All mapped identifiers in the CCDI Participant Index (CPI) are available
+                        All CPI mappings for a given study can be found
+                        in the "synonyms" tab of the downloadable manifest,
+                        available under the "Studies" tab in the Explore Dashboard.
+                        For more information about CPI, click
                         <span role="button" onClick={handleModalOpen} tabIndex={0} style={button}>here.</span>
                       </p>
                     </div>
