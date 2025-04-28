@@ -6,6 +6,7 @@ import {
 import { cellTypes } from '../util/Types';
 import CustomLinkView from './components/CustomLinkView';
 import DataFormatView from './components/DataFormatView';
+import CPIView from './components/CPIView';
 
 /**
 * Custom Column reneder
@@ -29,6 +30,7 @@ const CustomComponent = ({
 const ViewCell = ({
   column,
   row,
+  themeConfig,
 }) => {
   const { cellType } = column;
   function isNumeric(value) {
@@ -64,6 +66,14 @@ const ViewCell = ({
             : row[column.dataField]}
         </Typography>
       );
+    case cellTypes.CPI:
+      return (
+        <CPIView
+          row={row}
+          column={column}
+          themeConfig={themeConfig}
+        />
+      );
     default:
       return (
         <Typography>
@@ -76,11 +86,13 @@ const ViewCell = ({
 const DisplayCell = ({
   row,
   column,
+  themeConfig,
 }) => (
   <TableCell className={column.dataField}>
     <ViewCell
       row={row}
       column={column}
+      themeConfig={themeConfig}
     />
   </TableCell>
 );
