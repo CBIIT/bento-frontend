@@ -77,15 +77,20 @@ export const ButtonTextLabel = styled(Typography)({
 });
 
 export const DisplayPropertyTableButton = styled(Button)({
-  width: '150px',
-  height: '26px',
-  backgroundColor: '#EEF5F7',
-  textTransform: 'capitalize',
-  borderRadius: '0px',
-  fontSize: '14px',
-  fontWeight: '700',
-  color: '#42779a',
-  fontFamily: 'Open Sans',
+  '&.MuiButtonBase-root': {
+    width: '150px',
+    height: '26px',
+    backgroundColor: '#EEF5F7',
+    textTransform: 'capitalize',
+    borderRadius: '0px',
+    fontSize: '14px',
+    fontWeight: '700',
+    color: '#42779a',
+    fontFamily: 'Open Sans',
+    '&:hover': {
+      backgroundColor: '#EEF5F7',
+    },
+  },
 });
 
 export const MuiExpandIcon = styled(ExpandMoreIcon)(
@@ -121,23 +126,24 @@ export const NodeLabel = styled('span')({
   borderRadius: '100px',
   border: '1px solid #cdcdcd',
   background: '#fff',
-  fontSize: '12px',
+  fontSize: '14px',
   height: '22px',
-  width: '136px',
+  maxWidth: '160px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   gap: '5px',
+  whiteSpace: 'nowrap',
 });
 
 export const NodeAssignment = styled('span')({
-  color: '#009dc4',
+  color: '#036077',
   fontWeight: '600',
   fontFamily: 'Nunito',
 });
 
 export const NodeClass = styled('span')({
-  color: '#009dc4',
+  color: '#036077',
   fontWeight: '600',
   fontFamily: 'Nunito',
 });

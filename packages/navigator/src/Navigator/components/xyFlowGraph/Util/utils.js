@@ -1,47 +1,3 @@
-/* eslint-disable guard-for-in */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
-/* eslint-disable space-infix-ops */
-/* eslint-disable prefer-template */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable quotes */
-/* eslint-disable no-undef */
-/* eslint-disable no-shadow */
-/* eslint-disable semi */
-/* eslint-disable object-curly-spacing */
-/* eslint-disable import/no-cycle */
-/* eslint-disable no-multiple-empty-lines */
-/* eslint-disable indent */
-/* eslint-disable object-shorthand */
-/* eslint-disable comma-dangle */
-/* eslint-disable import/order */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable react/jsx-indent */
-/* eslint-disable object-curly-newline */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable react/jsx-wrap-multilines */
-/* eslint-disable arrow-spacing */
-/* eslint-disable keyword-spacing */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable no-case-declarations */
-/* eslint-disable space-before-blocks */
-/* eslint-disable arrow-parens */
-/* eslint-disable function-paren-newline */
-/* eslint-disable prefer-const */
-/* eslint-disable max-len */
-/* eslint-disable eqeqeq */
-/* eslint-disable comma-spacing */
-/* eslint-disable consistent-return */
-/* eslint-disable no-console */
-/* eslint-disable arrow-body-style */
-/* eslint-disable no-else-return */
-/* eslint-disable padded-blocks */
-
 import studyIcon from '../Canvas/assets/study.svg';
 import caseIcon from '../Canvas/assets/case.svg';
 import clinicalTrialIcon from '../Canvas/assets/clinical_trial.svg';
@@ -72,6 +28,21 @@ const graphIconColors = {
   data_file: '#00ad0c',
   clinical: '#1b75bc',
 };
+
+export const graphColorAndIcon = (category) => {
+  let categoryIcon = adminIcon;
+  if (graphIcons[category]) {
+    categoryIcon = graphIcons[category];
+  }
+  let categoryColor = graphIconColors.administrative;
+  if (graphIconColors[category]) {
+    categoryColor = graphIconColors[category];
+  }
+  return {
+    categoryIcon,
+    categoryColor,
+  };
+};
 /* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 /**
@@ -81,13 +52,13 @@ const graphIconColors = {
  * @param {string} sourceId - source id for subgroup links
  * This function traverse links recursively and return all nested subgroup lnks
  */
-const getSubgroupLinks = (link, nameToNode, sourceId) => {
+export const getSubgroupLinks = (link, nameToNode, sourceId) => {
   let subgroupLinks = [];
   if (link.subgroup) {
     link.subgroup.forEach((sgLink) => {
       if (sgLink.subgroup) {
         subgroupLinks = subgroupLinks.concat(
-          getSubgroupLinks(sgLink, nameToNode, sourceId)
+          getSubgroupLinks(sgLink, nameToNode, sourceId),
         );
       } else {
         subgroupLinks.push({
@@ -103,13 +74,17 @@ const getSubgroupLinks = (link, nameToNode, sourceId) => {
 };
 
 /**
- * reactflow node details 
- * @param {*} nodes 
- * @returns 
+ * reactflow node details
+ * @param {*} nodes
+ * @returns
  */
 const generateNodes = (nodes) => {
-  const generatedNodes = nodes.map((node, index) => {
+  const generatedNodes = nodes.map((node) => {
     const { inclusionCount } = node;
+    const {
+      categoryIcon,
+      categoryColor,
+    } = graphColorAndIcon(`${node.category}`.toLowerCase());
     return {
       type: 'custom',
       position: { x: 0, y: 0 },
@@ -117,16 +92,16 @@ const generateNodes = (nodes) => {
       category: `${node.category}`,
       data: {
         label: node.title,
-        icon: graphIcons[node.category],
-        iconColor: graphIconColors[node.category],
+        icon: categoryIcon,
+        iconColor: categoryColor,
         category: `${node.category}`,
         summary: {
           Assignment: `${node.assignment}`,
           Class: `${node.class}`,
-          Required_Properties: inclusionCount?.required || 0,
-          Preferred_Properties: inclusionCount?.preferred || 0,
-          Optional_Properties: inclusionCount?.optional || 0,
-        }
+          'Required Properties': inclusionCount?.required || 0,
+          'Preferred Properties': inclusionCount?.preferred || 0,
+          'Optional Properties': inclusionCount?.optional || 0,
+        },
       },
     };
   });
@@ -136,9 +111,9 @@ const generateNodes = (nodes) => {
 };
 
 /**
- * reactflow edge details 
- * @param {*} nodes 
- * @returns 
+ * reactflow edge details
+ * @param {*} nodes
+ * @returns
  */
 const generateEdges = (edges) => {
   // type: 'custom',
@@ -147,24 +122,20 @@ const generateEdges = (edges) => {
     animated: false,
   };
 
-  const generatedEdges = edges.map((edge, index) => {
-    return {
-      ...DEFAULT_EDGE_TYPE,
-      id: `${edge.source}->${edge.target}`,
-      source: `${edge.source}`,
-      target: `${edge.target}`,
-    };
-  });
+  const generatedEdges = edges.map((edge) => ({
+    ...DEFAULT_EDGE_TYPE,
+    id: `${edge.source}->${edge.target}`,
+    source: `${edge.source}`,
+    target: `${edge.target}`,
+  }));
 
   return generatedEdges;
 };
 
-const generateFlowData = (nodes, edges) => {
-  return {
-    nodes: generateNodes(nodes),
-    edges: generateEdges(edges),
-  };
-};
+const generateFlowData = (nodes, edges) => ({
+  nodes: generateNodes(nodes),
+  edges: generateEdges(edges),
+});
 
 /**
  * @method createNodesAndEdges
@@ -175,14 +146,14 @@ export function createNodesAndEdges(
 ) {
   const nodes = Object.keys(dictionary)
     .map((nodeName) => dictionary[nodeName]);
-  
+
   const edges = Object.keys(dictionary)
     .reduce((acc, node) => {
       const links = dictionary[node].links || [];
       acc = [...acc, ...links];
       return acc;
     }, []);
-  
+
   // assignNodePositions
   return generateFlowData(nodes, edges);
 }

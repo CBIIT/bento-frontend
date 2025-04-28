@@ -82,6 +82,7 @@ const NodeView = ({
             <Styled.NodeButton
               className="nodeButton"
               match={(matches || {})[label]}
+              expandNodeView={display}
               isSearchMode={isSearchMode}
               onClick={toggleNode}
             >
@@ -93,11 +94,13 @@ const NodeView = ({
                     className="iconWrapper"
                     catgoryColor={iconColor}
                   >
-                    <Styled.CategoryIcon
-                      className="categoryIcon"
-                      src={icon}
-                      alt="category icon"
-                    />
+                    {(icon) && (
+                      <Styled.CategoryIcon
+                        className="categoryIcon"
+                        src={icon}
+                        alt="category icon"
+                      />
+                    )}
                   </Styled.IconWrapper>
                 </Styled.NodeBackground>
                 <Styled.LabelWrapper className="labelWrapper">
@@ -123,12 +126,12 @@ const NodeView = ({
             }
           </Styled.SummaryList>
         </Styled.Summary>
-        <Styled.FlowHandle
+        <Styled.FlowHandleTop
           className="nodeTargetPt"
           type="target"
           position={Position.Top}
         />
-        <Styled.FlowHandle
+        <Styled.FlowHandleBottom
           className="nodeSourcePt"
           type="source"
           position={Position.Bottom}

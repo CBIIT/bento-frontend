@@ -62,9 +62,10 @@ export const NodeOuterDiv = styled('div')(
       return {
         backgroundColor: "#2D4455",
         borderRadius: "5px",
-        marginTop: "-10px",
+        marginTop: "-18px",
         marginLeft: "-22px",
-        zIndex: "1000"
+        border: "5px solid #0c3759",
+        zIndex: "1000",
       }
     }
   }
@@ -109,11 +110,13 @@ export const CloseIconBar = styled('div') ({
 });
 
 export const CloseButton = styled(CloseIcon)({
-  float: "right",
-  color: "#ffffff",
-  height: "15px",
-  width: "20px",
-  cursor: "pointer",
+  '&.MuiSvgIcon-root': {
+    float: "right",
+    color: "#ffffff",
+    height: "15px",
+    width: "20px",
+    cursor: "pointer",
+  },
 });
 
 export const ContentWrapper = styled('div')({
@@ -128,11 +131,9 @@ export const NodeTitle = styled('div')(
       return {
         paddingLeft: "20px",
         paddingRight: "20px",
-      }
+        textAlign: 'center',
+      };
     }
-    return {
-      outline: "0.5px solid #ffffff",
-    };
   }
 );
 
@@ -140,6 +141,14 @@ export const NodeButton = styled('button')(
   ({isSearchMode, expandNodeView, match = {} }) => {
     const isTitleMatch = Object.keys(match.title || {}).length > 0;
     const isDescMatch = Object.keys(match.description || {}).length > 0;
+
+    if (expandNodeView) {
+      return {
+        border: '2px solid #fff',
+        borderRadius: "15px",
+        padding: '0',
+      };
+    }
 
     if (isTitleMatch || isDescMatch) {
       return {
@@ -160,8 +169,8 @@ export const NodeButton = styled('button')(
 
     if (!isSearchMode || !expandNodeView) {
       return {
-        borderRadius: "15px",
         border: '0',
+        borderRadius: "15px",
         padding: '0',
       };
     }
@@ -202,10 +211,16 @@ export const CategoryIcon = styled('img')({
   height: "39px",
 });
 
-export const FlowHandle = styled(Handle)({
+export const FlowHandleTop = styled(Handle)({
   background: "transparent",
   border: "none",
-  top: '27px'
+  top: "10px"
+});
+
+export const FlowHandleBottom = styled(Handle)({
+  background: "transparent",
+  border: "none",
+  top: "27px",
 });
 
 export const Summary = styled('div')(

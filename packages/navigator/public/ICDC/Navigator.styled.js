@@ -70,10 +70,12 @@ export const StyledTabView = styled(Tab)({
   borderRight: '0.9px solid #C4C4C4',
   borderLeft: '0.9px solid #C4C4C4',
   height: '50px',
+  fontFamily: 'Lato',
   '@media (min-width: 600px)': {
     minWidth: '110px',
   },
   '&.Mui-selected': {
+    fontFamily: 'Lato',
     boxShadow: '-1px -3px 10px 1px rgb(50 50 50 / 25%)',
     borderBottom: '10px solid #fff',
     background: '#ffffff',

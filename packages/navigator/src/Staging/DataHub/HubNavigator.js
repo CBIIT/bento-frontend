@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import DemoNavigatorView from './NavigatorLayoutView';
-import {
-  generateNodeTree,
-  getChangelog,
-  getFilterItems,
-  getModelData,
-  HeaderViewMuiv4,
-  NavigatorViewController,
-  ModelContextProvider
-} from '../../dist';
+import { generateNodeTree } from '../../Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
+import { getChangelog } from '../../Navigator/controller/Changelog';
+import { getFilterItems } from '../../Navigator/controller/Filter';
+import { getModelData } from '../../Navigator/controller/Dictionary';
+import HeaderViewMuiv4 from '../../Navigator/components/Header/Muiv4/Header.component';
+import NavigatorViewController from '../../Navigator/NavigatorController';
+import ModelContextProvider from '../../Navigator/state/NavContextProvider';
 
 // const headerIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/4a3fb8e201e6ba2a858d7ec1226d2fd6ea2b5298/icdc/images/svgs/Icon-DMNav.85x85.svg';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraphView } from '../../dist';
+import GraphView from '../../Navigator/components/xyFlowGraph/GraphView';
 
 const GraphPanelView = ({
   dictionary,

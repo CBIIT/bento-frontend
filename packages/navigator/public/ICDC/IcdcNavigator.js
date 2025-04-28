@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from 'react';
-// import { createRoot } from 'react-dom/client';
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import {
-  StyledContainer,
-  StyledSideBarContrainer,
-  StyledTabBtnContainer,
-  StyledTabContainer,
-  StyledTabPanelContainer,
-  StyledTabPanelOuterContainer,
-  TabPanelContrainer,
-  StyledTabView,
-  StyledTabs,
-} from './Navigator.styled';
 import {
   generateNodeTree,
-  getChangelog,
   getFilterItems,
   getModelData,
   HeaderView,
@@ -22,7 +8,7 @@ import {
 } from '../../dist';
 import NavigatorController from '../../dist/Navigator/NavigatorController';
 import DemoNavigatorView from './NavigatorLayoutView';
-import { Tab, Tabs } from '@mui/material';
+
 
 const headerIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/4a3fb8e201e6ba2a858d7ec1226d2fd6ea2b5298/icdc/images/svgs/Icon-DMNav.85x85.svg';
 
@@ -61,13 +47,20 @@ const pageConfig = {
 };
 
 const headerConfiguration = {
-  // headerLogo: dogIconSrc, // proivde bento app specific icon
+  headerLogo: headerIcon, // proivde bento app specific icon
 };
 
 export const loadingExampleConfig = {
   type: 'dynamic', // static or dynamic
   url: 'https://raw.githubusercontent.com/CBIIT/icdc-data-loading-example-sets/main/config.json', // premade ZIP for static, config.json for dynamic
-}
+};
+
+// node view and table config
+const tableConfig = {
+  columns: [
+    
+  ]
+};
 
 // const node2DPosition = [
 //   ['program'],
@@ -137,6 +130,9 @@ const ICDCNavigatorView = () => {
   */
   Object.keys(dictionary).forEach((key) => {
     dictionary[key]['isTemplateAndDocsDownlaod'] = false;
+    if (key === 'file') {
+      dictionary[key]['isManifest'] = true
+    }
   });
 
   /**
@@ -167,6 +163,7 @@ const ICDCNavigatorView = () => {
     readMeConfig,
     pageConfig,
     graphConfig,
+    tableConfig,
     filterSections,
     facetFilterData,
     node2FacetItem,
@@ -178,7 +175,10 @@ const ICDCNavigatorView = () => {
   return (
     <>
     <ModelContextProvider>
-      <HeaderView readMeConfig={readMeConfig} />
+      <HeaderView
+        headerLogo={headerIcon}
+        readMeConfig={readMeConfig}
+      />
       <NavigatorController
         dictionary={dictionary}
         config={config}
@@ -190,17 +190,3 @@ const ICDCNavigatorView = () => {
 }
 
 export default ICDCNavigatorView;
-
-// const root = createRoot(document.getElementById('root'));
-// root.render(
-//   <>
-//     <Router>
-//       <Routes>
-//         {/* The main layout route */}
-//         <Route path="/" element={<HubNavigatorView />}>
-//           {/* Nested routes */}
-//         </Route>
-//       </Routes>
-//     </Router>
-//   </>
-// );

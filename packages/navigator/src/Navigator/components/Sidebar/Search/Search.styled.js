@@ -27,7 +27,9 @@ export const MuiClearIcon = styled(ClearIcon)({
 });
 
 export const ClearButton = styled(IconButton)({
-  padding: '15px 15px 15px 0px',
+  '&.MuiButtonBase-root': {
+    padding: '15px 15px 15px 0px',
+  },
 });
 
 export const ClearInputAdornment = styled(InputAdornment)({
@@ -43,8 +45,10 @@ export const Divider = styled('i')({
 });
 
 export const SearchButton = styled(IconButton)({
-  padding: '5px',
-  '&:hover': {
-    backgroundColor: '#f1f1f1',
+  '&.MuiButtonBase-root': {
+    padding: '5px',
+    '&:hover': {
+      backgroundColor: '#f1f1f1',
+    },
   },
 });

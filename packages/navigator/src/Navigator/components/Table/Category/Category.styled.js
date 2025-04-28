@@ -14,13 +14,22 @@ export const StyledCategoryContainer = styled('div')(
       alignItems: 'center',
       color: '#ffffff',
       paddingLeft: '20px',
+      paddingRight: '12px',
       gap: '8px',
+      justifyContent: 'space-between',
     };
   },
 );
 
 export const StyledCategoryIcon = styled('img')({
   width: '32px',
+});
+
+export const StyledCatTitleAndIcon = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  paddingLeft: '4px',
 });
 
 export const StyleCategoryTitle = styled('div')({

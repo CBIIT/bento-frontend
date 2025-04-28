@@ -5,6 +5,10 @@ export { getDictionary, getModelData } from './Navigator/controller/Dictionary';
 export { getFilterItems } from './Navigator/controller/Filter';
 export { getChangelog } from './Navigator/controller/Changelog';
 export { ModelContextProvider } from './Navigator/state/NavContextProvider';
+export {
+  field as tableField,
+  label as tableHeaderLabel,
+} from './Navigator/components/Table/Property/tableConfig';
 export { generateNodeTree } from './Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
 
 // views
@@ -16,3 +20,6 @@ export { default as HeaderViewMuiv4 } from './Navigator/components/Header/Muiv4/
 export { default as HeaderView } from './Navigator/components/Header/Muiv5+/HeaderView';
 export { default as NavaigatorLayoutView } from './Navigator/NavLayoutView';
 export { default as PropertyTableView } from './Navigator/components/Table/Property/PropertyView';
+
+// app
+export { default as HubNavigator } from './Staging/DataHub/HubNavigator';

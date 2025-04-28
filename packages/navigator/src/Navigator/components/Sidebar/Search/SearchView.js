@@ -75,6 +75,7 @@ const SearchTextView = () => {
           value={searchTerm}
           onChange={(e) => handleTextChange(e.target.value)}
           onKeyDown={onSearchEnter}
+          placeholder="Search in Dictionary"
           slotProps={{
             input: {
               endAdornment: (

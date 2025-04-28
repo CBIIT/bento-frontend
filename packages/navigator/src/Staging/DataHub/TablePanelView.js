@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableView } from '../../dist';
+import TableView from '../../Navigator/components/Table/TableView';
 
 const TablePanelView = ({
   dictionary,

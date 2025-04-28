@@ -41,19 +41,18 @@ export const SearchInputContrainer = styled('div')({
 });
 
 export const ClearAllBtn = styled(Button)({
-  marginTop: '20px',
-  width: '75px',
-  height: '22px',
-  padding: '2px',
-  fontSize: '9px',
-  alignSelf: 'end',
-  background: '#fff',
-  minHeight: '20px',
-  fontFamily: 'Open Sans',
-  borderRadius: '100px',
-  textTransform: 'none',
-  marginRight: '5px',
-  '&:hover': {
+  '&.MuiButtonBase-root': {
+    marginTop: '20px',
+    width: '75px',
+    height: '22px',
+    padding: '2px',
+    fontSize: '9px',
+    alignSelf: 'end',
     background: '#fff',
+    minHeight: '20px',
+    fontFamily: 'Open Sans',
+    borderRadius: '100px',
+    textTransform: 'none',
+    marginRight: '5px',
   },
 });

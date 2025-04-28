@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChangeLogView } from '../../dist';
+import ChangeLogView from '../../Navigator/components/Changelog/Changelog.component';
 
 const ChangeLogPanelView = () => (
   <>

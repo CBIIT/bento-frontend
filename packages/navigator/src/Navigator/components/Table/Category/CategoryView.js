@@ -12,6 +12,7 @@ import {
   StyledCloseButton,
   StyledCloseIcon,
   StyledLeftBorder,
+  StyledCatTitleAndIcon,
 } from './Category.styled';
 
 const CategoryView = ({
@@ -20,6 +21,7 @@ const CategoryView = ({
   isOverLayTable,
   onCloseOverlayTable,
   matches = {},
+  tableViewConfig = {},
 }) => {
   const categoryIconAndColor = getCategoryColorAndIcon(category);
   const iconURL = categoryIconAndColor?.tableIcon;
@@ -33,14 +35,16 @@ const CategoryView = ({
         categoryStyles={categoryIconAndColor}
         className={`categoryIconAndColor_${category}`}
       >
-        <StyledCategoryIcon
-          src={iconURL}
-          alt="icon"
-          className="categoryIcon"
-        />
-        <StyleCategoryTitle className={`categoryTitle_${category}`}>
-          {category}
-        </StyleCategoryTitle>
+        <StyledCatTitleAndIcon>
+          <StyledCategoryIcon
+            src={iconURL}
+            alt="icon"
+            className="categoryIcon"
+          />
+          <StyleCategoryTitle className={`categoryTitle_${category}`}>
+            {category}
+          </StyleCategoryTitle>
+        </StyledCatTitleAndIcon>
         { isOverLayTable && (
           <StyledCloseButton
             onClick={onCloseOverlayTable}
@@ -68,6 +72,7 @@ const CategoryView = ({
               ...matches[node.id],
               searchText: matches?.searchText,
             }}
+            tableColumns={tableViewConfig?.columns}
           />
         ))
       }

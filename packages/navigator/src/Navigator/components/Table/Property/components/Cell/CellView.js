@@ -56,7 +56,7 @@ const CellView = ({
   if (field === columnField.INCLUSION) {
     const { inclusion } = row;
     return (
-      <Styled.InclusionCellView inclusion={inclusion}>
+      <Styled.InclusionCellView inclusion={inclusion} className={field}>
         {inclusion}
       </Styled.InclusionCellView>
     );
@@ -64,14 +64,16 @@ const CellView = ({
 
   if (field === columnField.CDEInfo) {
     return (
-      <>CDE Info</>
+      <Styled.MuiCellView className={field}>
+        CDE Info
+      </Styled.MuiCellView>
     );
   }
 
   if (field === columnField.PROPERTY_NAME) {
     const { key: isKey = false } = row;
     return (
-      <Styled.PropertyName isKey={isKey}>
+      <Styled.PropertyName isKey={isKey} className={field}>
         {highligtSearchText(row[field], field)}
         {isKey && (<PropertyKeyIcon src={KeyIconSvg} alt="key_icon" />)}
       </Styled.PropertyName>
@@ -91,7 +93,7 @@ const CellView = ({
     if (isEnum) {
       const matchingItems = matchedProperty[columnField.ENUM] || {};
       return (
-        <Styled.ListCell>
+        <Styled.ListCell className={field}>
           <ListView
             items={enumValue}
             matchingItems={matchingItems}
@@ -105,7 +107,7 @@ const CellView = ({
     const isArray = Array.isArray(typeValue);
     if (isArray) {
       return (
-        <Styled.TypeCell>
+        <Styled.TypeCell className={field}>
           <List>
             {typeValue.map((item) => (
               <ListItem>{item}</ListItem>
@@ -117,7 +119,7 @@ const CellView = ({
 
     if (typeof row[field] === 'object') {
       return (
-        <Styled.TypeCell>
+        <Styled.TypeCell className={field}>
           {highligtSearchText(JSON.stringify(row[field]), field)}
         </Styled.TypeCell>
       );
@@ -126,7 +128,7 @@ const CellView = ({
 
   if (typeof row[field] === 'string') {
     return (
-      <Styled.MuiCellView>
+      <Styled.MuiCellView className={field}>
         {highligtSearchText(row[field], field)}
       </Styled.MuiCellView>
     );

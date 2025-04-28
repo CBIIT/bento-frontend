@@ -22,7 +22,7 @@ const graphConfig = {
       zoom: 0.5,
       minZoom: 0.5,
       maxZoom: 2, 
-      xInterval: 300, // space x - axis
+      xInterval: 220, // space x - axis
       yInterval: 120, // space y-axis
     },
   },
@@ -58,15 +58,11 @@ export const loadingExampleConfig = {
 }
 
 const node2DPosition = [
-  ['program'],
   ['study'],
   ['participant'],
-  ['diagnosis', 'treatment', 'sample'],
-  ['file'],
-  ['genomic_info', 'image', 'proteomic'],
-  ['MultiplexMicroscopy', 'NonDICOMMRimages', 'NonDICOMPETimages'],
-  ['NonDICOMCTimages', 'NonDICOMpathologyImages', 'NonDICOMradiologyAllModalities'],
-  ['version']
+  ['sample', 'synonym'],
+  ['treatment', 'diagnosis', 'laboratory_test', 'genetic_analysis'],
+  ['survival', 'treatment_response', 'reference_file'],
 ];
 
 /**
@@ -130,7 +126,7 @@ const C3DCNavigatorView = () => {
   * node2DPosition - node placement - 2D array of the node name
   * generateNodeTree - will assign the default position
   */
-  const nodeTree = generateNodeTree(dictionary);
+  const nodeTree = node2DPosition || generateNodeTree(dictionary);
 
   // create necessary data for navigator
   const {

@@ -39,7 +39,6 @@
 import React from 'react';
 import { CircularProgress } from '@mui/material';
 import {
-  StyledTableContainer,
   StyledTableSummary
 } from './Table.styled';
 import CategoryView from './Category/CategoryView';
@@ -87,6 +86,7 @@ const getNodePropertyCount = (dictionary) => {
  */
 const TableView = ({
   dictionary = {},
+  tableViewConfig,
 }) => {
   const { context } = useModelContext();
   if (!context) {
@@ -115,6 +115,7 @@ const TableView = ({
             key={category}
             nodes={node2Category[category]}
             category={category}
+            tableViewConfig={tableViewConfig}
           />
         ))}
       </div>

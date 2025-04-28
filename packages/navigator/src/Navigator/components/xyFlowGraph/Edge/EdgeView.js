@@ -5,11 +5,10 @@
 
 import React from 'react';
 import { getStraightPath } from '@xyflow/react';
+import { useModelContext } from '../../../state/NavContextProvider';
 
 const EdgeView = ({
   id,
-  source,
-  target,
   sourceX,
   sourceY,
   targetX,
@@ -17,10 +16,11 @@ const EdgeView = ({
   sourcePosition,
   targetPosition,
   markerEnd,
-  isSearchMode,
-  expandNodeView,
-  highlightParentNodes = [],
 }) => {
+  const { context = {} } = useModelContext();
+  const {
+    isSearchMode,
+  } = context;
 
   const [edgePath] = getStraightPath({
     sourceX,
@@ -31,10 +31,7 @@ const EdgeView = ({
     targetPosition,
   });
 
-  const highlightEdge = highlightParentNodes.includes(source)
-        && highlightParentNodes.includes(target);
-  const stroke = isSearchMode ? '#b1b1b7' : (!expandNodeView)
-    ? "#222" : (expandNodeView && highlightEdge) ? "#222" : '#b1b1b7';
+  const stroke = isSearchMode ? '#b1b1b7' : '#222';
 
   return (
     <>

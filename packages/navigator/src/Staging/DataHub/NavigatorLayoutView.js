@@ -19,7 +19,7 @@ import {
 import GraphPanelView from './GraphPanelView';
 import TablePanelView from './TablePanelView';
 import ChangelogPanelView from './ChangelogPanelView';
-import { SideBarView } from '../../dist';
+import SidebarView from '../../Navigator/components/Sidebar/SidebarView';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -80,7 +80,7 @@ const NavigatorLayoutView = ({
   return (
     <StyledContainer ref={ref}>
       <StyledSideBarContrainer>
-        <SideBarView />
+        <SidebarView />
       </StyledSideBarContrainer>
       <StyledTabContainer>
         <StyledTabBtnContainer>

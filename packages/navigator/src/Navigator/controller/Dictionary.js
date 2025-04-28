@@ -80,15 +80,16 @@ const getPropertyType = (required) => {
 const isIncludedInTemplate = (value) => (`${value}`.toLowerCase() === 'yes');
 
 // assign property details
-const getNodePropertyDetails = (nodeName, yamlPropertyDetails, propertyItem = {}) => ({
+const getNodePropertyDetails = (nodeName, yamlPropertyDetails) => ({
   node: nodeName,
   description: yamlPropertyDetails.Desc,
   type: yamlPropertyDetails.Type || yamlPropertyDetails.Enum,
   enum: yamlPropertyDetails?.Enum || yamlPropertyDetails?.Type?.Enum,
   key: yamlPropertyDetails?.Key,
   Term: yamlPropertyDetails?.Term,
-  propertyType: propertyItem?.propertyType || getPropertyType(yamlPropertyDetails.Req),
-  inclusion: propertyItem?.propertyType || getPropertyType(yamlPropertyDetails.Req),
+  source: yamlPropertyDetails?.Src || '',
+  propertyType: getPropertyType(yamlPropertyDetails.Req),
+  inclusion: getPropertyType(yamlPropertyDetails.Req),
   display: (yamlPropertyDetails.Tags && yamlPropertyDetails.Tags.Labeled)
     ? isPropertyRequired.YES : isPropertyRequired.NO,
   isIncludedInTemplate: isIncludedInTemplate(yamlPropertyDetails?.Tags?.Template),
@@ -190,7 +191,6 @@ export async function getModelData(
             const propertyDetail = getNodePropertyDetails(
               key,
               yamlPropertiesDetails[name],
-              acc[name],
             );
             acc[name] = propertyDetail;
             acc[name].propertyName = name;

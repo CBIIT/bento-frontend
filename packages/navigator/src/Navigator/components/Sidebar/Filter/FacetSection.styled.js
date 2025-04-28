@@ -31,6 +31,9 @@ export const SectionAccordianSummary = styled(AccordionSummary)({
   lineHeight: '26px',
   paddingLeft: '9px',
   letterSpacing: '0.25px',
+  '&.MuiButtonBase-root': {
+    boxShadow: 'inset -10px -1px 10px -7px rgb(100 102 106 / 40%)',
+  },
 });
 
 export const FacetAccordian = styled(Accordion)({

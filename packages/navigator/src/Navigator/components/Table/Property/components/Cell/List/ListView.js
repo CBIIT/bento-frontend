@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 /* eslint-disable-next-line */
 import CloseIcon from '@mui/icons-material/Close';
 import {
-  Button,
   IconButton,
 } from '@mui/material';
 /* eslint-disable-next-line */
@@ -61,9 +60,9 @@ const ListView = ({
         {' '}
         {(!display) && (<DisplayListItem displayItems={listItems} />)}
         {(!display && items.length > numbOfDefaultDisplayItems) ? (
-          <Button onClick={() => setDisplay(!display)}>
+          <Styled.ShowMoreBtn onClick={() => setDisplay(!display)}>
             ...show More
-          </Button>
+          </Styled.ShowMoreBtn>
         ) : (
           <Styled.MuiDialog
             open={display}

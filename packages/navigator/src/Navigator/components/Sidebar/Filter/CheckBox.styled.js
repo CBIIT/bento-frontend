@@ -32,15 +32,19 @@ export const StyledCheckBoxIcon = styled(CheckBoxIcon)({
 });
 
 export const StyledMuiCheckBox = styled(Checkbox)(
-  ({ checkBoxBorderColor, matchedNodeCount }) => ({
-    color: (matchedNodeCount === 0) ? '#EAEAEA'
-      : (checkBoxBorderColor || '#137fbe'),
-    '& svg': {
-      fontSize: '18px',
-      color: (matchedNodeCount === 0) ? '#EAEAEA'
-        : (checkBoxBorderColor || '#137fbe'),
-    },
-  }),
+  ({ checkBoxBorderColor, matchedNodeCount }) => {
+    const color = (matchedNodeCount === 0) ? '#EAEAEA' : (checkBoxBorderColor || '#137fbe');
+    return {
+      '&.MuiButtonBase-root': {
+        color,
+        padding: 9,
+        '& svg': {
+          fontSize: '18px',
+          color,
+        },
+      },
+    };
+  },
 );
 
 export const StyledLabelDiv = styled('div')({

@@ -54,4 +54,9 @@ export const TypeCell = styled(TableCell)({
 export const MuiCellView = styled(TableCell)({
   verticalAlign: 'top',
   borderBottom: 'none',
+  // '&.headerColumn_type': {
+  //   maxWidth: '300px',
+  //   minWidth: '100px',
+  //   wordWrap: 'break-word',
+  // },
 });

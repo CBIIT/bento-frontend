@@ -2,7 +2,6 @@ import React from 'react';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { defaultColumnsConfig } from './tableConfig';
 import CellView from './components/Cell/CellView';
@@ -15,13 +14,13 @@ const PropertyView = ({
   <TableContainer component={Paper} className="tableContainer">
     <Styled.MuiTable aria-label="property table">
       <Styled.TableHeader className="tableHeader">
-        <TableRow className="headerRow">
+        <Styled.HeaderRow className="headerRow">
           {columns.map((column) => (
             <TableCell className={`headerColumn_${column.field}`}>
               {column.name}
             </TableCell>
           ))}
-        </TableRow>
+        </Styled.HeaderRow>
       </Styled.TableHeader>
       <TableBody className="tableBody">
         {

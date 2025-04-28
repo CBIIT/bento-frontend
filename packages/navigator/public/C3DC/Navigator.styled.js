@@ -55,29 +55,14 @@ export const StyledTabs = styled(Tabs)({
 });
 
 export const StyledTabView = styled(Tab)({
-
-  textTransform: 'none',
-  borderTopLeftRadius: '5px',
-  borderTopRightRadius: '5px',
-  background: 'rgba(229, 227, 227, 0.28)',
-  marginRight: '10px',
-  marginLeft: '10px',
-  marginTop: '20px',
-  minWidth: '130px',
-  paddingLeft: '30px',
-  paddingRight: '30px',
-  fontSize: '18px',
-  borderTop: '0.9px solid #C4C4C4',
-  borderRight: '0.9px solid #C4C4C4',
-  borderLeft: '0.9px solid #C4C4C4',
-  height: '50px',
   '@media (min-width: 600px)': {
     minWidth: '110px',
   },
   '&.Mui-selected': {
+    fontFamily: 'Lato',
     boxShadow: '-1px -3px 10px 1px rgb(50 50 50 / 25%)',
     borderBottom: '10px solid #fff',
-    background: '#ffffff',
+    background: '#ffffff !important',
     border: '0.75px solid #fffff5',
     fontSize: '18px',
     fontFamily: 'Lato',
@@ -87,6 +72,7 @@ export const StyledTabView = styled(Tab)({
     marginLeft: '10px',
   },
   '&.MuiButtonBase-root': {
+    fontFamily: 'Lato',
     textTransform: 'none',
     borderTopLeftRadius: '5px',
     borderTopRightRadius: '5px',
@@ -102,6 +88,5 @@ export const StyledTabView = styled(Tab)({
     borderRight: '0.9px solid #C4C4C4',
     borderLeft: '0.9px solid #C4C4C4',
     height: '50px',
-
-  }
+  },
 });

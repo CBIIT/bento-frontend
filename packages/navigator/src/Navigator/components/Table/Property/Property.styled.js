@@ -42,13 +42,33 @@ import TableRow from '@mui/material/TableRow';
 
 export const TableHeader = styled(TableHead)({
     color: '#606060',
-    fontSize: '13px',
+    fontSize: '15px',
     background: '#eef5f7',
     borderTop: '3px solid #adbec4',
     borderBottom: '3px solid #adbec4',
     '& th': {
       fontWeight: '900',
     },
+});
+
+export const HeaderRow = styled(TableRow)({
+  '& .MuiTableCell-head': {
+    color: '#606060',
+    fontSize: '15px',
+    background: '#eef5f7',
+    borderTop: '3px solid #adbec4',
+    borderBottom: '3px solid #adbec4',
+    padding: '10px 10px 10px 15px',
+    whiteSpace: 'nowrap',
+    '&.headerColumn_type': {
+      maxWidth: '150px',
+      width: '150px',
+    },
+    '& th': {
+      fontWeight: '900',
+      whiteSpace: 'nowrap',
+    },
+  },
 });
 
 export const MuiTable = styled(Table)({
