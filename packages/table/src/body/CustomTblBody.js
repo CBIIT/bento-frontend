@@ -25,7 +25,11 @@ const CustomTableBody = ({
 }) => {
   const { columns } = table;
   const displayColunms = columns.filter((col) => col.display);
-  const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
+
+  const MuiTableRow = { ...defaultTheme().MuiTableRow, ...customTheme.MuiTableRow };
+  const updatedTheme = { overrides: { ...defaultTheme(), ...customTheme, MuiTableRow } };
+
+  const themeConfig = createTheme(updatedTheme);
 
   return (
     <ThemeProvider theme={themeConfig}>
@@ -50,6 +54,7 @@ const CustomTableBody = ({
                     <DisplayCell
                       column={column}
                       row={row}
+                      themeConfig={themeConfig}
                     />
                   );
                 })

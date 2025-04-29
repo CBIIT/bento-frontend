@@ -9,6 +9,7 @@ export const FORMAT_BYTES = 'FORMAT_BYTES';
 export const TRANSFORM = 'TRANSFORM';
 export const EXPAND = 'EXPAND';
 export const COMMA = 'COMMA';
+export const CPI = 'CPI';
 
 export const cellTypes = {
   CUSTOM_ELEM,
@@ -19,6 +20,7 @@ export const cellTypes = {
   DEFAULT,
   FORMAT_DATA,
   COMMA,
+  CPI,
 };
 
 export const cellStyles = {
