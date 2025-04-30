@@ -49,11 +49,11 @@
             "maxZoom": 2
           },
           "nodeTree": [
-            ["participant"],
             ["study"],
-            ["sample", "survival", "genetic_analysis", "laboratory_test"],
-            ["treatment", "synonym", "reference_file"],
-            ["diagnosis", "treatment_response"]
+            ["participant"],
+            ["sample", "synonym"],
+            ["treatment", "diagnosis", "laboratory_test", "genetic_analysis"],
+            ["survival", "treatment_response", "reference_file"]
           ]
         }
       }
