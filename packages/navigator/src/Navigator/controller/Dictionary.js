@@ -22,7 +22,7 @@ import {
  * @param {*} url
  * @returns
  */
-const getYAMLFileContent = async (url) => {
+export const getYAMLFileContent = async (url) => {
   try {
     const response = await axios.get(url);
     const data = yaml.load(response.data);

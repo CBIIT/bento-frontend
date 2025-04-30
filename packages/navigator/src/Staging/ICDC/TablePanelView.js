@@ -1,5 +1,6 @@
 import React from 'react';
-import { tableField, tableHeaderLabel, TableView } from '../../dist';
+import { field, label } from '../../Navigator/components/Table/Property/tableConfig';
+import TableView from '../../Navigator/components/Table/TableView';
 /**
  * override table view
  * @param {*} param0
@@ -9,10 +10,10 @@ const TablePanelView = ({
   dictionary,
 }) => {
   const columns = [
-    { field: tableField.PROPERTY_NAME, name: tableHeaderLabel.PROPERTY },
-    { field: tableField.TYPE, name: tableHeaderLabel.TYPE },
-    { field: tableField.INCLUSION, name: tableHeaderLabel.INCLUSION },
-    { field: tableField.DESC, name: tableHeaderLabel.DESC },
+    { field: field.PROPERTY_NAME, name: label.PROPERTY },
+    { field: field.TYPE, name: label.TYPE },
+    { field: field.INCLUSION, name: label.INCLUSION },
+    { field: field.DESC, name: label.DESC },
   ];
 
   const tableViewConfig = {
@@ -27,7 +28,7 @@ const TablePanelView = ({
         tableViewConfig={tableViewConfig}
       />
     </>
-  )
+  );
 };
 
 export default TablePanelView;

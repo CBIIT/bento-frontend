@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import {
-  generateNodeTree,
-  getFilterItems,
-  getModelData,
-  HeaderView,
-  ModelContextProvider,
-} from '../../dist';
-import NavigatorController from '../../dist/Navigator/NavigatorController';
-import DemoNavigatorView from './NavigatorLayoutView';
-
+import { getModelData } from '../../Navigator/controller/Dictionary';
+import { generateNodeTree } from '../../Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
+import { getFilterItems } from '../../Navigator/controller/Filter';
+import { ModelContextProvider } from '../../Navigator/state/NavContextProvider';
+import HeaderView from '../../Navigator/components/Header/Muiv5+/HeaderView';
+import NavigatorView from './NavigatorLayoutView';
+import NavigatorController from '../../Navigator/NavigatorController';
 
 const headerIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/4a3fb8e201e6ba2a858d7ec1226d2fd6ea2b5298/icdc/images/svgs/Icon-DMNav.85x85.svg';
 
 const graphConfig = {
   canvas: {
     fit: {
-      x: 0, // init x position of parent/ origin node 
+      x: 0, // init x position of parent/ origin node
       y: 0, // init y position of parent / origin node
       zoom: 0.5,
       minZoom: 0.5,
-      maxZoom: 2, 
+      maxZoom: 2,
       xInterval: 250, // space x - axis
       yInterval: 80, // space y-axis
     },
@@ -30,7 +27,7 @@ const pdfDownloadConfig = {
   fileType: 'pdf',
   prefix: 'ICDC_',
   templatePrefix: 'ICDC_Data_Loading_Template-',
-  fileTransferManifestName: "ICDC_Data_Loading_Template-file-manifest",
+  fileTransferManifestName: 'ICDC_Data_Loading_Template-file-manifest',
   landscape: 'true',
   footnote: 'test',
   enabled: true,
@@ -42,13 +39,13 @@ const readMeConfig = {
 };
 
 const pageConfig = {
-  title: "DMN",
-  iconSrc: "https://api.placeholder.app/image/85x85",
+  title: 'DMN',
+  iconSrc: 'https://api.placeholder.app/image/85x85',
 };
 
-const headerConfiguration = {
-  headerLogo: headerIcon, // proivde bento app specific icon
-};
+// const headerConfiguration = {
+//   headerLogo: headerIcon, // proivde bento app specific icon
+// };
 
 export const loadingExampleConfig = {
   type: 'dynamic', // static or dynamic
@@ -58,36 +55,20 @@ export const loadingExampleConfig = {
 // node view and table config
 const tableConfig = {
   columns: [
-    
-  ]
+  ],
 };
-
-// const node2DPosition = [
-//   ['program'],
-//   ['study'],
-//   ['participant'],
-//   ['diagnosis', 'treatment', 'sample'],
-//   ['file'],
-//   ['genomic_info', 'image', 'proteomic'],
-//   ['MultiplexMicroscopy', 'NonDICOMMRimages', 'NonDICOMPETimages'],
-//   ['NonDICOMCTimages', 'NonDICOMpathologyImages', 'NonDICOMradiologyAllModalities'],
-//   ['version']
-// ];
 
 /**
 * example layout setup and configuration
 */
-const DATA_MODEL = "https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model.yml";
-const DATA_MODEL_PROPS = "https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model-props.yml";
+const DATA_MODEL = 'https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model.yml';
+const DATA_MODEL_PROPS = 'https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model-props.yml';
 
 const nodesYamlFilePath = DATA_MODEL;
 const propertiesYamlFilePath = DATA_MODEL_PROPS;
-const changelogUrl = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/dev2/cache/CDS/6.0.2/version-history.md';
 
-const ICDCNavigatorView = () => {
+const ICDCNavigator = () => {
   const [dictionary, setDictionary] = useState(null);
-  // const [versInfo, setVersionInfo] = useState(null);
-  // const [changelogData, setChangelogData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // retrive all data for navigator
@@ -96,26 +77,18 @@ const ICDCNavigatorView = () => {
       try {
         const [res1] = await Promise.all([
           getModelData(nodesYamlFilePath, propertiesYamlFilePath),
-          // getChangelog(changelogUrl),
         ]);
         const { dictionary: Dictionary } = res1;
         setDictionary(Dictionary);
-        // setVersionInfo(versionInfo);
-        // setChangelogData(res2);
       } catch (error) {
-        console.error("Error fetching data", error);
+        console.error('Error fetching data', error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
-  /**
-  * generate dictionary
-  *  *** configure any additional change this dictionary ***
-  */
   if (loading || !dictionary) {
     return (
       <>
@@ -123,15 +96,16 @@ const ICDCNavigatorView = () => {
       </>
     );
   }
+
   /**
   * apply any additional dictionary changes
   * 1. logic to display or hide element in node views
   * 2. any additional fields to display
   */
   Object.keys(dictionary).forEach((key) => {
-    dictionary[key]['isTemplateAndDocsDownlaod'] = false;
+    dictionary[key].isTemplateAndDocsDownlaod = false;
     if (key === 'file') {
-      dictionary[key]['isManifest'] = true
+      dictionary[key].isManifest = true;
     }
   });
 
@@ -151,8 +125,8 @@ const ICDCNavigatorView = () => {
     node2FacetItem,
     props2FacetItem,
     facet2FacetItem,
-  } = getFilterItems(dictionary); 
-  
+  } = getFilterItems(dictionary);
+
   const filterSections = { filterByNode, filterByProperty };
 
   // bundle all config value and data to initize State
@@ -174,19 +148,19 @@ const ICDCNavigatorView = () => {
 
   return (
     <>
-    <ModelContextProvider>
-      <HeaderView
-        headerLogo={headerIcon}
-        readMeConfig={readMeConfig}
-      />
-      <NavigatorController
-        dictionary={dictionary}
-        config={config}
-        CustomNavigatorView={DemoNavigatorView}
-      />
-    </ModelContextProvider>
+      <ModelContextProvider>
+        <HeaderView
+          headerLogo={headerIcon}
+          readMeConfig={readMeConfig}
+        />
+        <NavigatorController
+          dictionary={dictionary}
+          config={config}
+          CustomNavigatorView={NavigatorView}
+        />
+      </ModelContextProvider>
     </>
   );
-}
+};
 
-export default ICDCNavigatorView;
+export default ICDCNavigator;

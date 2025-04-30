@@ -18,8 +18,7 @@ import {
 } from './Navigator.styled';
 import GraphPanelView from './GraphPanelView';
 import TablePanelView from './TablePanelView';
-import ChangelogPanelView from './ChangelogPanelView';
-import { SideBarView } from '../../dist';
+import SideBarView from '../../Navigator/components/Sidebar/SidebarView';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -67,16 +66,6 @@ const NavigatorLayoutView = ({
     setTabViewWidth(ref.current.offsetWidth);
   }, []);
 
-  // return (
-  //   <StyledContainer ref={ref}>
-  //     <StyledTabPanelOuterContainer>
-  //       <GraphPanelView
-  //         dictionary={dictionary}
-  //         tabViewWidth={tabViewWidth}
-  //       />
-  //     </StyledTabPanelOuterContainer>
-  //   </StyledContainer>
-  // )
   return (
     <StyledContainer ref={ref}>
       <StyledSideBarContrainer>
@@ -91,7 +80,6 @@ const NavigatorLayoutView = ({
           >
             <StyledTabView label="Graph View" />
             <StyledTabView label="Table View" />
-            <StyledTabView label="Version History" />
           </StyledTabs>
         </StyledTabBtnContainer>
         <StyledTabPanelOuterContainer>
@@ -104,9 +92,6 @@ const NavigatorLayoutView = ({
             </TabPanel>
             <TabPanel value={value} index={1}>
               <TablePanelView dictionary={dictionary} />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-              <ChangelogPanelView />
             </TabPanel>
           </StyledTabPanelContainer>
         </StyledTabPanelOuterContainer>

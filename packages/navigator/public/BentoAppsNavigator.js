@@ -6,12 +6,9 @@ import styled from '@emotion/styled';
 import {
   createHashRouter,
   RouterProvider,
-  Outlet,
-  Link
 } from "react-router-dom";
-import HubNavigatorView from './DataHub/HubNavigator';
-import ICDCNavigatorView from './ICDC/IcdcNavigator';
 import C3DCNavigatorView from './C3DC/C3DCNavigator';
+import { ICDCNavigator, HubNavigator, IframeNavigator } from '../dist/index';
 
 // Styled Tab
 const StyledTabView = styled(Tab)(() => ({
@@ -24,11 +21,13 @@ const StyledTabView = styled(Tab)(() => ({
     minWidth: '100px',
     '&.Mui-selected': {
       color: '#1976d2', // nice blue when selected
-      borderBottom: '3px solid #1976d2', // underline
+      borderBottom: '3px solidrgb(94, 104, 113)', // underline
       backgroundColor: '#e3f2fd', // light blue background
     },
   },
 }));
+
+const configUrl = 'https://raw.githubusercontent.com/CBIIT/c3dc-model/refs/heads/dmn-dev2/model-desc/content.json';
 
 function Layout({
   children,
@@ -45,10 +44,12 @@ function Layout({
           <StyledTabView label="C3DC" />
           <StyledTabView label="Hub" />
           <StyledTabView label="ICDC" />
+          <StyledTabView label="Iframe" />
         </Tabs>
         {value === 0 && <C3DCNavigatorView />}
-        {value === 1 && <HubNavigatorView />}
-        {value === 2 && <ICDCNavigatorView />}
+        {value === 1 && <HubNavigator />}
+        {value === 2 && <ICDCNavigator />}
+        {value === 3 && <IframeNavigator configUrl={configUrl} />}
       </Box>
     </>
   );
@@ -88,14 +89,6 @@ const router = createHashRouter([
       {
         path: "c3dc",
         element: <C3DCNavigatorView />,
-      },
-      {
-        path: "hub",
-        element: <HubNavigatorView />,
-      },
-      {
-        path: "icdc",
-        element: <ICDCNavigatorView />,
       },
     ],
   },
