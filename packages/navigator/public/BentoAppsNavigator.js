@@ -8,7 +8,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import C3DCNavigatorView from './C3DC/C3DCNavigator';
-import { ICDCNavigator, HubNavigator, IframeNavigator } from '../dist/index';
+import {
+  ICDCNavigator,
+  HubNavigator,
+  IframeNavigatorController as IframeNavigator,
+} from '../dist/index';
 
 // Styled Tab
 const StyledTabView = styled(Tab)(() => ({
@@ -27,7 +31,7 @@ const StyledTabView = styled(Tab)(() => ({
   },
 }));
 
-const configUrl = 'https://raw.githubusercontent.com/CBIIT/c3dc-model/refs/heads/dmn-dev2/model-desc/content.json';
+const configUrl = 'https://raw.githubusercontent.com/CBIIT/bento-frontend/refs/heads/bento_core_navigator/packages/navigator/src/Staging/Iframe/config.json';
 
 function Layout({
   children,

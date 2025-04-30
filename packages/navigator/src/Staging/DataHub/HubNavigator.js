@@ -64,12 +64,16 @@ const node2DPosition = [
 /**
 * example layout setup and configuration
 */
-const nodesYamlFilePath = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/cds-model.yml';
-const propertiesYamlFilePath = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/cds-model-props.yml';
-const changelogUrl = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/dev2/cache/CDS/6.0.2/version-history.md';
+const DATA_MODEL = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/cds-model.yml';
+const DATA_MODEL_PROPS = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/cds-model-props.yml';
+const versionUrl = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/dev2/cache/CDS/6.0.2/version-history.md';
 // const readMeUrl = "https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/dev2/cache/CDS/6.0.2/README.md";
 
-const HubNavigatorView = () => {
+const HubNavigatorView = ({
+  nodesYamlFilePath = DATA_MODEL,
+  propertiesYamlFilePath = DATA_MODEL_PROPS,
+  changelogUrl = versionUrl,
+}) => {
   const [dictionary, setDictionary] = useState(null);
   const [versInfo, setVersionInfo] = useState(null);
   const [changelogData, setChangelogData] = useState(null);

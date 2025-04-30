@@ -211,6 +211,7 @@ export async function getModelData(
     item.links = nodeReationships[key];
     modelData[key] = item;
   });
+  // todo - add cdeMap info
   console.log(cdeMap);
   // model version info
   return {

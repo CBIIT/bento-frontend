@@ -24,4 +24,4 @@ export { default as PropertyTableView } from './Navigator/components/Table/Prope
 // app
 export { default as HubNavigator } from './Staging/DataHub/HubNavigator';
 export { default as ICDCNavigator } from './Staging/ICDC/ICDCNavigator';
-export { default as IframeNavigator } from './Staging/Iframe/Navigator';
+export { default as IframeNavigatorController } from './Staging/Iframe/Navigator';
