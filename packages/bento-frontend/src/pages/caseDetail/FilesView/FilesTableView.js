@@ -19,6 +19,7 @@ const FilesTableView = ({
     tableMsg: filesTable.tableMsg,
     sortBy: filesTable.defaultSortField,
     sortOrder: filesTable.defaultSortDirection,
+    extendedViewConfig: filesTable.extendedViewConfig,
     rowsPerPage: 10,
     dataKey: filesTable.dataKey,
     page: 0,

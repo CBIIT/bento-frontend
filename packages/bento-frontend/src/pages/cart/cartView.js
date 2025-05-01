@@ -27,6 +27,7 @@ const CartView = (props) => {
     paginationAPIField: config.paginationAPIField,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
+    extendedViewConfig: config.extendedViewConfig,
     rowsPerPage: 10,
     page: 0,
   });

@@ -122,36 +122,51 @@ export const table = {
   defaultSortDirection: 'asc',
   paginationAPIField: 'filesInList',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
+  extendedViewConfig: {
+    pagination: false,
+    download: {
+      downloadCsv: 'Download Table Contents As CSV',
+      downloadFileName: 'Bento_My_Files_download',
+    },
+    manageViewColumns: {
+      title: 'View Columns',
+    },
+  },
   columns: [
     {
       dataField: 'file_name',
       header: 'File Name',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'file_type',
       header: 'File Type',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'association',
       header: 'Association',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'file_description',
       header: 'Description',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'file_format',
       header: 'Format',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'file_size',
@@ -161,30 +176,35 @@ export const table = {
       dataFormatType: dataFormatTypes.FORMAT_BYTES,
       cellType: cellTypes.FORMAT_DATA,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'subject_id',
       header: 'Case ID',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'study_code',
       header: 'Study Code',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'file_id',
       header: 'UUID',
       display: false,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'md5sum',
       header: 'Md5Sum',
       display: false,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       cellType: cellTypes.DELETE,

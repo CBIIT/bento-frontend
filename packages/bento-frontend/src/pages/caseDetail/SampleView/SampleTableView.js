@@ -19,6 +19,7 @@ const SampleTableView = ({
     tableMsg: sampleTable.tableMsg,
     sortBy: sampleTable.defaultSortField,
     sortOrder: sampleTable.defaultSortDirection,
+    extendedViewConfig: sampleTable.extendedViewConfig,
     rowsPerPage: 10,
     dataKey: sampleTable.dataKey,
     page: 0,

@@ -307,6 +307,16 @@ export const sampleTable = {
   // Set 'selectableRows' to true to show the row selection
   selectableRows: true,
   // A maximum of 10 columns are allowed
+  extendedViewConfig: {
+    pagination: false,
+    download: {
+      downloadCsv: 'Download Table Contents As CSV',
+      downloadFileName: 'Bento_Sample_Download'
+    },
+    manageViewColumns: {
+      title: 'View Columns',
+    },
+  },
   columns: [
     {
       cellType: cellTypes.CHECKBOX,
@@ -399,6 +409,16 @@ export const filesTable = {
   downloadFileName: 'Bento_case_samples_download',
   // Set 'selectableRows' to true to show the row selection
   selectableRows: true,
+  extendedViewConfig: {
+    pagination: false,
+    download: {
+      downloadCsv: 'Download Table Contents As CSV',
+      downloadFileName: 'Bento_Files_Download'
+    },
+    manageViewColumns: {
+      title: 'View Columns',
+    },
+  },
   // A maximum of 10 columns are allowed
   columns: [
     {
