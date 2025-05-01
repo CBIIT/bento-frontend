@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Checkbox,
   FormControlLabel,
   IconButton,
   List,
   ListItem,
-  Popover,
   Tooltip,
   Typography,
   withStyles,
@@ -31,16 +30,42 @@ const ManageColumnView = ({
     return null;
   }
   const { columns } = table;
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [listDisplay, setListDisplay] = useState('none');
   const [selectAll, setSelectAll] = useState(false);
 
   const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const dropdownSelection = useRef(null);
+
+  const handleClose = () => {
+    setListDisplay('none');
   };
 
-  const handleClose = () => setAnchorEl(null);
+  const handleClickButton = () => {
+    if (listDisplay === 'none') {
+      setListDisplay('block');
+    } else {
+      setListDisplay('none');
+    }
+  };
+
+  const useOutsideAlerter = (ref) => {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        console.log(event.target);
+        if (!(event.target.getAttribute('id') && event.target.getAttribute('id').includes('dropdownListItem'))
+        && !(event.target.getAttribute('class') && event.target.getAttribute('class').includes('MuiFormControlLabel'))
+        ) {
+          setListDisplay('none');
+        }
+      }
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  };
+  useOutsideAlerter(dropdownSelection);
 
   const handleSelectAll = () => {
     const state = selectAll;
@@ -52,7 +77,7 @@ const ManageColumnView = ({
     width: '48px',
     height: '36px',
     paddingLeft: '5px',
-    border: '0.75px solid #606060',
+    border: `${listDisplay === 'none' ? '0.75px solid #606060' : '1.5px solid #5666BD'}`,
     borderRadius: '5px',
     display: 'inline-flex',
     position: 'relative',
@@ -61,43 +86,45 @@ const ManageColumnView = ({
   };
 
   const displayColumnStyle = {
-    position: 'relative',
-    right: '20px',
-    bottom: '15px',
-    scale: '0.5',
+    position: 'absolute',
+    right: '35px',
+    bottom: '23px',
   };
 
   const viewColumnsStyle = {
     marginTop: '6px',
     height: '24px',
-    right: '37px',
+    backgroundColor: 'transparent',
+  };
+
+  const dropdownList = {
+    position: 'absolute',
+    width: '230px',
+    marginTop: '38px',
+    marginLeft: '-187px',
+    overflow: 'auto',
+    zIndex: '5',
+    border: '1.5px solid #5666BD',
+    borderRadius: '5px',
+    background: '#ffffff',
+    display: listDisplay,
   };
 
   const arrowdownIcon = {
     fill: '#606060',
   };
-
-  const open = Boolean(anchorEl);
   return (
     <div style={columnDropdown}>
       <Tooltip title="Columns may be hidden">
         <img src={hiddenColumnsIcon} alt="hiddenColumnsIcon" style={displayColumnStyle} />
       </Tooltip>
       <Tooltip title={manageViewColumns.title}>
-        <IconButton variant="contained" onClick={handleClick} style={viewColumnsStyle}>
+        <IconButton variant="contained" onClick={handleClickButton} style={viewColumnsStyle}>
           <img src={viewColumnsIcon} alt="viewColumnsIcon" />
           <KeyboardArrowDownOutlinedIcon style={arrowdownIcon} />
         </IconButton>
       </Tooltip>
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-      >
+      <div style={dropdownList}>
         <Typography variant="caption" className="viewColumnText">
           {manageViewColumns.title}
         </Typography>
@@ -109,10 +136,11 @@ const ManageColumnView = ({
           <Close />
         </IconButton>
         <List className="viewColumnList">
-          {viewColumns.map((column) => (
+          {viewColumns.map((column, index) => (
             <ListItem
               width={1}
               className="viewColumnListItem"
+              id={`dropdownListItem-${index}`}
             >
               <FormControlLabel
                 control={(
@@ -125,6 +153,7 @@ const ManageColumnView = ({
                     )}
                     onClick={() => onColumnViewChange(column)}
                     checked={column.display}
+                    id={`dropdownListItemCheckbox-${index}`}
                     checkedIcon={(
                       <CheckBoxIcon
                         style={{
@@ -142,6 +171,7 @@ const ManageColumnView = ({
                 )}
                 disabled={!column.hideable}
                 label={column.header}
+                id={`dropdownListItem-${index}-label`}
               />
             </ListItem>
           ))}
@@ -161,6 +191,7 @@ const ManageColumnView = ({
                   )}
                   onClick={() => handleSelectAll()}
                   checked={selectAll}
+                  id="dropdownListItem-all"
                   checkedIcon={(
                     <CheckBoxIcon
                       style={{
@@ -176,10 +207,11 @@ const ManageColumnView = ({
                 />
               )}
               label={selectAll ? 'Deselect All' : 'Select All'}
+              id="dropdownListItem-all-label"
             />
           </ListItem>
         </List>
-      </Popover>
+      </div>
     </div>
   );
 };

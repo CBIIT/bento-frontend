@@ -123,7 +123,7 @@ const DownloadButton = ({
       width: '48px',
       height: '36px',
       paddingLeft: '5px',
-      border: '0.75px solid #606060',
+      border: ` ${listDisplay === 'none' ? '0.75px solid #606060' : '1.5px solid #5666BD'}`,
       borderRadius: '5px',
       display: 'inline-block',
       position: 'relative',
@@ -133,11 +133,11 @@ const DownloadButton = ({
       display: 'block',
       position: 'absolute',
       width: '60px',
-      marginTop: '3px',
-      marginLeft: '-5px',
+      top: '38px',
+      right: '0.5px',
       overflow: 'auto',
       zIndex: '5',
-      border: '1.5px solid #41545E',
+      border: '1.5px solid #5666BD',
       borderRadius: '5px',
       background: '#ffffff',
     },
@@ -148,7 +148,7 @@ const DownloadButton = ({
       fontWeight: 400,
       lineHeight: '21px',
       '&:hover': {
-        background: '#D7D7D7',
+        background: '#C9CFF4',
         cursor: 'pointer',
       },
     },
@@ -173,13 +173,13 @@ const DownloadButton = ({
         {
           count !== 0
             ? (
-              <IconButton onClick={handleClickButton}>
+              <IconButton onClick={handleClickButton} style={{ backgroundColor: 'transparent' }}>
                 <CloudDownload />
                 <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIcon} />
               </IconButton>
             )
             : (
-              <IconButton disabled>
+              <IconButton disabled style={{ backgroundColor: 'transparent' }}>
                 <CloudDownload />
                 <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIconDisabled} />
               </IconButton>
