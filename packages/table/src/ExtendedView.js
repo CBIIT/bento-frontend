@@ -17,6 +17,7 @@ const downloadAreaStyle = {
 const ExtendedView = ({
   table,
   onColumnViewChange,
+  onAllColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
   customTheme,
@@ -56,15 +57,16 @@ const ExtendedView = ({
                 queryVariables={queryVariables}
                 table={table}
               />
-              <DownloadButton
-                count={table.totalRowCount || 0}
-                queryVariables={queryVariables}
-                table={table}
-              />
               <ManageColumnView
                 table={table}
                 manageViewColumns={manageViewColumns}
                 onColumnViewChange={onColumnViewChange}
+                onAllColumnViewChange={onAllColumnViewChange}
+              />
+              <DownloadButton
+                count={table.totalRowCount || 0}
+                queryVariables={queryVariables}
+                table={table}
               />
             </div>
           )

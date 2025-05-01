@@ -120,14 +120,14 @@ const DownloadButton = ({
 
   const useStyles = makeStyles({
     dropdown: {
-      width: '60px',
-      height: '25px',
-      marginTop: '8px',
+      width: '48px',
+      height: '36px',
       paddingLeft: '5px',
       border: '0.75px solid #606060',
       borderRadius: '5px',
       display: 'inline-block',
       position: 'relative',
+      marginTop: '2px',
     },
     dropdownList: {
       display: 'block',
@@ -153,12 +153,15 @@ const DownloadButton = ({
       },
     },
     arrowdownIcon: {
-      marginLeft: '5px',
       fill: '#606060',
+      marginTop: '2px',
     },
     arrowdownIconDisabled: {
       marginLeft: '5px',
       fill: '#00000042',
+    },
+    tooltip: {
+      marginTop: '5px',
     },
   });
 
@@ -166,7 +169,7 @@ const DownloadButton = ({
 
   return (
     <div className={classes.dropdown}>
-      <Tooltip title="Download filtered results">
+      <Tooltip title="Download filtered results" className={classes.tooltip}>
         {
           count !== 0
             ? (
