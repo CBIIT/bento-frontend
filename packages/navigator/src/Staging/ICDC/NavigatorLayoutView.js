@@ -15,7 +15,7 @@ import {
   TabPanelContrainer,
   StyledTabView,
   StyledTabs,
-} from './Navigator.styled';
+} from '../../Navigator/Navigator.styled';
 import GraphPanelView from './GraphPanelView';
 import TablePanelView from './TablePanelView';
 import SideBarView from '../../Navigator/components/Sidebar/SidebarView';

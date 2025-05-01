@@ -164,13 +164,25 @@ export const IframeNavigator = ({
   );
 };
 
-const IframeNavigatorController = ({
-  url = defaultUrl,
-}) => {
+const IframeNavigatorController = () => {
+  const params = new URLSearchParams(window.location.search);
+  const configUrl = params.get('configUrl');
+  const url = configUrl;
+
+  if (!url) {
+    return (
+      <>
+        <Alert severity="error" sx={{ width: '100%' }}>
+          Missign Config Url !!!
+        </Alert>
+      </>
+    );
+  }
+
   const [jsonData, setJsonData] = useState(null);
   const [loader, setLoader] = useState(true);
   const [error, setError] = useState(null);
-
+  console.log(url);
   useEffect(() => {
     const fetchData = async () => {
       setLoader(true); // start loading
@@ -194,7 +206,7 @@ const IframeNavigatorController = ({
   if (!jsonData || error) {
     return (
       <Alert severity="error" sx={{ width: '100%' }}>
-        Provide URL for JSON configuration  !!!
+        Provide URL for JSON configuration !!!
       </Alert>
     );
   }

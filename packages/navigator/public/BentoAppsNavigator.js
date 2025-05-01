@@ -53,7 +53,13 @@ function Layout({
         {value === 0 && <C3DCNavigatorView />}
         {value === 1 && <HubNavigator />}
         {value === 2 && <ICDCNavigator />}
-        {value === 3 && <IframeNavigator configUrl={configUrl} />}
+        {value === 3 && (
+          <iframe
+            src={"http://localhost:7700?configUrl=https://raw.githubusercontent.com/CBIIT/bento-frontend/refs/heads/bento_core_navigator/packages/navigator/src/Staging/Iframe/config.json"}
+            width="100%"
+            height="800"
+          />
+        )}
       </Box>
     </>
   );

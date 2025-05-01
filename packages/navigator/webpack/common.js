@@ -4,7 +4,6 @@ const webpack = require('webpack');
 const paths = require('./paths');
 
 module.exports = {
-  entry: paths.appIndex,
   module: {
     rules: [
       {

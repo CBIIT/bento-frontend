@@ -7,13 +7,13 @@ const paths = require('./paths');
 const publicUrl = '';
 
 module.exports = merge(common, {
-  entry: paths.appIndex,
+  entry: paths.appIframeIndex,
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
     compress: true,
     open: true,
-    port: 6100,
+    port: 7700,
     client: {
       overlay: false,
     },
@@ -43,7 +43,7 @@ module.exports = merge(common, {
       filename: '[name].css',
     }),
     new HtmlWebpackPlugin({
-      template: paths.appHtml, // Environment-specific template
+      template: paths.appIframHtml, // Environment-specific template
       inject: true,
     }),
   ],

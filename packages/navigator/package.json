@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src",
     "dev": "npm i --legacy-peer-deps && NODE_ENV=development webpack-dev-server --config ./webpack/dev.js",
+    "iframe-dev": "npm i --legacy-peer-deps && NODE_ENV=development webpack-dev-server --config ./webpack/iframe.dev.js",
     "standalone": "esbuild --bundle public/DemoNavigator.js --outfile=static/index.js --minify --sourcemap --loader:.js=jsx --jsx=automatic",
     "standalone_build": "NODE_ENV=production webpack --config ./webpack/prod.js"
   },
