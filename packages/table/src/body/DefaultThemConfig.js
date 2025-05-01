@@ -6,7 +6,7 @@ const defaultTheme = () => ({
     },
     root: {
       '&:nth-child(even)': {
-        background: '#e6f2f7',
+        background: '#E7F4F9',
       },
     },
   },
