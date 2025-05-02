@@ -152,12 +152,21 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               getOptionLabel={(option) => option.title}
               renderTags={() => null}
               renderOption={(option) => {
-                const { type, title } = option;
+                const { type, title, synonym } = option;
                 return (
                   <>
-                    {type === 'associatedIds' && (<span className={classes.filterName}>Synonym</span>)}
                     <div style={{ }}>
-                      {title}
+                      {type === 'associatedIds' ? (
+                        <>
+                          <span className={classes.filterName}>Synonym</span>
+                          {' '}
+                          { synonym }
+                        </>
+                      ) : (
+                        <>
+                          { title }
+                        </>
+                      )}
                     </div>
                   </>
                 );

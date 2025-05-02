@@ -204,7 +204,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                           }
                           onClick={() => deleteAutocompleteItem(d.title)}
                         >
-                          {d.title}
+                          {d.synonym}
                         </span>
                         {idx < arr.length - 1 && ' '}
                       </React.Fragment>
