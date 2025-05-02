@@ -7,7 +7,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
   config: {
     inputPlaceholder: 'e.g. BENTO-CASE-06, BENTO-CASE-22',
     noOptionsText: 'No matching items found',
-    searchType: 'subjectIds',
+    searchType: ['subjectIds'],
     ariaLabel: 'Search',
   },
 

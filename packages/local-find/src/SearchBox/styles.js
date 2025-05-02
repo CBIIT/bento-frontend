@@ -73,4 +73,16 @@ export default () => ({
   searchBoxRoot: {
     width: '100%',
   },
+  filterName: {
+    cursor: 'pointer',
+    padding: '0px 2px 0px 2px',
+    fontSize: '10px',
+    fontWeight: 600,
+    borderRadius: '4px',
+    textTransform: 'uppercase',
+    color: '#000',
+    backgroundColor: '#F6A700',
+    marginRight: '4px',
+
+  },
 });

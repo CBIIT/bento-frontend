@@ -37,7 +37,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.noOptionsText
     : DEFAULT_CONFIG.config.noOptionsText;
 
-  const searchType = config && typeof config.searchType === 'string'
+  const searchType = config && typeof config.searchType === 'object'
     ? config.searchType
     : DEFAULT_CONFIG.config.searchType;
 
@@ -124,7 +124,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
           <div>
             <SearchList
               classes={classes}
-              items={value.map((e) => e.title)}
+              items={value}
               onDelete={onDelete}
             />
           </div>
@@ -151,6 +151,17 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               onChange={(event, newValue, reason) => onChangeWrapper(newValue, reason)}
               getOptionLabel={(option) => option.title}
               renderTags={() => null}
+              renderOption={(option) => {
+                const { type, title } = option;
+                return (
+                  <>
+                    {type === 'associatedIds' && (<span className={classes.filterName}>Synonym</span>)}
+                    <div style={{ }}>
+                      {title}
+                    </div>
+                  </>
+                );
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
