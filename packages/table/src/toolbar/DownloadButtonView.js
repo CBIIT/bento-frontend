@@ -123,7 +123,7 @@ const DownloadButton = ({
       width: '48px',
       height: '36px',
       paddingLeft: '5px',
-      border: ` ${listDisplay === 'none' ? '0.75px solid #606060' : '1.5px solid #5666BD'}`,
+      border: `${listDisplay === 'none' ? '0.75px solid #606060' : '1.5px solid #5666BD'}`,
       borderRadius: '5px',
       display: 'inline-block',
       position: 'relative',
@@ -134,7 +134,7 @@ const DownloadButton = ({
       position: 'absolute',
       width: '60px',
       top: '38px',
-      right: '0.5px',
+      left: '-13.5px',
       overflow: 'auto',
       zIndex: '5',
       border: '1.5px solid #5666BD',
@@ -155,6 +155,8 @@ const DownloadButton = ({
     arrowdownIcon: {
       fill: '#606060',
       marginTop: '2px',
+      width: '20px',
+      height: '20px',
     },
     arrowdownIconDisabled: {
       marginLeft: '5px',

@@ -101,17 +101,36 @@ const ManageColumnView = ({
     position: 'absolute',
     width: '230px',
     marginTop: '38px',
-    marginLeft: '-187px',
+    marginLeft: '-188px',
     overflow: 'auto',
-    zIndex: '5',
+    zIndex: '11',
     border: '1.5px solid #5666BD',
     borderRadius: '5px',
     background: '#ffffff',
     display: listDisplay,
   };
 
+  const titleStyle = {
+    fontFamily: 'Poppins',
+    fontWeight: '400',
+    fontSize: '14px',
+    display: 'flex',
+    position: 'relative',
+    top: '15px',
+    left: '1px',
+    color: '#000000',
+  };
+
+  const textStyle = {
+    fontFamily: 'Poppins',
+    fontSize: '14px',
+    fontWeight: '400',
+  };
+
   const arrowdownIcon = {
     fill: '#606060',
+    width: '20px',
+    height: '20px',
   };
   return (
     <div style={columnDropdown}>
@@ -125,17 +144,17 @@ const ManageColumnView = ({
         </IconButton>
       </Tooltip>
       <div style={dropdownList}>
-        <Typography variant="caption" className="viewColumnText">
+        <Typography variant="caption" className="viewColumnText" style={titleStyle}>
           {manageViewColumns.title}
         </Typography>
         <IconButton
           onClick={handleClose}
           className="closeIcon"
-          style={{ float: 'right' }}
+          style={{ float: 'right', bottom: '20px', scale: '0.75' }}
         >
           <Close />
         </IconButton>
-        <List className="viewColumnList">
+        <List className="viewColumnList" id="dropdownListItemTitle">
           {viewColumns.map((column, index) => (
             <ListItem
               width={1}
@@ -158,7 +177,7 @@ const ManageColumnView = ({
                       <CheckBoxIcon
                         style={{
                           fontSize: 18,
-                          color: column.hideable ? 'rgba(11, 53, 86, 1)' : 'rgba(11, 53, 86, 0.38)',
+                          color: column.hideable ? 'rgba(109, 95, 91, 1)' : 'rgba(109, 95, 91, 0.38)',
                         }}
                         className="checkBoxIcon"
                       />
@@ -170,7 +189,7 @@ const ManageColumnView = ({
                   />
                 )}
                 disabled={!column.hideable}
-                label={column.header}
+                label={<Typography id={`dropdownListItemLabel-${index}`} style={textStyle}>{column.header}</Typography>}
                 id={`dropdownListItem-${index}-label`}
               />
             </ListItem>
@@ -179,6 +198,7 @@ const ManageColumnView = ({
           <ListItem
             width={1}
             className="viewColumnListItem"
+            style={{ height: '20px' }}
           >
             <FormControlLabel
               control={(
@@ -196,7 +216,7 @@ const ManageColumnView = ({
                     <CheckBoxIcon
                       style={{
                         fontSize: 18,
-                        color: 'rgba(11, 53, 86, 1)',
+                        color: 'rgba(109, 95, 91, 1)',
                       }}
                       className="checkBoxIcon"
                     />
@@ -206,7 +226,11 @@ const ManageColumnView = ({
                   className="checkBox"
                 />
               )}
-              label={selectAll ? 'Deselect All' : 'Select All'}
+              label={(
+                <Typography id="dropdownListItem-all-label" style={textStyle}>
+                  {selectAll ? 'Deselect All' : 'Select All'}
+                </Typography>
+              )}
               id="dropdownListItem-all-label"
             />
           </ListItem>
