@@ -38,7 +38,6 @@ const NodeView = ({
   description,
   isOverLayTable = false,
   textSearchDetail,
-  tableColumns,
 }) => {
   const [expand, setExpand] = useState(isOverLayTable);
   const propertiesCount = Object.keys(node.properties || {}).length;
@@ -120,7 +119,6 @@ const NodeView = ({
       {expand && (
         <PropertyView
           properties={node.properties || {}}
-          columns={tableColumns}
         />
       )}
     </Styled.Container>

@@ -86,7 +86,6 @@ const getNodePropertyCount = (dictionary) => {
  */
 const TableView = ({
   dictionary = {},
-  tableViewConfig,
 }) => {
   const { context } = useModelContext();
   if (!context) {
@@ -115,7 +114,6 @@ const TableView = ({
             key={category}
             nodes={node2Category[category]}
             category={category}
-            tableViewConfig={tableViewConfig}
           />
         ))}
       </div>

@@ -3,6 +3,7 @@ import { getModelData } from '../../Navigator/controller/Dictionary';
 import { generateNodeTree } from '../../Navigator/components/xyFlowGraph/Canvas/CanvasHelper';
 import { getFilterItems } from '../../Navigator/controller/Filter';
 import { ModelContextProvider } from '../../Navigator/state/NavContextProvider';
+import { field, label } from '../../Navigator/components/Table/Property/tableConfig';
 import HeaderView from '../../Navigator/components/Header/Muiv5+/HeaderView';
 import NavigatorView from './NavigatorLayoutView';
 import NavigatorController from '../../Navigator/NavigatorController';
@@ -50,12 +51,6 @@ const pageConfig = {
 export const loadingExampleConfig = {
   type: 'dynamic', // static or dynamic
   url: 'https://raw.githubusercontent.com/CBIIT/icdc-data-loading-example-sets/main/config.json', // premade ZIP for static, config.json for dynamic
-};
-
-// node view and table config
-const tableConfig = {
-  columns: [
-  ],
 };
 
 /**
@@ -108,6 +103,20 @@ const ICDCNavigator = () => {
       dictionary[key].isManifest = true;
     }
   });
+
+  /**
+   * table config
+   */
+  const columns = [
+    { field: field.PROPERTY_NAME, name: label.PROPERTY },
+    { field: field.TYPE, name: label.TYPE },
+    { field: field.INCLUSION, name: label.INCLUSION },
+    { field: field.DESC, name: label.DESC },
+  ];
+
+  const tableConfig = {
+    columns,
+  };
 
   /**
   * create node tree

@@ -21,7 +21,6 @@ const CategoryView = ({
   isOverLayTable,
   onCloseOverlayTable,
   matches = {},
-  tableViewConfig = {},
 }) => {
   const categoryIconAndColor = getCategoryColorAndIcon(category);
   const iconURL = categoryIconAndColor?.tableIcon;
@@ -72,7 +71,6 @@ const CategoryView = ({
               ...matches[node.id],
               searchText: matches?.searchText,
             }}
-            tableColumns={tableViewConfig?.columns}
           />
         ))
       }

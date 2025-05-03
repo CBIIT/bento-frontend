@@ -212,6 +212,11 @@ export const getType = (property) => {
   return type;
 };
 
+export function capitalizeFirstLetter(str) {
+  const res = str.replace(/_/gi, ' ');
+  return res.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+}
+
 export const downloadTemplate = (format, nodeId) => {
   if (format === 'tsv' || format === 'json') {
     const templatePath = `${dataDictionaryTemplatePath}${nodeId}?format=${format}`;

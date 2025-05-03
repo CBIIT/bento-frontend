@@ -8,6 +8,7 @@ import ListView from './List/ListView';
 import { useModelContext } from '../../../../../state/NavContextProvider';
 import HighlightText from '../../../../Sidebar/Search/HighlightText';
 import * as Styled from './Cell.styled';
+import DownloadBtnView from '../Download/DownloadView';
 
 const CellView = ({
   column,
@@ -22,6 +23,7 @@ const CellView = ({
   const {
     isSearchMode = false,
     matches = {},
+    pdfDownloadConfig,
   } = context;
 
   const { node, propertyName } = row;
@@ -98,6 +100,11 @@ const CellView = ({
             items={enumValue}
             matchingItems={matchingItems}
             searchTerm={matches?.searchText}
+          />
+          <DownloadBtnView
+            data={enumValue}
+            propertyId={row.propertyId}
+            pdfConfig={pdfDownloadConfig}
           />
         </Styled.ListCell>
       );

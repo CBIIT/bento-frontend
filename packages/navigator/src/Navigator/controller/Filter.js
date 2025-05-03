@@ -55,7 +55,6 @@ const property2FacetItems = (
       filterDataset.forEach((item) => {
         if (item[facetItem]) {
           if (!acc[item[facetItem]]) {
-            console.log(item[facetItem]);
             acc[item[facetItem]] = [];
           }
           if (item.propertyId) {
