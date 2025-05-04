@@ -100,6 +100,8 @@ const CellView = ({
             items={enumValue}
             matchingItems={matchingItems}
             searchTerm={matches?.searchText}
+            propertyId={row.propertyId}
+            pdfConfig={pdfDownloadConfig}
           />
           <DownloadBtnView
             data={enumValue}

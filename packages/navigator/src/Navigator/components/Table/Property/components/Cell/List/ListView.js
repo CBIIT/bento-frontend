@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 /* eslint-disable-next-line */
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  IconButton,
-} from '@mui/material';
 /* eslint-disable-next-line */
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import * as Styled from './List.styled';
 import HighlightText from '../../../../../Sidebar/Search/HighlightText';
+import DownloadBtnView from '../../Download/DownloadView';
 
 const numbOfDefaultDisplayItems = 10;
 const exceedNumbOfItems = 30;
@@ -16,6 +14,8 @@ const ListView = ({
   items = [],
   matchingItems = {},
   searchTerm,
+  propertyId,
+  pdfConfig,
 }) => {
   const [display, setDisplay] = useState(false);
   const listItems = items.slice(0, numbOfDefaultDisplayItems);
@@ -80,9 +80,14 @@ const ListView = ({
                 Acceptable Values
               </Styled.DialogTitle>
               <Styled.ActionBtn>
-                <IconButton onClick={() => setDisplay(false)}>
+                <DownloadBtnView
+                  data={items}
+                  propertyId={propertyId}
+                  pdfConfig={pdfConfig}
+                />
+                <Styled.CloseButton onClick={() => setDisplay(false)}>
                   <CloseIcon fontSize="small" />
-                </IconButton>
+                </Styled.CloseButton>
               </Styled.ActionBtn>
             </Styled.DialogTitleContent>
             <DisplayListItem displayItems={items} />

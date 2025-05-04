@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import {
   Button,
   Dialog,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -117,5 +118,12 @@ export const ShowMoreBtn = styled(Button)({
       backgroundColor: 'transparent',
       cursor: 'pointer',
     },
+  },
+});
+
+export const CloseButton = styled(IconButton)({
+  '&.MuiButtonBase-root': {
+    float: 'right',
+    marginLeft: '10px',
   },
 });

@@ -266,7 +266,11 @@ export const getFacetItemCount = (
       };
     });
   }
-
+  /**
+  * STEP - 7 or last step
+  * Restore the count for currently toggled facet
+  * the count for the facet should not change
+  */
   const prevFacetItemCount = {};
   selectedFacetItems.forEach((facetItem) => {
     if (currFacetItemCount[facetItem]) {
