@@ -38,10 +38,9 @@ const DownloadBtnView = ({
   };
 
   const download = (thisData, fileType, contentType) => {
-    console.log('download file');
     const exportData = new Blob([thisData], { type: contentType });
-    const title = capitalizeFirstLetter(propertyId).replace(/_/gi, '-');
-    const fileName = createFileName(`${title}`, pdfConfig?.prefix || filePerfix);
+    const title = capitalizeFirstLetter(propertyId);
+    const fileName = createFileName(`${title}`, pdfConfig?.prefix || filePerfix).replace(/\s+/g, '_');
     saveAs(exportData, `${fileName}.${fileType.toLowerCase()}`);
   };
 
@@ -86,7 +85,7 @@ const DownloadBtnView = ({
         </StyledDownloadBtn>
       </ButtonGroup>
       <StyledMenu
-        id="dropdown-menu"
+        className="dropdown-menu"
         anchorEl={anchorElement}
         keepMounted
         open={Boolean(anchorElement)}
@@ -94,6 +93,7 @@ const DownloadBtnView = ({
       >
         {fileTypes.map((item) => (
           <StyledMenuItem
+            className={`option ${item}`}
             onClick={() => setFileType(item)}
           >
             {item}
