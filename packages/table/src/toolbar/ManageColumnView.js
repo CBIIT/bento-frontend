@@ -52,9 +52,8 @@ const ManageColumnView = ({
   const useOutsideAlerter = (ref) => {
     useEffect(() => {
       function handleClickOutside(event) {
-        console.log(event.target);
         if (!(event.target.getAttribute('id') && event.target.getAttribute('id').includes('dropdownListItem'))
-        && !(event.target.getAttribute('class') && event.target.getAttribute('class').includes('MuiFormControlLabel'))
+          && !(event.target.getAttribute('class') && event.target.getAttribute('class').includes('MuiFormControlLabel'))
         ) {
           setListDisplay('none');
         }
@@ -125,6 +124,17 @@ const ManageColumnView = ({
     fontFamily: 'Poppins',
     fontSize: '14px',
     fontWeight: '400',
+    lineHeight: '1.2',
+  };
+
+  const dividerStyle = {
+    backgroundColor: '#375F9A',
+    marginTop: '5px',
+    marginBottom: '5px',
+    width: '110%',
+    position: 'relative',
+    right: '10px',
+    height: '0.5px',
   };
 
   const arrowdownIcon = {
@@ -194,7 +204,7 @@ const ManageColumnView = ({
               />
             </ListItem>
           ))}
-          <Divider style={{ color: '#375F9A', marginTop: '5px', marginBottom: '5px' }} />
+          <Divider style={dividerStyle} />
           <ListItem
             width={1}
             className="viewColumnListItem"
@@ -270,6 +280,9 @@ const styles = () => ({
   label: {
     fontSize: '15px',
     marginLeft: '8px',
+  },
+  viewColumnListItem: {
+    height: '18px',
   },
 });
 

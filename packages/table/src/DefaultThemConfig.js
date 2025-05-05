@@ -46,7 +46,7 @@ const defaultTheme = () => ({
   MuiCheckbox: {
     root: {
       '&.checkBox': {
-        padding: '5px 5px 5px 0px',
+        padding: '0px 5px 0px 0px',
       },
     },
   },
