@@ -101,7 +101,6 @@ const ManageColumnView = ({
     width: '230px',
     marginTop: '38px',
     marginLeft: '-188px',
-    overflow: 'auto',
     zIndex: '11',
     border: '1.5px solid #5666BD',
     borderRadius: '5px',
@@ -201,6 +200,8 @@ const ManageColumnView = ({
                 disabled={!column.hideable}
                 label={<Typography id={`dropdownListItemLabel-${index}`} style={textStyle}>{column.header}</Typography>}
                 id={`dropdownListItem-${index}-label`}
+                className="formControlLabel"
+                style={{ marginLeft: '13px' }}
               />
             </ListItem>
           ))}
@@ -237,7 +238,7 @@ const ManageColumnView = ({
                 />
               )}
               label={(
-                <Typography id="dropdownListItem-all-label" style={textStyle}>
+                <Typography id="dropdownListItem-all-label" style={{ ...textStyle, position: 'relative', left: '25px' }}>
                   {selectAll ? 'Deselect All' : 'Select All'}
                 </Typography>
               )}
@@ -283,6 +284,10 @@ const styles = () => ({
   },
   viewColumnListItem: {
     height: '18px',
+  },
+  formControlLabel: {
+    marginLeft: '13px',
+    position: 'relative',
   },
 });
 
