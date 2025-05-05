@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { isEqual } from 'lodash';
 import TextField from './components/CustomTextField';
 import SearchList from './components/SearchList';
@@ -141,7 +141,13 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               noOptionsText={noOptionsText}
               options={options}
               loading={loading}
-              filterOptions={createFilterOptions({ trim: true })}
+              filterOptions={(filterOptions, { inputValue }) => filterOptions.filter((option) => {
+                const titleMatch = option.title?.toLowerCase().includes(inputValue.toLowerCase());
+                const synonymMatch = option.synonym?.toString().toLowerCase().includes(
+                  inputValue.toLowerCase(),
+                );
+                return titleMatch || synonymMatch;
+              })}
               onOpen={() => {
                 setOpen(true);
               }}
