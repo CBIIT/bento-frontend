@@ -7,12 +7,10 @@ import {
   createHashRouter,
   RouterProvider,
 } from "react-router-dom";
-import C3DCNavigatorView from './C3DC/C3DCNavigator';
 import {
   ICDCNavigator,
-  HubNavigator,
+  GCNavigator,
   CTDCNavigator,
-  IframeNavigatorController as IframeNavigator,
 } from '../dist/index';
 
 // Styled Tab
@@ -52,7 +50,7 @@ function Layout({
           <StyledTabView label="Iframe" />
         </Tabs>
         {value === 0 && (
-          <HubNavigator
+          <GCNavigator
             nodesYamlFilePath = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/cds-model.yml'
             propertiesYamlFilePath = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/cds-model-props.yml'
             changelogUrl = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/version-history.md'
@@ -104,12 +102,6 @@ const router = createHashRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [
-      {
-        path: "c3dc",
-        element: <C3DCNavigatorView />,
-      },
-    ],
   },
 ]);
 

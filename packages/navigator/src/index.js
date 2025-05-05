@@ -22,7 +22,7 @@ export { default as NavaigatorLayoutView } from './Navigator/NavLayoutView';
 export { default as PropertyTableView } from './Navigator/components/Table/Property/PropertyView';
 
 // app
-export { default as HubNavigator } from './Staging/DataHub/HubNavigator';
+export { default as GCNavigator } from './Staging/GC/GCNavigator';
 export { default as ICDCNavigator } from './Staging/ICDC/ICDCNavigator';
 export { default as CTDCNavigator } from './Staging/CTDC/CTDCNavigator';
 export { default as IframeNavigatorController } from './Staging/Iframe/Navigator';

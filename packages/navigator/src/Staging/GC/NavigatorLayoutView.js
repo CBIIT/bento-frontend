@@ -15,11 +15,11 @@ import {
   TabPanelContrainer,
   StyledTabView,
   StyledTabs,
-} from './Navigator.styled';
+} from '../../Navigator/Navigator.styled';
 import GraphPanelView from './GraphPanelView';
 import TablePanelView from './TablePanelView';
 import ChangelogPanelView from './ChangelogPanelView';
-import { SideBarView } from '../../dist';
+import SidebarView from '../../Navigator/components/Sidebar/SidebarView';
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -66,21 +66,11 @@ const NavigatorLayoutView = ({
   useLayoutEffect(() => {
     setTabViewWidth(ref.current.offsetWidth);
   }, []);
-  
-  // return (
-  //   <StyledContainer ref={ref}>
-  //     <StyledTabPanelOuterContainer>
-  //       <GraphPanelView
-  //         dictionary={dictionary}
-  //         tabViewWidth={tabViewWidth}
-  //       />
-  //     </StyledTabPanelOuterContainer>
-  //   </StyledContainer>
-  // )
+
   return (
     <StyledContainer ref={ref}>
       <StyledSideBarContrainer>
-        <SideBarView />
+        <SidebarView />
       </StyledSideBarContrainer>
       <StyledTabContainer>
         <StyledTabBtnContainer>
@@ -113,6 +103,6 @@ const NavigatorLayoutView = ({
       </StyledTabContainer>
     </StyledContainer>
   );
-}
+};
 
 export default NavigatorLayoutView;
