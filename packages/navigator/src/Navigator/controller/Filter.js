@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/prefer-default-export */
-
+/**
+* data sturctures for filter actions
+*/
 import { initFacetItemCount } from '../state/reducers/filter';
 import {
   filterByNode,

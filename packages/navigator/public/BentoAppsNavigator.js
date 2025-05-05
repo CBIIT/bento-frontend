@@ -11,6 +11,7 @@ import C3DCNavigatorView from './C3DC/C3DCNavigator';
 import {
   ICDCNavigator,
   HubNavigator,
+  CTDCNavigator,
   IframeNavigatorController as IframeNavigator,
 } from '../dist/index';
 
@@ -45,13 +46,21 @@ function Layout({
     <>
       <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
         <Tabs value={value} onChange={handleChange} centered>
-          <StyledTabView label="C3DC" />
-          <StyledTabView label="Hub" />
+          <StyledTabView label="GC Model" />
+          <StyledTabView label="CTDC" />
           <StyledTabView label="ICDC" />
           <StyledTabView label="Iframe" />
         </Tabs>
-        {value === 0 && <C3DCNavigatorView />}
-        {value === 1 && <HubNavigator />}
+        {value === 0 && (
+          <HubNavigator
+            nodesYamlFilePath = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/cds-model.yml'
+            propertiesYamlFilePath = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/cds-model-props.yml'
+            changelogUrl = 'https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/prod/cache/CDS/6.0.4/version-history.md'
+          />
+        )}
+        {value === 1 && (
+          <CTDCNavigator />
+        )}
         {value === 2 && <ICDCNavigator />}
         {value === 3 && (
           <iframe
