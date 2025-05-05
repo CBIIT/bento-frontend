@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { isEqual } from 'lodash';
 import TextField from './components/CustomTextField';
 import SearchList from './components/SearchList';
@@ -37,7 +37,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.noOptionsText
     : DEFAULT_CONFIG.config.noOptionsText;
 
-  const searchType = config && typeof config.searchType === 'string'
+  const searchType = config && typeof config.searchType === 'object'
     ? config.searchType
     : DEFAULT_CONFIG.config.searchType;
 
@@ -124,7 +124,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
           <div>
             <SearchList
               classes={classes}
-              items={value.map((e) => e.title)}
+              items={value}
               onDelete={onDelete}
             />
           </div>
@@ -141,7 +141,13 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               noOptionsText={noOptionsText}
               options={options}
               loading={loading}
-              filterOptions={createFilterOptions({ trim: true })}
+              filterOptions={(filterOptions, { inputValue }) => filterOptions.filter((option) => {
+                const titleMatch = option.title?.toLowerCase().includes(inputValue.toLowerCase());
+                const synonymMatch = option.synonym?.toString().toLowerCase().includes(
+                  inputValue.toLowerCase(),
+                );
+                return titleMatch || synonymMatch;
+              })}
               onOpen={() => {
                 setOpen(true);
               }}
@@ -151,6 +157,26 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               onChange={(event, newValue, reason) => onChangeWrapper(newValue, reason)}
               getOptionLabel={(option) => option.title}
               renderTags={() => null}
+              renderOption={(option) => {
+                const { type, title, synonym } = option;
+                return (
+                  <>
+                    <div style={{ }}>
+                      {type === 'associatedIds' ? (
+                        <>
+                          <span className={classes.filterName}>Synonym</span>
+                          {' '}
+                          { synonym }
+                        </>
+                      ) : (
+                        <>
+                          { title }
+                        </>
+                      )}
+                    </div>
+                  </>
+                );
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}

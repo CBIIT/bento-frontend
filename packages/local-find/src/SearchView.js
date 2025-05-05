@@ -54,7 +54,7 @@ const SearchView = (props) => {
       {matchedFiles.length !== 0 ? (
         <SearchList
           classes={{ divider: classes.customDivider, listPadding: classes.customListPadding }}
-          items={['INPUT SET']}
+          items={[{ title: 'INPUT SET' }]}
           id="localFindCaseUploadSet"
           onDelete={resetUpload}
         />

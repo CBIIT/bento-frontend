@@ -34,11 +34,20 @@ const SearchList = (props) => {
           <Divider className={classes.divider} />
           <ListItem classes={{ gutters: classes.listItemGutters }} key={index}>
             <div className={classes.searchResultDetailText}>
-              <span>
-                {item}
-              </span>
+              {(item.type === 'associatedIds' ? (
+                <>
+                  <span className={classes.filterName}>Synonym</span>
+                  <span>
+                    {item.synonym}
+                  </span>
+                </>
+              ) : (
+                <span>
+                  {item.title}
+                </span>
+              ))}
             </div>
-            <div className={classes.deleteIcon} onClick={() => deleteWrapper(item)}>
+            <div className={classes.deleteIcon} onClick={() => deleteWrapper(item.title)}>
               <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
             </div>
           </ListItem>
