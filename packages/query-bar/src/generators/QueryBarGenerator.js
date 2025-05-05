@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { Filter } from '../components/FilterMap';
 import DEFAULT_STYLES from './styles';
 import DEFAULT_CONFIG from './config';
+import QueryUrl from '../components/QueryUrl';
 
 /**
  * Generate a pre-configured Explore Query Bar component
@@ -47,6 +48,14 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
   const resetFacetSlider = functions && typeof functions.resetFacetSlider === 'function'
     ? functions.resetFacetSlider
     : DEFAULT_CONFIG.functions.resetFacetSlider;
+
+  const viewQueryURL = config && typeof config.viewQueryURL === 'boolean'
+    ? config.viewQueryURL
+    : DEFAULT_CONFIG.config.viewQueryURL;
+
+  const queryUrlCharacterLimit = config && typeof config.queryUrlCharacterLimit === 'number'
+    ? config.queryUrlCharacterLimit
+    : DEFAULT_CONFIG.config.queryUrlCharacterLimit;
 
   return {
     QueryBar: withStyles(DEFAULT_STYLES, { withTheme: true })((props) => {
@@ -178,6 +187,16 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
               />
             ))}
           </span>
+          {
+            viewQueryURL && (
+              <QueryUrl
+                classes={classes}
+                localFind={localFind}
+                filterItems={mappedInputs}
+                queryUrlCharacterLimit={queryUrlCharacterLimit}
+              />
+            )
+          }
         </div>
       );
     }),
