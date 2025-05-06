@@ -9,6 +9,7 @@
 /* eslint-disable react/jsx-closing-bracket-location */
 /* eslint-disable arrow-body-style */
 /* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {
   ListItemText,
@@ -19,7 +20,7 @@ import {
 function isLink(value) {
   return !!value.CDELink;
 }
-// to do configure highlight 
+// to do configure highlight
 const CDEListComponent = ({
   classes,
   items,
@@ -36,10 +37,9 @@ const CDEListComponent = ({
               <div style={{
               }}>{label}</div>
               <div>
-                {!isLink(value) ?
-                  highligtSearchText(value, field)
-                    : <div>{wrapLinkInLink(value)} </div>
-                }
+                {!isLink(value)
+                  ? highligtSearchText(value, field)
+                  : <div>{wrapLinkInLink(value)} </div>}
               </div>
             </div>
           )
