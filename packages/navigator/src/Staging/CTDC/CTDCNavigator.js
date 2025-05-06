@@ -29,7 +29,7 @@ const pdfDownloadConfig = {
   templatePrefix: 'CDS_Data_Loading_Template-',
   fileTransferManifestName: 'CDS_Data_Loading_Template-file-manifest',
   landscape: 'true',
-  footnote: 'test',
+  footnote: 'HTTPS://HUB.DATACOMMONS.CANCER.GOV/MODEL-NAVIGATOR/CTDC',
   enabled: true,
 };
 

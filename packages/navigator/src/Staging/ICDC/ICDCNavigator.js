@@ -30,7 +30,7 @@ const pdfDownloadConfig = {
   templatePrefix: 'ICDC_Data_Loading_Template-',
   fileTransferManifestName: 'ICDC_Data_Loading_Template-file-manifest',
   landscape: 'true',
-  footnote: 'test',
+  footnote: 'caninecommons.cancer.gov/#/icdc-data-model',
   enabled: true,
 };
 
