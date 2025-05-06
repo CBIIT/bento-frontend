@@ -1092,7 +1092,13 @@ export const tabContainers = [
     tableID: 'case_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      download: {
+        downloadCsv: 'Download Table Contents As CSV',
+        downloadFileName: 'Bento_Cases_download',
+      },
+      manageViewColumns: {
+        title: 'View Columns',
+      },
     },
     columns: [
       {
@@ -1220,7 +1226,13 @@ export const tabContainers = [
     tableID: 'sample_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      download: {
+        downloadCsv: 'Download Table Contents As CSV',
+        downloadFileName: 'Bento_Samples_download',
+      },
+      manageViewColumns: {
+        title: 'View Columns',
+      },
     },
     saveButtonDefaultStyle: {
       color: '#fff',
@@ -1365,7 +1377,13 @@ export const tabContainers = [
     tableID: 'file_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      download: {
+        downloadCsv: 'Download Table Contents As CSV',
+        downloadFileName: 'Bento_Files_download',
+      },
+      manageViewColumns: {
+        title: 'View Columns',
+      },
     },
     columns: [
       {

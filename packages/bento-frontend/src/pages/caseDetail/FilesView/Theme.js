@@ -50,10 +50,73 @@ export const tblContainer = {
   },
 };
 
+export const extendedView = ({
+  primaryColor = '#FF9742',
+}) => ({
+  extendedView: {
+    tblTopPgn: {
+      MuiTablePagination: {
+        root: {
+          paddingRight: '43px',
+          borderTop: `3px solid ${primaryColor}`,
+        },
+      },
+    },
+    MuiTooltip: {
+      tooltip: {
+        backgroundColor: '#ffffff',
+        color: '#1c2023',
+        maxWidth: '220px',
+        fontSize: '0.75rem',
+        border: '2px solid #a7afb3',
+        fontFamily: 'Open Sans',
+        fontWeight: '600',
+        textAlign: 'left',
+        lineHeight: '1.6',
+        padding: '10px 12px',
+        borderRadius: '0px',
+      },
+    },
+    MuiList: {
+      root: {
+        '&.viewColumnList': {
+          padding: '8px 42px 8px 10px',
+          '& img': {
+            width: '25px',
+            marginRight: '10px',
+          },
+        },
+      },
+    },
+    MuiToolbar: {
+      root: {
+        display: 'block',
+        position: 'relative',
+        textAlign: 'right',
+        '&.downloadAndColumnView': {
+          maxHeight: '2px',
+          minHeight: '0px',
+          '& button': {
+            marginTop: '-50px',
+            '&.download-icon': {
+              marginRight: '-10px',
+            },
+            '&.manageViewColumnBtn': {
+              marginBottom: '0px',
+              zIndex: '10',
+            },
+          },
+        },
+      },
+    },
+  },
+});
+
 export const themeConfig = {
   tblHeader,
   tblPgn,
   tblContainer,
+  ...extendedView({}),
 };
 
 /**

@@ -10,11 +10,13 @@ import React, { useState } from 'react';
 import {
   AccordionSummary,
   Button,
+  IconButton,
   withStyles,
 } from '@material-ui/core';
 import {
   ArrowDropDown as ArrowDropDownIcon,
 } from '@material-ui/icons';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import clsx from 'clsx';
 import {
   resetAllData, chunkSplit,
@@ -180,7 +182,12 @@ const BentoFacetFilter = ({
   * 1. Config local search input for Case
   * 2. Facet Section Name
   */
-  const CustomFacetView = ({ facet, facetClasses }) => {
+  const CustomFacetView = ({
+    facet,
+    facetClasses,
+    hasSelections,
+    clearFacetSectionValues,
+  }) => {
     return (
       <>
         <CustomExpansionPanelSummary
@@ -194,12 +201,25 @@ const BentoFacetFilter = ({
           className={classes.customExpansionPanelSummaryRoot}
         >
           <div
-            id={facet.label}
-            className={
-              clsx(classes.sectionSummaryText, classes[facetClasses])
-            }
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
           >
-            {facet.label}
+            <div
+              id={facet.label}
+              className={
+                clsx(classes.sectionSummaryText, classes[facetClasses])
+              }
+            >
+              {facet.label}
+            </div>
+            {hasSelections && (
+                <IconButton onClick={clearFacetSectionValues}>
+                  <RefreshIcon />
+                </IconButton>
+              )}
           </div>
         </CustomExpansionPanelSummary>
       </>
