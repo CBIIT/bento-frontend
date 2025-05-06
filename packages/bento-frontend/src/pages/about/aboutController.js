@@ -13,7 +13,7 @@ const About = ({ match }) => {
       let result = [];
       try {
         result = await axios.get(YAMLData);
-        resultData = yaml.safeLoad(result.data);
+        resultData = yaml.load(result.data);
         const supportObj = resultData.find(({ page }) => page === match.path);
         setData(supportObj);
       } catch (error) {
