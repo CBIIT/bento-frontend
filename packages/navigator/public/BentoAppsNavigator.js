@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Tab, Tabs, Box } from '@mui/material';
 import styled from '@emotion/styled';
@@ -40,9 +40,25 @@ function Layout({
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // set full window height for iframe
+  const containerRef = useRef(null);
+  const [windowHeight, setWindowHeight] = useState(0);
+  
+  useEffect(() => {
+    const updateWindowHeight = () => {
+      setWindowHeight(window.innerHeight);
+    };
+    updateWindowHeight();
+    window.addEventListener('resize', updateWindowHeight);
+    return () => {
+      window.removeEventListener('resize', updateWindowHeight);
+    };
+  }, []);
+
   return (
     <>
-      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <Box sx={{ width: '100%', bgcolor: 'background.paper' }} ref={containerRef}>
         <Tabs value={value} onChange={handleChange} centered>
           <StyledTabView label="GC Model" />
           <StyledTabView label="CTDC" />
@@ -64,7 +80,7 @@ function Layout({
           <iframe
             src={"http://localhost:7700?configUrl=https://raw.githubusercontent.com/CBIIT/bento-frontend/refs/heads/bento_core_navigator/packages/navigator/src/Staging/Iframe/config.json"}
             width="100%"
-            height="800"
+            height={windowHeight}
           />
         )}
       </Box>

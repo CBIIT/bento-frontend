@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   createHashRouter,
@@ -7,12 +7,10 @@ import {
 import { IframeNavigatorController } from '../dist/index';
 
 const Layout = () => {
-  const params = new URLSearchParams(window.location.search);
-  const configUrl = params.get('configUrl');
   return (
-    <>
+    <div>
       <IframeNavigatorController />
-    </>
+    </div>
   );
 };
 

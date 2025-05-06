@@ -19,51 +19,14 @@ import {
 function isLink(value) {
   return !!value.CDELink;
 }
-
-const wrapLinkInLink = ({ CDELink, CDECode }) => <a target="_blank" href={CDELink}>{CDECode}</a>;
-
+// to do configure highlight 
 const CDEListComponent = ({
   classes,
   items,
-  CDEInfoMatchList,
-  isSearchMode,
   highligtSearchText,
+  field,
 }) => {
-  const highlightMatchingProperties = (item) => {
-    if (isSearchMode && CDEInfoMatchList && CDEInfoMatchList.length > 0) {
-      const matchItem = CDEInfoMatchList.map((prop) => {
-        if (prop.value === item) {
-          return prop;
-        }
-      }).filter((c) => c);
-      if (matchItem.length) {
-        return (
-          <ListItemText>
-            <span className={classes.listItemText}>
-              {item.substring}
-              {
-                highligtSearchText(
-                  item,
-                  matchItem[0].indices,
-                  'data-dictionary-property-table__span',
-                )
-              }
-            </span>
-          </ListItemText>
-        );
-      }
-    }
-    return (
-      <ListItemText
-        primary={(
-          <Typography className={classes.listItemText}>
-            {item}
-          </Typography>
-        )}
-      />
-    );
-  };
-
+  const wrapLinkInLink = ({ CDELink, CDECode }) => <a target="_blank" href={CDELink}>{CDECode}</a>;
   return (
     <div className={classes.listWrapper}>
       {
@@ -72,7 +35,12 @@ const CDEListComponent = ({
             <div className={classes.listItem}>
               <div style={{
               }}>{label}</div>
-              <div>{!isLink(value) ? highlightMatchingProperties(value) : <div>{wrapLinkInLink(value)}</div>}</div>
+              <div>
+                {!isLink(value) ?
+                  highligtSearchText(value, field)
+                    : <div>{wrapLinkInLink(value)} </div>
+                }
+              </div>
             </div>
           )
         })
