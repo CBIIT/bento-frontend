@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import {
   Box,
   Checkbox,
@@ -69,6 +68,7 @@ const CPIModal = ({
   onClose,
   row,
   themeConfig = {},
+  navigation
 }) => {
   const [sortBy, setSortBy] = useState('associated_id');
   const [sortOrder, setSortOrder] = useState('asc');
@@ -390,14 +390,13 @@ const CPIModal = ({
             buttonStyle={addSelectedFilesButton}
             rowID={row.id}
           />
-          <NavLink to="/fileCentricCart">
-            <Button
-              style={goToCartButton}
-            >
-              GO TO CART
-              <img src={cartIcon} alt="cart" style={{ paddingLeft: '30px' }} />
-            </Button>
-          </NavLink>
+          <Button
+            style={goToCartButton}
+            onClick={() => navigation('/fileCentricCart')}
+          >
+            GO TO CART
+            <img src={cartIcon} alt="cart" style={{ paddingLeft: '30px' }} />
+          </Button>
         </div>
         <div className="footer" style={footer}>
           All CPI mappings for a given study can be found in the "synonyms"
