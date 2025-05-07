@@ -24,7 +24,8 @@ const defaultTheme = () => ({
   MuiList: {
     root: {
       '&.viewColumnList': {
-        padding: '8px 20px 8px 10px',
+        padding: '8px 20px 8px 20px',
+        bottom: '5px',
       },
     },
   },
@@ -46,7 +47,10 @@ const defaultTheme = () => ({
   MuiCheckbox: {
     root: {
       '&.checkBox': {
-        padding: '5px 5px 5px 0px',
+        padding: '0px 5px 0px 0px',
+        position: 'absolute',
+        top: '0px',
+        left: '-10px',
       },
     },
   },

@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/table",
-  "version": "1.0.1-ccdihub.90",
+  "version": "1.0.1-ccdihub.96",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
@@ -34,7 +34,8 @@
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.1-ccdihub.1",
     "clsx": "^2.1.1",
-    "graphql-tag": "^2.12.6"
+    "graphql-tag": "^2.12.6",
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {},
   "description": ""

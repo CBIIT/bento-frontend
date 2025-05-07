@@ -62,6 +62,7 @@ const TableView = ({
   totalRowCount,
   onSortByColumn,
   onColumnViewChange,
+  onAllColumnViewChange,
   themeConfig = {},
   queryVariables,
   navigation,
@@ -92,6 +93,7 @@ const TableView = ({
       <ExtendedView
         table={table}
         onColumnViewChange={onColumnViewChange}
+        onAllColumnViewChange={onAllColumnViewChange}
         onRowsPerPageChange={onRowsPerPageChange}
         onPageChange={onPageChange}
         numSelected={table?.selectedRows?.length || 0}
@@ -145,15 +147,16 @@ const TableView = ({
           onPageChange={onPageChange}
           onRowsPerPageChange={onRowsPerPageChange}
         />
-        <DownloadButton
-          count={table.totalRowCount || 0}
-          queryVariables={queryVariables}
-          table={table}
-        />
         <ManageColumnView
           table={table}
           manageViewColumns={manageViewColumns}
           onColumnViewChange={onColumnViewChange}
+          onAllColumnViewChange={onAllColumnViewChange}
+        />
+        <DownloadButton
+          count={table.totalRowCount || 0}
+          queryVariables={queryVariables}
+          table={table}
         />
       </div>
     </>
