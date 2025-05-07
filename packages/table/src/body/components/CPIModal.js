@@ -50,7 +50,7 @@ const tooltipContent = {
 const CustomTableContainer = (props) => {
   const { children, themeConfig, className } = props;
   const tableStyle = {
-    height: '470px',
+    height: '425px',
     overflowX: 'hidden',
   };
   return (
@@ -230,7 +230,7 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '400',
-    padding: '45px',
+    padding: '40px',
     paddingLeft: '35px',
     paddingRight: '20px',
     borderTop: '1px solid #505050',
