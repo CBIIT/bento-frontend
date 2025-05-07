@@ -68,7 +68,7 @@ const CPIModal = ({
   onClose,
   row,
   themeConfig = {},
-  navigation
+  navigation,
 }) => {
   const [sortBy, setSortBy] = useState('associated_id');
   const [sortOrder, setSortOrder] = useState('asc');
