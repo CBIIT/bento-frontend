@@ -7,6 +7,16 @@ export default {
      * @var {number}
      */
     maxItems: 2,
+    /**
+     * display copy url button
+     * @var {boolean}
+     */
+    viewQueryURL: true,
+    /**
+     * display copy url button
+     * @var {boolean}
+     */
+    queryUrlCharacterLimit: 70,
   },
 
   /* Component Helper Functions */
@@ -16,21 +26,21 @@ export default {
      *
      * @returns {void}
      */
-    clearAll: () => {},
+    clearAll: () => { },
 
     /**
      * Clear all active Local Find file upload filters
      *
      * @returns {void}
      */
-    clearUpload: () => {},
+    clearUpload: () => { },
 
     /**
      * Clear all active Local Find searchbox filters
      *
      * @returns {void}
      */
-    clearAutocomplete: () => {},
+    clearAutocomplete: () => { },
 
     /**
      * Delete a specific Local Find searchbox filter (case)
@@ -38,7 +48,7 @@ export default {
      * @param {string} title
      * @returns {void}
      */
-    deleteAutocompleteItem: (title) => {},
+    deleteAutocompleteItem: (title) => { },
 
     /**
      * Reset a specific facet section (e.g. Program)
@@ -46,7 +56,7 @@ export default {
      * @param {object} section the configuration object for the section
      * @returns {void}
      */
-    resetFacetSection: (section) => {},
+    resetFacetSection: (section) => { },
 
     /**
      * Reset a specific facet checkbox (e.g. Program > TAILORx)
@@ -55,7 +65,7 @@ export default {
      * @param {string} checkbox the name of the checkbox
      * @returns {void}
      */
-    resetFacetCheckbox: (section, checkbox) => {},
+    resetFacetCheckbox: (section, checkbox) => { },
 
     /**
      * Reset a specific slider section (e.g. Age)
@@ -63,6 +73,6 @@ export default {
      * @param {object} section the configuration object for the section
      * @returns {void}
      */
-    resetFacetSlider: (section) => {},
+    resetFacetSlider: (section) => { },
   },
 };
