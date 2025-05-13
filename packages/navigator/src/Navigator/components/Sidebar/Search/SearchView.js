@@ -40,11 +40,13 @@ const SearchTextView = () => {
       setSearchTerm(value);
     }
     const { dispatch } = context;
-    if (state && state[searchTerm]) {
-      const result = state[searchTerm] || {};
+    // check existing results
+    if (state && state?.results?.[searchTerm]) {
+      const result = state?.results?.[searchTerm] || {};
       const { matches, summary } = result;
       dispatch(onTextSearch({ matches, summary }));
     } else {
+      // conpute result for new search
       const { matches, summary } = findMatchingText(value, context);
       if (Object.keys(summary).length > 0) {
         actions.setSearchResults(searchTerm, summary, matches);

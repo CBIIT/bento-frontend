@@ -23,6 +23,7 @@ export { default as PropertyTableView } from './Navigator/components/Table/Prope
 
 // app
 export { default as GCNavigator } from './Staging/GC/GCNavigator';
+export { default as CDSNavigator } from './Staging/CDS/CDSNavigator';
 export { default as ICDCNavigator } from './Staging/ICDC/ICDCNavigator';
 export { default as CTDCNavigator } from './Staging/CTDC/CTDCNavigator';
 export { default as IframeNavigatorController } from './Staging/Iframe/Navigator';

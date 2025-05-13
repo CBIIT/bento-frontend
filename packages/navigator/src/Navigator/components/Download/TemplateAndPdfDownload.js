@@ -8,6 +8,7 @@ const TemplateAndPdfDownload = ({
   nodes,
   pdfFileName,
   tsvFileName,
+  isTemplate,
 }) => {
   const [isLoading, setLoading] = useState(false);
 
@@ -28,16 +29,18 @@ const TemplateAndPdfDownload = ({
 
   return (
     <>
-      <Styled.DownLoadBtn
-        className="tsvDownloadBtn"
-        onClick={downloadTSVTemplate}
-      >
-        <Styled.DownloadIcon
-          className="tsvDownloadIcon"
-          src={IconDownloadTSV}
-          alt="tsvIcon"
-        />
-      </Styled.DownLoadBtn>
+      {(isTemplate) && (
+        <Styled.DownLoadBtn
+          className="tsvDownloadBtn"
+          onClick={downloadTSVTemplate}
+        >
+          <Styled.DownloadIcon
+            className="tsvDownloadIcon"
+            src={IconDownloadTSV}
+            alt="tsvIcon"
+          />
+        </Styled.DownLoadBtn>
+      )}
       <Styled.DownLoadBtn
         className="pdfDownloadBtn"
         onClick={downloadPdf}

@@ -11,6 +11,7 @@ import {
   ICDCNavigator,
   GCNavigator,
   CTDCNavigator,
+  CDSNavigator,
 } from '../dist/index';
 
 // Styled Tab
@@ -61,6 +62,7 @@ function Layout({
       <Box sx={{ width: '100%', bgcolor: 'background.paper' }} ref={containerRef}>
         <Tabs value={value} onChange={handleChange} centered>
           <StyledTabView label="GC Model" />
+          <StyledTabView label="CDS" />
           <StyledTabView label="CTDC" />
           <StyledTabView label="ICDC" />
           <StyledTabView label="Iframe" />
@@ -73,10 +75,13 @@ function Layout({
           />
         )}
         {value === 1 && (
+          <CDSNavigator />
+        )}
+        {value === 2 && (
           <CTDCNavigator />
         )}
-        {value === 2 && <ICDCNavigator />}
-        {value === 3 && (
+        {value === 3 && <ICDCNavigator />}
+        {value === 4 && (
           <iframe
             src={"http://localhost:7700?configUrl=https://raw.githubusercontent.com/CBIIT/bento-frontend/refs/heads/bento_core_navigator/packages/navigator/src/Staging/Iframe/config.json"}
             width="100%"

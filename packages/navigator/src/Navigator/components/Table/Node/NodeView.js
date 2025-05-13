@@ -10,6 +10,7 @@ import { createFileName } from '../../../utils/Utils';
 const DownloadButton = ({
   category,
   node,
+  isTemplate,
 }) => {
   const {
     isTemplateAndDocsDownlaod = true,
@@ -19,12 +20,14 @@ const DownloadButton = ({
       <TemplateAndDocsDownload
         category={category}
         node={node}
+        isTemplate={isTemplate}
       />
     );
   }
   return (
     <TemplateAndPdfDownload
       nodes={[node]}
+      isTemplate={isTemplate}
       pdfFileName={createFileName('', '')}
       tsvFileName={createFileName('', '')}
     />
@@ -103,14 +106,11 @@ const NodeView = ({
             <Styled.DownloadContainer className="downloadContainer">
               <Styled.MuiButtonGroup className="muiButtonGroup">
                 {/* <replace node required, preferred field val> */}
-                {
-                  (node.isTemplate) && (
-                    <DownloadButton
-                      category={category}
-                      node={node}
-                    />
-                  )
-                }
+                <DownloadButton
+                  category={category}
+                  node={node}
+                  isTemplate={node.isTemplate}
+                />
               </Styled.MuiButtonGroup>
             </Styled.DownloadContainer>
           </Styled.TagsAndBtnContainer>
