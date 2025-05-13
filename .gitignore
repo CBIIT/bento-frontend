@@ -28,3 +28,8 @@ yarn-error.log*
 
 # WebStrom
 .idea
+
+# NX
+.nx/*
+.direnv/
+.envrc

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "outDir": "dist",
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "checkJs": false, // Don't type-check .js files
+    "noImplicitAny": false, // Allow implicit 'any'
+    "jsx": "react-jsx", // if using React
+    "module": "ESNext",
+    "target": "ES2020",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
