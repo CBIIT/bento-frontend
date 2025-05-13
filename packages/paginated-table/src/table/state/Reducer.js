@@ -3,6 +3,11 @@ import { actionTypes } from './Actions';
 const reducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
+    case actionTypes.CUSTOMIZE_PAGINATION_ACTION:
+      return {
+        ...state,
+        ...payload,
+      };
     case actionTypes.ON_COLUMN_SORT:
       return {
         ...state,
@@ -40,6 +45,23 @@ const reducer = (state, action) => {
       return {
         ...state,
         totalRowCount: payload,
+      };
+    case actionTypes.ON_ROW_DELETE:
+      return {
+        ...state,
+        deletedRow: payload.deletedRow,
+        selectedRows: payload.selectedRows,
+      };
+    case actionTypes.ON_ROWS_DELETE:
+      return {
+        ...state,
+        deletedRows: payload.deleteRows,
+        selectedRows: payload.selectedRows,
+      };
+    case actionTypes.ON_SEARCH_QUERY_CHANGE:
+      return {
+        ...state,
+        searchQuery: payload.searchQuery,
       };
     default:
       return state;

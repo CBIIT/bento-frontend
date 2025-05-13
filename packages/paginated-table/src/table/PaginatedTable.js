@@ -1,4 +1,8 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+} from 'react';
 import ServerTableView from './ServerController';
 import ClientTableView from './ClientController';
 import {
@@ -9,6 +13,9 @@ import {
   onColumnSort,
   onPageAndTotalCountChange,
   onColumnViewChange,
+  onRowDelete,
+  onClearCart,
+  onInputSearchQueryChange,
 } from './state/Actions';
 import { TableContext } from './ContextProvider';
 import reducer from './state/Reducer';
@@ -21,6 +28,7 @@ const PaginatedTable = ({
   activeTab = true,
   server = true,
   tblRows = [],
+  paginationOptions = {},
 }) => {
   /**
   * Initailize useReducer state
@@ -74,6 +82,18 @@ const PaginatedTable = ({
   const handleChangePage = (event, newPage) => {
     dispatch(onPageChange({ pageNumb: newPage }));
   };
+  // custonize pagination behavior
+  const {
+    customizeOnRowSelect,
+    customizeToggleSelectAll,
+    customizeSortByColumn,
+    customizeChangePage,
+    customizeChangeRowsPerPage,
+    customizeColumnViewChange,
+    customizeDeleteRow,
+    customizeDeleteAllRows,
+    customizeSearchQueryChange,
+  } = paginationOptions;
 
   /**
   * update selected Ids
@@ -120,7 +140,7 @@ const PaginatedTable = ({
   const handleColumnViewChange = (column) => {
     const columns = table.columns.map((col) => {
       const updateColumnView = { ...col };
-      if (col.dataField === column.dataField) {
+      if (col.dataField && col.dataField === column.dataField) {
         updateColumnView.display = !column.display;
       }
       return updateColumnView;
@@ -130,6 +150,48 @@ const PaginatedTable = ({
       columns,
     }));
   };
+
+  /**
+  * handle delete row from table
+  * remove selected rows
+  */
+  const onDeleteRow = (row) => {
+    let selectedIds = table.selectedRows;
+    // if del row is selected remove from selected rows
+    if (row.isChecked) {
+      const delId = row[table.dataKey];
+      selectedIds = table.selectedRows.reduce((acc, id) => {
+        if (delId !== id) {
+          acc.push(id);
+        }
+        return acc;
+      }, []);
+    }
+    dispatch(onRowDelete({
+      deletedRow: row,
+      selectedRows: selectedIds,
+    }));
+  };
+
+  /**
+  * clear selected rows when all files are removed from myCart/ My file
+  */
+  const onDeleteAllRows = () => {
+    dispatch(onClearCart({
+      deletedRows: table.selectedRows,
+      selectedRows: [],
+    }));
+  };
+
+  /**
+  * Filter table rows based on Search query
+  */
+  const handleSeachQueryChange = (value) => {
+    dispatch(onInputSearchQueryChange({
+      searchQuery: value,
+    }));
+  };
+
   /**
   * A. client table
   * table data provide by bento app (tblRows)
@@ -141,12 +203,15 @@ const PaginatedTable = ({
         <ClientTableView
           tblRows={tblRows}
           table={table}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          onPageChange={handleChangePage}
-          onRowSelectChange={onRowSelectHandler}
-          onToggleSelectAll={handleToggleSelectAll}
-          onSortByColumn={handleSortByColumn}
-          onColumnViewChange={handleColumnViewChange}
+          onRowsPerPageChange={customizeChangeRowsPerPage || handleChangeRowsPerPage}
+          onPageChange={customizeChangePage || handleChangePage}
+          onRowSelectChange={customizeOnRowSelect || onRowSelectHandler}
+          onToggleSelectAll={customizeToggleSelectAll || handleToggleSelectAll}
+          onSortByColumn={customizeSortByColumn || handleSortByColumn}
+          onColumnViewChange={customizeColumnViewChange || handleColumnViewChange}
+          onDeleteRow={customizeDeleteRow || onDeleteRow}
+          onDeleteAllFiles={customizeDeleteAllRows || onDeleteAllRows}
+          onSearchQueryChange={customizeSearchQueryChange || handleSeachQueryChange}
           themeConfig={themeConfig}
         />
       </>
@@ -170,12 +235,16 @@ const PaginatedTable = ({
         queryVariables={queryVariables}
         totalRowCount={totalRowCount}
         table={table}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        onPageChange={handleChangePage}
-        onRowSelectChange={onRowSelectHandler}
-        onToggleSelectAll={handleToggleSelectAll}
-        onSortByColumn={handleSortByColumn}
-        onColumnViewChange={handleColumnViewChange}
+        server={server}
+        onRowsPerPageChange={customizeChangeRowsPerPage || handleChangeRowsPerPage}
+        onPageChange={customizeChangePage || handleChangePage}
+        onRowSelectChange={customizeOnRowSelect || onRowSelectHandler}
+        onToggleSelectAll={customizeToggleSelectAll || handleToggleSelectAll}
+        onSortByColumn={customizeSortByColumn || handleSortByColumn}
+        onColumnViewChange={customizeColumnViewChange || handleColumnViewChange}
+        onDeleteRow={customizeDeleteRow || onDeleteRow}
+        onDeleteAllFiles={customizeDeleteAllRows || onDeleteAllRows}
+        onSearchQueryChange={customizeSearchQueryChange || handleSeachQueryChange}
         themeConfig={themeConfig}
       />
     </>

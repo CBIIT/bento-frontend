@@ -1,5 +1,14 @@
 /* eslint-disable no-unused-vars */
 /**
+* icon type
+*/
+
+export const tooltipIconType = {
+  DEFAULT: 'DEFAULT',
+  SPEECH_BUBBLE: 'SPEECH_BUBBLE',
+};
+
+/**
  * Default configuration for Local Find Upload Modal
  */
 export const DEFAULT_CONFIG_UPLOADMODAL = {
@@ -9,8 +18,17 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     inputPlaceholder: 'eg. BENTO-CASE-06, BENTO-CASE-22',
     inputTooltip: 'Add the case indentifier.',
     uploadTooltip: 'Add the case indentifier.',
+    uploadTooltipIcon: tooltipIconType.DEFAULT,
     accept: '.csv,.txt',
     maxSearchTerms: 1000,
+    matchedId: 'subject_id',
+    matchedLabel: 'SUBMITTED CASE ID',
+    associateId: 'program_id',
+    associateLabel: 'ASSOCIATED PROGRAM',
+    projectName: 'BENTO',
+    caseIds: 'Case IDs',
+    listTitleIds: 'Add a list of Case IDs:',
+    listTitleUpload: 'Choose a file to upload:',
   },
 
   // Helper functions used by the component

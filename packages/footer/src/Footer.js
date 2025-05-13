@@ -208,13 +208,15 @@ const styles = () => ({
   },
   footerLogoText: {
     fontFamily: 'Montserrat',
-    fontWeight: 'bold',
+    fontWeight: '700',
     fontSize: '25px',
     letterSpacing: '-0.5px',
+    textWrap: 'nowrap',
   },
   footerLogoSubText: {
     fontFamily: 'Montserrat',
-    fontWeight: 'bold',
+    textWrap: 'nowrap',
+    fontWeight: '500',
     fontSize: '16px',
     marginBottom: '5px',
     letterSpacing: '-0.5px',
@@ -259,7 +261,7 @@ const Footer = ({ classes, data }) => {
                       <div className={classes.footerLogoText}>
                         {data.footerLogoText}
                       </div>
-                      <div>
+                      <div className={classes.footerLogoSubText}>
                         {data.footerLogoSubText}
                       </div>
                     </RouteLinks>

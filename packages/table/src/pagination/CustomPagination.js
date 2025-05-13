@@ -45,6 +45,12 @@ const CustomPagination = ({
     <TablePagination
       rowsPerPageOptions={rowsPerPageOptions}
       component="div"
+      SelectProps={{
+        inputProps: {
+          title: 'checkbox',
+          'aria-label': 'checkbox',
+        },
+      }}
       count={count}
       rowsPerPage={rowsPerPage}
       page={page}

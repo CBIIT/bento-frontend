@@ -10,22 +10,35 @@ import {
 const DeleteCellView = ({
   column,
   row,
-}) => (
-  <TableCell
-    scope="col"
-    className="delete_row"
-  >
-    <IconButton
-      disableRipple
-      className="del_row_btn"
-      onClick={() => column.cellEventHandler(row)}
+  onDeleteRow,
+}) => {
+  const { customCellRender } = column;
+  return (
+    <TableCell
+      scope="col"
+      className="delete_row"
     >
-      <DeleteOutlineIcon
-        className="del_row_btn_icon"
-        fontSize="small"
-      />
-    </IconButton>
-  </TableCell>
-);
+      {
+        customCellRender ? (
+          <>
+            {customCellRender(row, onDeleteRow)}
+          </>
+        ) : (
+          <IconButton
+            disableRipple
+            className="del_row_btn"
+            aria-label="delete"
+            onClick={() => column.cellEventHandler(row)}
+          >
+            <DeleteOutlineIcon
+              className="del_row_btn_icon"
+              fontSize="small"
+            />
+          </IconButton>
+        )
+      }
+    </TableCell>
+  );
+};
 
 export default DeleteCellView;
