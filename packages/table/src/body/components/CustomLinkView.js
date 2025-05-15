@@ -12,7 +12,7 @@ const CustomLinkView = ({
   row,
 }) => {
   const { rootPath, pathParams } = column?.linkAttr;
-  const url = pathParams.map((attr) => `#${rootPath}/`.concat(row[attr]));
+  const url = pathParams.map((attr) => `${rootPath}/`.concat(row[attr]));
   return (
     <Link href={url} className={cellTypes.LINK}>
       <Typography>
