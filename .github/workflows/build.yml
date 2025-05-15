@@ -35,7 +35,7 @@ jobs:
       run: |
         # Get all tags for the repo and find the latest tag for the branch being built
         git fetch --tags --force --quiet
-        tag=$(git tag -l $BRANCH_NAME* | tail -1)
+        tag=$(git tag -l $BRANCH_NAME* | sort -V | tail -1)
         if  [ ! -z "$tag" ];
         then
           # Increment the build number if a tag is found
