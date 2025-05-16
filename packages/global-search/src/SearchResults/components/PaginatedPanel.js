@@ -92,7 +92,7 @@ const PaginatedPanel = (props) => {
       );
     }
 
-    if (!data || data.length <= 0) return <div>No data</div>;
+    if (!data || data.length <= 0) return <div style={{ marginTop: '20px' }}>No data</div>;
 
     return data.map((d, index) => (
       <ResultCard
@@ -101,6 +101,7 @@ const PaginatedPanel = (props) => {
         resultMap={resultCardMap}
         classes={classes}
         searchText={searchText}
+        type={field}
       />
     ));
   };
