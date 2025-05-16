@@ -33,19 +33,20 @@ const DEFAULT_CARD_MAP = {
 export const ResultCard = (props) => {
   const {
     searchText, data, classes, index,
-    resultMap,
+    resultMap, type,
   } = props;
+  const dataType = data.type || type;
 
   // Use the provided cardMap if it exists
-  if (resultMap && typeof resultMap[data.type] !== 'undefined') {
-    return createElement(resultMap[data.type], {
+  if (resultMap && typeof resultMap[dataType] !== 'undefined') {
+    return createElement(resultMap[dataType], {
       data, classes, index, searchText,
     });
   }
 
   // Default to the default card map
-  if (typeof DEFAULT_CARD_MAP[data.type] !== 'undefined') {
-    return createElement(DEFAULT_CARD_MAP[data.type], {
+  if (typeof DEFAULT_CARD_MAP[dataType] !== 'undefined') {
+    return createElement(DEFAULT_CARD_MAP[dataType], {
       data, classes, index, searchText,
     });
   }
@@ -53,7 +54,7 @@ export const ResultCard = (props) => {
   // Render a placeholder component
   return createElement(() => (
     <div>
-      {`The component for ${data.type} was not found.`}
+      {`The component for ${type} was not found.`}
     </div>
   ));
 };

@@ -10,8 +10,8 @@ import { CustomSearchIcon } from './CustomSearchIcon';
  */
 export const CustomTextField = ({ ...params }) => {
   const {
-    classes, placeholder, loading,
-    onClick, onEnter, iconType,
+    classes, loading,
+    onClick, onEnter, iconType, displaySearchIcon,
   } = params;
 
   const InputProps = {
@@ -25,11 +25,13 @@ export const CustomTextField = ({ ...params }) => {
       <>
         {loading ? <CircularProgress color="inherit" size={20} /> : null}
         {params.InputProps.endAdornment}
-        <CustomSearchIcon
-          classes={classes}
-          onClick={onClick ? () => onClick(params.inputProps.value) : undefined}
-          type={iconType}
-        />
+        {displaySearchIcon && (
+          <CustomSearchIcon
+            classes={classes}
+            onClick={onClick ? () => onClick(params.inputProps.value) : undefined}
+            type={iconType}
+          />
+        )}
       </>
     ),
   };
@@ -45,7 +47,6 @@ export const CustomTextField = ({ ...params }) => {
       {...params}
       hiddenLabel
       classes={{ root: classes.textFieldRoot }}
-      placeholder={placeholder}
       variant="outlined"
       onKeyDown={keyDown}
       InputProps={InputProps}
