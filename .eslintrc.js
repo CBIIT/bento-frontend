@@ -33,5 +33,7 @@ module.exports = {
     "react/jsx-props-no-spreading":"off",
     "linebreak-style":"off",
     "react/jsx-no-bind":"off",
+    "template-curly-spacing" : "off",
+    "indent": "off",
   },
 };

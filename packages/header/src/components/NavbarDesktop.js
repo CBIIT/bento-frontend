@@ -535,19 +535,16 @@ const NavBar = ({ config, endComponent, classes }) => {
                           >
                             {dropItem.name}
                             <ul className="dropdownSubItemList">
-                              {dropItem?.items?.map((item) => {
-                                const key = ['dropdown-sub-item-', item.id].join();
-                                return (
-                                  <li key={key}>
-                                    <NavbarLink
-                                      item={item}
-                                      icon={<PDFDownloadIconSvg />}
-                                      className="dropdownSubItem"
-                                      onItemClick={() => setClickedTitle('')}
-                                    />
-                                  </li>
-                                );
-                              })}
+                              {dropItem?.items?.map((item) => (
+                                <li key={`dropdown-sub-item-${item?.id}`}>
+                                  <NavbarLink
+                                    item={item}
+                                    icon={<PDFDownloadIconSvg />}
+                                    className="dropdownSubItem"
+                                    onItemClick={() => setClickedTitle('')}
+                                  />
+                                </li>
+                              ))}
                             </ul>
                           </div>
                         </li>
