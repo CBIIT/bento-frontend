@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/header",
-  "version": "1.0.1-CDS.3",
+  "version": "1.0.1-CDS.4",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
