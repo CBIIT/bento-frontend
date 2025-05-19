@@ -38,9 +38,9 @@ const Header = ({
       <Logo headerData={config.headerData} />
       <div className={classes.headerLowerContainer}>
         {SearchComponent && (
-        <div className="searchBarArea">
-          {SearchComponent}
-        </div>
+          <div className="searchBarArea">
+            {SearchComponent}
+          </div>
         )}
       </div>
     </div>
