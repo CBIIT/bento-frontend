@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
-  withStyles, Button, Grid, CircularProgress, Typography,
+  withStyles, Grid, CircularProgress, Typography,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { ResultCard } from './ResultCard';
@@ -20,10 +20,29 @@ import { ResultCard } from './ResultCard';
  * @param {string} props.field - The field to search on
  * @param {object} [props.resultCardMap] - The mapping of search result types to JSX components
  */
+
+const useOutsideAlerter = (ref) => {
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (!event.target || (event.target.getAttribute('id') !== 'pageSizeBlock' && event.target.getAttribute('id') !== 'pageSizeArrow' && ref.current && !ref.current.contains(event.target))) {
+        const toggle = document.getElementById('pageSizeBlock');
+        if (document.getElementById('pagelist').style.visibility !== 'hidden') {
+          toggle.click();
+        }
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ref]);
+};
+
 const PaginatedPanel = (props) => {
   const {
     classes, searchText, count,
-    getTabData, pageSize, resultCardMap,
+    getTabData, resultCardMap,
     field,
   } = props;
 
@@ -35,9 +54,14 @@ const PaginatedPanel = (props) => {
     );
   }
 
+  const sizelist = [10, 20, 50, 100];
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [pageListVisible, setPageListVisible] = useState(0);
+  const [pageSize, setSize] = useState(sizelist[0]);
+  const perPageSelection = useRef(null);
+  useOutsideAlerter(perPageSelection);
 
   async function onChange(newPage = 1) {
     // Reset data if search text is empty or there are no results
@@ -83,6 +107,11 @@ const PaginatedPanel = (props) => {
     scrollToTop();
   };
 
+  const onPageSizeClick = (e) => {
+    setSize(Number(e.target.innerText));
+    setPageListVisible(!pageListVisible);
+  };
+
   const renderCards = () => {
     if (loading) {
       return (
@@ -108,59 +137,92 @@ const PaginatedPanel = (props) => {
 
   useEffect(() => {
     onChange();
-  }, [searchText, count]);
+  }, [searchText, count, pageSize]);
 
   return (
     <>
       {Math.ceil(count / pageSize) !== 0 && (
-      <div className={classes.totalResults}>
-        <span id="global_search_results_count" className={classes.totalCount}>{count}</span>
-        {' '}
-        Results
-      </div>
-      ) }
+        <div className={classes.totalResults}>
+          <span id="global_search_results_count" className={classes.totalCount}>{count}</span>
+          {' '}
+          Results
+        </div>
+      )}
       <Grid className={classes.subsection}>
         <Grid item container direction="column" className={classes.subsectionBody} xs={9}>
           {renderCards()}
         </Grid>
       </Grid>
-      {Math.ceil(count / pageSize) > 1 && (
-      <div className={classes.paginationContainer}>
-        <Button id="global_search_paginate_prev" onClick={onPrevious} className={classes.prevButton}>
-          <span>
-            <img
-              className={classes.prevIcon}
-              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchPrevious.svg"
-              alt="previous button"
+      {Math.ceil(count / pageSize) !== 0 && (
+        <div className={classes.paginationContainer}>
+          <div className={classes.perPageContainer}>
+            Results per Page:
+            <div id="pageSizeBlock" className={classes.pageSizeContainer} onClick={() => setPageListVisible(!pageListVisible)}>
+              {pageSize}
+              <span id="pageSizeArrow" className={pageListVisible ? classes.pageSizeArrowUp : classes.pageSizeArrowDown} />
+            </div>
+            <div ref={perPageSelection} id="pagelist" className={classes.pageSizeList} style={pageListVisible ? null : { visibility: 'hidden' }}>
+              {
+                sizelist.map((sizeItem, idx) => {
+                  const key = `size_${idx}`;
+                  return (
+                    sizeItem !== pageSize && (
+                      <div key={key} className={classes.pageSizeItem} onClick={onPageSizeClick}>
+                          {sizeItem}
+                      </div>
+                    )
+                  );
+                })
+              }
+            </div>
+            <div className={classes.showingContainer}>
+              Showing
+              &nbsp;
+              <div className={classes.showingRangeContainer}>
+                {pageSize * (page - 1) + 1}
+                -
+                {pageSize * page < count ? pageSize * page : count}
+                &nbsp;
+              </div>
+              of&nbsp;
+              {count}
+            </div>
+          </div>
+          <div className={classes.pageContainer}>
+            <div
+              className={page === 1
+                ? classes.prevButtonDisabledContainer
+                : classes.prevButtonContainer}
+              onClick={onPrevious}
+            >
+              <div className={page === 1 ? classes.prevButtonDisabled : classes.prevButton} />
+            </div>
+            <Pagination
+              disabletouchripple="true"
+              classes={{ ul: classes.paginationUl }}
+              className={classes.paginationRoot}
+              count={Math.ceil(count / pageSize)}
+              page={page}
+              siblingCount={2}
+              boundaryCount={1}
+              shape="rounded"
+              hideNextButton
+              hidePrevButton
+              onChange={handleChangePage}
             />
-          </span>
-          previous
-        </Button>
-
-        <Pagination
-          classes={{ ul: classes.paginationUl }}
-          className={classes.paginationRoot}
-          count={Math.ceil(count / pageSize)}
-          page={page}
-          siblingCount={2}
-          boundaryCount={1}
-          shape="rounded"
-          hideNextButton
-          hidePrevButton
-          onChange={handleChangePage}
-        />
-
-        <Button id="global_search_paginate_next" onClick={onNext} className={classes.nextButton}>
-          next
-          <span>
-            <img
-              className={classes.nextIcon}
-              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/globalSearchNext.svg"
-              alt="previous button"
-            />
-          </span>
-        </Button>
-      </div>
+            <div
+              className={page === Math.ceil(count / pageSize)
+                ? classes.nextButtonDisabledContainer
+                : classes.nextButtonContainer}
+              onClick={onNext}
+            >
+              <div className={page === Math.ceil(count / pageSize)
+                ? classes.nextButtonDisabled
+                : classes.nextButton}
+              />
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
@@ -190,7 +252,7 @@ const styles = {
   paginationContainer: {
     display: 'flex',
     justifyContent: 'center',
-    maxWidth: '680px',
+    maxWidth: '800px',
     margin: '0 auto',
     paddingBottom: '20px',
     '& > *': {
@@ -208,15 +270,45 @@ const styles = {
   paginationUl: {
     padding: '2px',
     '& .MuiPaginationItem-root': {
-      color: '#565656',
-      fontFamily: '"Open Sans", sans-serif',
-      fontSize: '11px',
-      fontWeight: 'bold',
+      color: '#045B80',
+      fontFamily: 'Poppins',
+      fontSize: '14px',
+      fontWeight: '300',
+      minWidth: '25px',
+      margin: '0',
+      padding: '0 7px',
+    },
+    '& .MuiPaginationItem-page': {
+      transition: 'none',
     },
   },
   paginationRoot: {
     '& .Mui-selected': {
-      backgroundColor: '#D9E8F8',
+      backgroundColor: 'transparent',
+      fontWeight: '600',
+    },
+    '& .Mui-selected:hover': {
+      backgroundColor: 'transparent',
+    },
+    '& .MuiPagination-ul': {
+      padding: '0',
+    },
+    '& .MuiPagination-ul:hover': {
+      cursor: 'pointer',
+    },
+    '& .MuiPagination-ul > li': {
+      height: '32px;',
+      borderTop: '1px solid #99A1B7',
+      borderRight: '1px solid #99A1B7',
+      borderBottom: '1px solid #99A1B7',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+    },
+    '& .MuiPaginationItem-page': {
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
     },
   },
   subsectionBody: {
