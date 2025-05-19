@@ -34,6 +34,6 @@ module.exports = {
     "linebreak-style":"off",
     "react/jsx-no-bind":"off",
     "template-curly-spacing" : "off",
-    "indent": "off",
+    "indent": ["error", 2, { ignoredNodes: ['TemplateLiteral', 'TemplateLiteral *', 'JSXElement', 'JSXElement *']}]
   },
 };
