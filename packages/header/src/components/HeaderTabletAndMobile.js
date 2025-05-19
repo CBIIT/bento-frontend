@@ -202,61 +202,66 @@ const Header = ({
             )}
             <div className="navMobileContainer">
               {selectedList
-                && selectedList.map((navMobileItem) => (
-                  <React.Fragment key={`mobile_${navMobileItem.id}`}>
-                    {navMobileItem.className === 'navMobileItem' && (
-                      <NavLink
-                        id={navMobileItem.id}
-                        to={navMobileItem.link}
-                        target={
-                          navMobileItem.link.startsWith('https://')
-                            ? '_blank'
-                            : '_self'
-                        }
-                        onClick={() => setNavMobileDisplay('none')}
-                      >
-                        <div className="navMobileItem">
+                && selectedList
+                  .flatMap((item) => [item, ...(item.items ?? [])])
+                  .filter((item) => item.link || item.onClick)
+                  .map((navMobileItem) => (
+                    <React.Fragment key={`mobile_${navMobileItem.id}`}>
+                      {navMobileItem.className === 'navMobileItem' && navMobileItem.link && (
+                        <NavLink
+                          id={navMobileItem.id}
+                          to={navMobileItem.link}
+                          target={
+                            navMobileItem.link.startsWith('https://')
+                              ? '_blank'
+                              : '_self'
+                          }
+                          onClick={() => setNavMobileDisplay('none')}
+                        >
+                          <div className="navMobileItem">
+                            {navMobileItem.name}
+                          </div>
+                        </NavLink>
+                      )}
+                      {navMobileItem.className
+                        === 'navMobileItem clickable' && (
+                        <div
+                          id={navMobileItem.id}
+                          role="button"
+                          tabIndex={0}
+                          className="navMobileItem clickable"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              clickNavItem(e);
+                            }
+                          }}
+                          onClick={clickNavItem}
+                        >
                           {navMobileItem.name}
                         </div>
-                      </NavLink>
-                    )}
-                    {navMobileItem.className === 'navMobileItem clickable' && (
-                      <div
-                        id={navMobileItem.id}
-                        role="button"
-                        tabIndex={0}
-                        className="navMobileItem clickable"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            clickNavItem(e);
-                          }
-                        }}
-                        onClick={clickNavItem}
-                      >
-                        {navMobileItem.name}
-                      </div>
-                    )}
-                    {(navMobileItem.className === 'navMobileSubItem action'
-                    && 'onClick' in navMobileItem
-                    && typeof navMobileItem.onClick === 'function') ? (
-                      <div
-                        id={navMobileItem.id}
-                        role="button"
-                        tabIndex={0}
-                        className="navMobileItem SubItem action"
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            navMobileItem.onClick();
-                          }
-                        }}
-                        onClick={() => navMobileItem.onClick()}
-                      >
-                        {navMobileItem.name}
-                      </div>
+                      )}
+                      {navMobileItem.className === 'navMobileSubItem action'
+                      && 'onClick' in navMobileItem
+                      && typeof navMobileItem.onClick === 'function' ? (
+                        <div
+                          id={navMobileItem.id}
+                          role="button"
+                          tabIndex={0}
+                          className="navMobileItem SubItem action"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              navMobileItem.onClick();
+                            }
+                          }}
+                          onClick={() => navMobileItem.onClick()}
+                        >
+                          {navMobileItem.name}
+                        </div>
                       ) : null}
-                    {navMobileItem.className === 'navMobileSubItem' && (
-                      navMobileItem.link.startsWith('https://') || navMobileItem.link.endsWith('.pdf')
-                        ? (
+                      {navMobileItem.className === 'navMobileSubItem'
+                        && navMobileItem.link
+                        && (navMobileItem.link.startsWith('https://')
+                        || navMobileItem.link.endsWith('.pdf') ? (
                           <a
                             id={navMobileItem.id}
                             href={navMobileItem.link}
@@ -297,13 +302,14 @@ const Header = ({
                               {navMobileItem.name}
                             </div>
                           </Link>
-                        )
-                    )}
-                    {navMobileItem.className === 'navMobileSubTitle' && (
-                      <div className="navMobileItem">{navMobileItem.name}</div>
-                    )}
-                  </React.Fragment>
-                ))}
+                        ))}
+                      {navMobileItem.className === 'navMobileSubTitle' && (
+                        <div className="navMobileItem">
+                          {navMobileItem.name}
+                        </div>
+                      )}
+                    </React.Fragment>
+              ))}
 
               {endComponent && selectedList === HeaderLinks && (
                 <div
