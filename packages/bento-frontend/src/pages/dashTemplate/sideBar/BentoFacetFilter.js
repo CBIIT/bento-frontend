@@ -239,6 +239,7 @@ const BentoFacetFilter = ({
           facetsConfig={facetsConfig}
           CustomFacetSection={CustomFacetSection}
           CustomFacetView={CustomFacetView}
+          enableFacetCollapse
         />
       </FacetFilterThemeProvider>
     </div>
