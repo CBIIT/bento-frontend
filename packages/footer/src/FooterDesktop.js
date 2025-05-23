@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 
 const styles = () => ({
@@ -244,19 +245,19 @@ const FooterDesktop = ({ classes, data, handleExternalLinkClick }) => {
 
                   return (
                     <div className={classes.footItemSubtitle} key={item.text}>
-                      {item.link.includes('http') ? (
+                      {item.link.includes('http') || item.link.includes('mailto') ? (
                         <a
                           className={classes.footItemLink}
                           href={item.link}
-                          onClick={(e) => handleExternalLinkClick(e, item.link)}
+                          onClick={(e) => !item.link.includes('mailto') && handleExternalLinkClick(e, item.link)}
                           rel="noopener noreferrer"
                         >
                           {item.text}
                         </a>
                       ) : (
-                        <a className={classes.footItemLink} href={item.link}>
+                        <Link className={classes.footItemLink} to={item.link}>
                           {item.text}
-                        </a>
+                        </Link>
                       )}
                     </div>
                   );
