@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 
 const styles = () => ({
@@ -254,19 +255,19 @@ const FooterTablet = ({ classes, data, handleExternalLinkClick }) => {
 
                   return (
                     <div className="footItemSubtitle" key={`item_${item.text}`}>
-                      {item.link.includes('http') ? (
+                      {item.link.includes('http') || item.link.includes('mailto') ? (
                         <a
                           className="footItemLink"
                           href={item.link}
-                          onClick={(e) => handleExternalLinkClick(e, item.link)}
+                          onClick={(e) => !item.link.includes('mailto') && handleExternalLinkClick(e, item.link)}
                           rel="noopener noreferrer"
                         >
                           {item.text}
                         </a>
                       ) : (
-                        <a className="footItemLink" href={item.link}>
+                        <Link className="footItemLink" to={item.link}>
                           {item.text}
-                        </a>
+                        </Link>
                       )}
                     </div>
                   );

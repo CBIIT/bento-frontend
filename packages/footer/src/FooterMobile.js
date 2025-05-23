@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 
 const styles = () => ({
@@ -320,24 +321,24 @@ const FooterMobile = ({ classes, data, handleExternalLinkClick }) => {
                         );
                       }
 
-                      return item.link.includes('http') ? (
+                      return item.link.includes('http') || item.link.includes('mailto') ? (
                         <a
                           className="footItemLink"
                           key={itemKey}
                           href={item.link}
-                          onClick={(e) => handleExternalLinkClick(e, item.link)}
+                          onClick={(e) => !item.link.includes('mailto') && handleExternalLinkClick(e, item.link)}
                           rel="noopener noreferrer"
                         >
                           {item.text}
                         </a>
                       ) : (
-                        <a
+                        <Link
                           className="footItemLink"
                           key={itemKey}
-                          href={item.link}
+                          to={item.link}
                         >
                           {item.text}
-                        </a>
+                        </Link>
                       );
                     })}
                   </div>
