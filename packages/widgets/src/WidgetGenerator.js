@@ -1,8 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
 import { makeStyles, Paper } from '@material-ui/core';
-import { DEFAULT_CONFIG_DONUT, DonutChartGenerator } from './DonutChart/DonutChartGenerator';
-import { DEFAULT_CONFIG_SUNBURST, SunburstChartGenerator } from './SunburstChart/SunburstChartGenerator';
+import {
+  DEFAULT_CONFIG_DONUT,
+  DonutChartGenerator,
+} from './DonutChart/DonutChartGenerator';
+import {
+  DEFAULT_CONFIG_SUNBURST,
+  SunburstChartGenerator,
+} from './SunburstChart/SunburstChartGenerator';
 import { BarChartGenerator } from './BarChart/BarChartGenerator';
 
 const DEFAULT_CLASSES = makeStyles({
@@ -10,7 +16,13 @@ const DEFAULT_CLASSES = makeStyles({
     display: 'flex',
     minHeight: '100%',
   },
-  widgetHeader: { },
+  widgetHeader: {},
+  widgetDividerWrapper: {
+    margin: '0px 32px 0px 64px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   widgetDivider: {
     background: (theme) => (theme && theme.custom ? theme.custom.widgetDivider : 'transparent'),
     height: '6px',
@@ -30,7 +42,7 @@ const DEFAULT_CLASSES = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  widgetRoot: { },
+  widgetRoot: {},
   widgetBody: {
     margin: '0px auto',
     paddingRight: (theme) => (theme && theme.spacing ? theme.spacing.unit * 3 : 0),
@@ -47,7 +59,9 @@ const DEFAULT_CLASSES = makeStyles({
     boxShadow: 'none',
   },
   customBackGround: {
-    background: (theme) => (theme && theme.palette ? theme.palette.widgetBackground.main : 'transparent'),
+    background: (theme) => (theme && theme.palette
+      ? theme.palette.widgetBackground.main
+      : 'transparent'),
   },
 });
 
@@ -66,11 +80,15 @@ export const DEFAULT_CONFIG_WIDGET = {
  */
 export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
   const {
-    theme, classes: uiClasses,
-    SunburstConfig: sbConfig, DonutConfig: dConfig,
+    theme,
+    classes: uiClasses,
+    SunburstConfig: sbConfig,
+    DonutConfig: dConfig,
   } = uiConfig;
 
-  const SunburstConfig = sbConfig && typeof sbConfig === 'object' ? sbConfig : DEFAULT_CONFIG_SUNBURST;
+  const SunburstConfig = sbConfig && typeof sbConfig === 'object'
+    ? sbConfig
+    : DEFAULT_CONFIG_SUNBURST;
   const { SunburstChart } = SunburstChartGenerator(SunburstConfig);
 
   const DonutConfig = dConfig && typeof dConfig === 'object' ? dConfig : DEFAULT_CONFIG_DONUT;
@@ -86,11 +104,22 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
     Widget: (props) => {
       const {
         // Widget Options
-        title, header, noBodyPadding, bodyClass,
-        customBackGround, bottomDivider, noPaddedTitle,
+        title,
+        header,
+        noBodyPadding,
+        bodyClass,
+        customBackGround,
+        bottomDivider,
+        noPaddedTitle,
         // Chart Options
-        chartType, sliceTitle, data, chartTitleLocation, chartTitleAlignment,
-        children, width, height,
+        chartType,
+        sliceTitle,
+        data,
+        chartTitleLocation,
+        chartTitleAlignment,
+        children,
+        width,
+        height,
       } = props;
 
       return (
@@ -131,11 +160,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
                 />
               )}
               {chartType === 'bar' && (
-                <BarChart
-                  data={data}
-                  width={width}
-                  height={height}
-                />
+                <BarChart data={data} width={width} height={height} />
               )}
               {chartType === 'sunburst' && (
                 <SunburstChart
@@ -150,7 +175,14 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
               )}
               {!chartType && children}
             </div>
-            {bottomDivider && <hr className={classes.widgetDivider} />}
+            {bottomDivider && chartType === 'bar' && (
+              <div className={classes.widgetDividerWrapper}>
+                <hr className={classes.widgetDivider} />
+              </div>
+            )}
+            {bottomDivider && chartType !== 'bar' && (
+              <hr className={classes.widgetDivider} />
+            )}
           </Paper>
         </div>
       );
