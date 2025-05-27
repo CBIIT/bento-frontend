@@ -30,6 +30,7 @@ const ExtendedView = ({
   const {
     manageViewColumns = false,
     pagination = false,
+    hasExport = true,
   } = extendedViewConfig;
 
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
@@ -63,11 +64,13 @@ const ExtendedView = ({
                 onColumnViewChange={onColumnViewChange}
                 onAllColumnViewChange={onAllColumnViewChange}
               />
-              <DownloadButton
-                count={table.totalRowCount || 0}
-                queryVariables={queryVariables}
-                table={table}
-              />
+              {hasExport && (
+                <DownloadButton
+                  count={table.totalRowCount || 0}
+                  queryVariables={queryVariables}
+                  table={table}
+                />
+              )}
             </div>
           )
         }
