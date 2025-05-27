@@ -52,6 +52,18 @@ const addScrollStyle = {
   height: '14px',
 };
 
+const getPaginationStyle = (table, hasExport) => {
+  if (table.paginationAPIField === 'filesInList') {
+    return cartDownloadAreaStyle;
+  }
+
+  if (!hasExport) {
+    return { ...downloadAreaStyle, paddingRight: '0px' };
+  }
+
+  return downloadAreaStyle;
+};
+
 const TableView = ({
   tableRows = [],
   table,
@@ -87,6 +99,7 @@ const TableView = ({
   const { extendedViewConfig } = table;
   const {
     manageViewColumns = false,
+    hasExport = true,
   } = extendedViewConfig;
   return (
     <>
@@ -136,7 +149,7 @@ const TableView = ({
           table={table}
         />
       )}
-      <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : downloadAreaStyle}>
+      <div className="downloadArea" style={getPaginationStyle(table, hasExport)}>
         <CustomPagination
           customTheme={themeConfig.tblPgn}
           rowsPerPageOptions={[10, 25, 50, 100]}
@@ -153,11 +166,13 @@ const TableView = ({
           onColumnViewChange={onColumnViewChange}
           onAllColumnViewChange={onAllColumnViewChange}
         />
-        <DownloadButton
-          count={table.totalRowCount || 0}
-          queryVariables={queryVariables}
-          table={table}
-        />
+        {hasExport && (
+          <DownloadButton
+            count={table.totalRowCount || 0}
+            queryVariables={queryVariables}
+            table={table}
+          />
+        )}
       </div>
     </>
   );
