@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Checkbox,
@@ -72,12 +72,13 @@ const CPIModal = ({
 }) => {
   const [sortBy, setSortBy] = useState('associated_id');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [data, setData] = useState(() => {
-    const result = row.cpi_data;
-    return result;
-  });
+  const [data, setData] = useState(row.cpi_data);
   const [selectedIds, setIds] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    setData(row.cpi_data);
+  }, [row]);
 
   const wrapperConfig = {
     container: 'buttons',

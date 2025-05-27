@@ -50,6 +50,24 @@ export const SearchResultsGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHRESULTS) 
         setTabValue(activeTab);
       }, [activeTab, searchText]);
 
+      const tabLabel = {
+        fontFamily: 'Poppins',
+        fontWeight: '500',
+        fontSize: '16px',
+        lineHeight: '16px',
+        letterSpacing: '2%',
+        color: '#0A5E63',
+      };
+
+      const tabCount = {
+        fontFamily: 'Poppins',
+        fontWeight: '300',
+        fontSize: '15px',
+        lineHeight: '14px',
+        letterSpacing: '0px',
+        color: '#0B3556',
+      };
+
       return (
         <TabContext value={tabValue}>
           <Box sx={{ borderBottom: '1px solid #828282' }}>
@@ -60,11 +78,11 @@ export const SearchResultsGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHRESULTS) 
                   classes={prop.classes}
                   label={(
                     <span>
-                      <span id={`global_search_tab_label_${idx}`}>
+                      <span style={tabLabel} id={`global_search_tab_label_${idx}`}>
                         {typeof prop.name === 'function' ? prop.name() : prop.name}
                       </span>
                       {' '}
-                      <span id={`global_search_tab_count_${idx}`}>{prop.count}</span>
+                      <span style={tabCount} id={`global_search_tab_count_${idx}`}>{prop.count}</span>
                     </span>
                   )}
                   value={prop.value}
