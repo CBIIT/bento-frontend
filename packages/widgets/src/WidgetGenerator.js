@@ -17,6 +17,12 @@ const DEFAULT_CLASSES = makeStyles({
     minHeight: '100%',
   },
   widgetHeader: {},
+  widgetDividerWrapper: {
+    margin: '0px 32px 0px 64px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   widgetDivider: {
     background: (theme) => (theme && theme.custom ? theme.custom.widgetDivider : 'transparent'),
     height: '6px',
@@ -169,10 +175,13 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
               )}
               {!chartType && children}
             </div>
-            {bottomDivider && (
-              <div>
+            {bottomDivider && chartType === 'bar' && (
+              <div className={classes.widgetDividerWrapper}>
                 <hr className={classes.widgetDivider} />
               </div>
+            )}
+            {bottomDivider && chartType !== 'bar' && (
+              <hr className={classes.widgetDivider} />
             )}
           </Paper>
         </div>
