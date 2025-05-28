@@ -252,7 +252,6 @@ const styles = {
   paginationContainer: {
     display: 'flex',
     justifyContent: 'center',
-    maxWidth: '800px',
     margin: '0 auto',
     paddingBottom: '20px',
     '& > *': {
