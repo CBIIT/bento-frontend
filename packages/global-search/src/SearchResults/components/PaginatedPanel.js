@@ -3,6 +3,7 @@ import {
   withStyles, Grid, CircularProgress, Typography,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
+import PaginationItem from '@material-ui/lab/PaginationItem';
 import { ResultCard } from './ResultCard';
 
 /**
@@ -205,6 +206,23 @@ const PaginatedPanel = (props) => {
               page={page}
               siblingCount={2}
               boundaryCount={1}
+              renderItem={(item) => {
+                // Hide the last boundary buttons only
+                // Boundary buttons are pages within the first or last 'boundaryCount' pages
+
+                // Condition to identify last boundary buttons:
+                // Pages in [count - boundaryCount + 1 ... count]
+                const isLastBoundary = item.page > Math.ceil(count / pageSize) - 1;
+
+                // Only hide last boundary page buttons of type "page" (not ellipsis or navigation)
+                if (item.type === 'page' && isLastBoundary) {
+                  // Return null to skip rendering this button
+                  return null;
+                }
+
+                // Otherwise render normally
+                return <PaginationItem {...item} />;
+              }}
               shape="rounded"
               hideNextButton
               hidePrevButton
@@ -303,6 +321,9 @@ const styles = {
       '&:hover': {
         backgroundColor: 'transparent',
       },
+    },
+    '& .MuiPagination-ul > li:last-child': {
+      border: '0px',
     },
     '& .MuiPaginationItem-page': {
       '&:hover': {
