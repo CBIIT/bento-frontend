@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import ToolTip from '@bento-core/tool-tip';
 import { Button } from '@material-ui/core';
-import clsx from 'clsx';
-import gql from 'graphql-tag';
-import AddToCartDialogView from '../AddToCartDialog/AddToCartDialogView';
+import SnackbarView from '../Snackbar/Snackbar';
 
 const customTooltip = {
   border: '#03A383 1px solid',
@@ -60,29 +58,16 @@ export const ToolTipView = (props) => {
 
 const checkDuplicate = (cartFiles, ids) => (ids.filter((id) => !cartFiles[id]));
 
-const addFileQuery = gql`
-query search (          
-  $participant_ids: [String],
-){
-  fileIDsFromList (          
-      participant_ids: $participant_ids,
-  ) 
-}
-  `;
-
-const CPIFilesComponent = (props) => {
+const AddToCartView = (props) => {
   const {
     cartFiles,
     fileId,
+    buttonStyle,
   } = props;
-  /**
-  * conditionally display dialog view
-  */
-  const [openAddDialog, setOpen] = useState(false);
-  const toggleOpen = () => setOpen(!openAddDialog);
-  const [addFilesId, setAddFilesId] = useState([]);
+
   // const [isDataloading, setIsDataloading] = useState(false);
-  const responseKeys = ['fileIDsFromList'];
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [count, setCount] = useState(cartFiles.length);
 
   const cartFilesDict = {};
   cartFiles.forEach((file) => { cartFilesDict[file] = true; });
@@ -95,40 +80,24 @@ const CPIFilesComponent = (props) => {
   /**
   * verify and set file ids
   */
-  const addAllFiles = () => {
-    let toAdd = [];
-    if (btnType === 'ADD_ALL_FILES') {
-      participantIds.forEach((e) => {
-        if (e.data_type === 'internal' && e.p_id) {
-          toAdd = toAdd.concat(e.p_id);
-        }
-        toAdd = toAdd.concat(rowID);
-      });
-    } else {
-      toAdd = participantIds.concat(rowID);
-    }
-    const idsInitial = response[responseKeys[0]] || [];
-      console.log(idsInitial);
-      const ids = [...new Set(idsInitial)];
-      const fileCount = ids.length;
-      if (fileCount <= upperLimit && cartCount < upperLimit) {
-        if (cartCount + ids.length <= upperLimit) {
-          setOpen(true);
-          setAddFilesId(ids);
-        } else {
-          const newIds = checkDuplicate(cartFiles, ids);
-          if (cartCount + newIds.length <= upperLimit) {
-            setOpen(true);
-            setAddFilesId(newIds);
-          } else {
-            setAlterDisplay(true);
-          }
-        }
+  const addFiles = () => {
+    const idsInitial = fileId || [];
+    console.log(idsInitial);
+    const ids = [...new Set(idsInitial)];
+    const fileCount = ids.length;
+    const upperLimit = 200000;
+    const cartCount = cartFiles.length;
+
+    if (fileCount <= upperLimit && cartCount < upperLimit) {
+      if (cartCount + ids.length <= upperLimit) {
+        setOpenSnackbar(true);
       } else {
-        setAlterDisplay(true);
+        const newIds = checkDuplicate(cartFiles, ids);
+        if (cartCount + newIds.length <= upperLimit) {
+          setCount(cartCount + newIds.length);
+          setOpenSnackbar(true);
+        }
       }
-    } else {
-      setAlterDisplay(true);
     }
   };
 
@@ -136,21 +105,19 @@ const CPIFilesComponent = (props) => {
   * use wrapper service to add files to cart
   */
   const addFilesToCart = () => {
-    addFiles(addFilesId);
-    toggleOpen();
+    addFiles();
     setOpenSnackbar(true);
   };
 
   return (
     <>
       <Button
-        onClick={addAllFiles}
-        className={clsx(clsName, `${clsName}_${section}`)}
+        onClick={addFilesToCart}
         disableRipple
         style={buttonStyle}
         disabled={false}
       >
-        {title}
+        ADD TO CART
       </Button>
       <SnackbarView
         open={openSnackbar}
@@ -161,4 +128,4 @@ const CPIFilesComponent = (props) => {
   );
 };
 
-export default CPIFilesComponent;
+export default AddToCartView;
