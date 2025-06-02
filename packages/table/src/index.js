@@ -7,3 +7,4 @@ export {
   dataFormatTypes,
 } from './util/Types';
 export { formatBytes } from './util/Dataformat';
+export { AddtoCart } from './wrapper/components/AddToCart/ReduxAddToCart';
