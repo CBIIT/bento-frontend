@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ToolTip from '@bento-core/tool-tip';
 import { Button } from '@material-ui/core';
 import SnackbarView from '../Snackbar/Snackbar';
+import AlertView from '../AddToCartDialog/AddToCartDialogAlertView';
 
 const customTooltip = {
   border: '#03A383 1px solid',
@@ -63,11 +64,13 @@ const AddToCartView = (props) => {
     cartFiles,
     fileId,
     buttonStyle,
+    addFiles,
+    count,
   } = props;
 
   // const [isDataloading, setIsDataloading] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [count, setCount] = useState(cartFiles.length);
+  const [displayAlter, setAlterDisplay] = useState(false);
 
   const cartFilesDict = {};
   cartFiles.forEach((file) => { cartFilesDict[file] = true; });
@@ -80,39 +83,31 @@ const AddToCartView = (props) => {
   /**
   * verify and set file ids
   */
-  const addFiles = () => {
+  const addAllFiles = () => {
     const idsInitial = fileId || [];
-    console.log(idsInitial);
-    const ids = [...new Set(idsInitial)];
+    const ids = [idsInitial];
     const fileCount = ids.length;
     const upperLimit = 200000;
     const cartCount = cartFiles.length;
-
     if (fileCount <= upperLimit && cartCount < upperLimit) {
-      if (cartCount + ids.length <= upperLimit) {
+      const newIds = checkDuplicate(cartFiles, ids);
+      console.log(newIds);
+      if (cartCount + newIds.length <= upperLimit) {
+        addFiles(newIds);
         setOpenSnackbar(true);
       } else {
-        const newIds = checkDuplicate(cartFiles, ids);
-        if (cartCount + newIds.length <= upperLimit) {
-          setCount(cartCount + newIds.length);
-          setOpenSnackbar(true);
-        }
+        setAlterDisplay(true);
       }
+    } else {
+      setAlterDisplay(true);
     }
-  };
-
-  /**
-  * use wrapper service to add files to cart
-  */
-  const addFilesToCart = () => {
-    addFiles();
-    setOpenSnackbar(true);
   };
 
   return (
     <>
       <Button
-        onClick={addFilesToCart}
+        variant="outlined"
+        onClick={addAllFiles}
         disableRipple
         style={buttonStyle}
         disabled={false}
@@ -124,6 +119,13 @@ const AddToCartView = (props) => {
         count={count}
         onClose={() => setOpenSnackbar(false)}
       />
+      {displayAlter && (
+        <AlertView
+          alertMessage="The cart is limited to 200,000 files. Please narrow the search criteria or remove some files from the cart to add more."
+          open={displayAlter}
+          onClose={() => setAlterDisplay(false)}
+        />
+      )}
     </>
   );
 };
