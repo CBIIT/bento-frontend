@@ -91,7 +91,6 @@ const AddToCartView = (props) => {
     const cartCount = cartFiles.length;
     if (fileCount <= upperLimit && cartCount < upperLimit) {
       const newIds = checkDuplicate(cartFiles, ids);
-      console.log(newIds);
       if (cartCount + newIds.length <= upperLimit) {
         addFiles(newIds);
         setOpenSnackbar(true);
