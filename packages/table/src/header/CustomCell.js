@@ -21,6 +21,7 @@ const CustomHeaderCell = ({
     tooltipText,
     header,
     headerType,
+    sortField,
     customColHeaderRender,
     sortable,
   } = column;
@@ -66,9 +67,9 @@ const CustomHeaderCell = ({
     >
       <Tooltip>
         <TableSortLabel
-          active={sortBy === dataField}
-          hideSortIcon={sortBy !== dataField}
-          direction={sortBy === dataField ? sortOrder : 'asc'}
+          active={sortBy === ( sortField ? sortField : dataField)}
+          hideSortIcon={sortBy !== ( sortField ? sortField : dataField)}
+          direction={sortBy === ( sortField ? sortField : dataField) ? sortOrder : 'asc'}
           onClick={toggleSort}
         >
           {(headerType === headerTypes.CUSTOM_ELEM && customColHeaderRender)

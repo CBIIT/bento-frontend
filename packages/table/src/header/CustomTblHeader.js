@@ -65,7 +65,9 @@ const CustomTableHeader = ({
                   column={column}
                   sortBy={sortBy}
                   sortOrder={sortOrder}
-                  toggleSort={() => sortByColumn(column.dataField, sortOrder)}
+                  toggleSort={() => {
+                    sortByColumn(column.sortField ? column.sortField : column.dataField, sortOrder);
+                  }}
                 />
               );
             })
