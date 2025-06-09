@@ -1,0 +1,128 @@
+/* eslint-disable import/no-cycle */
+import React, { useState } from 'react';
+import PropertyView from '../Property/PropertyView';
+import * as Styled from './Node.styled';
+import TemplateAndDocsDownload from '../../Download/TemplateAndDocsDownload';
+import HighlightText from '../../Sidebar/Search/HighlightText';
+import TemplateAndPdfDownload from '../../Download/TemplateAndPdfDownload';
+import { createFileName } from '../../../utils/Utils';
+
+const DownloadButton = ({
+  category,
+  node,
+  isTemplate,
+}) => {
+  const {
+    isTemplateAndDocsDownlaod = true,
+  } = node;
+  if (isTemplateAndDocsDownlaod) {
+    return (
+      <TemplateAndDocsDownload
+        category={category}
+        node={node}
+        isTemplate={isTemplate}
+      />
+    );
+  }
+  return (
+    <TemplateAndPdfDownload
+      nodes={[node]}
+      isTemplate={isTemplate}
+      pdfFileName={createFileName('', '')}
+      tsvFileName={createFileName('', '')}
+    />
+  );
+};
+
+const NodeView = ({
+  node,
+  title,
+  category,
+  description,
+  isOverLayTable = false,
+  textSearchDetail,
+}) => {
+  const [expand, setExpand] = useState(isOverLayTable);
+  const propertiesCount = Object.keys(node.properties || {}).length;
+  const searchTerm = textSearchDetail?.searchText || '';
+
+  return (
+    <Styled.Container className={`${category}_${title}`}>
+      <Styled.TitleAndDescContainer className="titleAndDescContainer">
+        <Styled.NodeTitle className={`nodeTitle_${title}`}>
+          <HighlightText
+            text={title}
+            searchTerm={textSearchDetail?.title ? searchTerm : ''}
+          />
+        </Styled.NodeTitle>
+        <Styled.TagsAndDescriptionContainer className="tagsAndDescriptionContainer">
+          <Styled.NodeDescription className={`nodeDescription_${title}`}>
+            <HighlightText
+              text={description}
+              searchTerm={textSearchDetail?.description ? searchTerm : ''}
+            />
+          </Styled.NodeDescription>
+          <Styled.TagsAndBtnContainer className="tagsAndBtnContainer">
+            <div>
+              <Styled.DisplayPropertyTableButton
+                className="displayPropertyTableButton"
+                onClick={() => setExpand(!expand)}
+                variant="contained"
+                disabled={isOverLayTable}
+                startIcon={
+                  expand ? (
+                    <Styled.MuiCollapseIcon isOverLayTable={isOverLayTable} />
+                  ) : (
+                    <Styled.MuiExpandIcon isOverLayTable={isOverLayTable} />
+                  )
+                }
+              >
+                <Styled.ButtonCountLabel className="buttonCountLabel">
+                  {propertiesCount}
+                </Styled.ButtonCountLabel>
+                <Styled.ButtonTextLabel className="buttonTextLabel">
+                  { propertiesCount === 1 ? ' property' : ' properties' }
+                </Styled.ButtonTextLabel>
+              </Styled.DisplayPropertyTableButton>
+            </div>
+            <Styled.AssignmentAndClassTags className="assignmentAndClassTags">
+              {node.assignment && (
+                <Styled.NodeLabel className="nodeLabel">
+                  <span>Assignment:</span>
+                  <Styled.NodeAssignment className="nodeAssignment">
+                    {node.assignment}
+                  </Styled.NodeAssignment>
+                </Styled.NodeLabel>
+              )}
+              {node.class && (
+                <Styled.NodeLabel className="nodeLabel">
+                  Class:
+                  <Styled.NodeClass className="nodeClass">
+                    {node.class}
+                  </Styled.NodeClass>
+                </Styled.NodeLabel>
+              )}
+            </Styled.AssignmentAndClassTags>
+            <Styled.DownloadContainer className="downloadContainer">
+              <Styled.MuiButtonGroup className="muiButtonGroup">
+                {/* <replace node required, preferred field val> */}
+                <DownloadButton
+                  category={category}
+                  node={node}
+                  isTemplate={node.isTemplate}
+                />
+              </Styled.MuiButtonGroup>
+            </Styled.DownloadContainer>
+          </Styled.TagsAndBtnContainer>
+        </Styled.TagsAndDescriptionContainer>
+      </Styled.TitleAndDescContainer>
+      {expand && (
+        <PropertyView
+          properties={node.properties || {}}
+        />
+      )}
+    </Styled.Container>
+  );
+};
+
+export default NodeView;

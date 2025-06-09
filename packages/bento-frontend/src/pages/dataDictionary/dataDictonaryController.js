@@ -16,10 +16,10 @@ const About = () => {
       let result = [];
       try {
         result = await axios.get(ABOUT_CONTENT_URL);
-        resultData = yaml.safeLoad(result.data);
+        resultData = yaml.load(result.data);
       } catch (error) {
         result = await axios.get(YAMLData);
-        resultData = yaml.safeLoad(result.data);
+        resultData = yaml.load(result.data);
       }
 
       const supportObj = resultData.find(({ page }) => page === '/data-dictionary');

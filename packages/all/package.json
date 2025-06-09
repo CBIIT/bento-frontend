@@ -25,6 +25,7 @@
     "@bento-core/header": "^1.0.0",
     "@bento-core/local-find": "^1.0.0",
     "@bento-core/nav-bar": "^1.0.0",
+    "@bento-core/navigator": "^1.0.0",
     "@bento-core/paginated-table": "^1.0.0",
     "@bento-core/profile": "^1.0.0",
     "@bento-core/query-bar": "^1.1.0",

@@ -1,0 +1,62 @@
+{
+  "model-files": [
+    "c3dc-model.yml",
+    "c3dc-model-props.yml"
+  ],
+  "nodesYamlFilePath": "https://raw.githubusercontent.com/CBIIT/c3dc-model/main/model-desc/c3dc-model.yml",
+  "propertiesYamlFilePath": "https://raw.githubusercontent.com/CBIIT/c3dc-model/main/model-desc/c3dc-model-props.yml",
+  "readMeConfig": {
+    "readMeUrl": "https://raw.githubusercontent.com/CBIIT/crdc-datahub-models/dev2/cache/CDS/6.0.2/README.md"
+  },
+  "readme-file": "README.md",
+  "loading-file": "c3dc-file-examples.zip",
+  "semantics": {
+    "file-nodes": {
+      "file": {
+        "id-field": "file_id",
+        "name-field": "file_name",
+        "size-field": "file_size",
+        "md5-field": "md5sum"
+      }
+    }
+  },
+  "current-version": "1.0.0",
+  "versions": [
+    "1.0.0"
+  ],
+  "ui_settings": {
+    "name": "C3DC",
+    "assets": null,
+    "configuration": {
+      "pageTitle": "C3DC Data Model",
+      "pdfConfig": {
+        "fileType": "pdf",
+        "prefix": "c3dc_",
+        "downloadPrefix": "c3dc_",
+        "fileTransferManifestName": "c3dc_",
+        "iconSrc": "logo",
+        "footnote": "https://hub.datacommons.cancer.gov/model-navigator/C3DC",
+        "landscape": true
+      },
+      "graphViewConfig": {
+        "legend": {},
+        "canvas": {
+          "fit": {
+            "x": 0,
+            "y": 20,
+            "zoom": 0.7,
+            "minZoom": 0.7,
+            "maxZoom": 2
+          },
+          "nodeTree": [
+            ["study"],
+            ["participant"],
+            ["sample", "synonym"],
+            ["treatment", "diagnosis", "laboratory_test", "genetic_analysis"],
+            ["survival", "treatment_response", "reference_file"]
+          ]
+        }
+      }
+    }
+  }
+}
