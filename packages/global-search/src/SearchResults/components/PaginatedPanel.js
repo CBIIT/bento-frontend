@@ -215,7 +215,8 @@ const PaginatedPanel = (props) => {
                 const isLastBoundary = item.page > Math.ceil(count / pageSize) - 1;
 
                 // Only hide last boundary page buttons of type "page" (not ellipsis or navigation)
-                if (item.type === 'page' && isLastBoundary) {
+                // and if count is greater than 40000
+                if (item.type === 'page' && isLastBoundary && count > 40000) {
                   // Return null to skip rendering this button
                   return null;
                 }
@@ -321,9 +322,6 @@ const styles = {
       '&:hover': {
         backgroundColor: 'transparent',
       },
-    },
-    '& .MuiPagination-ul > li:last-child': {
-      border: '0px',
     },
     '& .MuiPaginationItem-page': {
       '&:hover': {
