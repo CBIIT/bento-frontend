@@ -91,7 +91,8 @@ const QueryUrl = ({
     ...pathFilterParams,
     ...localFind,
   });
-  const url = encodeURI(rootPath.concat(query));
+
+  const url = rootPath + encodeURIComponent(query);
 
   const copyUrl = async () => {
     toggleOpen(!open);
@@ -107,7 +108,7 @@ const QueryUrl = ({
           onClick={toggleDisplay}
           className={classes.viewLinkToggleBtn}
         >
-          { (display) ? 'Hide Query URL' : 'Show Query URL'}
+          {(display) ? 'Hide Query URL' : 'Show Query URL'}
         </Button>
         {
           (display) && (
