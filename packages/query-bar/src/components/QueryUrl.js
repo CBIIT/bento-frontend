@@ -12,6 +12,62 @@ import {
 } from '@material-ui/core';
 import CopyIcon from '../assets/CopyIcon.svg';
 
+const ViewFullLinkComponent = ({
+  classes,
+  url,
+  maxWidth = 1200,
+}) => {
+  const linkRef = useRef(null);
+  const [collapseLink, setCollapseLink] = useState(false);
+
+  /**
+   * Compute url link width based on the windowsize
+   */
+  useEffect(() => {
+    const urlWidth = linkRef?.current?.offsetWidth;
+    if (urlWidth > maxWidth / 2) {
+      setCollapseLink(true);
+    }
+  }, []);
+
+  const expandUrl = () => {
+    setCollapseLink(false);
+  };
+
+  const collapseUrl = () => {
+    setCollapseLink(true);
+  };
+
+  return (
+    <>
+      <span ref={linkRef} className={classes.link}>
+        <span
+          className={clsx(classes.viewLink,
+            { [classes.collapseLink]: collapseLink })}
+        >
+          <span
+            className={clsx(classes.urlView,
+              { [classes.urlViewBtn]: !collapseLink })}
+            type="button"
+            onClick={collapseUrl}
+          >
+            {url}
+          </span>
+          {(collapseLink) && (
+            <span
+              className={classes.expandLinkBtn}
+              type="button"
+              onClick={expandUrl}
+            >
+              ...
+            </span>
+          )}
+        </span>
+      </span>
+    </>
+  );
+};
+
 const QueryUrl = ({
   classes,
   filterItems,
@@ -20,6 +76,8 @@ const QueryUrl = ({
 }) => {
   const [display, setDisplay] = useState(false);
   const toggleDisplay = () => setDisplay(!display);
+
+  const [expand, setExpand] = useState(false);
 
   const [open, toggleOpen] = useState(false);
 
@@ -55,12 +113,21 @@ const QueryUrl = ({
         {
           (display) && (
             <>
-              <div
-                type="button"
-                className={clsx(classes.viewLink)}
-              >
-                {url}
-              </div>
+              {(expand) ? (
+                <span
+                  type="button"
+                  onClick={() => setExpand(!expand)}
+                  className={clsx(classes.link, classes.viewLink, classes.expandLink)}
+                >
+                  {url}
+                </span>
+              ) : (
+                <ViewFullLinkComponent
+                  url={url}
+                  classes={classes}
+                  maxWidth={queryRef?.current?.offsetWidth}
+                />
+              )}
               <Tooltip
                 arrow
                 title="Copy to Clipboard"
@@ -75,7 +142,6 @@ const QueryUrl = ({
       </div>
       <Dialog
         open={open}
-        onClose={() => toggleOpen(!open)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         className={clsx(classes.dialogBox, 'dialogBox')}
