@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import {
   Button,
@@ -165,43 +165,48 @@ const QueryUrl = ({
 const styles = () => ({
   urlContainer: {
     display: 'flex',
-    marginTop: '3px',
+    marginTop: '10px',
     minHeight: '10px',
   },
-  viewLink: {
+  link: {
+    lineBreak: 'anywhere',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
     fontFamily: 'Nunito',
     fontSize: '12px',
     fontWeight: '500',
     lineHeight: '16px',
     letterSpacing: '0em',
-    padding: '2px 5px',
+    padding: '5px',
     borderRadius: '5px',
     float: 'left',
     color: '#1D79A8',
     backgroundColor: '#fff',
+    maxWidth: '80%',
+  },
+  viewLink: {
     margin: '0',
-    whiteSpace: 'nowrap',
-    wordBreak: 'break-all',
-    '@media (max-width: 2560px)': {
-      maxWidth: '1800px',
-    },
-    '@media (max-width: 2000px)': {
-      maxWidth: '1500px',
-    },
-    '@media (max-width: 1600px)': {
-      maxWidth: '1100px',
-    },
-    '@media (max-width: 1300px)': {
-      maxWidth: '900px',
-    },
   },
   urlViewBtn: {
     cursor: 'pointer',
   },
+  collapseLink: {
+    maxHeight: '1em',
+    display: 'block',
+    // display: '-webkit-box',
+    '-webkit-box-orient': 'vertical',
+    '-webkit-line-clamp': '1',
+    overflow: 'hidden',
+  },
+  expandLink: {
+    cursor: 'pointer',
+  },
+  expandLinkBtn: {
+    float: 'left',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
   viewLinkToggleBtn: {
-    padding: '5px 10px 5px 10px',
     height: '20px',
     fontFamily: 'Nunito',
     fontSize: '12px',
@@ -214,10 +219,26 @@ const styles = () => ({
     color: '#fff',
     float: 'left',
     margin: '0px 10px 0px 0px',
-    whiteSpace: 'nowrap',
     '&:hover': {
       backgroundColor: '#1D79A8',
       color: '#fff',
+    },
+  },
+  urlView: {
+    float: 'left',
+    width: 'calc(100% - 13px)',
+    minWidth: '840px',
+    '@media (max-width: 2560px)': {
+      maxWidth: '1800px',
+    },
+    '@media (max-width: 2000px)': {
+      maxWidth: '1400px',
+    },
+    '@media (max-width: 1600px)': {
+      maxWidth: '1200px',
+    },
+    '@media (max-width: 1300px)': {
+      maxWidth: '1050px',
     },
   },
   copyIconBtn: {
