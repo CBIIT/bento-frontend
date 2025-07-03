@@ -174,7 +174,7 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
     DonutChart: ({ data, ...props }) => {
       const {
         cx, cy,
-        titleLocation, titleAlignment, sliceTitle,
+        titleLocation, titleAlignment, sliceTitle, currentChart,
         blendStroke, innerRadius, outerRadius, width, height,
       } = props;
 
@@ -205,32 +205,34 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
       };
 
       return (
-        <ResponsiveContainer width={width} height={height}>
-          <PieChart>
-            <Pie
-              data={dataset}
-              activeIndex={activeIndex}
-              blendStroke={blendStroke || true}
-              cx={cx || '50%'}
-              cy={cy || '50%'}
-              innerRadius={innerRadius}
-              outerRadius={outerRadius}
-              dataKey="value"
-              paddingAngle={cellPadding}
-              activeShape={(currentProps) => (mergeProps(currentProps, defaultProps, activeShape))}
-              onMouseEnter={(d, idx) => setActiveIndex(idx)}
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={data.length % 2 === 0
-                    ? COLORS_EVEN[index % COLORS_EVEN.length]
-                    : COLORS_ODD[index % COLORS_ODD.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        <>
+          <ResponsiveContainer width={width} height={height}>
+            <PieChart ref={currentChart}>
+              <Pie
+                data={dataset}
+                activeIndex={activeIndex}
+                blendStroke={blendStroke || true}
+                cx={cx || '50%'}
+                cy={cy || '50%'}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius}
+                dataKey="value"
+                paddingAngle={cellPadding}
+                activeShape={(currProps) => (mergeProps(currProps, defaultProps, activeShape))}
+                onMouseEnter={(d, idx) => setActiveIndex(idx)}
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={data.length % 2 === 0
+                      ? COLORS_EVEN[index % COLORS_EVEN.length]
+                      : COLORS_ODD[index % COLORS_ODD.length]}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </>
       );
     },
   };
