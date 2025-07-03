@@ -93,7 +93,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
   return {
     BarChart: ({ data, ...props }) => {
       const {
-        width, height,
+        width, height, currentChart,
       } = props;
 
       const tooltipStyle = {
@@ -116,24 +116,27 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
       };
 
       return (
-        <ResponsiveContainer width={width} height={height}>
-          <BarChart
-            data={data}
-          >
-            <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
-            <XAxis dataKey="group" />
-            <YAxis tickFormatter={(tick) => tick.toLocaleString()} />
-            <Tooltip cursor={false} content={<CustomTooltip />} />
-            <Bar dataKey="subjects">
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={DEFAULT_COLORS_ODD[index % DEFAULT_COLORS_ODD.length]}
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        <>
+          <ResponsiveContainer width={width} height={height}>
+            <BarChart
+              data={data}
+              ref={currentChart}
+            >
+              <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
+              <XAxis dataKey="group" />
+              <YAxis tickFormatter={(tick) => tick.toLocaleString()} />
+              <Tooltip cursor={false} content={<CustomTooltip />} />
+              <Bar dataKey="subjects">
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={DEFAULT_COLORS_ODD[index % DEFAULT_COLORS_ODD.length]}
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </>
       );
     },
   };
