@@ -25,6 +25,10 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? functions.clearAll
     : DEFAULT_CONFIG.functions.clearAll;
 
+  const clearImportFrom = functions && typeof functions.clearImportFrom === 'function'
+    ? functions.clearImportFrom
+    : DEFAULT_CONFIG.functions.clearImportFrom;
+
   const clearUpload = functions && typeof functions.clearUpload === 'function'
     ? functions.clearUpload
     : DEFAULT_CONFIG.functions.clearUpload;
@@ -59,8 +63,9 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
   return {
     QueryBar: withStyles(DEFAULT_STYLES, { withTheme: true })((props) => {
-      const { statusReducer, localFind, classes } = props;
-
+      const {
+        hasImportFrom, statusReducer, localFind, classes,
+      } = props;
       const { autocomplete, upload } = localFind;
 
       // Remove any sections without checkboxes selected
@@ -84,7 +89,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
         })
         .filter((facet) => facet.items.length > 0);
 
-      if ((mappedInputs.length || autocomplete.length || upload.length) <= 0) {
+      if (!hasImportFrom && (mappedInputs.length || autocomplete.length || upload.length) <= 0) {
         return null;
       }
 
@@ -102,6 +107,20 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
           <span className={classes.queryContainer}>
             {/* Local Find Selections */}
             {/* TODO: Refactor this into a separate component */}
+            {
+              hasImportFrom
+              && (
+                <span
+                  className={clsx(classes.filterCheckboxes, classes.localFindBackground)}
+                  onClick={clearImportFrom}
+                >
+                  IMPORT PARTICIPANT SET
+                </span>
+              )
+            }
+            {((autocomplete.length || upload.length) && mappedInputs.length)
+              ? <span className={classes.operators}> AND </span>
+              : null}
             {(autocomplete.length || upload.length) ? (
               <span>
                 {/* Standalone case set button */}
