@@ -114,7 +114,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   className={clsx(classes.filterCheckboxes, classes.localFindBackground)}
                   onClick={clearImportFrom}
                 >
-                  IMPORT PARTICIPANT SET
+                  IMPORTED PARTICIPANT SET
                 </span>
               )
             }
