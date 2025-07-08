@@ -29,6 +29,13 @@ export default {
     clearAll: () => { },
 
     /**
+     * Clear import from filter
+     *
+     * @returns {void}
+     */
+    clearImportFrom: () => { },
+
+    /**
      * Clear all active Local Find file upload filters
      *
      * @returns {void}
