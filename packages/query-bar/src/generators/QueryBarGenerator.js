@@ -118,7 +118,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 </span>
               )
             }
-            {((autocomplete.length || upload.length) && mappedInputs.length)
+            {hasImportFrom && mappedInputs.length
               ? <span className={classes.operators}> AND </span>
               : null}
             {(autocomplete.length || upload.length) ? (
