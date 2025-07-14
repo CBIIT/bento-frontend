@@ -92,7 +92,6 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
       if (!hasImportFrom && (mappedInputs.length || autocomplete.length || upload.length) <= 0) {
         return null;
       }
-
       return (
         <div className={classes.queryWrapper}>
           <Button
@@ -118,7 +117,8 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 </span>
               )
             }
-            {((autocomplete.length || upload.length) && mappedInputs.length)
+
+            {hasImportFrom && (mappedInputs.length || autocomplete.length || upload.length)
               ? <span className={classes.operators}> AND </span>
               : null}
             {(autocomplete.length || upload.length) ? (
