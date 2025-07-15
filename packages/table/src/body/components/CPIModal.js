@@ -70,8 +70,8 @@ const CPIModal = ({
   themeConfig = {},
   navigation,
 }) => {
-  const [sortBy, setSortBy] = useState('associated_id');
-  const [sortOrder, setSortOrder] = useState('asc');
+  // const [sortBy, setSortBy] = useState('associated_id');
+  // const [sortOrder, setSortOrder] = useState('asc');
   const [data, setData] = useState(row.cpi_data);
   const [selectedIds, setIds] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -108,14 +108,14 @@ const CPIModal = ({
     ],
   };
 
-  const sortingData = (column, newOrder) => {
+  /* const sortingData = (column, newOrder) => {
     const sortedData = data.sort((a, b) => a[column].localeCompare(b[column]));
 
     if (newOrder === 'desc') {
       return sortedData.reverse();
     }
     return sortedData;
-  };
+  }; */
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -143,13 +143,13 @@ const CPIModal = ({
     }
   };
 
-  const handleSortByColumn = (column, order) => {
+  /* const handleSortByColumn = (column, order) => {
     const newOrder = (order === 'asc' && sortBy === column) ? 'desc' : 'asc';
     const newData = sortingData(column, newOrder);
     setData(newData);
     setSortBy(column);
     setSortOrder(newOrder);
-  };
+  }; */
 
   const buttonContainer = {
     display: 'flex',
@@ -278,27 +278,27 @@ const CPIModal = ({
     {
       dataField: 'associated_id',
       header: 'Participant ID',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
     },
     {
       dataField: 'repository_of_synonym_id',
       header: 'Name',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
     },
     {
       dataField: 'domain_description',
       header: 'Description',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
     },
     {
       dataField: 'domain_category',
       header: 'Category',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
     },
     {
       dataField: 'data_location',
       header: 'Location',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
     },
   ];
 
@@ -344,9 +344,9 @@ const CPIModal = ({
                   displayColumns.map((column) => (
                     <HeaderCell
                       column={column}
-                      sortBy={sortBy}
-                      sortOrder={sortOrder}
-                      toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
+                      // sortBy={sortBy}
+                      // sortOrder={sortOrder}
+                      // toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
                       style={{ paddingLeft: '3px', paddingRight: '3px', fontWeight: '700' }}
                     />
                   ))
