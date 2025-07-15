@@ -279,26 +279,31 @@ const CPIModal = ({
       dataField: 'associated_id',
       header: 'Participant ID',
       // tooltipText: 'sort',
+      sortable: false,
     },
     {
       dataField: 'repository_of_synonym_id',
       header: 'Name',
       // tooltipText: 'sort',
+      sortable: false,
     },
     {
       dataField: 'domain_description',
       header: 'Description',
       // tooltipText: 'sort',
+      sortable: false,
     },
     {
       dataField: 'domain_category',
       header: 'Category',
       // tooltipText: 'sort',
+      sortable: false,
     },
     {
       dataField: 'data_location',
       header: 'Location',
       // tooltipText: 'sort',
+      sortable: false,
     },
   ];
 
