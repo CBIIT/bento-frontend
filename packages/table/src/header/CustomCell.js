@@ -51,6 +51,7 @@ const CustomHeaderCell = ({
     return (
       <TableCell
         scope="col"
+        style={style}
       >
         {header}
       </TableCell>
