@@ -52,6 +52,18 @@ const addScrollStyle = {
   height: '14px',
 };
 
+const getPaginationStyle = (table, hasExport) => {
+  if (table.paginationAPIField === 'filesInList') {
+    return cartDownloadAreaStyle;
+  }
+
+  if (!hasExport) {
+    return { ...downloadAreaStyle, paddingRight: '0px' };
+  }
+
+  return downloadAreaStyle;
+};
+
 const TableView = ({
   tableRows = [],
   table,
@@ -62,6 +74,7 @@ const TableView = ({
   totalRowCount,
   onSortByColumn,
   onColumnViewChange,
+  onAllColumnViewChange,
   themeConfig = {},
   queryVariables,
   navigation,
@@ -86,12 +99,14 @@ const TableView = ({
   const { extendedViewConfig } = table;
   const {
     manageViewColumns = false,
+    hasExport = true,
   } = extendedViewConfig;
   return (
     <>
       <ExtendedView
         table={table}
         onColumnViewChange={onColumnViewChange}
+        onAllColumnViewChange={onAllColumnViewChange}
         onRowsPerPageChange={onRowsPerPageChange}
         onPageChange={onPageChange}
         numSelected={table?.selectedRows?.length || 0}
@@ -134,7 +149,7 @@ const TableView = ({
           table={table}
         />
       )}
-      <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : downloadAreaStyle}>
+      <div className="downloadArea" style={getPaginationStyle(table, hasExport)}>
         <CustomPagination
           customTheme={themeConfig.tblPgn}
           rowsPerPageOptions={[10, 25, 50, 100]}
@@ -145,16 +160,19 @@ const TableView = ({
           onPageChange={onPageChange}
           onRowsPerPageChange={onRowsPerPageChange}
         />
-        <DownloadButton
-          count={table.totalRowCount || 0}
-          queryVariables={queryVariables}
-          table={table}
-        />
         <ManageColumnView
           table={table}
           manageViewColumns={manageViewColumns}
           onColumnViewChange={onColumnViewChange}
+          onAllColumnViewChange={onAllColumnViewChange}
         />
+        {hasExport && (
+          <DownloadButton
+            count={table.totalRowCount || 0}
+            queryVariables={queryVariables}
+            table={table}
+          />
+        )}
       </div>
     </>
   );
