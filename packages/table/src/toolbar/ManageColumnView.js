@@ -1,99 +1,253 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Checkbox,
+  FormControlLabel,
   IconButton,
   List,
   ListItem,
-  Popover,
   Tooltip,
   Typography,
   withStyles,
+  Divider,
 } from '@material-ui/core';
 import {
-  ViewColumn,
   CheckBox as CheckBoxIcon,
   CheckBoxOutlineBlank as CheckBoxBlankIcon,
   Close,
 } from '@material-ui/icons';
+import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import { cellTypes } from '../util/Types';
+import viewColumnsIcon from './assets/View_Columns.svg';
+import hiddenColumnsIcon from './assets/Hidden_Column.svg';
 
 const ManageColumnView = ({
   table,
   onColumnViewChange,
+  onAllColumnViewChange,
   manageViewColumns,
 }) => {
   if (!manageViewColumns) {
     return null;
   }
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const { columns } = table;
+  const [listDisplay, setListDisplay] = useState('none');
+  const [selectAll, setSelectAll] = useState(false);
+
+  const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY);
+
+  const dropdownSelection = useRef(null);
+
+  const handleClose = () => {
+    setListDisplay('none');
   };
 
-  const handleClose = () => setAnchorEl(null);
+  const handleClickButton = () => {
+    if (listDisplay === 'none') {
+      setListDisplay('block');
+    } else {
+      setListDisplay('none');
+    }
+  };
 
-  const open = Boolean(anchorEl);
-  const { columns } = table;
-  const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY && col.hideable);
+  const useOutsideAlerter = (ref) => {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (!(event.target.getAttribute('id') && event.target.getAttribute('id').includes('dropdownListItem'))
+          && !(event.target.getAttribute('class') && event.target.getAttribute('class').includes('MuiFormControlLabel'))
+        ) {
+          setListDisplay('none');
+        }
+      }
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  };
+  useOutsideAlerter(dropdownSelection);
+
+  const handleSelectAll = () => {
+    const state = selectAll;
+    setSelectAll(!selectAll);
+    onAllColumnViewChange(!state);
+  };
+
+  const columnDropdown = {
+    width: '48px',
+    height: '36px',
+    paddingLeft: '5px',
+    border: `${listDisplay === 'none' ? '0.75px solid #606060' : '1.5px solid #5666BD'}`,
+    borderRadius: '5px',
+    display: 'inline-flex',
+    position: 'relative',
+    marginTop: '2px',
+    marginRight: '7px',
+  };
+
+  const displayColumnStyle = {
+    position: 'absolute',
+    right: '35px',
+    bottom: '23px',
+  };
+
+  const viewColumnsStyle = {
+    marginTop: '6px',
+    height: '24px',
+    backgroundColor: 'transparent',
+  };
+
+  const dropdownList = {
+    position: 'absolute',
+    width: '230px',
+    marginTop: '38px',
+    marginLeft: '-188px',
+    zIndex: '11',
+    border: '1.5px solid #5666BD',
+    borderRadius: '5px',
+    background: '#ffffff',
+    display: listDisplay,
+  };
+
+  const titleStyle = {
+    fontFamily: 'Poppins',
+    fontWeight: '400',
+    fontSize: '14px',
+    display: 'flex',
+    position: 'relative',
+    top: '15px',
+    left: '1px',
+    color: '#000000',
+  };
+
+  const textStyle = {
+    fontFamily: 'Poppins',
+    fontSize: '14px',
+    fontWeight: '400',
+    lineHeight: '1.2',
+  };
+
+  const dividerStyle = {
+    backgroundColor: '#375F9A',
+    marginTop: '5px',
+    marginBottom: '5px',
+    width: '110%',
+    position: 'relative',
+    right: '10px',
+    height: '0.5px',
+  };
+
+  const arrowdownIcon = {
+    fill: '#606060',
+    width: '20px',
+    height: '20px',
+  };
   return (
-    <>
+    <div style={columnDropdown}>
+      <Tooltip title="Columns may be hidden">
+        <img src={hiddenColumnsIcon} alt="hiddenColumnsIcon" style={displayColumnStyle} />
+      </Tooltip>
       <Tooltip title={manageViewColumns.title}>
-        <IconButton variant="contained" onClick={handleClick} style={{ marginLeft: '10px', marginTop: '9px', height: '24px' }}>
-          <ViewColumn />
+        <IconButton variant="contained" onClick={handleClickButton} style={viewColumnsStyle}>
+          <img src={viewColumnsIcon} alt="viewColumnsIcon" />
+          <KeyboardArrowDownOutlinedIcon style={arrowdownIcon} />
         </IconButton>
       </Tooltip>
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-      >
-        <Typography variant="caption" className="viewColumnText">
+      <div style={dropdownList}>
+        <Typography variant="caption" className="viewColumnText" style={titleStyle}>
           {manageViewColumns.title}
         </Typography>
         <IconButton
           onClick={handleClose}
           className="closeIcon"
-          style={{ float: 'right' }}
+          style={{ float: 'right', bottom: '20px', scale: '0.75' }}
         >
           <Close />
         </IconButton>
-        <List className="viewColumnList">
-          {viewColumns.map((column) => (
+        <List className="viewColumnList" id="dropdownListItemTitle">
+          {viewColumns.map((column, index) => (
             <ListItem
               width={1}
               className="viewColumnListItem"
+              id={`dropdownListItem-${index}`}
             >
-              <Checkbox
-                icon={(
-                  <CheckBoxBlankIcon
-                    style={{ fontSize: 18 }}
-                    className="checkBoxIcon"
+              <FormControlLabel
+                control={(
+                  <Checkbox
+                    icon={(
+                      <CheckBoxBlankIcon
+                        style={{ fontSize: 18 }}
+                        className="checkBoxIcon"
+                      />
+                    )}
+                    onClick={() => onColumnViewChange(column)}
+                    checked={column.display}
+                    id={`dropdownListItemCheckbox-${index}`}
+                    checkedIcon={(
+                      <CheckBoxIcon
+                        style={{
+                          fontSize: 18,
+                          color: column.hideable ? 'rgba(109, 95, 91, 1)' : 'rgba(109, 95, 91, 0.38)',
+                        }}
+                        className="checkBoxIcon"
+                      />
+                    )}
+                    disableRipple
+                    color="secondary"
+                    className="checkBox"
+                    disabled={!column.hideable}
                   />
                 )}
-                onClick={() => onColumnViewChange(column)}
-                checked={column.display}
-                checkedIcon={(
-                  <CheckBoxIcon
-                    style={{
-                      fontSize: 18,
-                    }}
-                    className="checkBoxIcon"
-                  />
-                )}
-                disableRipple
-                color="secondary"
-                className="checkBox"
+                disabled={!column.hideable}
+                label={<Typography id={`dropdownListItemLabel-${index}`} style={textStyle}>{column.header}</Typography>}
+                id={`dropdownListItem-${index}-label`}
+                className="formControlLabel"
+                style={{ marginLeft: '13px' }}
               />
-              <Typography>{column.header}</Typography>
             </ListItem>
           ))}
+          <Divider style={dividerStyle} />
+          <ListItem
+            width={1}
+            className="viewColumnListItem"
+            style={{ height: '20px' }}
+          >
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  icon={(
+                    <CheckBoxBlankIcon
+                      style={{ fontSize: 18 }}
+                      className="checkBoxIcon"
+                    />
+                  )}
+                  onClick={() => handleSelectAll()}
+                  checked={selectAll}
+                  id="dropdownListItem-all"
+                  checkedIcon={(
+                    <CheckBoxIcon
+                      style={{
+                        fontSize: 18,
+                        color: 'rgba(109, 95, 91, 1)',
+                      }}
+                      className="checkBoxIcon"
+                    />
+                  )}
+                  disableRipple
+                  color="secondary"
+                  className="checkBox"
+                />
+              )}
+              label={(
+                <Typography id="dropdownListItem-all-label" style={{ ...textStyle, position: 'relative', left: '25px' }}>
+                  {selectAll ? 'Deselect All' : 'Select All'}
+                </Typography>
+              )}
+              id="dropdownListItem-all-label"
+            />
+          </ListItem>
         </List>
-      </Popover>
-    </>
+      </div>
+    </div>
   );
 };
 
@@ -127,6 +281,13 @@ const styles = () => ({
   label: {
     fontSize: '15px',
     marginLeft: '8px',
+  },
+  viewColumnListItem: {
+    height: '18px',
+  },
+  formControlLabel: {
+    marginLeft: '13px',
+    position: 'relative',
   },
 });
 

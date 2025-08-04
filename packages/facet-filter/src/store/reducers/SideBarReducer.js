@@ -101,6 +101,7 @@ export function sideBarReducerGenerator() {
           return {
             ...state,
             filterState: {},
+            searchState: {},
           };
         case sideBarActionTypes.CLEAR_FACET_SECTION:
           updateState = onClearFacetSection({ ...payload, ...state });

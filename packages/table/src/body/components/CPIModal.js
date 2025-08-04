@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Checkbox,
@@ -50,7 +50,7 @@ const tooltipContent = {
 const CustomTableContainer = (props) => {
   const { children, themeConfig, className } = props;
   const tableStyle = {
-    height: '450px',
+    height: '425px',
     overflowX: 'hidden',
   };
   return (
@@ -70,14 +70,15 @@ const CPIModal = ({
   themeConfig = {},
   navigation,
 }) => {
-  const [sortBy, setSortBy] = useState('associated_id');
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [data, setData] = useState(() => {
-    const result = row.cpi_data;
-    return result;
-  });
+  // const [sortBy, setSortBy] = useState('associated_id');
+  // const [sortOrder, setSortOrder] = useState('asc');
+  const [data, setData] = useState(row.cpi_data);
   const [selectedIds, setIds] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    setData(row.cpi_data);
+  }, [row]);
 
   const wrapperConfig = {
     container: 'buttons',
@@ -107,14 +108,14 @@ const CPIModal = ({
     ],
   };
 
-  const sortingData = (column, newOrder) => {
+  /* const sortingData = (column, newOrder) => {
     const sortedData = data.sort((a, b) => a[column].localeCompare(b[column]));
 
     if (newOrder === 'desc') {
       return sortedData.reverse();
     }
     return sortedData;
-  };
+  }; */
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -142,13 +143,13 @@ const CPIModal = ({
     }
   };
 
-  const handleSortByColumn = (column, order) => {
+  /* const handleSortByColumn = (column, order) => {
     const newOrder = (order === 'asc' && sortBy === column) ? 'desc' : 'asc';
     const newData = sortingData(column, newOrder);
     setData(newData);
     setSortBy(column);
     setSortOrder(newOrder);
-  };
+  }; */
 
   const buttonContainer = {
     display: 'flex',
@@ -230,6 +231,9 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '400',
+    padding: '40px',
+    paddingLeft: '35px',
+    paddingRight: '20px',
     borderTop: '1px solid #505050',
   };
 
@@ -238,6 +242,9 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '700',
+    position: 'relative',
+    top: '11.5px',
+    right: '39px',
   };
 
   const modalTitle = {
@@ -271,27 +278,32 @@ const CPIModal = ({
     {
       dataField: 'associated_id',
       header: 'Participant ID',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
+      sortable: false,
     },
     {
       dataField: 'repository_of_synonym_id',
       header: 'Name',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
+      sortable: false,
     },
     {
       dataField: 'domain_description',
       header: 'Description',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
+      sortable: false,
     },
     {
       dataField: 'domain_category',
       header: 'Category',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
+      sortable: false,
     },
     {
       dataField: 'data_location',
       header: 'Location',
-      tooltipText: 'sort',
+      // tooltipText: 'sort',
+      sortable: false,
     },
   ];
 
@@ -337,9 +349,9 @@ const CPIModal = ({
                   displayColumns.map((column) => (
                     <HeaderCell
                       column={column}
-                      sortBy={sortBy}
-                      sortOrder={sortOrder}
-                      toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
+                      // sortBy={sortBy}
+                      // sortOrder={sortOrder}
+                      // toggleSort={() => handleSortByColumn(column.dataField, sortOrder)}
                       style={{ paddingLeft: '3px', paddingRight: '3px', fontWeight: '700' }}
                     />
                   ))
@@ -393,7 +405,10 @@ const CPIModal = ({
           </Button>
         </div>
         <div className="footer" style={footer}>
-          To learn more about CPI click&nbsp;
+          All CPI mappings for a given study can be found in the "synonyms"
+          tab of the downloadable manifest,
+          available under the "Studies" tab in the Explore Dashboard.
+          For more information about CPI, click&nbsp;
           <a style={link} href="https://participantindex-docs.ccdi.cancer.gov/" target="_blank" rel="noopener noreferrer">here</a>
         </div>
       </Box>
