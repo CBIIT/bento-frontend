@@ -39,7 +39,7 @@ const CPIView = ({
   const classes = useStyles();
 
   const [modalOpen, setModalOpen] = useState(false);
-  const cpiData = row.cpi_data;
+  const cpiData = row.cpi_data ? row.cpi_data : [];
   const internalData = cpiData.filter((e) => (e.data_type === 'internal'));
   const externalData = cpiData.filter((e) => (e.data_type === 'external'));
 
