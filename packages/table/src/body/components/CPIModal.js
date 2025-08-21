@@ -196,7 +196,7 @@ const CPIModal = ({
     position: 'absolute',
     top: '5%',
     left: '25%',
-    width: '840px',
+    width: '880px',
     height: '671px',
     background: '#FFFFFF',
     border: '1px solid #505050',
@@ -231,10 +231,9 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '400',
-    padding: '40px',
-    paddingLeft: '35px',
-    paddingRight: '20px',
+    padding: '35px 25px 40px 30px',
     borderTop: '1px solid #505050',
+    textAlign: 'center', // Add this to center the text
   };
 
   const link = {
@@ -242,9 +241,7 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '700',
-    position: 'relative',
-    top: '11.5px',
-    right: '39px',
+    textDecoration: 'underline',
   };
 
   const modalTitle = {
@@ -405,11 +402,24 @@ const CPIModal = ({
           </Button>
         </div>
         <div className="footer" style={footer}>
-          All CPI mappings for a given study can be found in the "synonyms"
-          tab of the downloadable manifest,
-          available under the "Studies" tab in the Explore Dashboard.
-          For more information about CPI, click&nbsp;
-          <a style={link} href="https://participantindex-docs.ccdi.cancer.gov/" target="_blank" rel="noopener noreferrer">here</a>
+          <span>
+            Public participant ID mappings for
+            a given study can be found in the
+            "synonyms" tab of the downloadable manifest,
+            available under the "Studies" tab
+            in the Explore Dashboard.
+            For more information about CPI, click
+            {' '}
+            <a
+              style={link}
+              href="https://participantindex-docs.ccdi.cancer.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              here
+            </a>
+            .
+          </span>
         </div>
       </Box>
     </Modal>
