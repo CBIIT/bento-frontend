@@ -1,13 +1,14 @@
 /* eslint-disable */
-import React from 'react';
-import {
-  Grid, Button
-} from '@material-ui/core';
-import NavbarLink from './NavbarLink';
-import PDFDownloadIconSvg from './PDFDownloadSvg';
+import React from "react";
+import { Grid, Button } from "@material-ui/core";
+import NavbarLink from "./NavbarLink";
+import PDFDownloadIconSvg from "./PDFDownloadSvg";
 
 const NavBarDropdown = ({
-  clickedTitle, HeaderSubLinks, setClickedTitle, classes,
+  clickedTitle,
+  HeaderSubLinks,
+  setClickedTitle,
+  classes,
 }) => {
   if (!clickedTitle) return null;
 
@@ -21,31 +22,42 @@ const NavBarDropdown = ({
                 <Grid item xs={3} key={dropItem.id} className="gridItem">
                   <ul className="dropdownList">
                     <li className="dropdownListItem">
-                      <div id={dropItem.id} className="dropdownItem dropdownTitle">
+                      {/* ✅ Parent title in its own container */}
+                      <div
+                        id={dropItem.id}
+                        className="dropdownItem dropdownTitle"
+                      >
                         <NavbarLink
                           item={dropItem}
                           onItemClick={() => setClickedTitle("")}
                         />
-                        {dropItem?.items?.length > 0 && (
-                          <ul className="dropdownSubItemList">
-                            {dropItem.items.map((item) => (
-                              <li key={"dropdown-sub-item-" + item?.id}>
-                                <NavbarLink
-                                  item={item}
-                                  icon={dropItem?.isPdfDownload && <PDFDownloadIconSvg />}
-                                  className="dropdownSubItem"
-                                  onItemClick={() => setClickedTitle("")}
-                                />
-                              </li>
-                            ))}
-                          </ul>
-                        )}
                       </div>
+
+                      {/* ✅ Sub-items are siblings, not inside parent container */}
+                      {dropItem?.items?.length > 0 && (
+                        <ul className="dropdownSubItemList">
+                          {dropItem.items.map((item) => (
+                            <li key={"dropdown-sub-item-" + item?.id}>
+                              <NavbarLink
+                                item={item}
+                                icon={
+                                  dropItem?.isPdfDownload && (
+                                    <PDFDownloadIconSvg />
+                                  )
+                                }
+                                className="dropdownSubItem"
+                                onItemClick={() => setClickedTitle("")}
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </li>
                   </ul>
                 </Grid>
               );
             }
+
             if (dropItem.onClick) {
               return (
                 <Grid item xs={3} key={dropItem.id} className="gridItem">
@@ -63,6 +75,7 @@ const NavBarDropdown = ({
                 </Grid>
               );
             }
+
             return null;
           })}
         </Grid>

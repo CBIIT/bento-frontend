@@ -2,9 +2,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { withStyles, Grid, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import { useOutsideClick } from './hooks/useOutsideClick';
-import NavbarLink from './components/NavbarLink';
+import NavBarDropdown from './components/NavbarDropdown'
 import styles from './components/Navbar.styles';
 import Cart from './components/Cart'
 
@@ -114,74 +114,12 @@ const NavBar = ({
       {/* ✅ Only render dropdown if clicked item has sublinks */}
       <div ref={dropdownRef}>
         {clickedTitle && HeaderSubLinks[clickedTitle] && (
-          <div className={classes.dropdown}>
-            <div className="dropdownListWrapper">
-              <Grid container className={classes.nameDropdownContainer}>
-                {HeaderSubLinks[clickedTitle]?.map((dropItem) => {
-                  if (dropItem.link) {
-                    return (
-                      <Grid item xs={3} key={dropItem.id} className="gridItem">
-                        <ul className="dropdownList">
-                          <li className="dropdownListItem">
-                            <NavbarLink
-                              item={dropItem}
-                              onItemClick={() => setClickedTitle('')}
-                            />
-                          </li>
-                        </ul>
-                      </Grid>
-                    );
-                  }
-                  if (dropItem.onClick) {
-                    return (
-                      <Grid item xs={3} key={dropItem.id} className="gridItem">
-                        <ul className="dropdownList">
-                          <li className="dropdownListItem">
-                            <Button
-                              id={dropItem.id}
-                              key={dropItem.id}
-                              className="dropdownItem dropdownItemButton"
-                              onClick={dropItem.onClick}
-                            >
-                              {dropItem.name}
-                            </Button>
-                          </li>
-                        </ul>
-                      </Grid>
-                    );
-                  }
-                  if (dropItem?.items?.length > 0) {
-                    return (
-                      <Grid item xs={3} key={dropItem.id} className="gridItem">
-                        <ul className="dropdownList">
-                          <li className="dropdownListItem">
-                            <div
-                              id={dropItem.id}
-                              className="dropdownItem dropdownTitle"
-                            >
-                              {dropItem.name}
-                              <ul className="dropdownSubItemList">
-                                {dropItem?.items?.map((item) => (
-                                  <li key={'dropdown-sub-item-' + item?.id}>
-                                    <NavbarLink
-                                      item={item}
-                                      className="dropdownSubItem"
-                                      onItemClick={() => setClickedTitle('')}
-                                    />
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </li>
-                        </ul>
-                      </Grid>
-                    );
-                  }
-                  return null;
-                })}
-              </Grid>
-            </div>
-          </div>
+          <NavBarDropdown
+            clickedTitle={clickedTitle}
+            HeaderSubLinks={HeaderSubLinks}
+            setClickedTitle={setClickedTitle}
+            classes={classes}
+          />
         )}
       </div>
     </div>
