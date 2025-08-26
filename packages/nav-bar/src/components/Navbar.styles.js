@@ -3,7 +3,7 @@ const styles = {
   nav: {
     top: 0,
     left: 0,
-    height: "60px",
+    height: "61px",
     width: "100%",
     background: "#ffffff",
     boxShadow: "0px 4px 8px -4px rgba(0, 0, 0, 0.5)",
@@ -19,7 +19,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "end",
-    top: "8px",
+    top: "10px",
   },
 
   ulContainer: {
@@ -168,7 +168,7 @@ const styles = {
   },
 
   nameDropdownContainer: {
-    margin: "0 auto",
+    margin: "0 18px",
     textAlign: "left",
     position: "relative",
     maxWidth: "1400px",
