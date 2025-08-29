@@ -206,7 +206,7 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
 
       return (
         <ResponsiveContainer width={width} height={height}>
-          {data.length === 0 ? (
+          {data?.length === 0 ? (
             <PieChart>
               <Pie
                 data={[{ name: 'Empty', value: 1 }]}
