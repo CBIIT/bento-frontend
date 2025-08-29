@@ -104,7 +104,7 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
     - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea     # v7.0.1
-      if: inputs.deploy_to_dev == 'true'
+      if: ${{ inputs.deploy_to_dev }}
       with:
         github-token: ${{ secrets.REPO_PAT }}
         script: |
