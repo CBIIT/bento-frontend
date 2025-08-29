@@ -206,30 +206,71 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
 
       return (
         <ResponsiveContainer width={width} height={height}>
-          <PieChart>
-            <Pie
-              data={dataset}
-              activeIndex={activeIndex}
-              blendStroke={blendStroke || true}
-              cx={cx || '50%'}
-              cy={cy || '50%'}
-              innerRadius={innerRadius}
-              outerRadius={outerRadius}
-              dataKey="value"
-              paddingAngle={cellPadding}
-              activeShape={(currentProps) => (mergeProps(currentProps, defaultProps, activeShape))}
-              onMouseEnter={(d, idx) => setActiveIndex(idx)}
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={data.length % 2 === 0
-                    ? COLORS_EVEN[index % COLORS_EVEN.length]
-                    : COLORS_ODD[index % COLORS_ODD.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
+          {data.length === 0 ? (
+            <PieChart>
+              <Pie
+                data={[{ name: 'Empty', value: 1 }]}
+                cx={cx || '50%'}
+                cy={cy || '50%'}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius}
+                dataKey="value"
+                startAngle={0}
+                endAngle={360}
+                activeShape={null}
+                onMouseEnter={() => {}}
+              >
+                <Cell fill="#E2E2E2" />
+              </Pie>
+              <text
+                x="50%"
+                y="50%"
+                textAnchor="middle"
+                fontSize="12px"
+                fontWeight="400"
+                fontFamily="Nunito"
+              >
+                <tspan x="50%" dy="-18">
+                  No data
+                </tspan>
+                <tspan x="50%" dy="18">
+                  returned for
+                </tspan>
+                <tspan x="50%" dy="18">
+                  this search
+                </tspan>
+              </text>
+            </PieChart>
+          ) : (
+            <PieChart>
+              <Pie
+                data={dataset}
+                activeIndex={activeIndex}
+                blendStroke={blendStroke || true}
+                cx={cx || '50%'}
+                cy={cy || '50%'}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius}
+                dataKey="value"
+                paddingAngle={cellPadding}
+                activeShape={
+                  (currentProps) => mergeProps(currentProps, defaultProps, activeShape)
+                }
+                onMouseEnter={(d, idx) => setActiveIndex(idx)}
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={
+                      data.length % 2 === 0
+                        ? COLORS_EVEN[index % COLORS_EVEN.length]
+                        : COLORS_ODD[index % COLORS_ODD.length]
+                    }
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          )}
         </ResponsiveContainer>
       );
     },
