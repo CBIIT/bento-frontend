@@ -108,7 +108,7 @@ jobs:
       with:
         github-token: ${{ secrets.REPO_PAT }}
         script: |
-          await github.rest.actions.createworkflowDispatch({
+          await github.rest.actions.createWorkflowDispatch({
               owner: 'CBIIT',
               repo: 'fnl-bento-deployments',
               workflow_id: 'manual-deploy.yml',
