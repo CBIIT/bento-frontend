@@ -114,7 +114,7 @@ jobs:
               workflow_id: 'manual-deploy.yml',
               ref: 'main',
               inputs: {
-                frontend_image: ${{ env.IMAGE_TAG }},
+                frontend_image: '${{ env.IMAGE_TAG }}',
                 cdk_command: 'diff'
               }
           })
