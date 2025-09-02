@@ -10,7 +10,7 @@ const styles = () => ({
     flexGrow: 3,
   },
   searchComp: {
-    marginRight: '45px',
+    marginRight: '156px',
   },
   headerBar: (props) => {
     const defaultProps = {

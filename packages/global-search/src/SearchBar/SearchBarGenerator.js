@@ -112,6 +112,8 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
         setResults(resultOpts);
       }
 
+      const InputComponent = config?.inputComponent;
+
       return (
         <Autocomplete
           id="global_search_input"
@@ -136,15 +138,26 @@ export const SearchBarGenerator = (uiConfig = DEFAULT_CONFIG_SEARCHBAR) => {
           onChange={(event, val) => onChange(val, searchRoute, history, event)}
           PopperComponent={(params) => (<CustomPopper {...params} classes={classes} />)}
           renderInput={(params) => (
-            <CustomTextField
-              {...params}
-              loading={showLoading ? loading : false}
-              classes={classes}
-              iconType={config.iconType}
-              placeholder={typeof config.placeholder === 'string' ? config.placeholder : DEFAULT_CONFIG_SEARCHBAR.config.placeholder}
-              onClick={(val) => onChange(val, searchRoute, history)}
-              onEnter={(val) => onChange(val, searchRoute, history)}
-            />
+            InputComponent ? (
+              <InputComponent
+                {...params}
+                loading={showLoading ? loading : false}
+                placeholder={typeof config.placeholder === 'string' ? config.placeholder : DEFAULT_CONFIG_SEARCHBAR.config.placeholder}
+                onClick={(val) => onChange(val, searchRoute, history)}
+                onEnter={(val) => onChange(val, searchRoute, history)}
+              />
+            )
+              : (
+                <CustomTextField
+                  {...params}
+                  loading={showLoading ? loading : false}
+                  classes={classes}
+                  iconType={config.iconType}
+                  placeholder={typeof config.placeholder === 'string' ? config.placeholder : DEFAULT_CONFIG_SEARCHBAR.config.placeholder}
+                  onClick={(val) => onChange(val, searchRoute, history)}
+                  onEnter={(val) => onChange(val, searchRoute, history)}
+                />
+              )
           )}
         />
       );
