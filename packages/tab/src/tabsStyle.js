@@ -39,6 +39,26 @@ const tabsStyle = {
     fontSize: '21px',
   },
   tabsPanel: {},
+  moreButton: {
+    root: {
+      minWidth: '70px',
+      height: '45px',
+      marginRight: '10px',
+      fontSize: '14px',
+      textTransform: 'none',
+      color: '#6E6E6E',
+      borderColor: '#8B8B8B',
+      fontFamily: 'Raleway',
+      background: '#EAEAEA',
+      border: '1px solid #8B8B8B',
+      borderTop: '1px solid black',
+      borderLeft: '1px solid black',
+      borderRight: '1px solid black',
+      '&:hover': {
+        background: '#D5D5D5',
+      },
+    },
+  },
 };
 
 export default tabsStyle;
