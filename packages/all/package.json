@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/all",
-  "version": "1.1.0",
+  "version": "1.1.0-popsci.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "@bento-core/table": "^1.0.0",
     "@bento-core/tool-tip": "^1.0.0",
     "@bento-core/util": "^1.0.0",
-    "@bento-core/widgets": "^1.0.0"
+    "@bento-core/widgets": "^1.0.1-popsci.0"
   },
   "author": "CTOS Bento Team",
   "license": "ISC"
