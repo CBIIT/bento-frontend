@@ -85,17 +85,23 @@ const TabItems = ({
       return [];
     }
 
-    const allTabs = [...tabItems];
     const visibleStart = currentGroup * tabLimit;
-    const visibleEnd = Math.min(visibleStart + tabLimit, allTabs.length);
+    const visibleEnd = Math.min(visibleStart + tabLimit, tabItems.length);
 
-    // Remove currently visible tabs
-    const hiddenTabs = [
-      ...allTabs.slice(visibleEnd),
-      ...allTabs.slice(0, visibleStart),
-    ];
+    // Create hidden tabs with their original indices to avoid O(n²) findIndex
+    const hiddenTabsWithIndex = [];
 
-    return hiddenTabs;
+    // Add tabs after visible range
+    for (let i = visibleEnd; i < tabItems.length; i += 1) {
+      hiddenTabsWithIndex.push({ tab: tabItems[i], originalIndex: i });
+    }
+
+    // Add tabs before visible range (wrap-around)
+    for (let i = 0; i < visibleStart; i += 1) {
+      hiddenTabsWithIndex.push({ tab: tabItems[i], originalIndex: i });
+    }
+
+    return hiddenTabsWithIndex;
   };
 
   const handleMoreButtonClick = (event) => {
@@ -224,24 +230,21 @@ const TabItems = ({
             style={{ marginTop: '10px' }}
           >
             <List className="popover-list">
-              {popupTabs.map((tab) => {
-                const originalIndex = tabItems.findIndex((item) => item === tab);
-                return (
-                  <ListItem
-                    key={originalIndex}
-                    button
-                    onClick={() => handlePopupTabClick(originalIndex)}
-                    className="popover-list-item"
-                  >
-                    <span className="popover-tab-name">
-                      {tab.name}
-                    </span>
-                    <span className="popover-tab-count">
-                      {tab.count || ''}
-                    </span>
-                  </ListItem>
-                );
-              })}
+              {popupTabs.map(({ tab, originalIndex }) => (
+                <ListItem
+                  key={originalIndex}
+                  button
+                  onClick={() => handlePopupTabClick(originalIndex)}
+                  className="popover-list-item"
+                >
+                  <span className="popover-tab-name">
+                    {tab.name}
+                  </span>
+                  <span className="popover-tab-count">
+                    {tab.count || ''}
+                  </span>
+                </ListItem>
+              ))}
             </List>
           </Popover>
         )}
