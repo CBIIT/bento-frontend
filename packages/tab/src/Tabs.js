@@ -180,12 +180,13 @@ const TabItems = ({
             onClose={handlePopupClose}
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'left',
+              horizontal: 'center',
             }}
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'left',
+              horizontal: 'center',
             }}
+            style={{ marginTop: '10px' }}
           >
             <List className="popover-list">
               {popupTabs.map((tab) => {
