@@ -23,10 +23,21 @@ const TabItems = ({
   enableGrouping = false,
   responsiveBreakpoints = null,
 }) => {
+  // Get default window width from breakpoint config (ensures max tabs for SSR)
+  const getDefaultWindowWidth = () => {
+    if (!responsiveBreakpoints || !responsiveBreakpoints.breakpoints.length) {
+      return 1800; // Fallback if no config provided
+    }
+    // Use width above the highest breakpoint to ensure default tab limit
+    const { breakpoints } = responsiveBreakpoints;
+    const highestBreakpoint = breakpoints[breakpoints.length - 1];
+    return highestBreakpoint.maxWidth + 100;
+  };
+
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showMorePopup, setShowMorePopup] = useState(false);
   const [moreButtonAnchor, setMoreButtonAnchor] = useState(null);
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1465);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : getDefaultWindowWidth());
 
   // Calculate tab limit based on screen width breakpoints
   const getTabLimitByWidth = (width) => {
@@ -41,9 +52,9 @@ const TabItems = ({
 
     // Use configuration-based breakpoints
     for (let i = 0; i < responsiveBreakpoints.breakpoints.length; i += 1) {
-      const breakpoint = responsiveBreakpoints.breakpoints[i];
-      if (width <= breakpoint.maxWidth) {
-        return breakpoint.tabLimit;
+      const { maxWidth, tabLimit } = responsiveBreakpoints.breakpoints[i];
+      if (width <= maxWidth) {
+        return tabLimit;
       }
     }
     return responsiveBreakpoints.defaultTabLimit;
