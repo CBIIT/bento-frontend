@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import ToolTip from '@bento-core/tool-tip';
 import { defaultTheme } from './defaultTheme';
+import MoreVerticalIcon from './assets/icons/more-vertical.svg';
 
 const TabItems = ({
   tabItems,
@@ -138,13 +139,17 @@ const TabItems = ({
 
   // Add More button if needed
   if (shouldShowMoreButton) {
+    const hiddenTabsCount = popupTabs.length;
     TABs.push(
       <Button
         key="more-button"
         onClick={handleMoreButtonClick}
         className="more-button"
       >
-        More
+        <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img src={MoreVerticalIcon} alt="More options" style={{ height: '15px' }} />
+          {`More(${hiddenTabsCount})`}
+        </span>
       </Button>,
     );
   }
