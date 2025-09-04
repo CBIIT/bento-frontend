@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Tab,
   Tabs,
@@ -13,6 +13,21 @@ import ToolTip from '@bento-core/tool-tip';
 import { defaultTheme } from './defaultTheme';
 import MoreVerticalIcon from './assets/icons/more-vertical.svg';
 
+// Calculate default window width for SSR (ensures max tabs)
+const getDefaultWindowWidth = (responsiveBreakpoints) => {
+  if (
+    !responsiveBreakpoints
+    || !Array.isArray(responsiveBreakpoints.breakpoints)
+    || responsiveBreakpoints.breakpoints.length === 0
+  ) {
+    return 1800; // Fallback if no config provided
+  }
+  // Use width above the highest breakpoint to ensure default tab limit
+  const { breakpoints } = responsiveBreakpoints;
+  const highestBreakpoint = breakpoints[breakpoints.length - 1];
+  return highestBreakpoint.maxWidth + 100;
+};
+
 const TabItems = ({
   tabItems,
   handleTabChange,
@@ -23,25 +38,10 @@ const TabItems = ({
   enableGrouping = false,
   responsiveBreakpoints = null,
 }) => {
-  // Get default window width from breakpoint config (ensures max tabs for SSR)
-  const getDefaultWindowWidth = () => {
-    if (
-      !responsiveBreakpoints
-      || !Array.isArray(responsiveBreakpoints.breakpoints)
-      || responsiveBreakpoints.breakpoints.length === 0
-    ) {
-      return 1800; // Fallback if no config provided
-    }
-    // Use width above the highest breakpoint to ensure default tab limit
-    const { breakpoints } = responsiveBreakpoints;
-    const highestBreakpoint = breakpoints[breakpoints.length - 1];
-    return highestBreakpoint.maxWidth + 100;
-  };
-
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showMorePopup, setShowMorePopup] = useState(false);
   const [moreButtonAnchor, setMoreButtonAnchor] = useState(null);
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : getDefaultWindowWidth());
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : getDefaultWindowWidth(responsiveBreakpoints));
 
   // Calculate tab limit based on screen width breakpoints
   const getTabLimitByWidth = (width) => {
@@ -107,8 +107,8 @@ const TabItems = ({
     return tabItems.slice(startIndex, endIndex);
   };
 
-  // Get popup tabs with wrap-around logic
-  const getPopupTabs = () => {
+  // Get popup tabs with wrap-around logic (memoized for performance)
+  const popupTabs = useMemo(() => {
     if (!enableGrouping || !shouldShowMoreButton) {
       return [];
     }
@@ -130,7 +130,7 @@ const TabItems = ({
     }
 
     return hiddenTabsWithIndex;
-  };
+  }, [enableGrouping, shouldShowMoreButton, currentGroup, tabLimit, tabItems]);
 
   const handleMoreButtonClick = (event) => {
     setMoreButtonAnchor(event.currentTarget);
@@ -170,7 +170,6 @@ const TabItems = ({
   );
 
   const visibleTabs = getVisibleTabs();
-  const popupTabs = getPopupTabs();
 
   const TABs = visibleTabs.map((tab, visibleIndex) => {
     // Calculate the actual tab index in the full tabItems array
