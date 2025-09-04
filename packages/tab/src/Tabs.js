@@ -25,7 +25,11 @@ const TabItems = ({
 }) => {
   // Get default window width from breakpoint config (ensures max tabs for SSR)
   const getDefaultWindowWidth = () => {
-    if (!responsiveBreakpoints || !responsiveBreakpoints.breakpoints.length) {
+    if (
+      !responsiveBreakpoints
+      || !Array.isArray(responsiveBreakpoints.breakpoints)
+      || responsiveBreakpoints.breakpoints.length === 0
+    ) {
       return 1800; // Fallback if no config provided
     }
     // Use width above the highest breakpoint to ensure default tab limit
