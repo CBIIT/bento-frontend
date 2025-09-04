@@ -21,6 +21,7 @@ const TabItems = ({
   customTheme = {},
   maxVisibleTabs = 6,
   enableGrouping = false,
+  responsiveBreakpoints = null,
 }) => {
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showMorePopup, setShowMorePopup] = useState(false);
@@ -29,11 +30,23 @@ const TabItems = ({
 
   // Calculate tab limit based on screen width breakpoints
   const getTabLimitByWidth = (width) => {
-    if (width < 1250) return 2;
-    if (width < 1400) return 3;
-    if (width < 1550) return 4;
-    if (width < 1700) return 5;
-    return 6; // >= 1700px
+    if (!responsiveBreakpoints) {
+      // Fallback to original hardcoded values if no config provided
+      if (width < 1250) return 2;
+      if (width < 1400) return 3;
+      if (width < 1550) return 4;
+      if (width < 1700) return 5;
+      return 6; // >= 1700px
+    }
+
+    // Use configuration-based breakpoints
+    for (let i = 0; i < responsiveBreakpoints.breakpoints.length; i += 1) {
+      const breakpoint = responsiveBreakpoints.breakpoints[i];
+      if (width <= breakpoint.maxWidth) {
+        return breakpoint.tabLimit;
+      }
+    }
+    return responsiveBreakpoints.defaultTabLimit;
   };
 
   // Grouping logic with responsive breakpoints
