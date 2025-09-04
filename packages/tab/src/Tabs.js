@@ -121,7 +121,7 @@ const TabItems = ({
     handlePopupClose();
   };
 
-  const getTabLalbel = ({
+  const getTabLabel = ({
     name, count, clsName, index,
   }) => (
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -155,7 +155,7 @@ const TabItems = ({
         <ToolTip {...tab.tooltipStyles} title={tab.toolTipText || '.'} arrow placement="top" key={actualIndex}>
           <Tab
             index={actualIndex}
-            label={getTabLalbel({ ...tab, index: actualIndex })}
+            label={getTabLabel({ ...tab, index: actualIndex })}
             className={tab.clsName}
             disableRipple
           />
@@ -164,7 +164,7 @@ const TabItems = ({
       : (
         <Tab
           index={actualIndex}
-          label={getTabLalbel({ ...tab, index: actualIndex })}
+          label={getTabLabel({ ...tab, index: actualIndex })}
           key={actualIndex}
           className={tab.clsName}
           disableRipple
