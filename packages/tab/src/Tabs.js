@@ -203,7 +203,13 @@ const TabItems = ({
     <ThemeProvider theme={themeConfig}>
       <div style={{ position: 'relative' }}>
         <Tabs
-          onChange={(event, value) => handleTabChange(event, value)}
+          onChange={(event, value) => {
+            // Convert relative position to actual tab index when grouping is enabled
+            const actualTabIndex = enableGrouping
+              ? (currentGroup * tabLimit) + value
+              : value;
+            handleTabChange(event, actualTabIndex);
+          }}
           value={adjustedCurrentTab}
           TabIndicatorProps={{ style: { background: 'none' } }}
           orientation={orientation}
