@@ -208,8 +208,8 @@ const TabItems = ({
         onClick={handleMoreButtonClick}
         className="more-button"
       >
-        <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src={MoreVerticalIcon} alt="More options" style={{ height: '15px' }} />
+        <span>
+          <img src={MoreVerticalIcon} alt="More options" />
           {`More(${hiddenTabsCount})`}
         </span>
       </Button>,
