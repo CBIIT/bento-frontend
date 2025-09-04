@@ -40,9 +40,6 @@ const TabItems = ({
   const tabLimit = enableGrouping ? getTabLimitByWidth(windowWidth) : maxVisibleTabs;
   const shouldShowMoreButton = enableGrouping && tabItems.length > tabLimit;
 
-  // Calculate which group the current active tab belongs to
-  const activeTabGroup = Math.floor(currentTab / tabLimit);
-
   // Window resize listener for responsive breakpoints
   useEffect(() => {
     if (!enableGrouping || typeof window === 'undefined') {
@@ -60,7 +57,7 @@ const TabItems = ({
     };
   }, [enableGrouping]);
 
-  // Handle tab limit changes and group recalculation
+  // Consolidated effect: handle tab limit changes and active tab group recalculation
   useEffect(() => {
     if (!enableGrouping) {
       return;
@@ -71,13 +68,6 @@ const TabItems = ({
       setCurrentGroup(newActiveTabGroup);
     }
   }, [tabLimit, currentTab, currentGroup, enableGrouping]);
-
-  // Update current group when active tab changes to different group
-  React.useEffect(() => {
-    if (enableGrouping && activeTabGroup !== currentGroup) {
-      setCurrentGroup(activeTabGroup);
-    }
-  }, [currentTab, activeTabGroup, currentGroup, enableGrouping]);
 
   // Get visible tabs for current group
   const getVisibleTabs = () => {
