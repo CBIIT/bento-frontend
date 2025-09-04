@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Tab,
   Tabs,
@@ -25,13 +25,52 @@ const TabItems = ({
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showMorePopup, setShowMorePopup] = useState(false);
   const [moreButtonAnchor, setMoreButtonAnchor] = useState(null);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1465);
 
-  // Grouping logic
-  const tabLimit = enableGrouping ? 2 : maxVisibleTabs; // Phase 1: hardcode to 3
+  // Calculate tab limit based on screen width breakpoints
+  const getTabLimitByWidth = (width) => {
+    if (width < 1250) return 2;
+    if (width < 1400) return 3;
+    if (width < 1550) return 4;
+    if (width < 1700) return 5;
+    return 6; // >= 1700px
+  };
+
+  // Grouping logic with responsive breakpoints
+  const tabLimit = enableGrouping ? getTabLimitByWidth(windowWidth) : maxVisibleTabs;
   const shouldShowMoreButton = enableGrouping && tabItems.length > tabLimit;
 
   // Calculate which group the current active tab belongs to
   const activeTabGroup = Math.floor(currentTab / tabLimit);
+
+  // Window resize listener for responsive breakpoints
+  useEffect(() => {
+    if (!enableGrouping || typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const handleResize = () => {
+      const newWidth = window.innerWidth;
+      setWindowWidth(newWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [enableGrouping]);
+
+  // Handle tab limit changes and group recalculation
+  useEffect(() => {
+    if (!enableGrouping) {
+      return;
+    }
+
+    const newActiveTabGroup = Math.floor(currentTab / tabLimit);
+    if (newActiveTabGroup !== currentGroup) {
+      setCurrentGroup(newActiveTabGroup);
+    }
+  }, [tabLimit, currentTab, currentGroup, enableGrouping]);
 
   // Update current group when active tab changes to different group
   React.useEffect(() => {
