@@ -23,7 +23,7 @@ const FacetView = ({
   const onExpandFacet = () => setExpand(!expand);
 
   /**
-   * expand section incase of active local search
+   * Expand section incase of active local search
    */
   useEffect(() => {
     if (
