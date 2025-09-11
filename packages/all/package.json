@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/all",
-  "version": "1.1.0-popsci.1",
+  "version": "1.1.0-popsci.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,13 +13,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/about": "^1.0.1-popsci.0",
+    "@bento-core/about": "^1.0.1-popsci.1",
     "@bento-core/admin": "^1.0.0",
     "@bento-core/authentication": "^1.0.0",
     "@bento-core/cart": "^1.0.0",
     "@bento-core/data-access-request": "^1.0.0",
     "@bento-core/data-table": "^1.0.0",
-    "@bento-core/facet-filter": "^1.0.1-popsci.0",
+    "@bento-core/facet-filter": "^1.0.1-popsci.2",
     "@bento-core/footer": "^1.0.0",
     "@bento-core/global-search": "^1.0.0",
     "@bento-core/header": "^1.0.0",
@@ -27,7 +27,7 @@
     "@bento-core/nav-bar": "^1.0.0",
     "@bento-core/paginated-table": "^1.0.0",
     "@bento-core/profile": "^1.0.0",
-    "@bento-core/query-bar": "^1.1.0-popsci.0",
+    "@bento-core/query-bar": "^1.1.0-popsci.1",
     "@bento-core/session-timeout": "^1.0.0",
     "@bento-core/stats-bar": "^1.0.0",
     "@bento-core/tab": "^1.0.0",
