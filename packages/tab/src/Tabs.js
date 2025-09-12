@@ -121,12 +121,18 @@ const TabItems = ({
 
     // Add tabs after visible range
     for (let i = visibleEnd; i < tabItems.length; i += 1) {
-      hiddenTabsWithIndex.push({ tab: tabItems[i], originalIndex: i });
+      const tab = tabItems[i];
+      if (tab) {
+        hiddenTabsWithIndex.push({ tab, originalIndex: i });
+      }
     }
 
     // Add tabs before visible range (wrap-around)
     for (let i = 0; i < visibleStart; i += 1) {
-      hiddenTabsWithIndex.push({ tab: tabItems[i], originalIndex: i });
+      const tab = tabItems[i];
+      if (tab) {
+        hiddenTabsWithIndex.push({ tab, originalIndex: i });
+      }
     }
 
     return hiddenTabsWithIndex;
@@ -257,21 +263,26 @@ const TabItems = ({
             style={{ marginTop: '10px' }}
           >
             <List className="popover-list">
-              {popupTabs.map(({ tab, originalIndex }) => (
-                <ListItem
-                  key={originalIndex}
-                  button
-                  onClick={() => handlePopupTabClick(originalIndex)}
-                  className="popover-list-item"
-                >
-                  <span className="popover-tab-name">
-                    {tab.name}
-                  </span>
-                  <span className="popover-tab-count">
-                    {tab.count || ''}
-                  </span>
-                </ListItem>
-              ))}
+              {popupTabs.map(({ tab, originalIndex }) => {
+                if (!tab || !tab.name) {
+                  return null;
+                }
+                return (
+                  <ListItem
+                    key={originalIndex}
+                    button
+                    onClick={() => handlePopupTabClick(originalIndex)}
+                    className="popover-list-item"
+                  >
+                    <span className="popover-tab-name">
+                      {tab.name}
+                    </span>
+                    <span className="popover-tab-count">
+                      {tab.count || ''}
+                    </span>
+                  </ListItem>
+                );
+              })}
             </List>
           </Popover>
         )}
