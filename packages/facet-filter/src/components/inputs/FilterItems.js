@@ -50,26 +50,32 @@ const FilterItems = ({
 
         // Always show checked items first
         const checkedItems = sortFilters.filter((item) => item.isChecked)
-          .map((item, index) => (
-            <ReduxCheckbox
-              key={`checked-${item.name}-${index}`}
-              checkboxItem={{ ...item, index, section }}
-              datafield={datafield}
-              facet={facet}
-            />
-          ));
+          .map((item) => {
+            const originalIndex = sortFilters.indexOf(item);
+            return (
+              <ReduxCheckbox
+                key={`checked-${item.name}-${originalIndex}`}
+                checkboxItem={{ ...item, index: originalIndex, section }}
+                datafield={datafield}
+                facet={facet}
+              />
+            );
+          });
 
         // Lazy load unchecked items
         const uncheckedItems = allUncheckedItems
           .slice(0, displayCount)
-          .map((item, index) => (
-            <ReduxCheckbox
-              key={`unchecked-${item.name}-${index}`}
-              checkboxItem={{ ...item, index, section }}
-              datafield={datafield}
-              facet={facet}
-            />
-          ));
+          .map((item) => {
+            const originalIndex = sortFilters.indexOf(item);
+            return (
+              <ReduxCheckbox
+                key={`unchecked-${item.name}-${originalIndex}`}
+                checkboxItem={{ ...item, index: originalIndex, section }}
+                datafield={datafield}
+                facet={facet}
+              />
+            );
+          });
 
         return (
           <>
