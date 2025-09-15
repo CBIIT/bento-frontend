@@ -11,14 +11,15 @@ import { InputTypes } from './Types';
 import { sortBySection } from '../../utils/Sort';
 import styles from './FilterItemStyle';
 
+const INITIAL_ITEM_SIZE = 20;
+
 const FilterItems = ({
   facet,
   sortBy = null,
   classes,
 }) => {
   const { type, datafield, section } = facet;
-  const initialItemSize = 20;
-  const [displayCount, setDisplayCount] = useState(initialItemSize);
+  const [displayCount, setDisplayCount] = useState(INITIAL_ITEM_SIZE);
   const scrollableRef = useRef(null);
   const sortFilters = sortBySection({ ...facet, sortBy });
 
@@ -27,7 +28,7 @@ const FilterItems = ({
       case InputTypes.CHECKBOX: {
         // Only use lazy loading if we have more items than the initial size
         const uncheckedCount = sortFilters.filter((item) => !item.isChecked).length;
-        if (uncheckedCount <= initialItemSize) {
+        if (uncheckedCount <= INITIAL_ITEM_SIZE) {
           // Render all items normally if below threshold
           return sortFilters.map((item, index) => (
             <ReduxCheckbox
@@ -74,12 +75,12 @@ const FilterItems = ({
 
         const handleScrollLocal = (e) => {
           const totalUnchecked = uncheckedItemsWithIndices.length;
-          if (displayCount < totalUnchecked && totalUnchecked > initialItemSize) {
+          if (displayCount < totalUnchecked && totalUnchecked > INITIAL_ITEM_SIZE) {
             const { scrollTop, scrollHeight, clientHeight } = e.target;
             if (scrollHeight > clientHeight) {
               const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
               if (position >= 90) {
-                setDisplayCount((prevCount) => prevCount + initialItemSize);
+                setDisplayCount((prevCount) => prevCount + INITIAL_ITEM_SIZE);
               }
             }
           }
@@ -108,7 +109,7 @@ const FilterItems = ({
   };
 
   useEffect(() => {
-    setDisplayCount(initialItemSize);
+    setDisplayCount(INITIAL_ITEM_SIZE);
     if (scrollableRef.current) {
       scrollableRef.current.scrollTo(0, 0);
     }
