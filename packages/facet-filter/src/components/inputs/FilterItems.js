@@ -58,7 +58,7 @@ const FilterItems = ({
         // Always show checked items first
         const checkedItems = sortFilters.filter((item) => item.isChecked)
           .map((item) => {
-            const originalIndex = sortFilters.indexOf(item);
+            const originalIndex = sortFilters.findIndex((f) => f === item);
             return (
               <ReduxCheckbox
                 key={`checked-${item.name}-${originalIndex}`}
@@ -73,7 +73,7 @@ const FilterItems = ({
         const uncheckedItems = allUncheckedItems
           .slice(0, displayCount)
           .map((item) => {
-            const originalIndex = sortFilters.indexOf(item);
+            const originalIndex = sortFilters.findIndex((f) => f === item);
             return (
               <ReduxCheckbox
                 key={`unchecked-${item.name}-${originalIndex}`}
