@@ -1,6 +1,9 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React,
+{
+  useEffect, useState, useRef, useMemo,
+} from 'react';
 import { withStyles } from '@material-ui/core';
 import ReduxCheckbox from './checkbox/ReduxCheckbox';
 import ReduxSlider from './slider/ReduxSlider';
@@ -21,13 +24,10 @@ const FilterItems = ({
 
   const allUncheckedItems = useMemo(
     () => sortFilters.filter((item) => !item.isChecked),
-    [sortFilters]
+    [sortFilters],
   );
 
-  const uncheckedItemsCount = useMemo(() =>
-    allUncheckedItems.length,
-    [allUncheckedItems]
-  );
+  const uncheckedItemsCount = useMemo(() => allUncheckedItems.length, [allUncheckedItems]);
 
   const handleScroll = (e) => {
     if (displayCount < uncheckedItemsCount && uncheckedItemsCount > initialItemSize) {
