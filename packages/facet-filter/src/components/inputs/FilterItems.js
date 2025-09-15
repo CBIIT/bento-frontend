@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-indent */
 import React,
 {
-  useEffect, useState, useRef, useMemo,
+  useEffect, useState, useRef,
 } from 'react';
 import { withStyles } from '@material-ui/core';
 import ReduxCheckbox from './checkbox/ReduxCheckbox';
@@ -22,28 +22,12 @@ const FilterItems = ({
   const scrollableRef = useRef(null);
   const sortFilters = sortBySection({ ...facet, sortBy });
 
-  const allUncheckedItems = useMemo(
-    () => sortFilters.filter((item) => !item.isChecked),
-    [sortFilters],
-  );
-
-  const uncheckedItemsCount = useMemo(() => allUncheckedItems.length, [allUncheckedItems]);
-
-  const handleScroll = (e) => {
-    if (displayCount < uncheckedItemsCount && uncheckedItemsCount > initialItemSize) {
-      const { scrollTop, scrollHeight, clientHeight } = e.target;
-      const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
-      if (position >= 90) {
-        setDisplayCount(displayCount + initialItemSize);
-      }
-    }
-  };
-
   const filterItems = () => {
     switch (type) {
       case InputTypes.CHECKBOX: {
         // Only use lazy loading if we have more items than the initial size
-        if (allUncheckedItems.length <= initialItemSize) {
+        const uncheckedCount = sortFilters.filter((item) => !item.isChecked).length;
+        if (uncheckedCount <= initialItemSize) {
           // Render all items normally if below threshold
           return sortFilters.map((item, index) => (
             <ReduxCheckbox
@@ -55,41 +39,58 @@ const FilterItems = ({
           ));
         }
 
+        // Create items with original indices - O(n) complexity
+        const itemsWithIndices = sortFilters.map((item, originalIndex) => ({
+          ...item,
+          originalIndex,
+        }));
+
         // Always show checked items first
-        const checkedItems = sortFilters.filter((item) => item.isChecked)
-          .map((item) => {
-            const originalIndex = sortFilters.findIndex((f) => f === item);
-            return (
-              <ReduxCheckbox
-                key={`checked-${item.name}-${originalIndex}`}
-                checkboxItem={{ ...item, index: originalIndex, section }}
-                datafield={datafield}
-                facet={facet}
-              />
-            );
-          });
+        const checkedItems = itemsWithIndices
+          .filter((item) => item.isChecked)
+          .map((item) => (
+            <ReduxCheckbox
+              key={`checked-${item.name}-${item.originalIndex}`}
+              checkboxItem={{ ...item, index: item.originalIndex, section }}
+              datafield={datafield}
+              facet={facet}
+            />
+          ));
 
         // Lazy load unchecked items
-        const uncheckedItems = allUncheckedItems
+        const uncheckedItemsWithIndices = itemsWithIndices.filter((item) => !item.isChecked);
+        const uncheckedItems = uncheckedItemsWithIndices
           .slice(0, displayCount)
-          .map((item) => {
-            const originalIndex = sortFilters.findIndex((f) => f === item);
-            return (
-              <ReduxCheckbox
-                key={`unchecked-${item.name}-${originalIndex}`}
-                checkboxItem={{ ...item, index: originalIndex, section }}
-                datafield={datafield}
-                facet={facet}
-              />
-            );
-          });
+          .map((item) => (
+            <ReduxCheckbox
+              key={`unchecked-${item.name}-${item.originalIndex}`}
+              checkboxItem={{ ...item, index: item.originalIndex, section }}
+              datafield={datafield}
+              facet={facet}
+            />
+          ));
+
+        const handleScrollLocal = (e) => {
+          const totalUnchecked = uncheckedItemsWithIndices.length;
+          if (displayCount < totalUnchecked && totalUnchecked > initialItemSize) {
+            const { scrollTop, scrollHeight, clientHeight } = e.target;
+            const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
+            if (position >= 90) {
+              setDisplayCount(displayCount + initialItemSize);
+            }
+          }
+        };
 
         return (
           <>
             <div>
               {checkedItems}
             </div>
-            <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll}>
+            <div
+              ref={scrollableRef}
+              className={classes.itemsContainer}
+              onScroll={handleScrollLocal}
+            >
               {uncheckedItems}
             </div>
           </>
