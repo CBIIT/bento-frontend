@@ -39,26 +39,28 @@ const FilterItems = ({
           ));
         }
 
-        // Create items with original indices - O(n) complexity
-        const itemsWithIndices = sortFilters.map((item, originalIndex) => ({
-          ...item,
-          originalIndex,
-        }));
+        // Single pass: create checked and unchecked items with original indices - O(n) complexity
+        const checkedItemsWithIndices = [];
+        const uncheckedItemsWithIndices = [];
+
+        sortFilters.forEach((item, originalIndex) => {
+          const itemWithIndex = { ...item, originalIndex };
+          if (item.isChecked) {
+            checkedItemsWithIndices.push(itemWithIndex);
+          } else {
+            uncheckedItemsWithIndices.push(itemWithIndex);
+          }
+        });
 
         // Always show checked items first
-        const checkedItems = itemsWithIndices
-          .filter((item) => item.isChecked)
-          .map((item) => (
-            <ReduxCheckbox
-              key={`checked-${item.name}-${item.originalIndex}`}
-              checkboxItem={{ ...item, index: item.originalIndex, section }}
-              datafield={datafield}
-              facet={facet}
-            />
-          ));
-
-        // Lazy load unchecked items
-        const uncheckedItemsWithIndices = itemsWithIndices.filter((item) => !item.isChecked);
+        const checkedItems = checkedItemsWithIndices.map((item) => (
+          <ReduxCheckbox
+            key={`checked-${item.name}-${item.originalIndex}`}
+            checkboxItem={{ ...item, index: item.originalIndex, section }}
+            datafield={datafield}
+            facet={facet}
+          />
+        ));
         const uncheckedItems = uncheckedItemsWithIndices
           .slice(0, displayCount)
           .map((item) => (
