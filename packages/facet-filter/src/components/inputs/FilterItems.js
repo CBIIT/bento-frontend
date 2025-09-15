@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-indent */
 import React,
 {
-  useEffect, useState, useRef,
+  useEffect, useState, useRef, useCallback,
 } from 'react';
 import { withStyles } from '@material-ui/core';
 import ReduxCheckbox from './checkbox/ReduxCheckbox';
@@ -22,6 +22,19 @@ const FilterItems = ({
   const [displayCount, setDisplayCount] = useState(INITIAL_ITEM_SIZE);
   const scrollableRef = useRef(null);
   const sortFilters = sortBySection({ ...facet, sortBy });
+
+  // Memoized scroll handler
+  const handleScroll = useCallback((uncheckedCount) => (e) => {
+    if (displayCount < uncheckedCount && uncheckedCount > INITIAL_ITEM_SIZE) {
+      const { scrollTop, scrollHeight, clientHeight } = e.target;
+      if (scrollHeight > clientHeight) {
+        const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
+        if (position >= 90) {
+          setDisplayCount((prevCount) => prevCount + INITIAL_ITEM_SIZE);
+        }
+      }
+    }
+  }, [displayCount]);
 
   const filterItems = () => {
     switch (type) {
@@ -73,19 +86,6 @@ const FilterItems = ({
             />
           ));
 
-        const handleScrollLocal = (e) => {
-          const totalUnchecked = uncheckedItemsWithIndices.length;
-          if (displayCount < totalUnchecked && totalUnchecked > INITIAL_ITEM_SIZE) {
-            const { scrollTop, scrollHeight, clientHeight } = e.target;
-            if (scrollHeight > clientHeight) {
-              const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
-              if (position >= 90) {
-                setDisplayCount((prevCount) => prevCount + INITIAL_ITEM_SIZE);
-              }
-            }
-          }
-        };
-
         return (
           <>
             <div>
@@ -94,7 +94,7 @@ const FilterItems = ({
             <div
               ref={scrollableRef}
               className={classes.itemsContainer}
-              onScroll={handleScrollLocal}
+              onScroll={handleScroll(uncheckedItemsWithIndices.length)}
             >
               {uncheckedItems}
             </div>
