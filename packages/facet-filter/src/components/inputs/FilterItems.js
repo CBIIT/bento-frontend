@@ -74,9 +74,11 @@ const FilterItems = ({
           const totalUnchecked = uncheckedItemsWithIndices.length;
           if (displayCount < totalUnchecked && totalUnchecked > initialItemSize) {
             const { scrollTop, scrollHeight, clientHeight } = e.target;
-            const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
-            if (position >= 90) {
-              setDisplayCount(displayCount + initialItemSize);
+            if (scrollHeight > clientHeight) {
+              const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
+              if (position >= 90) {
+                setDisplayCount(displayCount + initialItemSize);
+              }
             }
           }
         };
