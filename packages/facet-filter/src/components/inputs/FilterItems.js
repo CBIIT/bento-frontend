@@ -79,7 +79,7 @@ const FilterItems = ({
             if (scrollHeight > clientHeight) {
               const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
               if (position >= 90) {
-                setDisplayCount(displayCount + initialItemSize);
+                setDisplayCount((prevCount) => prevCount + initialItemSize);
               }
             }
           }
