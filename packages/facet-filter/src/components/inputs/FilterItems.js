@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { withStyles } from '@material-ui/core';
 import ReduxCheckbox from './checkbox/ReduxCheckbox';
 import ReduxSlider from './slider/ReduxSlider';
@@ -19,8 +19,17 @@ const FilterItems = ({
   const scrollableRef = useRef(null);
   const sortFilters = sortBySection({ ...facet, sortBy });
 
+  const allUncheckedItems = useMemo(
+    () => sortFilters.filter((item) => !item.isChecked),
+    [sortFilters]
+  );
+
+  const uncheckedItemsCount = useMemo(() =>
+    allUncheckedItems.length,
+    [allUncheckedItems]
+  );
+
   const handleScroll = (e) => {
-    const uncheckedItemsCount = sortFilters.filter((item) => !item.isChecked).length;
     if (displayCount < uncheckedItemsCount && uncheckedItemsCount > initialItemSize) {
       const { scrollTop, scrollHeight, clientHeight } = e.target;
       const position = Math.ceil((scrollTop / (scrollHeight - clientHeight)) * 100);
@@ -33,8 +42,6 @@ const FilterItems = ({
   const filterItems = () => {
     switch (type) {
       case InputTypes.CHECKBOX: {
-        const allUncheckedItems = sortFilters.filter((item) => !item.isChecked);
-
         // Only use lazy loading if we have more items than the initial size
         if (allUncheckedItems.length <= initialItemSize) {
           // Render all items normally if below threshold
