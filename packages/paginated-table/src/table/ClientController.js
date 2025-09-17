@@ -55,6 +55,7 @@ const TableController = ((props) => {
     <>
       <TableView
         {...props}
+        totalRows={tblRows}
         tableRows={displayRows}
       />
     </>
