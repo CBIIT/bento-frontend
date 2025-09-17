@@ -18,9 +18,12 @@ const PaginatedTable = ({
   themeConfig = {},
   totalRowCount = 0,
   initState,
+  checkedItemReset,
   activeTab = true,
   server = true,
   tblRows = [],
+  paginationOptions = {},
+  customTableHeader,
 }) => {
   /**
   * Initailize useReducer state
@@ -44,6 +47,12 @@ const PaginatedTable = ({
     const { setContext } = tableContext;
     setContext({ ...table, dispatch });
   }, [table]);
+
+  useEffect(() => {
+    if (checkedItemReset) {
+      dispatch(onRowSeclect([]));
+    }
+  }, [checkedItemReset]);
 
   /**
   * update state to props change
@@ -74,6 +83,15 @@ const PaginatedTable = ({
   const handleChangePage = (event, newPage) => {
     dispatch(onPageChange({ pageNumb: newPage }));
   };
+  // custonize pagination behavior
+  const {
+    customizeOnRowSelect,
+    customizeToggleSelectAll,
+    customizeSortByColumn,
+    customizeChangePage,
+    customizeChangeRowsPerPage,
+    customizeColumnViewChange,
+  } = paginationOptions;
 
   /**
   * update selected Ids
@@ -120,7 +138,7 @@ const PaginatedTable = ({
   const handleColumnViewChange = (column) => {
     const columns = table.columns.map((col) => {
       const updateColumnView = { ...col };
-      if (col.dataField === column.dataField) {
+      if (col.dataField && col.dataField === column.dataField) {
         updateColumnView.display = !column.display;
       }
       return updateColumnView;
@@ -141,13 +159,14 @@ const PaginatedTable = ({
         <ClientTableView
           tblRows={tblRows}
           table={table}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          onPageChange={handleChangePage}
-          onRowSelectChange={onRowSelectHandler}
-          onToggleSelectAll={handleToggleSelectAll}
-          onSortByColumn={handleSortByColumn}
-          onColumnViewChange={handleColumnViewChange}
+          onRowsPerPageChange={customizeChangeRowsPerPage || handleChangeRowsPerPage}
+          onPageChange={customizeChangePage || handleChangePage}
+          onRowSelectChange={customizeOnRowSelect || onRowSelectHandler}
+          onToggleSelectAll={customizeToggleSelectAll || handleToggleSelectAll}
+          onSortByColumn={customizeSortByColumn || handleSortByColumn}
+          onColumnViewChange={customizeColumnViewChange || handleColumnViewChange}
           themeConfig={themeConfig}
+          customTableHeader={customTableHeader}
         />
       </>
     );
@@ -170,13 +189,15 @@ const PaginatedTable = ({
         queryVariables={queryVariables}
         totalRowCount={totalRowCount}
         table={table}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        onPageChange={handleChangePage}
-        onRowSelectChange={onRowSelectHandler}
-        onToggleSelectAll={handleToggleSelectAll}
-        onSortByColumn={handleSortByColumn}
-        onColumnViewChange={handleColumnViewChange}
+        server={server}
+        onRowsPerPageChange={customizeChangeRowsPerPage || handleChangeRowsPerPage}
+        onPageChange={customizeChangePage || handleChangePage}
+        onRowSelectChange={customizeOnRowSelect || onRowSelectHandler}
+        onToggleSelectAll={customizeToggleSelectAll || handleToggleSelectAll}
+        onSortByColumn={customizeSortByColumn || handleSortByColumn}
+        onColumnViewChange={customizeColumnViewChange || handleColumnViewChange}
         themeConfig={themeConfig}
+        customTableHeader={customTableHeader}
       />
     </>
   );

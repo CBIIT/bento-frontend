@@ -12,6 +12,8 @@ function AddToCartDialogView(props) {
     onNoClick,
     cartWillFull = false,
     alertMessage,
+    DisplayCustomText,
+    activeFilters,
   } = props;
 
   if (cartWillFull) {
@@ -24,6 +26,8 @@ function AddToCartDialogView(props) {
     );
   }
 
+  const CustomDialog = DisplayCustomText && DisplayCustomText.component;
+
   return (
     <>
       <Dialog
@@ -32,21 +36,40 @@ function AddToCartDialogView(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure to add All Files
-            {' '}
-            {numberOfFilesSelected}
-            {' '}
-            to cart
-          </DialogContentText>
+          {
+            DisplayCustomText ? (
+              <CustomDialog
+                onYesClick={onYesClick}
+                onNoClick={onNoClick}
+                activeFilters={activeFilters}
+              />
+            ) : (
+              <DialogContentText id="alert-dialog-description">
+                Are you sure to add All Files
+                {' '}
+                {numberOfFilesSelected}
+                {' '}
+                to cart
+              </DialogContentText>
+            )
+          }
         </DialogContent>
-        <DialogActions>
-          <Button className="yesBtn" onClick={() => onYesClick()}>
-            Yes
-          </Button>
-          <Button className="noBtn" onClick={() => onNoClick()}>
-            No
-          </Button>
+        <DialogActions className="dialog_actions">
+          { DisplayCustomText && DisplayCustomText.actions && DisplayCustomText.actions.map((a) => (
+            <Button
+              className={a.className}
+              onClick={() => {
+                if (a.type === 'Positive') {
+                  onYesClick();
+                } else {
+                  onNoClick();
+                }
+              }}
+            >
+
+              {a.label}
+            </Button>
+          ))}
         </DialogActions>
       </Dialog>
     </>
