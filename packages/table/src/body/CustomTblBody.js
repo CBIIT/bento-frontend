@@ -12,6 +12,7 @@ import DisplayCell from './DisplayBodyCell';
 import defaultTheme from './DefaultThemConfig';
 import { actionCellTypes } from '../util/Types';
 import ActionCell from './ActionBodyCell';
+import { formatColumnValues } from '../util/Dataformat';
 
 /**
 * 1. Returns cell associated with action (checkbox / delete view)
@@ -24,13 +25,14 @@ const CustomTableBody = ({
   customTheme = {},
 }) => {
   const { columns } = table;
+  const formatRows = formatColumnValues(columns, rows);
   const displayColunms = columns.filter((col) => col.display);
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
 
   return (
     <ThemeProvider theme={themeConfig}>
       <TableBody>
-        {rows
+        {formatRows
           .map((row) => (
             <TableRow>
               {

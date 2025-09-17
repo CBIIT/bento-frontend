@@ -13,11 +13,34 @@ function RemoveAllDialogView(props) {
     toggleDisplay,
     count,
     removeAllFiles,
+    customModalMessage,
+    cancelText = 'No',
+    okText = 'Yes',
   } = props;
   const deleteAllFiles = () => {
     removeAllFiles();
     toggleDisplay();
   };
+
+  const generateModalMessage = (countValue) => {
+    if (customModalMessage) {
+      return customModalMessage(countValue);
+    }
+    return (
+      <>
+        Remove
+        {' '}
+        <b>
+          All files
+          {' ('}
+          {countValue}
+          {') '}
+        </b>
+        From Cart
+      </>
+    );
+  };
+
   return (
     <>
       <Dialog
@@ -27,23 +50,15 @@ function RemoveAllDialogView(props) {
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Remove
-            {' '}
-            <b>
-              All files
-              {' ('}
-              {count}
-              {') '}
-            </b>
-            From Cart
+            {generateModalMessage(count)}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions className="actionsWrapper">
           <Button className="okBtn" onClick={deleteAllFiles}>
-            Ok
+            {okText}
           </Button>
           <Button className="cancelBtn" onClick={() => toggleDisplay()}>
-            Cancel
+            {cancelText}
           </Button>
         </DialogActions>
       </Dialog>

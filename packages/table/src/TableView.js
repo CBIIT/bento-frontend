@@ -27,6 +27,7 @@ const CustomTableContainer = (props) => {
 
 const TableView = ({
   tableRows = [],
+  totalRows = [],
   table,
   onRowsPerPageChange,
   onPageChange,
@@ -36,15 +37,21 @@ const TableView = ({
   onSortByColumn,
   onColumnViewChange,
   themeConfig = {},
+  queryVariables,
+  server,
+  customTableHeader: CustomTableHeader = TableHeader,
 }) => (
   <>
     <ExtendedView
       table={table}
+      rows={totalRows}
+      server={server}
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
       onPageChange={onPageChange}
       numSelected={table?.selectedRows?.length || 0}
       customTheme={themeConfig.extendedView}
+      queryVariables={queryVariables}
     />
     <CustomToolbar
       numSelected={table?.selectedRows?.length || 0}
@@ -56,14 +63,27 @@ const TableView = ({
       customTheme={themeConfig.tblContainer || {}}
     >
       <Table>
-        <TableHeader
-          customTheme={themeConfig.tblHeader}
-          table={table}
-          rows={tableRows}
-          count={totalRowCount}
-          toggleSelectAll={onToggleSelectAll}
-          sortByColumn={onSortByColumn}
-        />
+        {
+          CustomTableHeader ? (
+            <CustomTableHeader
+              customTheme={themeConfig.tblHeader}
+              table={table}
+              rows={tableRows}
+              count={totalRowCount}
+              toggleSelectAll={onToggleSelectAll}
+              sortByColumn={onSortByColumn}
+            />
+          ) : (
+            <TableHeader
+              customTheme={themeConfig.tblHeader}
+              table={table}
+              rows={tableRows}
+              count={totalRowCount}
+              toggleSelectAll={onToggleSelectAll}
+              sortByColumn={onSortByColumn}
+            />
+          )
+        }
         <CustomTableBody
           customTheme={themeConfig.tblBody}
           rows={tableRows}

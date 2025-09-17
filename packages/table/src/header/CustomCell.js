@@ -50,6 +50,7 @@ const CustomHeaderCell = ({
       scope="col"
       active={sortBy === dataField}
       direction={sortOrder}
+      className={dataField}
     >
       <Tooltip>
         <TableSortLabel
