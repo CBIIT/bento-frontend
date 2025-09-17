@@ -31,7 +31,13 @@ const DeleteCellView = ({
   const testTrigger = () => {
     setDisplay(true);
   };
-  const { customColHeaderRender, customModalMessage } = column;
+  const {
+    customColHeaderRender,
+    customModalMessage,
+    cancelText,
+    okText,
+  } = column;
+
   return (
     <>
       <TableCell
@@ -70,6 +76,8 @@ const DeleteCellView = ({
           count={count}
           toggleDisplay={toggleDialogDisplay}
           customModalMessage={customModalMessage}
+          cancelText={cancelText}
+          okText={okText}
         />
       </TableCell>
     </>
