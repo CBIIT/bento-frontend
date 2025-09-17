@@ -20,6 +20,7 @@ const CheckboxView = ({
           onChange={(event) => toggleSelectAll(event, Ids, includeSelectedIds)}
         />
       )}
+      aria-label="Select all rows"
     />
   </TableCell>
 );
