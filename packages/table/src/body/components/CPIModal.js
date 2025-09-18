@@ -52,7 +52,7 @@ const CPIModal = ({
 
 
   const sortingData = (column, newOrder) => {
-    const sortedData = data.sort((a, b) => a[column].localeCompare(b[column]));
+    const sortedData = [...data].sort((a, b) => a[column].localeCompare(b[column]));
 
     if (newOrder === 'desc') {
       return sortedData.reverse();
