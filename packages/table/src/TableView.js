@@ -152,7 +152,7 @@ const TableView = ({
       <div className="downloadArea" style={getPaginationStyle(table, hasExport)}>
         <CustomPagination
           customTheme={themeConfig.tblPgn}
-          rowsPerPageOptions={[10, 25, 50, 100]}
+          rowsPerPageOptions={table.rowsPerPageOptions || [10, 25, 50, 100]}
           component="div"
           count={table.totalRowCount || 0}
           rowsPerPage={table.rowsPerPage || 10}
