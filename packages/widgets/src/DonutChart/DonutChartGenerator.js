@@ -87,7 +87,7 @@ export const DEFAULT_CONFIG_DONUT = {
       const overflowLength = isCapital ? textOverflowLength : textOverflowLength + 10;
 
       const labelX = (titleAlignment === 'center') ? cx : (titleAlignment === 'left') ? 0 : cx * 2;
-      const labelY = (titleLocation === 'top') ? 9 : cy * 2;
+      const labelY = (titleLocation === 'top') ? 9 : (cy * 2) + 15;
 
       const faceValue = showTotalCount === true ? `${value} / ${totalCount}` : value;
 
@@ -232,7 +232,7 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         <>
           <Button
             onClick={() => handleExportChart()}
-            style={{ bottom: '27px', left: '150px', backgroundColor: 'transparent' }}
+            style={{ bottom: '27px', left: '190px', backgroundColor: 'transparent' }}
           >
             <img src={exportIcon} alt="export" />
           </Button>
