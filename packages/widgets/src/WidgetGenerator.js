@@ -95,7 +95,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
       } = props;
 
       return (
-        <div className={classes.widgetWrapper}>
+        <div className={classes.widgetWrapper} style={{ position: 'relative' }}>
           <Paper
             className={classnames(classes.paper, {
               [classes.customBackGround]: customBackGround,
