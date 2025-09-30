@@ -178,7 +178,7 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
   return {
     BarChart: ({ data, ...props }) => {
       const {
-        title, width, height,
+        title, width,
         // cx, cy,
         // titleLocation, titleAlignment, sliceTitle,
         // blendStroke, innerRadius, outerRadius,
@@ -277,15 +277,16 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         <>
           <Button
             onClick={() => handleExportChart()}
-            style={{ bottom: '25px', left: '235px', backgroundColor: 'transparent' }}
+            style={{ bottom: '25px', left: '225px', backgroundColor: 'transparent' }}
           >
             <img src={exportIcon} alt="export" />
           </Button>
 
-          <ResponsiveContainer width={width} height={height}>
+          <ResponsiveContainer width={width} height={230}>
             <BarChart
               data={data}
               ref={currentChart}
+              height={230}
             // margin={{
             //   top: 5,
             //   right: 30,

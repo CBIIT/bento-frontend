@@ -16,10 +16,10 @@ const DEFAULT_CLASSES = makeStyles({
     height: '6px',
     width: '180px',
     border: 'none',
-    margin: '16px auto 0px auto',
+    margin: '20px auto 20px auto',
   },
   paddedTitle: {
-    margin: '32px 32px 0px 64px',
+    margin: '32px 32px 0px 15px',
     display: 'flex',
     alignItems: 'center',
   },
@@ -123,7 +123,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
                   data={data}
                   sliceTitle={sliceTitle || 'Cases'}
                   width={185}
-                  height={210}
+                  height={230}
                   innerRadius={45}
                   outerRadius={80}
                   cx={90}
