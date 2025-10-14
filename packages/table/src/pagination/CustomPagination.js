@@ -54,6 +54,9 @@ const CustomPagination = ({
         inputProps: {
           'aria-label': 'Select number of rows per page',
           'aria-labelledby': 'rowsPerPageLabel',
+          style: {
+            visibility: 'hidden',
+          },
         },
         id: 'rowsPerPageLabel',
       }}

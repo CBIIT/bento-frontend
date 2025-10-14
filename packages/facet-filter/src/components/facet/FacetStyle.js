@@ -63,7 +63,7 @@ export default () => ({
     marginTop: '5px',
   },
   highlight: {
-    color: '#b2c6d6',
+    color: '#537A9D',
   },
   showMore: {
     textAlign: 'right',
