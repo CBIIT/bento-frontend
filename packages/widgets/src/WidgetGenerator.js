@@ -100,14 +100,14 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
             })}
             classes={{ root: classes.widgetRoot }}
           >
-            <div
+            <h4
               id={title}
               className={classnames(classes.widgetHeader, classes.paddedTitle, {
                 [classes.noPaddedTitle]: noPaddedTitle,
               })}
             >
               {header || title}
-            </div>
+            </h4>
             <div
               className={classnames(classes.widgetBody, {
                 [classes.noPadding]: noBodyPadding,

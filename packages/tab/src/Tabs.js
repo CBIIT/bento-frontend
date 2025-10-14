@@ -18,7 +18,7 @@ const TabItems = ({
     name, count, clsName, index,
   }) => (
     <>
-      <span>
+      <h3 className={`index_${index} tab_label ${clsName}_name`}>
         {name}
         {count && (
         <span
@@ -27,7 +27,7 @@ const TabItems = ({
           {count}
         </span>
         )}
-      </span>
+      </h3>
     </>
   );
 
