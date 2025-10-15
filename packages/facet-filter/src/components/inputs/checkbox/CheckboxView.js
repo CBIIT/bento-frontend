@@ -5,7 +5,9 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react';
+/* eslint-disable no-useless-escape */
+
+import React, { useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Checkbox,
@@ -15,14 +17,14 @@ import {
   Tooltip,
   Box,
   Typography,
+  ButtonBase,
 } from '@material-ui/core';
+import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple';
 import clsx from 'clsx';
 import {
   CheckBox as CheckBoxIcon, CheckBoxOutlineBlank as CheckBoxBlankIcon,
 } from '@material-ui/icons';
 import styles from './CheckboxStyle';
-
-const alignment = 'flex-start';
 
 const CheckBoxView = ({
   classes,
@@ -42,6 +44,20 @@ const CheckBoxView = ({
   } = checkboxItem;
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
   const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
+  const checkboxId = `checkbox_${facet.label}_${name}`;
+  const rippleRef = useRef(null);
+
+  const handleRippleStart = (event) => {
+    if (rippleRef.current) {
+      rippleRef.current.start(event);
+    }
+  };
+
+  const handleRippleStop = (event) => {
+    if (rippleRef.current) {
+      rippleRef.current.stop(event);
+    }
+  };
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
@@ -68,58 +84,63 @@ const CheckBoxView = ({
 
   return (
     <>
-      <ListItem
-        width={1}
-        button
-        alignItems="flex-start"
-        onClick={handleToggle}
-        classes={{ gutters: classes.listItemGutters }}
-        className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
-      >
-        <Checkbox
-          id={`checkbox_${facet.label}_${name}`}
-          icon={<CheckBoxBlankIcon style={{ fontSize: 18 }} />}
+        <ListItem
+          component="div"
+          width={1}
+          alignItems="flex-start"
           onClick={handleToggle}
-          checked={isChecked}
-          checkedIcon={(
-            <CheckBoxIcon
-              style={{
-                fontSize: 18,
-              }}
-              className={`${checkedSection}CheckedIcon`}
-            />
-          )}
-          disableRipple
-          color="secondary"
-          classes={{ root: classes.checkboxRoot }}
-          inputProps={{ 'aria-label': 'checkbox' }}
-        />
-        { tooltip ? (
-          <Tooltip id={datafield} title={tooltip}>
-            <div className={datafield}>
-              <LabelComponent />
-            </div>
-          </Tooltip>
-        ) : (
-          <LabelComponent />
-        )}
-        <ListItemText />
-        <Typography
-          className={clsx(`${checkedSection}Subjects`, {
-            [`${checkedSection}SubjectUnChecked`]: !isChecked,
-            [`${checkedSection}SubjectChecked`]: isChecked,
-          })}
+          onMouseDown={handleRippleStart}
+          onMouseUp={handleRippleStop}
+          onMouseLeave={handleRippleStop}
+          classes={{ gutters: classes.listItemGutters, root: classes.listItemRoot }}
+          className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
         >
-          {`(${subjects})`}
-        </Typography>
-      </ListItem>
-      <Divider
-        style={{
-          backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
-          margin: '0px',
-          height: isChecked ? '2px' : '1px',
-        }}
-      />
+          <Checkbox
+            id={checkboxId}
+            icon={(<CheckBoxBlankIcon style={{ fontSize: 18 }} className={checkedSection} />
+            )}
+            inputProps={{ 'aria-label': 'checkbox', tabIndex: -1, 'aria-hidden': true }}
+            checked={isChecked}
+            checkedIcon={(
+              <CheckBoxIcon
+                style={{
+                  fontSize: 18,
+                }}
+                className={`${checkedSection}CheckedIcon`}
+              />
+            )}
+            disableRipple
+            color="secondary"
+            classes={{ root: classes.checkboxRoot }}
+            style={{ pointerEvents: 'none' }}
+          />
+          { tooltip ? (
+            <Tooltip id={datafield} title={tooltip}>
+              <div className={datafield}>
+                <LabelComponent />
+              </div>
+            </Tooltip>
+          ) : (
+            <LabelComponent />
+          )}
+          <ListItemText className={`${checkedSection}_md_space`} />
+          <Typography
+            className={clsx(`${checkedSection}Subjects`, {
+              [`${checkedSection}SubjectUnChecked`]: !isChecked,
+              [`${checkedSection}SubjectChecked`]: isChecked,
+            })}
+          >
+            {`(${subjects})`}
+          </Typography>
+          <TouchRipple ref={rippleRef} center />
+        </ListItem>
+        <Divider
+          style={{
+            backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
+            margin: '0px',
+            height: isChecked ? '2px' : '1px',
+          }}
+        />
     </>
   );
 };
