@@ -2,6 +2,12 @@ export default () => ({
   listItemGutters: {
     padding: '10px 20px 10px 0px',
   },
+  listItemRoot: {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    },
+  },
   checkboxRoot: {
     marginLeft: '5px',
     height: 12,
