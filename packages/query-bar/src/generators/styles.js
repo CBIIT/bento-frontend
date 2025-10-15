@@ -38,14 +38,14 @@ export default () => ({
   bracketsOpen: {
     fontSize: 18,
     fontFamily: 'Nunito Sans Semibold',
-    color: '#787878',
+    color: '#525252',
     marginRight: 3,
     fontWeight: 600,
   },
   bracketsClose: {
     fontSize: 18,
     fontFamily: 'Nunito Sans Semibold',
-    color: '#787878',
+    color: '#525252',
     marginLeft: 3,
     fontWeight: 600,
   },
@@ -55,7 +55,7 @@ export default () => ({
     marginRight: '3px',
     borderBottom: 'none',
     textDecoration: 'none',
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: 'bold',
   },
   clearQueryButton: {
