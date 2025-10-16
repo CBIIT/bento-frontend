@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/facet-filter",
-  "version": "1.0.1-popsci.3",
+  "version": "1.0.1-popsci.4",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

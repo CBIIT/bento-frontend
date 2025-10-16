@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/about",
-  "version": "1.0.1-popsci.2",
+  "version": "1.0.1-popsci.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/facet-filter": "^1.0.1-popsci.3",
+    "@bento-core/facet-filter": "^1.0.1-popsci.4",
     "lodash": "^4.17.20",
     "react-zoom-pan-pinch": "*"
   },
