@@ -34,16 +34,21 @@ const CheckBoxView = ({
   facet,
 }) => {
   const {
-    name,
-    subjects,
     isChecked = false,
     index,
     section,
     tooltip,
-    label,
   } = checkboxItem;
+  const {
+    field = 'group',
+    count = 'subjects',
+    customCount = (text) => `(${text})`,
+    defaultValue = '',
+  } = facet;
+
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
-  const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
+  const checkedSection = `${section}`.toLowerCase().replace(/\ /g, '_');
+  const name = checkboxItem[field] || defaultValue || 'N/A';
   const checkboxId = `checkbox_${facet.label}_${name}`;
   const rippleRef = useRef(null);
 
@@ -61,7 +66,7 @@ const CheckBoxView = ({
 
   const handleToggle = () => {
     const toggleCheckBoxItem = {
-      name: name,
+      name: checkboxItem[field],
       datafield: datafield,
       isChecked: !isChecked,
     };
@@ -76,9 +81,9 @@ const CheckBoxView = ({
         [`${checkedSection}NameChecked`]: isChecked,
       })}
     >
-      {label ? (
-        <Typography className={classes.checkboxLabel}>{label}</Typography>
-      ) : (<Typography className={classes.checkboxName}>{name}</Typography>)}
+      <Typography className={classes.checkboxName}>
+        {name}
+      </Typography>
     </Box>
   );
 
@@ -97,7 +102,11 @@ const CheckBoxView = ({
         >
           <Checkbox
             id={checkboxId}
-            icon={(<CheckBoxBlankIcon style={{ fontSize: 18 }} className={checkedSection} />
+            icon={(
+              <CheckBoxBlankIcon
+                style={{ fontSize: 18 }}
+                className={checkedSection}
+              />
             )}
             inputProps={{ 'aria-label': 'checkbox', tabIndex: -1, 'aria-hidden': true }}
             checked={isChecked}
@@ -117,7 +126,7 @@ const CheckBoxView = ({
           { tooltip ? (
             <Tooltip id={datafield} title={tooltip}>
               <div className={datafield}>
-                <LabelComponent />
+                {name}
               </div>
             </Tooltip>
           ) : (
@@ -130,7 +139,7 @@ const CheckBoxView = ({
               [`${checkedSection}SubjectChecked`]: isChecked,
             })}
           >
-            {`(${subjects})`}
+            {customCount(checkboxItem[count] || 0)}
           </Typography>
           <TouchRipple ref={rippleRef} center />
         </ListItem>

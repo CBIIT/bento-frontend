@@ -37,22 +37,28 @@ export const getNumberArray = (range) => {
  * @param {array} checkboxData
  * @return {array}
  */
-export const sortBySection = ({ facetValues, sort_type, sortBy }) => {
+export const sortBySection = ({
+  facetValues,
+  sort_type,
+  sortBy,
+  field,
+  count = 'subjects',
+}) => {
   const sortfacetValues = [...facetValues];
   if (!sortfacetValues) {
     return facetValues;
   }
   if (sortBy === sortType.NUMERIC) {
-    sortfacetValues.sort((a, b) => b.subjects - a.subjects);
+    sortfacetValues.sort((a, b) => b[count] - a[count]);
   } else {
-    sortfacetValues.sort(((a, b) => (lowerCaseString(a.name) > lowerCaseString(b.name)
-      || -(lowerCaseString(a.name) < lowerCaseString(b.name)))));
+    sortfacetValues.sort(((a, b) => (lowerCaseString(a[field]) > lowerCaseString(b[field])
+      || -(lowerCaseString(a[field]) < lowerCaseString(b[field])))));
   }
 
   if (sort_type === sortType.CUSTOM_NUMBER && sortBy !== sortType.NUMERIC) {
     sortfacetValues.sort((a, b) => {
-      const aNumbs = getNumberArray(a.name);
-      const bNumbs = getNumberArray(b.name);
+      const aNumbs = getNumberArray(a[field]);
+      const bNumbs = getNumberArray(b[field]);
       const aNumb = Number(aNumbs[0]);
       const bNumb = Number(bNumbs[0]);
       return (aNumbs.length === bNumbs.length) ? aNumb > bNumb : -(aNumb <= bNumb);
@@ -60,8 +66,8 @@ export const sortBySection = ({ facetValues, sort_type, sortBy }) => {
   }
 
   if (sort_type === sortType.RANGE && sortBy !== sortType.NUMERIC) {
-    sortfacetValues.sort(((a, b) => (startIndex(a.name) > startIndex(b.name)
-      || -(startIndex(a.name) < startIndex(b.name)))));
+    sortfacetValues.sort(((a, b) => (startIndex(a[field]) > startIndex(b[field])
+      || -(startIndex(a[field]) < startIndex(b[field])))));
   }
   /**
    * Display checked item always on top
