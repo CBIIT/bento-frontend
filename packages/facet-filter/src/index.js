@@ -1,4 +1,5 @@
 export { default as FacetFilter } from './FacetFilterController';
+export { default as NewFacetFilter } from './NewFacetFilterController';
 export {
   sortType,
   sortByCheckedItem,
