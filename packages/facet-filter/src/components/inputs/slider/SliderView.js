@@ -115,6 +115,11 @@ const SliderView = ({
     getDisplayValue(upperBoundValue),
   ]);
   useEffect(() => {
+    // Don't reset slider values if "Only" is selected - preserve current values
+    if (unknownAges === 'only') {
+      return; // Keep current slider values
+    }
+
     if (filterState && datafield && filterState[datafield]) {
       setSliderValue([
         getDisplayValue(filterState[datafield][0]),
@@ -123,7 +128,7 @@ const SliderView = ({
     } else {
       setSliderValue([getDisplayValue(minLowerBound), getDisplayValue(maxUpperBound)]);
     }
-  }, [facet, timeUnit]);
+  }, [facet, timeUnit, unknownAges]);
 
   const handleChangeSlider = (index, value) => {
     if (!value.includes('')) {
@@ -145,12 +150,22 @@ const SliderView = ({
       const queryStr = generateQueryStr(query, queryParams, paramValue);
       navigate(`/explore${queryStr}`);
 
-      // Reset slider to default values for display
-      const defaultValues = [getDisplayValue(minLowerBound), getDisplayValue(maxUpperBound)];
-      setSliderValue(defaultValues);
+      // Keep the current slider values for display (don't reset to defaults)
+      // The slider will be disabled but show the user's previous selection
+      // setSliderValue remains unchanged - keep current values
 
-      // Clear the slider state in the parent component
+      // Clear the slider state in the parent component (don't use age range in query)
       onSliderToggle({ sliderValue: [], ...facet });
+    } else if (unknownAges === 'only' && newUnknownAges !== 'only') {
+      // When switching away from "only", restore the slider values to the query
+      const currentSliderValues = [convertToDays(sliderValue[0]), convertToDays(sliderValue[1])];
+      const paramValue = {};
+      paramValue[datafield] = currentSliderValues;
+      const queryStr = generateQueryStr(query, queryParams, paramValue);
+      navigate(`/explore${queryStr}`);
+
+      // Restore the slider state in the parent component
+      onSliderToggle({ sliderValue: currentSliderValues, ...facet });
     }
   };
 
