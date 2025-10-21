@@ -14,7 +14,7 @@ import { facetsConfig } from '../../../bento/dashTemplate';
  * @param {object} props.localFind Local Find State
  * @returns {JSX.Element}
  */
-const QueryBarView = ({ data, statusReducer, localFind }) => {
+const QueryBarView = ({ data, statusReducer, localFind, unknownAgesState }) => {
   const dispatch = useDispatch();
 
   const sectionOrder = facetsConfig.map((v) => v.datafield);
@@ -25,6 +25,7 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
       ...config,
       items: statusReducer[facet],
       data: data[config.apiForFiltering],
+      unknownAges: unknownAgesState?.[facet] || 'include',
     }
   });
   mappedFilterState.sort((a, b) => sectionOrder.indexOf(a.datafield) - sectionOrder.indexOf(b.datafield));
@@ -78,6 +79,7 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
 const mapStateToProps = (state) => ({
   statusReducer: state.statusReducer.filterState,
   localFind: state.localFind,
+  unknownAgesState: state.statusReducer.unknownAgesState || {},
 });
 
 export default connect(mapStateToProps, null)(QueryBarView);

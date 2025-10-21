@@ -6,7 +6,7 @@ export {
   getNumberArray,
   sortBySection,
 } from './utils/Sort';
-export { getFilters } from './utils/filter';
+export { getFilters, getFiltersWithUnknownAges } from './utils/filter';
 export { InputTypes } from './components/inputs/Types';
 export {
   sideBarReducerGenerator,
@@ -24,6 +24,7 @@ export {
   clearSliderSection,
   clearAllAndSelectFacet,
   updateFilterState,
+  unknownAgesChange,
 } from './store/actions/Actions';
 export {
   generateFacetSectionView,

@@ -50,10 +50,12 @@ const SearchFacetView = ({
   searchText,
   sortBy,
   onClearFacetSection,
+  onUnknownAgesChange,
   onSearchTextChange,
   onSortChange,
   CustomView,
   queryParams,
+  unknownAgesState,
 }) => {
   const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
   const [open, setOpen] = useState(false);
@@ -65,9 +67,21 @@ const SearchFacetView = ({
     const field = facet.datafield;
     const paramValue = {};
     paramValue[field] = '';
+
+    // Also clear the corresponding unknownAges parameter if it exists
+    const unknownAgesField = `${field}_unknownAges`;
+    if (queryParams.includes(unknownAgesField)) {
+      paramValue[unknownAgesField] = '';
+    }
+
     const queryStr = generateQueryStr(query, queryParams, paramValue);
     navigate(`/explore${queryStr}`, { replace: true });
     onSortChange(facet.datafield, null);
+
+    // Reset the corresponding unknownAges parameter in Redux state
+    if (queryParams.includes(unknownAgesField) && onUnknownAgesChange) {
+      onUnknownAgesChange(field, 'include');
+    }
     onClearFacetSection(facet);
   };
 
@@ -80,7 +94,12 @@ const SearchFacetView = ({
   const selectedItems = facetValues && facetValues.filter((item) => item.isChecked);
   const displayFacet = { ...facet };
   displayFacet.facetValues = selectedItems;
-  const isActiveFacet = [...selectedItems].length > 0;
+
+  // Check if facet is active based on selected items or unknown ages selection
+  const hasSelectedItems = [...selectedItems].length > 0;
+  const unknownAges = unknownAgesState?.[facet.datafield] || 'include';
+  const hasUnknownAgesSelection = unknownAges !== 'include';
+  const isActiveFacet = hasSelectedItems || (type === InputTypes.SLIDER && hasUnknownAgesSelection);
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
 
   const sortFilters = sortBySection({ ...facet, sortBy });

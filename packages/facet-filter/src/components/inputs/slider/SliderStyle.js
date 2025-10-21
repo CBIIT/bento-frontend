@@ -5,6 +5,10 @@ export default () => ({
     marginRight: 'Auto',
     paddingRight: '20px',
   },
+  disabledSliderRoot: {
+    opacity: 0.5,
+    pointerEvents: 'none',
+  },
   minValue: {
     fontFamily: 'Nunito',
     fontSize: '15px',
@@ -61,6 +65,25 @@ export default () => ({
     background: '#F44336',
     '&~&': {
       background: '#142D64',
+    },
+  },
+  disabledRail: {
+    borderRadius: 4,
+    height: 6,
+    background: '#E8E8E8',
+  },
+  disabledThumb: {
+    height: 16,
+    width: 16,
+    cursor: 'not-allowed',
+    opacity: 0.4,
+  },
+  disabledTrack: {
+    borderRadius: 4,
+    height: 6,
+    opacity: 0.4,
+    '&~&': {
+      background: '#E8E8E8',
     },
   },
   upperBound: {

@@ -25,6 +25,7 @@ const FacetFilterController = (props) => {
     data,
     facetsConfig,
     facetSectionConfig,
+    unknownAgesState,
   } = props;
 
   const filterState = {};
@@ -138,8 +139,10 @@ const FacetFilterController = (props) => {
           if (facet.type === InputTypes.SLIDER) {
             const lowerBound = data[apiForFiltering][ApiLowerBoundName];
             const upperBound = data[apiForFiltering][ApiUpperBoundName];
+            const unknownAges = unknownAgesState?.[facet.datafield] || 'include';
             updateFacet.minLowerBound = lowerBound;
             updateFacet.maxUpperBound = upperBound;
+            updateFacet.unknownAges = unknownAges;
             updateFacet.facetValues = [lowerBound, upperBound];
             updateFacet.style = facet.style;
           }

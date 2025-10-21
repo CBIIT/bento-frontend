@@ -28,6 +28,8 @@ export default () => ({
     textAlign: 'left',
     marginLeft: '-5px',
     borderTop: 'none',
+    display: 'flex',
+    alignItems: 'center',
   },
   sortGroupIcon: {
     cursor: 'pointer',
@@ -117,5 +119,91 @@ export default () => ({
     position: 'absolute',
     right: '14px',
     top: '14px',
+  },
+  timeUnitToggle: {
+    marginLeft: '8px',
+    marginRight: '20px',
+    height: '32px',
+    '& .MuiToggleButtonGroup-grouped': {
+      borderRadius: '8px',
+      '&:not(:first-child)': {
+        marginLeft: '0px',
+        borderLeft: '1px solid #D3D3D3',
+        borderTopLeftRadius: '0px',
+        borderBottomLeftRadius: '0px',
+      },
+      '&:not(:last-child)': {
+        borderTopRightRadius: '0px',
+        borderBottomRightRadius: '0px',
+      },
+    },
+  },
+  toggleButton: (props) => {
+    const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
+      ? props.facet.style.colorPrimary.color
+      : '#3f51b5';
+
+    return {
+      fontFamily: 'Poppins !important',
+      fontSize: '11px !important',
+      fontWeight: '400 !important',
+      fontStyle: 'normal !important',
+      lineHeight: '100% !important',
+      letterSpacing: '0.02em !important',
+      padding: '6px 24px',
+      textTransform: 'uppercase !important',
+      border: '1px solid #D3D3D3',
+      borderRadius: '8px',
+      backgroundColor: '#EDEDED',
+      color: '#000000',
+      '& .MuiToggleButton-label': {
+        fontFamily: 'Poppins !important',
+        fontSize: '11px !important',
+        fontWeight: '400 !important',
+        lineHeight: '100% !important',
+        letterSpacing: '0.02em !important',
+        textTransform: 'uppercase !important',
+      },
+      '&:hover': {
+        backgroundColor: '#E0E0E0',
+      },
+      '&.Mui-disabled': {
+        backgroundColor: '#F5F5F5',
+        color: '#BDBDBD',
+        border: '1px solid #E0E0E0',
+        cursor: 'not-allowed',
+        '& .MuiToggleButton-label': {
+          color: '#BDBDBD',
+        },
+      },
+      '&.Mui-selected': {
+        backgroundColor: primaryColor,
+        color: '#FFFFFF',
+        '& .MuiToggleButton-label': {
+          fontFamily: 'Poppins !important',
+          fontSize: '11px !important',
+          fontWeight: '400 !important',
+          lineHeight: '100% !important',
+          letterSpacing: '0.02em !important',
+          textTransform: 'uppercase !important',
+        },
+        '&:hover': {
+          backgroundColor: primaryColor,
+        },
+      },
+    };
+  },
+  toggleButtonSelected: (props) => {
+    const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
+      ? props.facet.style.colorPrimary.color
+      : '#3f51b5';
+
+    return {
+      backgroundColor: primaryColor,
+      color: '#FFFFFF !important',
+      '&:hover': {
+        backgroundColor: primaryColor,
+      },
+    };
   },
 });
