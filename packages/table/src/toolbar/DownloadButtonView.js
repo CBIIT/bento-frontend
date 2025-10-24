@@ -70,29 +70,68 @@ const DownloadButton = ({
     return cleanedResult;
   }
 
-  async function downloadFile(type) {
-    const {
-      query,
-      paginationAPIField,
-    } = table;
+  // --- retry helper (recursive ESLINT no await-in-loop — we want this to be sequential) ---
+  async function retry(fn, retries = 3, attempt = 1) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt >= retries) throw err;
+      return retry(fn, retries, attempt + 1);
+    }
+  }
 
-    const result = await client.query({
+  async function fetchCountWithRetry() {
+    const { statsQuery, statsQueryName, statsField } = table;
+    return retry(() => client.query({
+      query: statsQuery,
+      variables: queryVariables,
+    }).then(({ data }) => {
+      const queryResponse = data[statsQueryName];
+      return {
+        totalCount: queryResponse[statsField],
+        pageSize: queryResponse.pageSize || downloadLimit,
+      };
+    }));
+  }
+
+  async function fetchDownloadWithRetry(variables) {
+    const { query, paginationAPIField } = table;
+    return retry(() => client.query({
       query,
-      variables: {
-        ...queryVariables,
-        page: 0,
-        first: downloadLimit,
-        order_by: table.sortBy,
-        sort_direction: table.sortOrder,
-      },
-    })
-      .then((response) => {
-        if (paginationAPIField && response && response.data) {
-          return response.data[paginationAPIField];
-        }
-        return response.data;
-      });
-    downloadData(cleanData(result), table, table.downloadFileName, type);
+      variables,
+    }).then((response) => {
+      if (paginationAPIField && response && response.data) {
+        return response.data[paginationAPIField];
+      }
+      return response.data;
+    }));
+  }
+
+  async function downloadFile(type) {
+    try {
+      const { totalCount, pageSize } = await fetchCountWithRetry();
+      console.log(`FIND-ME: Downloading ${totalCount} entries...`);
+
+      let completedEntries = 0;
+      let allData = [];
+      while (completedEntries < totalCount) {
+        const variables = {
+          ...queryVariables,
+          offset: Math.floor(completedEntries / pageSize) * pageSize,
+          first: Math.min(pageSize, totalCount - completedEntries),
+          order_by: table.sortBy,
+          sort_direction: table.sortOrder,
+        };
+        // eslint-disable-next-line no-await-in-loop
+        const data = await fetchDownloadWithRetry(variables);
+        allData = allData.concat(data);
+        console.log(`FIND-ME: Downloaded ${allData.length} / ${totalCount} entries...`);
+        completedEntries += data.length;
+      }
+      downloadData(cleanData(allData), table, table.downloadFileName, type);
+    } catch (error) {
+      console.error('Error fetching count:', error);
+    }
   }
 
   const downloadTableCSV = useCallback(() => {
