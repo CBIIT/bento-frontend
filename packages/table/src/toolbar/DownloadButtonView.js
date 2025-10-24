@@ -70,7 +70,7 @@ const DownloadButton = ({
     return cleanedResult;
   }
 
-  async function downloadSCSVFile() {
+  async function downloadFile(type) {
     const {
       query,
       paginationAPIField,
@@ -92,42 +92,16 @@ const DownloadButton = ({
         }
         return response.data;
       });
-
-    downloadData(cleanData(result), table, table.downloadFileName, 'csv');
-  }
-
-  async function downloadJsonFile() {
-    const {
-      query,
-      paginationAPIField,
-    } = table;
-
-    const result = await client.query({
-      query,
-      variables: {
-        ...queryVariables,
-        page: 0,
-        first: downloadLimit,
-        order_by: table.sortBy,
-        sort_direction: table.sortOrder,
-      },
-    })
-      .then((response) => {
-        if (paginationAPIField && response && response.data) {
-          return response.data[paginationAPIField];
-        }
-        return response.data;
-      });
-    downloadData(cleanData(result), table, table.downloadFileName, 'json');
+    downloadData(cleanData(result), table, table.downloadFileName, type);
   }
 
   const downloadTableCSV = useCallback(() => {
-    downloadSCSVFile();
+    downloadFile('csv');
     setListDisplay('none');
   }, [queryVariables, table]);
 
   const downloadTableJson = useCallback(() => {
-    downloadJsonFile();
+    downloadFile('json');
     setListDisplay('none');
   }, [queryVariables, table]);
 
