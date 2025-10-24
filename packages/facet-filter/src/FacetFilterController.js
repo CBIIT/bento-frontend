@@ -54,7 +54,11 @@ const FacetFilterController = (props) => {
          */
         if (sideBar.type === InputTypes.SLIDER) {
           const { minLowerBound, maxUpperBound } = sideBar;
-          sideBar.facetValues = [minLowerBound, maxUpperBound];
+          if (minLowerBound === 0 && maxUpperBound === 0) {
+            sideBar.facetValues = [0, 0];
+          } else {
+            sideBar.facetValues = [minLowerBound, maxUpperBound];
+          }
         }
       });
     }
@@ -65,7 +69,7 @@ const FacetFilterController = (props) => {
     const sideBar = {};
 
     arr.forEach(({ section, ...item }) => {
-      const { isExpanded } =facetSectionConfig[section];
+      const { isExpanded } = facetSectionConfig[section];
       if (!sideBar[section]) {
         sideBar[section] = {
           name: section,
@@ -110,14 +114,17 @@ const FacetFilterController = (props) => {
           if (facet.type === InputTypes.SLIDER) {
             const lowerBound = data[apiForFiltering][ApiLowerBoundName];
             const upperBound = data[apiForFiltering][ApiUpperBoundName];
+
             if (lowerBound === 0 && upperBound === 0) {
-              updateFacet.filterOut = true;
+              updateFacet.minLowerBound = 0;
+              updateFacet.maxUpperBound = 0;
+              updateFacet.facetValues = [];
             } else {
               updateFacet.minLowerBound = lowerBound;
               updateFacet.maxUpperBound = upperBound;
               updateFacet.facetValues = [lowerBound, upperBound];
-              updateFacet.style = facet.style;
             }
+            updateFacet.style = facet.style;
           }
         }
         if (!updateFacet.filterOut) {

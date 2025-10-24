@@ -15,11 +15,16 @@ const SliderView = ({
   filterState,
 }) => {
   const { minLowerBound, maxUpperBound, quantifier, datafield, facetValues } = facet;
+  // Check if bounds are invalid (both are 0)
+  const isBoundsInvalid = !facetValues
+    || facetValues.length === 0
+    || (facetValues[0] === 0 && facetValues[1] === 0);
   const lowerBoundValue = facetValues[0];
   const upperBoundValue = facetValues[1];
 
   // Determines whether the lower bound and upper bound values are valid
   const isValid = () => {
+    if (isBoundsInvalid) return false;
     const checks = [
       lowerBoundValue <= upperBoundValue,
       lowerBoundValue >= minLowerBound,
@@ -66,6 +71,7 @@ const SliderView = ({
               maxUpperBound={maxUpperBound}
               type={silderTypes.INPUT_MIN}
               onInputChange={handleChangeCommittedSlider}
+              disabled={isBoundsInvalid}
             />
           </div>
           <div className={classes.maxValue}>
@@ -80,6 +86,7 @@ const SliderView = ({
               maxUpperBound={maxUpperBound}
               type={silderTypes.INPUT_MAX}
               onInputChange={handleChangeCommittedSlider}
+              disabled={isBoundsInvalid}
             />
           </div>
         </div>
@@ -87,9 +94,12 @@ const SliderView = ({
           {/* Change to red if invalid range */}
           <Slider
             disableSwap
+            disabled={isBoundsInvalid}
             getAriaValueText={valuetext}
-            onChange={handleChangeSlider}
-            onChangeCommitted={(event, value) => handleChangeCommittedSlider(value)}
+            onChange={isBoundsInvalid ? undefined : handleChangeSlider}
+            onChangeCommitted={
+              isBoundsInvalid ? undefined : (event, value) => handleChangeCommittedSlider(value)
+            }
             value={[...sliderValue]}
             valueLabelDisplay="auto"
             min={minLowerBound}
