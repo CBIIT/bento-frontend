@@ -23,6 +23,7 @@ const DownloadButton = ({
   count,
   queryVariables,
   table,
+  buttonConfig,
 }) => {
   const [listDisplay, setListDisplay] = useState('none');
   const dropdownSelection = useRef(null);
@@ -46,6 +47,7 @@ const DownloadButton = ({
   }
 
   const client = useApolloClient();
+  const downloadLimit = buttonConfig?.downloadLimit || 10000;
 
   function cleanData(result) {
     function hasHTMLTags(str) {
@@ -79,7 +81,7 @@ const DownloadButton = ({
       variables: {
         ...queryVariables,
         page: 0,
-        first: 10000,
+        first: downloadLimit,
         order_by: table.sortBy,
         sort_direction: table.sortOrder,
       },
@@ -105,7 +107,7 @@ const DownloadButton = ({
       variables: {
         ...queryVariables,
         page: 0,
-        first: 10000,
+        first: downloadLimit,
         order_by: table.sortBy,
         sort_direction: table.sortOrder,
       },
