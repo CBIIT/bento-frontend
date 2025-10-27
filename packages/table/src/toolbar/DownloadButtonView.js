@@ -110,7 +110,6 @@ const DownloadButton = ({
   async function downloadFile(type) {
     try {
       const { totalCount, pageSize } = await fetchCountWithRetry();
-      console.log(`FIND-ME: Downloading ${totalCount} entries...`);
 
       let completedEntries = 0;
       let allData = [];
@@ -125,7 +124,6 @@ const DownloadButton = ({
         // eslint-disable-next-line no-await-in-loop
         const data = await fetchDownloadWithRetry(variables);
         allData = allData.concat(data);
-        console.log(`FIND-ME: Downloaded ${allData.length} / ${totalCount} entries...`);
         completedEntries += data.length;
       }
       downloadData(cleanData(allData), table, table.downloadFileName, type);
@@ -134,13 +132,61 @@ const DownloadButton = ({
     }
   }
 
+  async function downloadFileParallel(type, concurrency = 5) {
+    try {
+      const { totalCount, pageSize } = await fetchCountWithRetry();
+      const totalChunks = Math.ceil(totalCount / pageSize);
+      const results = new Array(totalChunks);
+
+      for (let i = 0; i < totalChunks; i += concurrency) {
+        const batch = [];
+
+        for (let j = i; j < Math.min(i + concurrency, totalChunks); j += 1) {
+          const offset = j * pageSize;
+          const first = Math.min(pageSize, totalCount - offset);
+
+          const variables = {
+            ...queryVariables,
+            offset,
+            first,
+            order_by: table.sortBy,
+            sort_direction: table.sortOrder,
+          };
+
+          batch.push(
+            fetchDownloadWithRetry(variables).then((data) => ({ index: j, data })),
+          );
+        }
+
+        // eslint-disable-next-line no-await-in-loop
+        const batchResults = await Promise.all(batch);
+        batchResults.forEach(({ index, data }) => {
+          results[index] = data;
+        });
+      }
+
+      const allData = results.flat();
+      downloadData(cleanData(allData), table, table.downloadFileName, type);
+    } catch (error) {
+      console.error('Error fetching count:', error);
+    }
+  }
+
   const downloadTableCSV = useCallback(() => {
-    downloadFile('csv');
+    if (table.asyncDownload) {
+      downloadFileParallel('csv');
+    } else {
+      downloadFile('csv');
+    }
     setListDisplay('none');
   }, [queryVariables, table]);
 
   const downloadTableJson = useCallback(() => {
-    downloadFile('json');
+    if (table.asyncDownload) {
+      downloadFileParallel('json');
+    } else {
+      downloadFile('json');
+    }
     setListDisplay('none');
   }, [queryVariables, table]);
 
