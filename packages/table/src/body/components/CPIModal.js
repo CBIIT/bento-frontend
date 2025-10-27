@@ -1,60 +1,217 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
   Checkbox,
+  Button,
   Modal,
   Typography,
   IconButton,
   Paper,
   Table,
   TableContainer,
-  ThemeProvider,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Button,
+  ThemeProvider,
+  Tooltip,
 } from '@material-ui/core';
 // import CustomTableBody from '../../body/CustomTblBody';
 import CloseIcon from '@material-ui/icons/Close';
-import { withStyles } from '@material-ui/core/styles';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import { withStyles, makeStyles, createTheme } from '@material-ui/core/styles';
 import styles from './ModalStyle';
 // import TableHeader from '../../header/CustomTblHeader';
 import HeaderCell from '../../header/CustomCell';
 import AddFileButtonView from '../../wrapper/components/ReduxAddFile';
 import questionIcon from './assets/Question_Icon.svg';
-import cartIcon from './assets/Cart_Icon.svg';
+import downloadIcon from './assets/download.svg';
 
-const tooltipContentAddAll = {
-  tooltipText: 'Click button to add all Hub files associated with this participant to the cart.',
-  icon: questionIcon,
-  alt: 'tooltipIcon',
-  Participants: 'Click button to add all files associated with the filtered row(s).',
-  arrow: true,
-  styles: {
-    border: '#03A383 1px solid',
+const useStyles = makeStyles(() => ({
+  button: {
+    width: '189px',
+    height: '41px',
+    alignSelf: 'end',
+    color: '#FFFFFF',
+    backgroundColor: '#2A6E93',
+    borderColor: '#2A6E93',
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: '12px',
+    lineHeight: '13px',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: '0 12px',
+    borderRadius: '5px',
+    transition: 'border-radius 0.2s ease-in-out',
+    textAlign: 'left',
+    '&:hover': {
+      backgroundColor: '#245A7A',
+    },
+    '& .MuiButton-label': {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+    },
   },
-};
-
-const tooltipContent = {
-  tooltipText: 'Click button to add all selected files associated with this participant to the cart.',
-  icon: questionIcon,
-  alt: 'tooltipIcon',
-  Participants: 'Click button to add files associated with the selected row(s).',
-  arrow: true,
-  styles: {
-    border: '#03A383 1px solid',
+  buttonOpen: {
+    borderBottomLeftRadius: '0',
+    borderBottomRightRadius: '0',
   },
-};
+  dropdownContainer: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+  },
+  dropdown: {
+    position: 'absolute',
+    top: '100%',
+    right: 0,
+    zIndex: 10000,
+    marginTop: '-1px',
+    backgroundColor: 'white',
+    border: '1px solid #07679C',
+    borderTop: 'none',
+    borderRadius: '0 0 5px 5px',
+    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+    minWidth: '189px',
+    width: '189px',
+    transformOrigin: 'top',
+    animation: '$slideDown 0.2s ease-out',
+  },
+  '@keyframes slideDown': {
+    '0%': {
+      opacity: 0,
+      transform: 'translateY(-10px)',
+    },
+    '100%': {
+      opacity: 1,
+      transform: 'translateY(0)',
+    },
+  },
+  dropdownList: {
+    padding: 0,
+    margin: 0,
+  },
+  dropdownItem: {
+    borderBottom: '1px solid #07679C',
+    padding: '0',
+    height: '41px',
+    minHeight: '41px',
+    display: 'flex',
+    alignItems: 'center',
+    '&:first-child': {
+      borderTop: '1px solid #07679C',
+    },
+    '&:last-child': {
+      borderBottom: 'none',
+    },
+    '&:hover': {
+      backgroundColor: '#DEE4EC',
+    },
+    '&:active': {
+      backgroundColor: '#e9ecef',
+    },
+    '&:not(:last-child)': {
+      borderBottom: '1px solid #07679C',
+    },
+    '& > div': {
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      height: '100%',
+    },
+    '& button': {
+      width: '100% !important',
+      height: '41px !important',
+      borderRadius: '0 !important',
+      backgroundColor: 'transparent !important',
+      color: '#343434 !important',
+      fontFamily: 'Poppins !important',
+      fontWeight: '500 !important',
+      fontStyle: 'Medium !important',
+      fontSize: '12px !important',
+      lineHeight: '13px !important',
+      letterSpacing: '-0.02em !important',
+      textTransform: 'uppercase !important',
+      textAlign: 'left !important',
+      justifyContent: 'flex-start !important',
+      padding: '0 12px !important',
+      border: 'none !important',
+      boxShadow: 'none !important',
+      display: 'flex !important',
+      alignItems: 'center !important',
+      verticalAlign: 'middle !important',
+      '&:hover': {
+        backgroundColor: 'transparent !important',
+      },
+    },
+  },
+  dropdownItemText: {
+    '& .MuiListItemText-primary': {
+      fontFamily: 'Poppins',
+      fontWeight: '600',
+      fontSize: '12px',
+      color: '#07679C',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px',
+    },
+  },
+  questionIcon: {
+    width: '10px',
+    height: '10px',
+    position: 'absolute',
+    top: '3px',
+    right: '-12px',
+    cursor: 'pointer',
+    zIndex: 1,
+  },
+  tooltipContent: {
+    fontFamily: 'Poppins',
+    fontWeight: 400,
+    fontStyle: 'Regular',
+    fontSize: '13px',
+    lineHeight: '17.5px',
+    letterSpacing: '-0.01em',
+    color: '#000000',
+    backgroundColor: '#FFFFFF',
+    border: '0.5px solid #000000',
+    borderRadius: '4px',
+    padding: '12px',
+    maxWidth: '400px',
+  },
+  tooltipIcon: {
+    width: '16px',
+    height: '11px',
+    marginRight: '8px',
+    verticalAlign: 'middle',
+  },
+  customTooltip: {
+    backgroundColor: '#FFFFFF !important',
+    color: '#000000 !important',
+    border: '0.5px solid #000000 !important',
+    borderRadius: '4px !important',
+    padding: '0 !important',
+    boxShadow: 'none !important',
+    '& .MuiTooltip-arrow': {
+      color: '#000000 !important',
+    },
+  },
+}));
 
 const CustomTableContainer = (props) => {
-  const { children, themeConfig, className } = props;
+  const { children, className } = props;
   const tableStyle = {
-    height: '425px',
+    height: '450px',
     overflowX: 'hidden',
   };
+  const defaultTheme = createTheme();
   return (
-    <ThemeProvider theme={themeConfig}>
+    <ThemeProvider theme={defaultTheme}>
       <TableContainer className={className} id="tableContainer" component={Paper} style={tableStyle}>
         {children}
       </TableContainer>
@@ -63,22 +220,135 @@ const CustomTableContainer = (props) => {
 };
 
 const CPIModal = ({
-  classes,
   open,
   onClose,
   row,
-  themeConfig = {},
-  navigation,
 }) => {
+  const classes = useStyles();
   // const [sortBy, setSortBy] = useState('associated_id');
   // const [sortOrder, setSortOrder] = useState('asc');
   const [data, setData] = useState(row.cpi_data);
   const [selectedIds, setIds] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const participantId = row.participant_id;
+  const studyId = row.study_id;
 
   useEffect(() => {
     setData(row.cpi_data);
   }, [row]);
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const displayColumns = [
+    {
+      dataField: 'associated_id',
+      header: 'Participant ID',
+      // tooltipText: 'sort',
+      sortable: false,
+    },
+    {
+      dataField: 'repository_of_synonym_id',
+      header: 'Name',
+      // tooltipText: 'sort',
+      sortable: false,
+    },
+    {
+      dataField: 'domain_description',
+      header: 'Description',
+      // tooltipText: 'sort',
+      sortable: false,
+    },
+    {
+      dataField: 'domain_category',
+      header: 'Category',
+      // tooltipText: 'sort',
+      sortable: false,
+    },
+    {
+      dataField: 'data_location',
+      header: 'Location',
+      // tooltipText: 'sort',
+      sortable: false,
+    },
+  ];
+
+  const handleDownloadCSV = () => {
+    // Define CSV column order (different from table display order)
+    const csvColumnOrder = [
+      {
+        dataField: 'repository_of_synonym_id',
+        header: 'repository_of_synonym_id',
+      },
+      {
+        dataField: 'associated_id',
+        header: 'associated_id',
+      },
+      {
+        dataField: 'domain_description',
+        header: 'domain_description',
+      },
+      {
+        dataField: 'domain_category',
+        header: 'domain_category',
+      },
+      {
+        dataField: 'data_location',
+        header: 'data_location',
+      },
+    ];
+
+    // Get the table data using CSV column order
+    const csvData = data.map((dataRow) => csvColumnOrder.map((column) => {
+      const value = dataRow[column.dataField];
+      // Escape commas and quotes in CSV
+      if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+        return `"${value.replace(/"/g, '""')}"`;
+      }
+      return value || '';
+    }));
+
+    // Create CSV headers using CSV column order
+    const headers = csvColumnOrder.map((column) => column.header).join(',');
+
+    // Create CSV content
+    const csvContent = [
+      headers,
+      ...csvData.map((csvRow) => csvRow.join(',')),
+    ].join('\n');
+
+    // Create and download the file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `alternative_identifiers_${participantId}_${studyId}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    if (dropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropdownOpen]);
 
   const wrapperConfig = {
     container: 'buttons',
@@ -91,7 +361,6 @@ const CPIModal = ({
         clsName: 'add_all_button',
         role: 'ADD_ALL_FILES',
         btnType: 'ADD_ALL_FILES',
-        tooltipCofig: tooltipContentAddAll,
         conditional: false,
         alertMessage: 'The cart is limited to 200,000 files. Please narrow the search criteria or remove some files from the cart to add more.',
       },
@@ -101,8 +370,8 @@ const CPIModal = ({
         clsName: 'add_selected_button',
         role: 'ADD_SELECTED_FILES',
         btnType: 'ADD_SELECTED_FILES',
-        tooltipCofig: tooltipContent,
         conditional: true,
+        disabled: selectedIds.length === 0,
         alertMessage: 'The cart is limited to 200,000 files. Please narrow the search criteria or remove some files from the cart to add more.',
       },
     ],
@@ -154,7 +423,9 @@ const CPIModal = ({
   const buttonContainer = {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: '10px',
+    gap: '20px',
   };
 
   const addAllFilesButton = {
@@ -177,8 +448,10 @@ const CPIModal = ({
     fontFamily: 'Poppins',
     fontWeight: '600',
     fontSize: '12px',
-    color: 'white',
+    color: selectedIds.length ? 'white' : '#666666',
     lineHeight: '14px',
+    opacity: selectedIds.length ? 1 : 0.6,
+    cursor: selectedIds.length ? 'pointer' : 'not-allowed',
   };
 
   const goToCartButton = {
@@ -192,16 +465,42 @@ const CPIModal = ({
     color: 'white',
   };
 
+  const downloadAltIdsButton = {
+    width: '189px',
+    height: '41px',
+    borderRadius: '5px',
+    backgroundColor: '#5A7C84',
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: '12px',
+    color: 'white',
+    textTransform: 'uppercase',
+    border: 'none',
+  };
+
+  const viewInExploreButton = {
+    width: '189px',
+    height: '41px',
+    borderRadius: '5px',
+    backgroundColor: '#2A5C75',
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+    fontSize: '12px',
+    color: 'white',
+    textTransform: 'uppercase',
+    border: 'none',
+  };
+
   const modalBody = {
     position: 'absolute',
     top: '5%',
     left: '25%',
-    width: '840px',
+    width: '880px',
     height: '671px',
     background: '#FFFFFF',
     border: '1px solid #505050',
     borderRadius: '40px',
-    overflow: 'hidden',
+    overflow: 'visible',
   };
 
   const header = {
@@ -226,15 +525,15 @@ const CPIModal = ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '55px',
+    height: '50px',
     color: '#7D267E',
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '400',
-    padding: '40px',
-    paddingLeft: '35px',
-    paddingRight: '20px',
+    padding: '0 25px',
     borderTop: '1px solid #505050',
+    textAlign: 'center',
+    lineHeight: '30px',
   };
 
   const link = {
@@ -242,9 +541,7 @@ const CPIModal = ({
     fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '700',
-    position: 'relative',
-    top: '11.5px',
-    right: '39px',
+    textDecoration: 'underline',
   };
 
   const modalTitle = {
@@ -273,39 +570,20 @@ const CPIModal = ({
     paddingLeft: '16px',
   };
 
-  const participantId = row.participant_id;
-  const displayColumns = [
-    {
-      dataField: 'associated_id',
-      header: 'Participant ID',
-      // tooltipText: 'sort',
-      sortable: false,
+  const tableContainer = {
+    '&::-webkit-scrollbar': {
+      width: '6px',
+      borderWidth: '0px 1px 1px 1px',
+      borderStyle: 'solid',
+      borderColor: '#B0B0B0',
     },
-    {
-      dataField: 'repository_of_synonym_id',
-      header: 'Name',
-      // tooltipText: 'sort',
-      sortable: false,
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: '#CECECE',
     },
-    {
-      dataField: 'domain_description',
-      header: 'Description',
-      // tooltipText: 'sort',
-      sortable: false,
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#003F74',
     },
-    {
-      dataField: 'domain_category',
-      header: 'Category',
-      // tooltipText: 'sort',
-      sortable: false,
-    },
-    {
-      dataField: 'data_location',
-      header: 'Location',
-      // tooltipText: 'sort',
-      sortable: false,
-    },
-  ];
+  };
 
   return (
     <Modal
@@ -313,10 +591,10 @@ const CPIModal = ({
       onClose={onClose}
       aria-labelledby={`${row.id}-modal`}
     >
-      <Box className={classes.modalBody} style={modalBody}>
+      <Box style={modalBody}>
         <div className="header" style={header}>
           <Typography id="modal-modal-title" className="modalTitle" style={modalTitle}>
-            {`Participant ID ${participantId} : CPI Mappings`}
+            {`Alternative Identifiers for Participant ${participantId} in ${studyId}`}
           </Typography>
           <IconButton
             aria-label="close"
@@ -331,8 +609,7 @@ const CPIModal = ({
           {`${data.length} mapped identifiers`}
         </div>
         <CustomTableContainer
-          className={classes.tableContainer}
-          themeConfig={themeConfig}
+          style={tableContainer}
         >
           <Table>
             <TableHead>
@@ -386,30 +663,129 @@ const CPIModal = ({
           </Table>
         </CustomTableContainer>
         <div style={buttonContainer}>
-          <AddFileButtonView
-            {...wrapperConfig.items[0]}
-            buttonStyle={addAllFilesButton}
-            rowID={row.id}
-          />
-          <AddFileButtonView
-            {...wrapperConfig.items[1]}
-            buttonStyle={addSelectedFilesButton}
-            rowID={row.id}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+            <Button
+              style={downloadAltIdsButton}
+              onClick={handleDownloadCSV}
+              disableRipple
+            >
+              <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
+                <div>DOWNLOAD</div>
+                <div>ALTERNATIVE IDS</div>
+              </div>
+            </Button>
+            <Tooltip
+              title={(
+                <div className={classes.tooltipContent}>
+                  <div style={{ marginBottom: '8px' }}>
+                    Clicking on DOWNLOAD ALTERNATIVE IDS will download the available
+                    alternative identifiers for this Participant.
+                  </div>
+                  <div style={{ marginBottom: '8px' }}>
+                    CPI mappings are also available for each study as part of the downloadable
+                    study manifest. Follow these steps to download all alternative identifiers
+                    for a study:
+                  </div>
+                  <div style={{ paddingLeft: '16px' }}>
+                    <div style={{ marginBottom: '4px' }}>1. Go to the Explore Dashboard</div>
+                    <div style={{ marginBottom: '4px' }}>2. Go to the Studies Tab of the Table</div>
+                    <div style={{ marginBottom: '4px' }}>
+                      3. Click on the icon
+                      {' '}
+                      <img
+                        src={downloadIcon}
+                        alt="Download"
+                        style={{
+                          width: '12px', height: '8px', margin: '0 4px', verticalAlign: 'middle',
+                        }}
+                      />
+                      {' '}
+                      in the Manifest column to download the Manifest.
+                    </div>
+                    <div>
+                      4. Open the downloaded Manifest and go to the "alternative identifiers" tab
+                    </div>
+                  </div>
+                </div>
+              )}
+              placement="top"
+              arrow
+              classes={{ tooltip: classes.customTooltip }}
+            >
+              <img src={questionIcon} alt="Help" className={classes.questionIcon} />
+            </Tooltip>
+          </div>
+
           <Button
-            style={goToCartButton}
-            onClick={() => navigation('/fileCentricCart')}
+            style={viewInExploreButton}
+            onClick={() => {
+              window.location.href = `/explore?p_id=${participantId}&dbgap_accession=${studyId}`;
+            }}
+            disableRipple
           >
-            GO TO CART
-            <img src={cartIcon} alt="cart" style={{ paddingLeft: '30px' }} />
+            VIEW IN EXPLORE
           </Button>
+
+          <div className={classes.dropdownContainer} ref={dropdownRef}>
+            <Button
+              variant="outlined"
+              className={`${classes.button} ${dropdownOpen ? classes.buttonOpen : ''}`}
+              onClick={handleDropdownToggle}
+              disableRipple
+            >
+              <span>ADD TO OR GO TO CART</span>
+              {dropdownOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </Button>
+
+            {dropdownOpen && (
+              <div className={classes.dropdown}>
+                <div className={classes.dropdownList}>
+                  <div className={classes.dropdownItem}>
+                    <AddFileButtonView
+                      {...wrapperConfig.items[0]}
+                      buttonStyle={addAllFilesButton}
+                      rowID={row.id}
+                    />
+                  </div>
+                  <div className={classes.dropdownItem}>
+                    <AddFileButtonView
+                      {...wrapperConfig.items[1]}
+                      buttonStyle={addSelectedFilesButton}
+                      rowID={row.id}
+                      disabled={selectedIds.length === 0}
+                    />
+                  </div>
+                  <div className={classes.dropdownItem}>
+                    <Button
+                      style={goToCartButton}
+                      onClick={() => {
+                        window.location.href = '/#/fileCentricCart';
+                        setDropdownOpen(false);
+                      }}
+                      disableRipple
+                    >
+                      GO TO CART
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         <div className="footer" style={footer}>
-          All CPI mappings for a given study can be found in the "synonyms"
-          tab of the downloadable manifest,
-          available under the "Studies" tab in the Explore Dashboard.
-          For more information about CPI, click&nbsp;
-          <a style={link} href="https://participantindex-docs.ccdi.cancer.gov/" target="_blank" rel="noopener noreferrer">here</a>
+          <span>
+            For more information about CPI, click
+            {' '}
+            <a
+              style={link}
+              href="https://participantindex-docs.ccdi.cancer.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              here
+            </a>
+            .
+          </span>
         </div>
       </Box>
     </Modal>

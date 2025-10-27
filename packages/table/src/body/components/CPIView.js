@@ -5,7 +5,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { cellTypes } from '../../util/Types';
-import cpiIcon from './assets/CPI_icon.svg';
+import cpiIconSingle from './assets/CPI_Icon_Single.svg';
+import cpiIconMulti from './assets/CPI_Icon_Multi.svg';
 import CPIModal from './CPIModal';
 
 /**
@@ -43,6 +44,9 @@ const CPIView = ({
   const internalData = cpiData.filter((e) => (e.data_type === 'internal'));
   const externalData = cpiData.filter((e) => (e.data_type === 'external'));
 
+  // Select icon based on data length
+  const cpiIcon = cpiData.length === 1 ? cpiIconSingle : cpiIconMulti;
+
   const handleModalOpen = () => {
     setModalOpen(true);
   };
@@ -65,7 +69,31 @@ const CPIView = ({
     position: 'relative',
     top: '5px',
     cursor: 'pointer',
+    display: 'inline-block',
   };
+
+  const badgeContainer = {
+    position: 'relative',
+    display: 'inline-block',
+  };
+
+  const getBadgeStyle = () => ({
+    position: 'absolute',
+    right: cpiData.length === 1 ? '-4px' : '-6px',
+    bottom: cpiData.length === 1 ? '0.5px' : '0px',
+    backgroundColor: '#07679C',
+    borderRadius: '4px',
+    minWidth: '12px',
+    height: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '0 3px',
+    fontSize: '9px',
+    fontWeight: 700,
+    color: 'white',
+    fontFamily: 'Poppins',
+  });
 
   return (
     <Typography className={cellTypes.CPI}>
@@ -117,12 +145,15 @@ const CPIView = ({
               }
             >
               <span style={icon}>
-                <img
-                  src={cpiIcon}
-                  height={21}
-                  width={23}
-                  alt="cpi-icon"
-                />
+                <span style={badgeContainer}>
+                  <img
+                    src={cpiIcon}
+                    height={21}
+                    width={23}
+                    alt="cpi-icon"
+                  />
+                  <span style={getBadgeStyle()}>{cpiData.length}</span>
+                </span>
               </span>
             </Tooltip>
           </>
