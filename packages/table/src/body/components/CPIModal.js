@@ -708,7 +708,7 @@ const CPIModal = ({
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    zIndex: 1,
+                    zIndex: 9998,
                   }}
                   onClick={() => setDropdownOpen(false)}
                 />

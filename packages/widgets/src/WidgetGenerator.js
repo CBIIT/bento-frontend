@@ -19,7 +19,7 @@ const DEFAULT_CLASSES = makeStyles({
     margin: '20px auto 20px auto',
   },
   paddedTitle: {
-    margin: '32px 32px 0px 15px',
+    margin: '32px 32px 0px 20px',
     display: 'flex',
     alignItems: 'center',
   },
