@@ -278,31 +278,10 @@ const CPIModal = ({
   ];
 
   const handleDownloadCSV = () => {
-    // Define CSV column order (different from table display order)
-    const csvColumnOrder = [
-      {
-        dataField: 'repository_of_synonym_id',
-        header: 'repository_of_synonym_id',
-      },
-      {
-        dataField: 'associated_id',
-        header: 'associated_id',
-      },
-      {
-        dataField: 'domain_description',
-        header: 'domain_description',
-      },
-      {
-        dataField: 'domain_category',
-        header: 'domain_category',
-      },
-      {
-        dataField: 'data_location',
-        header: 'data_location',
-      },
-    ];
+    // Use the same column order and headers as the table display
+    const csvColumnOrder = displayColumns;
 
-    // Get the table data using CSV column order
+    // Get the table data using the same column order as table
     const csvData = data.map((dataRow) => csvColumnOrder.map((column) => {
       const value = dataRow[column.dataField];
       // Escape commas and quotes in CSV
@@ -312,7 +291,7 @@ const CPIModal = ({
       return value || '';
     }));
 
-    // Create CSV headers using CSV column order
+    // Create CSV headers using the same headers as table
     const headers = csvColumnOrder.map((column) => column.header).join(',');
 
     // Create CSV content
@@ -332,23 +311,6 @@ const CPIModal = ({
     link.click();
     document.body.removeChild(link);
   };
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
-
-    if (dropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [dropdownOpen]);
 
   const wrapperConfig = {
     container: 'buttons',
@@ -738,37 +700,50 @@ const CPIModal = ({
             </Button>
 
             {dropdownOpen && (
-              <div className={classes.dropdown}>
-                <div className={classes.dropdownList}>
-                  <div className={classes.dropdownItem}>
-                    <AddFileButtonView
-                      {...wrapperConfig.items[0]}
-                      buttonStyle={addAllFilesButton}
-                      rowID={row.id}
-                    />
-                  </div>
-                  <div className={classes.dropdownItem}>
-                    <AddFileButtonView
-                      {...wrapperConfig.items[1]}
-                      buttonStyle={addSelectedFilesButton}
-                      rowID={row.id}
-                      disabled={selectedIds.length === 0}
-                    />
-                  </div>
-                  <div className={classes.dropdownItem}>
-                    <Button
-                      style={goToCartButton}
-                      onClick={() => {
-                        window.location.href = '/#/fileCentricCart';
-                        setDropdownOpen(false);
-                      }}
-                      disableRipple
-                    >
-                      GO TO CART
-                    </Button>
+              <>
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 1,
+                  }}
+                  onClick={() => setDropdownOpen(false)}
+                />
+                <div className={classes.dropdown}>
+                  <div className={classes.dropdownList}>
+                    <div className={classes.dropdownItem}>
+                      <AddFileButtonView
+                        {...wrapperConfig.items[0]}
+                        buttonStyle={addAllFilesButton}
+                        rowID={row.id}
+                      />
+                    </div>
+                    <div className={classes.dropdownItem}>
+                      <AddFileButtonView
+                        {...wrapperConfig.items[1]}
+                        buttonStyle={addSelectedFilesButton}
+                        rowID={row.id}
+                        disabled={selectedIds.length === 0}
+                      />
+                    </div>
+                    <div className={classes.dropdownItem}>
+                      <Button
+                        style={goToCartButton}
+                        onClick={() => {
+                          window.location.href = '/fileCentricCart';
+                          setDropdownOpen(false);
+                        }}
+                        disableRipple
+                      >
+                        GO TO CART
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
         </div>
