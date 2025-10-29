@@ -50,6 +50,8 @@ export default () => ({
     fontSize: '11px',
     marginRight: '12px',
     marginLeft: '24px',
+    display: 'flex',
+    alignItems: 'center',
   },
   sortGroupItem: {
     cursor: 'pointer',
@@ -58,8 +60,6 @@ export default () => ({
     // marginRight: '32px',
   },
   NonSortGroup: {
-    marginBottom: '5px',
-    borderTop: '1px solid #B1B1B1',
     textAlign: 'left',
     paddingLeft: '10px',
   },

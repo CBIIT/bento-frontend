@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable object-curly-newline */
 import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
 import { withStyles, Slider, Typography, Box } from '@material-ui/core';
 // import styles from './SliderStyle';
 import { silderTypes } from '../Types';
@@ -100,15 +101,21 @@ const SliderView = ({
             onChangeCommitted={
               isBoundsInvalid ? undefined : (event, value) => handleChangeCommittedSlider(value)
             }
-            value={[...sliderValue]}
+            value={maxUpperBound === 0 ? [0, 0] : [...sliderValue]}
             valueLabelDisplay="auto"
             min={minLowerBound}
-            max={maxUpperBound}
+            max={maxUpperBound === 0 ? undefined : maxUpperBound}
             classes={{
-              colorPrimary: classes.colorPrimary,
-              rail: classes.rail,
-              thumb: isValid() ? classes.thumb : classes.invalidThumb,
-              track: isValid() ? classes.track : classes.invalidTrack,
+              colorPrimary: clsx(`colorPrimary${facet.section}`, classes.colorPrimary),
+              rail: clsx(`rail${facet.section}`, classes.rail),
+              thumb: clsx(`thumb${facet.section}`, {
+                isThumbValid: isValid(),
+                invalidThumb: !isValid(),
+              }),
+              track: clsx(`track${facet.section}`, {
+                isTrackValid: isValid(),
+                invalidTrack: !isValid(),
+              }),
             }}
           />
         </div>
@@ -117,7 +124,7 @@ const SliderView = ({
             {minLowerBound.toLocaleString()}
           </Typography>
           <Typography className={classes.upperBound}>
-            {maxUpperBound.toLocaleString()}
+            {maxUpperBound !== 0 ? maxUpperBound.toLocaleString() : '.'}
           </Typography>
         </Box>
       </div>
