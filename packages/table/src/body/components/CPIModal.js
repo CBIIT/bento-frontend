@@ -235,11 +235,14 @@ const CPIModal = ({
 
   const participantId = row.participant_id;
   const studyId = row.study_id;
-  const cpiData = row.cpi_data;
 
   useEffect(() => {
-    setData(row.cpi_data);
-  }, [row]);
+    // Reset all state when row or open status changes
+    setData(row.cpi_data || []);
+    setIds([]);
+    setSelectAll(false);
+    setDropdownOpen(false);
+  }, [row, open]);
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -319,7 +322,7 @@ const CPIModal = ({
     clsName: 'container_header',
     items: [
       {
-        participantIds: cpiData,
+        participantIds: data,
         title: 'ADD ALL FILES FOR PARTICIPANT',
         clsName: 'add_all_button',
         role: 'ADD_ALL_FILES',

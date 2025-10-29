@@ -102,6 +102,7 @@ const CPIView = ({
         ? (
           <>
             <CPIModal
+              key={`${row.id}-${row.participant_id}`}
               row={row}
               open={modalOpen}
               onClose={handleModalClose}
