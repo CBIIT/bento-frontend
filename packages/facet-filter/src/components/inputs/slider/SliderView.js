@@ -124,7 +124,7 @@ const SliderView = ({
             {minLowerBound.toLocaleString()}
           </Typography>
           <Typography className={classes.upperBound}>
-            {maxUpperBound !== 0 ? maxUpperBound.toLocaleString() : '.'}
+            {(minLowerBound === 0 && maxUpperBound === 0) ? '-' : (maxUpperBound !== 0 ? maxUpperBound.toLocaleString() : '.')}
           </Typography>
         </Box>
       </div>
