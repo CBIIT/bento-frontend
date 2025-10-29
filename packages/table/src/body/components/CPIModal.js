@@ -235,6 +235,7 @@ const CPIModal = ({
 
   const participantId = row.participant_id;
   const studyId = row.study_id;
+  const cpiData = row.cpi_data;
 
   useEffect(() => {
     setData(row.cpi_data);
@@ -318,7 +319,7 @@ const CPIModal = ({
     clsName: 'container_header',
     items: [
       {
-        participantIds: data,
+        participantIds: cpiData,
         title: 'ADD ALL FILES FOR PARTICIPANT',
         clsName: 'add_all_button',
         role: 'ADD_ALL_FILES',
@@ -681,7 +682,6 @@ const CPIModal = ({
           <Button
             style={viewInExploreButton}
             onClick={() => {
-              onClose();
               window.location.href = `/explore?p_id=${participantId}&dbgap_accession=${studyId}`;
             }}
             disableRipple
@@ -734,8 +734,8 @@ const CPIModal = ({
                       <Button
                         style={goToCartButton}
                         onClick={() => {
-                          onClose();
                           window.location.href = '/fileCentricCart';
+                          setDropdownOpen(false);
                         }}
                         disableRipple
                       >
