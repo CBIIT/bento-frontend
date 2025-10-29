@@ -681,6 +681,7 @@ const CPIModal = ({
           <Button
             style={viewInExploreButton}
             onClick={() => {
+              onClose();
               window.location.href = `/explore?p_id=${participantId}&dbgap_accession=${studyId}`;
             }}
             disableRipple
@@ -733,8 +734,8 @@ const CPIModal = ({
                       <Button
                         style={goToCartButton}
                         onClick={() => {
+                          onClose();
                           window.location.href = '/fileCentricCart';
-                          setDropdownOpen(false);
                         }}
                         disableRipple
                       >
