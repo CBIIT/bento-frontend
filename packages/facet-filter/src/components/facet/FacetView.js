@@ -89,18 +89,7 @@ const FacetView = ({
             </div>
           </CustomAccordionSummary>
         )}
-        {
-          (facetValues.length === 0)
-          && (
-          <div className={classes.NonSortGroup}>
-            <span
-              className={classes.NonSortGroupItem}
-            >
-              No data for this field
-            </span>
-          </div>
-          )
-        }
+
         {
           (facet.type === InputTypes.SLIDER || facetValues.length > 0)
           && (
@@ -110,7 +99,7 @@ const FacetView = ({
           >
             <span className={classes.sortGroupIcon}>
               <Icon
-                style={{ fontSize: 10 }}
+                style={{ fontSize: 14 }}
                 onClick={onClearSection}
               >
                 <img
@@ -120,6 +109,17 @@ const FacetView = ({
                   alt="clear-icon"
                 />
               </Icon>
+
+              {facetValues.length === 0
+              && (
+              <div className={classes.NonSortGroup}>
+                <span
+                  className={classes.NonSortGroupItem}
+                >
+                  No data for this field
+                </span>
+              </div>
+              )}
             </span>
             { (facet.type === InputTypes.CHECKBOX && facetValues.length > 0)
           && (

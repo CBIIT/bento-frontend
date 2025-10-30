@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable object-curly-newline */
 import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
 import { withStyles, Slider, Typography, Box } from '@material-ui/core';
 // import styles from './SliderStyle';
 import { silderTypes } from '../Types';
@@ -15,11 +16,16 @@ const SliderView = ({
   filterState,
 }) => {
   const { minLowerBound, maxUpperBound, quantifier, datafield, facetValues } = facet;
+  // Check if bounds are invalid (both are 0)
+  const isBoundsInvalid = !facetValues
+    || facetValues.length === 0
+    || (facetValues[0] === 0 && facetValues[1] === 0);
   const lowerBoundValue = facetValues[0];
   const upperBoundValue = facetValues[1];
 
   // Determines whether the lower bound and upper bound values are valid
   const isValid = () => {
+    if (isBoundsInvalid) return false;
     const checks = [
       lowerBoundValue <= upperBoundValue,
       lowerBoundValue >= minLowerBound,
@@ -66,6 +72,7 @@ const SliderView = ({
               maxUpperBound={maxUpperBound}
               type={silderTypes.INPUT_MIN}
               onInputChange={handleChangeCommittedSlider}
+              disabled={isBoundsInvalid}
             />
           </div>
           <div className={classes.maxValue}>
@@ -80,6 +87,7 @@ const SliderView = ({
               maxUpperBound={maxUpperBound}
               type={silderTypes.INPUT_MAX}
               onInputChange={handleChangeCommittedSlider}
+              disabled={isBoundsInvalid}
             />
           </div>
         </div>
@@ -87,18 +95,27 @@ const SliderView = ({
           {/* Change to red if invalid range */}
           <Slider
             disableSwap
+            disabled={isBoundsInvalid}
             getAriaValueText={valuetext}
-            onChange={handleChangeSlider}
-            onChangeCommitted={(event, value) => handleChangeCommittedSlider(value)}
-            value={[...sliderValue]}
+            onChange={isBoundsInvalid ? undefined : handleChangeSlider}
+            onChangeCommitted={
+              isBoundsInvalid ? undefined : (event, value) => handleChangeCommittedSlider(value)
+            }
+            value={maxUpperBound === 0 ? [0, 0] : [...sliderValue]}
             valueLabelDisplay="auto"
             min={minLowerBound}
-            max={maxUpperBound}
+            max={maxUpperBound === 0 ? undefined : maxUpperBound}
             classes={{
-              colorPrimary: classes.colorPrimary,
-              rail: classes.rail,
-              thumb: isValid() ? classes.thumb : classes.invalidThumb,
-              track: isValid() ? classes.track : classes.invalidTrack,
+              colorPrimary: clsx(`colorPrimary${facet.section}`, classes.colorPrimary),
+              rail: clsx(`rail${facet.section}`, classes.rail),
+              thumb: clsx(`thumb${facet.section}`, {
+                isThumbValid: isValid(),
+                invalidThumb: !isValid(),
+              }),
+              track: clsx(`track${facet.section}`, {
+                isTrackValid: isValid(),
+                invalidTrack: !isValid(),
+              }),
             }}
           />
         </div>
@@ -107,7 +124,7 @@ const SliderView = ({
             {minLowerBound.toLocaleString()}
           </Typography>
           <Typography className={classes.upperBound}>
-            {maxUpperBound.toLocaleString()}
+            {(minLowerBound === 0 && maxUpperBound === 0) ? '-' : (maxUpperBound !== 0 ? maxUpperBound.toLocaleString() : '.')}
           </Typography>
         </Box>
       </div>

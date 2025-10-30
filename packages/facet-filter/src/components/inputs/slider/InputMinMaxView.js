@@ -14,8 +14,10 @@ function InputMinMaxView({
   maxUpperBound,
   onInputChange,
   type,
+  disabled = false,
 }) {
   const handleInputChange = (e) => {
+    if (disabled) return;
     const minMaxRange = [lowerBoundVal, upperBoundVal];
     if (type === silderTypes.INPUT_MIN) {
       minMaxRange[0] = Number(e.target.value);
@@ -32,6 +34,7 @@ function InputMinMaxView({
       id={`slider_${type}`}
       className={classes[`slider_${type}`]}
       onChange={(event) => handleInputChange(event)}
+      disabled={disabled}
       inputProps={{
         step: 1,
         min: minLowerBound,
