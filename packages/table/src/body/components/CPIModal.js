@@ -223,6 +223,7 @@ const CPIModal = ({
   open,
   onClose,
   row,
+  navigation,
 }) => {
   const classes = useStyles();
   // const [sortBy, setSortBy] = useState('associated_id');
@@ -685,7 +686,8 @@ const CPIModal = ({
           <Button
             style={viewInExploreButton}
             onClick={() => {
-              window.location.href = `/explore?p_id=${participantId}&dbgap_accession=${studyId}`;
+              onClose();
+              navigation(`/explore?p_id=${participantId}&dbgap_accession=${studyId}`);
             }}
             disableRipple
           >
@@ -737,8 +739,9 @@ const CPIModal = ({
                       <Button
                         style={goToCartButton}
                         onClick={() => {
-                          window.location.href = '/fileCentricCart';
+                          onClose();
                           setDropdownOpen(false);
+                          navigation('/fileCentricCart');
                         }}
                         disableRipple
                       >

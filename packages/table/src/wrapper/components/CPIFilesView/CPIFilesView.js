@@ -109,8 +109,6 @@ const CPIFilesComponent = (props) => {
   */
   const addAllFiles = () => {
     let toAdd = [];
-    console.log('participantIds', participantIds);
-    console.log('rowID', rowID);
     if (btnType === 'ADD_ALL_FILES') {
       participantIds.forEach((e) => {
         if (e.data_type === 'internal' && e.p_id) {
