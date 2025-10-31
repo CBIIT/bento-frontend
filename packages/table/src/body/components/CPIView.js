@@ -30,10 +30,13 @@ const CPIView = ({
       backgroundColor: 'white',
       border: '1px solid black',
       color: 'black',
-      font: 'Poppins',
+      fontFamily: 'Poppins',
       fontWeight: 400,
+      fontStyle: 'Regular',
       fontSize: '13px',
       lineHeight: '17.5px',
+      letterSpacing: '-0.01em',
+      padding: '10px',
     },
   }));
 
@@ -62,6 +65,15 @@ const CPIView = ({
     cursor: 'pointer',
     padding: 0,
     marginLeft: '3px',
+  };
+
+  const italicText = {
+    fontFamily: 'Poppins',
+    fontWeight: 400,
+    fontStyle: 'italic',
+    fontSize: '13px',
+    lineHeight: '19px',
+    letterSpacing: '-0.01em',
   };
 
   const icon = {
@@ -123,25 +135,34 @@ const CPIView = ({
               }}
               classes={{ arrow: classes.arrow, tooltip: classes.tooltip }}
               title={
-                (externalData.length && internalData.length === 0
+                (externalData.length === 1 && internalData.length === 0
                   ? (
                     <div>
-                      All mapped identifiers in the CCDI Participant Index (CPI) are available
+                      dbGaP identifier mapped in the CCDI Participant Index (CPI) is available
                       <span role="button" onClick={handleModalOpen} tabIndex={0} style={button}>here.</span>
                     </div>
                   )
-                  : (
-                    <div>
-                      <div style={{ marginBottom: '3px' }}>Identifier mapped in CCDI Hub:</div>
-                      {internalData.map((e) => (
-                        <div>{`${e.associated_id}, ${e.repository_of_synonym_id}`}</div>
-                      ))}
-                      <p>
-                        All mapped identifiers in the CCDI Participant Index (CPI) are available
+                  : externalData.length > 1 && internalData.length === 0
+                    ? (
+                      <div>
+                        Multiple alternative identifiers mapped in the
+                        CCDI Participant Index (CPI) are available
                         <span role="button" onClick={handleModalOpen} tabIndex={0} style={button}>here.</span>
-                      </p>
-                    </div>
-                  )
+                      </div>
+                    )
+                    : (
+                      <div>
+                        <div style={{ marginBottom: '6px' }}>This participant has more than one identifier in CCDI Hub studies:</div>
+                        {internalData.map((e) => (
+                          <div key={e.associated_id} style={italicText}>{`${e.associated_id}, ${e.repository_of_synonym_id}`}</div>
+                        ))}
+                        <div style={{ marginTop: '6px' }}>
+                          Additional alternative identifiers mapped in the
+                          CCDI Participant Index (CPI) for this participant are available
+                          <span role="button" onClick={handleModalOpen} tabIndex={0} style={button}>here.</span>
+                        </div>
+                      </div>
+                    )
                 )
               }
             >
