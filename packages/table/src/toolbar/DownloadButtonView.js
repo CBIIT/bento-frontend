@@ -90,7 +90,7 @@ const DownloadButton = ({
       const queryResponse = data[statsQueryName];
       return {
         totalCount: queryResponse[statsField],
-        pageSize: queryResponse.pageSize || downloadLimit,
+        pageSize: downloadLimit || queryResponse.pageSize,
       };
     }));
   }
