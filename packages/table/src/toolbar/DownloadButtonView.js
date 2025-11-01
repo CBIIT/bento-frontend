@@ -90,7 +90,7 @@ const DownloadButton = ({
       const queryResponse = data[statsQueryName];
       return {
         totalCount: queryResponse[statsField],
-        pageSize: downloadLimit || queryResponse.pageSize,
+        pageSize: downloadLimit ?? queryResponse.pageSize,
       };
     }));
   }
@@ -260,9 +260,9 @@ const DownloadButton = ({
 
       <Tooltip title={isDownloading ? 'Download in progress...' : (table.downloadButtonTooltipText || 'Download filtered results')}>
         {
-          count !== 0 && !isDownloading
+          count !== 0
             ? (
-              <IconButton onClick={handleClickButton} style={{ padding: '0' }}>
+              <IconButton onClick={handleClickButton} style={{ padding: '0' }} disabled={isDownloading}>
                 <CloudDownload />
                 <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIcon} />
               </IconButton>
