@@ -26,6 +26,7 @@ const DownloadButton = ({
   buttonConfig,
 }) => {
   const [listDisplay, setListDisplay] = useState('none');
+  const [isDownloading, setIsDownloading] = useState(false);
   const dropdownSelection = useRef(null);
   const useOutsideAlerter = (ref) => {
     useEffect(() => {
@@ -47,7 +48,7 @@ const DownloadButton = ({
   }
 
   const client = useApolloClient();
-  const downloadLimit = buttonConfig?.downloadLimit || 10000;
+  const downloadLimit = buttonConfig?.downloadLimit || 5000;
 
   function cleanData(result) {
     function hasHTMLTags(str) {
@@ -108,6 +109,7 @@ const DownloadButton = ({
   }
 
   async function downloadFile(type) {
+    setIsDownloading(true);
     try {
       const { totalCount, pageSize } = await fetchCountWithRetry();
 
@@ -129,10 +131,13 @@ const DownloadButton = ({
       downloadData(cleanData(allData), table, table.downloadFileName, type);
     } catch (error) {
       console.error('Error fetching count:', error);
+    } finally {
+      setIsDownloading(false);
     }
   }
 
   async function downloadFileParallel(type, concurrency = 5) {
+    setIsDownloading(true);
     try {
       const { totalCount, pageSize } = await fetchCountWithRetry();
       const totalChunks = Math.ceil(totalCount / pageSize);
@@ -169,28 +174,33 @@ const DownloadButton = ({
       downloadData(cleanData(allData), table, table.downloadFileName, type);
     } catch (error) {
       console.error('Error fetching count:', error);
+    } finally {
+      setIsDownloading(false);
     }
   }
 
   const downloadTableCSV = useCallback(() => {
+    if (isDownloading) return;
     if (table.asyncDownload) {
       downloadFileParallel('csv');
     } else {
       downloadFile('csv');
     }
     setListDisplay('none');
-  }, [queryVariables, table]);
+  }, [queryVariables, table, isDownloading]);
 
   const downloadTableJson = useCallback(() => {
+    if (isDownloading) return;
     if (table.asyncDownload) {
       downloadFileParallel('json');
     } else {
       downloadFile('json');
     }
     setListDisplay('none');
-  }, [queryVariables, table]);
+  }, [queryVariables, table, isDownloading]);
 
   const handleClickButton = () => {
+    if (isDownloading) return;
     if (listDisplay === 'none') {
       setListDisplay('block');
     } else {
@@ -246,11 +256,11 @@ const DownloadButton = ({
   const classes = useStyles();
 
   return (
-    <div className={classes.dropdown}>
+    <div className={classes.dropdown} style={isDownloading ? { cursor: 'wait' } : {}}>
 
-      <Tooltip title={table.downloadButtonTooltipText || 'Download filtered results'}>
+      <Tooltip title={isDownloading ? 'Download in progress...' : (table.downloadButtonTooltipText || 'Download filtered results')}>
         {
-          count !== 0
+          count !== 0 && !isDownloading
             ? (
               <IconButton onClick={handleClickButton} style={{ padding: '0' }}>
                 <CloudDownload />
