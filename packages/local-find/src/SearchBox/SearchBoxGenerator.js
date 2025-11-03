@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useRef, useState,
+} from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -64,6 +66,9 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const [open, setOpen] = useState(false);
       const [value, setValue] = useState(autocomplete || []);
       const [options, setOptions] = useState([]);
+      const [visibleLimit, setVisibleLimit] = useState(200);
+      const [filteredOptions, setFilteredOptions] = useState([]);
+      const [inputValue, setInputValue] = useState('');
 
       const dataLoaded = useRef(false);
       const loading = open && (options.length === 0 || dataLoaded.current === false);
@@ -78,9 +83,50 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
           const opts = await getSuggestions(searchType);
 
           setOptions(opts);
+          setFilteredOptions(opts);
           dataLoaded.current = opts && opts.length > 0;
         })();
       }, [open]);
+
+      // Filter options based on input value
+      useEffect(() => {
+        if (!inputValue) {
+          setFilteredOptions(options);
+        } else {
+          const filtered = options.filter((option) => {
+            const titleMatch = option.title?.toLowerCase().includes(inputValue.toLowerCase());
+            const synonymMatch = option.synonym?.toString().toLowerCase().includes(
+              inputValue.toLowerCase(),
+            );
+            return titleMatch || synonymMatch;
+          });
+          setFilteredOptions(filtered);
+        }
+        // Reset visible limit when filtering
+        setVisibleLimit(200);
+      }, [inputValue, options]);
+
+      // Progressive loading: load more items every 500ms
+      useEffect(() => {
+        if (!open || visibleLimit >= filteredOptions.length || filteredOptions.length === 0) {
+          return undefined;
+        }
+
+        const interval = setInterval(() => {
+          setVisibleLimit((prev) => Math.min(prev + 400, filteredOptions.length));
+        }, 500); // Load 400 more items every 500ms
+
+        return () => {
+          clearInterval(interval);
+        };
+      }, [open, visibleLimit, filteredOptions.length]);
+
+      // Reset visible limit when dropdown opens or input changes
+      useEffect(() => {
+        if (open) {
+          setVisibleLimit(200);
+        }
+      }, [open, inputValue]);
 
       /**
        * onChange callback for Autocomplete
@@ -139,15 +185,15 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               open={open}
               freeSolo={false}
               noOptionsText={noOptionsText}
-              options={options}
+              options={filteredOptions.slice(0, visibleLimit)}
               loading={loading}
-              filterOptions={(filterOptions, { inputValue }) => filterOptions.filter((option) => {
-                const titleMatch = option.title?.toLowerCase().includes(inputValue.toLowerCase());
-                const synonymMatch = option.synonym?.toString().toLowerCase().includes(
-                  inputValue.toLowerCase(),
-                );
-                return titleMatch || synonymMatch;
-              })}
+              filterOptions={(x) => x}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
+              }}
+              ListboxProps={{
+                style: { maxHeight: '300px', overflow: 'auto' },
+              }}
               onOpen={() => {
                 setOpen(true);
               }}
@@ -160,21 +206,17 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               renderOption={(option) => {
                 const { type, title, synonym } = option;
                 return (
-                  <>
-                    <div style={{ }}>
-                      {type === 'associatedIds' ? (
-                        <>
-                          <span className={classes.filterName}>Synonym</span>
-                          {' '}
-                          { synonym }
-                        </>
-                      ) : (
-                        <>
-                          { title }
-                        </>
-                      )}
-                    </div>
-                  </>
+                  <div>
+                    {type === 'associatedIds' ? (
+                      <>
+                        <span className={classes.filterName}>Synonym</span>
+                        {' '}
+                        {synonym}
+                      </>
+                    ) : (
+                      title
+                    )}
+                  </div>
                 );
               }}
               renderInput={(params) => (
