@@ -48,7 +48,7 @@ const ExtendedView = ({
             <div className="downloadArea" style={downloadAreaStyle}>
               <CustomPagination
                 customTheme={customTheme.tblTopPgn}
-                rowsPerPageOptions={[10, 25, 50, 100]}
+                rowsPerPageOptions={table.rowsPerPageOptions || [10, 25, 50, 100]}
                 component="div"
                 count={table.totalRowCount || 0}
                 rowsPerPage={table.rowsPerPage || 10}

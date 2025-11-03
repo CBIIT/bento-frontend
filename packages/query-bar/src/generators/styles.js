@@ -3,9 +3,8 @@
  */
 export default () => ({
   queryWrapper: {
-    height: '120px',
     backgroundColor: '#f1f1f1',
-    padding: '14px 14px 0px 35px',
+    padding: '5px 15px 15px 15px',
     overflowY: 'auto',
   },
   queryContainer: {
