@@ -227,13 +227,13 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
                   x="50%"
                   y="50%"
                   textAnchor="middle"
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight="400"
-                  fontFamily="Nunito"
+                  fontFamily="Open Sans"
                 >
-                  <tspan x="50%" dy="-18">No data</tspan>
-                  <tspan x="50%" dy="18">returned for</tspan>
-                  <tspan x="50%" dy="18">this search</tspan>
+                  <tspan x="51%" dy="-18">No data</tspan>
+                  <tspan x="51%" dy="18">returned for</tspan>
+                  <tspan x="51%" dy="18">this search</tspan>
                 </text>
               </PieChart>
             </ResponsiveContainer>
