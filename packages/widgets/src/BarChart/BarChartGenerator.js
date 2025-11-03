@@ -115,29 +115,60 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         return null;
       };
 
-      return (
-        <>
-          <ResponsiveContainer width={width} height={height}>
-            <BarChart
-              data={data}
-              ref={currentChart}
-            >
-              <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
-              <XAxis dataKey="group" />
-              <YAxis tickFormatter={(tick) => tick.toLocaleString()} />
-              <Tooltip cursor={false} content={<CustomTooltip />} />
-              <Bar dataKey="subjects">
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={DEFAULT_COLORS_ODD[index % DEFAULT_COLORS_ODD.length]}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </>
-      );
+      return data.length === 0
+        ? (
+          <>
+            <ResponsiveContainer width={width} height={height}>
+              <BarChart
+                data={[{ group: '', subjects: 0 }]}
+                ref={currentChart}
+              >
+                <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
+                <XAxis dataKey="group" tick={false} />
+                <YAxis tick={false} />
+                <Bar dataKey="subjects">
+                  <Cell fill="transparent" />
+                </Bar>
+                <text
+                  x="50%"
+                  y="50%"
+                  textAnchor="middle"
+                  fontSize="14px"
+                  fontWeight="400"
+                  fontFamily="Open Sans"
+                  fill="#0F253A"
+                >
+                  <tspan x="57.5%" dy="-30">No data</tspan>
+                  <tspan x="57.5%" dy="18">returned for</tspan>
+                  <tspan x="57.5%" dy="18">this search</tspan>
+                </text>
+              </BarChart>
+            </ResponsiveContainer>
+          </>
+        )
+        : (
+          <>
+            <ResponsiveContainer width={width} height={height}>
+              <BarChart
+                data={data}
+                ref={currentChart}
+              >
+                <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
+                <XAxis dataKey="group" />
+                <YAxis tickFormatter={(tick) => tick.toLocaleString()} />
+                <Tooltip cursor={false} content={<CustomTooltip />} />
+                <Bar dataKey="subjects">
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={DEFAULT_COLORS_ODD[index % DEFAULT_COLORS_ODD.length]}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </>
+        );
     },
   };
 };
