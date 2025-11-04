@@ -48,7 +48,7 @@ const DownloadButton = ({
   }
 
   const client = useApolloClient();
-  const downloadLimit = buttonConfig?.downloadLimit || 5000;
+  const downloadLimit = buttonConfig?.downloadLimit;
 
   function cleanData(result) {
     function hasHTMLTags(str) {
@@ -90,7 +90,7 @@ const DownloadButton = ({
       const queryResponse = data[statsQueryName];
       return {
         totalCount: queryResponse[statsField],
-        pageSize: downloadLimit ?? queryResponse.pageSize,
+        pageSize: downloadLimit || queryResponse.pageSize || 5000,
       };
     }));
   }
