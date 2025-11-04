@@ -16,7 +16,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
 import { InputTypes } from '../inputs/Types';
-import styles from './FacetStyle';
+import styles from './NewFacetStyle';
 import FilterItems from '../inputs/FilterItems';
 import SearchFilterItems from '../inputs/SearchFilterItems';
 import { sortType, sortBySection } from '../../utils/Sort';

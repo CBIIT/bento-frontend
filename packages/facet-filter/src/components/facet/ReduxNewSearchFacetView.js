@@ -8,9 +8,9 @@ import {
   unknownAgesChange,
 } from '../../store/actions/Actions';
 // import FacetView from './FacetView';
-import SearchFacetView from './SearchFacetView';
+import NewSearchFacetView from './NewSearchFacetView';
 
-const ReduxSearchFacetView = ((props) => <SearchFacetView {...props} />);
+const ReduxNewSearchFacetView = ((props) => <NewSearchFacetView {...props} />);
 
 const mapStateToProps = (state, ownProps) => ({
   searchText: state.statusReducer?.searchState[ownProps.facet.datafield] || '',
@@ -32,4 +32,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReduxSearchFacetView);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxNewSearchFacetView);

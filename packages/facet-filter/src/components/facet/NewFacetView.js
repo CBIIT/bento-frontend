@@ -10,15 +10,17 @@ import {
   withStyles,
   Icon,
 } from '@material-ui/core';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import clsx from 'clsx';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
 import { InputTypes } from '../inputs/Types';
-import styles from './FacetStyle';
+import styles from './NewFacetStyle';
 import FilterItems from '../inputs/FilterItems';
 import { sortType } from '../../utils/Sort';
 import clearIcon from './assets/clearIcon.svg';
 
-const FacetView = ({
+const NewFacetView = ({
   classes,
   facet,
   onClearFacetSection,
@@ -26,6 +28,8 @@ const FacetView = ({
   onUnknownAgesChange,
   CustomView,
   queryParams,
+  timeUnitState,
+  onTimeUnitChange,
   unknownAgesState,
 }) => {
   const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
@@ -44,8 +48,17 @@ const FacetView = ({
   // }, [autoComplete, upload]);
 
   const [sortBy, setSortBy] = useState(null);
+  const timeUnit = timeUnitState[facet.datafield] || 'days';
+  const unknownAges = unknownAgesState?.[facet.datafield] || 'include';
+  const isOnlyUnknownAges = unknownAges === 'only';
   const onSortFacet = (type) => {
     setSortBy(type);
+  };
+
+  const handleTimeUnitChange = (event, newUnit) => {
+    if (newUnit !== null) {
+      onTimeUnitChange(facet.datafield, newUnit);
+    }
   };
 
   const onClearSection = () => {
@@ -83,9 +96,9 @@ const FacetView = ({
 
   // Check if facet is active based on selected items or unknown ages selection
   const hasSelectedItems = [...selectedItems].length > 0;
-  const unknownAges = unknownAgesState?.[facet.datafield] || 'include';
   const hasUnknownAgesSelection = unknownAges !== 'include';
   const isActiveFacet = hasSelectedItems || (type === InputTypes.SLIDER && hasUnknownAgesSelection);
+
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
   return (
     <>
@@ -150,6 +163,39 @@ const FacetView = ({
                 />
               </Icon>
             </span>
+            { facet.type === InputTypes.SLIDER && (
+              <ToggleButtonGroup
+                value={timeUnit}
+                exclusive
+                disabled={isOnlyUnknownAges}
+                onChange={handleTimeUnitChange}
+                aria-label="time unit"
+                className={classes.timeUnitToggle}
+              >
+                <ToggleButton
+                  value="days"
+                  aria-label="days"
+                  disabled={isOnlyUnknownAges}
+                  classes={{
+                    root: classes.toggleButton,
+                    selected: classes.toggleButtonSelected,
+                  }}
+                >
+                  DAYS
+                </ToggleButton>
+                <ToggleButton
+                  value="years"
+                  aria-label="years"
+                  disabled={isOnlyUnknownAges}
+                  classes={{
+                    root: classes.toggleButton,
+                    selected: classes.toggleButtonSelected,
+                  }}
+                >
+                  YEARS
+                </ToggleButton>
+              </ToggleButtonGroup>
+            )}
             { (facet.type === InputTypes.CHECKBOX && facetValues.length > 0)
           && (
           <>
@@ -186,6 +232,7 @@ const FacetView = ({
           facet={facet}
           queryParams={queryParams}
           sortBy={sortBy}
+          timeUnit={timeUnit}
         />
       </Accordion>
       {
@@ -214,4 +261,4 @@ const FacetView = ({
   );
 };
 
-export default withStyles(styles)(FacetView);
+export default withStyles(styles)(NewFacetView);

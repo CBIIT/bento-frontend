@@ -1,0 +1,209 @@
+import SearchIcon from './assets/Search_Icon.svg';
+
+export default () => ({
+  expansionPanelDetailsRoot: {
+    display: 'block',
+  },
+  expansionPanelsideBarItem: {
+    boxShadow: 'none',
+    marginTop: '8px',
+    margin: 'auto',
+    position: 'initial',
+    '&:before': {
+      position: 'initial',
+    },
+  },
+  subSectionSummaryText: {
+    marginLeft: '10px',
+    lineHeight: 0,
+    color: '#323232',
+    fontFamily: 'Raleway',
+    fontSize: '13px',
+    fontWeight: 'bold',
+    letterSpacing: '0.25px',
+  },
+  sortGroup: {
+    paddingTop: '10px',
+    marginBottom: '5px',
+    textAlign: 'left',
+    marginLeft: '-5px',
+    borderTop: 'none',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  sortGroupIcon: {
+    cursor: 'pointer',
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    marginRight: '12px',
+    marginLeft: '24px',
+  },
+  sortGroupItem: {
+    cursor: 'pointer',
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    marginRight: '32px',
+  },
+  NonSortGroup: {
+    marginBottom: '5px',
+    borderTop: '1px solid #B1B1B1',
+    textAlign: 'left',
+    paddingLeft: '10px',
+  },
+  NonSortGroupItem: {
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    marginRight: '32px',
+  },
+  sortGroupItemCounts: {
+    cursor: 'pointer',
+    fontFamily: 'Nunito',
+    fontSize: '10px',
+    float: 'right',
+    marginRight: '10px',
+    marginTop: '5px',
+  },
+  highlight: {
+    color: '#b2c6d6',
+  },
+  showMore: {
+    textAlign: 'right',
+    paddingRight: '5px',
+    cursor: 'pointer',
+    fontSize: '10px',
+    width: '100%',
+  },
+  searchContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  searchBox: {
+    fontSize: '11px',
+    fontFamily: 'Nunito',
+    width: 'calc(100% - 26px)',
+    height: '30px',
+    marginTop: '12px',
+    borderRadius: '5px',
+    background: `url(${SearchIcon}) right 5px center no-repeat`,
+    marginLeft: '6px',
+    border: '1px solid',
+    padding: '5px',
+  },
+  searchBoxWithText: {
+    fontSize: '11px',
+    fontFamily: 'Nunito',
+    width: 'calc(100% - 26px)',
+    height: '30px',
+    marginTop: '12px',
+    borderRadius: '5px',
+    marginLeft: '6px',
+    border: '1px solid',
+    padding: '5px',
+  },
+  expandedDisplayButton: {
+    backgroundColor: '#4D889E !important',
+    color: 'white',
+    width: 'calc(100% - 26px)',
+    height: '30px',
+    marginBottom: '5px',
+    marginLeft: '6px',
+    borderRadius: '5px',
+    fontSize: '12px',
+    fontWeight: '600',
+    top: '8px',
+  },
+  clearTextButton: {
+    padding: '0px',
+    height: '20px',
+    position: 'absolute',
+    right: '14px',
+    top: '14px',
+  },
+  timeUnitToggle: {
+    marginLeft: '8px',
+    marginRight: '20px',
+    height: '32px',
+    '& .MuiToggleButtonGroup-grouped': {
+      borderRadius: '8px',
+      '&:not(:first-child)': {
+        marginLeft: '0px',
+        borderLeft: '1px solid #D3D3D3',
+        borderTopLeftRadius: '0px',
+        borderBottomLeftRadius: '0px',
+      },
+      '&:not(:last-child)': {
+        borderTopRightRadius: '0px',
+        borderBottomRightRadius: '0px',
+      },
+    },
+  },
+  toggleButton: (props) => {
+    const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
+      ? props.facet.style.colorPrimary.color
+      : '#3f51b5';
+
+    return {
+      fontFamily: 'Poppins !important',
+      fontSize: '11px !important',
+      fontWeight: '400 !important',
+      fontStyle: 'normal !important',
+      lineHeight: '100% !important',
+      letterSpacing: '0.02em !important',
+      padding: '6px 24px',
+      textTransform: 'uppercase !important',
+      border: '1px solid #D3D3D3',
+      borderRadius: '8px',
+      backgroundColor: '#EDEDED',
+      color: '#000000',
+      '& .MuiToggleButton-label': {
+        fontFamily: 'Poppins !important',
+        fontSize: '11px !important',
+        fontWeight: '400 !important',
+        lineHeight: '100% !important',
+        letterSpacing: '0.02em !important',
+        textTransform: 'uppercase !important',
+      },
+      '&:hover': {
+        backgroundColor: '#E0E0E0',
+      },
+      '&.Mui-disabled': {
+        backgroundColor: '#F5F5F5',
+        color: '#BDBDBD',
+        border: '1px solid #E0E0E0',
+        cursor: 'not-allowed',
+        '& .MuiToggleButton-label': {
+          color: '#BDBDBD',
+        },
+      },
+      '&.Mui-selected': {
+        backgroundColor: primaryColor,
+        color: '#FFFFFF',
+        '& .MuiToggleButton-label': {
+          fontFamily: 'Poppins !important',
+          fontSize: '11px !important',
+          fontWeight: '400 !important',
+          lineHeight: '100% !important',
+          letterSpacing: '0.02em !important',
+          textTransform: 'uppercase !important',
+        },
+        '&:hover': {
+          backgroundColor: primaryColor,
+        },
+      },
+    };
+  },
+  toggleButtonSelected: (props) => {
+    const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
+      ? props.facet.style.colorPrimary.color
+      : '#3f51b5';
+
+    return {
+      backgroundColor: primaryColor,
+      color: '#FFFFFF !important',
+      '&:hover': {
+        backgroundColor: primaryColor,
+      },
+    };
+  },
+});

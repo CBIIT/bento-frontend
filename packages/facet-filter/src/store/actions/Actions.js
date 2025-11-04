@@ -51,3 +51,19 @@ export const updateFilterState = (filterState) => ({
   type: sideBarActionTypes.UPDATE_FILTER_STATE,
   payload: filterState,
 });
+
+export const timeUnitChange = (datafield, timeUnit) => ({
+  type: sideBarActionTypes.TIME_UNIT_CHANGED,
+  payload: {
+    datafield,
+    timeUnit,
+  },
+});
+
+export const unknownAgesChange = (datafield, unknownAges) => ({
+  type: sideBarActionTypes.UNKNOWN_AGES_CHANGED,
+  payload: {
+    datafield,
+    unknownAges,
+  },
+});
