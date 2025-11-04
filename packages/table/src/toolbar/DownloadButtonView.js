@@ -23,8 +23,10 @@ const DownloadButton = ({
   count,
   queryVariables,
   table,
+  buttonConfig,
 }) => {
   const [listDisplay, setListDisplay] = useState('none');
+  const [isDownloading, setIsDownloading] = useState(false);
   const dropdownSelection = useRef(null);
   const useOutsideAlerter = (ref) => {
     useEffect(() => {
@@ -46,6 +48,7 @@ const DownloadButton = ({
   }
 
   const client = useApolloClient();
+  const downloadLimit = buttonConfig?.downloadLimit;
 
   function cleanData(result) {
     function hasHTMLTags(str) {
@@ -68,68 +71,136 @@ const DownloadButton = ({
     return cleanedResult;
   }
 
-  async function downloadSCSVFile() {
-    const {
-      query,
-      paginationAPIField,
-    } = table;
-
-    const result = await client.query({
-      query,
-      variables: {
-        ...queryVariables,
-        page: 0,
-        first: 10000,
-        order_by: table.sortBy,
-        sort_direction: table.sortOrder,
-      },
-    })
-      .then((response) => {
-        if (paginationAPIField && response && response.data) {
-          return response.data[paginationAPIField];
-        }
-        return response.data;
-      });
-
-    downloadData(cleanData(result), table, table.downloadFileName, 'csv');
+  // --- retry helper (recursive ESLINT no await-in-loop — we want this to be sequential) ---
+  async function retry(fn, retries = 3, attempt = 1) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt >= retries) throw err;
+      return retry(fn, retries, attempt + 1);
+    }
   }
 
-  async function downloadJsonFile() {
-    const {
-      query,
-      paginationAPIField,
-    } = table;
+  async function fetchCountWithRetry() {
+    const { statsQuery, statsQueryName, statsField } = table;
+    return retry(() => client.query({
+      query: statsQuery,
+      variables: queryVariables,
+    }).then(({ data }) => {
+      const queryResponse = data[statsQueryName];
+      return {
+        totalCount: queryResponse[statsField],
+        pageSize: downloadLimit || queryResponse.pageSize || 5000,
+      };
+    }));
+  }
 
-    const result = await client.query({
+  async function fetchDownloadWithRetry(variables) {
+    const { query, paginationAPIField } = table;
+    return retry(() => client.query({
       query,
-      variables: {
-        ...queryVariables,
-        page: 0,
-        first: 10000,
-        order_by: table.sortBy,
-        sort_direction: table.sortOrder,
-      },
-    })
-      .then((response) => {
-        if (paginationAPIField && response && response.data) {
-          return response.data[paginationAPIField];
+      variables,
+    }).then((response) => {
+      if (paginationAPIField && response && response.data) {
+        return response.data[paginationAPIField];
+      }
+      return response.data;
+    }));
+  }
+
+  async function downloadFile(type) {
+    setIsDownloading(true);
+    try {
+      const { totalCount, pageSize } = await fetchCountWithRetry();
+
+      let completedEntries = 0;
+      let allData = [];
+      while (completedEntries < totalCount) {
+        const variables = {
+          ...queryVariables,
+          offset: Math.floor(completedEntries / pageSize) * pageSize,
+          first: Math.min(pageSize, totalCount - completedEntries),
+          order_by: table.sortBy,
+          sort_direction: table.sortOrder,
+        };
+        // eslint-disable-next-line no-await-in-loop
+        const data = await fetchDownloadWithRetry(variables);
+        allData = allData.concat(data);
+        completedEntries += data.length;
+      }
+      downloadData(cleanData(allData), table, table.downloadFileName, type);
+    } catch (error) {
+      console.error('Error fetching count:', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  }
+
+  async function downloadFileParallel(type, concurrency = 5) {
+    setIsDownloading(true);
+    try {
+      const { totalCount, pageSize } = await fetchCountWithRetry();
+      const totalChunks = Math.ceil(totalCount / pageSize);
+      const results = new Array(totalChunks);
+
+      for (let i = 0; i < totalChunks; i += concurrency) {
+        const batch = [];
+
+        for (let j = i; j < Math.min(i + concurrency, totalChunks); j += 1) {
+          const offset = j * pageSize;
+          const first = Math.min(pageSize, totalCount - offset);
+
+          const variables = {
+            ...queryVariables,
+            offset,
+            first,
+            order_by: table.sortBy,
+            sort_direction: table.sortOrder,
+          };
+
+          batch.push(
+            fetchDownloadWithRetry(variables).then((data) => ({ index: j, data })),
+          );
         }
-        return response.data;
-      });
-    downloadData(cleanData(result), table, table.downloadFileName, 'json');
+
+        // eslint-disable-next-line no-await-in-loop
+        const batchResults = await Promise.all(batch);
+        batchResults.forEach(({ index, data }) => {
+          results[index] = data;
+        });
+      }
+
+      const allData = results.flat();
+      downloadData(cleanData(allData), table, table.downloadFileName, type);
+    } catch (error) {
+      console.error('Error fetching count:', error);
+    } finally {
+      setIsDownloading(false);
+    }
   }
 
   const downloadTableCSV = useCallback(() => {
-    downloadSCSVFile();
+    if (isDownloading) return;
+    if (table.asyncDownload) {
+      downloadFileParallel('csv');
+    } else {
+      downloadFile('csv');
+    }
     setListDisplay('none');
-  }, [queryVariables, table]);
+  }, [queryVariables, table, isDownloading]);
 
   const downloadTableJson = useCallback(() => {
-    downloadJsonFile();
+    if (isDownloading) return;
+    if (table.asyncDownload) {
+      downloadFileParallel('json');
+    } else {
+      downloadFile('json');
+    }
     setListDisplay('none');
-  }, [queryVariables, table]);
+  }, [queryVariables, table, isDownloading]);
 
   const handleClickButton = () => {
+    if (isDownloading) return;
     if (listDisplay === 'none') {
       setListDisplay('block');
     } else {
@@ -185,13 +256,13 @@ const DownloadButton = ({
   const classes = useStyles();
 
   return (
-    <div className={classes.dropdown}>
+    <div className={classes.dropdown} style={isDownloading ? { cursor: 'wait' } : {}}>
 
-      <Tooltip title={table.downloadButtonTooltipText || 'Download filtered results'}>
+      <Tooltip title={isDownloading ? 'Download in progress...' : (table.downloadButtonTooltipText || 'Download filtered results')}>
         {
           count !== 0
             ? (
-              <IconButton onClick={handleClickButton} style={{ padding: '0' }}>
+              <IconButton onClick={handleClickButton} style={{ padding: '0' }} disabled={isDownloading}>
                 <CloudDownload />
                 <KeyboardArrowDownOutlinedIcon className={classes.arrowdownIcon} />
               </IconButton>
