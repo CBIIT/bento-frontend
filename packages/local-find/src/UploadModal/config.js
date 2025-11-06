@@ -21,6 +21,7 @@ export const DEFAULT_CONFIG_UPLOADMODAL = {
     uploadTooltipIcon: tooltipIconType.DEFAULT,
     accept: '.csv,.txt',
     maxSearchTerms: 1000,
+    mappedLabel: 'Participant record(s)',
     matchedId: 'subject_id',
     matchedLabel: 'SUBMITTED CASE ID',
     associateId: 'program_id',

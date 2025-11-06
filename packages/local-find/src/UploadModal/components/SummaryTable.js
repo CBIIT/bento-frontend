@@ -22,6 +22,7 @@ const SummaryTable = (props) => {
     error = null,
     matchLocalFindId,
     associateId,
+    mappedLabel,
     matchedLabel,
     associateLabel,
     projectName,
@@ -29,11 +30,12 @@ const SummaryTable = (props) => {
   } = props;
 
   const [tab, setTab] = useState('matched');
+  const uniqueMatchedIds = [...new Set(matched.map((item) => item[matchLocalFindId]))];
 
   return (
     <div className={classes.summaryContainer} id="uploadCaseSetSummarySection">
       <p className={classes.summary} id="uploadCaseSetSummaryCount">
-        {`${matched.length + unmatched.length} submitted ${caseIds} mapped to ${matched.length} unique ${projectName} ${caseIds}`}
+        {`${uniqueMatchedIds.length} unique ${projectName} ${caseIds} mapped to ${matched.length} ${projectName} ${mappedLabel}`}
       </p>
       {error ? (
         <Typography className={clsx(classes.summary, classes.error)}>
@@ -72,7 +74,6 @@ const SummaryTable = (props) => {
             <table className={classes.tableContainer} id="uploadCaseSetMatchedTable">
               <tr id="uploadCaseSetMatchedHeader">
                 <th className={classes.header}>{matchedLabel}</th>
-                <td className={classes.emptyCell} />
                 {associateLabel
                   ? (<th className={classes.header}>{associateLabel}</th>)
                   : (<></>)}
@@ -80,7 +81,6 @@ const SummaryTable = (props) => {
               </tr>
               <tr className={classes.heading}>
                 <td className={classes.columnPadding}><Divider style={{ width: '100%' }} className={classes.divider} /></td>
-                <td className={classes.emptyCell} />
                 {associateLabel
                   ? (
                     <td className={classes.dividerContainer}>
@@ -93,10 +93,9 @@ const SummaryTable = (props) => {
               {matched.map((data, id) => (
                 <tr key={id}>
                   <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[matchLocalFindId]}</td>
-                  <td className={classes.emptyCell} />
                   {
                     associateLabel
-                      ? <td className={classes.programHeading} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[associateId]}</td>
+                      ? <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[associateId]}</td>
                       : (<></>)
 }
                 </tr>
@@ -107,13 +106,17 @@ const SummaryTable = (props) => {
           : (
             unmatched.length ? (
               <table className={classes.tableContainer} id="uploadCaseSetUnMatchedTable">
-                <th id="uploadCaseSetUnMatchedHeader" className={classes.heading} style={{ textAlign: 'left', paddingLeft: 50 }}>
-                  {matchedLabel}
-                </th>
-                <tr className={classes.heading} style={{ width: '180' }}><Divider className={classes.divider} style={{ width: '48%' }} /></tr>
+                <tr id="uploadCaseSetUnMatchedHeader">
+                  <th className={classes.header}>{matchedLabel}</th>
+                </tr>
+                <tr className={classes.heading}>
+                  <td className={classes.columnPadding}>
+                    <Divider style={{ width: '100%' }} className={classes.divider} />
+                  </td>
+                </tr>
                 {unmatched.map((data, id) => (
-                  <tr key={id} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>
-                    <td className={classes.tableColumn} style={{ textAlign: 'left', paddingLeft: 40 }}>{data}</td>
+                  <tr key={id}>
+                    <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data}</td>
                   </tr>
                 ))}
               </table>
@@ -134,6 +137,7 @@ const styles = () => ({
     backgroundColor: '#fff',
     padding: 14,
     marginBottom: 16,
+    tableLayout: 'fixed',
   },
   summaryButton: {
     fontSize: 12,
