@@ -61,6 +61,9 @@ const DEFAULT_CLASSES = makeStyles({
   noPadding: {
     padding: 0,
   },
+  noLeftPadding: {
+    paddingLeft: '0px !important',
+  },
   paper: {
     display: 'flex',
     flexDirection: 'column',
@@ -185,6 +188,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
             <div
               className={classnames(classes.widgetBody, {
                 [classes.noPadding]: noBodyPadding,
+                [classes.noLeftPadding]: chartType === 'bar' && data.length === 0,
                 [bodyClass]: bodyClass,
               })}
               style={chartType === 'bar' ? { width: '100%' } : {}}
