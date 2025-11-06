@@ -23,6 +23,10 @@ const PaginatedTable = ({
   server = true,
   tblRows = [],
   navigation = () => {},
+  onSearch,
+  searchValue,
+  onSearchResultCount,
+  onColumnStateChange,
 }) => {
   /**
   * Initailize useReducer state
@@ -176,6 +180,10 @@ const PaginatedTable = ({
       ...table,
       columns,
     }));
+    // Save column state for persistence across search state changes
+    if (onColumnStateChange) {
+      onColumnStateChange(columns);
+    }
   };
 
   const handleAllColumnViewChange = (checked) => {
@@ -193,6 +201,10 @@ const PaginatedTable = ({
       ...table,
       columns,
     }));
+    // Save column state for persistence across search state changes
+    if (onColumnStateChange) {
+      onColumnStateChange(columns);
+    }
   };
   /**
   * A. client table
@@ -213,6 +225,9 @@ const PaginatedTable = ({
           onColumnViewChange={handleColumnViewChange}
           onAllColumnViewChange={handleAllColumnViewChange}
           themeConfig={themeConfig}
+          onSearch={onSearch}
+          searchValue={searchValue}
+          onSearchResultCount={onSearchResultCount}
         />
       </>
     );
@@ -244,6 +259,9 @@ const PaginatedTable = ({
         onAllColumnViewChange={handleAllColumnViewChange}
         themeConfig={themeConfig}
         navigation={navigation}
+        onSearch={onSearch}
+        searchValue={searchValue}
+        onSearchResultCount={onSearchResultCount}
       />
     </>
   );
