@@ -107,16 +107,19 @@ const SummaryTable = (props) => {
                   : (<></>)}
 
               </tr>
-              {sortedMatched.map((data, id) => (
-                <tr key={id}>
-                  <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[matchLocalFindId]}</td>
-                  {
-                    associateLabel
-                      ? <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[associateId]}</td>
-                      : (<></>)
+              {sortedMatched.map((data, id) => {
+                const uniqueKey = `${data[matchLocalFindId]}-${data[associateId] || 'no-associate'}`;
+                return (
+                  <tr key={uniqueKey}>
+                    <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[matchLocalFindId]}</td>
+                    {
+                      associateLabel
+                        ? <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[associateId]}</td>
+                        : (<></>)
 }
-                </tr>
-              ))}
+                  </tr>
+                );
+              })}
             </table>
           ) : null
         )
@@ -132,7 +135,7 @@ const SummaryTable = (props) => {
                   </td>
                 </tr>
                 {unmatched.map((data, id) => (
-                  <tr key={id}>
+                  <tr key={data}>
                     <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data}</td>
                   </tr>
                 ))}
