@@ -56,10 +56,13 @@ const DownloadButton = ({
       paginationAPIField,
     } = table;
 
+    // Remove filename parameter for download to only use facet filters
+    const { filename, ...filteredVariables } = queryVariables;
+
     const result = await client.query({
       query,
       variables: {
-        ...queryVariables,
+        ...filteredVariables,
         page: 0,
         first: 200000,
         order_by: table.sortBy,
@@ -68,7 +71,12 @@ const DownloadButton = ({
     })
       .then((response) => {
         if (paginationAPIField && response && response.data) {
-          return response.data[paginationAPIField];
+          const apiResult = response.data[paginationAPIField];
+          // Handle getFilenames response structure which has files array nested
+          if (paginationAPIField === 'getFilenames' && apiResult && apiResult.files) {
+            return apiResult.files;
+          }
+          return apiResult;
         }
         return response.data;
       });
@@ -81,10 +89,13 @@ const DownloadButton = ({
       paginationAPIField,
     } = table;
 
+    // Remove filename parameter for download to only use facet filters
+    const { filename, ...filteredVariables } = queryVariables;
+
     const result = await client.query({
       query,
       variables: {
-        ...queryVariables,
+        ...filteredVariables,
         page: 0,
         first: 200000,
         order_by: table.sortBy,
@@ -93,7 +104,12 @@ const DownloadButton = ({
     })
       .then((response) => {
         if (paginationAPIField && response && response.data) {
-          return response.data[paginationAPIField];
+          const apiResult = response.data[paginationAPIField];
+          // Handle getFilenames response structure which has files array nested
+          if (paginationAPIField === 'getFilenames' && apiResult && apiResult.files) {
+            return apiResult.files;
+          }
+          return apiResult;
         }
         return response.data;
       });

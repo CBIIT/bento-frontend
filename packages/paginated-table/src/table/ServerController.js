@@ -13,8 +13,8 @@ import {
 * Updates table row when table state is changed 1. (paginated action) and 2. filter action
 */
 const TableController = ((props) => {
-  const { queryVariables, table } = props;
-  const { tableData } = getTableData({ queryVariables, table });
+  const { queryVariables, table, onSearchResultCount } = props;
+  const { tableData } = getTableData({ queryVariables, table, onSearchResultCount });
   if (!tableData) {
     return (
       <Container maxWidth="xl">

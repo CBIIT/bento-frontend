@@ -31,7 +31,7 @@ const downloadAreaStyle = {
   display: 'flex',
   borderTop: '1px solid #8A7F7C',
   borderBottom: '1px solid #8A7F7C',
-  paddingRight: '41px',
+  paddingRight: '48px',
 };
 
 const cartDownloadAreaStyle = {
@@ -78,6 +78,8 @@ const TableView = ({
   themeConfig = {},
   queryVariables,
   navigation,
+  onSearch,
+  searchValue,
 }) => {
   useEffect(() => {
     const tableContainer = document.getElementById('tableContainer');
@@ -112,6 +114,8 @@ const TableView = ({
         numSelected={table?.selectedRows?.length || 0}
         customTheme={themeConfig.extendedView}
         queryVariables={queryVariables}
+        onSearch={onSearch}
+        initialSearchValue={searchValue}
       />
       <CustomToolbar
         numSelected={table?.selectedRows?.length || 0}
