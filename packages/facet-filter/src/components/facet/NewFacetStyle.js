@@ -1,5 +1,3 @@
-import SearchIcon from './assets/Search_Icon.svg';
-
 export default () => ({
   expansionPanelDetailsRoot: {
     display: 'block',
@@ -15,7 +13,6 @@ export default () => ({
   },
   subSectionSummaryText: {
     marginLeft: '10px',
-    lineHeight: 0,
     color: '#323232',
     fontFamily: 'Raleway',
     fontSize: '13px',
@@ -59,9 +56,6 @@ export default () => ({
     cursor: 'pointer',
     fontFamily: 'Nunito',
     fontSize: '10px',
-    float: 'right',
-    marginRight: '10px',
-    marginTop: '5px',
   },
   highlight: {
     color: '#b2c6d6',
@@ -79,19 +73,18 @@ export default () => ({
     position: 'relative',
   },
   searchBox: {
-    fontSize: '11px',
+    fontSize: '14px',
     fontFamily: 'Nunito',
     width: 'calc(100% - 26px)',
     height: '30px',
     marginTop: '12px',
     borderRadius: '5px',
-    background: `url(${SearchIcon}) right 5px center no-repeat`,
     marginLeft: '6px',
     border: '1px solid',
     padding: '5px',
   },
   searchBoxWithText: {
-    fontSize: '11px',
+    fontSize: '14px',
     fontFamily: 'Nunito',
     width: 'calc(100% - 26px)',
     height: '30px',
@@ -102,16 +95,31 @@ export default () => ({
     padding: '5px',
   },
   expandedDisplayButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#4D889E !important',
     color: 'white',
     width: 'calc(100% - 26px)',
     height: '30px',
     marginBottom: '5px',
     marginLeft: '6px',
+    padding: '6px 11px',
     borderRadius: '5px',
-    fontSize: '12px',
+    fontFamily: 'Nunito',
+    fontSize: '11px',
     fontWeight: '600',
     top: '8px',
+  },
+  expandedDisplayCount: {
+    marginLeft: '4px',
+    fontFamily: 'Nunito',
+    fontSize: '11px',
+    fontWeight: '600',
+    lineHeight: '17px',
+    color: '#ffffff',
+    backgroundColor: '#5D98AE',
+    padding: '1px 2px',
   },
   clearTextButton: {
     padding: '0px',
