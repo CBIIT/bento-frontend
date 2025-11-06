@@ -32,6 +32,23 @@ const SummaryTable = (props) => {
   const [tab, setTab] = useState('matched');
   const uniqueMatchedIds = [...new Set(matched.map((item) => item[matchLocalFindId]))];
 
+  // Sort matched results first by participant ID, then by study ID
+  const sortedMatched = [...matched].sort((a, b) => {
+    const participantA = a[matchLocalFindId] || '';
+    const participantB = b[matchLocalFindId] || '';
+
+    // First sort by participant ID
+    const participantCompare = participantA.localeCompare(participantB);
+    if (participantCompare !== 0) {
+      return participantCompare;
+    }
+
+    // If participant IDs are the same, sort by study ID
+    const studyA = a[associateId] || '';
+    const studyB = b[associateId] || '';
+    return studyA.localeCompare(studyB);
+  });
+
   return (
     <div className={classes.summaryContainer} id="uploadCaseSetSummarySection">
       <p className={classes.summary} id="uploadCaseSetSummaryCount">
@@ -90,7 +107,7 @@ const SummaryTable = (props) => {
                   : (<></>)}
 
               </tr>
-              {matched.map((data, id) => (
+              {sortedMatched.map((data, id) => (
                 <tr key={id}>
                   <td className={classes.tableColumn} style={id % 2 ? { backgroundColor: '#fff' } : { backgroundColor: '#F8F8F8' }}>{data[matchLocalFindId]}</td>
                   {
