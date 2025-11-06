@@ -8,7 +8,16 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { generateQueryStr } from '@bento-core/util';
-import { withStyles, Slider, Typography, Box } from '@material-ui/core';
+import {
+  withStyles,
+  Slider,
+  Typography,
+  Box,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+} from '@material-ui/core';
 // import styles from './SliderStyle';
 import { silderTypes } from '../Types';
 import InputMinMaxView from './InputMinMaxView';
@@ -19,6 +28,9 @@ const SliderView = ({
   onSliderToggle,
   filterState,
   queryParams,
+  timeUnit = 'days',
+  unknownAgesState,
+  onUnknownAgesChange,
 }) => {
   const { minLowerBound, maxUpperBound, quantifier, datafield, facetValues } = facet;
   const lowerBoundValue = facetValues[0];
@@ -26,33 +38,97 @@ const SliderView = ({
   const query = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
 
+  const unknownAges = unknownAgesState?.[datafield] || 'include';
+  const isOnlyUnknownAges = unknownAges === 'only';
+
+  // Get the primary color from facet styling
+  const primaryColor = facet?.style?.colorPrimary?.color || '#10A075';
+
+  // Initialize unknownAges from URL parameters on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(query);
+    const unknownAgesParam = urlParams.get(`${datafield}_unknownAges`);
+    if (unknownAgesParam && unknownAgesParam !== unknownAges) {
+      onUnknownAgesChange(datafield, unknownAgesParam);
+    }
+  }, []); // Run only once on mount
+
+  const getUnknownAgesText = () => {
+    switch (unknownAges) {
+      case 'include':
+        return 'Unknown ages included';
+      case 'exclude':
+        return 'Unknown ages excluded';
+      case 'only':
+        return 'Unknown ages only';
+      default:
+        return '';
+    }
+  };
+
+  // Helper function to get display value (convert to years if needed)
+  const getDisplayValue = (days) => {
+    if (timeUnit === 'years') {
+      return Number((days / 365.25).toFixed(2));
+    }
+    return days;
+  };
+
+  // Helper function to convert display value back to days
+  const convertToDays = (displayValue) => {
+    if (timeUnit === 'years') {
+      return Math.round(displayValue * 365.25);
+    }
+    return displayValue;
+  };
+
   // Determines whether the lower bound and upper bound values are valid
   const isValid = () => {
+    // Convert bounds to display units for proper validation
+    const displayMinLowerBound = getDisplayValue(minLowerBound);
+    const displayMaxUpperBound = getDisplayValue(maxUpperBound);
+    const displayLowerBoundValue = getDisplayValue(lowerBoundValue);
+    const displayUpperBoundValue = getDisplayValue(upperBoundValue);
+
     const checks = [
-      lowerBoundValue <= upperBoundValue,
-      lowerBoundValue >= minLowerBound,
-      upperBoundValue <= maxUpperBound,
+      displayLowerBoundValue <= displayUpperBoundValue,
+      displayLowerBoundValue >= displayMinLowerBound,
+      displayUpperBoundValue <= displayMaxUpperBound,
     ];
 
     return checks.every((condition) => condition === true);
   };
+
   const handleChangeCommittedSlider = (value) => {
     if (!value.includes('')) {
+      // Convert back to days if in years mode, otherwise use value as-is
+      const daysValue = [convertToDays(value[0]), convertToDays(value[1])];
       const paramValue = {};
-      paramValue[datafield] = value;
+      paramValue[datafield] = daysValue;
       const queryStr = generateQueryStr(query, queryParams, paramValue);
       navigate(`/explore${queryStr}`);
-      onSliderToggle({ sliderValue: value, ...facet });
+      onSliderToggle({ sliderValue: daysValue, ...facet });
     }
   };
-  const [sliderValue, setSliderValue] = useState([lowerBoundValue, upperBoundValue]);
+  const [sliderValue, setSliderValue] = useState([
+    getDisplayValue(lowerBoundValue),
+    getDisplayValue(upperBoundValue),
+  ]);
   useEffect(() => {
-    if (filterState && datafield && filterState[datafield]) {
-      setSliderValue([...filterState[datafield]]);
-    } else {
-      setSliderValue([minLowerBound, maxUpperBound]);
+    // Don't reset slider values if "Only" is selected - preserve current values
+    if (unknownAges === 'only') {
+      return; // Keep current slider values
     }
-  }, [facet]);
+
+    if (filterState && datafield && filterState[datafield]) {
+      setSliderValue([
+        getDisplayValue(filterState[datafield][0]),
+        getDisplayValue(filterState[datafield][1]),
+      ]);
+    } else {
+      setSliderValue([getDisplayValue(minLowerBound), getDisplayValue(maxUpperBound)]);
+    }
+  }, [facet, timeUnit, unknownAges]);
 
   const handleChangeSlider = (index, value) => {
     if (!value.includes('')) {
@@ -62,9 +138,40 @@ const SliderView = ({
 
   const valuetext = (value) => `${value}`;
 
+  const handleUnknownAgesChange = (event) => {
+    const newUnknownAges = event.target.value;
+    onUnknownAgesChange(datafield, newUnknownAges);
+
+    // When "only" is selected, clear the age filter from the query completely
+    if (newUnknownAges === 'only') {
+      // Clear the age range parameter from the URL
+      const paramValue = {};
+      paramValue[datafield] = ''; // Clear the age range filter
+      const queryStr = generateQueryStr(query, queryParams, paramValue);
+      navigate(`/explore${queryStr}`);
+
+      // Keep the current slider values for display (don't reset to defaults)
+      // The slider will be disabled but show the user's previous selection
+      // setSliderValue remains unchanged - keep current values
+
+      // Clear the slider state in the parent component (don't use age range in query)
+      onSliderToggle({ sliderValue: [], ...facet });
+    } else if (unknownAges === 'only' && newUnknownAges !== 'only') {
+      // When switching away from "only", restore the slider values to the query
+      const currentSliderValues = [convertToDays(sliderValue[0]), convertToDays(sliderValue[1])];
+      const paramValue = {};
+      paramValue[datafield] = currentSliderValues;
+      const queryStr = generateQueryStr(query, queryParams, paramValue);
+      navigate(`/explore${queryStr}`);
+
+      // Restore the slider state in the parent component
+      onSliderToggle({ sliderValue: currentSliderValues, ...facet });
+    }
+  };
+
   return (
     <>
-      <div className={classes.sliderRoot}>
+      <div className={`${classes.sliderRoot} ${isOnlyUnknownAges ? classes.disabledSliderRoot : ''}`}>
         <div className={classes.minMaxInputs}>
           <div className={classes.minValue}>
             <Typography className={classes.minInputLabel}>
@@ -74,10 +181,12 @@ const SliderView = ({
               className={classes.minInputValue}
               lowerBoundVal={sliderValue[0]}
               upperBoundVal={sliderValue[1]}
-              minLowerBound={minLowerBound}
-              maxUpperBound={maxUpperBound}
+              minLowerBound={getDisplayValue(minLowerBound)}
+              maxUpperBound={getDisplayValue(maxUpperBound)}
               type={silderTypes.INPUT_MIN}
               onInputChange={handleChangeCommittedSlider}
+              step={timeUnit === 'years' ? 0.01 : 1}
+              disabled={isOnlyUnknownAges}
             />
           </div>
           <div className={classes.maxValue}>
@@ -88,10 +197,12 @@ const SliderView = ({
               className={classes.maxInputValue}
               lowerBoundVal={sliderValue[0]}
               upperBoundVal={sliderValue[1]}
-              minLowerBound={minLowerBound}
-              maxUpperBound={maxUpperBound}
+              minLowerBound={getDisplayValue(minLowerBound)}
+              maxUpperBound={getDisplayValue(maxUpperBound)}
               type={silderTypes.INPUT_MAX}
               onInputChange={handleChangeCommittedSlider}
+              step={timeUnit === 'years' ? 0.01 : 1}
+              disabled={isOnlyUnknownAges}
             />
           </div>
         </div>
@@ -99,33 +210,76 @@ const SliderView = ({
           {/* Change to red if invalid range */}
           <Slider
             disableSwap
+            disabled={isOnlyUnknownAges}
             getAriaValueText={valuetext}
             onChange={handleChangeSlider}
             onChangeCommitted={(event, value) => handleChangeCommittedSlider(value)}
             value={[...sliderValue]}
             valueLabelDisplay="auto"
-            min={minLowerBound}
-            max={maxUpperBound}
+            min={getDisplayValue(minLowerBound)}
+            max={getDisplayValue(maxUpperBound)}
+            step={timeUnit === 'years' ? 0.01 : 1}
             classes={{
               colorPrimary: classes.colorPrimary,
-              rail: classes.rail,
-              thumb: isValid() ? classes.thumb : classes.invalidThumb,
-              track: isValid() ? classes.track : classes.invalidTrack,
+              rail: isOnlyUnknownAges ? classes.disabledRail : classes.rail,
+              thumb: isOnlyUnknownAges ? {
+                ...classes.disabledThumb,
+                background: primaryColor,
+              } : (isValid() ? classes.thumb : classes.invalidThumb),
+              track: isOnlyUnknownAges ? {
+                ...classes.disabledTrack,
+                background: primaryColor,
+              } : (isValid() ? classes.track : classes.invalidTrack),
             }}
           />
         </div>
-        <Box className={classes.lowerUpperBound}>
-          <Typography className={classes.lowerBound}>
-            {minLowerBound.toLocaleString()}
-          </Typography>
-          <Typography className={classes.upperBound}>
-            {maxUpperBound.toLocaleString()}
-          </Typography>
-        </Box>
       </div>
-      {/* Change to red if invalid range */}
+      <Box className={classes.lowerUpperBound}>
+        <Typography className={classes.lowerBound}>
+          {getDisplayValue(minLowerBound).toLocaleString()}
+        </Typography>
+        <Typography className={classes.upperBound}>
+          {getDisplayValue(maxUpperBound).toLocaleString()}
+        </Typography>
+      </Box>
+      {/* Unknown Ages Section */}
+      <Box className={classes.unknownAgesSection}>
+        <Typography className={classes.unknownAgesTitle}>
+          UNKNOWN AGES:
+        </Typography>
+        <FormControl component="fieldset" className={classes.unknownAgesFormControl}>
+          <RadioGroup
+            aria-label="unknown-ages"
+            name="unknown-ages"
+            value={unknownAges}
+            onChange={handleUnknownAgesChange}
+            className={classes.unknownAgesRadioGroup}
+          >
+            <FormControlLabel
+              value="include"
+              control={<Radio classes={{ root: classes.radio, checked: classes.radioChecked }} />}
+              label="Include"
+              classes={{ root: classes.radioLabel, label: classes.radioLabelText }}
+            />
+            <FormControlLabel
+              value="exclude"
+              control={<Radio classes={{ root: classes.radio, checked: classes.radioChecked }} />}
+              label="Exclude"
+              classes={{ root: classes.radioLabel, label: classes.radioLabelText }}
+            />
+            <FormControlLabel
+              value="only"
+              control={<Radio classes={{ root: classes.radio, checked: classes.radioChecked }} />}
+              label="Only"
+              classes={{ root: classes.radioLabel, label: classes.radioLabelText }}
+            />
+          </RadioGroup>
+        </FormControl>
+      </Box>
+      {/* Slider text with unknown ages status */}
       {
-        (sliderValue[0] > minLowerBound || sliderValue[1] < maxUpperBound)
+        (sliderValue[0] > getDisplayValue(minLowerBound)
+          || sliderValue[1] < getDisplayValue(maxUpperBound))
         && (
           <Typography
             className={isValid() ? classes.sliderText : classes.invalidSliderText}
@@ -134,7 +288,9 @@ const SliderView = ({
             {' - '}
             {sliderValue[1].toLocaleString()}
             &nbsp;
-            {quantifier}
+            {timeUnit === 'years' ? 'years' : quantifier}
+            {', '}
+            {getUnknownAgesText()}
           </Typography>
         )
       }
@@ -155,6 +311,12 @@ const styles = () => ({
       marginLeft: '20px',
       marginRight: 'Auto',
       paddingRight: '20px',
+    }),
+  disabledSliderRoot: (props) => (props.facet.style && props.facet.style.disabledSliderRoot
+    ? props.facet.style.disabledSliderRoot
+    : {
+      opacity: 0.5,
+      pointerEvents: 'none',
     }),
   minValue: (props) => (props.facet.style && props.facet.style.minValue
     ? props.facet.style.minValue
@@ -250,6 +412,31 @@ const styles = () => ({
         background: '#142D64',
       },
     }),
+  disabledRail: (props) => (props.facet.style && props.facet.style.disabledRail
+    ? props.facet.style.disabledRail
+    : {
+      borderRadius: 4,
+      height: 6,
+      background: '#E8E8E8',
+    }),
+  disabledThumb: (props) => (props.facet.style && props.facet.style.disabledThumb
+    ? props.facet.style.disabledThumb
+    : {
+      height: 16,
+      width: 16,
+      cursor: 'not-allowed',
+      opacity: 0.4,
+    }),
+  disabledTrack: (props) => (props.facet.style && props.facet.style.disabledTrack
+    ? props.facet.style.disabledTrack
+    : {
+      borderRadius: 4,
+      height: 6,
+      opacity: 0.4,
+      '&~&': {
+        background: '#E8E8E8',
+      },
+    }),
   upperBound: (props) => (props.facet.style && props.facet.style.upperBound
     ? props.facet.style.upperBound
     : {
@@ -279,11 +466,14 @@ const styles = () => ({
       lineHeight: '120%',
       fontFamily: 'Nunito',
       fontSize: '14px',
-      padding: '5px 15px 5px 0px',
+      padding: '5px 15px 5px 15px',
       width: '100%',
       textAlign: 'right',
       background: '#f5fdee',
-      marginTop: '10px',
+      marginTop: '8px',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     }),
   invalidSliderText: (props) => (props.facet.style && props.facet.style.invalidSliderText
     ? props.facet.style.invalidSliderText
@@ -292,11 +482,14 @@ const styles = () => ({
       lineHeight: '120%',
       fontFamily: 'Nunito',
       fontSize: '14px',
-      padding: '5px 15px 5px 0px',
+      padding: '5px 15px 5px 15px',
       width: '100%',
       textAlign: 'right',
       background: '#E57373',
-      marginTop: '10px',
+      marginTop: '8px',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     }),
   sliderListItem: (props) => (props.facet.style && props.facet.style.sliderListItem
     ? props.facet.style.sliderListItem
@@ -315,6 +508,72 @@ const styles = () => ({
     : {
       height: '15px',
     }),
+  unknownAgesSection: (props) => (props.facet.style && props.facet.style.unknownAgesSection
+    ? props.facet.style.unknownAgesSection
+    : {
+      marginTop: '10px',
+      paddingTop: '10px',
+      paddingLeft: '20px',
+      paddingRight: '20px',
+      paddingBottom: '0px',
+      borderTop: '1px solid #CCCCCC',
+    }),
+  unknownAgesTitle: (props) => (props.facet.style && props.facet.style.unknownAgesTitle
+    ? props.facet.style.unknownAgesTitle
+    : {
+      fontFamily: 'Poppins',
+      fontSize: '13px',
+      fontWeight: '400',
+      color: '#323232',
+      marginBottom: '6px',
+      letterSpacing: '0.25px',
+    }),
+  unknownAgesFormControl: {
+    width: '100%',
+  },
+  unknownAgesRadioGroup: {
+    flexDirection: 'row',
+    gap: '10px',
+  },
+  radioLabel: (props) => (props.facet.style && props.facet.style.radioLabel
+    ? props.facet.style.radioLabel
+    : {
+      marginRight: '10px',
+      marginBottom: '0px',
+      marginTop: '0px',
+    }),
+  radioLabelText: (props) => (props.facet.style && props.facet.style.radioLabelText
+    ? props.facet.style.radioLabelText
+    : {
+      fontFamily: 'Poppins',
+      fontSize: '14px',
+      color: '#000000',
+    }),
+  radio: (props) => {
+    const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
+      ? props.facet.style.colorPrimary.color
+      : '#3f51b5';
+
+    return props.facet.style && props.facet.style.radio
+      ? props.facet.style.radio
+      : {
+        color: '#CCCCCC',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+      };
+  },
+  radioChecked: (props) => {
+    const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
+      ? props.facet.style.colorPrimary.color
+      : '#3f51b5';
+
+    return props.facet.style && props.facet.style.radioChecked
+      ? props.facet.style.radioChecked
+      : {
+        color: `${primaryColor} !important`,
+      };
+  },
 });
 
 export default withStyles(styles)(SliderView);

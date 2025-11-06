@@ -22,3 +22,21 @@ export const getFilters = (activeFilters) => {
   }
   return {};
 };
+
+export const getFiltersWithUnknownAges = (activeFilters, unknownAgesState) => {
+  const regularFilters = getFilters(activeFilters);
+
+  // Map unknownAgesState to GraphQL variables
+  const unknownAgesFilters = {};
+  if (unknownAgesState) {
+    Object.keys(unknownAgesState).forEach((fieldName) => {
+      const unknownAgesKey = `${fieldName}_unknownAges`;
+      unknownAgesFilters[unknownAgesKey] = [unknownAgesState[fieldName]];
+    });
+  }
+
+  return {
+    ...regularFilters,
+    ...unknownAgesFilters,
+  };
+};

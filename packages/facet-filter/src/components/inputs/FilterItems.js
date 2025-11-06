@@ -10,6 +10,7 @@ const FilterItems = ({
   facet,
   queryParams,
   sortBy,
+  timeUnit,
 }) => {
   const {
     type, datafield, section,
@@ -27,7 +28,7 @@ const FilterItems = ({
           />
         ));
       case InputTypes.SLIDER:
-        return (<ReduxSlider facet={facet} queryParams={queryParams} />);
+        return (<ReduxSlider facet={facet} queryParams={queryParams} timeUnit={timeUnit} />);
       default:
         return (<></>);
     }

@@ -14,6 +14,7 @@ function InputMinMaxView({
   maxUpperBound,
   onInputChange,
   type,
+  disabled = false,
 }) {
   const handleInputChange = (e) => {
     const minMaxRange = [lowerBoundVal, upperBoundVal];
@@ -31,6 +32,7 @@ function InputMinMaxView({
       value={vlaue}
       id={`slider_${type}`}
       className={classes[`slider_${type}`]}
+      disabled={disabled}
       onChange={(event) => handleInputChange(event)}
       inputProps={{
         step: 1,

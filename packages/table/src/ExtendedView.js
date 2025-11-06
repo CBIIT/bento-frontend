@@ -10,9 +10,12 @@ import CustomPagination from './pagination/CustomPagination';
 import ManageColumnView from './toolbar/ManageColumnView';
 import defaultTheme from './DefaultThemConfig';
 import DownloadButton from './toolbar/DownloadButtonView';
+import SearchBar from './toolbar/SearchBar';
 
 const downloadAreaStyle = {
   display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   borderTop: '1px solid #8A7F7C',
   paddingRight: '48px',
   paddingTop: '5px',
@@ -91,6 +94,7 @@ const ExtendedView = ({
     manageViewColumns = false,
     pagination = false,
     hasExport = true,
+    searchBar = false,
   } = extendedViewConfig;
 
   // Check if this is the Files tab
@@ -201,10 +205,27 @@ const ExtendedView = ({
               {hasExport && (
                 <DownloadButton
                   count={table.totalRowCount || 0}
+                  rowsPerPage={table.rowsPerPage || 10}
+                  page={table.page || 0}
+                  onPageChange={onPageChange}
+                  onRowsPerPageChange={onRowsPerPageChange}
                   queryVariables={queryVariables}
                   table={table}
                 />
-              )}
+                <ManageColumnView
+                  table={table}
+                  manageViewColumns={manageViewColumns}
+                  onColumnViewChange={onColumnViewChange}
+                  onAllColumnViewChange={onAllColumnViewChange}
+                />
+                {hasExport && (
+                  <DownloadButton
+                    count={table.totalRowCount || 0}
+                    queryVariables={queryVariables}
+                    table={table}
+                  />
+                )}
+              </div>
             </div>
           )
         }

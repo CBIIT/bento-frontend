@@ -12,9 +12,9 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { InputTypes } from './components/inputs/Types';
-import BentoFacetFilter from './FacetFilterView';
+import NewBentoFacetFilter from './NewFacetFilterView';
 
-const FacetFilterController = (props) => {
+const NewFacetFilterController = (props) => {
   /**
    * update checkbox state
    * 1. checkbox state
@@ -25,6 +25,7 @@ const FacetFilterController = (props) => {
     data,
     facetsConfig,
     facetSectionConfig,
+    selectedSection,
     unknownAgesState,
   } = props;
 
@@ -162,15 +163,20 @@ const FacetFilterController = (props) => {
   const facetStates = addFacetValues(displayFacets);
   const updateState = updateFacetState(facetStates);
   const facetSections = arrangeBySections(updateState);
+  const facetSection = facetSections[selectedSection];
 
   return (
     <>
-      <BentoFacetFilter
+      <NewBentoFacetFilter
         {...props}
-        sideBarSections={facetSections}
+        facetSection={facetSection}
       />
     </>
   );
 };
 
-export default connect(null, null)(FacetFilterController);
+const mapStateToProps = (state) => ({
+  unknownAgesState: state?.statusReducer?.unknownAgesState || {},
+});
+
+export default connect(mapStateToProps, null)(NewFacetFilterController);

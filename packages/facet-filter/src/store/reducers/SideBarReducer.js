@@ -4,6 +4,8 @@ import { sideBarActionTypes } from '../actions/ActionTypes';
 const initFilterState = {
   searchState: {},
   sortState: {},
+  timeUnitState: {},
+  unknownAgesState: {},
 };
 
 export const onToggleStateUpdate = ({
@@ -78,6 +80,26 @@ export const onSortChange = ({
   return updatedState;
 };
 
+export const onTimeUnitChange = ({
+  datafield,
+  timeUnit,
+  timeUnitState,
+}) => {
+  const updatedState = { ...timeUnitState };
+  updatedState[datafield] = timeUnit;
+  return updatedState;
+};
+
+export const onUnknownAgesChange = ({
+  datafield,
+  unknownAges,
+  unknownAgesState,
+}) => {
+  const updatedState = { ...unknownAgesState };
+  updatedState[datafield] = unknownAges;
+  return updatedState;
+};
+
 export function sideBarReducerGenerator() {
   return {
     actionTypes: sideBarActionTypes,
@@ -101,7 +123,7 @@ export function sideBarReducerGenerator() {
           return {
             ...state,
             filterState: {},
-            searchState: {},
+            unknownAgesState: {},
           };
         case sideBarActionTypes.CLEAR_FACET_SECTION:
           updateState = onClearFacetSection({ ...payload, ...state });
@@ -111,9 +133,16 @@ export function sideBarReducerGenerator() {
           };
         case sideBarActionTypes.CLEAR_SLIDER_SECTION:
           updateState = onClearSliderSection({ ...payload, ...state });
+          // Also reset the corresponding unknownAges parameter
+          const { datafield } = payload;
+          const updatedUnknownAgesState = { ...state.unknownAgesState };
+          if (updatedUnknownAgesState[datafield]) {
+            updatedUnknownAgesState[datafield] = 'include';
+          }
           return {
             ...state,
             filterState: { ...updateState },
+            unknownAgesState: updatedUnknownAgesState,
           };
         case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
           return {
@@ -135,6 +164,18 @@ export function sideBarReducerGenerator() {
           return {
             ...state,
             filterState: payload,
+          };
+        case sideBarActionTypes.TIME_UNIT_CHANGED:
+          updateState = onTimeUnitChange({ ...payload, ...state });
+          return {
+            ...state,
+            timeUnitState: { ...updateState },
+          };
+        case sideBarActionTypes.UNKNOWN_AGES_CHANGED:
+          updateState = onUnknownAgesChange({ ...payload, ...state });
+          return {
+            ...state,
+            unknownAgesState: { ...updateState },
           };
         default:
           return state;
