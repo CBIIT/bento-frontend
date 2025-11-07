@@ -30,6 +30,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     { ...DEFAULT_STYLES(), ...customStyles }
   );
 
+  const mappedLabel = config && config.mappedLabel && typeof config.mappedLabel === 'string'
+    ? config.mappedLabel
+    : DEFAULT_CONFIG.config.mappedLabel;
+
   const matchLocalFindId = config && config.matchedId && typeof config.matchedId === 'string'
     ? config.matchedId
     : DEFAULT_CONFIG.config.matchedId;
@@ -174,7 +178,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
         // Split content by lines and commas
         const searchTokens = content
           .split(/[,\n]/g)
-          .map((e) => e.trim().replace('\r', '').toUpperCase())
+          .map((e) => e.trim().replace('\r', ''))
           .filter((e) => e && e.length > 1);
 
         const { matched, unmatched } = await searchMatches(searchTokens);
@@ -257,6 +261,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 unmatched={unmatchedIds}
                 matchLocalFindId={matchLocalFindId}
                 associateId={associateId}
+                mappedLabel={mappedLabel}
                 matchedLabel={matchedLabel}
                 associateLabel={associateLabel}
                 projectName={projectName}
