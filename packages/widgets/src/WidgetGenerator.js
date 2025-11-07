@@ -14,7 +14,7 @@ const DEFAULT_CLASSES = makeStyles({
   },
   widgetHeader: {},
   widgetDividerWrapper: {
-    margin: '0px 32px 0px 64px',
+    margin: '0px 0px 0px 0px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -27,7 +27,7 @@ const DEFAULT_CLASSES = makeStyles({
     margin: '16px auto 0px auto',
   },
   paddedTitle: {
-    margin: '32px 32px 0px 64px',
+    margin: '32px 0px 0px 0px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -52,11 +52,11 @@ const DEFAULT_CLASSES = makeStyles({
   },
   widgetRoot: {
     borderRadius: '20px',
+    paddingRight: (theme) => (theme && theme.spacing ? theme.spacing.unit * 3 : 0),
+    paddingLeft: (theme) => (theme && theme.spacing ? theme.spacing.unit * 3 : 0),
   },
   widgetBody: {
     margin: '0px auto',
-    paddingRight: (theme) => (theme && theme.spacing ? theme.spacing.unit * 3 : 0),
-    paddingLeft: (theme) => (theme && theme.spacing ? theme.spacing.unit * 3 : 0),
   },
   noPadding: {
     padding: 0,
