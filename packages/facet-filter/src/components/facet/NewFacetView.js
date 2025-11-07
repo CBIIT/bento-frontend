@@ -209,7 +209,7 @@ const NewFacetView = ({
                 onSortFacet(sortType.ALPHABET);
               }}
             >
-              Sort alphabetically
+              Sort Alphabetically
             </span>
             <span
               className={
@@ -221,7 +221,7 @@ const NewFacetView = ({
                 onSortFacet(sortType.NUMERIC);
               }}
             >
-              Sort by count
+              Sort by Count
             </span>
           </>
           )}
