@@ -126,7 +126,7 @@ export default () => ({
     height: '20px',
     position: 'absolute',
     right: '14px',
-    top: '14px',
+    top: '16px',
   },
   timeUnitToggle: {
     marginLeft: '8px',
