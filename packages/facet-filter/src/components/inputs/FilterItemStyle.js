@@ -31,8 +31,8 @@ export default () => ({
     maxHeight: '400px',
     overflowY: 'auto',
     overflowX: 'hidden',
-    borderTop: '2px solid #AEAEAE',
-    borderBottom: '2px solid #AEAEAE',
+    borderTop: '1px solid #AEAEAE',
+    borderBottom: '1px solid #AEAEAE',
     marginRight: '-1px',
     '&::-webkit-scrollbar': {
       width: '12px',

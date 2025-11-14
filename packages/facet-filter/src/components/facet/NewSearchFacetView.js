@@ -178,7 +178,7 @@ const SearchFacetView = ({
                   className={searchText && searchText.trim() !== '' ? classes.searchBoxWithText : classes.searchBox}
                   value={searchText}
                   type="text"
-                  placeholder="e.g. Sarcoma, Neoplasm"
+                  placeholder="e.g. Sarcoma, Neoplasm, phs087..."
                   onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)}
                 />
                 {
@@ -203,7 +203,8 @@ const SearchFacetView = ({
               </div>
               <div className={classes.searchContainer}>
                 <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
-                  {`VIEW EXPANDED DISPLAY (${checkedItems.length + newUncheckedFullList.length})`}
+                  VIEW EXPANDED DISPLAY
+                  <span className={classes.expandedDisplayCount}>{`${checkedItems.length + newUncheckedFullList.length}`}</span>
                 </Button>
               </div>
             </>
@@ -237,7 +238,7 @@ const SearchFacetView = ({
                     onSortChange(facet.datafield, sortType.ALPHABET);
                   }}
                 >
-                  Sort alphabetically
+                  Sort Alphabetically
                 </span>
                 <span
                   className={
@@ -249,7 +250,7 @@ const SearchFacetView = ({
                     onSortChange(facet.datafield, sortType.NUMERIC);
                   }}
                 >
-                  Sort by count
+                  Sort by Count
                 </span>
               </div>
               <SearchFilterItems

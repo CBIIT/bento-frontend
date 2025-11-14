@@ -162,14 +162,14 @@ const CheckBoxView = ({
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {`(${subjects.toLocaleString()})`}
+          {`${subjects.toLocaleString()}`}
         </Typography>
       </ListItem>
       <Divider
         style={{
-          backgroundColor: isChecked ? '#FFFFFF' : '#b1b1b1',
+          backgroundColor: isChecked ? '#AEAEAE' : '#B1B1B1',
           margin: '0px',
-          height: isChecked ? '2px' : '1px',
+          height: isChecked ? '0.5px' : '0.5px',
         }}
       />
     </>

@@ -24,10 +24,10 @@ export default () => ({
   checkboxName: {
     margin: '0',
     color: '#000000',
-    fontSize: '16px',
+    fontSize: '15px',
     fontWeight: 300,
     marginTop: '1.5px',
     fontFamily: 'Nunito',
-    lineHeight: '120%',
+    lineHeight: '16px',
   },
 });
