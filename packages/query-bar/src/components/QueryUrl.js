@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import {
   Button,
@@ -31,11 +31,11 @@ const QueryUrl = ({
     return acc;
   }, {});
 
-  const query = JSON.stringify({
+  const queryString = JSON.stringify({
     ...pathFilterParams,
     ...localFind,
   });
-  const url = rootPath.slice(0, -1).concat(`?filterQuery=${encodeURIComponent(query)}`);
+  const [url, setUrl] = useState('');
 
   const copyUrl = async () => {
     toggleOpen();
@@ -43,6 +43,60 @@ const QueryUrl = ({
   };
 
   const queryRef = useRef(null);
+
+  const generateUrl = async () => {
+    // Configuration constants
+    const CCDI_INTEROP_SERVICE_URL = 'https://ccdi.cancer.gov/api/interoperation/graphql';
+
+    try {
+      const graphqlQuery = `
+        query storeManifest($manifestString: String!, $type: String!) {
+          storeManifest(manifest: $manifestString, type: $type)
+        }
+      `;
+
+      const response = await fetch(CCDI_INTEROP_SERVICE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: graphqlQuery,
+          variables: {
+            manifestString: JSON.stringify({ key: encodeURIComponent(queryString) }),
+            type: 'json',
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.errors) {
+        const errorMessage = result.errors[0]?.message || 'Unknown error';
+        throw new Error(`CCDI Interop Service Error: ${errorMessage}`);
+      }
+
+      // Process and open the URL
+      const processedUrl = result.data?.storeManifest || null;
+      if (!processedUrl) {
+        throw new Error('No valid URL returned from interop service');
+      }
+
+      setUrl(rootPath.slice(0, -1).concat(`?filterQuery=${processedUrl}`));
+    } catch (error) {
+      // Silently handle error
+    }
+  };
+
+  useEffect(() => {
+    if (display) {
+      generateUrl();
+    }
+  }, [display]);
 
   return (
     <>
