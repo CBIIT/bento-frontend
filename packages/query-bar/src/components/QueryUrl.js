@@ -46,7 +46,7 @@ const QueryUrl = ({
 
   const generateUrl = async () => {
     // Configuration constants
-    const CCDI_INTEROP_SERVICE_URL = 'https://ccdi.cancer.gov/api/interoperation/graphql';
+    const CCDI_INTEROP_SERVICE_URL = 'https://ccdi-dev.cancer.gov/api/interoperation/graphql';
 
     try {
       const graphqlQuery = `
