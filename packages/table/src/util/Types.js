@@ -11,6 +11,7 @@ export const TRANSFORM = 'TRANSFORM';
 export const STUDY_DOWNLOAD = 'STUDY_DOWNLOAD';
 export const EXPAND = 'EXPAND';
 export const DBGAP = 'DBGAP';
+export const MODAL = 'MODAL';
 
 export const cellTypes = {
   CUSTOM_ELEM,
@@ -28,6 +29,7 @@ export const cellStyles = {
   EXPAND,
   DBGAP,
   STUDY_DOWNLOAD,
+  MODAL,
 };
 
 export const actionCellTypes = [CHECKBOX, DELETE];
