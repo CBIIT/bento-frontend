@@ -56,19 +56,19 @@ export default function (getFromLocalStorage) {
       const { payload, type } = action;
       let updatedState;
       switch (type) {
-        case ActionTypes.SIGN_IN:
-          updatedState = updateAfterSignInData(payload, state);
-          return {
-            ...state,
-            ...updatedState,
-          };
-        case ActionTypes.SIGN_OUT:
-          updatedState = updateAfterSignOutData();
-          return {
-            ...updatedState,
-          };
-        default:
-          return state;
+      case ActionTypes.SIGN_IN:
+        updatedState = updateAfterSignInData(payload, state);
+        return {
+          ...state,
+          ...updatedState,
+        };
+      case ActionTypes.SIGN_OUT:
+        updatedState = updateAfterSignOutData();
+        return {
+          ...updatedState,
+        };
+      default:
+        return state;
       }
     },
   };

@@ -101,39 +101,39 @@ function DataAccessRequest({
     const notificationSchema = generateNotification(notification);
 
     switch (alertType) {
-      case 'error':
-        return (
-          <AlertMessage severity="error" backgroundColor={notificationSchema.error.color}>
-            {notificationSchema.error.message
+    case 'error':
+      return (
+        <AlertMessage severity="error" backgroundColor={notificationSchema.error.color}>
+          {notificationSchema.error.message
               ? notificationSchema.error.message : getErrorDetails()}
-          </AlertMessage>
-        );
-      case 'success':
-        return (
-          <AlertMessage severity="success" backgroundColor={notificationSchema.success.color}>
-            {notificationSchema.success.message}
-          </AlertMessage>
-        );
-      case 'noAclToRequest':
-        return (
-          <AlertMessage severity="error" backgroundColor={notificationSchema.noAclToRequest.color}>
-            {notificationSchema.noAclToRequest.message}
-          </AlertMessage>
-        );
-      case 'noAccess':
-        return (
-          <AlertMessage severity="success" timeout={5000000} backgroundColor={notificationSchema.noAccess.color}>
-            {notificationSchema.noAccess.message}
-          </AlertMessage>
-        );
-      case 'disabled':
-        return (
-          <AlertMessage severity="error" timeout={5000000} backgroundColor={notificationSchema.disabled.color}>
-            {notificationSchema.disabled.message}
-          </AlertMessage>
-        );
-      default:
-        return null;
+        </AlertMessage>
+      );
+    case 'success':
+      return (
+        <AlertMessage severity="success" backgroundColor={notificationSchema.success.color}>
+          {notificationSchema.success.message}
+        </AlertMessage>
+      );
+    case 'noAclToRequest':
+      return (
+        <AlertMessage severity="error" backgroundColor={notificationSchema.noAclToRequest.color}>
+          {notificationSchema.noAclToRequest.message}
+        </AlertMessage>
+      );
+    case 'noAccess':
+      return (
+        <AlertMessage severity="success" timeout={5000000} backgroundColor={notificationSchema.noAccess.color}>
+          {notificationSchema.noAccess.message}
+        </AlertMessage>
+      );
+    case 'disabled':
+      return (
+        <AlertMessage severity="error" timeout={5000000} backgroundColor={notificationSchema.disabled.color}>
+          {notificationSchema.disabled.message}
+        </AlertMessage>
+      );
+    default:
+      return null;
     }
   };
 

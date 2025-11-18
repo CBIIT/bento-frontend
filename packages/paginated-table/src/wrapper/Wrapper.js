@@ -59,20 +59,20 @@ const Text = ({
 export const ViewComponent = (props) => {
   const { type, customViewElem } = props;
   switch (type) {
-    case types.BUTTON:
-      return (<ButtonView {...props} />);
-    case types.LINK:
-      return (<LinkComponent {...props} />);
-    case types.ICON:
-      return <Img {...props} />;
-    case types.TEXT:
-      return <Text {...props} />;
-    case types.TEXT_INPUT:
-      return <TextFieldView {...props} />;
-    case types.CUSTOM_ELEM:
-      return customViewElem();
-    default:
-      return <></>;
+  case types.BUTTON:
+    return (<ButtonView {...props} />);
+  case types.LINK:
+    return (<LinkComponent {...props} />);
+  case types.ICON:
+    return <Img {...props} />;
+  case types.TEXT:
+    return <Text {...props} />;
+  case types.TEXT_INPUT:
+    return <TextFieldView {...props} />;
+  case types.CUSTOM_ELEM:
+    return customViewElem();
+  default:
+    return <></>;
   }
 };
 

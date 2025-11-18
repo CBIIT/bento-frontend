@@ -50,25 +50,25 @@ const getFilesAfterDel = (state, payload) => {
 export const cartReducer = (state = initCartState(), action) => {
   const { payload, type } = action;
   switch (type) {
-    case actionTypes.ADD_CART_FILES:
-      return {
-        ...state,
-        ...addFilesToCart(state, payload),
-      };
-    case actionTypes.DELETE_CART_FILE:
-      return {
-        ...state,
-        ...getFilesAfterDel(state, payload),
-      };
-    case actionTypes.DELETE_ALL_CART_FILES:
-      // clear all local storage if we remove all record
-      localStorage.clear();
-      return {
-        ...state,
-        filesId: [],
-      };
-    default:
-      return state;
+  case actionTypes.ADD_CART_FILES:
+    return {
+      ...state,
+      ...addFilesToCart(state, payload),
+    };
+  case actionTypes.DELETE_CART_FILE:
+    return {
+      ...state,
+      ...getFilesAfterDel(state, payload),
+    };
+  case actionTypes.DELETE_ALL_CART_FILES:
+    // clear all local storage if we remove all record
+    localStorage.clear();
+    return {
+      ...state,
+      filesId: [],
+    };
+  default:
+    return state;
   }
 };
 

@@ -98,17 +98,17 @@ export const LoginGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const signInCall = (provider) => {
         if (provider) {
           switch (provider.key) {
-            case 'google':
-              signInWithGoogle(onSuccessHandler, onErrorHandler);
-              break;
-            case 'nih':
-              signInWithNIH({ internalRedirectPath });
-              break;
-            case 'loginGov':
-              signInWithNIH({ internalRedirectPath });
-              break;
-            default:
-              showAlert('error', `The selected Identity Provider, ${provider.key}, is not currently supported. Please contact bento-help@nih.gov for more information.`);
+          case 'google':
+            signInWithGoogle(onSuccessHandler, onErrorHandler);
+            break;
+          case 'nih':
+            signInWithNIH({ internalRedirectPath });
+            break;
+          case 'loginGov':
+            signInWithNIH({ internalRedirectPath });
+            break;
+          default:
+            showAlert('error', `The selected Identity Provider, ${provider.key}, is not currently supported. Please contact bento-help@nih.gov for more information.`);
           }
         }
       };

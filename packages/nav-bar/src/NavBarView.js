@@ -28,26 +28,26 @@ const NavBar = ({
 
   const getCartLabel = (labelType) => {
     switch (labelType) {
-      case 'labelUnderCount':
-        return (
-          <div className={classes.cartCounter2Wrapper}>
-            <div className={classes.cartCounter2}>
-              {numberOfCases}
-            </div>
-            <div className={classes.cartLabel}>
-              Files
-            </div>
+    case 'labelUnderCount':
+      return (
+        <div className={classes.cartCounter2Wrapper}>
+          <div className={classes.cartCounter2}>
+            {numberOfCases}
           </div>
-        );
-      default:
-        return (
-          <span className={classes.badge}>
-            <span className={classes.cartCounter}>
-              {numberOfCases}
-            </span>
+          <div className={classes.cartLabel}>
+            Files
+          </div>
+        </div>
+      );
+    default:
+      return (
+        <span className={classes.badge}>
+          <span className={classes.cartCounter}>
+            {numberOfCases}
           </span>
+        </span>
 
-        );
+      );
     }
   };
 
