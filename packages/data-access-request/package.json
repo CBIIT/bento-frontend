@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/data-access-request",
-  "version": "1.0.0",
+  "version": "1.0.0-CDS.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
