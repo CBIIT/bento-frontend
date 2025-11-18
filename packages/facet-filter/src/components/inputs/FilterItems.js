@@ -15,18 +15,18 @@ const FilterItems = ({
 
   const filterItems = () => {
     switch (type) {
-      case InputTypes.CHECKBOX:
-        return sortFilters.map((item, index) => (
+    case InputTypes.CHECKBOX:
+      return sortFilters.map((item, index) => (
           <ReduxCheckbox
             checkboxItem={{ ...item, index, section }}
             datafield={datafield}
             facet={facet}
           />
-        ));
-      case InputTypes.SLIDER:
-        return (<ReduxSlider facet={facet} />);
-      default:
-        return (<></>);
+      ));
+    case InputTypes.SLIDER:
+      return (<ReduxSlider facet={facet} />);
+    default:
+      return (<></>);
     }
   };
 

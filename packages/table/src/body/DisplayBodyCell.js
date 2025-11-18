@@ -32,35 +32,35 @@ const ViewCell = ({
 }) => {
   const { cellType } = column;
   switch (cellType) {
-    case cellTypes.FORMAT_DATA:
-      return (
-        <DataFormatView
-          row={row}
-          column={column}
-        />
-      );
-    case cellTypes.LINK:
-      return (
-        <CustomLinkView
-          row={row}
-          column={column}
-        />
-      );
-    case cellTypes.CUSTOM_ELEM:
-      return (
-        <CustomComponent
-          row={row}
-          column={column}
-        />
-      );
-    default:
-      return (
-        <Typography>
-          {typeof row[column.dataField] === 'number'
+  case cellTypes.FORMAT_DATA:
+    return (
+      <DataFormatView
+        row={row}
+        column={column}
+      />
+    );
+  case cellTypes.LINK:
+    return (
+      <CustomLinkView
+        row={row}
+        column={column}
+      />
+    );
+  case cellTypes.CUSTOM_ELEM:
+    return (
+      <CustomComponent
+        row={row}
+        column={column}
+      />
+    );
+  default:
+    return (
+      <Typography>
+        {typeof row[column.dataField] === 'number'
             ? Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(row[column.dataField])
             : row[column.dataField]}
-        </Typography>
-      );
+      </Typography>
+    );
   }
 };
 

@@ -13,7 +13,7 @@ const initFilterState = {
 
 const updateUploadData = (data, state) => {
   const updatedState = { ...state };
-  updatedState.upload = data && (data instanceof Array) && data.length ? data : [];
+  updatedState.upload = data && data instanceof Array && data.length ? data : [];
   return updatedState;
 };
 
@@ -25,7 +25,7 @@ const updateUploadMetadata = (data, state) => {
 
 const updateAutocompleteData = (data, state) => {
   const updatedState = { ...state };
-  updatedState.autocomplete = data && (data instanceof Array) && data.length ? data : [];
+  updatedState.autocomplete = data && data instanceof Array && data.length ? data : [];
   return updatedState;
 };
 
@@ -40,41 +40,41 @@ export default function () {
       const { payload, type } = action;
       let updatedState;
       switch (type) {
-        case ActionTypes.UPDATE_LOCALFIND_UPLOAD_DATA:
-          updatedState = updateUploadData(payload, state);
-          return {
-            ...state,
-            ...updatedState,
-          };
-        case ActionTypes.UPDATE_LOCALFIND_AUTOCOMPLETE_DATA:
-          updatedState = updateAutocompleteData(payload, state);
-          return {
-            ...state,
-            ...updatedState,
-          };
-        case ActionTypes.UPDATE_LOCALFIND_UPLOAD_METADATA:
-          updatedState = updateUploadMetadata(payload, state);
-          return {
-            ...state,
-            ...updatedState,
-          };
-        case ActionTypes.RESET_LOCALFIND_UPLOAD_DATA:
-          updatedState = updateUploadData([], state);
-          updatedState = updateUploadMetadata({}, updatedState);
-          return {
-            ...state,
-            ...updatedState,
-          };
-        case ActionTypes.RESET_LOCALFIND_ALL_DATA:
-          updatedState = updateUploadData([], state);
-          updatedState = updateAutocompleteData([], updatedState);
-          updatedState = updateUploadMetadata({}, updatedState);
-          return {
-            ...state,
-            ...updatedState,
-          };
-        default:
-          return state;
+      case ActionTypes.UPDATE_LOCALFIND_UPLOAD_DATA:
+        updatedState = updateUploadData(payload, state);
+        return {
+          ...state,
+          ...updatedState,
+        };
+      case ActionTypes.UPDATE_LOCALFIND_AUTOCOMPLETE_DATA:
+        updatedState = updateAutocompleteData(payload, state);
+        return {
+          ...state,
+          ...updatedState,
+        };
+      case ActionTypes.UPDATE_LOCALFIND_UPLOAD_METADATA:
+        updatedState = updateUploadMetadata(payload, state);
+        return {
+          ...state,
+          ...updatedState,
+        };
+      case ActionTypes.RESET_LOCALFIND_UPLOAD_DATA:
+        updatedState = updateUploadData([], state);
+        updatedState = updateUploadMetadata({}, updatedState);
+        return {
+          ...state,
+          ...updatedState,
+        };
+      case ActionTypes.RESET_LOCALFIND_ALL_DATA:
+        updatedState = updateUploadData([], state);
+        updatedState = updateAutocompleteData([], updatedState);
+        updatedState = updateUploadMetadata({}, updatedState);
+        return {
+          ...state,
+          ...updatedState,
+        };
+      default:
+        return state;
       }
     },
   };

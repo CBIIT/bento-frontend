@@ -85,53 +85,53 @@ export function sideBarReducerGenerator() {
       const { payload, type } = action;
       let updateState;
       switch (type) {
-        case sideBarActionTypes.FACET_VALUE_CHANGED:
-          updateState = onToggleStateUpdate({ ...state, ...payload });
-          return {
-            ...state,
-            filterState: { ...updateState },
-          };
-        case sideBarActionTypes.ON_TOGGLE_SLIDER:
-          updateState = updateSiderValue({ ...state, ...payload });
-          return {
-            ...state,
-            filterState: { ...updateState },
-          };
-        case sideBarActionTypes.CLEAR_ALL_FILTERS:
-          return {
-            ...state,
-            filterState: {},
-          };
-        case sideBarActionTypes.CLEAR_FACET_SECTION:
-          updateState = onClearFacetSection({ ...payload, ...state });
-          return {
-            ...state,
-            filterState: { ...updateState },
-          };
-        case sideBarActionTypes.CLEAR_SLIDER_SECTION:
-          updateState = onClearSliderSection({ ...payload, ...state });
-          return {
-            ...state,
-            filterState: { ...updateState },
-          };
-        case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
-          return {
-            filterState: payload,
-          };
-        case sideBarActionTypes.SEARCH_TEXT_CHANGED:
-          updateState = onSearchTextChange({ ...payload, ...state });
-          return {
-            ...state,
-            searchState: { ...updateState },
-          };
-        case sideBarActionTypes.SORT_CHANGED:
-          updateState = onSortChange({ ...payload, ...state });
-          return {
-            ...state,
-            sortState: { ...updateState },
-          };
-        default:
-          return state;
+      case sideBarActionTypes.FACET_VALUE_CHANGED:
+        updateState = onToggleStateUpdate({ ...state, ...payload });
+        return {
+          ...state,
+          filterState: { ...updateState },
+        };
+      case sideBarActionTypes.ON_TOGGLE_SLIDER:
+        updateState = updateSiderValue({ ...state, ...payload });
+        return {
+          ...state,
+          filterState: { ...updateState },
+        };
+      case sideBarActionTypes.CLEAR_ALL_FILTERS:
+        return {
+          ...state,
+          filterState: {},
+        };
+      case sideBarActionTypes.CLEAR_FACET_SECTION:
+        updateState = onClearFacetSection({ ...payload, ...state });
+        return {
+          ...state,
+          filterState: { ...updateState },
+        };
+      case sideBarActionTypes.CLEAR_SLIDER_SECTION:
+        updateState = onClearSliderSection({ ...payload, ...state });
+        return {
+          ...state,
+          filterState: { ...updateState },
+        };
+      case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
+        return {
+          filterState: payload,
+        };
+      case sideBarActionTypes.SEARCH_TEXT_CHANGED:
+        updateState = onSearchTextChange({ ...payload, ...state });
+        return {
+          ...state,
+          searchState: { ...updateState },
+        };
+      case sideBarActionTypes.SORT_CHANGED:
+        updateState = onSortChange({ ...payload, ...state });
+        return {
+          ...state,
+          sortState: { ...updateState },
+        };
+      default:
+        return state;
       }
     },
   };

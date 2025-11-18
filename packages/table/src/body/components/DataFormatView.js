@@ -14,18 +14,18 @@ const CellView = ({
   const { dataFormatType } = column;
   const value = row[column?.dataField];
   switch (dataFormatType) {
-    case dataFormatTypes.FORMAT_BYTES:
-      return (
-        <Typography>
-          {formatBytes(value)}
-        </Typography>
-      );
-    default:
-      return (
-        <Typography>
-          {value}
-        </Typography>
-      );
+  case dataFormatTypes.FORMAT_BYTES:
+    return (
+      <Typography>
+        {formatBytes(value)}
+      </Typography>
+    );
+  default:
+    return (
+      <Typography>
+        {value}
+      </Typography>
+    );
   }
 };
 
