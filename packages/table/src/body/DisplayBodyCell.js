@@ -56,7 +56,9 @@ const ViewCell = ({
     default:
       return (
         <Typography>
-          {row[column.dataField]}
+          {typeof row[column.dataField] === 'number'
+            ? Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(row[column.dataField])
+            : row[column.dataField]}
         </Typography>
       );
   }

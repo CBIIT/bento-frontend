@@ -30,7 +30,7 @@ export default ({
           className={clsx(classes.filterCheckboxes, classes[`facetSection${section}`])}
           onClick={() => onItemClick(data, items[0])}
         >
-          {`${items[0]} – ${items[1]}`}
+          {`${Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(items[0] || 0)} – ${Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(items[1] || 0)}`}
         </span>
       </span>
     </span>

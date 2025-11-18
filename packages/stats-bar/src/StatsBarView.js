@@ -62,7 +62,7 @@ const StatsBar = ({
             {title}
           </div>
           <div className={countClasses} id={countId}>
-            {val}
+            {Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(val || 0)}
           </div>
         </div>
       );
@@ -71,7 +71,7 @@ const StatsBar = ({
     return (
       <div>
         <div className={countClasses} id={countId}>
-          {val}
+          {Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(val || 0)}
         </div>
         <div className={titleClasses} id={titleId}>
           {title || 0}

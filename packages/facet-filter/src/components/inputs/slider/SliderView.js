@@ -103,10 +103,10 @@ const SliderView = ({
         </div>
         <Box className={classes.lowerUpperBound}>
           <Typography className={classes.lowerBound}>
-            {minLowerBound}
+            {Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(minLowerBound || 0)}
           </Typography>
           <Typography className={classes.upperBound}>
-            {maxUpperBound}
+            {Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(maxUpperBound || 0)}
           </Typography>
         </Box>
       </div>
@@ -119,9 +119,9 @@ const SliderView = ({
               ? classes.sliderText
               : classes.invalidSliderText}
           >
-            {sliderValue[0]}
+            {Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(sliderValue[0] || 0)}
             {' - '}
-            {sliderValue[1]}
+            {Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(sliderValue[1] || 0)}
             &nbsp;
             {quantifier}
           </Typography>

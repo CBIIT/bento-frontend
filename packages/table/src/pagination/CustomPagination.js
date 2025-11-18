@@ -51,6 +51,11 @@ const CustomPagination = ({
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
       labelRowsPerPage={<span id="rows-per-page-label">Rows per page:</span>}
+      labelDisplayedRows={({ from, to, count: muiCount }) => `${from}–${to} OF ${
+        muiCount !== -1
+          ? Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(muiCount || 0)
+          : `more than ${to}`
+        }`}
       SelectProps={{
         inputProps: {
           'aria-label': 'rows per page dropdown selector',
