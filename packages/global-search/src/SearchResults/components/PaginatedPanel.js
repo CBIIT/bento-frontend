@@ -3,6 +3,7 @@ import {
   withStyles, Button, Grid, CircularProgress, Typography,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
+import { PaginationItem } from '@material-ui/lab';
 import { ResultCard } from './ResultCard';
 
 /**
@@ -113,7 +114,7 @@ const PaginatedPanel = (props) => {
     <>
       {Math.ceil(count / pageSize) !== 0 && (
       <div className={classes.totalResults}>
-        <span id="global_search_results_count" className={classes.totalCount}>{count}</span>
+        <span id="global_search_results_count" className={classes.totalCount}>{Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(count || 0)}</span>
         {' '}
         Results
       </div>
@@ -152,9 +153,10 @@ const PaginatedPanel = (props) => {
           hideNextButton
           hidePrevButton
           onChange={handleChangePage}
+          renderItem={(item) => <PaginationItem {...item} page={Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(item.page || 0)} />}
           getItemAriaLabel={(_, pageNumber, selected) => (selected
-            ? `Page ${pageNumber} of ${Math.ceil(count / pageSize)}`
-            : `Go to page ${pageNumber} of ${Math.ceil(count / pageSize)}`)}
+            ? `Page ${Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(pageNumber || 0)} of ${Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.ceil(count / pageSize) || 0)}`
+            : `Go to page ${Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(pageNumber || 0)} of ${Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.ceil(count / pageSize) || 0)}`)}
         />
 
         <Button
