@@ -80,5 +80,15 @@ export default {
      * @returns {void}
      */
     resetFacetSlider: (section) => {},
+
+    /**
+     * Generate a query URL by calling the interop service
+     *
+     * @param {string} queryStr the query string to encode
+     * @param {string} root the root path for the URL
+     * @param {function} setUrlCallback callback function to set the generated URL
+     * @returns {Promise<void>}
+     */
+    generateUrl: async (queryStr, root, setUrlCallback) => {},
   },
 };
