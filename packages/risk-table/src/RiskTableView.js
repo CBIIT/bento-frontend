@@ -66,7 +66,7 @@ const RiskTable = ({
       <table className={classes.table}>
         <thead>
           <tr className={classes.headerRow}>
-            <th className={classes.headerCell} aria-label="Cohort" />
+            <th className={classes.firstHeaderCell} aria-label="Cohort" />
             {timeIntervals.map((interval) => (
               <th key={interval} className={classes.headerCell}>
                 {interval}
@@ -123,21 +123,36 @@ const styles = () => ({
     marginBottom: '30px',
   },
   headerRow: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFFFFF',
   },
-  headerCell: {
-    padding: '12px 16px',
+  firstHeaderCell: {
     textAlign: 'left',
     fontSize: '12px',
     fontWeight: 600,
     color: '#333333',
-    borderBottom: '2px solid #E0E0E0',
+    border: 'none',
+    fontFamily: 'Nunito, sans-serif',
+  },
+  headerCell: {
+    textAlign: 'left',
+    fontSize: '12px',
+    fontWeight: 600,
+    color: '#333333',
+    border: '3px solid #080202ff',
     fontFamily: 'Nunito, sans-serif',
   },
   cohortRow: {
-    borderBottom: '1px solid #E0E0E0',
     '&:hover': {
       backgroundColor: '#F9F9F9',
+    },
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      left: '-20px',
+      right: '-20px',
+      bottom: '0',
+      height: '2px',
+      backgroundColor: '#080101ff',
     },
   },
   cohortCell: {
@@ -167,6 +182,7 @@ const styles = () => ({
     fontSize: '13px',
     color: '#333333',
     fontFamily: 'Nunito, sans-serif',
+    border: '2px solid #080101ff',
   },
 });
 
