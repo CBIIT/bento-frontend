@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import {
   Button,
@@ -18,6 +18,7 @@ const QueryUrl = ({
   localFind = {},
   rootPath,
   queryUrlCharacterLimit = 70,
+  generateUrl,
 }) => {
   const [display, setDisplay] = useState(false);
   const toggleDisplay = () => setDisplay((prevDisplay) => !prevDisplay);
@@ -31,11 +32,11 @@ const QueryUrl = ({
     return acc;
   }, {});
 
-  const query = JSON.stringify({
+  const queryString = JSON.stringify({
     ...pathFilterParams,
     ...localFind,
   });
-  const url = rootPath.slice(0, -1).concat(`?filterQuery=${encodeURIComponent(query)}`);
+  const [url, setUrl] = useState('');
 
   const copyUrl = async () => {
     toggleOpen();
@@ -43,6 +44,12 @@ const QueryUrl = ({
   };
 
   const queryRef = useRef(null);
+
+  useEffect(() => {
+    if (display && generateUrl) {
+      generateUrl(queryString, rootPath, setUrl);
+    }
+  }, [display]);
 
   return (
     <>

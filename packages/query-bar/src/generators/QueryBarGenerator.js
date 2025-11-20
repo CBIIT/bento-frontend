@@ -61,6 +61,10 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? functions.resetFacetSlider
     : DEFAULT_CONFIG.functions.resetFacetSlider;
 
+  const generateUrl = functions && typeof functions.generateUrl === 'function'
+    ? functions.generateUrl
+    : DEFAULT_CONFIG.functions.generateUrl;
+
   return {
     QueryBar: withStyles(customStyles || DEFAULT_STYLES,
       { withTheme: true })((props) => {
@@ -247,6 +251,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 filterItems={mappedInputs}
                 rootPath={queryURLRootPath}
                 queryUrlCharacterLimit={queryUrlCharacterLimit}
+                generateUrl={generateUrl}
               />
             )
           }
