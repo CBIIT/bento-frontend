@@ -86,7 +86,6 @@ const RiskTable = ({
           ))}
         </tbody>
       </table>
-      <div className={classes.percentageBottomLeft}>{percentage}</div>
     </div>
   );
 };
