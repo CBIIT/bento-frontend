@@ -48,10 +48,10 @@ const RiskTable = ({
             <span className={classes.cohortName}>{name || `Cohort ${id}`}</span>
           </div>
         </td>
-        {timeIntervals.map((interval) => {
+        {timeIntervals.map((interval, index) => {
           const value = data[interval] !== undefined ? data[interval] : '-';
           return (
-            <td key={interval} className={classes.dataCell}>
+            <td key={interval} className={index === 0 ? classes.secondDataCell : classes.dataCell}>
               {value}
             </td>
           );
@@ -67,8 +67,11 @@ const RiskTable = ({
         <thead>
           <tr className={classes.headerRow}>
             <th className={classes.firstHeaderCell} aria-label="Cohort" />
-            {timeIntervals.map((interval) => (
-              <th key={interval} className={classes.headerCell}>
+            {timeIntervals.map((interval, index) => (
+              <th
+                key={interval}
+                className={index === 0 ? classes.secondHeaderCell : classes.headerCell}
+              >
                 {interval}
               </th>
             ))}
@@ -133,26 +136,40 @@ const styles = () => ({
     border: 'none',
     fontFamily: 'Nunito, sans-serif',
   },
+  secondHeaderCell: {
+    position: 'relative',
+    textAlign: 'left',
+    fontSize: '12px',
+    fontWeight: 600,
+    color: '#333333',
+    border: '2px solid #080202ff',
+    fontFamily: 'Nunito, sans-serif',
+    paddingLeft: '16px',
+    paddingRight: '16px',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      left: '-20px',
+      bottom: '-1.5px',
+      height: '1px',
+      width: '25px',
+      backgroundColor: '#080101ff',
+    },
+  },
   headerCell: {
     textAlign: 'left',
     fontSize: '12px',
     fontWeight: 600,
     color: '#333333',
-    border: '3px solid #080202ff',
+    border: '2px solid #080202ff',
     fontFamily: 'Nunito, sans-serif',
+    paddingLeft: '16px',
+    paddingRight: '16px',
   },
   cohortRow: {
+    position: 'relative',
     '&:hover': {
       backgroundColor: '#F9F9F9',
-    },
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: '-20px',
-      right: '-20px',
-      bottom: '0',
-      height: '2px',
-      backgroundColor: '#080101ff',
     },
   },
   cohortCell: {
@@ -175,6 +192,24 @@ const styles = () => ({
     fontWeight: 500,
     color: '#333333',
     fontFamily: 'Nunito, sans-serif',
+  },
+  secondDataCell: {
+    position: 'relative',
+    padding: '12px 16px',
+    textAlign: 'right',
+    fontSize: '13px',
+    color: '#333333',
+    fontFamily: 'Nunito, sans-serif',
+    border: '2px solid #080101ff',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      left: '-20px',
+      bottom: '-1.5px',
+      height: '1px',
+      width: '25px',
+      backgroundColor: '#080101ff',
+    },
   },
   dataCell: {
     padding: '12px 16px',
