@@ -19,7 +19,6 @@ import { withStyles } from '@material-ui/core';
 const RiskTable = ({
   classes,
   cohorts = [],
-  percentage = '80.0%',
   timeIntervals = ['0 Months', '6 Months', '12 Months', '18 Months', '24 Months', '30 Months', '36 Months'],
 }) => {
   /**
@@ -62,7 +61,6 @@ const RiskTable = ({
 
   return (
     <div className={classes.container}>
-      <div className={classes.percentageTopLeft}>{percentage}</div>
       <table className={classes.table}>
         <thead>
           <tr className={classes.headerRow}>
@@ -96,11 +94,10 @@ const RiskTable = ({
 const styles = () => ({
   container: {
     position: 'relative',
-    backgroundColor: '#FFFFFF',
-    padding: '20px',
-    borderRadius: '4px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     fontFamily: 'Nunito, sans-serif',
+    width: '100%',
+    boxSizing: 'border-box',
+    overflow: 'hidden',
   },
   percentageTopLeft: {
     position: 'absolute',
@@ -120,6 +117,7 @@ const styles = () => ({
   },
   table: {
     width: '100%',
+    tableLayout: 'fixed',
     borderCollapse: 'collapse',
     marginTop: '30px',
     marginBottom: '30px',
@@ -134,6 +132,11 @@ const styles = () => ({
     color: '#333333',
     border: 'none',
     fontFamily: 'Nunito, sans-serif',
+    width: 'auto',
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   secondHeaderCell: {
     position: 'relative',
@@ -145,6 +148,10 @@ const styles = () => ({
     fontFamily: 'Nunito, sans-serif',
     paddingLeft: '16px',
     paddingRight: '16px',
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     '&::before': {
       content: '""',
       position: 'absolute',
@@ -164,6 +171,10 @@ const styles = () => ({
     fontFamily: 'Nunito, sans-serif',
     paddingLeft: '16px',
     paddingRight: '16px',
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   cohortRow: {
     position: 'relative',
@@ -174,6 +185,10 @@ const styles = () => ({
   cohortCell: {
     padding: '12px 16px',
     verticalAlign: 'middle',
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   cohortIndicator: {
     display: 'flex',
@@ -200,6 +215,10 @@ const styles = () => ({
     color: '#333333',
     fontFamily: 'Nunito, sans-serif',
     border: '2px solid #080101ff',
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     '&::before': {
       content: '""',
       position: 'absolute',
@@ -217,6 +236,10 @@ const styles = () => ({
     color: '#333333',
     fontFamily: 'Nunito, sans-serif',
     border: '2px solid #080101ff',
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 });
 

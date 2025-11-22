@@ -219,7 +219,14 @@ export default function KaplanMeierChart({
   const yTicks = 5;
 
   return (
-    <div className="w-full flex flex-col items-start" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div style={{
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      fontFamily: 'Inter, system-ui, sans-serif',
+    }}
+    >
       <div style={{
         marginBottom: 8, display: 'flex', alignItems: 'baseline', gap: 12,
       }}
@@ -319,7 +326,7 @@ export default function KaplanMeierChart({
 
 export function KaplanMeierDemo() {
   return (
-    <div className="p-4">
+    <div style={{ padding: '16px' }}>
       <KaplanMeierChart
         data={data}
         title="Overall Survival by Diagnosis (Demo)"
