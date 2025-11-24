@@ -40,13 +40,14 @@ const RiskTable = ({
       <tr className={classes.cohortRow}>
         <td className={classes.cohortCell}>
           <div className={classes.cohortIndicator}>
+            <span className={classes.cohortName}>{name || `Cohort ${id}`}</span>
             <div
               className={classes.cohortCircle}
               style={{ backgroundColor: color }}
             />
-            <span className={classes.cohortName}>{name || `Cohort ${id}`}</span>
           </div>
         </td>
+        <td className={classes.emptyDataCell} />
         {timeIntervals.map((interval, index) => {
           const value = data[interval] !== undefined ? data[interval] : '-';
           return (
@@ -65,6 +66,7 @@ const RiskTable = ({
         <thead>
           <tr className={classes.headerRow}>
             <th className={classes.firstHeaderCell} aria-label="Cohort" />
+            <th className={classes.emptyHeaderCell} aria-label="Separator" />
             {timeIntervals.map((interval, index) => (
               <th
                 key={interval}
@@ -132,11 +134,16 @@ const styles = () => ({
     color: '#333333',
     border: 'none',
     fontFamily: 'Nunito, sans-serif',
-    width: 'auto',
+    width: '150px',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+  },
+  emptyHeaderCell: {
+    width: '20px',
+    borderBottom: '2px solid #000000',
+    padding: 0,
   },
   secondHeaderCell: {
     position: 'relative',
@@ -144,7 +151,7 @@ const styles = () => ({
     fontSize: '12px',
     fontWeight: 600,
     color: '#333333',
-    border: '2px solid #080202ff',
+    border: '2px solid #3e3c3cff',
     fontFamily: 'Nunito, sans-serif',
     paddingLeft: '16px',
     paddingRight: '16px',
@@ -183,17 +190,18 @@ const styles = () => ({
     },
   },
   cohortCell: {
-    padding: '12px 16px',
     verticalAlign: 'middle',
-    minWidth: 0,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+  },
+  emptyDataCell: {
+    borderBottom: '2px solid #000000',
+    padding: 0,
   },
   cohortIndicator: {
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
+    justifyContent: 'flex-end',
   },
   cohortCircle: {
     width: '12px',

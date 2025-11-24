@@ -317,9 +317,6 @@ export default function KaplanMeierChart({
           ))}
         </g>
       </svg>
-      <div style={{ fontSize: 12, opacity: 0.7, marginTop: 6 }}>
-        ■ marks are step lines; small "+" markers denote right-censored observations at their last known times.
-      </div>
     </div>
   );
 }
