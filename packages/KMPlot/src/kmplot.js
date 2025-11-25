@@ -232,16 +232,7 @@ export default function KaplanMeierChart({
       }}
       >
         <h3 style={{ margin: 0 }}>{title}</h3>
-        {logRank && (
-          <div style={{ fontSize: 13, opacity: 0.8 }}>
-            Log-rank χ² =
-            {' '}
-            {logRank.chi2.toFixed(3)}
-            , p =
-            {' '}
-            {formatP(logRank.p)}
-          </div>
-        )}
+
       </div>
       <svg width={width} height={height} role="img" aria-label={title}>
         {/* Axes */}
