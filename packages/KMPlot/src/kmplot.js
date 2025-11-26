@@ -1,6 +1,8 @@
 /* eslint-disable no-use-before-define, no-continue, max-len, no-undef, no-restricted-syntax,
 no-restricted-properties, no-param-reassign, no-plusplus, no-shadow, no-unused-vars */
-import React, { useMemo } from 'react';
+import React, {
+  useMemo, useRef, useEffect, useState,
+} from 'react';
 import data from './examples/brain_tumor_data.json';
 
 /**
@@ -185,8 +187,23 @@ function formatP(p) {
 
 // ---- Reusable Chart Component ----
 export default function KaplanMeierChart({
-  data, width = 700, height = 420, margin = 48, groupKey = 'group', timeKey = 'time', eventKey = 'event', title = 'Kaplan–Meier Curves',
+  data, width = '100%', height = 420, margin = 48, groupKey = 'group', timeKey = 'time', eventKey = 'event', title = 'Kaplan–Meier Curves',
 }) {
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(700);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
   const groups = useMemo(() => groupBy(data, groupKey), [data, groupKey]);
   const groupKeys = Object.keys(groups);
 
@@ -208,10 +225,12 @@ export default function KaplanMeierChart({
     return null;
   }, [groupKeys, groups, timeKey, eventKey]);
 
-  // Scales
-  const innerW = width - margin * 2;
+  // Scales - use containerWidth for calculations
+  const innerW = containerWidth - margin * 2;
   const innerH = height - margin * 2;
-  const x = (t) => margin + (t / maxT) * innerW;
+  // Add small offset to prevent curve from overlapping y-axis
+  const xAxisOffset = 0.5;
+  const x = (t) => margin + xAxisOffset + (t / maxT) * innerW;
   const y = (s) => margin + innerH * (1 - s);
 
   // Axis ticks
@@ -234,80 +253,82 @@ export default function KaplanMeierChart({
         <h3 style={{ margin: 0 }}>{title}</h3>
 
       </div>
-      <svg width={width} height={height} role="img" aria-label={title}>
-        {/* Axes */}
-        <line x1={margin} y1={margin + innerH} x2={margin + innerW} y2={margin + innerH} stroke="#333" />
-        <line x1={margin} y1={margin} x2={margin} y2={margin + innerH} stroke="#333" />
+      <div ref={containerRef} style={{ width: '100%' }}>
+        <svg width={width} height={height} role="img" aria-label={title}>
+          {/* Axes */}
+          <line x1={margin + xAxisOffset} y1={margin + innerH} x2={margin + innerW + xAxisOffset} y2={margin + innerH} stroke="#333" />
+          <line x1={margin} y1={margin} x2={margin} y2={margin + innerH} stroke="#333" />
 
-        {/* X-axis ticks & labels */}
-        {Array.from({ length: xTicks + 1 }, (_, i) => {
-          const t = (i / xTicks) * maxT;
-          return (
-            <g key={`xt${i}`}>
-              <line x1={x(t)} y1={margin + innerH} x2={x(t)} y2={margin + innerH + 6} stroke="#333" />
-              <text x={x(t)} y={margin + innerH + 18} textAnchor="middle" fontSize={12}>{Math.round(t)}</text>
-            </g>
-          );
-        })}
-        <text x={margin + innerW / 2} y={height - 4} textAnchor="middle" fontSize={12} style={{ opacity: 0.85 }}>Time</text>
+          {/* X-axis ticks & labels */}
+          {Array.from({ length: xTicks + 1 }, (_, i) => {
+            const t = (i / xTicks) * maxT;
+            return (
+              <g key={`xt${i}`}>
+                <line x1={x(t)} y1={margin + innerH} x2={x(t)} y2={margin + innerH + 6} stroke="#333" />
+                <text x={x(t)} y={margin + innerH + 18} textAnchor="middle" fontSize={12}>{Math.round(t)}</text>
+              </g>
+            );
+          })}
+          <text x={margin + innerW / 2 + xAxisOffset} y={height - 4} textAnchor="middle" fontSize={12} style={{ opacity: 0.85 }}>Time</text>
 
-        {/* Y-axis ticks & labels */}
-        {Array.from({ length: yTicks + 1 }, (_, i) => {
-          const s = i / yTicks;
-          return (
-            <g key={`yt${i}`}>
-              <line x1={margin - 6} y1={y(s)} x2={margin} y2={y(s)} stroke="#333" />
-              <text x={margin - 10} y={y(s) + 4} textAnchor="end" fontSize={12}>{s.toFixed(1)}</text>
-              <line x1={margin} y1={y(s)} x2={margin + innerW} y2={y(s)} stroke="#ddd" />
-            </g>
-          );
-        })}
-        {/* <text x={14} y={margin - 10} fontSize={12} style={{ opacity: 0.85 }}>
-          Survival Probability
-        </text> */}
+          {/* Y-axis ticks & labels */}
+          {Array.from({ length: yTicks + 1 }, (_, i) => {
+            const s = i / yTicks;
+            return (
+              <g key={`yt${i}`}>
+                <line x1={margin - 6} y1={y(s)} x2={margin} y2={y(s)} stroke="#333" />
+                <text x={margin - 10} y={y(s) + 4} textAnchor="end" fontSize={12}>{s.toFixed(1)}</text>
+                <line x1={margin + xAxisOffset} y1={y(s)} x2={margin + innerW + xAxisOffset} y2={y(s)} stroke="#ddd" />
+              </g>
+            );
+          })}
+          {/* <text x={14} y={margin - 10} fontSize={12} style={{ opacity: 0.85 }}>
+            Survival Probability
+          </text> */}
 
-        {/* Curves and censor marks */}
-        {groupKeys.map((k, gi) => {
-          const { points, censorMarks } = kmResults[k];
-          const color = colors[gi % colors.length];
+          {/* Curves and censor marks */}
+          {groupKeys.map((k, gi) => {
+            const { points, censorMarks } = kmResults[k];
+            const color = colors[gi % colors.length];
 
-          // Build step path
-          const path = [];
-          const lastX = x(0); const
-            lastY = y(1);
-          path.push(`M ${lastX} ${lastY}`);
-          for (let i = 1; i < points.length; i++) {
-            const prev = points[i - 1];
-            const curr = points[i];
-            // horizontal segment to current time at prev S
-            path.push(`H ${x(curr.t)}`);
-            // vertical drop to new S at time
-            path.push(`V ${y(curr.S)}`);
-          }
+            // Build step path
+            const path = [];
+            const lastX = x(0); const
+              lastY = y(1);
+            path.push(`M ${lastX} ${lastY}`);
+            for (let i = 1; i < points.length; i++) {
+              const prev = points[i - 1];
+              const curr = points[i];
+              // horizontal segment to current time at prev S
+              path.push(`H ${x(curr.t)}`);
+              // vertical drop to new S at time
+              path.push(`V ${y(curr.S)}`);
+            }
 
-          return (
-            <g key={k}>
-              <path d={path.join(' ')} fill="none" stroke={color} strokeWidth={2} />
-              {censorMarks.map((m, idx) => (
-                <g key={`${k}-c-${idx}`}>
-                  <line x1={x(m.t) - 4} x2={x(m.t) + 4} y1={y(m.S)} y2={y(m.S)} stroke={color} />
-                  <line x1={x(m.t)} x2={x(m.t)} y1={y(m.S) - 4} y2={y(m.S) + 4} stroke={color} />
-                </g>
-              ))}
-            </g>
-          );
-        })}
+            return (
+              <g key={k}>
+                <path d={path.join(' ')} fill="none" stroke={color} strokeWidth={2} />
+                {censorMarks.map((m, idx) => (
+                  <g key={`${k}-c-${idx}`}>
+                    <line x1={x(m.t) - 4} x2={x(m.t) + 4} y1={y(m.S)} y2={y(m.S)} stroke={color} />
+                    <line x1={x(m.t)} x2={x(m.t)} y1={y(m.S) - 4} y2={y(m.S) + 4} stroke={color} />
+                  </g>
+                ))}
+              </g>
+            );
+          })}
 
-        {/* Legend */}
-        <g>
-          {groupKeys.map((k, gi) => (
-            <g key={`leg-${k}`} transform={`translate(${margin + gi * 180}, ${margin - 24})`}>
-              <rect width="14" height="14" fill={colors[gi % colors.length]} />
-              <text x={20} y={12} fontSize={12}>{k}</text>
-            </g>
-          ))}
-        </g>
-      </svg>
+          {/* Legend */}
+          <g>
+            {groupKeys.map((k, gi) => (
+              <g key={`leg-${k}`} transform={`translate(${margin + gi * 180}, ${margin - 24})`}>
+                <rect width="14" height="14" fill={colors[gi % colors.length]} />
+                <text x={20} y={12} fontSize={12}>{k}</text>
+              </g>
+            ))}
+          </g>
+        </svg>
+      </div>
     </div>
   );
 }
