@@ -125,7 +125,7 @@ const styles = () => ({
     marginBottom: '30px',
   },
   headerRow: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'transparent',
   },
   firstHeaderCell: {
     textAlign: 'left',
