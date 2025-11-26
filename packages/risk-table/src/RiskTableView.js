@@ -208,6 +208,7 @@ const styles = () => ({
     height: '12px',
     borderRadius: '50%',
     flexShrink: 0,
+    border: '1px solid #555555',
   },
   cohortName: {
     fontSize: '13px',
