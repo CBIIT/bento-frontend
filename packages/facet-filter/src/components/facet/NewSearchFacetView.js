@@ -205,9 +205,8 @@ const SearchFacetView = ({
               {
                 !facet.disableSearchModal && (
                 <div className={classes.searchContainer}>
-                  <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
-                    VIEW EXPANDED DISPLAY
-                    <span className={classes.expandedDisplayCount}>{`${checkedItems.length + newUncheckedFullList.length}`}</span>
+                  <Button variant="text" className={clsx(classes.expandedDisplayButton, classes[`expandedDisplayButton${facet.section}`])} onClick={() => setOpen(!open)}>
+                    {`VIEW EXPANDED DISPLAY (${checkedItems.length + newUncheckedFullList.length})`}
                   </Button>
                 </div>
                 )

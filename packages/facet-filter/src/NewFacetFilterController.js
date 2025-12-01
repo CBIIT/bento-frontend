@@ -27,6 +27,7 @@ const NewFacetFilterController = (props) => {
     facetSectionConfig,
     selectedSection,
     unknownAgesState,
+    searchFacetClasses,
   } = props;
 
   const filterState = {};
@@ -170,6 +171,7 @@ const NewFacetFilterController = (props) => {
       <NewBentoFacetFilter
         {...props}
         facetSection={facetSection}
+        searchFacetClasses={searchFacetClasses}
       />
     </>
   );

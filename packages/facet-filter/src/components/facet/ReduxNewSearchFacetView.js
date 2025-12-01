@@ -16,6 +16,7 @@ const mapStateToProps = (state, ownProps) => ({
   searchText: state.statusReducer?.searchState[ownProps.facet.datafield] || '',
   sortBy: state.statusReducer.sortState[ownProps.facet.datafield] || null,
   unknownAgesState: state?.statusReducer?.unknownAgesState || {},
+  classes: ownProps.classes,
 });
 
 const mapDispatchToProps = (dispatch) => ({
