@@ -3,6 +3,11 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable object-curly-newline */
 import React, { useEffect, useState } from 'react';
+import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import { generateQueryStr } from '@bento-core/util';
 import clsx from 'clsx';
 import { withStyles, Slider, Typography, Box } from '@material-ui/core';
 // import styles from './SliderStyle';
@@ -14,6 +19,7 @@ const SliderView = ({
   facet,
   onSliderToggle,
   filterState,
+  queryParams,
 }) => {
   const { minLowerBound, maxUpperBound, quantifier, datafield, facetValues } = facet;
   // Check if bounds are invalid (both are 0)
@@ -22,6 +28,8 @@ const SliderView = ({
     || (facetValues[0] === 0 && facetValues[1] === 0);
   const lowerBoundValue = facetValues[0];
   const upperBoundValue = facetValues[1];
+  const query = new URLSearchParams(useLocation().search);
+  const navigate = useNavigate();
 
   // Determines whether the lower bound and upper bound values are valid
   const isValid = () => {
@@ -36,6 +44,10 @@ const SliderView = ({
   };
   const handleChangeCommittedSlider = (value) => {
     if (!value.includes('')) {
+      const paramValue = {};
+      paramValue[datafield] = value;
+      const queryStr = generateQueryStr(query, queryParams, paramValue);
+      navigate(`/explore${queryStr}`);
       onSliderToggle({ sliderValue: value, ...facet });
     }
   };
