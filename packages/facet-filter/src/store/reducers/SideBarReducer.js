@@ -78,6 +78,26 @@ export const onSortChange = ({
   return updatedState;
 };
 
+export const onTimeUnitChange = ({
+  datafield,
+  timeUnit,
+  timeUnitState,
+}) => {
+  const updatedState = { ...timeUnitState };
+  updatedState[datafield] = timeUnit;
+  return updatedState;
+};
+
+export const onUnknownAgesChange = ({
+  datafield,
+  unknownAges,
+  unknownAgesState,
+}) => {
+  const updatedState = { ...unknownAgesState };
+  updatedState[datafield] = unknownAges;
+  return updatedState;
+};
+
 export function sideBarReducerGenerator() {
   return {
     actionTypes: sideBarActionTypes,
@@ -130,6 +150,23 @@ export function sideBarReducerGenerator() {
           return {
             ...state,
             sortState: { ...updateState },
+          };
+        case sideBarActionTypes.UPDATE_FILTER_STATE:
+          return {
+            ...state,
+            filterState: payload,
+          };
+        case sideBarActionTypes.TIME_UNIT_CHANGED:
+          updateState = onTimeUnitChange({ ...payload, ...state });
+          return {
+            ...state,
+            timeUnitState: { ...updateState },
+          };
+        case sideBarActionTypes.UNKNOWN_AGES_CHANGED:
+          updateState = onUnknownAgesChange({ ...payload, ...state });
+          return {
+            ...state,
+            unknownAgesState: { ...updateState },
           };
         default:
           return state;
