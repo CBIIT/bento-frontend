@@ -134,13 +134,14 @@ const SearchFacetView = ({
         }}
         id={facet.section}
       >
-        {CustomView ? (
+        { CustomView ? (
           <CustomView
             facet={facet}
             facetClasses={
               isActiveFacet ? `activeFacet${facet.section}`
                 : `inactiveFacet${facet.section}`
             }
+            expanded={expand}
           />
         ) : (
           <CustomAccordionSummary>
@@ -218,8 +219,8 @@ const SearchFacetView = ({
           (facetValues.length > 0)
             && (
               <>
-                <div className={classes.sortGroup}>
-                  <span className={classes.sortGroupIcon}>
+                <div className={classes.sortGroupSearchFacet}>
+                  <span className={classes.sortGroupIconSearchFacet}>
                     <Icon
                       style={{ fontSize: 10 }}
                       onClick={onClearSection}

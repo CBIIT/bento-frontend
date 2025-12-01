@@ -114,9 +114,10 @@ const NewFacetView = ({
           <CustomView
             facet={facet}
             facetClasses={
-            isActiveFacet ? `activeFacet${facet.section}`
-              : `inactiveFacet${facet.section}`
+              isActiveFacet ? `activeFacet${facet.section}`
+                : `inactiveFacet${facet.section}`
             }
+            expanded={expand}
           />
         ) : (
           <CustomAccordionSummary>
