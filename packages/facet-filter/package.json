@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/facet-filter",
-  "version": "1.0.1-c3dc.8",
+  "version": "1.0.1-c3dc.9",
   "description": "### Bento core sidebar design:",
   "main": "dist/index.js",
   "scripts": {
@@ -16,15 +16,18 @@
     "access": "public"
   },
   "dependencies": {
+    "@bento-core/util": "^1.0.0-c3dc.0",
     "lodash": "^4.17.20"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "clsx": "^1.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
-    "react-redux": "^7.2.1"
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.1.2"
   },
   "author": "CTOS Bento Team",
   "license": "ISC",
