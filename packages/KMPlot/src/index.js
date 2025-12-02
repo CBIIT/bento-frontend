@@ -1,1 +1,1 @@
-export { default as KaplanMeierChart, KaplanMeierDemo } from './kmplot';
+export { default as KaplanMeierChart } from './kmplot';

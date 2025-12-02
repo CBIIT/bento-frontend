@@ -3,7 +3,6 @@ no-restricted-properties, no-param-reassign, no-plusplus, no-shadow, no-unused-v
 import React, {
   useMemo, useRef, useEffect, useState,
 } from 'react';
-import data from './examples/brain_tumor_data.json';
 
 /**
  * Kaplan–Meier working prototype in pure React + SVG (no extra libs).
@@ -221,12 +220,6 @@ export default function KaplanMeierChart({
   const defaultColors = ['#1f77b4', '#d62728', '#2ca02c', '#9467bd', '#8c564b'];
   const colors = customColors && customColors.length > 0 ? customColors : defaultColors;
 
-  // Log-rank (only when there are exactly 2 groups)
-  const logRank = useMemo(() => {
-    if (groupKeys.length === 2) return logRankTest(groups, timeKey, eventKey);
-    return null;
-  }, [groupKeys, groups, timeKey, eventKey]);
-
   // Scales - use containerWidth for calculations
   const innerW = containerWidth - margin * 2;
   const innerH = height - margin * 2;
@@ -333,19 +326,6 @@ export default function KaplanMeierChart({
           )}
         </svg>
       </div>
-    </div>
-  );
-}
-
-export function KaplanMeierDemo() {
-  return (
-    <div style={{ padding: '16px' }}>
-      <KaplanMeierChart
-        data={data}
-        title="Overall Survival by Diagnosis (Demo)"
-        width={760}
-        height={480}
-      />
     </div>
   );
 }
