@@ -62,7 +62,6 @@ function MyComponent() {
   return (
     <RiskTable
       cohorts={cohorts}
-      percentage="80.0%"
       timeIntervals={['0 Months', '6 Months', '12 Months', '18 Months', '24 Months', '30 Months', '36 Months']}
     />
   );
@@ -74,7 +73,6 @@ function MyComponent() {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `cohorts` | `array` | `[]` | Array of cohort data objects |
-| `percentage` | `string` | `'80.0%'` | Percentage value to display in top-left and bottom-left corners |
 | `timeIntervals` | `array` | `['0 Months', '6 Months', ...]` | Array of time interval labels |
 
 ### Cohort Object Structure
@@ -101,7 +99,6 @@ The component uses Material-UI's `withStyles` for styling. You can override styl
 - White background design
 - Colored circle indicators for each cohort
 - Time interval columns (0, 6, 12, 18, 24, 30, 36 months)
-- Percentage display in top-left and bottom-left corners
 - Responsive table layout
 - Hover effects on rows
 

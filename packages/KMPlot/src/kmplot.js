@@ -184,6 +184,9 @@ function formatP(p) {
   return p.toFixed(4);
 }
 
+// Default color palette
+const defaultColors = ['#1f77b4', '#d62728', '#2ca02c', '#9467bd', '#8c564b'];
+
 // ---- Reusable Chart Component ----
 export default function KaplanMeierChart({
   data, width = '100%', height = 420, margin = 48, groupKey = 'group', timeKey = 'time', eventKey = 'event', title = 'Kaplan–Meier Curves', colors: customColors, showLegend = true,
@@ -217,7 +220,6 @@ export default function KaplanMeierChart({
   const maxT = useMemo(() => Math.max(1, ...data.map((d) => d[timeKey])), [data, timeKey]);
 
   // Use custom colors if provided, otherwise use default palette
-  const defaultColors = ['#1f77b4', '#d62728', '#2ca02c', '#9467bd', '#8c564b'];
   const colors = customColors && customColors.length > 0 ? customColors : defaultColors;
 
   // Scales - use containerWidth for calculations
@@ -292,7 +294,6 @@ export default function KaplanMeierChart({
               lastY = y(1);
             path.push(`M ${lastX} ${lastY}`);
             for (let i = 1; i < points.length; i++) {
-              const prev = points[i - 1];
               const curr = points[i];
               // horizontal segment to current time at prev S
               path.push(`H ${x(curr.t)}`);

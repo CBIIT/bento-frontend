@@ -10,7 +10,6 @@ import { withStyles } from '@material-ui/core';
  * @param {string} cohorts[].name - Cohort display name
  * @param {string} cohorts[].color - Color for the cohort indicator circle (hex or color name)
  * @param {object} cohorts[].data - Object with time intervals as keys and values as numbers
- * @param {string} percentage - Percentage value to display (e.g., "80.0%")
  * @param {array} timeIntervals - Array of time interval labels
  *   (e.g., ["0 Months", "6 Months", ...])
  *
@@ -30,7 +29,6 @@ const RiskTable = ({
    */
   const CohortRow = ({ cohort }) => {
     const {
-      id,
       name,
       color,
       data = {},
@@ -40,7 +38,7 @@ const RiskTable = ({
       <tr className={classes.cohortRow}>
         <td className={classes.cohortCell}>
           <div className={classes.cohortIndicator}>
-            <span className={classes.cohortName}>{name || `Cohort ${id}`}</span>
+            <span className={classes.cohortName}>{name || `Cohort ${cohort.id}`}</span>
             <div
               className={classes.cohortCircle}
               style={{ backgroundColor: color }}
@@ -100,22 +98,6 @@ const styles = () => ({
     width: '100%',
     boxSizing: 'border-box',
     overflow: 'hidden',
-  },
-  percentageTopLeft: {
-    position: 'absolute',
-    top: '10px',
-    left: '10px',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: '#333333',
-  },
-  percentageBottomLeft: {
-    position: 'absolute',
-    bottom: '10px',
-    left: '10px',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: '#333333',
   },
   table: {
     width: '100%',
@@ -255,7 +237,6 @@ const styles = () => ({
 RiskTable.defaultProps = {
   classes: {},
   cohorts: [],
-  percentage: '80.0%',
   timeIntervals: ['0 Months', '6 Months', '12 Months', '18 Months', '24 Months', '30 Months', '36 Months'],
 };
 
