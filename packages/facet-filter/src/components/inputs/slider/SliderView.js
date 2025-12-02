@@ -246,21 +246,13 @@ const SliderView = ({
         </div>
         <Box className={classes.lowerUpperBound}>
           <Typography className={classes.lowerBound}>
-            {minLowerBound.toLocaleString()}
+          {getDisplayValue(minLowerBound).toLocaleString()}
           </Typography>
           <Typography className={classes.upperBound}>
-            {(minLowerBound === 0 && maxUpperBound === 0) ? '-' : (maxUpperBound !== 0 ? maxUpperBound.toLocaleString() : '.')}
+            {(minLowerBound === 0 && maxUpperBound === 0) ? '-' : (maxUpperBound !== 0 ? getDisplayValue(maxUpperBound).toLocaleString() : '.')}
           </Typography>
         </Box>
       </div>
-      <Box className={classes.lowerUpperBound}>
-        <Typography className={classes.lowerBound}>
-          {getDisplayValue(minLowerBound).toLocaleString()}
-        </Typography>
-        <Typography className={classes.upperBound}>
-          {getDisplayValue(maxUpperBound).toLocaleString()}
-        </Typography>
-      </Box>
       {/* Unknown Ages Section */}
       <Box className={classes.unknownAgesSection}>
         <Typography className={classes.unknownAgesTitle}>
