@@ -153,7 +153,7 @@ export default () => ({
       ? props.facet.style.colorPrimary.color
       : '#3f51b5';
 
-    return {
+    const defaultStyles = {
       fontFamily: 'Poppins !important',
       fontSize: '11px !important',
       fontWeight: '400 !important',
@@ -202,18 +202,28 @@ export default () => ({
         },
       },
     };
+
+    // Merge custom styles with defaults
+    return props.facet.style && props.facet.style.toggleButton
+      ? { ...defaultStyles, ...props.facet.style.toggleButton }
+      : defaultStyles;
   },
   toggleButtonSelected: (props) => {
     const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
       ? props.facet.style.colorPrimary.color
       : '#3f51b5';
 
-    return {
+    const defaultStyles = {
       backgroundColor: primaryColor,
       color: '#FFFFFF !important',
       '&:hover': {
         backgroundColor: primaryColor,
       },
     };
+
+    // Merge custom styles with defaults
+    return props.facet.style && props.facet.style.toggleButtonSelected
+      ? { ...defaultStyles, ...props.facet.style.toggleButtonSelected }
+      : defaultStyles;
   },
 });
