@@ -37,6 +37,8 @@ export const DEFAULT_CONFIG_DONUT = {
     cellPadding: 2,
     showTotalCount: false,
     textOverflowLength: 20,
+    maxLines: 3,
+    lineHeight: 14,
   },
 
   // Helper functions used by the component
@@ -71,6 +73,55 @@ export const DEFAULT_CONFIG_DONUT = {
     mapData: (data) => ({ name: data.group, value: data.subjects }),
 
     /**
+     * Wrap text into multiple lines
+     *
+     * @param {string} text
+     * @param {number} maxCharsPerLine
+     * @param {number} maxLines
+     * @returns {string[]} array of lines
+     */
+    wrapText: (text, maxCharsPerLine, maxLines = 3) => {
+      const words = String(text).split(' ');
+      const lines = [];
+      let currentLine = '';
+
+      for (let i = 0; i < words.length; i += 1) {
+        const testLine = currentLine ? `${currentLine} ${words[i]}` : words[i];
+
+        if (testLine.length <= maxCharsPerLine) {
+          currentLine = testLine;
+        } else {
+          if (currentLine) {
+            lines.push(currentLine);
+            currentLine = words[i];
+          } else {
+            // Single word longer than max, split it
+            lines.push(words[i].substring(0, maxCharsPerLine));
+            currentLine = words[i].substring(maxCharsPerLine);
+          }
+
+          if (lines.length >= maxLines) {
+            break;
+          }
+        }
+      }
+
+      if (currentLine && lines.length < maxLines) {
+        lines.push(currentLine);
+      }
+
+      // If we still have more words and we're at max lines, add ellipsis
+      if (lines.length === maxLines && (currentLine || words.slice(lines.length).length > 0)) {
+        const lastLine = lines[maxLines - 1];
+        lines[maxLines - 1] = lastLine.length > maxCharsPerLine - 3
+          ? `${lastLine.substring(0, maxCharsPerLine - 3)}...`
+          : `${lastLine}...`;
+      }
+
+      return lines;
+    },
+
+    /**
      * Generate an active shape element for the pie chart
      *
      * @param {*} props
@@ -80,21 +131,47 @@ export const DEFAULT_CONFIG_DONUT = {
       const {
         cx, cy, innerRadius, outerRadius, startAngle, endAngle,
         fill, payload, value, textColor, fontSize, fontWeight, fontFamily,
-        titleLocation, titleAlignment, sliceTitle, totalCount, showTotalCount, textOverflowLength,
+        titleLocation, titleAlignment, sliceTitle, totalCount, showTotalCount,
+        textOverflowLength, maxLines, lineHeight, wrapText,
       } = props;
 
       const isCapital = String(payload.name).toUpperCase() === String(payload.name);
-      const overflowLength = isCapital ? textOverflowLength : textOverflowLength + 10;
+      const maxCharsPerLine = isCapital ? textOverflowLength : textOverflowLength + 10;
+      const maxLinesValue = maxLines || 3;
+      const lineHeightValue = lineHeight || 14;
+
+      // Wrap text into multiple lines
+      const wrappedLines = wrapText
+        ? wrapText(payload.name, maxCharsPerLine, maxLinesValue)
+        : [payload.name];
 
       const labelX = (titleAlignment === 'center') ? cx : (titleAlignment === 'left') ? 0 : cx * 2;
-      const labelY = (titleLocation === 'top') ? 9 : (cy * 2) + 15;
+      const baseLabelY = (titleLocation === 'top') ? 9 : (cy * 2) + 15;
+
+      // Adjust starting position so multi-line text grows upward, not downward
+      // This keeps the bottom line at the same position as single-line text
+      const totalTextHeight = (wrappedLines.length - 1) * lineHeightValue;
+      const labelY = baseLabelY - totalTextHeight;
 
       const faceValue = showTotalCount === true ? `${value} / ${totalCount}` : value;
 
       return (
         <g>
-          <text x={labelX} y={labelY} dy={0} textAnchor={(titleAlignment === 'center') ? 'middle' : undefined} fill={textColor} fontSize={fontSize || '12px'} fontWeight={fontWeight || '500'} fontFamily={fontFamily || 'Nunito'} cursor="text">
-            {String(payload.name).length > overflowLength ? `${String(payload.name).substring(0, overflowLength)}...` : payload.name}
+          <text
+            x={labelX}
+            y={labelY}
+            textAnchor={(titleAlignment === 'center') ? 'middle' : undefined}
+            fill={textColor}
+            fontSize={fontSize || '12px'}
+            fontWeight={fontWeight || '500'}
+            fontFamily={fontFamily || 'Nunito'}
+            cursor="text"
+          >
+            {wrappedLines.map((line, index) => (
+              <tspan key={index} x={labelX} dy={index === 0 ? 0 : lineHeightValue}>
+                {line}
+              </tspan>
+            ))}
             <title>{payload.name}</title>
           </text>
           <text x={cx} y={cy} dy={0} textAnchor="middle" fill={textColor} fontSize={fontSize || '12px'} fontWeight="bold" fontFamily={fontFamily || 'Nunito'}>
@@ -146,7 +223,7 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
 
   const {
     textColor, fontFamily, fontWeight, fontSize, cellPadding,
-    showTotalCount, textOverflowLength,
+    showTotalCount, textOverflowLength, maxLines, lineHeight,
   } = styles && typeof styles === 'object' ? styles : DEFAULT_CONFIG_DONUT.styles;
 
   const COLORS_EVEN = colors && colors.even instanceof Array && colors.even.length > 0
@@ -168,6 +245,10 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
   const activeShape = functions && typeof functions.renderActiveShape === 'function'
     ? functions.renderActiveShape
     : DEFAULT_CONFIG_DONUT.functions.renderActiveShape;
+
+  const wrapText = functions && typeof functions.wrapText === 'function'
+    ? functions.wrapText
+    : DEFAULT_CONFIG_DONUT.functions.wrapText;
 
   return {
     DonutChart: ({ data, ...props }) => {
@@ -226,18 +307,29 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         totalCount,
         showTotalCount,
         textOverflowLength,
+        maxLines,
+        lineHeight,
+        wrapText,
       };
 
       return (
         <>
           <Button
             onClick={() => handleExportChart()}
-            style={{ bottom: '27px', left: '190px', backgroundColor: 'transparent' }}
+            style={{
+              position: 'absolute',
+              top: '25px',
+              right: '15px',
+              backgroundColor: 'transparent',
+              zIndex: 1000,
+              minWidth: 'auto',
+              padding: '8px',
+            }}
           >
             <img src={exportIcon} alt="export" />
           </Button>
           <ResponsiveContainer width={width} height={height}>
-            <PieChart ref={currentChart}>
+            <PieChart ref={currentChart} width={width} height={height}>
               <Pie
                 data={dataset}
                 activeIndex={activeIndex}

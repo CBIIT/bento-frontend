@@ -277,7 +277,15 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         <>
           <Button
             onClick={() => handleExportChart()}
-            style={{ bottom: '25px', left: '225px', backgroundColor: 'transparent' }}
+            style={{
+              position: 'absolute',
+              top: '25px',
+              right: '15px',
+              backgroundColor: 'transparent',
+              zIndex: 1000,
+              minWidth: 'auto',
+              padding: '8px',
+            }}
           >
             <img src={exportIcon} alt="export" />
           </Button>

@@ -9,6 +9,7 @@ const DEFAULT_CLASSES = makeStyles({
   widgetWrapper: {
     display: 'flex',
     minHeight: '100%',
+    marginBottom: '-19px',
   },
   widgetHeader: { },
   widgetDivider: {
@@ -95,7 +96,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
       } = props;
 
       return (
-        <div className={classes.widgetWrapper}>
+        <div className={classes.widgetWrapper} style={{ position: 'relative' }}>
           <Paper
             className={classnames(classes.paper, {
               [classes.customBackGround]: customBackGround,
@@ -107,6 +108,7 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
               className={classnames(classes.widgetHeader, classes.paddedTitle, {
                 [classes.noPaddedTitle]: noPaddedTitle,
               })}
+              style={chartType === 'donut' ? { paddingBottom: '18px' } : {}}
             >
               {header || title}
             </div>
@@ -115,7 +117,13 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
                 [classes.noPadding]: noBodyPadding,
                 [bodyClass]: bodyClass,
               })}
-              style={chartType === 'bar' ? { width: '100%' } : {}}
+              style={
+                chartType === 'bar'
+                  ? { width: '100%', paddingTop: '15px' }
+                  : chartType === 'donut'
+                    ? { paddingLeft: 'calc((3 * 8px) - 3px)' }
+                    : {}
+              }
             >
               {chartType === 'donut' && (
                 <DonutChart
