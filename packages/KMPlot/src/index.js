@@ -1,1 +1,2 @@
-export { default as KaplanMeierChart, KaplanMeierDemo } from './kmplot';
+// eslint-disable-next-line import/prefer-default-export
+export { default as KaplanMeierChart } from './kmplot';
