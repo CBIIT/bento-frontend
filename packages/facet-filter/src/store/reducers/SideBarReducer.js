@@ -6,6 +6,7 @@ const initFilterState = {
   sortState: {},
   timeUnitState: {},
   unknownAgesState: {},
+  expandState: {}, // Add this line
 };
 
 export const onToggleStateUpdate = ({
@@ -100,6 +101,16 @@ export const onUnknownAgesChange = ({
   return updatedState;
 };
 
+export const onToggleFacetExpand = ({
+  datafield,
+  expanded,
+  expandState,
+}) => {
+  const updatedState = { ...expandState };
+  updatedState[datafield] = expanded;
+  return updatedState;
+};
+
 export function sideBarReducerGenerator() {
   return {
     actionTypes: sideBarActionTypes,
@@ -176,6 +187,12 @@ export function sideBarReducerGenerator() {
           return {
             ...state,
             unknownAgesState: { ...updateState },
+          };
+        case sideBarActionTypes.TOGGLE_FACET_EXPAND:
+          updateState = onToggleFacetExpand({ ...payload, ...state });
+          return {
+            ...state,
+            expandState: { ...updateState },
           };
         default:
           return state;

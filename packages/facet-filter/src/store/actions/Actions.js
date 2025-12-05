@@ -67,3 +67,11 @@ export const unknownAgesChange = (datafield, unknownAges) => ({
     unknownAges,
   },
 });
+
+export const toggleFacetExpand = (datafield, expanded) => ({
+  type: sideBarActionTypes.TOGGLE_FACET_EXPAND,
+  payload: {
+    datafield,
+    expanded,
+  },
+});
