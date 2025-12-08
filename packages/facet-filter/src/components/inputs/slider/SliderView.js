@@ -2,8 +2,9 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable object-curly-newline */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import clsx from 'clsx';
+import { debounce } from 'lodash';
 import { withStyles, Slider, Typography, Box } from '@material-ui/core';
 // import styles from './SliderStyle';
 import { silderTypes } from '../Types';
@@ -34,12 +35,35 @@ const SliderView = ({
 
     return checks.every((condition) => condition === true);
   };
-  const handleChangeCommittedSlider = (value) => {
+  const [sliderValue, setSliderValue] = useState([lowerBoundValue, upperBoundValue]);
+
+  const handleChangeCommittedSlider = useCallback((value) => {
     if (!value.includes('')) {
       onSliderToggle({ sliderValue: value, ...facet });
     }
-  };
-  const [sliderValue, setSliderValue] = useState([lowerBoundValue, upperBoundValue]);
+  }, [onSliderToggle, facet]);
+
+  // Debounced version for input changes (300ms delay)
+  const debouncedHandleChangeCommittedSlider = useMemo(
+    () => debounce(handleChangeCommittedSlider, 300),
+    [handleChangeCommittedSlider],
+  );
+
+  // Handler for input changes: updates local state immediately, debounces commit
+  const handleInputChange = useCallback((value) => {
+    // Update local state immediately for visual feedback
+    if (!value.includes('')) {
+      setSliderValue([...value]);
+    }
+    // Debounce the commit to parent
+    debouncedHandleChangeCommittedSlider(value);
+  }, [debouncedHandleChangeCommittedSlider]);
+
+  // Cleanup debounced function on unmount
+  useEffect(
+    () => () => debouncedHandleChangeCommittedSlider.cancel(),
+    [debouncedHandleChangeCommittedSlider],
+  );
   useEffect(() => {
     if (filterState && datafield && filterState[datafield]) {
       setSliderValue([...filterState[datafield]]);
@@ -71,7 +95,7 @@ const SliderView = ({
               minLowerBound={minLowerBound}
               maxUpperBound={maxUpperBound}
               type={silderTypes.INPUT_MIN}
-              onInputChange={handleChangeCommittedSlider}
+              onInputChange={handleInputChange}
               disabled={isBoundsInvalid}
             />
           </div>
@@ -86,7 +110,7 @@ const SliderView = ({
               minLowerBound={minLowerBound}
               maxUpperBound={maxUpperBound}
               type={silderTypes.INPUT_MAX}
-              onInputChange={handleChangeCommittedSlider}
+              onInputChange={handleInputChange}
               disabled={isBoundsInvalid}
             />
           </div>

@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/facet-filter",
-  "version": "1.0.1-c3dc.8",
+  "version": "1.0.1-c3dc.9",
   "description": "### Bento core sidebar design:",
   "main": "dist/index.js",
   "scripts": {
