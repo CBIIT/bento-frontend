@@ -5,6 +5,7 @@ import {
   clearSliderSection,
   timeUnitChange,
   unknownAgesChange,
+  toggleFacetExpand,
 } from '../../store/actions/Actions';
 import NewFacetView from './NewFacetView';
 
@@ -13,6 +14,7 @@ const ReduxNewFacetView = ((props) => <NewFacetView {...props} />);
 const mapStateToProps = (state) => ({
   timeUnitState: state?.statusReducer?.timeUnitState || {},
   unknownAgesState: state?.statusReducer?.unknownAgesState || {},
+  expandState: state?.statusReducer?.expandState || {},
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -21,6 +23,9 @@ const mapDispatchToProps = (dispatch) => ({
   onTimeUnitChange: (datafield, timeUnit) => { dispatch(timeUnitChange(datafield, timeUnit)); },
   onUnknownAgesChange: (datafield, unknownAges) => {
     dispatch(unknownAgesChange(datafield, unknownAges));
+  },
+  onToggleFacetExpand: (datafield, expanded) => {
+    dispatch(toggleFacetExpand(datafield, expanded));
   },
 });
 

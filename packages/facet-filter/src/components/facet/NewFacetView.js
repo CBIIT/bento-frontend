@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   useLocation,
   useNavigate,
@@ -31,9 +31,30 @@ const NewFacetView = ({
   timeUnitState,
   onTimeUnitChange,
   unknownAgesState,
+  expandState,
+  onToggleFacetExpand,
 }) => {
-  const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
-  const onExpandFacet = () => setExpand(!expand);
+  const expand = expandState[facet.datafield] !== undefined ? expandState[facet.datafield] : (facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
+
+  const isUserInitiated = useRef(false);
+  const prevExpandRef = useRef(expand);
+
+  useEffect(() => {
+    prevExpandRef.current = expand;
+    // Reset flag after render
+    if (isUserInitiated.current) {
+      setTimeout(() => {
+        isUserInitiated.current = false;
+      }, 0);
+    }
+  }, [expand]);
+
+  const onExpandFacet = () => {
+    isUserInitiated.current = true;
+    const newExpandState = !expand;
+    onToggleFacetExpand(facet.datafield, newExpandState);
+  };
+
   const query = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
 
@@ -110,6 +131,10 @@ const NewFacetView = ({
           root: classes.expansionPanelsideBarItem,
         }}
         id={facet.section}
+        TransitionProps={{
+          // Disable animation if change is not user-initiated
+          timeout: isUserInitiated.current ? undefined : 0,
+        }}
       >
         { CustomView ? (
           <CustomView

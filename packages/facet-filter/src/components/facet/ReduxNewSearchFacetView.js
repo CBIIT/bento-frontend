@@ -6,6 +6,7 @@ import {
   searchTextChange,
   sortChange,
   unknownAgesChange,
+  toggleFacetExpand,
 } from '../../store/actions/Actions';
 // import FacetView from './FacetView';
 import NewSearchFacetView from './NewSearchFacetView';
@@ -16,6 +17,7 @@ const mapStateToProps = (state, ownProps) => ({
   searchText: state.statusReducer?.searchState[ownProps.facet.datafield] || '',
   sortBy: state.statusReducer.sortState[ownProps.facet.datafield] || null,
   unknownAgesState: state?.statusReducer?.unknownAgesState || {},
+  expandState: state?.statusReducer?.expandState || {},
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -29,6 +31,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onUnknownAgesChange: (datafield, unknownAges) => {
     dispatch(unknownAgesChange(datafield, unknownAges));
+  },
+  onToggleFacetExpand: (datafield, expanded) => {
+    dispatch(toggleFacetExpand(datafield, expanded));
   },
 });
 
