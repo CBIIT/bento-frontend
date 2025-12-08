@@ -4,8 +4,6 @@ A lightweight, dependency-free Kaplan–Meier (KM) survival plot component inten
 
 > **Component**: `KaplanMeierChart`
 >
-> **Demo wrapper**: `KaplanMeierDemo`
->
 > **Tech**: React, SVG (no external chart libs)
 
 ---
@@ -96,9 +94,14 @@ Validation rules:
 ```tsx
 import React from "react";
 import { KaplanMeierChart } from "@bento-core/kmplot"; // once published
-import myData from "./brain_tumor_data.json";
 
 export default function Example() {
+  const myData = [
+    { id: "P1", time: 120, event: 1, group: "Medulloblastoma" },
+    { id: "P2", time: 220, event: 0, group: "Medulloblastoma" },
+    { id: "P3", time: 180, event: 1, group: "Ependymoma" },
+  ];
+
   return (
     <KaplanMeierChart
       data={myData}
@@ -118,22 +121,6 @@ export default function Example() {
   timeKey="t_months"
   eventKey="status" // 1=death, 0=censored
 />
-```
-
-### Demo wrapper
-```tsx
-export function KaplanMeierDemo() {
-  return (
-    <div className="p-4">
-      <KaplanMeierChart
-        data={data}
-        title="Overall Survival by Diagnosis (Demo)"
-        width={760}
-        height={480}
-      />
-    </div>
-  );
-}
 ```
 
 ---
@@ -195,10 +182,7 @@ Test statistic: \( \chi^2 = (\sum_t (d_1 - E_1))^2 / \sum_t V_t \), p‑value fr
 ```ts
 // packages/src/index.ts
 export { default as KaplanMeierChart } from './KaplanMeierChart';
-export { KaplanMeierDemo } from './KaplanMeierChart';
 ```
-
-- Keep the demo and sample data (`brain_tumor_data.json`) in `examples/` or behind a conditional export to avoid inflating consumer bundles
 
 ---
 
@@ -263,21 +247,6 @@ Although the implementation is plain JS, you can add JSDoc types for editor Inte
 - Optional stratified log‑rank for >2 groups; hazard ratio estimates via Cox PH (separate utility)
 
 ---
-
-## 📚 Example JSON loader
-If bundler supports JSON imports (Vite/Next/webpack > v5):
-
-```ts
-import data from './examples/brain_tumor_data.json';
-```
-
-Otherwise, fetch dynamically:
-
-```ts
-useEffect(() => {
-  fetch('/examples/brain_tumor_data.json').then(r => r.json()).then(setData);
-}, []);
-```
 
 ---
 
