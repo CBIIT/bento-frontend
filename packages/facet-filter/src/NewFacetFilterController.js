@@ -117,7 +117,7 @@ const NewFacetFilterController = (props) => {
               return addField;
             });
             /**
-             * Check if there are orphen filter values and add them to the facet values
+             * Check if there are orphan filter values and add them to the facet values
              */
             if (filterState !== undefined) {
               const facetFilter = filterState[facet.datafield];
