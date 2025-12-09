@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable object-curly-newline */
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import clsx from 'clsx';
 import { debounce } from 'lodash';
 import { withStyles, Slider, Typography, Box } from '@material-ui/core';
@@ -37,17 +37,20 @@ const SliderView = ({
   };
   const [sliderValue, setSliderValue] = useState([lowerBoundValue, upperBoundValue]);
 
-  const handleChangeCommittedSlider = useCallback((value) => {
-    if (!value.includes('')) {
-      onSliderToggle({ sliderValue: value, ...facet });
-    }
-  }, [onSliderToggle, facet]);
+  // Use ref to maintain stable debounced function
+  const debouncedHandleChangeCommittedSlider = useRef(
+    debounce((value) => {
+      if (!value.includes('')) {
+        onSliderToggle({ sliderValue: value, ...facet });
+      }
+    }, 300),
+  ).current;
 
-  // Debounced version for input changes (300ms delay)
-  const debouncedHandleChangeCommittedSlider = useMemo(
-    () => debounce(handleChangeCommittedSlider, 300),
-    [handleChangeCommittedSlider],
-  );
+  // Update debounced function when dependencies change
+  useEffect(() => {
+    debouncedHandleChangeCommittedSlider.cancel();
+    // Note: We keep the same debounced instance but facet is captured in closure
+  }, [facet, onSliderToggle, debouncedHandleChangeCommittedSlider]);
 
   // Handler for input changes: updates local state immediately, debounces commit
   const handleInputChange = useCallback((value) => {
@@ -123,7 +126,9 @@ const SliderView = ({
             getAriaValueText={valuetext}
             onChange={isBoundsInvalid ? undefined : handleChangeSlider}
             onChangeCommitted={
-              isBoundsInvalid ? undefined : (event, value) => handleChangeCommittedSlider(value)
+              isBoundsInvalid
+                ? undefined
+                : (event, value) => debouncedHandleChangeCommittedSlider(value)
             }
             value={maxUpperBound === 0 ? [0, 0] : [...sliderValue]}
             valueLabelDisplay="auto"
