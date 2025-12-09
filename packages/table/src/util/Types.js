@@ -6,12 +6,14 @@ export const DISPLAY = 'DISPLAY';
 export const DEFAULT = 'DEFAULT';
 export const FORMAT_DATA = 'FORMAT_DATA';
 export const CPI = 'CPI';
+export const CPI_MAPPING = 'CPI_MAPPING';
 export const FORMAT_BYTES = 'FORMAT_BYTES';
 export const TRANSFORM = 'TRANSFORM';
 export const STUDY_DOWNLOAD = 'STUDY_DOWNLOAD';
 export const EXPAND = 'EXPAND';
 export const DBGAP = 'DBGAP';
 export const MODAL = 'MODAL';
+export const EXCLUDE_FROM_DOWNLOAD = 'EXCLUDE_FROM_DOWNLOAD';
 
 export const cellTypes = {
   CUSTOM_ELEM,
@@ -22,6 +24,7 @@ export const cellTypes = {
   DEFAULT,
   FORMAT_DATA,
   CPI,
+  CPI_MAPPING,
 };
 
 export const cellStyles = {
@@ -30,11 +33,12 @@ export const cellStyles = {
   DBGAP,
   STUDY_DOWNLOAD,
   MODAL,
+  EXCLUDE_FROM_DOWNLOAD,
 };
 
 export const actionCellTypes = [CHECKBOX, DELETE];
 
-export const notIncludedCellStyle = [STUDY_DOWNLOAD];
+export const notIncludedCellStyle = [STUDY_DOWNLOAD, EXCLUDE_FROM_DOWNLOAD];
 
 export const FORMAT_DATA_CELLS = [FORMAT_BYTES];
 

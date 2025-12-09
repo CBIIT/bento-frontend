@@ -32,7 +32,7 @@ const CustomTableBody = ({
     <ThemeProvider theme={themeConfig}>
       <TableBody>
         {rows
-          .map((row) => (
+          .map((row, rowIndex) => (
             <TableRow>
               {
                 displayColunms.map((column) => {
@@ -51,6 +51,7 @@ const CustomTableBody = ({
                     <DisplayCell
                       column={column}
                       row={row}
+                      rowIndex={rowIndex}
                       themeConfig={themeConfig}
                       navigation={navigation}
                     />

@@ -7,6 +7,7 @@ import { cellTypes } from '../util/Types';
 import CustomLinkView from './components/CustomLinkView';
 import DataFormatView from './components/DataFormatView';
 import CPIView from './components/CPIView';
+import CPIMappingView from './components/CPIMappingView';
 
 /**
 * Custom Column reneder
@@ -30,6 +31,7 @@ const CustomComponent = ({
 const ViewCell = ({
   column,
   row,
+  rowIndex,
   themeConfig,
   navigation,
 }) => {
@@ -65,6 +67,16 @@ const ViewCell = ({
           navigation={navigation}
         />
       );
+    case cellTypes.CPI_MAPPING:
+      return (
+        <CPIMappingView
+          row={row}
+          column={column}
+          rowIndex={rowIndex}
+          themeConfig={themeConfig}
+          navigation={navigation}
+        />
+      );
     default:
       return (
         <Typography>
@@ -77,6 +89,7 @@ const ViewCell = ({
 const DisplayCell = ({
   row,
   column,
+  rowIndex,
   themeConfig,
   navigation,
 }) => (
@@ -84,6 +97,7 @@ const DisplayCell = ({
     <ViewCell
       row={row}
       column={column}
+      rowIndex={rowIndex}
       themeConfig={themeConfig}
       navigation={navigation}
     />
