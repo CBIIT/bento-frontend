@@ -91,7 +91,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
           return { ...facet, items: itemKeys };
         })
-        .filter((facet) => facet.items.length > 0);
+        .filter((facet) => facet.items.length > 0 || (facet.unknownAges && facet.unknownAges !== 'include'));
 
       if ((mappedInputs.length || autocomplete.length || upload.length) <= 0) {
         return null;
