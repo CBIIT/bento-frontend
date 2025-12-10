@@ -11,12 +11,13 @@ import DownloadButton from './toolbar/DownloadButtonView';
 const downloadAreaStyle = {
   display: 'flex',
   borderTop: '1px solid #8A7F7C',
-  paddingRight: '41px',
+  paddingRight: '48px',
 };
 
 const ExtendedView = ({
   table,
   onColumnViewChange,
+  onAllColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
   customTheme,
@@ -63,6 +64,7 @@ const ExtendedView = ({
                     table={table}
                     manageViewColumns={manageViewColumns}
                     onColumnViewChange={onColumnViewChange}
+                    onAllColumnViewChange={onAllColumnViewChange}
                   />
                 )
             }
