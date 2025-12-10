@@ -58,7 +58,6 @@ const TableView = ({
       onColumnViewChange={onColumnViewChange}
       onRowsPerPageChange={onRowsPerPageChange}
       onPageChange={onPageChange}
-      numSelected={table?.selectedRows?.length || 0}
       customTheme={themeConfig.extendedView}
       queryVariables={queryVariables}
     />

@@ -34,12 +34,11 @@ const ManageColumnView = ({
 
   const open = Boolean(anchorEl);
   const { columns } = table;
-  const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY);
-
+  const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY && col.hideable);
   return (
     <>
       <Tooltip title={manageViewColumns.title}>
-        <IconButton variant="contained" onClick={handleClick}>
+        <IconButton variant="contained" onClick={handleClick} style={{ marginLeft: '10px' }}>
           <ViewColumn />
         </IconButton>
       </Tooltip>
@@ -58,6 +57,7 @@ const ManageColumnView = ({
         <IconButton
           onClick={handleClose}
           className="closeIcon"
+          style={{ float: 'right' }}
         >
           <Close />
         </IconButton>

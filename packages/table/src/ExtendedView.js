@@ -19,7 +19,6 @@ const ExtendedView = ({
   onColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
-  numSelected = 0,
   customTheme,
   queryVariables,
 }) => {
@@ -37,15 +36,6 @@ const ExtendedView = ({
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
-      {(numSelected === 0 && (download || manageViewColumns)) && (
-
-        <ManageColumnView
-          table={table}
-          manageViewColumns={manageViewColumns}
-          onColumnViewChange={onColumnViewChange}
-        />
-
-      )}
       {
         (pagination) && (
           <div className="downloadArea" style={(table.paginationCustomStyle && table.paginationCustomStyle.topPagination) ? table.paginationCustomStyle.topPagination : downloadAreaStyle}>
@@ -66,6 +56,16 @@ const ExtendedView = ({
               queryVariables={queryVariables}
               table={table}
             />
+            {
+              (manageViewColumns)
+                && (
+                  <ManageColumnView
+                    table={table}
+                    manageViewColumns={manageViewColumns}
+                    onColumnViewChange={onColumnViewChange}
+                  />
+                )
+            }
             {
               (download)
                 && (
