@@ -105,15 +105,17 @@ const TableView = ({
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
       />
-      {table.showDownloadIcon !== false
-  && (
-    <DownloadButton
-      count={table.totalRowCount || 0}
-      queryVariables={queryVariables}
-      table={table}
-      buttonConfig={table.extendedViewConfig.downloadButtonConfig}
-    />
-  )}
+      {
+        table.extendedViewConfig.download
+        && (
+          <DownloadButton
+            count={table.totalRowCount || 0}
+            queryVariables={queryVariables}
+            table={table}
+            buttonConfig={table.extendedViewConfig.downloadButtonConfig}
+          />
+        )
+      }
     </div>
   </>
 );
