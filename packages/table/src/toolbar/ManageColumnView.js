@@ -33,7 +33,8 @@ const ManageColumnView = ({
   const [listDisplay, setListDisplay] = useState('none');
   const [selectAll, setSelectAll] = useState(false);
 
-  const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY);
+  const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY
+    && col.disableInManageView !== true);
 
   const dropdownSelection = useRef(null);
 
@@ -80,8 +81,9 @@ const ManageColumnView = ({
     borderRadius: '5px',
     display: 'inline-flex',
     position: 'relative',
-    marginTop: '2px',
-    marginRight: '7px',
+    marginTop: '5px',
+    marginBottom: '5px',
+    marginRight: '10px',
   };
 
   const displayColumnStyle = {
@@ -115,7 +117,7 @@ const ManageColumnView = ({
     display: 'flex',
     position: 'relative',
     top: '15px',
-    left: '1px',
+    left: '24px',
     color: '#000000',
   };
 
@@ -123,7 +125,8 @@ const ManageColumnView = ({
     fontFamily: 'Poppins',
     fontSize: '14px',
     fontWeight: '400',
-    lineHeight: '1.2',
+    margin: '2px 0px',
+    lineHeight: '15px',
   };
 
   const dividerStyle = {
@@ -195,13 +198,14 @@ const ManageColumnView = ({
                     color="secondary"
                     className="checkBox"
                     disabled={!column.hideable}
+                    style={{ paddingTop: 0 }}
                   />
                 )}
                 disabled={!column.hideable}
                 label={<Typography id={`dropdownListItemLabel-${index}`} style={textStyle}>{column.header}</Typography>}
                 id={`dropdownListItem-${index}-label`}
                 className="formControlLabel"
-                style={{ marginLeft: '13px' }}
+                style={{ marginLeft: '13px', alignItems: 'flex-start' }}
               />
             </ListItem>
           ))}
@@ -235,14 +239,16 @@ const ManageColumnView = ({
                   disableRipple
                   color="secondary"
                   className="checkBox"
+                  style={{ paddingTop: 0 }}
                 />
               )}
               label={(
-                <Typography id="dropdownListItem-all-label" style={{ ...textStyle, position: 'relative', left: '25px' }}>
+                <Typography id="dropdownListItem-all-label" style={textStyle}>
                   {selectAll ? 'Deselect All' : 'Select All'}
                 </Typography>
               )}
               id="dropdownListItem-all-label"
+              style={{ marginLeft: '13px', alignItems: 'flex-start', paddingTop: 7 }}
             />
           </ListItem>
         </List>
