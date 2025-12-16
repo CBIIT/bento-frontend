@@ -226,7 +226,7 @@ const DownloadButton = ({
       top: '38px',
       left: '-13.5px',
       overflow: 'auto',
-      zIndex: '5',
+      zIndex: '11',
       border: '1.5px solid #5666BD',
       borderRadius: '5px',
       background: '#ffffff',

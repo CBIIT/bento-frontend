@@ -14,6 +14,7 @@ import DownloadButton from './toolbar/DownloadButtonView';
 import ManageColumnView from './toolbar/ManageColumnView';
 import DisplayErrMsg from './errMsg/DisplayErrMsg';
 import ExtendedView from './ExtendedView';
+import defaultTheme from './DefaultThemConfig';
 
 const CustomTableContainer = (props) => {
   const { children, customTheme } = props;
@@ -30,7 +31,7 @@ const CustomTableContainer = (props) => {
 const downloadAreaStyle = {
   display: 'flex',
   borderTop: '1px solid #8A7F7C',
-  paddingRight: '41px',
+  paddingRight: '48px',
 };
 
 const cartDownloadAreaStyle = {
@@ -103,40 +104,42 @@ const TableView = ({
           table={table}
         />
       )}
-      <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : (table.paginationCustomStyle && table.paginationCustomStyle.bottomPagination) ? table.paginationCustomStyle.bottomPagination : downloadAreaStyle}>
-        <CustomPagination
-          customTheme={themeConfig.tblPgn}
-          rowsPerPageOptions={[10, 25, 50, 100]}
-          component="div"
-          count={table.totalRowCount || 0}
-          rowsPerPage={table.rowsPerPage || 10}
-          page={table.page || 0}
-          onPageChange={onPageChange}
-          onRowsPerPageChange={onRowsPerPageChange}
-        />
-        {
-          manageViewColumns
-          && (
-            <ManageColumnView
-              table={table}
-              manageViewColumns={manageViewColumns}
-              onColumnViewChange={onColumnViewChange}
-              onAllColumnViewChange={onAllColumnViewChange}
-            />
-          )
-        }
-        {
-          download
-          && (
-            <DownloadButton
-              count={table.totalRowCount || 0}
-              queryVariables={queryVariables}
-              table={table}
-              buttonConfig={downloadButtonConfig}
-            />
-          )
-        }
-      </div>
+      <ThemeProvider theme={createTheme({ overrides: { ...defaultTheme(), ...themeConfig.extendedView } })}>
+        <div className="downloadArea" style={table.paginationAPIField === 'filesInList' ? cartDownloadAreaStyle : (table.paginationCustomStyle && table.paginationCustomStyle.bottomPagination) ? table.paginationCustomStyle.bottomPagination : downloadAreaStyle}>
+          <CustomPagination
+            customTheme={themeConfig.tblPgn}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+            component="div"
+            count={table.totalRowCount || 0}
+            rowsPerPage={table.rowsPerPage || 10}
+            page={table.page || 0}
+            onPageChange={onPageChange}
+            onRowsPerPageChange={onRowsPerPageChange}
+          />
+          {
+            manageViewColumns
+            && (
+              <ManageColumnView
+                table={table}
+                manageViewColumns={manageViewColumns}
+                onColumnViewChange={onColumnViewChange}
+                onAllColumnViewChange={onAllColumnViewChange}
+              />
+            )
+          }
+          {
+            download
+            && (
+              <DownloadButton
+                count={table.totalRowCount || 0}
+                queryVariables={queryVariables}
+                table={table}
+                buttonConfig={downloadButtonConfig}
+              />
+            )
+          }
+        </div>
+      </ThemeProvider>
     </>
   );
 };
