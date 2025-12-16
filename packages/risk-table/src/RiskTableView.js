@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Tooltip } from '@material-ui/core';
 
 /**
  * Risk Table component displays survival data for multiple cohorts over time intervals
@@ -38,7 +38,12 @@ const RiskTable = ({
       <tr className={classes.cohortRow}>
         <td className={classes.cohortCell}>
           <div className={classes.cohortIndicator}>
-            <span className={classes.cohortName}>{name || `Cohort ${cohort.id}`}</span>
+            <Tooltip
+              title={name || `Cohort ${cohort.id}`}
+              placement="top"
+            >
+              <span className={classes.cohortName}>{name || `Cohort ${cohort.id}`}</span>
+            </Tooltip>
             <div
               className={classes.cohortCircle}
               style={{ backgroundColor: color }}
@@ -116,50 +121,36 @@ const styles = () => ({
     color: '#333333',
     border: 'none',
     fontFamily: 'Nunito, sans-serif',
-    width: '150px',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
   emptyHeaderCell: {
-    width: '20px',
+    width: '15px',
     borderBottom: '2px solid #000000',
     padding: 0,
   },
   secondHeaderCell: {
     position: 'relative',
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: '12px',
     fontWeight: 600,
     color: '#333333',
     border: '2px solid #3e3c3cff',
     fontFamily: 'Nunito, sans-serif',
-    paddingLeft: '16px',
-    paddingRight: '16px',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      left: '-20px',
-      bottom: '-1.5px',
-      height: '1px',
-      width: '25px',
-      backgroundColor: '#080101ff',
-    },
   },
   headerCell: {
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: '12px',
     fontWeight: 600,
     color: '#333333',
     border: '2px solid #080202ff',
     fontFamily: 'Nunito, sans-serif',
-    paddingLeft: '16px',
-    paddingRight: '16px',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -210,15 +201,6 @@ const styles = () => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      left: '-20px',
-      bottom: '-1.5px',
-      height: '1px',
-      width: '25px',
-      backgroundColor: '#080101ff',
-    },
   },
   dataCell: {
     padding: '12px 16px',
