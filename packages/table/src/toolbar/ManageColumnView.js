@@ -54,9 +54,7 @@ const ManageColumnView = ({
   const useOutsideAlerter = (ref) => {
     useEffect(() => {
       function handleClickOutside(event) {
-        if (!(event.target.getAttribute('id') && event.target.getAttribute('id').includes('dropdownListItem'))
-          && !(event.target.getAttribute('class') && event.target.getAttribute('class').includes('MuiFormControlLabel'))
-        ) {
+        if (ref.current && !ref.current.contains(event.target)) {
           setListDisplay('none');
         }
       }
@@ -64,18 +62,17 @@ const ManageColumnView = ({
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
-    }, [ref]);
+    }, []);
   };
   useOutsideAlerter(dropdownSelection);
 
   const handleSelectAll = () => {
-    const state = selectAll;
     setSelectAll(!selectAll);
-    onAllColumnViewChange(!state);
+    onAllColumnViewChange(!selectAll);
   };
 
   return (
-    <div className={listDisplay === 'none' ? classes.columnDropdown : classes.columnDropdownActive}>
+    <div ref={dropdownSelection} className={listDisplay === 'none' ? classes.columnDropdown : classes.columnDropdownActive}>
       <Tooltip title="Columns may be hidden">
         <img src={hiddenColumnsIcon} alt="hiddenColumnsIcon" className={classes.displayColumnIcon} />
       </Tooltip>
@@ -289,9 +286,9 @@ const styles = () => ({
     backgroundColor: '#375F9A',
     marginTop: '5px',
     marginBottom: '5px',
-    width: '110%',
+    width: 'calc(100% + 20px)',
     position: 'relative',
-    right: '10px',
+    left: '-10px',
     height: '0.5px',
   },
   title: {

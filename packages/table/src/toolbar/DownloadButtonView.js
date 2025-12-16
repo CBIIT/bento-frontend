@@ -31,7 +31,7 @@ const DownloadButton = ({
   const useOutsideAlerter = (ref) => {
     useEffect(() => {
       function handleClickOutside(event) {
-        if (!(event.target.getAttribute('id') && event.target.getAttribute('id').includes('dropdownListItem'))) {
+        if (ref.current && !ref.current.contains(event.target)) {
           setListDisplay('none');
         }
       }
@@ -39,7 +39,7 @@ const DownloadButton = ({
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
-    }, [ref]);
+    }, []);
   };
   useOutsideAlerter(dropdownSelection);
 
@@ -213,7 +213,7 @@ const DownloadButton = ({
       width: '48px',
       height: '36px',
       paddingLeft: '5px',
-      border: `${listDisplay === 'none' ? '0.75px solid #606060' : '1.5px solid #5666BD'}`,
+      border: listDisplay === 'none' ? '0.75px solid #606060' : '1.5px solid #5666BD',
       borderRadius: '5px',
       display: 'inline-block',
       position: 'relative',
@@ -260,7 +260,7 @@ const DownloadButton = ({
   const classes = useStyles();
 
   return (
-    <div className={classes.dropdown} style={isDownloading ? { cursor: 'wait' } : {}}>
+    <div ref={dropdownSelection} className={classes.dropdown} style={isDownloading ? { cursor: 'wait' } : {}}>
 
       <Tooltip title={isDownloading ? 'Download in progress...' : (table.downloadButtonTooltipText || 'Download filtered results')} className={classes.tooltip}>
         {
