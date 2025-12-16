@@ -34,15 +34,17 @@ const RiskTable = ({
       data = {},
     } = cohort;
 
+    const cohortDisplayName = name || `Cohort ${cohort.id}`;
+
     return (
       <tr className={classes.cohortRow}>
         <td className={classes.cohortCell}>
           <div className={classes.cohortIndicator}>
             <Tooltip
-              title={name || `Cohort ${cohort.id}`}
+              title={cohortDisplayName}
               placement="top"
             >
-              <span className={classes.cohortName}>{name || `Cohort ${cohort.id}`}</span>
+              <span className={classes.cohortName}>{cohortDisplayName}</span>
             </Tooltip>
             <div
               className={classes.cohortCircle}
