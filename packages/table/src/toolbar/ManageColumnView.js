@@ -25,6 +25,7 @@ const ManageColumnView = ({
   onColumnViewChange,
   onAllColumnViewChange,
   manageViewColumns,
+  classes,
 }) => {
   if (!manageViewColumns) {
     return null;
@@ -73,96 +74,24 @@ const ManageColumnView = ({
     onAllColumnViewChange(!state);
   };
 
-  const columnDropdown = {
-    width: '48px',
-    height: '36px',
-    paddingLeft: '5px',
-    border: `${listDisplay === 'none' ? '0.75px solid #606060' : '1.5px solid #5666BD'}`,
-    borderRadius: '5px',
-    display: 'inline-flex',
-    position: 'relative',
-    marginTop: '5px',
-    marginBottom: '5px',
-    marginRight: '10px',
-  };
-
-  const displayColumnStyle = {
-    position: 'absolute',
-    right: '35px',
-    bottom: '23px',
-  };
-
-  const viewColumnsStyle = {
-    marginTop: '6px',
-    height: '24px',
-    backgroundColor: 'transparent',
-  };
-
-  const dropdownList = {
-    position: 'absolute',
-    width: '230px',
-    marginTop: '38px',
-    marginLeft: '-188px',
-    zIndex: '11',
-    border: '1.5px solid #5666BD',
-    borderRadius: '5px',
-    background: '#ffffff',
-    display: listDisplay,
-  };
-
-  const titleStyle = {
-    fontFamily: 'Poppins',
-    fontWeight: '400',
-    fontSize: '14px',
-    display: 'flex',
-    position: 'relative',
-    top: '15px',
-    left: '24px',
-    color: '#000000',
-  };
-
-  const textStyle = {
-    fontFamily: 'Poppins',
-    fontSize: '14px',
-    fontWeight: '400',
-    margin: '2px 0px',
-    lineHeight: '15px',
-  };
-
-  const dividerStyle = {
-    backgroundColor: '#375F9A',
-    marginTop: '5px',
-    marginBottom: '5px',
-    width: '110%',
-    position: 'relative',
-    right: '10px',
-    height: '0.5px',
-  };
-
-  const arrowdownIcon = {
-    fill: '#606060',
-    width: '20px',
-    height: '20px',
-  };
   return (
-    <div style={columnDropdown}>
+    <div className={listDisplay === 'none' ? classes.columnDropdown : classes.columnDropdownActive}>
       <Tooltip title="Columns may be hidden">
-        <img src={hiddenColumnsIcon} alt="hiddenColumnsIcon" style={displayColumnStyle} />
+        <img src={hiddenColumnsIcon} alt="hiddenColumnsIcon" className={classes.displayColumnIcon} />
       </Tooltip>
       <Tooltip title={manageViewColumns.title}>
-        <IconButton variant="contained" onClick={handleClickButton} style={viewColumnsStyle}>
+        <IconButton variant="contained" onClick={handleClickButton} className={classes.viewColumnsButton}>
           <img src={viewColumnsIcon} alt="viewColumnsIcon" />
-          <KeyboardArrowDownOutlinedIcon style={arrowdownIcon} />
+          <KeyboardArrowDownOutlinedIcon className={classes.arrowDownIcon} />
         </IconButton>
       </Tooltip>
-      <div style={dropdownList}>
-        <Typography variant="caption" className="viewColumnText" style={titleStyle}>
+      <div className={listDisplay === 'none' ? classes.dropdownListHidden : classes.dropdownListVisible}>
+        <Typography variant="caption" className={classes.titleText}>
           {manageViewColumns.title}
         </Typography>
         <IconButton
           onClick={handleClose}
-          className="closeIcon"
-          style={{ float: 'right', bottom: '20px', scale: '0.75' }}
+          className={classes.closeIconButton}
         >
           <Close />
         </IconButton>
@@ -202,14 +131,14 @@ const ManageColumnView = ({
                   />
                 )}
                 disabled={!column.hideable}
-                label={<Typography id={`dropdownListItemLabel-${index}`} style={textStyle}>{column.header}</Typography>}
+                label={<Typography id={`dropdownListItemLabel-${index}`} className={classes.textStyle}>{column.header}</Typography>}
                 id={`dropdownListItem-${index}-label`}
                 className="formControlLabel"
                 style={{ marginLeft: '13px', alignItems: 'flex-start' }}
               />
             </ListItem>
           ))}
-          <Divider style={dividerStyle} />
+          <Divider className={classes.dividerStyle} />
           <ListItem
             width={1}
             className="viewColumnListItem"
@@ -243,7 +172,7 @@ const ManageColumnView = ({
                 />
               )}
               label={(
-                <Typography id="dropdownListItem-all-label" style={textStyle}>
+                <Typography id="dropdownListItem-all-label" className={classes.textStyle}>
                   {selectAll ? 'Deselect All' : 'Select All'}
                 </Typography>
               )}
@@ -261,6 +190,98 @@ const styles = () => ({
   root: {
     padding: '16px 24px 16px 24px',
     fontFamily: 'Roboto',
+  },
+  displayColumnIcon: {
+    position: 'absolute',
+    right: '35px',
+    bottom: '23px',
+  },
+  columnDropdown: {
+    width: '48px',
+    height: '36px',
+    paddingLeft: '5px',
+    border: '0.75px solid #606060',
+    borderRadius: '5px',
+    display: 'inline-flex',
+    position: 'relative',
+    marginTop: '5px',
+    marginBottom: '5px',
+    marginRight: '10px',
+  },
+  columnDropdownActive: {
+    width: '48px',
+    height: '36px',
+    paddingLeft: '5px',
+    border: '1.5px solid #5666BD',
+    borderRadius: '5px',
+    display: 'inline-flex',
+    position: 'relative',
+    marginTop: '5px',
+    marginBottom: '5px',
+    marginRight: '10px',
+  },
+  viewColumnsButton: {
+    marginTop: '6px',
+    height: '24px',
+    backgroundColor: 'transparent',
+  },
+  arrowDownIcon: {
+    fill: '#606060',
+    width: '20px',
+    height: '20px',
+  },
+  dropdownListHidden: {
+    position: 'absolute',
+    width: '230px',
+    marginTop: '38px',
+    marginLeft: '-188px',
+    zIndex: '11',
+    border: '1.5px solid #5666BD',
+    borderRadius: '5px',
+    background: '#ffffff',
+    display: 'none',
+  },
+  dropdownListVisible: {
+    position: 'absolute',
+    width: '230px',
+    marginTop: '38px',
+    marginLeft: '-188px',
+    zIndex: '11',
+    border: '1.5px solid #5666BD',
+    borderRadius: '5px',
+    background: '#ffffff',
+    display: 'block',
+  },
+  titleText: {
+    fontFamily: 'Poppins',
+    fontWeight: '400',
+    fontSize: '14px',
+    display: 'flex',
+    position: 'relative',
+    top: '15px',
+    left: '24px',
+    color: '#000000',
+  },
+  closeIconButton: {
+    float: 'right',
+    bottom: '20px',
+    scale: '0.75',
+  },
+  textStyle: {
+    fontFamily: 'Poppins',
+    fontSize: '14px',
+    fontWeight: '400',
+    margin: '2px 0px',
+    lineHeight: '15px',
+  },
+  dividerStyle: {
+    backgroundColor: '#375F9A',
+    marginTop: '5px',
+    marginBottom: '5px',
+    width: '110%',
+    position: 'relative',
+    right: '10px',
+    height: '0.5px',
   },
   title: {
     marginRight: '24px',
