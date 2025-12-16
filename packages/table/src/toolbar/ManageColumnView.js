@@ -200,25 +200,22 @@ const styles = () => ({
     width: '48px',
     height: '36px',
     paddingLeft: '5px',
-    border: '0.75px solid #606060',
+    border: '0.5px solid #606060',
     borderRadius: '5px',
     display: 'inline-flex',
     position: 'relative',
-    marginTop: '5px',
-    marginBottom: '5px',
-    marginRight: '10px',
+    padding: '0px 0px 0px 5px',
+    margin: '5px 11px 5px 1px',
   },
   columnDropdownActive: {
     width: '48px',
     height: '36px',
-    paddingLeft: '5px',
     border: '1.5px solid #5666BD',
     borderRadius: '5px',
     display: 'inline-flex',
     position: 'relative',
-    marginTop: '5px',
-    marginBottom: '5px',
-    marginRight: '10px',
+    padding: '0px 0px 0px 5px',
+    margin: '5px 10px 5px 0px',
   },
   viewColumnsButton: {
     marginTop: '6px',
@@ -251,6 +248,20 @@ const styles = () => ({
     borderRadius: '5px',
     background: '#ffffff',
     display: 'block',
+    maxHeight: '300px',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    '&::-webkit-scrollbar': {
+      width: '6px', // Width of the scrollbar
+    },
+    '&::-webkit-scrollbar-track': {
+      background: '#CECECE', // Track color
+      borderRadius: '5px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#8B98AF', // Thumb color
+      borderRadius: '5px',
+    },
   },
   titleText: {
     fontFamily: 'Poppins',
@@ -259,7 +270,7 @@ const styles = () => ({
     display: 'flex',
     position: 'relative',
     top: '15px',
-    left: '24px',
+    left: '34px',
     color: '#000000',
   },
   closeIconButton: {
