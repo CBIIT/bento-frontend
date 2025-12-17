@@ -41,6 +41,9 @@ const RiskTable = ({
         <td className={classes.cohortCell}>
           <div className={classes.cohortIndicator}>
             <Tooltip
+                  maxWidth="235px"
+                  border={'1px solid #598ac5'}
+                  arrowBorder={'1px solid #598AC5'}
               title={cohortDisplayName}
               placement="top"
             >
