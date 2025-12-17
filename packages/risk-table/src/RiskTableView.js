@@ -19,6 +19,7 @@ const RiskTable = ({
   classes,
   cohorts = [],
   timeIntervals = ['0 Months', '6 Months', '12 Months', '18 Months', '24 Months', '30 Months', '36 Months'],
+  cohortNameCharLimit = 18,
 }) => {
   /**
    * Render a cohort row with colored indicator and data values
@@ -36,19 +37,26 @@ const RiskTable = ({
 
     const cohortDisplayName = name || `Cohort ${cohort.id}`;
 
+    const showTooltip = cohortDisplayName.length > cohortNameCharLimit;
+    const truncatedName = showTooltip
+      ? `${cohortDisplayName.slice(0, cohortNameCharLimit)}...`
+      : cohortDisplayName;
     return (
       <tr className={classes.cohortRow}>
         <td className={classes.cohortCell}>
           <div className={classes.cohortIndicator}>
-            <Tooltip
-                  maxWidth="235px"
-                  border={'1px solid #598ac5'}
-                  arrowBorder={'1px solid #598AC5'}
-              title={cohortDisplayName}
-              placement="top"
-            >
+            {showTooltip ? (
+              <Tooltip
+                title={cohortDisplayName}
+                placement="top"
+                backgroundColor="#fff"
+                classes={{ tooltip: classes.whiteTooltip }}
+              >
+                <span className={classes.cohortName}>{truncatedName}</span>
+              </Tooltip>
+            ) : (
               <span className={classes.cohortName}>{cohortDisplayName}</span>
-            </Tooltip>
+            )}
             <div
               className={classes.cohortCircle}
               style={{ backgroundColor: color }}
@@ -102,6 +110,14 @@ const RiskTable = ({
  * Default styles for the Risk Table component
  */
 const styles = () => ({
+  whiteTooltip: {
+    backgroundColor: '#fff',
+    color: '#333',
+    boxShadow: '0px 2px 8px rgba(0,0,0,0.15)',
+    fontSize: 13,
+    border: '1px solid #598ac5',
+    maxWidth: 235,
+  },
   container: {
     position: 'relative',
     fontFamily: 'Nunito, sans-serif',
@@ -225,6 +241,7 @@ RiskTable.defaultProps = {
   classes: {},
   cohorts: [],
   timeIntervals: ['0 Months', '6 Months', '12 Months', '18 Months', '24 Months', '30 Months', '36 Months'],
+  cohortNameCharLimit: 18,
 };
 
 const StyledRiskTable = withStyles(styles)(RiskTable);
