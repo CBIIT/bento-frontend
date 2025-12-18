@@ -24,8 +24,13 @@ const defaultTheme = () => ({
   MuiList: {
     root: {
       '&.viewColumnList': {
-        padding: '8px 20px 8px 20px',
-        bottom: '5px',
+        paddingLeft: '19.5px',
+      },
+    },
+    padding: {
+      '&.viewColumnList': {
+        paddingTop: '0px',
+        paddingBottom: '0px',
       },
     },
   },

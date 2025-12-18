@@ -33,11 +33,13 @@ const ManageColumnView = ({
   const { columns } = table;
   const [listDisplay, setListDisplay] = useState('none');
   const [selectAll, setSelectAll] = useState(false);
+  const [needsScroll, setNeedsScroll] = useState(false);
 
   const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY
     && col.disableInManageView !== true);
 
   const dropdownSelection = useRef(null);
+  const formGroupRef = useRef(null);
 
   const handleClose = () => {
     setListDisplay('none');
@@ -71,6 +73,13 @@ const ManageColumnView = ({
     onAllColumnViewChange(!selectAll);
   };
 
+  useEffect(() => {
+    if (formGroupRef.current) {
+      const contentHeight = formGroupRef.current.scrollHeight;
+      setNeedsScroll(contentHeight > 400);
+    }
+  }, [viewColumns]);
+
   return (
     <div ref={dropdownSelection} className={listDisplay === 'none' ? classes.columnDropdown : classes.columnDropdownActive}>
       <Tooltip title="Columns may be hidden">
@@ -83,63 +92,70 @@ const ManageColumnView = ({
         </IconButton>
       </Tooltip>
       <div className={listDisplay === 'none' ? classes.dropdownListHidden : classes.dropdownListVisible}>
-        <Typography variant="caption" className={classes.titleText}>
-          {manageViewColumns.title}
-        </Typography>
-        <IconButton
-          onClick={handleClose}
-          className={classes.closeIconButton}
-        >
-          <Close />
-        </IconButton>
+        <div className={classes.dropdownHeader}>
+          <Typography variant="caption" className={classes.titleText}>
+            {manageViewColumns.title}
+          </Typography>
+          <IconButton
+            onClick={handleClose}
+            className={classes.closeIconButton}
+          >
+            <Close />
+          </IconButton>
+        </div>
+
         <List className="viewColumnList" id="dropdownListItemTitle">
-          {viewColumns.map((column, index) => (
-            <ListItem
-              width={1}
-              className="viewColumnListItem"
-              id={`dropdownListItem-${index}`}
-            >
-              <FormControlLabel
-                control={(
-                  <Checkbox
-                    icon={(
-                      <CheckBoxBlankIcon
-                        style={{ fontSize: 18 }}
-                        className="checkBoxIcon"
-                      />
-                    )}
-                    onClick={() => onColumnViewChange(column)}
-                    checked={column.display}
-                    id={`dropdownListItemCheckbox-${index}`}
-                    checkedIcon={(
-                      <CheckBoxIcon
-                        style={{
-                          fontSize: 18,
-                          color: column.hideable ? 'rgba(109, 95, 91, 1)' : 'rgba(109, 95, 91, 0.38)',
-                        }}
-                        className="checkBoxIcon"
-                      />
-                    )}
-                    disableRipple
-                    color="secondary"
-                    className="checkBox"
-                    disabled={!column.hideable}
-                    style={{ paddingTop: 0 }}
-                  />
-                )}
-                disabled={!column.hideable}
-                label={<Typography id={`dropdownListItemLabel-${index}`} className={classes.textStyle}>{column.header}</Typography>}
-                id={`dropdownListItem-${index}-label`}
-                className="formControlLabel"
-                style={{ marginLeft: '13px', alignItems: 'flex-start' }}
-              />
-            </ListItem>
-          ))}
+          <div
+            ref={formGroupRef}
+            className={classes.formGroup}
+            style={needsScroll ? { maxHeight: '253px' } : {}}
+          >
+            {viewColumns.map((column, index) => (
+              <ListItem
+                width={1}
+                className="viewColumnListItem"
+                id={`dropdownListItem-${index}`}
+              >
+                <FormControlLabel
+                  control={(
+                    <Checkbox
+                      icon={(
+                        <CheckBoxBlankIcon
+                          style={{ fontSize: 18 }}
+                          className="checkBoxIcon"
+                        />
+                      )}
+                      onClick={() => onColumnViewChange(column)}
+                      checked={column.display}
+                      id={`dropdownListItemCheckbox-${index}`}
+                      checkedIcon={(
+                        <CheckBoxIcon
+                          style={{
+                            fontSize: 18,
+                            color: column.hideable ? 'rgba(109, 95, 91, 1)' : 'rgba(109, 95, 91, 0.38)',
+                          }}
+                          className="checkBoxIcon"
+                        />
+                      )}
+                      disableRipple
+                      color="secondary"
+                      className="checkBox"
+                      disabled={!column.hideable}
+                      style={{ paddingTop: 0 }}
+                    />
+                  )}
+                  disabled={!column.hideable}
+                  label={<Typography id={`dropdownListItemLabel-${index}`} className={classes.textStyle}>{column.header}</Typography>}
+                  id={`dropdownListItem-${index}-label`}
+                  className={classes.checkboxItemLabel}
+                />
+              </ListItem>
+            ))}
+          </div>
           <Divider className={classes.dividerStyle} />
           <ListItem
             width={1}
             className="viewColumnListItem"
-            style={{ height: '20px' }}
           >
             <FormControlLabel
               control={(
@@ -174,7 +190,8 @@ const ManageColumnView = ({
                 </Typography>
               )}
               id="dropdownListItem-all-label"
-              style={{ marginLeft: '13px', alignItems: 'flex-start', paddingTop: 7 }}
+              className={classes.checkboxItemLabel}
+              style={{ padding: '2px 0px' }}
             />
           </ListItem>
         </List>
@@ -245,41 +262,34 @@ const styles = () => ({
     borderRadius: '5px',
     background: '#ffffff',
     display: 'block',
-    maxHeight: '300px',
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    '&::-webkit-scrollbar': {
-      width: '6px', // Width of the scrollbar
-    },
-    '&::-webkit-scrollbar-track': {
-      background: '#CECECE', // Track color
-      borderRadius: '5px',
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: '#8B98AF', // Thumb color
-      borderRadius: '5px',
-    },
+    maxHeight: '473px',
+  },
+  dropdownHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '16px 15px 0px 21px',
   },
   titleText: {
     fontFamily: 'Poppins',
     fontWeight: '400',
     fontSize: '14px',
-    display: 'flex',
-    position: 'relative',
-    top: '15px',
-    left: '34px',
+    lineHeight: '100%',
     color: '#000000',
   },
   closeIconButton: {
-    float: 'right',
-    bottom: '20px',
     scale: '0.75',
+    bottom: '14.5px',
+    left: '12.5px',
+  },
+  checkboxItemLabel: {
+    marginLeft: '0px !important',
   },
   textStyle: {
     fontFamily: 'Poppins',
     fontSize: '14px',
     fontWeight: '400',
-    margin: '2px 0px',
+    marginBottom: '3px',
     lineHeight: '15px',
   },
   dividerStyle: {
@@ -300,6 +310,19 @@ const styles = () => ({
   },
   formGroup: {
     marginTop: '8px',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    '&::-webkit-scrollbar': {
+      width: '6px',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: 'transparent',
+      borderRadius: '5px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#707070',
+      borderRadius: '5px',
+    },
   },
   formControl: {},
   checkbox: {
