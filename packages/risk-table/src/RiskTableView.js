@@ -49,9 +49,7 @@ const RiskTable = ({
                 classes={{ tooltip: classes.whiteTooltip }}
               >
                 <span className={classes.cohortName}>
-                  {showTooltip
-                    ? `${cohortDisplayName.slice(0, cohortNameCharLimit)}...`
-                    : cohortDisplayName}
+                  {showTooltip && `${cohortDisplayName.slice(0, cohortNameCharLimit)}...`}
                 </span>
               </Tooltip>
             ) : (
