@@ -38,9 +38,6 @@ const RiskTable = ({
     const cohortDisplayName = name || `Cohort ${cohort.id}`;
 
     const showTooltip = cohortDisplayName.length > cohortNameCharLimit;
-    const truncatedName = showTooltip
-      ? `${cohortDisplayName.slice(0, cohortNameCharLimit)}...`
-      : cohortDisplayName;
     return (
       <tr className={classes.cohortRow}>
         <td className={classes.cohortCell}>
@@ -49,10 +46,13 @@ const RiskTable = ({
               <Tooltip
                 title={cohortDisplayName}
                 placement="top"
-                backgroundColor="#fff"
                 classes={{ tooltip: classes.whiteTooltip }}
               >
-                <span className={classes.cohortName}>{truncatedName}</span>
+                <span className={classes.cohortName}>
+                  {showTooltip
+                    ? `${cohortDisplayName.slice(0, cohortNameCharLimit)}...`
+                    : cohortDisplayName}
+                </span>
               </Tooltip>
             ) : (
               <span className={classes.cohortName}>{cohortDisplayName}</span>
