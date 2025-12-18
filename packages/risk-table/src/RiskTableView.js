@@ -127,7 +127,6 @@ const styles = () => ({
   },
   table: {
     width: '100%',
-    tableLayout: 'fixed',
     borderCollapse: 'collapse',
     marginTop: '30px',
     marginBottom: '30px',
@@ -142,6 +141,7 @@ const styles = () => ({
     color: '#333333',
     border: 'none',
     fontFamily: 'Nunito, sans-serif',
+    width: '130px',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -186,6 +186,7 @@ const styles = () => ({
   cohortCell: {
     verticalAlign: 'middle',
     whiteSpace: 'nowrap',
+    width: '130px',
   },
   emptyDataCell: {
     borderBottom: '2px solid #000000',
