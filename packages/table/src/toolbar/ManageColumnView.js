@@ -20,6 +20,11 @@ import { cellTypes } from '../util/Types';
 import viewColumnsIcon from './assets/View_Columns.svg';
 import hiddenColumnsIcon from './assets/Hidden_Column.svg';
 
+// Height threshold to trigger scrolling behavior
+const SCROLL_THRESHOLD_HEIGHT = 400;
+// Maximum height of scrollable content area when scroll is needed
+const SCROLLABLE_MAX_HEIGHT = '253px';
+
 const ManageColumnView = ({
   table,
   onColumnViewChange,
@@ -74,11 +79,11 @@ const ManageColumnView = ({
   };
 
   useEffect(() => {
-    if (formGroupRef.current) {
+    if (formGroupRef.current && listDisplay === 'block') {
       const contentHeight = formGroupRef.current.scrollHeight;
-      setNeedsScroll(contentHeight > 400);
+      setNeedsScroll(contentHeight > SCROLL_THRESHOLD_HEIGHT);
     }
-  }, [viewColumns]);
+  }, [viewColumns, listDisplay]);
 
   return (
     <div ref={dropdownSelection} className={listDisplay === 'none' ? classes.columnDropdown : classes.columnDropdownActive}>
@@ -108,7 +113,7 @@ const ManageColumnView = ({
           <div
             ref={formGroupRef}
             className={classes.formGroup}
-            style={needsScroll ? { maxHeight: '253px' } : {}}
+            style={needsScroll ? { maxHeight: SCROLLABLE_MAX_HEIGHT } : {}}
           >
             {viewColumns.map((column, index) => (
               <ListItem
