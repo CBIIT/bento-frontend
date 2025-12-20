@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Tooltip } from '@material-ui/core';
 
 /**
  * Risk Table component displays survival data for multiple cohorts over time intervals
@@ -19,6 +19,7 @@ const RiskTable = ({
   classes,
   cohorts = [],
   timeIntervals = ['0 Months', '6 Months', '12 Months', '18 Months', '24 Months', '30 Months', '36 Months'],
+  cohortNameCharLimit = 18,
 }) => {
   /**
    * Render a cohort row with colored indicator and data values
@@ -34,11 +35,26 @@ const RiskTable = ({
       data = {},
     } = cohort;
 
+    const cohortDisplayName = name || `Cohort ${cohort.id}`;
+
+    const showTooltip = cohortDisplayName.length > cohortNameCharLimit;
     return (
       <tr className={classes.cohortRow}>
         <td className={classes.cohortCell}>
           <div className={classes.cohortIndicator}>
-            <span className={classes.cohortName}>{name || `Cohort ${cohort.id}`}</span>
+            {showTooltip ? (
+              <Tooltip
+                title={cohortDisplayName}
+                placement="top"
+                classes={{ tooltip: classes.whiteTooltip }}
+              >
+                <span className={classes.cohortName}>
+                  {showTooltip && `${cohortDisplayName.slice(0, cohortNameCharLimit)}...`}
+                </span>
+              </Tooltip>
+            ) : (
+              <span className={classes.cohortName}>{cohortDisplayName}</span>
+            )}
             <div
               className={classes.cohortCircle}
               style={{ backgroundColor: color }}
@@ -92,6 +108,14 @@ const RiskTable = ({
  * Default styles for the Risk Table component
  */
 const styles = () => ({
+  whiteTooltip: {
+    backgroundColor: '#fff',
+    color: '#333',
+    boxShadow: '0px 2px 8px rgba(0,0,0,0.15)',
+    fontSize: 13,
+    border: '1px solid #598ac5',
+    maxWidth: 235,
+  },
   container: {
     position: 'relative',
     fontFamily: 'Nunito, sans-serif',
@@ -101,7 +125,6 @@ const styles = () => ({
   },
   table: {
     width: '100%',
-    tableLayout: 'fixed',
     borderCollapse: 'collapse',
     marginTop: '30px',
     marginBottom: '30px',
@@ -116,50 +139,37 @@ const styles = () => ({
     color: '#333333',
     border: 'none',
     fontFamily: 'Nunito, sans-serif',
-    width: '150px',
+    width: '130px',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
   emptyHeaderCell: {
-    width: '20px',
+    width: '15px',
     borderBottom: '2px solid #000000',
     padding: 0,
   },
   secondHeaderCell: {
     position: 'relative',
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: '12px',
     fontWeight: 600,
     color: '#333333',
     border: '2px solid #3e3c3cff',
     fontFamily: 'Nunito, sans-serif',
-    paddingLeft: '16px',
-    paddingRight: '16px',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      left: '-20px',
-      bottom: '-1.5px',
-      height: '1px',
-      width: '25px',
-      backgroundColor: '#080101ff',
-    },
   },
   headerCell: {
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: '12px',
     fontWeight: 600,
     color: '#333333',
     border: '2px solid #080202ff',
     fontFamily: 'Nunito, sans-serif',
-    paddingLeft: '16px',
-    paddingRight: '16px',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -174,6 +184,7 @@ const styles = () => ({
   cohortCell: {
     verticalAlign: 'middle',
     whiteSpace: 'nowrap',
+    width: '130px',
   },
   emptyDataCell: {
     borderBottom: '2px solid #000000',
@@ -210,15 +221,6 @@ const styles = () => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      left: '-20px',
-      bottom: '-1.5px',
-      height: '1px',
-      width: '25px',
-      backgroundColor: '#080101ff',
-    },
   },
   dataCell: {
     padding: '12px 16px',
@@ -238,6 +240,7 @@ RiskTable.defaultProps = {
   classes: {},
   cohorts: [],
   timeIntervals: ['0 Months', '6 Months', '12 Months', '18 Months', '24 Months', '30 Months', '36 Months'],
+  cohortNameCharLimit: 18,
 };
 
 const StyledRiskTable = withStyles(styles)(RiskTable);

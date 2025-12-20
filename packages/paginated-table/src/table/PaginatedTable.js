@@ -183,6 +183,23 @@ const PaginatedTable = ({
       columns,
     }));
   };
+
+  const handleAllColumnViewChange = (checked) => {
+    const columns = table.columns.map((col) => {
+      const updateColumnView = { ...col };
+
+      if (!col.hideable) {
+        return updateColumnView;
+      }
+
+      updateColumnView.display = checked;
+      return updateColumnView;
+    });
+    dispatch(onColumnViewChange({
+      ...table,
+      columns,
+    }));
+  };
   /**
   * A. client table
   * table data provide by bento app (tblRows)
@@ -200,6 +217,7 @@ const PaginatedTable = ({
           onToggleSelectAll={handleToggleSelectAll}
           onSortByColumn={handleSortByColumn}
           onColumnViewChange={handleColumnViewChange}
+          onAllColumnViewChange={handleAllColumnViewChange}
           themeConfig={themeConfig}
         />
       </>
@@ -229,6 +247,7 @@ const PaginatedTable = ({
         onToggleSelectAll={handleToggleSelectAll}
         onSortByColumn={handleSortByColumn}
         onColumnViewChange={handleColumnViewChange}
+        onAllColumnViewChange={handleAllColumnViewChange}
         themeConfig={themeConfig}
       />
     </>

@@ -11,15 +11,15 @@ import DownloadButton from './toolbar/DownloadButtonView';
 const downloadAreaStyle = {
   display: 'flex',
   borderTop: '1px solid #8A7F7C',
-  paddingRight: '41px',
+  paddingRight: '48px',
 };
 
 const ExtendedView = ({
   table,
   onColumnViewChange,
+  onAllColumnViewChange,
   onRowsPerPageChange,
   onPageChange,
-  numSelected = 0,
   customTheme,
   queryVariables,
 }) => {
@@ -37,15 +37,6 @@ const ExtendedView = ({
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
-      {(numSelected === 0 && (download || manageViewColumns)) && (
-
-        <ManageColumnView
-          table={table}
-          manageViewColumns={manageViewColumns}
-          onColumnViewChange={onColumnViewChange}
-        />
-
-      )}
       {
         (pagination) && (
           <div className="downloadArea" style={(table.paginationCustomStyle && table.paginationCustomStyle.topPagination) ? table.paginationCustomStyle.topPagination : downloadAreaStyle}>
@@ -66,15 +57,28 @@ const ExtendedView = ({
               queryVariables={queryVariables}
               table={table}
             />
-            {table.showDownloadIcon !== false
-              && (
-                <DownloadButton
-                  count={table.totalRowCount || 0}
-                  queryVariables={queryVariables}
-                  table={table}
-                  buttonConfig={downloadButtonConfig}
-                />
-              )}
+            {
+              (manageViewColumns)
+                && (
+                  <ManageColumnView
+                    table={table}
+                    manageViewColumns={manageViewColumns}
+                    onColumnViewChange={onColumnViewChange}
+                    onAllColumnViewChange={onAllColumnViewChange}
+                  />
+                )
+            }
+            {
+              (download)
+                && (
+                  <DownloadButton
+                    count={table.totalRowCount || 0}
+                    queryVariables={queryVariables}
+                    table={table}
+                    buttonConfig={downloadButtonConfig}
+                  />
+                )
+            }
 
           </div>
         )
