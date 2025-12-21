@@ -4,7 +4,7 @@ import { makeStyles, Paper } from '@material-ui/core';
 import FileSaver from 'file-saver';
 import { DEFAULT_CONFIG_DONUT, DonutChartGenerator } from './DonutChart/DonutChartGenerator';
 import { DEFAULT_CONFIG_SUNBURST, SunburstChartGenerator } from './SunburstChart/SunburstChartGenerator';
-import { BarChartGenerator } from './BarChart/BarChartGenerator';
+import { DEFAULT_CONFIG_BAR, BarChartGenerator } from './BarChart/BarChartGenerator';
 import exportIcon from './assets/Widget_Export.svg';
 
 const DEFAULT_CLASSES = makeStyles({
@@ -81,6 +81,7 @@ export const DEFAULT_CONFIG_WIDGET = {
   classes: null,
   SunburstConfig: null,
   DonutConfig: null,
+  BarConfig: null,
 };
 
 /**
@@ -92,7 +93,7 @@ export const DEFAULT_CONFIG_WIDGET = {
 export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
   const {
     theme, classes: uiClasses,
-    SunburstConfig: sbConfig, DonutConfig: dConfig,
+    SunburstConfig: sbConfig, DonutConfig: dConfig, BarChartConfig: bConfig,
   } = uiConfig;
 
   const SunburstConfig = sbConfig && typeof sbConfig === 'object' ? sbConfig : DEFAULT_CONFIG_SUNBURST;
@@ -101,7 +102,8 @@ export function WidgetGenerator(uiConfig = DEFAULT_CONFIG_WIDGET) {
   const DonutConfig = dConfig && typeof dConfig === 'object' ? dConfig : DEFAULT_CONFIG_DONUT;
   const { DonutChart } = DonutChartGenerator(DonutConfig);
 
-  const { BarChart } = BarChartGenerator();
+  const BarChartConfig = bConfig && typeof bConfig === 'object' ? bConfig : DEFAULT_CONFIG_BAR;
+  const { BarChart } = BarChartGenerator(BarChartConfig);
 
   const classes = uiClasses && typeof uiClasses === 'object'
     ? uiClasses
