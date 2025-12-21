@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import {
   Tab,
   Tabs,
@@ -41,16 +46,27 @@ const TabItems = ({
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showMorePopup, setShowMorePopup] = useState(false);
   const [moreButtonAnchor, setMoreButtonAnchor] = useState(null);
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : getDefaultWindowWidth(responsiveBreakpoints));
+  const [containerWidth, setContainerWidth] = useState(
+    getDefaultWindowWidth(responsiveBreakpoints),
+  );
+  const containerRef = useRef(null);
 
   // Calculate tab limit based on screen width breakpoints
+  // We are now using the div container width instead of window width
+  // This is to support the facet kickout feature so that the tabs respond
+  // to the available space in the container div
+  // These breakpoints are calculated by multiplying the width of each tab
+  // including the padding/margin (203px)
+  // and counting the more button as a tab (203px)
+  // We will have enough space for tabs + more button + empty tab space
+  // e.g. 2 tabs: (203 * 2) + 203 + 203 = 812px
   const getTabLimitByWidth = (width) => {
     if (!responsiveBreakpoints) {
       // Fallback to original hardcoded values if no config provided
-      if (width < 1250) return 2;
-      if (width < 1400) return 3;
-      if (width < 1550) return 4;
-      if (width < 1700) return 5;
+      if (width < 812) return 2;
+      if (width < 1015) return 3;
+      if (width < 1281) return 4;
+      if (width < 1421) return 5;
       return 6; // >= 1700px
     }
 
@@ -65,23 +81,29 @@ const TabItems = ({
   };
 
   // Grouping logic with responsive breakpoints
-  const tabLimit = enableGrouping ? getTabLimitByWidth(windowWidth) : maxVisibleTabs;
+  const tabLimit = enableGrouping ? getTabLimitByWidth(containerWidth) : maxVisibleTabs;
   const shouldShowMoreButton = enableGrouping && tabItems.length > tabLimit;
 
-  // Window resize listener for responsive breakpoints
+  // ResizeObserver to monitor container div width for responsive breakpoints
   useEffect(() => {
-    if (!enableGrouping || typeof window === 'undefined') {
+    if (!enableGrouping || !containerRef.current) {
       return undefined;
     }
 
-    const handleResize = () => {
-      const newWidth = window.innerWidth;
-      setWindowWidth(newWidth);
-    };
+    const resizeObserver = new ResizeObserver((entries) => {
+      if (entries.length > 0) {
+        const newWidth = entries[0].contentRect.width;
+        setContainerWidth(newWidth);
+      }
+    });
 
-    window.addEventListener('resize', handleResize);
+    resizeObserver.observe(containerRef.current);
+
+    // Set initial width
+    setContainerWidth(containerRef.current.offsetWidth);
+
     return () => {
-      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
     };
   }, [enableGrouping]);
 
@@ -230,7 +252,7 @@ const TabItems = ({
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
-      <div style={{ position: 'relative' }}>
+      <div ref={containerRef} style={{ position: 'relative' }}>
         <Tabs
           onChange={(event, value) => {
             // Convert relative position to actual tab index when grouping is enabled
