@@ -3,10 +3,12 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable object-curly-newline */
 import React, { useEffect, useState } from 'react';
+/*
 import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
+*/
 import { generateQueryStr } from '@bento-core/util';
 import clsx from 'clsx';
 import {
@@ -40,8 +42,8 @@ const SliderView = ({
     || (facetValues[0] === 0 && facetValues[1] === 0);
   const lowerBoundValue = facetValues[0];
   const upperBoundValue = facetValues[1];
-  const query = new URLSearchParams(useLocation().search);
-  const navigate = useNavigate();
+  // const query = new URLSearchParams(useLocation().search);
+  // const navigate = useNavigate();
 
   const unknownAges = unknownAgesState?.[datafield] || 'include';
   const isOnlyUnknownAges = unknownAges === 'only';
@@ -51,11 +53,11 @@ const SliderView = ({
 
   // Initialize unknownAges from URL parameters on component mount
   useEffect(() => {
-    const urlParams = new URLSearchParams(query);
-    const unknownAgesParam = urlParams.get(`${datafield}_unknownAges`);
-    if (unknownAgesParam && unknownAgesParam !== unknownAges) {
-      onUnknownAgesChange(datafield, unknownAgesParam);
-    }
+    // const urlParams = new URLSearchParams(query);
+    // const unknownAgesParam = urlParams.get(`${datafield}_unknownAges`);
+    // if (unknownAgesParam && unknownAgesParam !== unknownAges) {
+    //   onUnknownAgesChange(datafield, unknownAgesParam);
+    // }
   }, []); // Run only once on mount
 
   const getUnknownAgesText = () => {
@@ -111,8 +113,8 @@ const SliderView = ({
       const daysValue = [convertToDays(value[0]), convertToDays(value[1])];
       const paramValue = {};
       paramValue[datafield] = daysValue;
-      const queryStr = generateQueryStr(query, queryParams, paramValue);
-      navigate(`/explore${queryStr}`);
+      // const queryStr = generateQueryStr(query, queryParams, paramValue);
+      // navigate(`/explore${queryStr}`);
       onSliderToggle({ sliderValue: daysValue, ...facet });
     }
   };
@@ -153,8 +155,8 @@ const SliderView = ({
       // Clear the age range parameter from the URL
       const paramValue = {};
       paramValue[datafield] = ''; // Clear the age range filter
-      const queryStr = generateQueryStr(query, queryParams, paramValue);
-      navigate(`/explore${queryStr}`);
+      // const queryStr = generateQueryStr(query, queryParams, paramValue);
+      // navigate(`/explore${queryStr}`);
 
       // Keep the current slider values for display (don't reset to defaults)
       // The slider will be disabled but show the user's previous selection
@@ -167,8 +169,8 @@ const SliderView = ({
       const currentSliderValues = [convertToDays(sliderValue[0]), convertToDays(sliderValue[1])];
       const paramValue = {};
       paramValue[datafield] = currentSliderValues;
-      const queryStr = generateQueryStr(query, queryParams, paramValue);
-      navigate(`/explore${queryStr}`);
+      // const queryStr = generateQueryStr(query, queryParams, paramValue);
+      // navigate(`/explore${queryStr}`);
 
       // Restore the slider state in the parent component
       onSliderToggle({ sliderValue: currentSliderValues, ...facet });

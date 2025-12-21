@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+/*
 import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { generateQueryStr } from '@bento-core/util';
+ */
+// import { generateQueryStr } from '@bento-core/util';
 import {
   Accordion,
   List,
@@ -34,8 +36,8 @@ const NewFacetView = ({
 }) => {
   const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
   const onExpandFacet = () => setExpand(!expand);
-  const query = new URLSearchParams(useLocation().search);
-  const navigate = useNavigate();
+  // const query = new URLSearchParams(useLocation().search);
+  // const navigate = useNavigate();
 
   /**
   * expand section incase of active local search
@@ -72,8 +74,8 @@ const NewFacetView = ({
       paramValue[unknownAgesField] = '';
     }
 
-    const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/explore${queryStr}`, { replace: true });
+    // const queryStr = generateQueryStr(query, queryParams, paramValue);
+    // navigate(`/explore${queryStr}`, { replace: true });
     setSortBy(null);
 
     // Reset the corresponding unknownAges parameter in Redux state
