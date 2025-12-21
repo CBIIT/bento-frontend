@@ -2,8 +2,11 @@
 import { sideBarActionTypes } from '../actions/ActionTypes';
 
 const initFilterState = {
+  filterState: {},
   searchState: {},
   sortState: {},
+  unknownAgesState: {},
+  timeUnitState: {},
 };
 
 export const onToggleStateUpdate = ({
@@ -137,6 +140,7 @@ export function sideBarReducerGenerator() {
           };
         case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
           return {
+            ...state,
             filterState: payload,
           };
         case sideBarActionTypes.SEARCH_TEXT_CHANGED:
