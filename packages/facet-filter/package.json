@@ -16,7 +16,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@bento-core/util": "^1.0.0-c3dc.0",
     "lodash": "^4.17.20"
   },
   "peerDependencies": {
