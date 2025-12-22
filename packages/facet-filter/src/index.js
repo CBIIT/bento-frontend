@@ -1,11 +1,12 @@
 export { default as FacetFilter } from './FacetFilterController';
+export { default as NewFacetFilter } from './NewFacetFilterController';
 export {
   sortType,
   sortByCheckedItem,
   getNumberArray,
   sortBySection,
 } from './utils/Sort';
-export { getFilters } from './utils/filter';
+export { getFilters, getFiltersWithUnknownAges } from './utils/filter';
 export { InputTypes } from './components/inputs/Types';
 export {
   sideBarReducerGenerator,
@@ -22,6 +23,8 @@ export {
   clearFacetSection,
   clearSliderSection,
   clearAllAndSelectFacet,
+  updateFilterState,
+  unknownAgesChange,
 } from './store/actions/Actions';
 export {
   generateFacetSectionView,

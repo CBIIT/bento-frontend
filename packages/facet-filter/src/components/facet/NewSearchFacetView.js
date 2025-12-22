@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+/*
+import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+ */
+// import { generateQueryStr } from '@bento-core/util';
 import {
   Accordion,
   List,
@@ -11,7 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
 import CustomAccordionSummary from '../summary/AccordionSummaryView';
 import { InputTypes } from '../inputs/Types';
-import styles from './FacetStyle';
+import styles from './NewFacetStyle';
 import FilterItems from '../inputs/FilterItems';
 import SearchFilterItems from '../inputs/SearchFilterItems';
 import { sortType, sortBySection } from '../../utils/Sort';
@@ -45,16 +52,38 @@ const SearchFacetView = ({
   searchText,
   sortBy,
   onClearFacetSection,
+  onUnknownAgesChange,
   onSearchTextChange,
   onSortChange,
   CustomView,
+  queryParams,
+  unknownAgesState,
 }) => {
   const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
   const [open, setOpen] = useState(false);
   const onExpandFacet = () => setExpand(!expand);
+  // const query = new URLSearchParams(useLocation().search);
+  // const navigate = useNavigate();
 
   const onClearSection = () => {
+    const field = facet.datafield;
+    const paramValue = {};
+    paramValue[field] = '';
+
+    // Also clear the corresponding unknownAges parameter if it exists
+    const unknownAgesField = `${field}_unknownAges`;
+    if (queryParams.includes(unknownAgesField)) {
+      paramValue[unknownAgesField] = '';
+    }
+
+    // const queryStr = generateQueryStr(query, queryParams, paramValue);
+    // navigate(`/explore${queryStr}`, { replace: true });
     onSortChange(facet.datafield, null);
+
+    // Reset the corresponding unknownAges parameter in Redux state
+    if (queryParams.includes(unknownAgesField) && onUnknownAgesChange) {
+      onUnknownAgesChange(field, 'include');
+    }
     onClearFacetSection(facet);
   };
 
@@ -67,7 +96,12 @@ const SearchFacetView = ({
   const selectedItems = facetValues && facetValues.filter((item) => item.isChecked);
   const displayFacet = { ...facet };
   displayFacet.facetValues = selectedItems;
-  const isActiveFacet = [...selectedItems].length > 0;
+
+  // Check if facet is active based on selected items or unknown ages selection
+  const hasSelectedItems = [...selectedItems].length > 0;
+  const unknownAges = unknownAgesState?.[facet.datafield] || 'include';
+  const hasUnknownAgesSelection = unknownAges !== 'include';
+  const isActiveFacet = hasSelectedItems || (type === InputTypes.SLIDER && hasUnknownAgesSelection);
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
 
   const sortFilters = sortBySection({ ...facet, sortBy });
@@ -78,7 +112,7 @@ const SearchFacetView = ({
         checkboxItem={{ ...item, index, section }}
         datafield={datafield}
         facet={facet}
-        // queryParams={queryParams}
+        queryParams={queryParams}
       />
     ));
 
@@ -89,7 +123,7 @@ const SearchFacetView = ({
     <>
       <ReduxFacetModal
         facet={facet}
-        // queryParams={queryParams}
+        queryParams={queryParams}
         open={open}
         onClose={() => setOpen(false)}
       />
@@ -102,13 +136,14 @@ const SearchFacetView = ({
         }}
         id={facet.section}
       >
-        {CustomView ? (
+        { CustomView ? (
           <CustomView
             facet={facet}
             facetClasses={
               isActiveFacet ? `activeFacet${facet.section}`
                 : `inactiveFacet${facet.section}`
             }
+            expanded={expand}
           />
         ) : (
           <CustomAccordionSummary>
@@ -167,7 +202,7 @@ const SearchFacetView = ({
               {
                 !facet.disableSearchModal && (
                 <div className={classes.searchContainer}>
-                  <Button variant="text" className={classes.expandedDisplayButton} onClick={() => setOpen(!open)}>
+                  <Button variant="text" className={clsx(classes.expandedDisplayButton, classes[`expandedDisplayButton${facet.section}`])} onClick={() => setOpen(!open)}>
                     {`VIEW EXPANDED DISPLAY (${checkedItems.length + newUncheckedFullList.length})`}
                   </Button>
                 </div>
@@ -180,8 +215,8 @@ const SearchFacetView = ({
           (facetValues.length > 0)
             && (
               <>
-                <div className={classes.sortGroup}>
-                  <span className={classes.sortGroupIcon}>
+                <div className={classes.sortGroupSearchFacet}>
+                  <span className={classes.sortGroupIconSearchFacet}>
                     <Icon
                       style={{ fontSize: 10 }}
                       onClick={onClearSection}
@@ -204,7 +239,7 @@ const SearchFacetView = ({
                       onSortChange(facet.datafield, sortType.ALPHABET);
                     }}
                   >
-                    Sort alphabetically
+                    Sort Alphabetically
                   </span>
                   <span
                     className={
@@ -216,12 +251,13 @@ const SearchFacetView = ({
                       onSortChange(facet.datafield, sortType.NUMERIC);
                     }}
                   >
-                    Sort by count
+                    Sort by Count
                   </span>
                 </div>
                 <SearchFilterItems
                   searchText={searchText}
                   facet={facet}
+                  queryParams={queryParams}
                   sortBy={sortBy}
                 />
               </>
@@ -234,6 +270,7 @@ const SearchFacetView = ({
             <List id="filter_Items">
               <FilterItems
                 facet={displayFacet}
+                queryParams={queryParams}
               />
             </List>
           </>

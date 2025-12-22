@@ -24,58 +24,8 @@ export const DEFAULT_COLORS_ODD = [
   '#EFA56F',
 ];
 
-export const DEFAULT_CONFIG_DONUT = {
-  // Styles used by the component and its children
-  styles: {
-    textColor: 'black',
-    fontFamily: 'Nunito',
-    fontWeight: 500,
-    fontSize: '12px',
-    cellPadding: 2,
-    showTotalCount: false,
-    textOverflowLength: 20,
-  },
-
-  // Helper functions used by the component
-  functions: {
-    /**
-     * Merge Props and return result of callback
-     *
-     * @param {object} props
-     * @param {object} extraProps
-     * @param {function} callback
-     * @return {any} result of callback
-     */
-    mergeProps: (props, extraProps, callback) => (callback({ ...props, ...extraProps })),
-
-    /**
-     * Return last index of dataset
-     *
-     * @param {object|array} dataset
-     * @returns {number} last index of array
-     */
-    getLastIndex: (dataset) => ((dataset.length !== undefined) ? dataset.length - 1 : 0),
-
-    /**
-     * Map dataset to {name, value} pairs
-     *
-     * Note:
-     * - Called by Array.map()
-     *
-     * @param {object} data
-     * @returns {object} {name, value}
-     */
-    mapData: (data) => ({ name: data.group, value: data.subjects }),
-
-    /**
-     * Generate an active shape element for the pie chart
-     *
-     * @param {*} props
-     * @returns {JSX.Element}
-     */
-  },
-
-  // Color scheme used for component slices
+export const DEFAULT_CONFIG_BAR = {
+  // Color scheme used for component bars
   colors: {
     even: DEFAULT_COLORS_EVEN,
     odd: DEFAULT_COLORS_ODD,
@@ -83,13 +33,24 @@ export const DEFAULT_CONFIG_DONUT = {
 };
 
 /**
- * Exposes a function to generate a donut chart component
+ * Exposes a function to generate a bar chart component
  *
  * @param {object|null} uiConfig
  * @returns {object}
  */
-// eslint-disable-next-line no-unused-vars, arrow-body-style
-export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
+export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_BAR) => {
+  const {
+    colors,
+  } = uiConfig;
+
+  const COLORS_EVEN = colors && colors.even instanceof Array && colors.even.length > 0
+    ? colors.even
+    : DEFAULT_CONFIG_BAR.colors.even;
+
+  const COLORS_ODD = colors && colors.odd instanceof Array && colors.odd.length > 0
+    ? colors.odd
+    : DEFAULT_CONFIG_BAR.colors.odd;
+
   return {
     BarChart: ({ data, ...props }) => {
       const {
@@ -161,7 +122,9 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
                   {data.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={DEFAULT_COLORS_ODD[index % DEFAULT_COLORS_ODD.length]}
+                      fill={data.length % 2 === 0
+                        ? COLORS_EVEN[index % COLORS_EVEN.length]
+                        : COLORS_ODD[index % COLORS_ODD.length]}
                     />
                   ))}
                 </Bar>

@@ -17,6 +17,8 @@ const FilterItems = ({
   facet,
   sortBy = null,
   classes,
+  queryParams,
+  timeUnit,
 }) => {
   const { type, datafield, section } = facet;
   const [displayCount, setDisplayCount] = useState(INITIAL_ITEM_SIZE);
@@ -49,6 +51,7 @@ const FilterItems = ({
               checkboxItem={{ ...item, index, section }}
               datafield={datafield}
               facet={facet}
+              queryParams={queryParams}
             />
           ));
         }
@@ -72,6 +75,7 @@ const FilterItems = ({
             checkboxItem={{ ...item, index: originalIndex, section }}
             datafield={datafield}
             facet={facet}
+            queryParams={queryParams}
           />
         ));
         const uncheckedItems = uncheckedItemsWithIndices
@@ -82,6 +86,7 @@ const FilterItems = ({
               checkboxItem={{ ...item, index: originalIndex, section }}
               datafield={datafield}
               facet={facet}
+              queryParams={queryParams}
             />
           ));
 
@@ -101,7 +106,7 @@ const FilterItems = ({
         );
       }
       case InputTypes.SLIDER:
-        return (<ReduxSlider facet={facet} />);
+        return (<ReduxSlider facet={facet} timeUnit={timeUnit} queryParams={queryParams} />);
       default:
         return (<></>);
     }
