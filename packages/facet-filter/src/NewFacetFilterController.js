@@ -1,10 +1,3 @@
-/* eslint-disable block-scoped-var */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-unused-vars */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-restricted-syntax */
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -38,27 +31,30 @@ const NewFacetFilterController = (props) => {
   const updateFacetState = (filterSections) => {
     if (!_.isEmpty(filterState)) {
       return filterSections.map((sideBar) => {
-        let updatedSideBar = { ...sideBar };
+        const filterValue = filterState[sideBar.datafield];
 
-        for (const [key, value] of Object.entries(filterState)) {
-          if (sideBar.type === InputTypes.CHECKBOX && sideBar.datafield === key) {
-            updatedSideBar = {
-              ...updatedSideBar,
-              facetValues: sideBar.facetValues.map((item) => ({
-                ...item,
-                isChecked: value.indexOf(item.name) > -1,
-              })),
-            };
-          }
-          if (sideBar.type === InputTypes.SLIDER && sideBar.datafield === key) {
-            updatedSideBar = {
-              ...updatedSideBar,
-              facetValues: value,
-            };
-          }
+        if (!filterValue) {
+          return sideBar;
         }
 
-        return updatedSideBar;
+        if (sideBar.type === InputTypes.CHECKBOX) {
+          return {
+            ...sideBar,
+            facetValues: sideBar.facetValues.map((item) => ({
+              ...item,
+              isChecked: filterValue.indexOf(item.name) > -1,
+            })),
+          };
+        }
+
+        if (sideBar.type === InputTypes.SLIDER) {
+          return {
+            ...sideBar,
+            facetValues: filterValue,
+          };
+        }
+
+        return sideBar;
       });
     }
 
