@@ -5,9 +5,6 @@
 /* eslint-disable no-var */
 /* eslint-disable vars-on-top */
 /* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
-/* eslint-disable space-infix-ops */
-/* eslint-disable prefer-template */
 import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -30,54 +27,70 @@ const NewFacetFilterController = (props) => {
     searchFacetClasses,
   } = props;
 
-  const filterState = {};
   // console.log(activeFilters);
-  for (const [key, value] of Object.entries(activeFilters)) {
+  const filterState = Object.entries(activeFilters).reduce((acc, [key, value]) => {
     if (key !== 'participant_ids') {
-      filterState[key] = value;
+      return { ...acc, [key]: value };
     }
-  }
+    return acc;
+  }, {});
 
   const updateFacetState = (filterSections) => {
-    const updateSections = [...filterSections];
     if (!_.isEmpty(filterState)) {
-      for (const [key, value] of Object.entries(filterState)) {
-        updateSections.forEach((sideBar) => {
+      return filterSections.map((sideBar) => {
+        let updatedSideBar = { ...sideBar };
+
+        for (const [key, value] of Object.entries(filterState)) {
           if (sideBar.type === InputTypes.CHECKBOX && sideBar.datafield === key) {
-            sideBar.facetValues.forEach((item) => {
-              // item.isChecked = value[item.name] ? value[item.name] : false;
-              item.isChecked = value.indexOf(item.name) > -1;
-            });
+            updatedSideBar = {
+              ...updatedSideBar,
+              facetValues: sideBar.facetValues.map((item) => ({
+                ...item,
+                isChecked: value.indexOf(item.name) > -1,
+              })),
+            };
           }
           if (sideBar.type === InputTypes.SLIDER && sideBar.datafield === key) {
-            sideBar.facetValues = value;
+            updatedSideBar = {
+              ...updatedSideBar,
+              facetValues: value,
+            };
           }
-        });
-      }
-    } else {
-      updateSections.forEach((sideBar) => {
-        if (sideBar.type === InputTypes.CHECKBOX) {
-          sideBar.facetValues.forEach((item) => {
-            item.isChecked = false;
-          });
         }
-        /**
-         * set default value for slider - on clear all filter
-         */
-        if (sideBar.type === InputTypes.SLIDER) {
-          const { minLowerBound, maxUpperBound } = sideBar;
-          sideBar.facetValues = [minLowerBound, maxUpperBound];
-        }
+
+        return updatedSideBar;
       });
     }
-    return updateSections;
+
+    return filterSections.map((sideBar) => {
+      if (sideBar.type === InputTypes.CHECKBOX) {
+        return {
+          ...sideBar,
+          facetValues: sideBar.facetValues.map((item) => ({
+            ...item,
+            isChecked: false,
+          })),
+        };
+      }
+      /**
+       * set default value for slider - on clear all filter
+       */
+      if (sideBar.type === InputTypes.SLIDER) {
+        const { minLowerBound, maxUpperBound } = sideBar;
+        return {
+          ...sideBar,
+          facetValues: [minLowerBound, maxUpperBound],
+        };
+      }
+      return sideBar;
+    });
   };
 
   const arrangeBySections = (arr) => {
     const sideBar = {};
 
     arr.forEach(({ section, ...item }) => {
-      const { isExpanded } =facetSectionConfig[section];
+      const { isExpanded } = facetSectionConfig[section];
       if (!sideBar[section]) {
         sideBar[section] = {
           name: section,
@@ -86,7 +99,10 @@ const NewFacetFilterController = (props) => {
           items: [],
         };
       }
-      sideBar[section].items.push({ section, ...item });
+      sideBar[section] = {
+        ...sideBar[section],
+        items: [...sideBar[section].items, { section, ...item }],
+      };
     });
     return Object.values(sideBar);
   };
@@ -97,62 +113,75 @@ const NewFacetFilterController = (props) => {
    * 2. add 'name' key to each facet value
    */
   const addFacetValues = (facets) => {
-    const updateFacets = [];
-    if (facets) {
-      facets.forEach((facet) => {
-        const updateFacet = { ...facet, facetValues: [] };
-        const {
-          field,
-          ApiLowerBoundName,
-          ApiUpperBoundName,
-          apiForFiltering,
-        } = updateFacet;
-        if (data[apiForFiltering]) {
-          if (Array.isArray(data[apiForFiltering])) {
-            const validValues = [];
-            const updateField = data[apiForFiltering].map((item) => {
-              const addField = { ...item };
-              addField.name = item[field];
-              validValues.push(addField.name);
-              return addField;
-            });
-            /**
-             * Check if there are orphan filter values and add them to the facet values
-             */
-            if (filterState !== undefined) {
-              const facetFilter = filterState[facet.datafield];
-              if (facetFilter) {
-                facetFilter.forEach((item) => {
-                  if (validValues.indexOf(item) === -1) {
-                    const tmp = {};
-                    tmp.group = item;
-                    tmp.name = item;
-                    tmp.subjects = 0;
-                    updateField.push(tmp);
-                  }
-                });
-              }
-            }
-            updateFacet.facetValues = updateField;
-          }
-          /**
-          * add object to facet values
-          */
-          if (facet.type === InputTypes.SLIDER) {
-            const lowerBound = data[apiForFiltering][ApiLowerBoundName];
-            const upperBound = data[apiForFiltering][ApiUpperBoundName];
-            const unknownAges = unknownAgesState?.[facet.datafield] || 'include';
-            updateFacet.minLowerBound = lowerBound;
-            updateFacet.maxUpperBound = upperBound;
-            updateFacet.unknownAges = unknownAges;
-            updateFacet.facetValues = [lowerBound, upperBound];
-            updateFacet.style = facet.style;
+    if (!facets) {
+      return [];
+    }
+
+    return facets.map((facet) => {
+      const updateFacet = { ...facet, facetValues: [] };
+      const {
+        field,
+        ApiLowerBoundName,
+        ApiUpperBoundName,
+        apiForFiltering,
+      } = updateFacet;
+
+      if (!data[apiForFiltering]) {
+        return updateFacet;
+      }
+
+      if (Array.isArray(data[apiForFiltering])) {
+        const validValues = [];
+        const updateField = data[apiForFiltering].map((item) => {
+          const addField = {
+            ...item,
+            name: item[field],
+          };
+          validValues.push(addField.name);
+          return addField;
+        });
+        /**
+         * Check if there are orphan filter values and add them to the facet values
+         */
+        let finalUpdateField = updateField;
+        if (filterState !== undefined) {
+          const facetFilter = filterState[facet.datafield];
+          if (facetFilter) {
+            const orphanValues = facetFilter
+              .filter((item) => validValues.indexOf(item) === -1)
+              .map((item) => ({
+                group: item,
+                name: item,
+                subjects: 0,
+              }));
+            finalUpdateField = [...updateField, ...orphanValues];
           }
         }
-        updateFacets.push(updateFacet);
-      });
-    }
-    return updateFacets;
+        return {
+          ...updateFacet,
+          facetValues: finalUpdateField,
+        };
+      }
+
+      /**
+      * add object to facet values
+      */
+      if (facet.type === InputTypes.SLIDER) {
+        const lowerBound = data[apiForFiltering][ApiLowerBoundName];
+        const upperBound = data[apiForFiltering][ApiUpperBoundName];
+        const unknownAges = unknownAgesState?.[facet.datafield] || 'include';
+        return {
+          ...updateFacet,
+          minLowerBound: lowerBound,
+          maxUpperBound: upperBound,
+          unknownAges,
+          facetValues: [lowerBound, upperBound],
+          style: facet.style,
+        };
+      }
+
+      return updateFacet;
+    });
   };
 
   /**
