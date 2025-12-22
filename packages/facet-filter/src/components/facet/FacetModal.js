@@ -48,12 +48,6 @@ const ModalView = ({
             aria-label="close"
             onClick={onClose}
             className={classes.closeButton}
-            sx={(theme) => ({
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: theme.palette.grey[500],
-            })}
           >
             <CloseIcon fontSize="small" />
           </IconButton>

@@ -169,7 +169,6 @@ const NewFacetView = ({
               <ToggleButtonGroup
                 value={timeUnit}
                 exclusive
-                disabled={isOnlyUnknownAges}
                 onChange={handleTimeUnitChange}
                 aria-label="time unit"
                 className={classes.timeUnitToggle}

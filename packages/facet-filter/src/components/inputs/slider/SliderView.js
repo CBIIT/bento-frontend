@@ -9,7 +9,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 */
-import { generateQueryStr } from '@bento-core/util';
+// import { generateQueryStr } from '@bento-core/util';
 import clsx from 'clsx';
 import {
   withStyles,
@@ -562,20 +562,14 @@ const styles = () => ({
       fontSize: '14px',
       color: '#000000',
     }),
-  radio: (props) => {
-    const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
-      ? props.facet.style.colorPrimary.color
-      : '#3f51b5';
-
-    return props.facet.style && props.facet.style.radio
-      ? props.facet.style.radio
-      : {
-        color: '#CCCCCC',
-        '&:hover': {
-          backgroundColor: 'transparent',
-        },
-      };
-  },
+  radio: (props) => (props.facet.style && props.facet.style.radio
+    ? props.facet.style.radio
+    : {
+      color: '#CCCCCC',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+    }),
   radioChecked: (props) => {
     const primaryColor = (props.facet && props.facet.style && props.facet.style.colorPrimary)
       ? props.facet.style.colorPrimary.color

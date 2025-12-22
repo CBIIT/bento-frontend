@@ -158,12 +158,6 @@ const SearchFacetView = ({
                     aria-label="close"
                     onClick={() => onSearchTextChange(facet.datafield, '')}
                     className={classes.clearTextButton}
-                    sx={(theme) => ({
-                      position: 'absolute',
-                      right: 7,
-                      top: 7,
-                      color: theme.palette.grey[500],
-                    })}
                   >
                     <CloseIcon fontSize="small" />
                   </IconButton>
