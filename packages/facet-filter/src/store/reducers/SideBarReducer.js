@@ -42,13 +42,22 @@ export const onClearFacetSection = ({
 export const onClearSliderSection = ({
   filterState,
   facetSection,
+  unknownAgesState,
 }) => {
-  const updatedState = { ...filterState };
+  const updatedFilterState = { ...filterState };
+  const updatedUnknownAgesState = { ...unknownAgesState };
   const { datafield } = facetSection;
-  if (updatedState[datafield]) {
-    delete updatedState[datafield];
+
+  if (updatedFilterState[datafield]) {
+    delete updatedFilterState[datafield];
   }
-  return updatedState;
+
+  // Also clear the unknownAgesState for this datafield
+  if (updatedUnknownAgesState[datafield]) {
+    delete updatedUnknownAgesState[datafield];
+  }
+
+  return { filterState: updatedFilterState, unknownAgesState: updatedUnknownAgesState };
 };
 
 export const updateSiderValue = ({
@@ -125,6 +134,7 @@ export function sideBarReducerGenerator() {
             ...state,
             filterState: {},
             searchState: {},
+            unknownAgesState: {},
           };
         case sideBarActionTypes.CLEAR_FACET_SECTION:
           updateState = onClearFacetSection({ ...payload, ...state });
@@ -136,7 +146,8 @@ export function sideBarReducerGenerator() {
           updateState = onClearSliderSection({ ...payload, ...state });
           return {
             ...state,
-            filterState: { ...updateState },
+            filterState: { ...updateState.filterState },
+            unknownAgesState: { ...updateState.unknownAgesState },
           };
         case sideBarActionTypes.CLEAR_AND_SELECT_FACET_VALUE:
           return {
