@@ -27,7 +27,6 @@ const NewFacetView = ({
   facet,
   onClearFacetSection,
   onClearSliderSection,
-  onUnknownAgesChange,
   CustomView,
   queryParams,
   timeUnitState,
@@ -78,10 +77,6 @@ const NewFacetView = ({
     // navigate(`/explore${queryStr}`, { replace: true });
     setSortBy(null);
 
-    // Reset the corresponding unknownAges parameter in Redux state
-    if (queryParams.includes(unknownAgesField) && onUnknownAgesChange) {
-      onUnknownAgesChange(field, 'include');
-    }
     if (facet.type === InputTypes.SLIDER) {
       onClearSliderSection(facet);
     } else {
