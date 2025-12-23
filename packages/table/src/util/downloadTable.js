@@ -63,8 +63,10 @@ export function convertToCSV(jsonse, keysToInclude, header) {
 
 export function downloadData(tableData, table, downloadFileName, format = 'csv') {
   const { columns = [] } = table;
-  const filterColumns = columns.filter(({ cellType, doNotDownload }) => (
-    !actionCellTypes.includes(cellType) && !doNotDownload));
+  const filterColumns = columns
+    .filter(({ cellType }) => !actionCellTypes.includes(cellType))
+    .filter(({ doNotDownload }) => !doNotDownload)
+    .filter(({ display }) => display);
   let formatDataVal = formatColumnValues(filterColumns, tableData);
 
   formatDataVal = formatDataVal.map((item) => {
