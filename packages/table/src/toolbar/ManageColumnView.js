@@ -41,7 +41,7 @@ const ManageColumnView = ({
   const [needsScroll, setNeedsScroll] = useState(false);
 
   const viewColumns = columns.filter((col) => col.role === cellTypes.DISPLAY
-    && col.disableInManageView !== true);
+    && col.downloadOnly !== true);
 
   const dropdownSelection = useRef(null);
   const formGroupRef = useRef(null);

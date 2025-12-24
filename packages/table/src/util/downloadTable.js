@@ -66,7 +66,7 @@ export function downloadData(tableData, table, downloadFileName, format = 'csv')
   const filterColumns = columns
     .filter(({ cellType }) => !actionCellTypes.includes(cellType))
     .filter(({ doNotDownload }) => !doNotDownload)
-    .filter(({ display }) => display);
+    .filter(({ display, downloadOnly }) => display || downloadOnly); // want to download hidden columns ('download only columns')
   let formatDataVal = formatColumnValues(filterColumns, tableData);
 
   formatDataVal = formatDataVal.map((item) => {
