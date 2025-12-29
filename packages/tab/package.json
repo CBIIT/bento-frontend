@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/tab",
-  "version": "1.0.0-c3dc.4",
+  "version": "1.0.0-c3dc.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {

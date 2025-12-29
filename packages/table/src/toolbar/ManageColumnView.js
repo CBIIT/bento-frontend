@@ -301,7 +301,7 @@ const styles = () => ({
     backgroundColor: '#375F9A',
     marginTop: '5px',
     marginBottom: '5px',
-    width: 'calc(100% + 20px)',
+    width: '100%',
     position: 'relative',
     left: '-10px',
     height: '0.5px',
