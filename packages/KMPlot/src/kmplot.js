@@ -160,7 +160,7 @@ export default function KaplanMeierChart({
               </g>
             );
           })}
-          <text x={margin + innerW / 2 + xAxisOffset} y={height - 4} textAnchor="middle" fontSize={12} style={{ opacity: 0.85 }}>Time</text>
+          <text x={margin + innerW / 2 + xAxisOffset} y={height - 4} textAnchor="middle" fontSize={11} fill="#3A7587" style={{ opacity: 0.85, fontFamily: 'Nunito', fontWeight: 700 }}>Time (days)</text>
 
           {/* Y-axis ticks & labels */}
           {Array.from({ length: yTicks + 1 }, (_, i) => {
@@ -173,9 +173,9 @@ export default function KaplanMeierChart({
               </g>
             );
           })}
-          {/* <text x={14} y={margin - 10} fontSize={12} style={{ opacity: 0.85 }}>
-            Survival Probability
-          </text> */}
+          <text x={2} y={margin + innerH / 2} textAnchor="middle" fontSize={11} style={{ opacity: 0.85, fontFamily: 'Nunito', fontWeight: 700 }} fill="#3A7587" transform={`rotate(90, 2, ${margin + innerH / 2})`}>
+            Survival Proportion
+          </text>
 
           {/* Curves and censor marks */}
           {groupKeys.map((k, gi) => {
