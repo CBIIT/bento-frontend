@@ -282,7 +282,13 @@ const TabItems = ({
               vertical: 'top',
               horizontal: 'center',
             }}
-            style={{ marginTop: '10px' }}
+            style={{ marginTop: '0px' }}
+            PaperProps={{
+              style: {
+                border: '1.5px solid rgb(86, 102, 189)',
+                borderRadius: '5px',
+              },
+            }}
           >
             <List className="popover-list">
               {popupTabs.map(({ tab, originalIndex }) => {
