@@ -124,6 +124,15 @@ export default function KaplanMeierChart({
   const x = (t) => margin + xAxisOffset + (t / maxT) * innerW;
   const y = (s) => margin + innerH * (1 - s);
 
+  // Shared axis label styles
+  const axisLabelStyle = {
+    fontSize: 11,
+    fill: '#3A7587',
+    opacity: 0.85,
+    fontFamily: 'Nunito',
+    fontWeight: 700,
+  };
+
   // Axis ticks
   const xTicks = 6;
   const yTicks = 5;
@@ -160,7 +169,7 @@ export default function KaplanMeierChart({
               </g>
             );
           })}
-          <text x={margin + innerW / 2 + xAxisOffset} y={height - 4} textAnchor="middle" fontSize={11} fill="#3A7587" style={{ opacity: 0.85, fontFamily: 'Nunito', fontWeight: 700 }}>Time (days)</text>
+          <text x={margin + innerW / 2 + xAxisOffset} y={height - 4} textAnchor="middle" style={axisLabelStyle}>Time (days)</text>
 
           {/* Y-axis ticks & labels */}
           {Array.from({ length: yTicks + 1 }, (_, i) => {
@@ -173,7 +182,7 @@ export default function KaplanMeierChart({
               </g>
             );
           })}
-          <text x={2} y={margin + innerH / 2} textAnchor="middle" fontSize={11} style={{ opacity: 0.85, fontFamily: 'Nunito', fontWeight: 700 }} fill="#3A7587" transform={`rotate(90, 2, ${margin + innerH / 2})`}>
+          <text x={2} y={margin + innerH / 2} textAnchor="middle" style={axisLabelStyle} transform={`rotate(90, 2, ${margin + innerH / 2})`}>
             Survival Proportion
           </text>
 
