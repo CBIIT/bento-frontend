@@ -57,6 +57,7 @@ const FacetView = ({
   displayFacet.facetValues = selectedItems;
   const isActiveFacet = [...selectedItems].length > 0;
   const limitCheckBoxCount = facet?.showCheckboxCount || 5;
+  const section = facet?.section?.replace(/\s+/g, '_') || '';
   return (
     <>
       <Accordion
@@ -66,14 +67,14 @@ const FacetView = ({
         classes={{
           root: classes.expansionPanelsideBarItem,
         }}
-        id={facet.section}
+        id={section}
       >
         { CustomView ? (
           <CustomView
             facet={facet}
             facetClasses={
-            isActiveFacet ? `activeFacet${facet.section}`
-              : `inactiveFacet${facet.section}`
+            isActiveFacet ? `activeFacet${section}`
+              : `inactiveFacet${section}`
             }
           />
         ) : (
