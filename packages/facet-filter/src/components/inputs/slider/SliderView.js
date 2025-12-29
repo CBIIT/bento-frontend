@@ -122,6 +122,11 @@ const SliderView = ({
     getDisplayValue(lowerBoundValue),
     getDisplayValue(upperBoundValue),
   ]);
+
+  // Check if slider text will be shown (to determine if unknownAgesSection needs bottom border)
+  const isSliderTextShown = (sliderValue[0] > getDisplayValue(minLowerBound)
+    || sliderValue[1] < getDisplayValue(maxUpperBound));
+
   useEffect(() => {
     // Don't reset slider values if "Only" is selected - preserve current values
     if (unknownAges === 'only') {
@@ -256,7 +261,10 @@ const SliderView = ({
         </Box>
       </div>
       {/* Unknown Ages Section */}
-      <Box className={classes.unknownAgesSection}>
+      <Box className={clsx(classes.unknownAgesSection, {
+        [classes.unknownAgesSectionWithBottomBorder]: !isSliderTextShown,
+      })}
+      >
         <Typography className={classes.unknownAgesTitle}>
           UNKNOWN AGES:
         </Typography>
@@ -487,6 +495,7 @@ const styles = () => ({
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
+      borderBottom: '1px solid #CCCCCC',
     }),
   invalidSliderText: (props) => (props.facet.style && props.facet.style.invalidSliderText
     ? props.facet.style.invalidSliderText
@@ -503,6 +512,7 @@ const styles = () => ({
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
+      borderBottom: '1px solid #CCCCCC',
     }),
   sliderListItem: (props) => (props.facet.style && props.facet.style.sliderListItem
     ? props.facet.style.sliderListItem
@@ -531,6 +541,12 @@ const styles = () => ({
       paddingBottom: '0px',
       borderTop: '1px solid #CCCCCC',
     }),
+  unknownAgesSectionWithBottomBorder: (props) => (
+    props.facet.style && props.facet.style.unknownAgesSectionWithBottomBorder
+      ? props.facet.style.unknownAgesSectionWithBottomBorder
+      : {
+        borderBottom: '1px solid #CCCCCC',
+      }),
   unknownAgesTitle: (props) => (props.facet.style && props.facet.style.unknownAgesTitle
     ? props.facet.style.unknownAgesTitle
     : {
