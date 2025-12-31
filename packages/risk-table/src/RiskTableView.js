@@ -159,7 +159,7 @@ const styles = () => ({
     border: '2px solid #3e3c3cff',
     fontFamily: 'Nunito, sans-serif',
     lineHeight: '10px',
-    letterSpacing: '0.02em', // 2% letter spacing
+    letterSpacing: '0.02em',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -173,7 +173,7 @@ const styles = () => ({
     border: '2px solid #080202ff',
     fontFamily: 'Nunito, sans-serif',
     lineHeight: '10px',
-    letterSpacing: '0.02em', // 2% letter spacing
+    letterSpacing: '0.02em',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
