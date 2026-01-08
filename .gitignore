@@ -16,6 +16,7 @@ dist
 
 # misc
 .DS_Store
+.nx
 .env.local
 .env.development.local
 .env.test.local
