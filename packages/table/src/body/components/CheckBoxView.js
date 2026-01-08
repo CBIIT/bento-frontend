@@ -13,6 +13,7 @@ const CheckboxView = ({
       disableRipple
       onClick={(event) => onRowSelectChange(event, row)}
       checked={row.isChecked}
+      inputProps={{ 'aria-label': `select row ${row.id} checkbox` }}
     />
   </TableCell>
 );
