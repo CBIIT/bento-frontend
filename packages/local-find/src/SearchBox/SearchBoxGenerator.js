@@ -161,6 +161,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 <TextField
                   {...params}
                   classes={classes}
+                  placeholder={inputPlaceholder}
                   inputProps={{ 'aria-label': ariaLabel }}
                 />
               )}
