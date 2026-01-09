@@ -74,12 +74,14 @@ const CheckBoxView = ({
   return (
     <>
       <ListItem
+        component="div"
+        tabIndex={-1}
         width={1}
-        button
         alignItems="flex-start"
         onClick={handleToggle}
         classes={{ gutters: classes.listItemGutters }}
         className={clsx({ [`${checkedSection}Checked${indexType}`]: isChecked })}
+        style={{ cursor: 'pointer' }}
       >
         <Checkbox
           id={`checkbox_${facet.label}_${name}`}
@@ -89,8 +91,7 @@ const CheckBoxView = ({
               className={checkedSection}
             />
           }
-          inputProps={{ 'aria-label': `Select ${name}` }}
-          onClick={handleToggle}
+          inputProps={{ 'aria-label': `Select ${name}`, tabIndex: -1, 'aria-hidden': true }}
           checked={isChecked}
           checkedIcon={(
             <CheckBoxIcon
