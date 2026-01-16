@@ -144,9 +144,10 @@ const SliderView = ({
 
     // When "only" is selected, clear the age filter from the query completely
     if (newUnknownAges === 'only') {
-      // Clear the age range parameter from the URL
+      // Clear the age range parameter from the URL but set the unknownAges parameter
       const paramValue = {};
       paramValue[datafield] = ''; // Clear the age range filter
+      paramValue[`${datafield}_unknownAges`] = 'only'; // Set the unknownAges parameter to only
       const queryStr = generateQueryStr(query, queryParams, paramValue);
       navigate(`/explore${queryStr}`);
 
@@ -156,11 +157,40 @@ const SliderView = ({
 
       // Clear the slider state in the parent component (don't use age range in query)
       onSliderToggle({ sliderValue: [], ...facet });
-    } else if (unknownAges === 'only' && newUnknownAges !== 'only') {
-      // When switching away from "only", restore the slider values to the query
+    } else if (unknownAges === 'only' && newUnknownAges === 'include') {
+      // When switching from "only" to "include", check if slider was adjusted from default
+      const currentSliderValues = [convertToDays(sliderValue[0]), convertToDays(sliderValue[1])];
+      const isDefaultRange = sliderValue[0] === getDisplayValue(minLowerBound)
+        && sliderValue[1] === getDisplayValue(maxUpperBound);
+
+      if (isDefaultRange) {
+        // Slider is at default range, clear all age query parameters
+        // since "include" with default range is the default state
+        const paramValue = {};
+        paramValue[datafield] = ''; // Clear the age range filter
+        paramValue[`${datafield}_unknownAges`] = ''; // Clear the unknownAges parameter
+        const queryStr = generateQueryStr(query, queryParams, paramValue);
+        navigate(`/explore${queryStr}`);
+
+        // Clear the slider state in the parent component
+        onSliderToggle({ sliderValue: [], ...facet });
+      } else {
+        // Slider was adjusted, restore those values to the query
+        const paramValue = {};
+        paramValue[datafield] = currentSliderValues;
+        paramValue[`${datafield}_unknownAges`] = ''; // Clear the unknownAges parameter since "include" is default
+        const queryStr = generateQueryStr(query, queryParams, paramValue);
+        navigate(`/explore${queryStr}`);
+
+        // Restore the slider state in the parent component
+        onSliderToggle({ sliderValue: currentSliderValues, ...facet });
+      }
+    } else if (unknownAges === 'only' && newUnknownAges === 'exclude') {
+      // When switching from "only" to "exclude", restore the slider values to the query
       const currentSliderValues = [convertToDays(sliderValue[0]), convertToDays(sliderValue[1])];
       const paramValue = {};
       paramValue[datafield] = currentSliderValues;
+      paramValue[`${datafield}_unknownAges`] = 'exclude'; // Set the unknownAges parameter to exclude
       const queryStr = generateQueryStr(query, queryParams, paramValue);
       navigate(`/explore${queryStr}`);
 
