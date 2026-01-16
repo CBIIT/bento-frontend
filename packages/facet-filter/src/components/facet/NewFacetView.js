@@ -282,6 +282,17 @@ const NewFacetView = ({
           </div>
         )
       }
+      {
+        (expand && type === InputTypes.SLIDER) && (
+          <div
+            style={{
+              marginTop: '20px',
+              marginBottom: '0px',
+              borderBottom: '1px solid rgb(204, 204, 204)',
+            }}
+          />
+        )
+      }
     </>
   );
 };
