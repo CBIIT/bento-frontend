@@ -32,9 +32,27 @@ const QueryUrl = ({
     return acc;
   }, {});
 
+  // Extract unknownAges state from filterItems
+  const unknownAgesState = filterItems.reduce((acc, item) => {
+    const {
+      datafield, unknownAges, isUnknownAges, parentDatafield,
+    } = item;
+    // Only include unknownAges if it's set and not the default 'include'
+    if (unknownAges && unknownAges !== 'include') {
+      // Use parentDatafield if this is an unknownAges-only item, otherwise use datafield
+      const key = isUnknownAges ? parentDatafield : datafield;
+      if (key) {
+        acc[key] = unknownAges;
+      }
+    }
+    return acc;
+  }, {});
+
   const queryString = JSON.stringify({
     ...pathFilterParams,
     ...localFind,
+    // Include unknownAgesState if it has any entries
+    ...(Object.keys(unknownAgesState).length > 0 && { unknownAgesState }),
   });
   const [url, setUrl] = useState('');
 
