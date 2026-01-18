@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/facet-filter",
-  "version": "1.0.1-c3dc.11",
+  "version": "1.0.1-c3dc.12",
   "description": "### Bento core sidebar design:",
   "main": "dist/index.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@bento-core/util": "^1.0.0-c3dc.0",
     "lodash": "^4.17.20"
   },
   "peerDependencies": {
