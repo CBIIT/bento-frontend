@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   useLocation,
-  useNavigate,
 } from 'react-router-dom';
 import { generateQueryStr } from '@bento-core/util';
 import {
@@ -35,7 +34,6 @@ const ModalView = ({
   queryParams,
 }) => {
   const query = new URLSearchParams(useLocation().search);
-  const navigate = useNavigate();
 
   const onClearSection = () => {
     // Only update URL if updateURL flag is explicitly set to true in facet config
@@ -44,7 +42,8 @@ const ModalView = ({
       const paramValue = {};
       paramValue[field] = '';
       const queryStr = generateQueryStr(query, queryParams, paramValue);
-      navigate(`/explore${queryStr}`, { replace: true });
+      // Use replaceState to update URL without triggering navigation/re-render
+      window.history.replaceState(null, '', `/explore${queryStr}`);
     }
     onSortChange(null);
     onClearFacetSection(facet);

@@ -6,10 +6,7 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-import {
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { generateQueryStr } from '@bento-core/util';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -51,7 +48,6 @@ const CheckBoxView = ({
     label,
   } = checkboxItem;
   const query = new URLSearchParams(useLocation().search);
-  const navigate = useNavigate();
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
   const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
 
@@ -87,7 +83,8 @@ const CheckBoxView = ({
         paramValue[datafield] = '';
       }
       const queryStr = generateQueryStr(query, queryParams, paramValue);
-      navigate(`/explore${queryStr}`);
+      // Use replaceState to update URL without triggering navigation/re-render
+      window.history.replaceState(null, '', `/explore${queryStr}`);
     }
 
     onToggle(toggleCheckBoxItem);
