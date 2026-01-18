@@ -63,28 +63,33 @@ const CheckBoxView = ({
       datafield: datafield,
       isChecked: !isChecked,
     };
-    const checkedValues = query.get(datafield);
-    const paramValue = {};
-    if (toggleCheckBoxItem.isChecked) {
-      if (checkedValues) {
+
+    // Only update URL if updateURL flag is explicitly set to true in facet config
+    if (facet.updateURL === true) {
+      const checkedValues = query.get(datafield);
+      const paramValue = {};
+      if (toggleCheckBoxItem.isChecked) {
+        if (checkedValues) {
+          const newValues = checkedValues.split('|');
+          newValues.push(name);
+          paramValue[datafield] = newValues.join('|');
+        } else {
+          paramValue[datafield] = name;
+        }
+      } else if (checkedValues) {
         const newValues = checkedValues.split('|');
-        newValues.push(name);
-        paramValue[datafield] = newValues.join('|');
+        const idx = newValues.indexOf(name);
+        if (idx > -1) {
+          newValues.splice(idx, 1);
+        }
+        paramValue[datafield] = newValues.length > 0 ? newValues.join('|') : '';
       } else {
-        paramValue[datafield] = name;
+        paramValue[datafield] = '';
       }
-    } else if (checkedValues) {
-      const newValues = checkedValues.split('|');
-      const idx = newValues.indexOf(name);
-      if (idx > -1) {
-        newValues.splice(idx, 1);
-      }
-      paramValue[datafield] = newValues.length > 0 ? newValues.join('|') : '';
-    } else {
-      paramValue[datafield] = '';
+      const queryStr = generateQueryStr(query, queryParams, paramValue);
+      navigate(`/explore${queryStr}`);
     }
-    const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/explore${queryStr}`);
+
     onToggle(toggleCheckBoxItem);
   };
 

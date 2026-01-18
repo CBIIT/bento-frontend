@@ -38,11 +38,14 @@ const ModalView = ({
   const navigate = useNavigate();
 
   const onClearSection = () => {
-    const field = facet.datafield;
-    const paramValue = {};
-    paramValue[field] = '';
-    const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/explore${queryStr}`, { replace: true });
+    // Only update URL if updateURL flag is explicitly set to true in facet config
+    if (facet.updateURL === true) {
+      const field = facet.datafield;
+      const paramValue = {};
+      paramValue[field] = '';
+      const queryStr = generateQueryStr(query, queryParams, paramValue);
+      navigate(`/explore${queryStr}`, { replace: true });
+    }
     onSortChange(null);
     onClearFacetSection(facet);
   };
