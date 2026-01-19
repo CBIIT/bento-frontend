@@ -62,7 +62,9 @@ const CheckBoxView = ({
 
     // Only update URL if updateURL flag is explicitly set to true in facet config
     if (facet.updateURL === true) {
-      const checkedValues = query.get(datafield);
+      // Create fresh query from current URL to avoid stale values
+      const currentQuery = new URLSearchParams(window.location.search);
+      const checkedValues = currentQuery.get(datafield);
       const paramValue = {};
       if (toggleCheckBoxItem.isChecked) {
         if (checkedValues) {
@@ -82,7 +84,7 @@ const CheckBoxView = ({
       } else {
         paramValue[datafield] = '';
       }
-      const queryStr = generateQueryStr(query, queryParams, paramValue);
+      const queryStr = generateQueryStr(currentQuery, queryParams, paramValue);
       // Use replaceState to update URL without triggering navigation/re-render
       window.history.replaceState(null, '', `/explore${queryStr}`);
     }
