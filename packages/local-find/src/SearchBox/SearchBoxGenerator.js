@@ -27,6 +27,10 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? functions.onChange
     : DEFAULT_CONFIG.functions.onChange;
 
+  const updateBrowserUrl = functions && typeof functions.updateBrowserUrl === 'function'
+    ? functions.updateBrowserUrl
+    : DEFAULT_CONFIG.functions.updateBrowserUrl;
+
   const getSuggestions = functions && typeof functions.getSuggestions === 'function'
     ? functions.getSuggestions
     : DEFAULT_CONFIG.functions.getSuggestions;
@@ -150,6 +154,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
         // Call the onChange function if the selection has changed
         if (!isEqual(newUniqueValue, value)) {
           onChange(newUniqueValue, reason, deleted);
+          updateBrowserUrl(newUniqueValue);
           applySearch(newUniqueValue);
           setValue(newUniqueValue);
         }
