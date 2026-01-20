@@ -100,6 +100,7 @@ const ModalView = ({
             onClearSection={onClearSection}
             onSortChange={onSortChange}
             queryParams={queryParams}
+            onUrlUpdate={onUrlUpdate}
           />
         </div>
       </Box>

@@ -36,6 +36,7 @@ const ModalFilterItems = ({
   onClearSection,
   onSortChange,
   classes,
+  onUrlUpdate,
 }) => {
   const { datafield, section } = facet;
   const initialItemSize = 40;
@@ -51,6 +52,7 @@ const ModalFilterItems = ({
       datafield={datafield}
       facet={facet}
       queryParams={queryParams}
+      onUrlUpdate={onUrlUpdate}
     />));
   const makeupItemsLen = 3 - (checkedItems.length % 3);
   const makeupItems = [];
@@ -69,6 +71,7 @@ const ModalFilterItems = ({
       datafield={datafield}
       facet={facet}
       queryParams={queryParams}
+      onUrlUpdate={onUrlUpdate}
     />));
   const makeupUncheckedItemsLen = 3 - (uncheckedItems.length % 3);
   const makeupUncheckedItems = [];

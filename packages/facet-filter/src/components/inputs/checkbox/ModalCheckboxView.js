@@ -48,7 +48,6 @@ const CheckBoxView = ({
     tooltip,
     label,
   } = checkboxItem;
-  const query = new URLSearchParams(useLocation().search);
   const indexType = index % 2 === 0 ? 'Even' : 'Odd';
   const checkedSection = `${section}`.toLowerCase().replace(' ', '_');
 
