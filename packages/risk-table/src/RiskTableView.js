@@ -21,6 +21,7 @@ const RiskTable = ({
   timeIntervals = ['0 Months', '6 Months', '12 Months', '18 Months', '24 Months', '30 Months', '36 Months'],
   cohortNameCharLimit = 18,
 }) => {
+  const hasData = cohorts && cohorts.length > 0;
   /**
    * Render a cohort row with colored indicator and data values
    *
@@ -66,7 +67,7 @@ const RiskTable = ({
           const value = data[interval] !== undefined ? data[interval] : '-';
           return (
             <td key={interval} className={index === 0 ? classes.secondDataCell : classes.dataCell}>
-              {value}
+              <div className={classes.cellContent}>{value}</div>
             </td>
           );
         })}
@@ -76,6 +77,9 @@ const RiskTable = ({
 
   return (
     <div className={classes.container}>
+      {!hasData && (
+        <div className={classes.noDataMessage}>No data provided</div>
+      )}
       <table className={classes.table}>
         <thead>
           <tr className={classes.headerRow}>
@@ -92,12 +96,33 @@ const RiskTable = ({
           </tr>
         </thead>
         <tbody>
-          {cohorts.map((cohort, index) => (
-            <CohortRow
-              key={cohort.id || index}
-              cohort={cohort}
-            />
-          ))}
+          {hasData ? (
+            cohorts.map((cohort, index) => (
+              <CohortRow
+                key={cohort.id || index}
+                cohort={cohort}
+              />
+            ))
+          ) : (
+            Array.from({ length: 4 }).map((_, rowIndex) => (
+              <tr key={rowIndex} className={classes.cohortRow}>
+                <td className={classes.cohortCell} style={rowIndex === 0 ? { borderTop: 'none' } : {}}>
+                  <div style={{ height: '5px' }} />
+                </td>
+                <td className={classes.emptyDataCell} />
+                {Array.from({ length: 7 }).map((__, colIndex) => (
+                  <td
+                    key={colIndex}
+                    className={colIndex === 0 && rowIndex !== 0
+                      ? classes.secondDataCell
+                      : classes.dataCell}
+                  >
+                    <div className={classes.cellContent} style={{ height: rowIndex === 0 ? '0px' : '10px' }}>&nbsp;</div>
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
@@ -108,6 +133,18 @@ const RiskTable = ({
  * Default styles for the Risk Table component
  */
 const styles = () => ({
+  noDataMessage: {
+    textAlign: 'center',
+    fontSize: '20px',
+    fontWeight: 600,
+    color: '#666666',
+    fontFamily: 'Nunito, sans-serif',
+    marginBottom: '10px',
+    marginTop: '10px',
+    position: 'absolute',
+    top: '45%',
+    left: '50%',
+  },
   whiteTooltip: {
     backgroundColor: '#fff',
     color: '#333',
@@ -134,7 +171,7 @@ const styles = () => ({
   },
   firstHeaderCell: {
     textAlign: 'left',
-    fontSize: '12px',
+    fontSize: '10px',
     fontWeight: 600,
     color: '#333333',
     border: 'none',
@@ -147,16 +184,16 @@ const styles = () => ({
   },
   emptyHeaderCell: {
     width: '15px',
-    borderBottom: '2px solid #000000',
+    borderBottom: '1px solid #666666',
     padding: 0,
   },
   secondHeaderCell: {
     position: 'relative',
     textAlign: 'center',
-    fontSize: '11px',
+    fontSize: '10px',
     fontWeight: 700,
     color: '#3A7587',
-    border: '2px solid #3e3c3cff',
+    border: '1px solid #666666',
     fontFamily: 'Nunito, sans-serif',
     lineHeight: '10px',
     letterSpacing: '0.02em',
@@ -167,10 +204,10 @@ const styles = () => ({
   },
   headerCell: {
     textAlign: 'center',
-    fontSize: '11px',
+    fontSize: '10px',
     fontWeight: 700,
     color: '#3A7587',
-    border: '2px solid #080202ff',
+    border: '1px solid #666666',
     fontFamily: 'Nunito, sans-serif',
     lineHeight: '10px',
     letterSpacing: '0.02em',
@@ -191,7 +228,7 @@ const styles = () => ({
     width: '130px',
   },
   emptyDataCell: {
-    borderBottom: '2px solid #000000',
+    borderBottom: '1px solid #666666',
     padding: 0,
   },
   cohortIndicator: {
@@ -213,16 +250,23 @@ const styles = () => ({
     color: '#333333',
     fontFamily: 'Nunito, sans-serif',
   },
+  cellContent: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
   secondDataCell: {
     position: 'relative',
     padding: '12px 16px',
     textAlign: 'center',
+    verticalAlign: 'middle',
     fontSize: '11px',
     lineHeight: '11px',
     letterSpacing: 0,
     color: '#333333',
     fontFamily: 'Nunito, sans-serif',
-    border: '2px solid #080101ff',
+    border: '1px solid #666666',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -231,12 +275,13 @@ const styles = () => ({
   dataCell: {
     padding: '12px 16px',
     textAlign: 'center',
+    verticalAlign: 'middle',
     fontSize: '11px',
     lineHeight: '11px',
     letterSpacing: 0,
     color: '#333333',
     fontFamily: 'Nunito, sans-serif',
-    border: '2px solid #080101ff',
+    border: '1px solid #666666',
     minWidth: 0,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
