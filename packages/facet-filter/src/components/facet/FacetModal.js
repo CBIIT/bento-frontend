@@ -32,6 +32,7 @@ const ModalView = ({
   onSearchTextChange,
   onSortChange,
   queryParams,
+  onUrlUpdate,
 }) => {
   const query = new URLSearchParams(useLocation().search);
 
@@ -41,9 +42,16 @@ const ModalView = ({
       const field = facet.datafield;
       const paramValue = {};
       paramValue[field] = '';
-      const queryStr = generateQueryStr(query, queryParams, paramValue);
-      // Use replaceState to update URL without triggering navigation/re-render
-      window.history.replaceState(null, '', `/explore${queryStr}`);
+
+      if (onUrlUpdate) {
+        // Use the provided URL manager with debounce and character limit handling
+        onUrlUpdate(paramValue);
+      } else {
+        // Fallback to direct update for backwards compatibility
+        const queryStr = generateQueryStr(query, queryParams, paramValue);
+        // Use replaceState to update URL without triggering navigation/re-render
+        window.history.replaceState(null, '', `/explore${queryStr}`);
+      }
     }
     onSortChange(null);
     onClearFacetSection(facet);

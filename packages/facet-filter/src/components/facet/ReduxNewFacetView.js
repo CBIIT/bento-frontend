@@ -15,6 +15,7 @@ const ReduxNewFacetView = ((props) => {
   const {
     queryParams, onClearFacetSection, onClearSliderSection,
     localFindAutocomplete, localFindUpload, localFindMetadata,
+    onUrlUpdate,
     ...restProps
   } = props;
 
@@ -67,9 +68,15 @@ const ReduxNewFacetView = ((props) => {
       // Sync participant IDs from Redux state to ensure URL reflects current state
       syncParticipantIdsToUrl(paramValue);
 
-      const queryStr = generateQueryStr(query, queryParams, paramValue);
-      // Use replaceState to update URL without triggering navigation/re-render
-      window.history.replaceState(null, '', `/explore${queryStr}`);
+      if (onUrlUpdate) {
+        // Use the provided URL manager with debounce and character limit handling
+        onUrlUpdate(paramValue);
+      } else {
+        // Fallback to direct update for backwards compatibility
+        const queryStr = generateQueryStr(query, queryParams, paramValue);
+        // Use replaceState to update URL without triggering navigation/re-render
+        window.history.replaceState(null, '', `/explore${queryStr}`);
+      }
     }
     onClearFacetSection(facet);
   };
@@ -89,9 +96,15 @@ const ReduxNewFacetView = ((props) => {
       // Sync participant IDs from Redux state to ensure URL reflects current state
       syncParticipantIdsToUrl(paramValue);
 
-      const queryStr = generateQueryStr(query, queryParams, paramValue);
-      // Use replaceState to update URL without triggering navigation/re-render
-      window.history.replaceState(null, '', `/explore${queryStr}`);
+      if (onUrlUpdate) {
+        // Use the provided URL manager with debounce and character limit handling
+        onUrlUpdate(paramValue);
+      } else {
+        // Fallback to direct update for backwards compatibility
+        const queryStr = generateQueryStr(query, queryParams, paramValue);
+        // Use replaceState to update URL without triggering navigation/re-render
+        window.history.replaceState(null, '', `/explore${queryStr}`);
+      }
     }
     onClearSliderSection(facet);
   };
@@ -102,6 +115,7 @@ const ReduxNewFacetView = ((props) => {
       queryParams={queryParams}
       onClearFacetSection={handleClearFacetSection}
       onClearSliderSection={handleClearSliderSection}
+      onUrlUpdate={onUrlUpdate}
     />
   );
 });

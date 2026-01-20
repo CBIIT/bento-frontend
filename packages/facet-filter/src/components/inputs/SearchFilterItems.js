@@ -32,6 +32,7 @@ const SearchFilterItems = ({
   sortBy,
   searchText,
   classes,
+  onUrlUpdate,
 }) => {
   const { datafield, section } = facet;
   const initialItemSize = 20;
@@ -45,6 +46,7 @@ const SearchFilterItems = ({
       datafield={datafield}
       facet={facet}
       queryParams={queryParams}
+      onUrlUpdate={onUrlUpdate}
     />));
 
   const newUncheckedFullList = searchItems(sortFilters.filter((item) => !item.isChecked),
@@ -56,6 +58,7 @@ const SearchFilterItems = ({
       datafield={datafield}
       facet={facet}
       queryParams={queryParams}
+      onUrlUpdate={onUrlUpdate}
     />));
 
   useEffect(() => {

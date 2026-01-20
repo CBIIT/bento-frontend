@@ -18,6 +18,7 @@ const NewFacetFilterController = (props) => {
     selectedSection,
     unknownAgesState,
     searchFacetClasses,
+    onUrlUpdate,
   } = props;
 
   // console.log(activeFilters);
@@ -197,6 +198,7 @@ const NewFacetFilterController = (props) => {
         {...props}
         facetSection={facetSection}
         searchFacetClasses={searchFacetClasses}
+        onUrlUpdate={onUrlUpdate}
       />
     </>
   );

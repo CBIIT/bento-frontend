@@ -37,6 +37,7 @@ const CheckBoxView = ({
   facet,
   queryParams,
   searchText,
+  onUrlUpdate,
 }) => {
   const {
     name,
@@ -84,9 +85,16 @@ const CheckBoxView = ({
       } else {
         paramValue[datafield] = '';
       }
-      const queryStr = generateQueryStr(currentQuery, queryParams, paramValue);
-      // Use replaceState to update URL without triggering navigation/re-render
-      window.history.replaceState(null, '', `/explore${queryStr}`);
+
+      if (onUrlUpdate) {
+        // Use the provided URL manager with debounce and character limit handling
+        onUrlUpdate(paramValue);
+      } else {
+        // Fallback to direct update for backwards compatibility
+        const queryStr = generateQueryStr(currentQuery, queryParams, paramValue);
+        // Use replaceState to update URL without triggering navigation/re-render
+        window.history.replaceState(null, '', `/explore${queryStr}`);
+      }
     }
 
     onToggle(toggleCheckBoxItem);
