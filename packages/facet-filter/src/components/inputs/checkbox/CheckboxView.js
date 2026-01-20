@@ -6,10 +6,8 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { generateQueryStr } from '@bento-core/util';
 import { withStyles } from '@material-ui/core/styles';
-
 import {
   Checkbox,
   ListItem,
