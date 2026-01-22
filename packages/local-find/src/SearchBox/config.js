@@ -8,6 +8,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     inputPlaceholder: 'Program Names',
     noOptionsText: 'No matching items found',
     searchType: 'program_name',
+    ariaLabel: 'Search',
   },
 
   // Helper functions used by the component

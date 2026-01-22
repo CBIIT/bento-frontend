@@ -37,6 +37,7 @@ function InputMinMaxView({
         min: minLowerBound,
         max: maxUpperBound,
         type: 'number',
+        'aria-label': type === silderTypes.INPUT_MIN ? 'Slider Minimum' : 'Slider Maximum',
       }}
     />
   );

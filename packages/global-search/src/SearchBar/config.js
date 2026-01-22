@@ -14,6 +14,7 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
     searchKeys: [],
     searchFields: [],
     placeholder: 'DOCUMENTATION SEARCH',
+    ariaLabel: 'Search INS Documentation',
     expandText: 'Press ENTER for more search results',
     searchRoute: '/globalsearch',
     minimumInputLength: 3,

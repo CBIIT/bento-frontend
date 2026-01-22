@@ -44,6 +44,10 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.searchType
     : DEFAULT_CONFIG.config.searchType;
 
+  const ariaLabel = config && typeof config.ariaLabel === 'string'
+    ? config.ariaLabel
+    : DEFAULT_CONFIG.config.ariaLabel;
+
   const stateProps = (state) => ({
     autocomplete: state.localFind.autocomplete,
   });
@@ -158,6 +162,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   {...params}
                   classes={classes}
                   placeholder={inputPlaceholder}
+                  inputProps={{ ...params.inputProps, 'aria-label': ariaLabel }}
                 />
               )}
             />
