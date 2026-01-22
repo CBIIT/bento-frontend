@@ -51,10 +51,10 @@ export default {
     /**
      * Delete a specific Local Find searchbox filter (case)
      *
-     * @param {string} title
+     * @param {object} item
      * @returns {void}
      */
-    deleteAutocompleteItem: (title) => {},
+    deleteAutocompleteItem: (item) => {},
 
     /**
      * Reset a specific facet section (e.g. Program)

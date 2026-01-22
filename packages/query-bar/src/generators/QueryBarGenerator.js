@@ -161,7 +161,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                         <React.Fragment key={`pid-${idx}`}>
                           <span
                             className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
-                            onClick={() => deleteAutocompleteItem(d.title)}
+                            onClick={() => deleteAutocompleteItem(d)}
                           >
                             {d.title}
                           </span>
@@ -206,7 +206,7 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
                           className={
                             clsx(classes.filterCheckboxes, classes.localFindAssociatedIdsText)
                           }
-                          onClick={() => deleteAutocompleteItem(d.title)}
+                          onClick={() => deleteAutocompleteItem(d)}
                         >
                           {d.synonym}
                         </span>

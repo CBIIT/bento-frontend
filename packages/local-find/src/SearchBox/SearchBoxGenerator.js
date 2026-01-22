@@ -159,9 +159,10 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
        * Handles the deletion of a search item under SearchList
        *
        * @param {string} val
+       * @param {string} type
        */
-      const onDelete = (val) => {
-        const newValue = value.filter((v) => v.title !== val);
+      const onDelete = (val, type) => {
+        const newValue = value.filter((v) => !(v.title === val && v.type === type));
         onChangeWrapper(newValue, null, true);
       };
 

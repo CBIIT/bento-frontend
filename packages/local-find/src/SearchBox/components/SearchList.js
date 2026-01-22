@@ -21,9 +21,9 @@ const SearchList = (props) => {
     onDelete,
   } = props;
 
-  const deleteWrapper = (item) => {
+  const deleteWrapper = (item, type) => {
     if (onDelete) {
-      onDelete(item);
+      onDelete(item, type);
     }
   };
 
@@ -47,8 +47,15 @@ const SearchList = (props) => {
                 </span>
               ))}
             </div>
-            <div className={classes.deleteIcon} onClick={() => deleteWrapper(item.title)}>
-              <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
+            <div
+              className={classes.deleteIcon}
+              onClick={() => deleteWrapper(item.title, item.type)}
+            >
+              <img
+                src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg"
+                alt="close icon"
+                className={classes.closeRoot}
+              />
             </div>
           </ListItem>
         </>
