@@ -21,9 +21,9 @@ const SearchList = (props) => {
     onDelete,
   } = props;
 
-  const deleteWrapper = (item, fullvalue) => {
+  const deleteWrapper = (item, type) => {
     if (onDelete) {
-      onDelete(item, fullvalue);
+      onDelete(item, type);
     }
   };
 
