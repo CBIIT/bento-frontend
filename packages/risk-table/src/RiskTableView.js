@@ -184,7 +184,6 @@ const styles = () => ({
   },
   emptyHeaderCell: {
     width: '15px',
-    borderBottom: '1px solid #666666',
     padding: 0,
   },
   secondHeaderCell: {
