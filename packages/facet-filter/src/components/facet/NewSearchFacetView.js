@@ -58,6 +58,7 @@ const SearchFacetView = ({
   CustomView,
   queryParams,
   unknownAgesState,
+  onUrlUpdate,
 }) => {
   const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
   const [open, setOpen] = useState(false);
@@ -126,6 +127,7 @@ const SearchFacetView = ({
         queryParams={queryParams}
         open={open}
         onClose={() => setOpen(false)}
+        onUrlUpdate={onUrlUpdate}
       />
       <Accordion
         square
@@ -259,6 +261,7 @@ const SearchFacetView = ({
                   facet={facet}
                   queryParams={queryParams}
                   sortBy={sortBy}
+                  onUrlUpdate={onUrlUpdate}
                 />
               </>
             )
@@ -271,6 +274,7 @@ const SearchFacetView = ({
               <FilterItems
                 facet={displayFacet}
                 queryParams={queryParams}
+                onUrlUpdate={onUrlUpdate}
               />
             </List>
           </>

@@ -32,6 +32,7 @@ const NewFacetView = ({
   timeUnitState,
   onTimeUnitChange,
   unknownAgesState,
+  onUrlUpdate,
 }) => {
   const [expand, setExpand] = useState(facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
   const onExpandFacet = () => setExpand(!expand);
@@ -229,6 +230,7 @@ const NewFacetView = ({
           queryParams={queryParams}
           sortBy={sortBy}
           timeUnit={timeUnit}
+          onUrlUpdate={onUrlUpdate}
         />
       </Accordion>
       {
@@ -238,6 +240,7 @@ const NewFacetView = ({
               <FilterItems
                 facet={displayFacet}
                 queryParams={queryParams}
+                onUrlUpdate={onUrlUpdate}
               />
             </List>
           </>

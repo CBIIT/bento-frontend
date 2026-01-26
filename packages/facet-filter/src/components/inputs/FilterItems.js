@@ -19,6 +19,7 @@ const FilterItems = ({
   classes,
   queryParams,
   timeUnit,
+  onUrlUpdate,
 }) => {
   const { type, datafield, section } = facet;
   const [displayCount, setDisplayCount] = useState(INITIAL_ITEM_SIZE);
@@ -52,6 +53,7 @@ const FilterItems = ({
               datafield={datafield}
               facet={facet}
               queryParams={queryParams}
+              onUrlUpdate={onUrlUpdate}
             />
           ));
         }
@@ -76,6 +78,7 @@ const FilterItems = ({
             datafield={datafield}
             facet={facet}
             queryParams={queryParams}
+            onUrlUpdate={onUrlUpdate}
           />
         ));
         const uncheckedItems = uncheckedItemsWithIndices
@@ -87,6 +90,7 @@ const FilterItems = ({
               datafield={datafield}
               facet={facet}
               queryParams={queryParams}
+              onUrlUpdate={onUrlUpdate}
             />
           ));
 

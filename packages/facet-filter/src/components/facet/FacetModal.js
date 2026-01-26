@@ -1,5 +1,9 @@
 import React from 'react';
 import {
+  useLocation,
+} from 'react-router-dom';
+import { generateQueryStr } from '@bento-core/util';
+import {
   Modal,
   Box,
   Button,
@@ -27,8 +31,28 @@ const ModalView = ({
   onClearFacetSection,
   onSearchTextChange,
   onSortChange,
+  queryParams,
+  onUrlUpdate,
 }) => {
+  const query = new URLSearchParams(useLocation().search);
+
   const onClearSection = () => {
+    // Only update URL if updateURL flag is explicitly set to true in facet config
+    if (facet.updateURL === true) {
+      const field = facet.datafield;
+      const paramValue = {};
+      paramValue[field] = '';
+
+      if (onUrlUpdate) {
+        // Use the provided URL manager with debounce and character limit handling
+        onUrlUpdate(paramValue);
+      } else {
+        // Fallback to direct update for backwards compatibility
+        const queryStr = generateQueryStr(query, queryParams, paramValue);
+        // Use replaceState to update URL without triggering navigation/re-render
+        window.history.replaceState(null, '', `/explore${queryStr}`);
+      }
+    }
     onSortChange(null);
     onClearFacetSection(facet);
   };
@@ -75,6 +99,8 @@ const ModalView = ({
             sortBy={sortBy}
             onClearSection={onClearSection}
             onSortChange={onSortChange}
+            queryParams={queryParams}
+            onUrlUpdate={onUrlUpdate}
           />
         </div>
       </Box>

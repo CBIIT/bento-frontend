@@ -16,6 +16,7 @@ const BentoFacetFilter = ({
   CustomFacetView,
   queryParams,
   searchFacetClasses,
+  onUrlUpdate,
 }) => {
   return (
     <>
@@ -32,6 +33,7 @@ const BentoFacetFilter = ({
               queryParams={queryParams}
               CustomView={CustomFacetView}
               classes={searchFacetClasses}
+              onUrlUpdate={onUrlUpdate}
             />
           );
         }
@@ -40,6 +42,7 @@ const BentoFacetFilter = ({
             facet={facet}
             queryParams={queryParams}
             CustomView={CustomFacetView}
+            onUrlUpdate={onUrlUpdate}
           >
             <List className={`List_${facet.label}`}>
               <FilterItems

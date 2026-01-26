@@ -62,6 +62,10 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? functions.modalClosed
     : DEFAULT_CONFIG.functions.modalClosed;
 
+  const updateBrowserUrl = functions && typeof functions.updateBrowserUrl === 'function'
+    ? functions.updateBrowserUrl
+    : DEFAULT_CONFIG.functions.updateBrowserUrl;
+
   const searchMatches = functions && typeof functions.searchMatches === 'function'
     ? functions.searchMatches
     : DEFAULT_CONFIG.functions.searchMatches;
@@ -140,6 +144,7 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
       };
 
       const applySearchWrapper = () => {
+        updateBrowserUrl(filename, fileContent, matchIds, unmatchedIds);
         onApplySearch(matchIds);
         updateMetadata({
           filename,
