@@ -20,18 +20,19 @@ const ReduxNewFacetView = ((props) => {
   } = props;
 
   // Helper function to sync participant IDs from Redux state to URL
-  const syncParticipantIdsToUrl = (paramValue) => {
-    /* eslint-disable no-param-reassign */
+  const syncParticipantIdsToUrl = () => {
+    const participantParams = {};
+
     // Sync autocomplete participant IDs
     if (localFindAutocomplete && localFindAutocomplete.length > 0) {
-      paramValue.p_id = localFindAutocomplete.map((data) => data.title).join('|');
+      participantParams.p_id = localFindAutocomplete.map((data) => data.title).join('|');
     } else {
-      paramValue.p_id = '';
+      participantParams.p_id = '';
     }
 
     // Sync uploaded participant IDs
     if (localFindUpload && localFindUpload.length > 0) {
-      paramValue.u = localFindUpload.map((data) => data.participant_id).join('|');
+      participantParams.u = localFindUpload.map((data) => data.participant_id).join('|');
 
       // Sync upload metadata
       if (localFindMetadata && localFindMetadata.fileContent) {
@@ -39,34 +40,35 @@ const ReduxNewFacetView = ((props) => {
           .split(/[,\n]/g)
           .map((e) => e.trim().replace(/\r/g, '').toUpperCase())
           .filter((e) => e && e.length > 1);
-        paramValue.u_fc = fc.join('|');
+        participantParams.u_fc = fc.join('|');
       } else {
-        paramValue.u_fc = '';
+        participantParams.u_fc = '';
       }
 
       if (localFindMetadata
         && localFindMetadata.unmatched
         && localFindMetadata.unmatched.length > 0) {
-        paramValue.u_um = localFindMetadata.unmatched.join('|');
+        participantParams.u_um = localFindMetadata.unmatched.join('|');
       } else {
-        paramValue.u_um = '';
+        participantParams.u_um = '';
       }
     } else {
-      paramValue.u = '';
-      paramValue.u_fc = '';
-      paramValue.u_um = '';
+      participantParams.u = '';
+      participantParams.u_fc = '';
+      participantParams.u_um = '';
     }
-    /* eslint-enable no-param-reassign */
+
+    return participantParams;
   };
 
   const handleClearFacetSection = (facet) => {
     // Only update URL if updateURL flag is explicitly set to true in facet config
     if (facet.updateURL === true && queryParams) {
-      const paramValue = {};
-      paramValue[facet.datafield] = '';
-
       // Sync participant IDs from Redux state to ensure URL reflects current state
-      syncParticipantIdsToUrl(paramValue);
+      const paramValue = {
+        [facet.datafield]: '',
+        ...syncParticipantIdsToUrl(),
+      };
 
       if (onUrlUpdate) {
         // Use the provided URL manager with debounce and character limit handling
@@ -84,17 +86,18 @@ const ReduxNewFacetView = ((props) => {
   const handleClearSliderSection = (facet) => {
     // Only update URL if updateURL flag is explicitly set to true in facet config
     if (facet.updateURL === true && queryParams) {
-      const paramValue = {};
-      paramValue[facet.datafield] = '';
-
       // Also clear the corresponding unknownAges parameter if it exists
       const unknownAgesField = `${facet.datafield}_unknownAges`;
-      if (queryParams.includes(unknownAgesField)) {
-        paramValue[unknownAgesField] = '';
-      }
+      const unknownAgesParam = queryParams.includes(unknownAgesField)
+        ? { [unknownAgesField]: '' }
+        : {};
 
       // Sync participant IDs from Redux state to ensure URL reflects current state
-      syncParticipantIdsToUrl(paramValue);
+      const paramValue = {
+        [facet.datafield]: '',
+        ...unknownAgesParam,
+        ...syncParticipantIdsToUrl(),
+      };
 
       if (onUrlUpdate) {
         // Use the provided URL manager with debounce and character limit handling
