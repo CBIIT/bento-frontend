@@ -8,6 +8,7 @@ import CustomLinkView from './components/CustomLinkView';
 import DataFormatView from './components/DataFormatView';
 import CPIView from './components/CPIView';
 import CPIMappingView from './components/CPIMappingView';
+import StudiesDataAvailabilityView from './components/StudiesDataAvailabilityView';
 
 /**
 * Custom Column reneder
@@ -75,6 +76,13 @@ const ViewCell = ({
           rowIndex={rowIndex}
           themeConfig={themeConfig}
           navigation={navigation}
+        />
+      );
+    case cellTypes.STUDIES:
+      return (
+        <StudiesDataAvailabilityView
+          row={row}
+          column={column}
         />
       );
     default:

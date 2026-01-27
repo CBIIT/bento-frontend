@@ -53,7 +53,8 @@ const CustomHeaderCell = ({
         scope="col"
         style={style}
       >
-        {header}
+        {(headerType === headerTypes.CUSTOM_ELEM && customColHeaderRender)
+          ? customColHeaderRender(column) : header}
       </TableCell>
     );
   }
@@ -72,8 +73,7 @@ const CustomHeaderCell = ({
           direction={sortBy === dataField ? sortOrder : 'asc'}
           onClick={toggleSort}
         >
-          {(headerType === headerTypes.CUSTOM_ELEM && customColHeaderRender)
-            ? customColHeaderRender(column) : header}
+          {header}
         </TableSortLabel>
       </Tooltip>
     </TableCell>

@@ -15,6 +15,8 @@ export const DBGAP = 'DBGAP';
 export const MODAL = 'MODAL';
 export const EXCLUDE_FROM_DOWNLOAD = 'EXCLUDE_FROM_DOWNLOAD';
 
+export const STUDIES = 'STUDIES';
+
 export const cellTypes = {
   CUSTOM_ELEM,
   LINK,
@@ -25,6 +27,7 @@ export const cellTypes = {
   FORMAT_DATA,
   CPI,
   CPI_MAPPING,
+  STUDIES,
 };
 
 export const cellStyles = {

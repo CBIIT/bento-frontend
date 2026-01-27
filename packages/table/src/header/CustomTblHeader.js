@@ -49,6 +49,7 @@ const CustomTableHeader = ({
               if (isActionCell) {
                 return (
                   <ActionHeaderCell
+                    key={column.dataField}
                     includeSelectedIds={includeSelectedIds}
                     toggleSelectAll={toggleSelectAll}
                     Ids={Ids}
@@ -59,14 +60,25 @@ const CustomTableHeader = ({
                 );
               }
 
+              const getHeaderStyle = () => {
+                if (column.dataField === 'participant_id') {
+                  return { minWidth: '230px' };
+                }
+                if (column.dataField === 'data_availability') {
+                  return { textAlign: 'center' };
+                }
+                return {};
+              };
+
               return (
                 <HeaderCell
+                  key={column.dataField}
                   components={components}
                   column={column}
                   sortBy={sortBy}
                   sortOrder={sortOrder}
                   toggleSort={() => sortByColumn(column.dataField, sortOrder)}
-                  style={column.dataField === 'participant_id' ? { minWidth: '230px' } : {}}
+                  style={getHeaderStyle()}
                 />
               );
             })
