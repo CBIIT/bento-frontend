@@ -171,7 +171,7 @@ const BaseCheckBoxView = ({
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {`(${subjects})`}
+          {`${subjects}`}
         </Typography>
       </ListItem>
       {showDivider && (
