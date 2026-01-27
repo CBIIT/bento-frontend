@@ -21,9 +21,9 @@ const SearchList = (props) => {
     onDelete,
   } = props;
 
-  const deleteWrapper = (item, type) => {
+  const deleteWrapper = (item, type, synonym) => {
     if (onDelete) {
-      onDelete(item, type);
+      onDelete(item, type, synonym);
     }
   };
 
@@ -49,7 +49,7 @@ const SearchList = (props) => {
             </div>
             <div
               className={classes.deleteIcon}
-              onClick={() => deleteWrapper(item.title, item.type)}
+              onClick={() => deleteWrapper(item.title, item.type, item.synonym)}
             >
               <img
                 src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg"
