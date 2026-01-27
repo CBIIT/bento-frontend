@@ -3,7 +3,7 @@ import {
   Input,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import styles from './InputMinMaxStyle';
+import defaultStyles from './InputMinMaxStyle';
 import { silderTypes } from '../Types';
 
 function InputMinMaxView({
@@ -45,5 +45,24 @@ function InputMinMaxView({
     />
   );
 }
+
+const styles = () => {
+  const defaults = defaultStyles();
+
+  return {
+    slider_INPUT_MIN: (props) => ({
+      ...defaults.slider_INPUT_MIN,
+      ...(props.customStyles && props.customStyles.slider_INPUT_MIN
+        ? props.customStyles.slider_INPUT_MIN
+        : {}),
+    }),
+    slider_INPUT_MAX: (props) => ({
+      ...defaults.slider_INPUT_MAX,
+      ...(props.customStyles && props.customStyles.slider_INPUT_MAX
+        ? props.customStyles.slider_INPUT_MAX
+        : {}),
+    }),
+  };
+};
 
 export default withStyles(styles)(InputMinMaxView);

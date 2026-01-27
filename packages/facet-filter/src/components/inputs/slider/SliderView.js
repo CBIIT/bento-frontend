@@ -200,6 +200,7 @@ const SliderView = ({
               onInputChange={handleChangeCommittedSlider}
               disabled={isBoundsInvalid || isOnlyUnknownAges}
               step={timeUnit === 'years' ? 0.01 : 1}
+              customStyles={facet.style && facet.style.inputMinMax}
             />
           </div>
           <div className={classes.maxValue}>
@@ -216,6 +217,7 @@ const SliderView = ({
               onInputChange={handleChangeCommittedSlider}
               disabled={isBoundsInvalid || isOnlyUnknownAges}
               step={timeUnit === 'years' ? 0.01 : 1}
+              customStyles={facet.style && facet.style.inputMinMax}
             />
           </div>
         </div>
