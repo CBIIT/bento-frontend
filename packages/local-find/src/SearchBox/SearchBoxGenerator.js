@@ -165,9 +165,12 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
        *
        * @param {string} val
        * @param {string} type
+       * @param {string} synonym
        */
-      const onDelete = (val, type) => {
-        const newValue = value.filter((v) => !(v.title === val && v.type === type));
+      const onDelete = (val, type, synonym) => {
+        const newValue = value.filter(
+          (v) => !(v.title === val && v.type === type && v.synonym === synonym),
+        );
         onChangeWrapper(newValue, null, true);
       };
 
