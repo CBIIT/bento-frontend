@@ -1,6 +1,6 @@
 import SearchIcon from './assets/Search_Icon.svg';
 
-export default () => ({
+const defaultStyles = {
   header: {
     display: 'flex',
     justifyContent: 'center',
@@ -112,9 +112,122 @@ export default () => ({
     fontSize: '10px',
     marginRight: '19px',
     marginLeft: 'auto',
-    // marginTop: '5px',
-    // float: 'right',
   },
   itemContainer: {
   },
+};
+
+export default () => ({
+  header: (props) => ({
+    ...defaultStyles.header,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.header
+      ? props.facet.style.modal.header
+      : {}),
+  }),
+  closeButton: (props) => ({
+    ...defaultStyles.closeButton,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.closeButton
+      ? props.facet.style.modal.closeButton
+      : {}),
+  }),
+  resetIcon: (props) => ({
+    ...defaultStyles.resetIcon,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.resetIcon
+      ? props.facet.style.modal.resetIcon
+      : {}),
+  }),
+  modalTitle: (props) => ({
+    ...defaultStyles.modalTitle,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.modalTitle
+      ? props.facet.style.modal.modalTitle
+      : {}),
+  }),
+  modalBody: (props) => ({
+    ...defaultStyles.modalBody,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.modalBody
+      ? props.facet.style.modal.modalBody
+      : {}),
+  }),
+  searchContainer: (props) => ({
+    ...defaultStyles.searchContainer,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.searchContainer
+      ? props.facet.style.modal.searchContainer
+      : {}),
+  }),
+  searchInputbox: (props) => ({
+    ...defaultStyles.searchInputbox,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.searchInputbox
+      ? props.facet.style.modal.searchInputbox
+      : {}),
+  }),
+  searchBox: (props) => ({
+    ...defaultStyles.searchBox,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.searchBox
+      ? props.facet.style.modal.searchBox
+      : {}),
+  }),
+  highlight: (props) => ({
+    ...defaultStyles.highlight,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.highlight
+      ? props.facet.style.modal.highlight
+      : {}),
+  }),
+  sortGroup: (props) => ({
+    ...defaultStyles.sortGroup,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.sortGroup
+      ? props.facet.style.modal.sortGroup
+      : {}),
+  }),
+  sortGroupIcon: (props) => ({
+    ...defaultStyles.sortGroupIcon,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.sortGroupIcon
+      ? props.facet.style.modal.sortGroupIcon
+      : {}),
+  }),
+  sortGroupItem: (props) => ({
+    ...defaultStyles.sortGroupItem,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.sortGroupItem
+      ? props.facet.style.modal.sortGroupItem
+      : {}),
+  }),
+  NonSortGroup: (props) => ({
+    ...defaultStyles.NonSortGroup,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.NonSortGroup
+      ? props.facet.style.modal.NonSortGroup
+      : {}),
+  }),
+  NonSortGroupItem: (props) => ({
+    ...defaultStyles.NonSortGroupItem,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.NonSortGroupItem
+      ? props.facet.style.modal.NonSortGroupItem
+      : {}),
+  }),
+  sortGroupItemCounts: (props) => ({
+    ...defaultStyles.sortGroupItemCounts,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.sortGroupItemCounts
+      ? props.facet.style.modal.sortGroupItemCounts
+      : {}),
+  }),
+  itemContainer: (props) => ({
+    ...defaultStyles.itemContainer,
+    ...(props.facet && props.facet.style && props.facet.style.modal
+      && props.facet.style.modal.itemContainer
+      ? props.facet.style.modal.itemContainer
+      : {}),
+  }),
 });
