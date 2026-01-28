@@ -250,7 +250,7 @@ const styles = () => ({
     border: '1px solid #555555',
   },
   cohortName: {
-    fontSize: '13px',
+    fontSize: '11px',
     fontWeight: 500,
     color: '#333333',
     fontFamily: 'Nunito, sans-serif',
