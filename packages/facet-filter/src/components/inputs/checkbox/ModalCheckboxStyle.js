@@ -33,6 +33,7 @@ const defaultStyles = {
     fontFamily: 'Nunito',
     lineHeight: '120%',
   },
+  subjectsText: {},
 };
 
 export default () => ({
@@ -76,6 +77,13 @@ export default () => ({
     ...(props.facet && props.facet.style && props.facet.style.modalCheckbox
       && props.facet.style.modalCheckbox.checkboxName
       ? props.facet.style.modalCheckbox.checkboxName
+      : {}),
+  }),
+  subjectsText: (props) => ({
+    ...defaultStyles.subjectsText,
+    ...(props.facet && props.facet.style && props.facet.style.modalCheckbox
+      && props.facet.style.modalCheckbox.subjectsText
+      ? props.facet.style.modalCheckbox.subjectsText
       : {}),
   }),
 });
