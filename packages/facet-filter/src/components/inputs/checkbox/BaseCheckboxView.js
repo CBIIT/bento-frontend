@@ -166,12 +166,12 @@ const BaseCheckBoxView = ({
         )}
         <ListItemText />
         <Typography
-          className={clsx(`${checkedSection}Subjects`, {
+          className={clsx(classes.subjectsText, `${checkedSection}Subjects`, {
             [`${checkedSection}SubjectUnChecked`]: !isChecked,
             [`${checkedSection}SubjectChecked`]: isChecked,
           })}
         >
-          {`(${subjects})`}
+          {`${Number(subjects).toLocaleString()}`}
         </Typography>
       </ListItem>
       {showDivider && (

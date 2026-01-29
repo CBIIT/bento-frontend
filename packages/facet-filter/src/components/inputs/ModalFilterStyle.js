@@ -1,4 +1,4 @@
-export default () => ({
+const defaultStyles = {
   sortGroup: {
     paddingTop: '10px',
     marginBottom: '5px',
@@ -110,4 +110,91 @@ export default () => ({
     borderRight: '0.5px solid #000000',
     borderBottom: '0.5px solid #000000',
   },
+};
+
+export default () => ({
+  sortGroup: (props) => ({
+    ...defaultStyles.sortGroup,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.sortGroup
+      ? props.facet.style.modalFilter.sortGroup
+      : {}),
+  }),
+  highlight: (props) => ({
+    ...defaultStyles.highlight,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.highlight
+      ? props.facet.style.modalFilter.highlight
+      : {}),
+  }),
+  sortGroupIcon: (props) => ({
+    ...defaultStyles.sortGroupIcon,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.sortGroupIcon
+      ? props.facet.style.modalFilter.sortGroupIcon
+      : {}),
+  }),
+  sortGroupItem: (props) => ({
+    ...defaultStyles.sortGroupItem,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.sortGroupItem
+      ? props.facet.style.modalFilter.sortGroupItem
+      : {}),
+  }),
+  sortGroupItemCounts: (props) => ({
+    ...defaultStyles.sortGroupItemCounts,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.sortGroupItemCounts
+      ? props.facet.style.modalFilter.sortGroupItemCounts
+      : {}),
+  }),
+  checkboxContainer: (props) => ({
+    ...defaultStyles.checkboxContainer,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.checkboxContainer
+      ? props.facet.style.modalFilter.checkboxContainer
+      : {}),
+  }),
+  checkedContainer: (props) => ({
+    ...defaultStyles.checkedContainer,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.checkedContainer
+      ? props.facet.style.modalFilter.checkedContainer
+      : {}),
+  }),
+  itemsContainer: (props) => ({
+    ...defaultStyles.itemsContainer,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.itemsContainer
+      ? props.facet.style.modalFilter.itemsContainer
+      : {}),
+  }),
+  sortingContainer: (props) => ({
+    ...defaultStyles.sortingContainer,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.sortingContainer
+      ? props.facet.style.modalFilter.sortingContainer
+      : {}),
+  }),
+  selectionText: (props) => ({
+    ...defaultStyles.selectionText,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.selectionText
+      ? props.facet.style.modalFilter.selectionText
+      : {}),
+  }),
+  totalText: (props) => ({
+    ...defaultStyles.totalText,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.totalText
+      ? props.facet.style.modalFilter.totalText
+      : {}),
+  }),
+  emptyItem: (props) => ({
+    ...defaultStyles.emptyItem,
+    ...(props.facet && props.facet.style && props.facet.style.modalFilter
+      && props.facet.style.modalFilter.emptyItem
+      ? props.facet.style.modalFilter.emptyItem
+      : {}),
+  }),
 });

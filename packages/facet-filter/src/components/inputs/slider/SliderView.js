@@ -200,6 +200,7 @@ const SliderView = ({
               onInputChange={handleChangeCommittedSlider}
               disabled={isBoundsInvalid || isOnlyUnknownAges}
               step={timeUnit === 'years' ? 0.01 : 1}
+              customStyles={facet.style && facet.style.inputMinMax}
             />
           </div>
           <div className={classes.maxValue}>
@@ -216,6 +217,7 @@ const SliderView = ({
               onInputChange={handleChangeCommittedSlider}
               disabled={isBoundsInvalid || isOnlyUnknownAges}
               step={timeUnit === 'years' ? 0.01 : 1}
+              customStyles={facet.style && facet.style.inputMinMax}
             />
           </div>
         </div>
@@ -557,13 +559,17 @@ const styles = () => ({
       marginBottom: '6px',
       letterSpacing: '0.25px',
     }),
-  unknownAgesFormControl: {
-    width: '100%',
-  },
-  unknownAgesRadioGroup: {
-    flexDirection: 'row',
-    gap: '10px',
-  },
+  unknownAgesFormControl: (props) => (props.facet.style && props.facet.style.unknownAgesFormControl
+    ? props.facet.style.unknownAgesFormControl
+    : {
+      width: '100%',
+    }),
+  unknownAgesRadioGroup: (props) => (props.facet.style && props.facet.style.unknownAgesRadioGroup
+    ? props.facet.style.unknownAgesRadioGroup
+    : {
+      flexDirection: 'row',
+      gap: '10px',
+    }),
   radioLabel: (props) => (props.facet.style && props.facet.style.radioLabel
     ? props.facet.style.radioLabel
     : {
