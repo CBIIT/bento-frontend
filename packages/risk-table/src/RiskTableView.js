@@ -171,7 +171,7 @@ const styles = () => ({
   },
   firstHeaderCell: {
     textAlign: 'left',
-    fontSize: '10px',
+    fontSize: '11px',
     fontWeight: 600,
     color: '#333333',
     border: 'none',
@@ -189,7 +189,7 @@ const styles = () => ({
   secondHeaderCell: {
     position: 'relative',
     textAlign: 'center',
-    fontSize: '10px',
+    fontSize: '11px',
     fontWeight: 700,
     color: '#3A7587',
     border: '1px solid #666666',
@@ -206,7 +206,7 @@ const styles = () => ({
   },
   headerCell: {
     textAlign: 'center',
-    fontSize: '10px',
+    fontSize: '11px',
     fontWeight: 700,
     color: '#3A7587',
     border: '1px solid #666666',

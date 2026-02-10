@@ -165,7 +165,7 @@ export default function KaplanMeierChart({
             return (
               <g key={`xt${i}`}>
                 <line x1={x(t)} y1={margin + innerH} x2={x(t)} y2={margin + innerH + 6} stroke="#333" />
-                <text x={x(t)} y={margin + innerH + 18} textAnchor="middle" fontSize={12}>{Math.round(t)}</text>
+                <text x={x(t)} y={margin + innerH + 18} textAnchor="middle" fontSize={11}>{Math.round(t)}</text>
               </g>
             );
           })}
@@ -177,7 +177,7 @@ export default function KaplanMeierChart({
             return (
               <g key={`yt${i}`}>
                 <line x1={margin - 6} y1={y(s)} x2={margin} y2={y(s)} stroke="#333" />
-                <text x={margin - 10} y={y(s) + 4} textAnchor="end" fontSize={12}>{s.toFixed(1)}</text>
+                <text x={margin - 10} y={y(s) + 4} textAnchor="end" fontSize={11}>{s.toFixed(1)}</text>
                 <line x1={margin + xAxisOffset} y1={y(s)} x2={margin + innerW + xAxisOffset} y2={y(s)} stroke="#ddd" />
               </g>
             );

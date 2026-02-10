@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/risk-table",
-  "version": "1.0.0-c3dc.5",
+  "version": "1.0.0-c3dc.6",
   "description": "The Risk Table component displays survival data for multiple cohorts over time intervals with colored indicators.",
   "main": "dist/index.js",
   "scripts": {
