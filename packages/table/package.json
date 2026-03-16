@@ -1,19 +1,34 @@
 {
   "name": "@bento-core/table",
-  "version": "1.0.1-ccdihub.122",
+  "version": "1.0.1-ccdiintegrated.1",
+  "description": "",
+  "homepage": "https://github.com/CBIIT/bento-frontend#readme",
+  "bugs": {
+    "url": "https://github.com/CBIIT/bento-frontend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBIIT/bento-frontend.git"
+  },
+  "license": "ISC",
+  "author": "CTOS Bento Team",
+  "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CBIIT/bento-frontend.git"
+  "dependencies": {
+    "@apollo/client": "^3.8.3",
+    "@bento-core/cart": "1.0.1-ccdiintegrated.1",
+    "@bento-core/tool-tip": "1.0.1-ccdiintegrated.1",
+    "@bento-core/util": "1.0.1-ccdiintegrated.1",
+    "clsx": "^2.1.1",
+    "graphql-tag": "^2.12.6",
+    "react-router-dom": "^5.1.2"
   },
-  "publishConfig": {
-    "access": "public"
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.9.1",
@@ -22,21 +37,7 @@
     "react-dom": "^17.0.0",
     "react-redux": "^7.2.1"
   },
-  "author": "CTOS Bento Team",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CBIIT/bento-frontend/issues"
-  },
-  "homepage": "https://github.com/CBIIT/bento-frontend#readme",
-  "dependencies": {
-    "@apollo/client": "^3.8.3",
-    "@bento-core/cart": "^1.0.1-ccdihub.9",
-    "@bento-core/tool-tip": "^1.0.0",
-    "@bento-core/util": "^1.0.1-ccdihub.1",
-    "clsx": "^2.1.1",
-    "graphql-tag": "^2.12.6",
-    "react-router-dom": "^5.1.2"
-  },
-  "devDependencies": {},
-  "description": ""
+  "publishConfig": {
+    "access": "public"
+  }
 }

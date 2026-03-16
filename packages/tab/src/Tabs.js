@@ -1,11 +1,37 @@
-import React from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import {
   Tab,
   Tabs,
   createTheme,
   ThemeProvider,
+  Button,
+  Popover,
+  List,
+  ListItem,
 } from '@material-ui/core';
+import ToolTip from '@bento-core/tool-tip';
 import { defaultTheme } from './defaultTheme';
+import MoreVerticalIcon from './assets/icons/more-vertical.svg';
+
+// Calculate default window width for SSR (ensures max tabs)
+const getDefaultWindowWidth = (responsiveBreakpoints) => {
+  if (
+    !responsiveBreakpoints
+    || !Array.isArray(responsiveBreakpoints.breakpoints)
+    || responsiveBreakpoints.breakpoints.length === 0
+  ) {
+    return 1800; // Fallback if no config provided
+  }
+  // Use width above the highest breakpoint to ensure default tab limit
+  const { breakpoints } = responsiveBreakpoints;
+  const highestBreakpoint = breakpoints[breakpoints.length - 1];
+  return highestBreakpoint.maxWidth + 100;
+};
 
 const TabItems = ({
   tabItems,
@@ -13,47 +39,282 @@ const TabItems = ({
   currentTab,
   orientation,
   customTheme = {},
+  maxVisibleTabs = 6,
+  enableGrouping = false,
+  responsiveBreakpoints = null,
 }) => {
-  const getTabLalbel = ({
+  const [currentGroup, setCurrentGroup] = useState(0);
+  const [showMorePopup, setShowMorePopup] = useState(false);
+  const [moreButtonAnchor, setMoreButtonAnchor] = useState(null);
+  const [containerWidth, setContainerWidth] = useState(
+    getDefaultWindowWidth(responsiveBreakpoints),
+  );
+  const containerRef = useRef(null);
+
+  // Calculate tab limit based on screen width breakpoints
+  // We are now using the div container width instead of window width
+  // This is to support the facet kickout feature so that the tabs respond
+  // to the available space in the container div
+  // These breakpoints are calculated by multiplying the width of each tab
+  // including the padding/margin (203px)
+  // and counting the more button as a tab (203px)
+  // We will have enough space for tabs + more button + empty tab space
+  // e.g. 2 tabs: (203 * 2) + 203 + 203 = 812px
+  const getTabLimitByWidth = (width) => {
+    if (!responsiveBreakpoints) {
+      // Fallback to original hardcoded values if no config provided
+      if (width < 812) return 2;
+      if (width < 1015) return 3;
+      if (width < 1281) return 4;
+      if (width < 1421) return 5;
+      return 6; // >= 1700px
+    }
+
+    // Use configuration-based breakpoints
+    for (let i = 0; i < responsiveBreakpoints.breakpoints.length; i += 1) {
+      const { maxWidth, tabLimit } = responsiveBreakpoints.breakpoints[i];
+      if (width <= maxWidth) {
+        return tabLimit;
+      }
+    }
+    return responsiveBreakpoints.defaultTabLimit;
+  };
+
+  // Grouping logic with responsive breakpoints
+  const tabLimit = enableGrouping ? getTabLimitByWidth(containerWidth) : maxVisibleTabs;
+  const shouldShowMoreButton = enableGrouping && tabItems.length > tabLimit;
+
+  // ResizeObserver to monitor container div width for responsive breakpoints
+  useEffect(() => {
+    if (!enableGrouping || !containerRef.current) {
+      return undefined;
+    }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      if (entries.length > 0) {
+        const newWidth = entries[0].contentRect.width;
+        setContainerWidth(newWidth);
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    // Set initial width
+    setContainerWidth(containerRef.current.offsetWidth);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [enableGrouping]);
+
+  // Consolidated effect: handle tab limit changes and active tab group recalculation
+  useEffect(() => {
+    if (!enableGrouping) {
+      return;
+    }
+
+    const newActiveTabGroup = Math.floor(currentTab / tabLimit);
+    if (newActiveTabGroup !== currentGroup) {
+      setCurrentGroup(newActiveTabGroup);
+    }
+  }, [tabLimit, currentTab, currentGroup, enableGrouping]);
+
+  // Get visible tabs for current group
+  const getVisibleTabs = () => {
+    if (!enableGrouping) {
+      return tabItems;
+    }
+    const startIndex = currentGroup * tabLimit;
+    const endIndex = Math.min(startIndex + tabLimit, tabItems.length);
+    return tabItems.slice(startIndex, endIndex);
+  };
+
+  // Get popup tabs with wrap-around logic (memoized for performance)
+  const popupTabs = useMemo(() => {
+    if (!enableGrouping || !shouldShowMoreButton) {
+      return [];
+    }
+
+    const visibleStart = currentGroup * tabLimit;
+    const visibleEnd = Math.min(visibleStart + tabLimit, tabItems.length);
+
+    // Create hidden tabs with their original indices to avoid O(n²) findIndex
+    const hiddenTabsWithIndex = [];
+
+    // Add tabs after visible range
+    for (let i = visibleEnd; i < tabItems.length; i += 1) {
+      const tab = tabItems[i];
+      if (tab) {
+        hiddenTabsWithIndex.push({ tab, originalIndex: i });
+      }
+    }
+
+    // Add tabs before visible range (wrap-around)
+    for (let i = 0; i < visibleStart; i += 1) {
+      const tab = tabItems[i];
+      if (tab) {
+        hiddenTabsWithIndex.push({ tab, originalIndex: i });
+      }
+    }
+
+    return hiddenTabsWithIndex;
+  }, [enableGrouping, shouldShowMoreButton, currentGroup, tabLimit, tabItems]);
+
+  const handleMoreButtonClick = (event) => {
+    setMoreButtonAnchor(event.currentTarget);
+    setShowMorePopup(true);
+  };
+
+  const handlePopupClose = () => {
+    setShowMorePopup(false);
+    setMoreButtonAnchor(null);
+  };
+
+  const handlePopupTabClick = (tabIndex) => {
+    const newGroup = Math.floor(tabIndex / tabLimit);
+    setCurrentGroup(newGroup);
+    handleTabChange(null, tabIndex);
+    handlePopupClose();
+  };
+
+  const getTabLabel = ({
     name, count, clsName, index,
   }) => (
-    <>
-      <span>
-        {name}
-        {count && (
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <span style={{ display: 'flex', flexDirection: 'column' }}>
+        {name.split(' ').map((word, index2) => (
+          <span key={index2}>{word}</span>
+        ))}
+      </span>
+      {count && (
         <span
           className={`index_${index} ${clsName}_count`}
+          style={{ paddingLeft: '4px' }}
         >
           {count}
         </span>
-        )}
-      </span>
-    </>
+      )}
+    </div>
   );
 
-  const TABs = tabItems.map((tab, index) => (
-    <Tab
-      index={index}
-      label={
-        getTabLalbel({ ...tab, index })
-      }
-      key={index}
-      className={tab.clsName}
-      disableRipple
-    />
-  ));
+  const visibleTabs = getVisibleTabs();
+
+  const TABs = visibleTabs.map((tab, visibleIndex) => {
+    // Calculate the actual tab index in the full tabItems array
+    const actualIndex = enableGrouping
+      ? (currentGroup * tabLimit) + visibleIndex
+      : visibleIndex;
+
+    return tab.hasToolTip
+      ? (
+        <ToolTip {...tab.tooltipStyles} title={tab.toolTipText || '.'} arrow placement="top" key={actualIndex}>
+          <Tab
+            index={actualIndex}
+            label={getTabLabel({ ...tab, index: actualIndex })}
+            className={tab.clsName}
+            disableRipple
+          />
+        </ToolTip>
+      )
+      : (
+        <Tab
+          index={actualIndex}
+          label={getTabLabel({ ...tab, index: actualIndex })}
+          key={actualIndex}
+          className={tab.clsName}
+          disableRipple
+        />
+      );
+  });
+
+  // Add More button if needed
+  if (shouldShowMoreButton) {
+    const hiddenTabsCount = popupTabs.length;
+    TABs.push(
+      <Button
+        key="more-button"
+        onClick={handleMoreButtonClick}
+        className="more-button"
+      >
+        <span>
+          <img src={MoreVerticalIcon} alt="More options" />
+          {`More(${hiddenTabsCount})`}
+        </span>
+      </Button>,
+    );
+  }
+
+  // Adjust currentTab value for visible tabs when grouping is enabled
+  const adjustedCurrentTab = enableGrouping
+    ? currentTab - (currentGroup * tabLimit)
+    : currentTab;
 
   const themeConfig = createTheme({ overrides: { ...defaultTheme(), ...customTheme } });
   return (
     <ThemeProvider theme={themeConfig}>
-      <Tabs
-        onChange={(event, value) => handleTabChange(event, value)}
-        value={currentTab}
-        TabIndicatorProps={{ style: { background: 'none' } }}
-        orientation={orientation}
-      >
-        {TABs}
-      </Tabs>
+      <div ref={containerRef} style={{ position: 'relative' }}>
+        <Tabs
+          onChange={(event, value) => {
+            // Convert relative position to actual tab index when grouping is enabled
+            const actualTabIndex = enableGrouping
+              ? (currentGroup * tabLimit) + value
+              : value;
+            handleTabChange(event, actualTabIndex);
+          }}
+          value={adjustedCurrentTab}
+          TabIndicatorProps={{ style: { background: 'none' } }}
+          orientation={orientation}
+        >
+          {TABs}
+        </Tabs>
+
+        {/* More button popup */}
+        {shouldShowMoreButton && (
+          <Popover
+            open={showMorePopup}
+            anchorEl={moreButtonAnchor}
+            onClose={handlePopupClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+            style={{ marginTop: '0px' }}
+            PaperProps={{
+              style: {
+                border: '1.5px solid rgb(86, 102, 189)',
+                borderRadius: '5px',
+              },
+            }}
+          >
+            <List className="popover-list">
+              {popupTabs.map(({ tab, originalIndex }) => {
+                if (!tab || !tab.name) {
+                  return null;
+                }
+                return (
+                  <ListItem
+                    key={originalIndex}
+                    button
+                    onClick={() => handlePopupTabClick(originalIndex)}
+                    className="popover-list-item"
+                  >
+                    <span className="popover-tab-name">
+                      {tab.name}
+                    </span>
+                    <span className="popover-tab-count">
+                      {tab.count || ''}
+                    </span>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Popover>
+        )}
+      </div>
     </ThemeProvider>
   );
 };

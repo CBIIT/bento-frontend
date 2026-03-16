@@ -1,18 +1,28 @@
 {
   "name": "@bento-core/util",
-  "version": "1.0.1-ccdihub.1",
+  "version": "1.0.1-ccdiintegrated.1",
+  "description": "",
+  "homepage": "https://github.com/CBIIT/bento-frontend#readme",
+  "bugs": {
+    "url": "https://github.com/CBIIT/bento-frontend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBIIT/bento-frontend.git"
+  },
+  "license": "ISC",
+  "author": "CTOS Bento Team",
+  "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CBIIT/bento-frontend.git"
-  },
-  "publishConfig": {
-    "access": "public"
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "prop-types": "^15.7.2",
+    "uuid": "^3.3.3"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.12.4",
@@ -21,16 +31,7 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.1.2"
   },
-  "dependencies": {
-    "lodash": "^4.17.20",
-    "prop-types": "^15.7.2",
-    "uuid": "^3.3.3"
-  },
-  "author": "CTOS Bento Team",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CBIIT/bento-frontend/issues"
-  },
-  "homepage": "https://github.com/CBIIT/bento-frontend#readme",
-  "description": ""
+  "publishConfig": {
+    "access": "public"
+  }
 }
