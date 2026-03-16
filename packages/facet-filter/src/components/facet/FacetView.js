@@ -60,7 +60,7 @@ const FacetView = ({
     }
 
     const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/explore${queryStr}`, { replace: true });
+    navigate(`/exploreParticipants${queryStr}`, { replace: true });
     setSortBy(null);
 
     // Reset the corresponding unknownAges parameter in Redux state

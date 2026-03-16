@@ -83,7 +83,7 @@ const CheckBoxView = ({
       paramValue[datafield] = '';
     }
     const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/explore${queryStr}`);
+    navigate(`/exploreParticipants${queryStr}`);
     onToggle(toggleCheckBoxItem);
   };
 

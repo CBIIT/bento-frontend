@@ -42,7 +42,7 @@ const ModalView = ({
     const paramValue = {};
     paramValue[field] = '';
     const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/explore${queryStr}`, { replace: true });
+    navigate(`/exploreParticipants${queryStr}`, { replace: true });
     onSortChange(null);
     onClearFacetSection(facet);
   };

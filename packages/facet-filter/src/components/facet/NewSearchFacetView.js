@@ -96,7 +96,7 @@ const SearchFacetView = ({
     }
 
     const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/explore${queryStr}`, { replace: true });
+    navigate(`/exploreParticipants${queryStr}`, { replace: true });
     onSortChange(facet.datafield, null);
 
     // Reset the corresponding unknownAges parameter in Redux state
