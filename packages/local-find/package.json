@@ -1,20 +1,30 @@
 {
   "name": "@bento-core/local-find",
-  "version": "1.0.1-ccdihub.11",
+  "version": "1.0.1-ccdiintegrated.1",
   "description": "The Local Find package provides components relating to the Dashboard/Explore case search feature. There are two primary components provided by this package:",
+  "homepage": "https://github.com/CBIIT/bento-frontend#readme",
+  "bugs": {
+    "url": "https://github.com/CBIIT/bento-frontend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBIIT/bento-frontend.git"
+  },
+  "license": "ISC",
+  "author": "CTOS Bento Team",
+  "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CBIIT/bento-frontend.git"
+  "dependencies": {
+    "@bento-core/tool-tip": "^1.0.0",
+    "@bento-core/util": "1.0.1-ccdihub.1",
+    "lodash": "^4.17.20"
   },
-  "publishConfig": {
-    "access": "public"
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "*",
@@ -25,15 +35,7 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.1.2"
   },
-  "dependencies": {
-    "@bento-core/tool-tip": "^1.0.0",
-    "@bento-core/util": "1.0.1-ccdihub.1",
-    "lodash": "^4.17.20"
-  },
-  "author": "CTOS Bento Team",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CBIIT/bento-frontend/issues"
-  },
-  "homepage": "https://github.com/CBIIT/bento-frontend#readme"
+  "publishConfig": {
+    "access": "public"
+  }
 }
