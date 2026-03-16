@@ -1,133 +1,31 @@
 /* eslint-disable max-len */
-import React, { useRef } from 'react';
-// import { isEqual } from 'lodash';
+import React from 'react';
 import {
   BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
-import { Button } from '@material-ui/core';
-import FileSaver from 'file-saver';
-import exportIcon from '../assets/Widget_Export.svg';
 
 export const DEFAULT_COLORS_EVEN = [
-  '#4555AB',
-  '#9FD1D6',
-  '#137E87',
-  '#99A4E4',
-  '#CB2809',
-  '#DFC798',
-  '#CECECE',
+  '#0053A0',
+  '#279BCC',
+  '#62E5B6',
+  '#FED339',
+  '#A44B19',
+  '#D6D8DF',
+  '#EFA56F',
 ];
 
 export const DEFAULT_COLORS_ODD = [
-  '#4555AB',
-  '#9FD1D6',
-  '#137E87',
-  '#99A4E4',
-  '#CB2809',
-  '#DFC798',
-  '#CECECE',
+  '#0053A0',
+  '#279BCC',
+  '#62E5B6',
+  '#FED339',
+  '#A44B19',
+  '#D6D8DF',
+  '#EFA56F',
 ];
 
-export const DEFAULT_CONFIG_DONUT = {
-  // Styles used by the component and its children
-  styles: {
-    textColor: 'black',
-    fontFamily: 'Nunito',
-    fontWeight: 500,
-    fontSize: '12px',
-    cellPadding: 2,
-    showTotalCount: false,
-    textOverflowLength: 20,
-  },
-
-  // Helper functions used by the component
-  functions: {
-    /**
-     * Merge Props and return result of callback
-     *
-     * @param {object} props
-     * @param {object} extraProps
-     * @param {function} callback
-     * @return {any} result of callback
-     */
-    mergeProps: (props, extraProps, callback) => (callback({ ...props, ...extraProps })),
-
-    /**
-     * Return last index of dataset
-     *
-     * @param {object|array} dataset
-     * @returns {number} last index of array
-     */
-    getLastIndex: (dataset) => ((dataset.length !== undefined) ? dataset.length - 1 : 0),
-
-    /**
-     * Map dataset to {name, value} pairs
-     *
-     * Note:
-     * - Called by Array.map()
-     *
-     * @param {object} data
-     * @returns {object} {name, value}
-     */
-    mapData: (data) => ({ name: data.group, value: data.subjects }),
-
-    /**
-     * Generate an active shape element for the pie chart
-     *
-     * @param {*} props
-     * @returns {JSX.Element}
-     */
-    // renderActiveShape: (props) => {
-    //   const {
-    //     cx, cy, innerRadius, outerRadius, startAngle, endAngle,
-    //     fill, payload, value, textColor, fontSize, fontWeight, fontFamily,
-    //     titleLocation, titleAlignment, sliceTitle, totalCount, showTotalCount, textOverflowLength,
-    //   } = props;
-
-    //   const isCapital = String(payload.name).toUpperCase() === String(payload.name);
-    //   const overflowLength = isCapital ? textOverflowLength : textOverflowLength + 10;
-
-    //   const labelX = (titleAlignment === 'center') ? cx : (titleAlignment === 'left') ? 0 : cx * 2;
-    //   const labelY = (titleLocation === 'top') ? 9 : cy * 2;
-
-    //   const faceValue = showTotalCount === true ? `${value} / ${totalCount}` : value;
-
-    //   return (
-    //     <g>
-    //       <text x={labelX} y={labelY} dy={0} textAnchor={(titleAlignment === 'center') ? 'middle' : undefined} fill={textColor} fontSize={fontSize || '12px'} fontWeight={fontWeight || '500'} fontFamily={fontFamily || 'Nunito'} cursor="text">
-    //         {String(payload.name).length > overflowLength ? `${String(payload.name).substring(0, overflowLength)}...` : payload.name}
-    //         <title>{payload.name}</title>
-    //       </text>
-    //       <text x={cx} y={cy} dy={0} textAnchor="middle" fill={textColor} fontSize={fontSize || '12px'} fontWeight="bold" fontFamily={fontFamily || 'Nunito'}>
-    //         {`${faceValue}`}
-    //       </text>
-    //       <text x={cx} y={cy} dy={12} textAnchor="middle" fill={textColor} fontSize={fontSize || '12px'} fontWeight="light" fontFamily={fontFamily || 'Nunito'}>
-    //         {`${sliceTitle}`}
-    //       </text>
-    //       <Sector
-    //         cx={cx}
-    //         cy={cy}
-    //         innerRadius={innerRadius}
-    //         outerRadius={outerRadius}
-    //         startAngle={startAngle}
-    //         endAngle={endAngle}
-    //         fill={fill}
-    //       />
-    //       <Sector
-    //         cx={cx}
-    //         cy={cy}
-    //         startAngle={startAngle}
-    //         endAngle={endAngle}
-    //         innerRadius={outerRadius + 6}
-    //         outerRadius={outerRadius + 8}
-    //         fill={fill}
-    //       />
-    //     </g>
-    //   );
-    // },
-  },
-
-  // Color scheme used for component slices
+export const DEFAULT_CONFIG_BAR = {
+  // Color scheme used for component bars
   colors: {
     even: DEFAULT_COLORS_EVEN,
     odd: DEFAULT_COLORS_ODD,
@@ -135,82 +33,29 @@ export const DEFAULT_CONFIG_DONUT = {
 };
 
 /**
- * Exposes a function to generate a donut chart component
+ * Exposes a function to generate a bar chart component
  *
  * @param {object|null} uiConfig
  * @returns {object}
  */
-// eslint-disable-next-line no-unused-vars, arrow-body-style
-export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
-  // const {
-  //   styles, functions, colors,
-  // } = uiConfig;
+export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_BAR) => {
+  const {
+    colors,
+  } = uiConfig;
 
-  // const {
-  //   textColor, fontFamily, fontWeight, fontSize, cellPadding,
-  //   showTotalCount, textOverflowLength,
-  // } = styles && typeof styles === 'object' ? styles : DEFAULT_CONFIG_DONUT.styles;
+  const COLORS_EVEN = colors && colors.even instanceof Array && colors.even.length > 0
+    ? colors.even
+    : DEFAULT_CONFIG_BAR.colors.even;
 
-  // const COLORS_EVEN = colors && colors.even instanceof Array && colors.even.length > 0
-  //   ? colors.even
-  //   : DEFAULT_CONFIG_DONUT.colors.even;
-
-  // const COLORS_ODD = colors && colors.odd instanceof Array && colors.odd.length > 0
-  //   ? colors.even
-  //   : DEFAULT_CONFIG_DONUT.colors.odd;
-
-  // const mergeProps = functions && typeof functions.mergeProps === 'function'
-  //   ? functions.mergeProps
-  //   : DEFAULT_CONFIG_DONUT.functions.mergeProps;
-
-  // const lastIndex = functions && typeof functions.getLastIndex === 'function'
-  //   ? functions.getLastIndex
-  //   : DEFAULT_CONFIG_DONUT.functions.getLastIndex;
-
-  // const mapDataset = functions && typeof functions.mapData === 'function'
-  //   ? functions.mapDatasetObject
-  //   : DEFAULT_CONFIG_DONUT.functions.mapData;
-
-  // const activeShape = functions && typeof functions.renderActiveShape === 'function'
-  //   ? functions.renderActiveShape
-  //   : DEFAULT_CONFIG_DONUT.functions.renderActiveShape;
+  const COLORS_ODD = colors && colors.odd instanceof Array && colors.odd.length > 0
+    ? colors.odd
+    : DEFAULT_CONFIG_BAR.colors.odd;
 
   return {
     BarChart: ({ data, ...props }) => {
       const {
-        title, width,
-        // cx, cy,
-        // titleLocation, titleAlignment, sliceTitle,
-        // blendStroke, innerRadius, outerRadius,
+        width, height, currentChart,
       } = props;
-
-      // const dataset = data.map(mapDataset);
-      // const totalCount = dataset.length || 0;
-
-      // const [activeIndex, setActiveIndex] = useState(lastIndex(data));
-      // const refHook = useRef(data);
-
-      // useEffect(() => {
-      //   if (isEqual(refHook.current, data) === false) {
-      //     refHook.current = data;
-      //     setActiveIndex(lastIndex(data));
-      //   }
-      // }, [data]);
-
-      // const defaultProps = {
-      //   textColor,
-      //   titleLocation,
-      //   titleAlignment,
-      //   sliceTitle,
-      //   fontSize,
-      //   fontWeight,
-      //   fontFamily,
-      //   totalCount,
-      //   showTotalCount,
-      //   textOverflowLength,
-      // };
-
-      const currentChart = useRef(null);
 
       const tooltipStyle = {
         border: '1px solid #CCCCCC',
@@ -231,94 +76,62 @@ export const BarChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
         return null;
       };
 
-      const renderTick = (tickProps) => {
-        const { x, y, payload } = tickProps;
-        const text = payload.value.split(' ');
-        return (
-          <g transform={`translate(${x},${y})`}>
-            <text x={0} y={0} dy={7} fill="#4A5C5E" fontSize="10px" textAnchor="middle">
-              {text[0]}
-            </text>
-            <text x={0} y={9} dy={7} fill="#4A5C5E" fontSize="10px" textAnchor="middle">
-              {text[1]}
-            </text>
-            <text x={0} y={20} dy={7} fill="#4A5C5E" fontSize="10px" textAnchor="middle">
-              {text[2]}
-            </text>
-          </g>
+      return data.length === 0
+        ? (
+          <>
+            <ResponsiveContainer width={width} height={height}>
+              <BarChart
+                data={[{ group: '', subjects: 0 }]}
+                ref={currentChart}
+              >
+                <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
+                <XAxis dataKey="group" tick={false} />
+                <YAxis tick={false} />
+                <Bar dataKey="subjects">
+                  <Cell fill="transparent" />
+                </Bar>
+                <text
+                  x="50%"
+                  y="50%"
+                  textAnchor="middle"
+                  fontSize="14px"
+                  fontWeight="400"
+                  fontFamily="Open Sans"
+                  fill="#0F253A"
+                >
+                  <tspan x="57.5%" dy="-30">No data</tspan>
+                  <tspan x="57.5%" dy="18">returned for</tspan>
+                  <tspan x="57.5%" dy="18">this search</tspan>
+                </text>
+              </BarChart>
+            </ResponsiveContainer>
+          </>
+        )
+        : (
+          <>
+            <ResponsiveContainer width={width} height={height}>
+              <BarChart
+                data={data}
+                ref={currentChart}
+              >
+                <CartesianGrid vertical={false} stroke="white" strokeDasharray="" strokeWidth={1} fill="#F0F0F0" />
+                <XAxis dataKey="group" />
+                <YAxis tickFormatter={(tick) => tick.toLocaleString()} />
+                <Tooltip cursor={false} content={<CustomTooltip />} />
+                <Bar dataKey="subjects">
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={data.length % 2 === 0
+                        ? COLORS_EVEN[index % COLORS_EVEN.length]
+                        : COLORS_ODD[index % COLORS_ODD.length]}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </>
         );
-      };
-
-      const handleExportChart = () => {
-        const chartSVG = currentChart.current.container.children[0];
-        const chartWidth = chartSVG.clientWidth;
-        const heightWidth = chartSVG.clientHeight;
-        const svgURL = new XMLSerializer().serializeToString(chartSVG);
-        const svgBlob = new Blob([svgURL], { type: 'image/svg+xml;charset=utf-8' });
-        const URL = window.URL || window.webkitURL || window;
-        const blobURL = URL.createObjectURL(svgBlob);
-
-        const image = new Image();
-        image.onload = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = chartWidth;
-          canvas.height = heightWidth;
-          const context = canvas.getContext('2d');
-          context.fillStyle = 'white';
-          context.drawImage(image, 0, 0, context.canvas.width, context.canvas.height);
-          const png = canvas.toDataURL('image/png', 1.0);
-          FileSaver.saveAs(png, `${title}.png`);
-        };
-
-        image.src = blobURL;
-      };
-
-      return (
-        <>
-          <Button
-            onClick={() => handleExportChart()}
-            style={{
-              position: 'absolute',
-              top: '25px',
-              right: '15px',
-              backgroundColor: 'transparent',
-              zIndex: 1000,
-              minWidth: 'auto',
-              padding: '8px',
-            }}
-          >
-            <img src={exportIcon} alt="export" />
-          </Button>
-
-          <ResponsiveContainer width={width} height={230}>
-            <BarChart
-              data={data}
-              ref={currentChart}
-              height={230}
-            // margin={{
-            //   top: 5,
-            //   right: 30,
-            //   left: 20,
-            //   bottom: 5,
-            // }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="group" interval={0} tick={renderTick} />
-              <YAxis tick={{ fill: '#4A5C5E' }} />
-              <Tooltip cursor={false} content={<CustomTooltip />} />
-              {/* <Legend /> */}
-              <Bar dataKey="subjects">
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={DEFAULT_COLORS_ODD[index % DEFAULT_COLORS_ODD.length]}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </>
-      );
     },
   };
 };
