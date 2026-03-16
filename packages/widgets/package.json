@@ -1,25 +1,23 @@
 {
   "name": "@bento-core/widgets",
-  "version": "1.0.1-ccdihub.22",
+  "version": "1.0.1-ccdiintegrated.1",
   "description": "This component provides an easy-to-use implementation of the DonutChart and SunburstChart components, and is ideal for implementation within a grid.",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src"
+  "homepage": "https://github.com/CBIIT/bento-frontend#readme",
+  "bugs": {
+    "url": "https://github.com/CBIIT/bento-frontend/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CBIIT/bento-frontend.git"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "peerDependencies": {
-    "@material-ui/core": "^4.10.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.0",
-    "react-redux": "^7.2.1"
+  "license": "ISC",
+  "author": "CTOS Bento Team",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run lint && cross-env-shell rm -rf dist && NODE_ENV=production BABEL_ENV=es babel src --out-dir dist --copy-files",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src"
   },
   "dependencies": {
     "classnames": "^2.2.6",
@@ -28,10 +26,13 @@
     "react-vis": "^1.11.7",
     "recharts": "^1.7.1"
   },
-  "author": "CTOS Bento Team",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CBIIT/bento-frontend/issues"
+  "peerDependencies": {
+    "@material-ui/core": "^4.10.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.0",
+    "react-redux": "^7.2.1"
   },
-  "homepage": "https://github.com/CBIIT/bento-frontend#readme"
+  "publishConfig": {
+    "access": "public"
+  }
 }
