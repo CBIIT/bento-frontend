@@ -31,6 +31,7 @@ const SliderView = ({
   timeUnit = 'days',
   unknownAgesState,
   onUnknownAgesChange,
+  basePath,
 }) => {
   const { minLowerBound, maxUpperBound, quantifier, datafield, facetValues } = facet;
   const lowerBoundValue = facetValues[0];
@@ -106,7 +107,7 @@ const SliderView = ({
       const paramValue = {};
       paramValue[datafield] = daysValue;
       const queryStr = generateQueryStr(query, queryParams, paramValue);
-      navigate(`/exploreParticipants${queryStr}`);
+      navigate(`${basePath}${queryStr}`);
       onSliderToggle({ sliderValue: daysValue, ...facet });
     }
   };
@@ -149,7 +150,7 @@ const SliderView = ({
       paramValue[datafield] = ''; // Clear the age range filter
       paramValue[`${datafield}_unknownAges`] = 'only'; // Set the unknownAges parameter to only
       const queryStr = generateQueryStr(query, queryParams, paramValue);
-      navigate(`/exploreParticipants${queryStr}`);
+      navigate(`${basePath}${queryStr}`);
 
       // Keep the current slider values for display (don't reset to defaults)
       // The slider will be disabled but show the user's previous selection
@@ -170,7 +171,7 @@ const SliderView = ({
         paramValue[datafield] = ''; // Clear the age range filter
         paramValue[`${datafield}_unknownAges`] = ''; // Clear the unknownAges parameter
         const queryStr = generateQueryStr(query, queryParams, paramValue);
-        navigate(`/exploreParticipants${queryStr}`);
+        navigate(`${basePath}${queryStr}`);
 
         // Clear the slider state in the parent component
         onSliderToggle({ sliderValue: [], ...facet });
@@ -180,7 +181,7 @@ const SliderView = ({
         paramValue[datafield] = currentSliderValues;
         paramValue[`${datafield}_unknownAges`] = ''; // Clear the unknownAges parameter since "include" is default
         const queryStr = generateQueryStr(query, queryParams, paramValue);
-        navigate(`/exploreParticipants${queryStr}`);
+        navigate(`${basePath}${queryStr}`);
 
         // Restore the slider state in the parent component
         onSliderToggle({ sliderValue: currentSliderValues, ...facet });
@@ -192,7 +193,7 @@ const SliderView = ({
       paramValue[datafield] = currentSliderValues;
       paramValue[`${datafield}_unknownAges`] = 'exclude'; // Set the unknownAges parameter to exclude
       const queryStr = generateQueryStr(query, queryParams, paramValue);
-      navigate(`/exploreParticipants${queryStr}`);
+      navigate(`${basePath}${queryStr}`);
 
       // Restore the slider state in the parent component
       onSliderToggle({ sliderValue: currentSliderValues, ...facet });

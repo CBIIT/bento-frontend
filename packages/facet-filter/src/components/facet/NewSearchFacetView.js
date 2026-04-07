@@ -58,6 +58,7 @@ const SearchFacetView = ({
   unknownAgesState,
   expandState,
   onToggleFacetExpand,
+  basePath,
 }) => {
   const expand = expandState[facet.datafield] !== undefined ? expandState[facet.datafield] : (facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
 
@@ -96,7 +97,7 @@ const SearchFacetView = ({
     }
 
     const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/exploreParticipants${queryStr}`, { replace: true });
+    navigate(`${basePath}${queryStr}`, { replace: true });
     onSortChange(facet.datafield, null);
 
     // Reset the corresponding unknownAges parameter in Redux state
