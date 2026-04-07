@@ -30,7 +30,12 @@ const FilterItems = ({
           />
         ));
       case InputTypes.SLIDER:
-        return (<ReduxSlider facet={facet} queryParams={queryParams} timeUnit={timeUnit} basePath={basePath} />);
+        return (<ReduxSlider
+          facet={facet}
+          queryParams={queryParams}
+          timeUnit={timeUnit}
+          basePath={basePath}
+        />);
       default:
         return (<></>);
     }
