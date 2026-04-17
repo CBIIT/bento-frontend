@@ -119,7 +119,7 @@ export default () => ({
     border: '1px solid #646464',
   },
   facetSectionGeneticanalysis: {
-    color: '#4555AB'
+    color: '#4555AB',
   },
   facetSectionGeneticanalysisBackground: {
     backgroundColor: '#4555AB30',
