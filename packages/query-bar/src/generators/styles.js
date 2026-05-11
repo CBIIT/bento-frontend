@@ -167,4 +167,10 @@ export default () => ({
     backgroundColor: '#E1C9E140',
     border: '1px solid #646464',
   },
+  localFindAssociatedIdsBackground: {
+    backgroundColor: '#F6A700',
+  },
+  localFindAssociatedIdsText: {
+    color: '#B36B00',
+  },
 });

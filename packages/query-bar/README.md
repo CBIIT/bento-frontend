@@ -84,12 +84,19 @@ const CONFIG = {
     clearAutocomplete: () => {},
 
     /**
-     * Delete a specific Local Find searchbox filter (case)
+     * Delete a specific Local Find searchbox filter item. The full
+     * autocomplete item object is passed (not just the title) so consumers
+     * can disambiguate between participant IDs and synonym/associated IDs
+     * that may share the same title.
      *
-     * @param {string} title
+     * @param {object} item       the full autocomplete item to remove
+     * @param {string} item.title the participant identifier
+     * @param {string} [item.type] 'associatedIds' for synonym entries, any
+     *                             other value for participant IDs
+     * @param {string} [item.synonym] synonym value (associated-IDs only)
      * @returns {void}
      */
-    deleteAutocompleteItem: (title) => {},
+    deleteAutocompleteItem: (item) => {},
 
     /**
      * Reset a specific facet section (e.g. Program)

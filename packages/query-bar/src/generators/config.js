@@ -50,12 +50,20 @@ export default {
     clearAutocomplete: () => { },
 
     /**
-     * Delete a specific Local Find searchbox filter (case)
+     * Delete a specific Local Find searchbox filter item.
+     * The full autocomplete item is passed (not just the title) so consumers
+     * can disambiguate between participant IDs and synonym/associated IDs that
+     * may share the same title.
      *
-     * @param {string} title
+     * @param {object} item the autocomplete item to remove
+     * @param {string} item.title the participant identifier
+     * @param {string} [item.type] either 'associatedIds' for synonym entries
+     *   or any other value (e.g. 'subjectIds', 'participantIds') for
+     *   participant IDs
+     * @param {string} [item.synonym] the synonym value (associated-IDs only)
      * @returns {void}
      */
-    deleteAutocompleteItem: (title) => { },
+    deleteAutocompleteItem: (item) => { },
 
     /**
      * Reset a specific facet section (e.g. Program)

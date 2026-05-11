@@ -42,10 +42,16 @@ const QueryBarView = ({ data, statusReducer, localFind, unknownAgesState }) => {
       clearAutocomplete: () => {
         dispatch(updateAutocompleteData([]));
       },
-      deleteAutocompleteItem: (title) => {
+      deleteAutocompleteItem: (item) => {
         const { autocomplete } = localFind;
         const newdata = [...autocomplete];
-        const index = newdata.findIndex((v) => v.title === title);
+        // Match on title + type + synonym so participant-ID and
+        // synonym/associated-ID items that share a title are not confused.
+        const index = newdata.findIndex((v) => (
+          v.title === item.title
+          && v.type === item.type
+          && v.synonym === item.synonym
+        ));
 
         if (index > -1) {
           newdata.splice(index, 1);

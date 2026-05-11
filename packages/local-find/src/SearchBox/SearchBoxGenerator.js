@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import { connect } from 'react-redux';
 import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { isEqual } from 'lodash';
 import TextField from './components/CustomTextField';
 import SearchList from './components/SearchList';
@@ -45,9 +47,16 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.noOptionsText
     : DEFAULT_CONFIG.config.noOptionsText;
 
-  const searchType = config && typeof config.searchType === 'string'
+  // Accept either a string (legacy) or an array of search-types so a consumer
+  // can pull suggestions from multiple sources (e.g. participants + synonyms).
+  const searchType = config
+    && (typeof config.searchType === 'string' || Array.isArray(config.searchType))
     ? config.searchType
     : DEFAULT_CONFIG.config.searchType;
+
+  const ariaLabel = config && typeof config.ariaLabel === 'string'
+    ? config.ariaLabel
+    : DEFAULT_CONFIG.config.ariaLabel;
 
   const stateProps = (state) => ({
     autocomplete: state.localFind.autocomplete,
@@ -71,9 +80,22 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const [open, setOpen] = useState(false);
       const [value, setValue] = useState(autocomplete || []);
       const [options, setOptions] = useState([]);
+      const [inputValue, setInputValue] = useState('');
 
       const dataLoaded = useRef(false);
       const loading = open && (options.length === 0 || dataLoaded.current === false);
+
+      // Custom client-side filter that matches against title OR synonym, so
+      // typing a synonym surfaces its associated-IDs option.
+      const filteredOptions = useMemo(() => {
+        if (!inputValue) return options;
+        const q = inputValue.toLowerCase();
+        return options.filter((option) => {
+          const titleMatch = option.title?.toString().toLowerCase().includes(q);
+          const synonymMatch = option.synonym?.toString().toLowerCase().includes(q);
+          return titleMatch || synonymMatch;
+        });
+      }, [inputValue, options]);
 
       useEffect(() => {
         // Check if the data has already been loaded
@@ -118,12 +140,18 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       }
 
       /**
-       * Handles the deletion of a search item under SearchList
+       * Handles the deletion of a search item under SearchList. The full
+       * (title, type, synonym) tuple is required because participant IDs
+       * and synonym/associated IDs may share a title.
        *
        * @param {string} val
+       * @param {string} [type]
+       * @param {string} [synonym]
        */
-      const onDelete = (val) => {
-        const newValue = value.filter((v) => v.title !== val);
+      const onDelete = (val, type, synonym) => {
+        const newValue = value.filter(
+          (v) => !(v.title === val && v.type === type && v.synonym === synonym),
+        );
         onChangeWrapper(newValue, null, true);
       };
 
@@ -132,7 +160,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
           <div>
             <SearchList
               classes={classes}
-              items={value.map((e) => e.title)}
+              items={value}
               onDelete={onDelete}
             />
           </div>
@@ -147,9 +175,12 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               open={open}
               freeSolo={false}
               noOptionsText={noOptionsText}
-              options={options}
+              options={filteredOptions}
               loading={loading}
-              filterOptions={createFilterOptions({ trim: true })}
+              // We do our own client-side filtering above (title OR synonym),
+              // so disable MUI's built-in label-only filter.
+              filterOptions={(x) => x}
+              onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
               onOpen={() => {
                 setOpen(true);
               }}
@@ -159,11 +190,34 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               onChange={(event, newValue, reason) => onChangeWrapper(newValue, reason)}
               getOptionLabel={(option) => option.title}
               renderTags={() => null}
+              renderOption={(option) => {
+                const { type, title, synonym } = option;
+                return (
+                  <div>
+                    {type === 'associatedIds' ? (
+                      <>
+                        <span className={classes.filterName}>Synonym</span>
+                        {' '}
+                        {synonym}
+                      </>
+                    ) : (
+                      title
+                    )}
+                  </div>
+                );
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   classes={classes}
                   placeholder={inputPlaceholder}
+                  InputProps={{
+                    ...params.InputProps,
+                    inputProps: {
+                      ...params.inputProps,
+                      'aria-label': ariaLabel,
+                    },
+                  }}
                 />
               )}
             />
