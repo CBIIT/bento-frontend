@@ -121,70 +121,120 @@ export const QueryBarGenerator = (uiConfig = DEFAULT_CONFIG) => {
             {hasImportFrom && (mappedInputs.length || autocomplete.length || upload.length)
               ? <span className={classes.operators}> AND </span>
               : null}
-            {(autocomplete.length || upload.length) ? (
+            {/* Section: Localfind Results */}
+            {(autocomplete.length || upload.length) > 0 && (
               <span>
-                {/* Standalone case set button */}
-                {(upload.length && !autocomplete.length)
-                  ? (
-                    <span
-                      className={clsx(classes.filterCheckboxes, classes.localFindBackground)}
-                      onClick={clearUpload}
-                    >
-                      INPUT PARTICIPANT SET
-                    </span>
-                  ) : null}
-                {autocomplete.length
-                  ? (
-                    <span>
-                      {' '}
+                {/* Participant ID Section
+                  * Treats any autocomplete item that is not explicitly an
+                  * associated/synonym ID as a participant ID, so legacy items
+                  * (e.g. type === 'subjectIds') keep working alongside the new
+                  * synonym section. */}
+                {(() => {
+                  const participantItems = autocomplete.filter((i) => i.type !== 'associatedIds');
+                  const participantCount = upload.length + participantItems.length;
+
+                  if (upload.length > 0 && participantItems.length === 0) {
+                    return (
                       <span
-                        className={clsx(classes.filterName, classes.localFindBackground)}
-                        onClick={clearAutocomplete}
-                      >
-                        Participant ID
-                      </span>
-                      {' '}
-                      {' '}
-                      <span className={classes.operators}>
-                        {(autocomplete.length === 1 && !upload.length) ? 'IS ' : 'IN '}
-                      </span>
-                    </span>
-                  ) : null}
-                <span>
-                  {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
-                    ? <span className={classes.bracketsOpen}>(</span>
-                    : null}
-                  {upload.length && autocomplete.length ? (
-                    <>
-                      {' '}
-                      <span
-                        className={clsx(classes.filterCheckboxes, classes.localFind)}
+                        className={clsx(classes.filterCheckboxes, classes.localFindBackground)}
                         onClick={clearUpload}
                       >
                         INPUT PARTICIPANT SET
                       </span>
-                      {' '}
-                    </>
-                  ) : null}
-                  {autocomplete.slice(0, maxItems).map((d, idx) => (
+                    );
+                  }
+
+                  if (participantCount > 0) {
+                    const operator = participantCount === 1 ? 'IS' : 'IN';
+
+                    return (
+                      <>
+                        <span
+                          className={clsx(classes.filterName, classes.localFindBackground)}
+                          onClick={clearAutocomplete}
+                        >
+                          Participant ID
+                        </span>
+                        <span className={classes.operators}>{operator}</span>
+
+                        {operator === 'IN' && <span className={classes.bracketsOpen}>(</span>}
+
+                        {upload.length > 0 && (
+                          <span
+                            className={clsx(classes.filterCheckboxes, classes.localFind)}
+                            onClick={clearUpload}
+                          >
+                            INPUT PARTICIPANT SET
+                          </span>
+                        )}
+
+                        {participantItems.slice(0, maxItems).map((d, idx, arr) => (
+                          <React.Fragment key={`pid-${idx}`}>
+                            <span
+                              className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
+                              onClick={() => deleteAutocompleteItem(d)}
+                            >
+                              {d.title}
+                            </span>
+                            {idx < arr.length - 1 && ' '}
+                          </React.Fragment>
+                        ))}
+                        {participantItems.length > maxItems && '...'}
+                        {operator === 'IN' && <span className={classes.bracketsClose}>)</span>}
+                      </>
+                    );
+                  }
+
+                  return null;
+                })()}
+
+                {/* OR connector between Participant IDs (or upload) and Synonyms */}
+                {(upload.length > 0 || autocomplete.some((i) => i.type !== 'associatedIds'))
+                  && autocomplete.some((i) => i.type === 'associatedIds')
+                  && (<span className={classes.operators}>OR</span>)}
+
+                {/* Associated ID (Synonym) Section */}
+                {(() => {
+                  const associatedItems = autocomplete.filter((i) => i.type === 'associatedIds');
+                  if (associatedItems.length === 0) return null;
+
+                  const operator = associatedItems.length === 1 ? 'IS' : 'IN';
+
+                  return (
                     <>
                       <span
-                        className={clsx(classes.filterCheckboxes, classes.facetSectionCases)}
-                        key={idx}
-                        onClick={() => deleteAutocompleteItem(d.title)}
+                        className={clsx(
+                          classes.filterName,
+                          classes.localFindAssociatedIdsBackground,
+                        )}
+                        onClick={clearAutocomplete}
                       >
-                        {d.title}
+                        Synonym
                       </span>
-                      {idx === (maxItems - 1) ? null : ' '}
+                      <span className={classes.operators}>{operator}</span>
+                      {operator === 'IN' && <span className={classes.bracketsOpen}>(</span>}
+
+                      {associatedItems.slice(0, maxItems).map((d, idx, arr) => (
+                        <React.Fragment key={`aid-${idx}`}>
+                          <span
+                            className={clsx(
+                              classes.filterCheckboxes,
+                              classes.localFindAssociatedIdsText,
+                            )}
+                            onClick={() => deleteAutocompleteItem(d)}
+                          >
+                            {d.synonym}
+                          </span>
+                          {idx < arr.length - 1 && ' '}
+                        </React.Fragment>
+                      ))}
+                      {associatedItems.length > maxItems && '...'}
+                      {operator === 'IN' && <span className={classes.bracketsClose}>)</span>}
                     </>
-                  ))}
-                  {autocomplete.length > maxItems && '...'}
-                  {(((upload.length > 0 ? 1 : 0) + autocomplete.length) > 1)
-                    ? <span className={classes.bracketsClose}>)</span>
-                    : null}
-                </span>
+                  );
+                })()}
               </span>
-            ) : null}
+            )}
 
             {/* Facet Sidebar Selections */}
             {((autocomplete.length || upload.length) && mappedInputs.length)
