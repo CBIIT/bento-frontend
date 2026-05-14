@@ -85,17 +85,46 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const dataLoaded = useRef(false);
       const loading = open && (options.length === 0 || dataLoaded.current === false);
 
-      // Custom client-side filter that matches against title OR synonym, so
-      // typing a synonym surfaces its associated-IDs option.
+      // Index where synonym (associated) rows start — list is [...participants, ...associated].
+      const associatedStartIndex = useMemo(() => {
+        for (let si = 0; si < options.length; si += 1) {
+          if (options[si].type === 'associatedIds') return si;
+        }
+        return options.length;
+      }, [options]);
+
+      // Avoid passing the full list to Autocomplete or filtering with O(n) .filter on every
+      // keystroke. Empty query: show a mix of participants + synonyms. Typed query: scan
+      // participants (bounded) then all synonym rows so CPI matches are not skipped.
       const filteredOptions = useMemo(() => {
-        if (!inputValue) return options;
-        const q = inputValue.toLowerCase();
-        return options.filter((option) => {
-          const titleMatch = option.title?.toString().toLowerCase().includes(q);
-          const synonymMatch = option.synonym?.toString().toLowerCase().includes(q);
-          return titleMatch || synonymMatch;
-        });
-      }, [inputValue, options]);
+        const split = associatedStartIndex;
+        const maxMatches = 400;
+        const trimmed = inputValue != null ? String(inputValue).trim() : '';
+        if (!trimmed) {
+          const half = 200;
+          const pTake = Math.min(split, half);
+          const pSlice = options.slice(0, pTake);
+          const aTake = Math.min(half, options.length - split);
+          const aSlice = options.slice(split, split + aTake);
+          return pSlice.concat(aSlice);
+        }
+        const q = trimmed.toLowerCase();
+        const out = [];
+        const maxScanP = split < 50000 ? split : 50000;
+        for (let i = 0; i < maxScanP && out.length < maxMatches; i += 1) {
+          const opt = options[i];
+          const t1 = opt.title != null ? String(opt.title).toLowerCase() : '';
+          const s1 = opt.synonym != null ? String(opt.synonym).toLowerCase() : '';
+          if (t1.includes(q) || s1.includes(q)) out.push(opt);
+        }
+        for (let i = split; i < options.length && out.length < maxMatches; i += 1) {
+          const opt2 = options[i];
+          const t2 = opt2.title != null ? String(opt2.title).toLowerCase() : '';
+          const s2 = opt2.synonym != null ? String(opt2.synonym).toLowerCase() : '';
+          if (t2.includes(q) || s2.includes(q)) out.push(opt2);
+        }
+        return out;
+      }, [inputValue, options, associatedStartIndex]);
 
       useEffect(() => {
         // Check if the data has already been loaded
@@ -105,7 +134,9 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
         (async () => {
           const opts = await getSuggestions(searchType);
-
+          await new Promise((resolve) => {
+            setTimeout(resolve, 0);
+          });
           setOptions(opts);
           dataLoaded.current = opts && opts.length > 0;
         })();
