@@ -46,6 +46,7 @@ const AddSelectedFilesOrangeButton = useCallback(() => (
 | btnType | TRUE | Determines the role of the button, add all files (blue) or add selected files (orange) | btnTypes.ADD_ALL_FILES, btnTypes.ADD_SELECTED_FILES or btnTypes.DOWNLOAD_MANIFEST |
 | title | TRUE | text for the button | 'Add Selected files' |
 | clsName | TRUE | configure theme with themeprovider | |
+| maxFileLimit | FALSE | Maximum total files allowed in cart. Validates current cart + new files (excluding duplicates) before adding. Displays alert if limit exceeded. | default: 1000 |
 | addFileQuery | TRUE | query to retrive files or file ids | graphQL query |
 | responseKeys | TRUE | Keys to access file_ids reponse provided by addFileQuery, provided as list to access the nested respose object or list (max depth upto 2) | ['caseOverview', 'files'] |
 | classes | TRUE | provide class for toltips to override the style |  tooltip: classes.customTooltip, arrow: classes.customArrow

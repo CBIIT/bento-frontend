@@ -21,6 +21,7 @@ const AddAllFilesComponent = (props) => {
     tooltipCofig,
     maxFileLimit = 1000,
     DisplayCustomText,
+    currentCartFileIds = [],
   } = props;
   /**
   * conditionally display dialog view
@@ -42,7 +43,11 @@ const AddAllFilesComponent = (props) => {
       const data = response[responseKeys[0]];
       if (data && data.length > 0) {
         const ids = addFilesResponseHandler(response, responseKeys);
-        if (ids.length > maxFileLimit) {
+        // Filter out files already in cart to avoid double-counting
+        const newUniqueFiles = ids.filter((id) => !currentCartFileIds.includes(id));
+        // Check if TOTAL (current cart + NEW unique files) exceeds limit
+        const totalFilesCount = currentCartFileIds.length + newUniqueFiles.length;
+        if (totalFilesCount > maxFileLimit) {
           setAlterDisplay(true);
         } else {
           setOpen(true);

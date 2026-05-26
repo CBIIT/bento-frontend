@@ -22,6 +22,7 @@ const AddSelectedFilesController = (props) => {
     maxFileLimit = 1000,
     applyActiveFilter = false,
     activeFilters = {},
+    currentCartFileIds = [],
   } = props;
 
   const tableContext = useContext(TableContext);
@@ -51,7 +52,11 @@ const AddSelectedFilesController = (props) => {
 
     fileIds().then((response) => {
       const ids = addFilesResponseHandler(response, responseKeys);
-      if (ids.length >= maxFileLimit) {
+      // Filter out files already in cart to avoid double-counting
+      const newUniqueFiles = ids.filter((id) => !currentCartFileIds.includes(id));
+      // Check if TOTAL (current cart + NEW unique files) exceeds limit
+      const totalFilesCount = currentCartFileIds.length + newUniqueFiles.length;
+      if (totalFilesCount > maxFileLimit) {
         setAlterDisplay(true);
       } else {
         addFiles(ids);
