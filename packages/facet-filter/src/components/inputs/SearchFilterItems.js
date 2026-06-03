@@ -83,9 +83,11 @@ const SearchFilterItems = ({
         <div>
           {checkedItems}
         </div>
-        <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll}>
-          {uncheckedItems}
-        </div>
+        {uncheckedItems.length > 0 && (
+          <div ref={scrollableRef} className={classes.itemsContainer} onScroll={handleScroll}>
+            {uncheckedItems}
+          </div>
+        )}
       </div>
     </>
   );
