@@ -116,8 +116,8 @@ const AddAllFilesComponent = (props) => {
           const ids = [...new Set(idsInitial)];
           if (cartCount + ids.length <= upperLimit) {
             setIsDataloading(false);
-            setOpen(true);
-            setAddFilesId(ids);
+            addFiles(ids);
+            setOpenSnackbar(true);
           } else {
             const newIds = checkDuplicate(cartFilesDict, ids);
             setIsDataloading(false);
