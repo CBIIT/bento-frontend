@@ -20,7 +20,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@bento-core/facet-filter": "1.0.1-ccdiintegrated.1",
+    "@bento-core/facet-filter": "1.0.1-ccdiintegrated.4",
     "lodash": "^4.17.20",
     "react-zoom-pan-pinch": "*"
   },
