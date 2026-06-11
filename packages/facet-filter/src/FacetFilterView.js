@@ -3,13 +3,11 @@
 import React from 'react';
 import {
   Divider,
-  List,
   withStyles,
 } from '@material-ui/core';
 import styles from './FacetFilterStyle';
 import FacetSectionView from './components/section/FacetSectionView';
 import FacetView from './components/facet/ReduxFacetView';
-import FilterItems from './components/inputs/FilterItems';
 
 const BentoFacetFilter = ({
   sideBarSections,
@@ -33,13 +31,7 @@ const BentoFacetFilter = ({
                 <FacetView
                   facet={facet}
                   CustomView={CustomFacetView}
-                >
-                  <List className={`List_${facet.label}`}>
-                    <FilterItems
-                      facet={facet}
-                    />
-                  </List>
-                </FacetView>
+                />
               ))}
             </FacetSectionView>
           </>

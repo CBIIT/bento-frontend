@@ -44,6 +44,7 @@ export const LoginGenerator = (uiConfig = DEFAULT_CONFIG) => {
     Login: (props) => {
       const {
         styles,
+        headerMessage,
         authenticationProviders,
         onSuccess,
         onError,
@@ -143,7 +144,7 @@ export const LoginGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 <Grid container item sm={4} justifyContent="center">
                   <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.Box}>
                     <Grid container item justifyContent="center" className={classes.LoginBoxTitle}>
-                      Log in with either of these Identity providers:
+                      {headerMessage}
                     </Grid>
                     <Grid container item justifyContent="center" className={classes.LoginButtonGroup}>
                       {Object.values(idps).map((provider) => (

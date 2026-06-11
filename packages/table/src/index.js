@@ -4,5 +4,6 @@ export {
   headerTypes,
   ComponentTypes,
   dataFormatTypes,
+  actionCellTypes,
 } from './util/Types';
 export { formatBytes } from './util/Dataformat';

@@ -30,7 +30,7 @@ export const ToolTipView = (props) => {
         arrow: classes.customArrow,
       }}
     >
-      <img src={icon || src} alt={alt} />
+      <img className="add_selected_file_tooltip_icon" src={icon || src} alt={alt} />
     </ToolTip>
   );
 };

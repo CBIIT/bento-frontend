@@ -150,6 +150,7 @@ const CustomWrapper = (props) => {
     classes,
     activeFilters,
     tblDispatch,
+    totalRowCount,
   } = props;
   return (
     <>
@@ -160,6 +161,7 @@ const CustomWrapper = (props) => {
         classes={classes}
         activeFilters={activeFilters}
         tblDispatch={tblDispatch}
+        totalRowCount={totalRowCount}
       >
         {children}
       </CustomLayout>

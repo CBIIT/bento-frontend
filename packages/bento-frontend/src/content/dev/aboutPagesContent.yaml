@@ -10,8 +10,8 @@
   content:
     - paragraph: "Bento is a modular, data agnostic, cloud-enable software framework for building data sharing platforms, for life science and clinical research. Instructions on using the Bento framework to set up your own platform may be found $$[here](https://cbiit.github.io/bento-docs/)."
     - paragraph: "All code necessary to use Bento is provided in the form of Docker containers. However, we do provide our code to the public for research, usage, forking and pull requests. Here are the repos for:"
-    - paragraph: "•	Core Data Model: $$[https://github.com/CBIIT/bento-model](https://github.com/CBIIT/bento-model)$$"
-    - paragraph: "•	Frontend: $$[https://github.com/CBIIT/bento-frontend](https://github.com/CBIIT/bento-frontend)"
-    - paragraph: "•	File and Data Loaders: $$[https://github.com/CBIIT/icdc-dataloader](https://github.com/CBIIT/icdc-dataloader)"
+    - paragraph: "• Core Data Model: $$[https://github.com/CBIIT/bento-model](https://github.com/CBIIT/bento-model)$$"
+    - paragraph: "• Frontend: $$[https://github.com/CBIIT/bento-frontend](https://github.com/CBIIT/bento-frontend)"
+    - paragraph: "• File and Data Loaders: $$[https://github.com/CBIIT/icdc-dataloader](https://github.com/CBIIT/icdc-dataloader)"
   secondaryZoomImageTitle: "The Bento Core Data Model"
   secondaryZoomImage: 'https://cbiit.github.io/bento-model/model-desc/bento-model.svg'

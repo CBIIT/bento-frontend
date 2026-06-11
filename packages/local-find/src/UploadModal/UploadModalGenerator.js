@@ -24,6 +24,26 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
     config, functions,
   } = uiConfig;
 
+  const matchLocalFindId = config && config.matchedId && typeof config.matchedId === 'string'
+    ? config.matchedId
+    : DEFAULT_CONFIG.config.matchedId;
+
+  const matchedLabel = config && config.matchedLabel && typeof config.matchedLabel === 'string'
+    ? config.matchedLabel
+    : DEFAULT_CONFIG.config.matchedLabel;
+
+  const associateId = config && config.associateId && typeof config.associateId === 'string'
+    ? config.associateId
+    : DEFAULT_CONFIG.config.associateId;
+
+  const associateLabel = config && config.associateLabel && typeof config.associateLabel === 'string'
+    ? config.associateLabel
+    : DEFAULT_CONFIG.config.associateLabel;
+
+  const projectName = config && config.projectName && typeof config.projectName === 'string'
+    ? config.projectName
+    : DEFAULT_CONFIG.config.projectName;
+
   const modalClosed = functions && typeof functions.modalClosed === 'function'
     ? functions.modalClosed
     : DEFAULT_CONFIG.functions.modalClosed;
@@ -208,6 +228,11 @@ export const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 classes={summaryClasses}
                 matched={matchIds}
                 unmatched={unmatchedIds}
+                matchLocalFindId={matchLocalFindId}
+                associateId={associateId}
+                matchedLabel={matchedLabel}
+                associateLabel={associateLabel}
+                projectName={projectName}
                 error={overMaxTerms ? errorText : null}
               />
             )}

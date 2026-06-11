@@ -20,7 +20,7 @@ export default () => ({
     },
     '& :hover': {
       color: 'white',
-      backgroundColor: '#10A075',
+      backgroundColor: '#10A075;',
     },
   },
   paper: {
@@ -73,4 +73,35 @@ export default () => ({
   searchBoxRoot: {
     width: '100%',
   },
-});
+  /* Searchlist styles */
+  listPadding: {
+    paddingTop: 0,
+    paddingBottom: 4,
+  },
+  deleteIcon: {
+    cursor: 'pointer',
+    marginTop: -4,
+  },
+  closeRoot: {
+    height: 10,
+  },
+  listItemGutters: {
+    padding: '0px 15px 0px 18px !important',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  searchResultDetailText: {
+    color: '#0D8662',
+    lineHeight: '20px',
+    fontFamily: 'Lato',
+    fontSize: '11px',
+    fontStyle: 'italic',
+  },
+  divider: {
+    backgroundColor: '#B1B1B1',
+    height: '1px',
+    marginRight: 11,
+    marginLeft: 12,
+  },
+}
+);
