@@ -33,6 +33,7 @@ const NewFacetView = ({
   unknownAgesState,
   expandState,
   onToggleFacetExpand,
+  basePath,
 }) => {
   const expand = expandState[facet.datafield] !== undefined ? expandState[facet.datafield] : (facet.expanded !== undefined && typeof facet.expanded === 'boolean' ? facet.expanded : false);
 
@@ -94,7 +95,7 @@ const NewFacetView = ({
     }
 
     const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/exploreParticipants${queryStr}`, { replace: true });
+    navigate(`${basePath}${queryStr}`, { replace: true });
     setSortBy(null);
 
     // Reset the corresponding unknownAges parameter in Redux state
@@ -258,6 +259,7 @@ const NewFacetView = ({
           queryParams={queryParams}
           sortBy={sortBy}
           timeUnit={timeUnit}
+          basePath={basePath}
         />
       </Accordion>
       {
@@ -267,6 +269,7 @@ const NewFacetView = ({
               <FilterItems
                 facet={displayFacet}
                 queryParams={queryParams}
+                basePath={basePath}
               />
             </List>
           </>

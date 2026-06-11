@@ -13,6 +13,7 @@ const FilterItems = ({
   queryParams,
   sortBy,
   timeUnit,
+  basePath,
   classes,
 }) => {
   const {
@@ -37,6 +38,7 @@ const FilterItems = ({
         datafield={datafield}
         facet={facet}
         queryParams={queryParams}
+        basePath={basePath}
       />
     ));
 
@@ -47,6 +49,7 @@ const FilterItems = ({
         datafield={datafield}
         facet={facet}
         queryParams={queryParams}
+        basePath={basePath}
       />
     ));
 

@@ -39,6 +39,7 @@ const CheckBoxView = ({
   onToggle,
   facet,
   queryParams,
+  basePath,
 }) => {
   const {
     name,
@@ -83,7 +84,7 @@ const CheckBoxView = ({
       paramValue[datafield] = '';
     }
     const queryStr = generateQueryStr(query, queryParams, paramValue);
-    navigate(`/exploreParticipants${queryStr}`);
+    navigate(`${basePath}${queryStr}`);
     onToggle(toggleCheckBoxItem);
   };
 
