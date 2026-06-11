@@ -1,7 +1,6 @@
 {
   "name": "@bento-core/about",
-  "version": "1.0.1-ccdiintegrated.1",
-  "description": "",
+  "version": "1.0.1-ccdiintegrated.2",
   "homepage": "https://github.com/CBIIT/bento-frontend#readme",
   "bugs": {
     "url": "https://github.com/CBIIT/bento-frontend/issues"
@@ -34,5 +33,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": ""
 }
