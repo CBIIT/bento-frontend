@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import { connect } from 'react-redux';
 import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { isEqual } from 'lodash';
 import TextField from './components/CustomTextField';
 import SearchList from './components/SearchList';
@@ -45,9 +47,16 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.noOptionsText
     : DEFAULT_CONFIG.config.noOptionsText;
 
-  const searchType = config && typeof config.searchType === 'string'
+  // Accept either a string (legacy) or an array of search-types so a consumer
+  // can pull suggestions from multiple sources (e.g. participants + synonyms).
+  const searchType = config
+    && (typeof config.searchType === 'string' || Array.isArray(config.searchType))
     ? config.searchType
     : DEFAULT_CONFIG.config.searchType;
+
+  const ariaLabel = config && typeof config.ariaLabel === 'string'
+    ? config.ariaLabel
+    : DEFAULT_CONFIG.config.ariaLabel;
 
   const stateProps = (state) => ({
     autocomplete: state.localFind.autocomplete,
@@ -71,9 +80,51 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       const [open, setOpen] = useState(false);
       const [value, setValue] = useState(autocomplete || []);
       const [options, setOptions] = useState([]);
+      const [inputValue, setInputValue] = useState('');
 
       const dataLoaded = useRef(false);
       const loading = open && (options.length === 0 || dataLoaded.current === false);
+
+      // Index where synonym (associated) rows start — list is [...participants, ...associated].
+      const associatedStartIndex = useMemo(() => {
+        for (let si = 0; si < options.length; si += 1) {
+          if (options[si].type === 'associatedIds') return si;
+        }
+        return options.length;
+      }, [options]);
+
+      // Avoid passing the full list to Autocomplete or filtering with O(n) .filter on every
+      // keystroke. Empty query: show a mix of participants + synonyms. Typed query: scan
+      // participants (bounded) then all synonym rows so CPI matches are not skipped.
+      const filteredOptions = useMemo(() => {
+        const split = associatedStartIndex;
+        const maxMatches = 400;
+        const trimmed = inputValue != null ? String(inputValue).trim() : '';
+        if (!trimmed) {
+          const half = 200;
+          const pTake = Math.min(split, half);
+          const pSlice = options.slice(0, pTake);
+          const aTake = Math.min(half, options.length - split);
+          const aSlice = options.slice(split, split + aTake);
+          return pSlice.concat(aSlice);
+        }
+        const q = trimmed.toLowerCase();
+        const out = [];
+        const maxScanP = split < 50000 ? split : 50000;
+        for (let i = 0; i < maxScanP && out.length < maxMatches; i += 1) {
+          const opt = options[i];
+          const t1 = opt.title != null ? String(opt.title).toLowerCase() : '';
+          const s1 = opt.synonym != null ? String(opt.synonym).toLowerCase() : '';
+          if (t1.includes(q) || s1.includes(q)) out.push(opt);
+        }
+        for (let i = split; i < options.length && out.length < maxMatches; i += 1) {
+          const opt2 = options[i];
+          const t2 = opt2.title != null ? String(opt2.title).toLowerCase() : '';
+          const s2 = opt2.synonym != null ? String(opt2.synonym).toLowerCase() : '';
+          if (t2.includes(q) || s2.includes(q)) out.push(opt2);
+        }
+        return out;
+      }, [inputValue, options, associatedStartIndex]);
 
       useEffect(() => {
         // Check if the data has already been loaded
@@ -83,7 +134,9 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
         (async () => {
           const opts = await getSuggestions(searchType);
-
+          await new Promise((resolve) => {
+            setTimeout(resolve, 0);
+          });
           setOptions(opts);
           dataLoaded.current = opts && opts.length > 0;
         })();
@@ -118,12 +171,18 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       }
 
       /**
-       * Handles the deletion of a search item under SearchList
+       * Handles the deletion of a search item under SearchList. The full
+       * (title, type, synonym) tuple is required because participant IDs
+       * and synonym/associated IDs may share a title.
        *
        * @param {string} val
+       * @param {string} [type]
+       * @param {string} [synonym]
        */
-      const onDelete = (val) => {
-        const newValue = value.filter((v) => v.title !== val);
+      const onDelete = (val, type, synonym) => {
+        const newValue = value.filter(
+          (v) => !(v.title === val && v.type === type && v.synonym === synonym),
+        );
         onChangeWrapper(newValue, null, true);
       };
 
@@ -132,7 +191,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
           <div>
             <SearchList
               classes={classes}
-              items={value.map((e) => e.title)}
+              items={value}
               onDelete={onDelete}
             />
           </div>
@@ -147,9 +206,12 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               open={open}
               freeSolo={false}
               noOptionsText={noOptionsText}
-              options={options}
+              options={filteredOptions}
               loading={loading}
-              filterOptions={createFilterOptions({ trim: true })}
+              // We do our own client-side filtering above (title OR synonym),
+              // so disable MUI's built-in label-only filter.
+              filterOptions={(x) => x}
+              onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
               onOpen={() => {
                 setOpen(true);
               }}
@@ -159,11 +221,34 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
               onChange={(event, newValue, reason) => onChangeWrapper(newValue, reason)}
               getOptionLabel={(option) => option.title}
               renderTags={() => null}
+              renderOption={(option) => {
+                const { type, title, synonym } = option;
+                return (
+                  <div>
+                    {type === 'associatedIds' ? (
+                      <>
+                        <span className={classes.filterName}>Synonym</span>
+                        {' '}
+                        {synonym}
+                      </>
+                    ) : (
+                      title
+                    )}
+                  </div>
+                );
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   classes={classes}
                   placeholder={inputPlaceholder}
+                  InputProps={{
+                    ...params.InputProps,
+                    inputProps: {
+                      ...params.inputProps,
+                      'aria-label': ariaLabel,
+                    },
+                  }}
                 />
               )}
             />

@@ -4,13 +4,22 @@ import {
 } from '@material-ui/core';
 
 /**
- * Renders a basic list of active search entries
+ * Renders a basic list of active search entries.
+ *
+ * Items may be passed as either:
+ *   - plain strings (legacy callers), which render as-is, or
+ *   - objects of the shape `{ title, type?, synonym? }`. Items with
+ *     `type === 'associatedIds'` render an orange "Synonym" tag followed
+ *     by the synonym value.
  *
  * @param {object} props
  * @param {object} props.classes Material UI classes
  * @param {string} [props.id] id of the list element
- * @param {string[]} [props.items] items to be displayed in the list
- * @param {function} [props.onDelete] function to be called when delete icon is clicked
+ * @param {(string|{title:string,type?:string,synonym?:string})[]} [props.items]
+ *   items to be displayed in the list
+ * @param {function} [props.onDelete] function to be called when delete icon
+ *   is clicked. Receives `(title, type, synonym)` for object items, or
+ *   `(item)` for legacy string items.
  * @returns {JSX.Element}
  */
 const SearchList = (props) => {
@@ -21,29 +30,49 @@ const SearchList = (props) => {
     onDelete,
   } = props;
 
-  const deleteWrapper = (item) => {
+  const deleteWrapper = (item, type, synonym) => {
     if (onDelete) {
-      onDelete(item);
+      onDelete(item, type, synonym);
     }
   };
 
   return (
     <List classes={{ padding: classes.listPadding }} id={id}>
-      {(items || []).reverse().map((item, index) => (
-        <>
-          <Divider className={classes.divider} />
-          <ListItem classes={{ gutters: classes.listItemGutters }} key={index}>
-            <div className={classes.searchResultDetailText}>
-              <span>
-                {item}
-              </span>
-            </div>
-            <div className={classes.deleteIcon} onClick={() => deleteWrapper(item)}>
-              <img src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg" alt="close icon" className={classes.closeRoot} />
-            </div>
-          </ListItem>
-        </>
-      ))}
+      {(items || []).reverse().map((item, index) => {
+        const isObjectItem = item !== null && typeof item === 'object';
+        const title = isObjectItem ? item.title : item;
+        const type = isObjectItem ? item.type : undefined;
+        const synonym = isObjectItem ? item.synonym : undefined;
+        const isSynonym = type === 'associatedIds';
+
+        return (
+          <React.Fragment key={`${title}-${type || ''}-${synonym || ''}-${index}`}>
+            <Divider className={classes.divider} />
+            <ListItem classes={{ gutters: classes.listItemGutters }}>
+              <div className={classes.searchResultDetailText}>
+                {isSynonym ? (
+                  <>
+                    <span className={classes.filterName}>Synonym</span>
+                    <span>{synonym}</span>
+                  </>
+                ) : (
+                  <span>{title}</span>
+                )}
+              </div>
+              <div
+                className={classes.deleteIcon}
+                onClick={() => deleteWrapper(title, type, synonym)}
+              >
+                <img
+                  src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg"
+                  alt="close icon"
+                  className={classes.closeRoot}
+                />
+              </div>
+            </ListItem>
+          </React.Fragment>
+        );
+      })}
       {items.length > 0 && <Divider className={classes.divider} />}
     </List>
   );

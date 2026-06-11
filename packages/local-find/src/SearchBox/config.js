@@ -7,7 +7,15 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
   config: {
     inputPlaceholder: 'e.g. BENTO-CASE-06, BENTO-CASE-22',
     noOptionsText: 'No matching items found',
+    /**
+     * Search type(s) to fetch suggestions for. Can be a single string
+     * (e.g. 'subjectIds') for backward compatibility, or an array of
+     * search types (e.g. ['participantIds', 'associatedIds']) to enable
+     * synonym-style multi-source autocomplete.
+     */
     searchType: 'subjectIds',
+    /** aria-label applied to the autocomplete input for accessibility */
+    ariaLabel: 'Search',
   },
 
   // Helper functions used by the component
@@ -43,8 +51,13 @@ export const DEFAULT_CONFIG_SEARCHBAR = {
      *   it returns a valid array.
      *
      * @async
-     * @param {string} searchType search type defined in the config
-     * @returns {Promise} Promise object represents the search results
+     * @param {string|string[]} searchType search type(s) defined in the
+     *   config. Will be a string when `config.searchType` is a string and
+     *   an array when `config.searchType` is an array.
+     * @returns {Promise} Promise object represents the search results.
+     *   Each item is expected to be an object of the form
+     *   `{ type, title, synonym? }`. Items with `type === 'associatedIds'`
+     *   are rendered as synonym matches.
      */
     getSuggestions: async (searchType) => [],
   },
