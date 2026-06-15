@@ -46,7 +46,7 @@ export function convertToCSV(jsonse, keysToInclude, header) {
         } else {
           line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
         }
-      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id' || keyName === 'data_category' || keyName === 'participant_id' || keyName === 'sample_anatomic_site' || keyName === 'participant_age_at_collection' || keyName === 'sample_description' || keyName === 'percent_tumor' || keyName === 'percent_necrosis' || keyName === 'consent_codes') {
+      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id' || keyName === 'data_category' || keyName === 'participant_id' || keyName === 'anatomic_site' || keyName === 'participant_age_at_collection' || keyName === 'sample_description' || keyName === 'percent_tumor' || keyName === 'percent_necrosis' || keyName === 'consent_codes') {
         if (!entry[keyName] || entry[keyName] === '[]') {
           line += '';
         } else if (entry[keyName].toString().charAt(0) === '[' && entry[keyName].toString().charAt(entry[keyName].toString().length - 1) === ']') {
@@ -104,7 +104,7 @@ export function downloadJson(tableData, table, downloadFileName) {
     let sampleId = entry.sample_id;
     let dataCategory = entry.data_category;
     let participantId = entry.participant_id;
-    let sampleAnatomicSite = entry.sample_anatomic_site;
+    let anatomicSite = entry.anatomic_site;
     let ageAtCollection = entry.participant_age_at_collection;
     let sampleDescription = entry.sample_description;
     let percentTumor = entry.percent_tumor;
@@ -128,9 +128,9 @@ export function downloadJson(tableData, table, downloadFileName) {
       participantId = participantId.toString().substring(1, participantId.length - 1);
       toReturn['Participant ID'] = participantId;
     }
-    if (sampleAnatomicSite && sampleAnatomicSite.toString().charAt(0) === '[' && sampleAnatomicSite.toString().charAt(sampleAnatomicSite.toString().length - 1) === ']') {
-      sampleAnatomicSite = sampleAnatomicSite.toString().substring(1, sampleAnatomicSite.length - 1);
-      toReturn['Sample Anatomic Site'] = sampleAnatomicSite;
+    if (anatomicSite && anatomicSite.toString().charAt(0) === '[' && anatomicSite.toString().charAt(anatomicSite.toString().length - 1) === ']') {
+      anatomicSite = anatomicSite.toString().substring(1, anatomicSite.length - 1);
+      toReturn['Anatomic Site'] = anatomicSite;
     }
     if (ageAtCollection && ageAtCollection.toString().charAt(0) === '[' && ageAtCollection.toString().charAt(ageAtCollection.toString().length - 1) === ']') {
       ageAtCollection = ageAtCollection.toString().substring(1, ageAtCollection.length - 1);
