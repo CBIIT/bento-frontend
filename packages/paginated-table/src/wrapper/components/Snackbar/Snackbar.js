@@ -21,7 +21,7 @@ const SnackbarView = (props) => {
         className="snackBar"
         open={open}
         autoHideDuration={3000}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         message={(
           <div className="snackBarMessage">
             <span className="snackBarMessageIcon">

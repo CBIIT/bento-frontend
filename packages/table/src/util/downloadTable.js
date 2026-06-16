@@ -46,7 +46,7 @@ export function convertToCSV(jsonse, keysToInclude, header) {
         } else {
           line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
         }
-      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id' || keyName === 'data_category') {
+      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id' || keyName === 'data_category' || keyName === 'participant_id' || keyName === 'anatomic_site' || keyName === 'participant_age_at_collection' || keyName === 'sample_description' || keyName === 'percent_tumor' || keyName === 'percent_necrosis' || keyName === 'consent_codes') {
         if (!entry[keyName] || entry[keyName] === '[]') {
           line += '';
         } else if (entry[keyName].toString().charAt(0) === '[' && entry[keyName].toString().charAt(entry[keyName].toString().length - 1) === ']') {
@@ -103,6 +103,13 @@ export function downloadJson(tableData, table, downloadFileName) {
     let survivalStatus = entry.last_known_survival_status;
     let sampleId = entry.sample_id;
     let dataCategory = entry.data_category;
+    let participantId = entry.participant_id;
+    let anatomicSite = entry.anatomic_site;
+    let ageAtCollection = entry.participant_age_at_collection;
+    let sampleDescription = entry.sample_description;
+    let percentTumor = entry.percent_tumor;
+    let percentNecrosis = entry.percent_necrosis;
+    let consentCodes = entry.consent_codes;
     const toReturn = { ...entry };
 
     if (survivalStatus && survivalStatus.toString().charAt(0) === '[' && survivalStatus.toString().charAt(survivalStatus.toString().length - 1) === ']') {
@@ -117,6 +124,35 @@ export function downloadJson(tableData, table, downloadFileName) {
       dataCategory = dataCategory.toString().substring(1, dataCategory.length - 1);
       toReturn['Data Category'] = dataCategory;
     }
+    if (participantId && participantId.toString().charAt(0) === '[' && participantId.toString().charAt(participantId.toString().length - 1) === ']') {
+      participantId = participantId.toString().substring(1, participantId.length - 1);
+      toReturn['Participant ID'] = participantId;
+    }
+    if (anatomicSite && anatomicSite.toString().charAt(0) === '[' && anatomicSite.toString().charAt(anatomicSite.toString().length - 1) === ']') {
+      anatomicSite = anatomicSite.toString().substring(1, anatomicSite.length - 1);
+      toReturn['Anatomic Site'] = anatomicSite;
+    }
+    if (ageAtCollection && ageAtCollection.toString().charAt(0) === '[' && ageAtCollection.toString().charAt(ageAtCollection.toString().length - 1) === ']') {
+      ageAtCollection = ageAtCollection.toString().substring(1, ageAtCollection.length - 1);
+      toReturn['Age at Collection'] = ageAtCollection;
+    }
+    if (sampleDescription && sampleDescription.toString().charAt(0) === '[' && sampleDescription.toString().charAt(sampleDescription.toString().length - 1) === ']') {
+      sampleDescription = sampleDescription.toString().substring(1, sampleDescription.length - 1);
+      toReturn['Sample Description'] = sampleDescription;
+    }
+    if (percentTumor && percentTumor.toString().charAt(0) === '[' && percentTumor.toString().charAt(percentTumor.toString().length - 1) === ']') {
+      percentTumor = percentTumor.toString().substring(1, percentTumor.length - 1);
+      toReturn['Percent Tumor'] = percentTumor;
+    }
+    if (percentNecrosis && percentNecrosis.toString().charAt(0) === '[' && percentNecrosis.toString().charAt(percentNecrosis.toString().length - 1) === ']') {
+      percentNecrosis = percentNecrosis.toString().substring(1, percentNecrosis.length - 1);
+      toReturn['Percent Necrosis'] = percentNecrosis;
+    }
+    if (consentCodes && consentCodes.toString().charAt(0) === '[' && consentCodes.toString().charAt(consentCodes.toString().length - 1) === ']') {
+      consentCodes = consentCodes.toString().substring(1, consentCodes.length - 1);
+      toReturn['Consent Codes'] = consentCodes;
+    }
+
     toDelete.forEach((column) => delete toReturn[column.dataField]);
     return toReturn;
   });
