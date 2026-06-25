@@ -63,8 +63,10 @@ const SearchFilterItems = ({
     />));
 
   useEffect(() => {
-    scrollableRef.current.scrollTo(0, 0);
     setDisplayCount(initialItemSize);
+    if (scrollableRef.current) {
+      scrollableRef.current.scrollTo(0, 0);
+    }
   }, [searchText]);
 
   const handleScroll = (e) => {
