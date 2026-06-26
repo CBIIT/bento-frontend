@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/about",
-  "version": "1.0.1-ccdiintegrated.2",
+  "version": "1.0.1-ccdiintegrated.3",
   "homepage": "https://github.com/CBIIT/bento-frontend#readme",
   "bugs": {
     "url": "https://github.com/CBIIT/bento-frontend/issues"
@@ -19,7 +19,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@bento-core/facet-filter": "1.0.1-ccdiintegrated.4",
+    "@bento-core/facet-filter": "1.0.1-ccdiintegrated.5",
     "lodash": "^4.17.20",
     "react-zoom-pan-pinch": "*"
   },
