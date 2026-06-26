@@ -23,7 +23,12 @@ const FilterItems = ({
 
   if (type === InputTypes.SLIDER) {
     return (
-      <ReduxSlider facet={facet} queryParams={queryParams} timeUnit={timeUnit} />
+      <ReduxSlider
+        facet={facet}
+        queryParams={queryParams}
+        timeUnit={timeUnit}
+        basePath={basePath}
+      />
     );
   }
 
