@@ -204,7 +204,7 @@ const SearchFacetView = ({
                   className={searchText && searchText.trim() !== '' ? classes.searchBoxWithText : classes.searchBox}
                   value={searchText}
                   type="text"
-                  placeholder="e.g. Sarcoma, Neoplasm, phs087..."
+                  placeholder={facet.searchPlaceholder || 'e.g. Sarcoma, Neoplasm, phs087...'}
                   onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)}
                 />
                 {

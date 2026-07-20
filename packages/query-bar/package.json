@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/query-bar",
-  "version": "1.0.1-ccdiintegrated.5",
+  "version": "1.0.1-ccdiintegrated.6",
   "description": "This package provides the Query Bar component that displays the current Facet Search and Local Find filters on the Dashboard/Explore page. It also provides the direct ability to reset all or some of the filters with the click of a button. It is designed to be implemented directly with the:",
   "homepage": "https://github.com/CBIIT/bento-frontend#readme",
   "bugs": {
@@ -20,7 +20,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@bento-core/facet-filter": "1.0.1-ccdiintegrated.5",
+    "@bento-core/facet-filter": "1.0.1-ccdiintegrated.6",
     "lodash": "^4.17.20"
   },
   "devDependencies": {},
