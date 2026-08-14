@@ -3,6 +3,7 @@ import {
   Button, Typography, Divider, withStyles,
 } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import ToolTip from '@bento-core/tool-tip';
 
 /**
  * Creates a file upload component with CSV and TXT file
@@ -59,7 +60,17 @@ const FileUploader = (props) => {
         {
           filename ? (
             <div className={classes.fileNameContainer}>
-              <Typography className={classes.fileName}>{filename}</Typography>
+              <ToolTip
+                className={classes.fileNameTooltip}
+                classes={{ arrow: classes.fileNameTooltipArrow }}
+                title={filename}
+                arrow
+                placement="bottom"
+              >
+                <Typography className={classes.fileName} noWrap>
+                  {filename}
+                </Typography>
+              </ToolTip>
               <RefreshIcon className={classes.refresh} onClick={onClear} />
             </div>
           ) : null
@@ -115,7 +126,8 @@ const styles = () => ({
   },
   horizontal: {
     height: 1,
-    width: 214,
+    width: '100%',
+    maxWidth: 214,
     backgroundColor: '#FFFFFF',
     marginTop: 30,
   },
@@ -124,20 +136,44 @@ const styles = () => ({
     flexDirection: 'column',
     alignItems: 'center',
     paddingTop: '16px',
+    width: '100%',
+    maxWidth: '100%',
+    minWidth: 0,
+    boxSizing: 'border-box',
   },
   fileName: {
     margin: 'unset',
     color: '#0D4A94',
     fontSize: 14,
+    minWidth: 0,
+    flex: '1 1 auto',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   fileNameContainer: {
     display: 'flex',
     alignItems: 'center',
+    width: '100%',
+    maxWidth: '100%',
+    minWidth: 0,
+    boxSizing: 'border-box',
+  },
+  // Match UploadModal help-icon ToolTip (customTooltip / customArrow).
+  fileNameTooltip: {
+    padding: 5,
+  },
+  fileNameTooltipArrow: {
+    '&::before': {
+      border: '#03A383 1px solid',
+    },
   },
   refresh: {
     color: '#1F2F50',
     height: 14,
     cursor: 'pointer',
+    flexShrink: 0,
+    marginLeft: 4,
   },
 });
 
