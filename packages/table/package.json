@@ -1,7 +1,6 @@
 {
   "name": "@bento-core/table",
-  "version": "1.0.1-ccdiintegrated.2",
-  "description": "",
+  "version": "1.0.1-ccdiintegrated.3",
   "homepage": "https://github.com/CBIIT/bento-frontend#readme",
   "bugs": {
     "url": "https://github.com/CBIIT/bento-frontend/issues"
@@ -39,5 +38,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": ""
 }

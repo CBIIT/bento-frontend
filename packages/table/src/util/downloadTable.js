@@ -1,6 +1,40 @@
 import { formatBytes, formatColumnValues } from './Dataformat';
 import { actionCellTypes, notIncludedCellStyle } from './Types';
 
+const AGE_FIELDS = new Set([
+  'age_at_diagnosis',
+  'participant_age_at_collection',
+  'age_at_treatment_start',
+  'age_at_treatment_end',
+  'age_at_response',
+  'age_at_last_known_survival_status',
+  'age_at_event_free_survival_status',
+]);
+
+/**
+ * Sentinel OpenSearch age values (-999) become "Not Reported" for CSV/JSON download.
+ * Supports scalars, arrays (files table), and bracketed strings.
+ */
+export function formatAgeForDownload(value) {
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return 'Not Reported';
+    }
+    return value.map((item) => formatAgeForDownload(item)).join('; ');
+  }
+  if (value === -999 || value === '-999' || value == null || value === '') {
+    return 'Not Reported';
+  }
+  if (typeof value === 'string' && value.startsWith('[') && value.endsWith(']')) {
+    const inner = value.slice(1, -1).trim();
+    if (!inner) {
+      return 'Not Reported';
+    }
+    return inner.split(',').map((item) => formatAgeForDownload(item.trim())).join('; ');
+  }
+  return String(value);
+}
+
 export function createFileName(fileName, type) {
   const date = new Date();
   const yyyy = date.getFullYear();
@@ -40,13 +74,13 @@ export function convertToCSV(jsonse, keysToInclude, header) {
       if (line !== '') line += ',';
       if (keyName === 'file_size') {
         line += entry[keyName] !== null ? `"${formatBytes(entry[keyName])}"` : ' ';
-      } else if (keyName === 'age_at_diagnosis' || keyName === 'participant_age_at_collection') {
-        if (entry[keyName] === -999) {
-          line += 'Not Reported';
+      } else if (AGE_FIELDS.has(keyName)) {
+        if (entry[keyName] == null) {
+          line += ' ';
         } else {
-          line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
+          line += `"${formatAgeForDownload(entry[keyName])}"`;
         }
-      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id' || keyName === 'data_category' || keyName === 'participant_id' || keyName === 'anatomic_site' || keyName === 'participant_age_at_collection' || keyName === 'sample_description' || keyName === 'percent_tumor' || keyName === 'percent_necrosis' || keyName === 'consent_codes') {
+      } else if (keyName === 'last_known_survival_status' || keyName === 'sample_id' || keyName === 'data_category' || keyName === 'participant_id' || keyName === 'anatomic_site' || keyName === 'sample_description' || keyName === 'percent_tumor' || keyName === 'percent_necrosis' || keyName === 'consent_codes') {
         if (!entry[keyName] || entry[keyName] === '[]') {
           line += '';
         } else if (entry[keyName].toString().charAt(0) === '[' && entry[keyName].toString().charAt(entry[keyName].toString().length - 1) === ']') {
@@ -105,12 +139,17 @@ export function downloadJson(tableData, table, downloadFileName) {
     let dataCategory = entry.data_category;
     let participantId = entry.participant_id;
     let anatomicSite = entry.anatomic_site;
-    let ageAtCollection = entry.participant_age_at_collection;
     let sampleDescription = entry.sample_description;
     let percentTumor = entry.percent_tumor;
     let percentNecrosis = entry.percent_necrosis;
     let consentCodes = entry.consent_codes;
     const toReturn = { ...entry };
+
+    AGE_FIELDS.forEach((field) => {
+      if (Object.prototype.hasOwnProperty.call(entry, field) && entry[field] != null) {
+        toReturn[field] = formatAgeForDownload(entry[field]);
+      }
+    });
 
     if (survivalStatus && survivalStatus.toString().charAt(0) === '[' && survivalStatus.toString().charAt(survivalStatus.toString().length - 1) === ']') {
       survivalStatus = survivalStatus.toString().substring(1, survivalStatus.length - 1);
@@ -131,10 +170,6 @@ export function downloadJson(tableData, table, downloadFileName) {
     if (anatomicSite && anatomicSite.toString().charAt(0) === '[' && anatomicSite.toString().charAt(anatomicSite.toString().length - 1) === ']') {
       anatomicSite = anatomicSite.toString().substring(1, anatomicSite.length - 1);
       toReturn['Anatomic Site'] = anatomicSite;
-    }
-    if (ageAtCollection && ageAtCollection.toString().charAt(0) === '[' && ageAtCollection.toString().charAt(ageAtCollection.toString().length - 1) === ']') {
-      ageAtCollection = ageAtCollection.toString().substring(1, ageAtCollection.length - 1);
-      toReturn['Age at Collection'] = ageAtCollection;
     }
     if (sampleDescription && sampleDescription.toString().charAt(0) === '[' && sampleDescription.toString().charAt(sampleDescription.toString().length - 1) === ']') {
       sampleDescription = sampleDescription.toString().substring(1, sampleDescription.length - 1);
