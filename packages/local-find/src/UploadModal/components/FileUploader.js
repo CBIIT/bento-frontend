@@ -4,6 +4,20 @@ import {
 } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
+const MAX_DISPLAY_LENGTH = 42;
+
+/** Truncate a filename as start...end so it stays on one line. */
+const truncateMiddleFilename = (name, maxLength = MAX_DISPLAY_LENGTH) => {
+  if (!name || name.length <= maxLength) {
+    return name;
+  }
+  const ellipsis = '...';
+  const available = maxLength - ellipsis.length;
+  const startLength = Math.ceil(available * 0.55);
+  const endLength = Math.floor(available * 0.45);
+  return `${name.substring(0, startLength)}${ellipsis}${name.substring(name.length - endLength)}`;
+};
+
 /**
  * Creates a file upload component with CSV and TXT file
  * parsing capabilities.
@@ -59,7 +73,9 @@ const FileUploader = (props) => {
         {
           filename ? (
             <div className={classes.fileNameContainer}>
-              <Typography className={classes.fileName}>{filename}</Typography>
+              <Typography className={classes.fileName}>
+                {truncateMiddleFilename(filename)}
+              </Typography>
               <RefreshIcon className={classes.refresh} onClick={onClear} />
             </div>
           ) : null
@@ -124,20 +140,26 @@ const styles = () => ({
     flexDirection: 'column',
     alignItems: 'center',
     paddingTop: '16px',
+    width: '100%',
+    minWidth: 0,
   },
   fileName: {
     margin: 'unset',
     color: '#0D4A94',
     fontSize: 14,
+    whiteSpace: 'nowrap',
   },
   fileNameContainer: {
     display: 'flex',
     alignItems: 'center',
+    maxWidth: '100%',
+    minWidth: 0,
   },
   refresh: {
     color: '#1F2F50',
     height: 14,
     cursor: 'pointer',
+    flexShrink: 0,
   },
 });
 
