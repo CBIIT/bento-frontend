@@ -6,5 +6,5 @@ export {
   ComponentTypes,
   dataFormatTypes,
 } from './util/Types';
-export { formatBytes } from './util/Dataformat';
+export { formatBytes, stripSurroundingBrackets, formatValueForDisplay } from './util/Dataformat';
 export { default as AddToCart } from './wrapper/components/AddToCart/ReduxAddToCart';

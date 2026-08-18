@@ -3,6 +3,7 @@ import {
   Link, Typography,
 } from '@material-ui/core';
 import { cellTypes } from '../../util/Types';
+import { formatValueForDisplay } from '../../util/Dataformat';
 
 /**
 * Custom Link component
@@ -16,7 +17,7 @@ const CustomLinkView = ({
   return (
     <Link href={url} className={cellTypes.LINK}>
       <Typography>
-        {row[column?.dataField]}
+        {formatValueForDisplay(row[column?.dataField])}
       </Typography>
     </Link>
   );
