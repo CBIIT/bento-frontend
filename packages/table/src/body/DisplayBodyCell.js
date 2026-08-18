@@ -4,6 +4,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { cellTypes } from '../util/Types';
+import { formatValueForDisplay, stripSurroundingBrackets } from '../util/Dataformat';
 import CustomLinkView from './components/CustomLinkView';
 import DataFormatView from './components/DataFormatView';
 import CPIView from './components/CPIView';
@@ -18,9 +19,15 @@ const CustomComponent = ({
   column,
 }) => {
   const { dataField, customCellRender } = column;
+  const stripped = stripSurroundingBrackets(row[dataField]);
   return (
     <>
-      {customCellRender({ ...row, ...column, label: row[dataField] })}
+      {customCellRender({
+        ...row,
+        ...column,
+        [dataField]: stripped,
+        label: stripped,
+      })}
     </>
   );
 };
@@ -88,7 +95,7 @@ const ViewCell = ({
     default:
       return (
         <Typography>
-          {row[column.dataField]}
+          {formatValueForDisplay(row[column.dataField])}
         </Typography>
       );
   }

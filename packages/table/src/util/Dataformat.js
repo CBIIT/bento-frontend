@@ -31,3 +31,42 @@ export const formatColumnValues = (columns, data) => {
   }
   return data;
 };
+
+/**
+ * Remove wrapping square brackets from OpenSearch array-as-string values.
+ * "[Complete Response]" => "Complete Response"; "[]" => "".
+ */
+export const stripSurroundingBrackets = (value) => {
+  if (value == null) {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map((item) => stripSurroundingBrackets(item));
+  }
+  if (typeof value !== 'string') {
+    return value;
+  }
+  const text = value.trim();
+  if (text === '[]') {
+    return '';
+  }
+  if (text.startsWith('[') && text.endsWith(']')) {
+    return text.slice(1, -1).trim();
+  }
+  return value;
+};
+
+/** Display helper: strip wrapping brackets and join arrays. */
+export const formatValueForDisplay = (value) => {
+  const stripped = stripSurroundingBrackets(value);
+  if (Array.isArray(stripped)) {
+    return stripped
+      .map((item) => (item == null ? '' : String(item)))
+      .filter(Boolean)
+      .join(', ');
+  }
+  if (stripped == null) {
+    return '';
+  }
+  return String(stripped);
+};
