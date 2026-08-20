@@ -33,6 +33,14 @@ export const formatColumnValues = (columns, data) => {
 };
 
 /**
+ * Column flag `stripSurroundingBrackets: false` disables OpenSearch
+ * bracket-stripping for that column. Default (undefined/true) is enabled.
+ */
+export const isBracketStripEnabled = (column = {}) => (
+  column.stripSurroundingBrackets !== false
+);
+
+/**
  * Remove wrapping square brackets from OpenSearch array-as-string values.
  * "[Complete Response]" => "Complete Response"; "[]" => "".
  */
