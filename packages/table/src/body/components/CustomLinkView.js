@@ -3,7 +3,7 @@ import {
   Link, Typography,
 } from '@material-ui/core';
 import { cellTypes } from '../../util/Types';
-import { formatValueForDisplay } from '../../util/Dataformat';
+import { formatValueForDisplay, isBracketStripEnabled } from '../../util/Dataformat';
 
 /**
 * Custom Link component
@@ -17,7 +17,9 @@ const CustomLinkView = ({
   return (
     <Link href={url} className={cellTypes.LINK}>
       <Typography>
-        {formatValueForDisplay(row[column?.dataField])}
+        {isBracketStripEnabled(column)
+          ? formatValueForDisplay(row[column?.dataField])
+          : row[column?.dataField]}
       </Typography>
     </Link>
   );

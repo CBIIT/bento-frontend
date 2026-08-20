@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 import { dataFormatTypes } from '../../util/Types';
-import { formatBytes, formatValueForDisplay } from '../../util/Dataformat';
+import { formatBytes, formatValueForDisplay, isBracketStripEnabled } from '../../util/Dataformat';
 
 /**
 * dataformat view for file size (byte, MB, GB)
@@ -23,7 +23,9 @@ const CellView = ({
     default:
       return (
         <Typography>
-          {formatValueForDisplay(value)}
+          {isBracketStripEnabled(column)
+            ? formatValueForDisplay(value)
+            : value}
         </Typography>
       );
   }
