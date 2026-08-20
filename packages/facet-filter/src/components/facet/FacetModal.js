@@ -22,6 +22,31 @@ const resetIcon = {
   size: '12 px',
 };
 
+const SEARCH_PLACEHOLDERS_BY_LABEL = {
+  Diagnosis: 'e.g. Neuroblastoma, Osteosarcoma, Leukemia',
+  'Diagnosis Category': 'e.g. Embryonal tumors, Gliomas, Leukemias',
+  'Gene Symbol': 'e.g. A1CF, CREB3L1, PIK3CA',
+  Alteration: 'e.g. BRAF V600E, EWSR1-FLI1, ALK Mutation',
+  'Sample Anatomic Site': 'e.g. Bone marrow, Blood, Brain',
+};
+
+const SEARCH_PLACEHOLDERS_BY_DATAFIELD = {
+  diagnoses: SEARCH_PLACEHOLDERS_BY_LABEL.Diagnosis,
+  diagnosis: SEARCH_PLACEHOLDERS_BY_LABEL.Diagnosis,
+  diagnosis_category: SEARCH_PLACEHOLDERS_BY_LABEL['Diagnosis Category'],
+  gene_symbol: SEARCH_PLACEHOLDERS_BY_LABEL['Gene Symbol'],
+  alteration: SEARCH_PLACEHOLDERS_BY_LABEL.Alteration,
+  sample_anatomic_site: SEARCH_PLACEHOLDERS_BY_LABEL['Sample Anatomic Site'],
+  anatomic_site: SEARCH_PLACEHOLDERS_BY_LABEL['Sample Anatomic Site'],
+};
+
+const getSearchPlaceholder = (facet) => (
+  facet.searchPlaceholder
+  || SEARCH_PLACEHOLDERS_BY_LABEL[facet.label]
+  || SEARCH_PLACEHOLDERS_BY_DATAFIELD[facet.datafield]
+  || 'Search...'
+);
+
 const ModalView = ({
   classes,
   facet,
@@ -74,7 +99,7 @@ const ModalView = ({
         </div>
         <div className={classes.searchContainer}>
           <div className={classes.searchInputbox}>{`Search ${facet.label}`}</div>
-          <input className={classes.searchBox} value={searchText} type="text" placeholder="e.g. A1CF, CREB3L1, PIK3CA" onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)} />
+          <input className={classes.searchBox} value={searchText} type="text" placeholder={getSearchPlaceholder(facet)} onChange={(e) => onSearchTextChange(facet.datafield, e.target.value)} />
           <Button
             variant="outlined"
             onClick={() => onSearchTextChange(facet.datafield, '')}
