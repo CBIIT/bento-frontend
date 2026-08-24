@@ -1,10 +1,12 @@
 import React from 'react';
 import { Snackbar } from '@material-ui/core';
+import { formatCartAddMessage } from '@bento-core/cart';
 import SuccessOutlinedIcon from './SuccessOutlined';
 
 const SnackbarView = (props) => {
   const {
     count,
+    alreadyInCartCount = 0,
     open,
     onClose,
   } = props;
@@ -30,9 +32,7 @@ const SnackbarView = (props) => {
               {' '}
             </span>
             <span className="snackBarText">
-              {count}
-              {' '}
-              File(s) successfully added to your cart
+              {formatCartAddMessage(count, alreadyInCartCount)}
             </span>
           </div>
         )}

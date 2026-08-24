@@ -24,18 +24,19 @@ export const filterOutIDs = (targetIds = [], existingIds = []) => {
 };
 
 const addFilesToCart = (state, payload = []) => {
-  const distinctIds = filterOutIDs(state.filesId, payload) || [];
-  // remove duplicated subject's id
+  const payloadUnique = [...new Set(payload)];
+  const alreadyInCartCount = payloadUnique.filter((id) => state.filesId.includes(id)).length;
+  const newIds = payloadUnique.filter((id) => !state.filesId.includes(id));
   const uniqueFileIds = payload.length > 0
     ? Array.from(
       new Set(
         state.filesId.concat(payload),
       ),
     ) : state.filesId;
-  // localStorage.setItem('CartFileIds', JSON.stringify(uniqueFileIds) || []);
   return {
     filesId: [...uniqueFileIds],
-    count: distinctIds.length,
+    count: newIds.length,
+    alreadyInCartCount,
   };
 };
 

@@ -66,6 +66,7 @@ const AddToCartView = (props) => {
     buttonStyle,
     addFiles,
     count,
+    alreadyInCartCount,
   } = props;
 
   // const [isDataloading, setIsDataloading] = useState(false);
@@ -85,14 +86,14 @@ const AddToCartView = (props) => {
   */
   const addAllFiles = () => {
     const idsInitial = fileId || [];
-    const ids = [idsInitial];
+    const ids = Array.isArray(idsInitial) ? idsInitial : [idsInitial];
     const fileCount = ids.length;
     const upperLimit = 200000;
     const cartCount = cartFiles.length;
     if (fileCount <= upperLimit && cartCount < upperLimit) {
       const newIds = checkDuplicate(cartFiles, ids);
       if (cartCount + newIds.length <= upperLimit) {
-        addFiles(newIds);
+        addFiles(ids);
         setOpenSnackbar(true);
       } else {
         setAlterDisplay(true);
@@ -116,6 +117,7 @@ const AddToCartView = (props) => {
       <SnackbarView
         open={openSnackbar}
         count={count}
+        alreadyInCartCount={alreadyInCartCount}
         onClose={() => setOpenSnackbar(false)}
       />
       {displayAlter && (

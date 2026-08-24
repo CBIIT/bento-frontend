@@ -8,7 +8,7 @@ const getCartItem = () => (new Promise((resolve, reject) => {
     const transaction = db.transaction(DB_STORE_NAME, 'readwrite');
     const store = transaction.objectStore(DB_STORE_NAME);
     const request = store.getAll();
-    request.onsuccess = function (event) {
+    request.onsuccess = (event) => {
       resolve(event.target.result);
     };
 
@@ -18,7 +18,7 @@ const getCartItem = () => (new Promise((resolve, reject) => {
     transaction.oncomplete = () => {
       db.close();
     };
-    transaction.onerror = function (event) { reject(event); };
+    transaction.onerror = (event) => { reject(event); };
   };
   open.onerror = (event) => { reject(event); };
   open.onupgradeneeded = (event) => {
@@ -44,7 +44,7 @@ const addCartItem = (files) => (new Promise((resolve, reject) => {
     };
     transaction.onerror = (event) => { reject(event); };
   };
-  open.onerror = function (event) { reject(event); };
+  open.onerror = (event) => { reject(event); };
   open.onupgradeneeded = (event) => {
     const db = event.target.result;
     db.createObjectStore(DB_STORE_NAME, { keyPath: 'fileId', autoIncrement: false });
@@ -53,7 +53,7 @@ const addCartItem = (files) => (new Promise((resolve, reject) => {
 
 const deleteCartItem = (fileId) => (new Promise((resolve, reject) => {
   const open = indexedDB.open(DB_NAME, 1);
-  open.onsuccess = function () {
+  open.onsuccess = () => {
     const db = open.result;
     const transaction = db.transaction(DB_STORE_NAME, 'readwrite');
     const store = transaction.objectStore(DB_STORE_NAME);
@@ -68,9 +68,9 @@ const deleteCartItem = (fileId) => (new Promise((resolve, reject) => {
     transaction.oncomplete = () => {
       db.close();
     };
-    transaction.onerror = function (event) { reject(event); };
+    transaction.onerror = (event) => { reject(event); };
   };
-  open.onerror = function (event) { reject(event); };
+  open.onerror = (event) => { reject(event); };
   open.onupgradeneeded = (event) => {
     const db = event.target.result;
     db.createObjectStore(DB_STORE_NAME, { keyPath: 'fileId', autoIncrement: false });
@@ -79,7 +79,7 @@ const deleteCartItem = (fileId) => (new Promise((resolve, reject) => {
 
 const deleteAllCartItem = () => (new Promise((resolve, reject) => {
   const open = indexedDB.open(DB_NAME, 1);
-  open.onsuccess = function () {
+  open.onsuccess = () => {
     const db = open.result;
     const transaction = db.transaction(DB_STORE_NAME, 'readwrite');
     const store = transaction.objectStore(DB_STORE_NAME);
@@ -91,12 +91,12 @@ const deleteAllCartItem = () => (new Promise((resolve, reject) => {
       reject(evt);
     };
     // Close the db when the transaction is done
-    transaction.oncomplete = function () {
+    transaction.oncomplete = () => {
       db.close();
     };
-    transaction.onerror = function (event) { reject(event); };
+    transaction.onerror = (event) => { reject(event); };
   };
-  open.onerror = function (event) { reject(event); };
+  open.onerror = (event) => { reject(event); };
   open.onupgradeneeded = (event) => {
     const db = event.target.result;
     db.createObjectStore(DB_STORE_NAME, { keyPath: 'fileId', autoIncrement: false });
