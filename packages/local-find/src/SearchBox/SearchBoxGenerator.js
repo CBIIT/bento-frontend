@@ -95,7 +95,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
       // Avoid passing the full list to Autocomplete or filtering with O(n) .filter on every
       // keystroke. Empty query: show a mix of participants + synonyms. Typed query: scan
-      // participants (bounded) then all synonym rows so CPI matches are not skipped.
+      // all participant rows then synonym rows so matches are not skipped.
       const filteredOptions = useMemo(() => {
         const split = associatedStartIndex;
         const maxMatches = 400;
@@ -110,7 +110,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
         }
         const q = trimmed.toLowerCase();
         const out = [];
-        const maxScanP = split < 50000 ? split : 50000;
+        const maxScanP = split;
         for (let i = 0; i < maxScanP && out.length < maxMatches; i += 1) {
           const opt = options[i];
           const t1 = opt.title != null ? String(opt.title).toLowerCase() : '';
