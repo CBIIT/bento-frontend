@@ -18,6 +18,7 @@ const AddFilesView = (props) => {
   const {
     btnType,
     count,
+    alreadyInCartCount,
     alertMessage,
     cartFiles,
   } = props;
@@ -62,6 +63,7 @@ const AddFilesView = (props) => {
       <SnackbarView
         open={openSnackbar}
         count={count}
+        alreadyInCartCount={alreadyInCartCount}
         onClose={() => setOpenSnackbar(false)}
       />
       {(displayAlter) && (

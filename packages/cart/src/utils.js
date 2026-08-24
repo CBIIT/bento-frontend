@@ -1,3 +1,25 @@
+export const getCartAddCounts = (cartFiles = [], fileIds = []) => {
+  const payloadUnique = [...new Set(fileIds)];
+  const cartSet = new Set(cartFiles);
+  const alreadyInCartCount = payloadUnique.filter((id) => cartSet.has(id)).length;
+  const addedCount = payloadUnique.length - alreadyInCartCount;
+  return { addedCount, alreadyInCartCount };
+};
+
+export const formatCartAddMessage = (addedCount = 0, alreadyInCartCount = 0) => {
+  const parts = [];
+  if (addedCount > 0 || alreadyInCartCount > 0) {
+    parts.push(`${addedCount} File(s) successfully added to your cart`);
+  }
+  if (alreadyInCartCount > 0) {
+    parts.push(`${alreadyInCartCount} File(s) were already in your cart`);
+  }
+  if (parts.length === 0) {
+    return 'No files were added to your cart';
+  }
+  return parts.join('. ');
+};
+
 export function createFileName(fileName) {
   const date = new Date();
   const yyyy = date.getFullYear();

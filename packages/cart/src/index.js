@@ -14,4 +14,6 @@ export {
   createFileName,
   convertToCSV,
   downloadJson,
+  getCartAddCounts,
+  formatCartAddMessage,
 } from './utils';

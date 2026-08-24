@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/table",
-  "version": "1.0.1-ccdiintegrated.5",
+  "version": "1.0.1-ccdiintegrated.6",
   "homepage": "https://github.com/CBIIT/bento-frontend#readme",
   "bugs": {
     "url": "https://github.com/CBIIT/bento-frontend/issues"
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.3",
-    "@bento-core/cart": "1.0.1-ccdiintegrated.1",
+    "@bento-core/cart": "1.0.1-ccdiintegrated.2",
     "@bento-core/tool-tip": "1.0.1-ccdiintegrated.1",
     "@bento-core/util": "1.0.1-ccdiintegrated.1",
     "clsx": "^2.1.1",

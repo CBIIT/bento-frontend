@@ -123,7 +123,7 @@ const AddAllFilesComponent = (props) => {
             setIsDataloading(false);
             if (cartCount + newIds.length <= upperLimit) {
               setOpen(true);
-              setAddFilesId(newIds);
+              setAddFilesId(ids);
             } else {
               setAlterDisplay(true);
             }
