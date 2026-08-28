@@ -15,7 +15,9 @@ import { ResultCard } from './ResultCard';
  * @param {object} props
  * @param {object} props.classes - Material UI styles
  * @param {string} props.searchText - The search text used for the search query
- * @param {number} props.count - The total number of results for this tab
+ * @param {number|null} props.count - The total number of results for this tab.
+ *   Pass `null` while counts are still loading so the panel shows the spinner
+ *   instead of flashing an empty/zero state.
  * @param {function} props.getTabData - The function to fetch paginated data
  * @param {number} props.pageSize - The number of results to fetch per page
  * @param {string} props.field - The field to search on
@@ -55,18 +57,31 @@ const PaginatedPanel = (props) => {
     );
   }
 
+  const countsPending = count == null;
+  const hasSearchText = Boolean(searchText && searchText.length > 0);
   const sizelist = [10, 20, 50, 100];
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // Show the existing spinner while counts are pending or a data fetch is expected.
+  const [loading, setLoading] = useState(
+    () => countsPending || Boolean(count && hasSearchText),
+  );
   const [pageListVisible, setPageListVisible] = useState(0);
   const [pageSize, setSize] = useState(sizelist[0]);
   const perPageSelection = useRef(null);
   useOutsideAlerter(perPageSelection);
 
   async function onChange(newPage = 1) {
+    // Counts not loaded yet — keep the spinner, do not treat as empty results.
+    if (count == null) {
+      setLoading(true);
+      setData([]);
+      return;
+    }
+
     // Reset data if search text is empty or there are no results
     if (!count || !searchText || searchText.length <= 0) {
+      setLoading(false);
       setData([]);
       return;
     }
@@ -142,7 +157,7 @@ const PaginatedPanel = (props) => {
 
   return (
     <>
-      {Math.ceil(count / pageSize) !== 0 && (
+      {count != null && Math.ceil(count / pageSize) !== 0 && (
         <div className={classes.totalResults}>
           <span id="global_search_results_count" className={classes.totalCount}>{count}</span>
           {' '}
@@ -154,7 +169,7 @@ const PaginatedPanel = (props) => {
           {renderCards()}
         </Grid>
       </Grid>
-      {Math.ceil(count / pageSize) !== 0 && (
+      {count != null && Math.ceil(count / pageSize) !== 0 && (
         <div className={classes.paginationContainer}>
           <div className={classes.perPageContainer}>
             Results per Page:
