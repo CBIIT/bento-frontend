@@ -1,6 +1,6 @@
 {
   "name": "@bento-core/paginated-table",
-  "version": "1.0.1-ccdiintegrated.7",
+  "version": "1.0.1-ccdiintegrated.8",
   "homepage": "https://github.com/CBIIT/bento-frontend#readme",
   "bugs": {
     "url": "https://github.com/CBIIT/bento-frontend/issues"
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@bento-core/cart": "1.0.1-ccdiintegrated.2",
-    "@bento-core/table": "1.0.1-ccdiintegrated.6",
+    "@bento-core/table": "1.0.1-ccdiintegrated.7",
     "@bento-core/tool-tip": "1.0.1-ccdiintegrated.1",
     "@bento-core/util": "1.0.1-ccdiintegrated.1"
   },

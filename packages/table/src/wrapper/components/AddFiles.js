@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApolloClient } from '@apollo/client';
 import CPIFilesView from './CPIFilesView/CPIFilesView';
-import SnackbarView from './Snackbar/Snackbar';
+import CartToast from './Snackbar/CartToast';
 import AlertView from './AddToCartDialog/AddToCartDialogAlertView';
 
 export const btnTypes = {
@@ -10,8 +10,8 @@ export const btnTypes = {
   DOWNLOAD_MANIFEST: 'DOWNLOAD_MANIFEST',
 };
 /**
-* customize button based on configuration
-* refer config table (wrapper component config)
+* Explore CPI add-files button. Uses CartToast (body portal) instead of the
+* Global Search MUI Snackbar so the toast stays visible above the Explore Modal.
 */
 const AddFilesView = (props) => {
   const {
@@ -21,19 +21,10 @@ const AddFilesView = (props) => {
     cartFiles,
     buttonStyle,
   } = props;
-  /**
-  * snackbar state
-  */
   const [openSnackbar, setOpenSnackbar] = useState(false);
-
-  /**
-  * conditionally display max file Alter/Error dialog view
-  */
   const [displayAlter, setAlterDisplay] = useState(false);
-  /**
-  * acess bento app client via ApolloProvider
-  */
   const client = useApolloClient();
+
   return (
     <>
       <CPIFilesView
@@ -44,7 +35,7 @@ const AddFilesView = (props) => {
         cartFiles={cartFiles}
         buttonStyle={buttonStyle}
       />
-      <SnackbarView
+      <CartToast
         open={openSnackbar}
         count={count}
         alreadyInCartCount={alreadyInCartCount}
