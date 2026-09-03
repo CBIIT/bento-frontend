@@ -62,12 +62,12 @@ export const ToolTipView = (props) => {
 const checkDuplicate = (cartFiles, ids) => (ids.filter((id) => !cartFiles[id]));
 
 const addFileQuery = gql`
-query search (          
-  $participant_ids: [String],
+query search (
+  $pid: [String],
 ){
-  fileIDsFromList (          
-      participant_ids: $participant_ids,
-  ) 
+  fileIDsFromList (
+      pid: $pid,
+  )
 }
   `;
 
@@ -86,6 +86,7 @@ const CPIFilesComponent = (props) => {
     participantIds,
     buttonStyle,
     rowID,
+    onOptionClick,
   } = props;
   /**
   * conditionally display dialog view
@@ -108,20 +109,25 @@ const CPIFilesComponent = (props) => {
   * verify and set file ids
   */
   const addAllFiles = () => {
+    if (typeof onOptionClick === 'function') {
+      onOptionClick();
+    }
     let toAdd = [];
     if (btnType === 'ADD_ALL_FILES') {
+      // Always include the modal participant pid plus any internal CPI-mapped ids.
+      toAdd = rowID ? [rowID] : [];
       participantIds.forEach((e) => {
         if (e.data_type === 'internal' && e.p_id) {
           toAdd = toAdd.concat(e.p_id);
         }
-        toAdd = toAdd.concat(rowID);
       });
     } else {
-      toAdd = participantIds.concat(rowID);
+      toAdd = (rowID ? [rowID] : []).concat(participantIds);
     }
+    toAdd = [...new Set(toAdd.filter((id) => typeof id === 'string' && id))];
     const fileIds = getFilesID({
       client,
-      variables: { participant_ids: toAdd },
+      variables: { pid: toAdd },
       query: addFileQuery,
     });
     const upperLimit = 200000;
@@ -136,10 +142,10 @@ const CPIFilesComponent = (props) => {
             setOpen(true);
             setAddFilesId(ids);
           } else {
-            const newIds = checkDuplicate(cartFiles, ids);
+            const newIds = checkDuplicate(cartFilesDict, ids);
             if (cartCount + newIds.length <= upperLimit) {
               setOpen(true);
-              setAddFilesId(ids);
+              setAddFilesId(newIds);
             } else {
               setAlterDisplay(true);
             }

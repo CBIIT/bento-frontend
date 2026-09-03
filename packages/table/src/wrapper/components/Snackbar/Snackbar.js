@@ -3,6 +3,10 @@ import { Snackbar } from '@material-ui/core';
 import { formatCartAddMessage } from '@bento-core/cart';
 import SuccessOutlinedIcon from './SuccessOutlined';
 
+/**
+ * Legacy MUI snackbar kept for non-CPI table cart actions.
+ * Explore CPI uses CartToast instead.
+ */
 const SnackbarView = (props) => {
   const {
     count,
@@ -24,7 +28,7 @@ const SnackbarView = (props) => {
         open={open}
         autoHideDuration={3000}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        style={{ bottom: '-45%', zIndex: '-10000', pointerEvents: 'none' }}
+        style={{ bottom: '-45%', zIndex: 15000, pointerEvents: 'none' }}
         message={(
           <div className="snackBarMessage">
             <span className="snackBarMessageIcon">
