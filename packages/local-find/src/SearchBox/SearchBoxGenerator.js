@@ -11,6 +11,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { isEqual } from 'lodash';
 import TextField from './components/CustomTextField';
 import SearchList from './components/SearchList';
+import sortSearchEntries from './sortSearchEntries';
 import { updateAutocompleteData } from '../store/actions/Actions';
 import DEFAULT_STYLES from './styles';
 import DEFAULT_CONFIG from './config';
@@ -94,8 +95,7 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
       }, [options]);
 
       // Avoid passing the full list to Autocomplete or filtering with O(n) .filter on every
-      // keystroke. Empty query: show a mix of participants + synonyms. Typed query: scan
-      // all participant rows then synonym rows so matches are not skipped.
+      // keystroke. Suggestions stay in two blocks: participant IDs, then synonyms.
       const filteredOptions = useMemo(() => {
         const split = associatedStartIndex;
         const maxMatches = 400;
@@ -109,21 +109,21 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
           return pSlice.concat(aSlice);
         }
         const q = trimmed.toLowerCase();
-        const out = [];
-        const maxScanP = split;
-        for (let i = 0; i < maxScanP && out.length < maxMatches; i += 1) {
+        const participantMatches = [];
+        const synonymMatches = [];
+        for (let i = 0; i < split && participantMatches.length < maxMatches; i += 1) {
           const opt = options[i];
           const t1 = opt.title != null ? String(opt.title).toLowerCase() : '';
           const s1 = opt.synonym != null ? String(opt.synonym).toLowerCase() : '';
-          if (t1.includes(q) || s1.includes(q)) out.push(opt);
+          if (t1.includes(q) || s1.includes(q)) participantMatches.push(opt);
         }
-        for (let i = split; i < options.length && out.length < maxMatches; i += 1) {
+        for (let i = split; i < options.length && synonymMatches.length < maxMatches; i += 1) {
           const opt2 = options[i];
           const t2 = opt2.title != null ? String(opt2.title).toLowerCase() : '';
           const s2 = opt2.synonym != null ? String(opt2.synonym).toLowerCase() : '';
-          if (t2.includes(q) || s2.includes(q)) out.push(opt2);
+          if (t2.includes(q) || s2.includes(q)) synonymMatches.push(opt2);
         }
-        return out;
+        return participantMatches.concat(synonymMatches);
       }, [inputValue, options, associatedStartIndex]);
 
       useEffect(() => {
@@ -158,7 +158,9 @@ export const SearchBoxGenerator = (uiConfig = DEFAULT_CONFIG) => {
         // Remove duplicate values
         let newUniqueValue = [];
         if (newValue instanceof Array) {
-          newUniqueValue = [...new Set(newValue.map(JSON.stringify))].map(JSON.parse);
+          newUniqueValue = sortSearchEntries(
+            [...new Set(newValue.map(JSON.stringify))].map(JSON.parse),
+          );
         }
 
         // Call the onChange function if the selection has changed
