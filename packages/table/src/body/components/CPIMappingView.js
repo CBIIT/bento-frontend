@@ -175,7 +175,7 @@ const CPIMappingView = ({
       tooltipContent = (
         <div>
           <div style={{ marginBottom: '6px' }}>
-            This participant has more than one identifier in CCDI Hub studies:
+            This participant has more than one identifier in CCDI studies:
           </div>
           {internalData.map((e) => (
             <div key={e.associated_id} style={italicText}>
