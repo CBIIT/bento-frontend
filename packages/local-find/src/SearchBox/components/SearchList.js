@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Divider, List, ListItem, withStyles,
 } from '@material-ui/core';
+import sortSearchEntries from '../sortSearchEntries';
 
 /**
  * Renders a basic list of active search entries.
@@ -16,7 +17,8 @@ import {
  * @param {object} props.classes Material UI classes
  * @param {string} [props.id] id of the list element
  * @param {(string|{title:string,type?:string,synonym?:string})[]} [props.items]
- *   items to be displayed in the list
+ *   items to be displayed in the list. Participant IDs are listed first,
+ *   then synonyms.
  * @param {function} [props.onDelete] function to be called when delete icon
  *   is clicked. Receives `(title, type, synonym)` for object items, or
  *   `(item)` for legacy string items.
@@ -36,9 +38,11 @@ const SearchList = (props) => {
     }
   };
 
+  const rows = sortSearchEntries(items);
+
   return (
     <List classes={{ padding: classes.listPadding }} id={id}>
-      {(items || []).reverse().map((item, index) => {
+      {rows.map((item, index) => {
         const isObjectItem = item !== null && typeof item === 'object';
         const title = isObjectItem ? item.title : item;
         const type = isObjectItem ? item.type : undefined;
@@ -73,7 +77,7 @@ const SearchList = (props) => {
           </React.Fragment>
         );
       })}
-      {items.length > 0 && <Divider className={classes.divider} />}
+      {rows.length > 0 && <Divider className={classes.divider} />}
     </List>
   );
 };
