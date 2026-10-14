@@ -114,12 +114,12 @@ const DEFAULT_CONFIG_DONUT = {
     mergeProps: (props, extraProps, callback) => ...,
 
     /**
-     * Return last index of dataset
+     * Index of the slice with the most participants
      *
-     * @param {object|array} dataset
-     * @returns {number} last index of array
+     * @param {object[]|array} dataset
+     * @returns {number}
      */
-    getLastIndex: (dataset) => ...,
+    getLargestIndex: (dataset) => ...,
 
     /**
      * Map dataset to {name, value} pairs

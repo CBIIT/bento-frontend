@@ -49,12 +49,30 @@ export const DEFAULT_CONFIG_DONUT = {
     mergeProps: (props, extraProps, callback) => (callback({ ...props, ...extraProps })),
 
     /**
-     * Return last index of dataset
+     * Index of the slice with the most participants.
+     * Accepts mapped `{ value }` rows or raw `{ subjects }` rows.
      *
-     * @param {object|array} dataset
-     * @returns {number} last index of array
+     * @param {object[]|array} dataset
+     * @returns {number}
      */
-    getLastIndex: (dataset) => ((dataset.length !== undefined) ? dataset.length - 1 : 0),
+    getLargestIndex: (dataset) => {
+      if (!dataset || !dataset.length) {
+        return 0;
+      }
+      let maxIndex = 0;
+      let maxValue = Number.NEGATIVE_INFINITY;
+      dataset.forEach((item, index) => {
+        const raw = item && typeof item === 'object'
+          ? (item.value != null ? item.value : item.subjects)
+          : item;
+        const value = Number(raw);
+        if (Number.isFinite(value) && value > maxValue) {
+          maxValue = value;
+          maxIndex = index;
+        }
+      });
+      return maxIndex;
+    },
 
     /**
      * Map dataset to {name, value} pairs
@@ -158,9 +176,9 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
     ? functions.mergeProps
     : DEFAULT_CONFIG_DONUT.functions.mergeProps;
 
-  const lastIndex = functions && typeof functions.getLastIndex === 'function'
-    ? functions.getLastIndex
-    : DEFAULT_CONFIG_DONUT.functions.getLastIndex;
+  const getLargestIndex = functions && typeof functions.getLargestIndex === 'function'
+    ? functions.getLargestIndex
+    : DEFAULT_CONFIG_DONUT.functions.getLargestIndex;
 
   const mapDataset = functions && typeof functions.mapData === 'function'
     ? functions.mapDatasetObject
@@ -180,14 +198,15 @@ export const DonutChartGenerator = (uiConfig = DEFAULT_CONFIG_DONUT) => {
 
       const dataset = data.map(mapDataset);
       const totalCount = dataset.length || 0;
+      const largestIndex = getLargestIndex(dataset);
 
-      const [activeIndex, setActiveIndex] = useState(lastIndex(data));
+      const [activeIndex, setActiveIndex] = useState(largestIndex);
       const refHook = useRef(data);
 
       useEffect(() => {
         if (isEqual(refHook.current, data) === false) {
           refHook.current = data;
-          setActiveIndex(lastIndex(data));
+          setActiveIndex(getLargestIndex(data.map(mapDataset)));
         }
       }, [data]);
 
