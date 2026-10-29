@@ -152,7 +152,7 @@ const CPIView = ({
                     )
                     : (
                       <div>
-                        <div style={{ marginBottom: '6px' }}>This participant has more than one identifier in CCDI Hub studies:</div>
+                        <div style={{ marginBottom: '6px' }}>This participant has more than one identifier in CCDI studies:</div>
                         {internalData.map((e) => (
                           <div key={e.associated_id} style={italicText}>{`${e.associated_id}, ${e.repository_of_synonym_id}`}</div>
                         ))}
