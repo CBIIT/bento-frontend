@@ -21,7 +21,7 @@ export default () => ({
   },
   sortGroup: {
     paddingTop: '10px',
-    marginBottom: '5px',
+    marginBottom: '13px',
     textAlign: 'left',
     marginLeft: '-5px',
     borderTop: 'none',
@@ -129,9 +129,10 @@ export default () => ({
     top: '16px',
   },
   timeUnitToggle: {
-    marginLeft: '8px',
-    marginRight: '20px',
-    height: '32px',
+    width: '190px',
+    height: '24px',
+    marginLeft: '1px',
+    marginRight: 0,
     '& .MuiToggleButtonGroup-grouped': {
       borderRadius: '8px',
       '&:not(:first-child)': {
@@ -152,13 +153,18 @@ export default () => ({
       : '#3f51b5';
 
     return {
-      fontFamily: 'Poppins !important',
+      fontFamily: 'Raleway, sans-serif !important',
       fontSize: '11px !important',
-      fontWeight: '400 !important',
+      fontWeight: '600 !important',
       fontStyle: 'normal !important',
-      lineHeight: '100% !important',
-      letterSpacing: '0.02em !important',
-      padding: '6px 24px',
+      lineHeight: 'normal !important',
+      letterSpacing: '0.22px!important',
+      flex: '0 0 95px',
+      width: '95px',
+      height: '24px',
+      boxSizing: 'border-box',
+      margin: 0,
+      padding: '0 12px',
       textTransform: 'uppercase !important',
       border: '1px solid #D3D3D3',
       borderRadius: '8px',

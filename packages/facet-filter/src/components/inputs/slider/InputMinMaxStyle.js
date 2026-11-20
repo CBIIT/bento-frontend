@@ -6,7 +6,10 @@ export default () => ({
     color: '#717171',
     background: '#F0F0F0',
     '& input': {
-      width: '70px',
+      width: '65px',
+      height: '22px',
+      boxSizing: 'border-box',
+      padding: '3px 4px',
     },
     '&.Mui-disabled': {
       color: '#BDBDBD',
@@ -24,7 +27,10 @@ export default () => ({
     color: '#717171',
     background: '#F0F0F0',
     '& input': {
-      width: '70px',
+      width: '65px',
+      height: '22px',
+      boxSizing: 'border-box',
+      padding: '3px 4px',
     },
     '&.Mui-disabled': {
       color: '#BDBDBD',
