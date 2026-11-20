@@ -3,9 +3,11 @@
  */
 export default () => ({
   queryWrapper: {
-    backgroundColor: '#f1f1f1',
+    backgroundColor: '#FFFFFF',
     padding: '5px 15px 15px 27px',
     overflowY: 'auto',
+    borderBottom: '1px solid #B0B0B0',
+    boxShadow: 'inset 0 4px 6px -1px rgba(0, 0, 0, 0.25)',
   },
   queryContainer: {
     marginLeft: 5,
