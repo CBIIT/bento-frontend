@@ -4,7 +4,7 @@
 export default () => ({
   queryWrapper: {
     backgroundColor: '#f1f1f1',
-    padding: '5px 15px 15px 15px',
+    padding: '5px 15px 15px 27px',
     overflowY: 'auto',
   },
   queryContainer: {
@@ -63,8 +63,6 @@ export default () => ({
     fontWeight: 'bold',
   },
   clearQueryButton: {
-    margin: '1px',
-    marginLeft: -6,
     fontWeight: 600,
     fontSize: '12px',
     color: '#fff',

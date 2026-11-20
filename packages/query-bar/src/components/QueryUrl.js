@@ -32,7 +32,7 @@ const QueryUrl = ({
   const queryRef = useRef(null);
 
   return (
-    <div style={{ position: 'relative', right: '6px' }}>
+    <>
       <div ref={queryRef} className={classes.urlContainer}>
         <Button
           onClick={toggleDisplay}
@@ -79,7 +79,7 @@ const QueryUrl = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 
