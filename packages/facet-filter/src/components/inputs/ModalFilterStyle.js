@@ -47,7 +47,7 @@ export default () => ({
       borderBottom: '0px',
     },
     '&::-webkit-scrollbar': {
-      width: '16px',
+      width: '6px',
       backgroundColor: '#E2E2E2',
       borderLeft: '0.5px solid #1E1E1E',
     },
@@ -70,7 +70,7 @@ export default () => ({
       borderBottom: '0px',
     },
     '&::-webkit-scrollbar': {
-      width: '16px',
+      width: '6px',
       backgroundColor: '#E2E2E2',
       borderLeft: '0.5px solid #1E1E1E',
     },

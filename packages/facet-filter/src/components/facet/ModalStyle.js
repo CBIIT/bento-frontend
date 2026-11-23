@@ -3,13 +3,19 @@ import SearchIcon from './assets/Search_Icon.svg';
 export default () => ({
   header: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    position: 'relative',
     height: '55px',
+    padding: '0 56px 0 24px',
+    boxSizing: 'border-box',
   },
   closeButton: {
-    marginLeft: '769px',
     position: 'absolute',
+    right: '12px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    marginLeft: 0,
   },
   resetIcon: {
     marginLeft: '10px',
@@ -24,8 +30,9 @@ export default () => ({
     fontWeight: '400',
     lineHeight: '21px',
     letterSpacing: '0.02em',
-    textAlign: 'center',
+    textAlign: 'left',
     color: '#000000',
+    margin: '0',
   },
   modalBody: {
     position: 'absolute',
@@ -35,7 +42,7 @@ export default () => ({
     height: '671px',
     background: '#FFFFFF',
     border: '1px solid #505050',
-    borderRadius: '40px',
+    borderRadius: '10px',
     overflow: 'hidden',
   },
   searchContainer: {
