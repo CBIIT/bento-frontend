@@ -25,7 +25,7 @@ const searchBarContainerStyle = {
   display: 'flex',
   alignItems: 'center',
   marginRight: 'auto',
-  paddingLeft: '18px',
+  paddingLeft: '20px',
 };
 
 const getSearchBarWrapperStyle = (isFocused) => ({
